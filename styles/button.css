@@ -1,0 +1,369 @@
+/* =========================================================
+   FARM2VET DESIGN SYSTEM — BUTTON COMPONENT
+   Reusable button system. All declarations resolve through
+   --btn-* component tokens defined in tokens.css.
+   Depends on: tokens.css
+   ========================================================= */
+
+/* =========================================================
+   BASE — defaults to LG (the canonical focus size)
+   ========================================================= */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--btn-gap);
+    font-family: var(--btn-font-family);
+    font-weight: var(--btn-font-weight);
+    letter-spacing: var(--btn-letter-spacing);
+    border-radius: var(--btn-radius);
+    border: var(--btn-border-width) solid transparent;
+    cursor: pointer;
+    transition: var(--btn-transition);
+    white-space: nowrap;
+    user-select: none;
+    text-decoration: none;
+    line-height: 1;
+
+    /* Default size = LG */
+    font-size:  var(--btn-lg-font-size);
+    padding:    var(--btn-lg-padding-y) var(--btn-lg-padding-x);
+    min-height: var(--btn-lg-height);
+}
+
+.btn:focus-visible {
+    outline: var(--btn-focus-outline-width) solid var(--btn-focus-outline);
+    outline-offset: var(--btn-focus-outline-offset);
+}
+
+.btn .icon {
+    width:  var(--btn-lg-icon);
+    height: var(--btn-lg-icon);
+    flex-shrink: 0;
+}
+
+/* =========================================================
+   SIZES
+   ========================================================= */
+.btn--sm {
+    font-size:    var(--btn-sm-font-size);
+    padding:      var(--btn-sm-padding-y) var(--btn-sm-padding-x);
+    min-height:   var(--btn-sm-height);
+    border-radius: var(--radius-sm);
+}
+.btn--sm .icon { width: var(--btn-sm-icon); height: var(--btn-sm-icon); }
+
+.btn--md {
+    font-size:  var(--btn-md-font-size);
+    padding:    var(--btn-md-padding-y) var(--btn-md-padding-x);
+    min-height: var(--btn-md-height);
+}
+.btn--md .icon { width: var(--btn-md-icon); height: var(--btn-md-icon); }
+
+.btn--lg {
+    font-size:  var(--btn-lg-font-size);
+    padding:    var(--btn-lg-padding-y) var(--btn-lg-padding-x);
+    min-height: var(--btn-lg-height);
+}
+.btn--lg .icon { width: var(--btn-lg-icon); height: var(--btn-lg-icon); }
+
+.btn--xl {
+    font-size:    var(--btn-xl-font-size);
+    padding:      var(--btn-xl-padding-y) var(--btn-xl-padding-x);
+    min-height:   var(--btn-xl-height);
+    border-radius: var(--radius-lg);
+}
+.btn--xl .icon { width: var(--btn-xl-icon); height: var(--btn-xl-icon); }
+
+.btn--2xl {
+    font-size:    var(--btn-2xl-font-size);
+    padding:      var(--btn-2xl-padding-y) var(--btn-2xl-padding-x);
+    min-height:   var(--btn-2xl-height);
+    border-radius: var(--radius-lg);
+}
+.btn--2xl .icon { width: var(--btn-2xl-icon); height: var(--btn-2xl-icon); }
+
+/* =========================================================
+   VARIANTS
+   ========================================================= */
+.btn--cta {
+    background:    var(--btn-cta-bg);
+    color:         var(--btn-cta-fg);
+    border-color:  var(--btn-cta-border);
+    box-shadow:    var(--btn-cta-shadow);
+}
+.btn--cta:hover  { background: var(--btn-cta-bg-hover);  box-shadow: var(--btn-shadow-hover); transform: translateY(-1px); }
+.btn--cta:active { background: var(--btn-cta-bg-active); transform: translateY(0); }
+
+.btn--secondary {
+    background:    var(--btn-secondary-bg);
+    color:         var(--btn-secondary-fg);
+    border-color:  var(--btn-secondary-border);
+    box-shadow:    var(--btn-secondary-shadow);
+}
+.btn--secondary:hover  { background: var(--btn-secondary-bg-hover); }
+.btn--secondary:active { background: var(--btn-secondary-bg-active); }
+
+.btn--ghost {
+    background:    var(--btn-ghost-bg);
+    color:         var(--btn-ghost-fg);
+    border-color:  var(--btn-ghost-border);
+    box-shadow:    none;
+}
+.btn--ghost:hover  { background: var(--btn-ghost-bg-hover); }
+.btn--ghost:active { background: var(--btn-ghost-bg-active); }
+
+.btn--disabled,
+.btn[disabled] {
+    background:   var(--btn-disabled-bg)     !important;
+    color:        var(--btn-disabled-fg)     !important;
+    border-color: var(--btn-disabled-border) !important;
+    cursor:       var(--btn-disabled-cursor);
+    opacity:      var(--btn-disabled-opacity);
+    box-shadow:   none !important;
+    transform:    none !important;
+}
+
+.btn--loading {
+    background:   var(--btn-loading-bg);
+    color:        var(--btn-loading-fg);
+    border-color: transparent;
+    cursor:       progress;
+    position:     relative;
+}
+.btn--loading .spinner {
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    border: 2px solid var(--btn-loading-track);
+    border-top-color: var(--btn-loading-spinner);
+    animation: btn-spin .8s linear infinite;
+    flex-shrink: 0;
+}
+@keyframes btn-spin { to { transform: rotate(360deg); } }
+
+.btn--caution {
+    background:    var(--btn-caution-bg);
+    color:         var(--btn-caution-fg);
+    border-color:  var(--btn-caution-border);
+    box-shadow:    var(--btn-caution-shadow);
+}
+.btn--caution:hover  { background: var(--btn-caution-bg-hover);  box-shadow: var(--btn-shadow-hover); transform: translateY(-1px); }
+.btn--caution:active { background: var(--btn-caution-bg-active); transform: translateY(0); }
+
+.btn--toggle {
+    background:   var(--btn-toggle-bg);
+    color:        var(--btn-toggle-fg);
+    border-color: var(--btn-toggle-border);
+}
+.btn--toggle:hover { background: var(--btn-toggle-bg-hover); }
+.btn--toggle.is-on,
+.btn--toggle[aria-pressed="true"] {
+    background:   var(--btn-toggle-on-bg);
+    color:        var(--btn-toggle-on-fg);
+    border-color: var(--btn-toggle-on-border);
+}
+
+/* =========================================================
+   SWITCH — binary on/off with sliding thumb, plus a
+   segmented variant for picking one-of-N (e.g., language
+   switch, quick filter). Uses the --btn-switch-* component
+   tokens which alias the toggle variant's colour scheme,
+   and the same height scale as .btn (--btn-*-height).
+   ========================================================= */
+.btn-switch {
+    /* Local size variables — overridden by .btn-switch--{sm|md|lg|xl|2xl} */
+    --_track-h: var(--btn-lg-height);
+    --_pad:     var(--btn-switch-track-pad);
+    --_track-w: calc(var(--_track-h) * var(--btn-switch-aspect));
+    --_thumb:   calc(var(--_track-h) - var(--_pad) * 2 - var(--btn-border-width) * 2);
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    width:  var(--_track-w);
+    height: var(--_track-h);
+    padding: var(--_pad);
+    margin: 0;
+    background:    var(--btn-switch-track-bg);
+    color:         var(--btn-switch-fg);
+    border: var(--btn-border-width) solid var(--btn-switch-track-border);
+    border-radius: var(--btn-switch-radius);
+    cursor: pointer;
+    user-select: none;
+    line-height: 1;
+    font-family: var(--btn-font-family);
+    font-weight: var(--btn-font-weight);
+    font-size:   var(--btn-lg-font-size);
+    transition:  var(--btn-transition);
+}
+.btn-switch:hover { background: var(--btn-switch-track-bg-hover); }
+.btn-switch:focus-visible {
+    outline: var(--btn-focus-outline-width) solid var(--btn-focus-outline);
+    outline-offset: var(--btn-focus-outline-offset);
+}
+
+.btn-switch__thumb {
+    display: block;
+    width:  var(--_thumb);
+    height: var(--_thumb);
+    background:    var(--btn-switch-thumb-bg);
+    border-radius: 50%;
+    box-shadow:    var(--btn-switch-thumb-shadow);
+    transform: translateX(0);
+    transition: transform var(--btn-switch-thumb-duration) var(--btn-switch-thumb-easing),
+                background-color .18s ease;
+}
+
+.btn-switch.is-on,
+.btn-switch[aria-checked="true"] {
+    background:   var(--btn-switch-on-bg);
+    color:        var(--btn-switch-on-fg);
+    border-color: var(--btn-switch-on-border);
+}
+.btn-switch.is-on .btn-switch__thumb,
+.btn-switch[aria-checked="true"] .btn-switch__thumb {
+    transform: translateX(calc(var(--_track-w) - var(--_thumb) - var(--_pad) * 2 - var(--btn-border-width) * 2));
+}
+
+/* ---- Sizes — same height scale as .btn ---- */
+.btn-switch--sm  { --_track-h: var(--btn-sm-height);  font-size: var(--btn-sm-font-size); }
+.btn-switch--md  { --_track-h: var(--btn-md-height);  font-size: var(--btn-md-font-size); }
+.btn-switch--lg  { --_track-h: var(--btn-lg-height);  font-size: var(--btn-lg-font-size); }
+.btn-switch--xl  { --_track-h: var(--btn-xl-height);  font-size: var(--btn-xl-font-size); }
+.btn-switch--2xl { --_track-h: var(--btn-2xl-height); font-size: var(--btn-2xl-font-size); }
+
+/* ---- Disabled ---- */
+.btn-switch[disabled],
+.btn-switch.is-disabled {
+    background:   var(--btn-disabled-bg)     !important;
+    border-color: var(--btn-disabled-border) !important;
+    color:        var(--btn-disabled-fg)     !important;
+    cursor:       var(--btn-disabled-cursor);
+    opacity:      var(--btn-disabled-opacity);
+}
+.btn-switch[disabled] .btn-switch__thumb,
+.btn-switch.is-disabled .btn-switch__thumb {
+    background: var(--btn-disabled-fg);
+    box-shadow: none;
+}
+
+/* =========================================================
+   SEGMENTED SWITCH — multi-option (e.g., language switch).
+   Compose as: .btn-switch.btn-switch--segmented containing
+   .btn-switch__option children; the active child carries
+   .is-on (or aria-pressed="true").
+   ========================================================= */
+.btn-switch.btn-switch--segmented {
+    width: auto;
+    align-items: stretch;
+    gap: 0;
+    padding: var(--_pad);
+    cursor: default;
+}
+
+.btn-switch__option {
+    appearance: none;
+    -webkit-appearance: none;
+    background: transparent;
+    border: 0;
+    color: var(--btn-switch-fg);
+    font: inherit;
+    font-weight: var(--btn-font-weight);
+    line-height: 1;
+    padding: 0 var(--spacing-4x);
+    border-radius: var(--btn-switch-radius);
+    cursor: pointer;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: var(--_thumb);
+    transition: background-color .18s ease, color .18s ease, box-shadow .18s ease;
+}
+.btn-switch__option:hover { color: var(--text-default); }
+.btn-switch__option:focus-visible {
+    outline: var(--btn-focus-outline-width) solid var(--btn-focus-outline);
+    outline-offset: 0;
+}
+.btn-switch__option.is-on,
+.btn-switch__option[aria-pressed="true"],
+.btn-switch__option[aria-selected="true"] {
+    background:   var(--btn-switch-active-bg);
+    color:        var(--btn-switch-active-fg);
+    border-color: var(--btn-switch-active-border);
+    box-shadow:   var(--btn-switch-thumb-shadow);
+}
+.btn-switch__option.is-on:hover,
+.btn-switch__option[aria-pressed="true"]:hover,
+.btn-switch__option[aria-selected="true"]:hover { color: var(--btn-switch-active-fg); }
+
+/* Segmented padding scales gently with size. */
+.btn-switch--segmented.btn-switch--sm  .btn-switch__option { padding: 0 var(--spacing-2x); }
+.btn-switch--segmented.btn-switch--md  .btn-switch__option { padding: 0 var(--spacing-3x); }
+.btn-switch--segmented.btn-switch--xl  .btn-switch__option { padding: 0 var(--spacing-5x); }
+.btn-switch--segmented.btn-switch--2xl .btn-switch__option { padding: 0 var(--spacing-6x); }
+
+.btn-switch__option[disabled] {
+    cursor:  var(--btn-disabled-cursor);
+    color:   var(--btn-disabled-fg);
+    opacity: var(--btn-disabled-opacity);
+}
+
+/* =========================================================
+   VERSIONS — modifiers stacked on top of variants
+   ========================================================= */
+
+/* Icon-only — square aspect, padded for the icon only */
+.btn--icon-only {
+    padding: var(--btn-lg-padding-y);
+    width:   var(--btn-lg-height);
+    aspect-ratio: 1;
+}
+.btn--icon-only.btn--sm  { padding: var(--btn-sm-padding-y);  width: var(--btn-sm-height); }
+.btn--icon-only.btn--md  { padding: var(--btn-md-padding-y);  width: var(--btn-md-height); }
+.btn--icon-only.btn--xl  { padding: var(--btn-xl-padding-y);  width: var(--btn-xl-height); }
+.btn--icon-only.btn--2xl { padding: var(--btn-2xl-padding-y); width: var(--btn-2xl-height); }
+
+/* Borderless — strips the surface and border, becomes text-like */
+.btn--borderless {
+    border-color: transparent !important;
+    box-shadow:   none        !important;
+    background:   transparent;
+}
+.btn--borderless.btn--cta            { color: var(--text-accent-strong); }
+.btn--borderless.btn--cta:hover      { background: var(--background-accent-subtle); color: var(--text-accent-strong); }
+.btn--borderless.btn--caution        { background: transparent; color: var(--text-critical); }
+.btn--borderless.btn--caution:hover  { background: color-mix(in srgb, var(--critical-500) 8%, transparent); }
+.btn--borderless.btn--secondary      { background: transparent; color: var(--text-default); }
+.btn--borderless.btn--secondary:hover{ background: var(--background-default-subtle); }
+
+/* Inverted surface — when the button sits on a dark/brand panel */
+.surface-inverted .btn--cta {
+    background: var(--btn-inverted-cta-bg);
+    color:      var(--btn-inverted-cta-fg);
+}
+.surface-inverted .btn--cta:hover { background: var(--btn-inverted-cta-bg-hover); }
+
+.surface-inverted .btn--secondary {
+    background:   var(--btn-inverted-secondary-bg);
+    color:        var(--btn-inverted-secondary-fg);
+    border-color: var(--btn-inverted-secondary-border);
+}
+.surface-inverted .btn--secondary:hover { background: var(--background-inverted-minimal); }
+
+.surface-inverted .btn--ghost            { color: var(--btn-inverted-ghost-fg); }
+.surface-inverted .btn--ghost:hover      { background: var(--btn-inverted-ghost-bg-hover); }
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+    .btn                  { transition: none; }
+    .btn--loading .spinner { animation: none; }
+    .btn-switch,
+    .btn-switch__thumb,
+    .btn-switch__option   { transition: none; }
+}

@@ -1,0 +1,168 @@
+/* =========================================================
+   PAGE — COMPONENT · FORM
+   Styles unique to component-form.html: layout for the
+   form variant grid, version showcase, size stage, and the
+   component token spec table.
+   The actual form components live in form.css.
+   Depends on: tokens.css, base.css, shell.css, form.css
+   ========================================================= */
+
+/* =========================================================
+   VARIANT GRID — one card per form variant
+   Fixed at 2 columns on desktop. LG inputs (22.5px font,
+   ~480px content width) need real horizontal room — a
+   3-column layout shrinks them below their natural size
+   and the placeholder text starts to truncate.
+   ========================================================= */
+.form-variant-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-5x);
+}
+.form-variant-card {
+    border-radius: var(--radius-lg);
+    border: var(--border-width-base) solid var(--border-glass-light);
+    background: var(--background-glass-light);
+    backdrop-filter: var(--blur-lg) saturate(140%);
+    -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
+    padding: var(--spacing-6x);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4x);
+    min-height: 240px;
+    justify-content: space-between;
+}
+.form-variant-card.tall { min-height: 320px; }
+
+.form-variant-card .label {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+}
+.form-variant-card .demo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.form-variant-card .meta {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    color: var(--text-default-minimal);
+    letter-spacing: 0.04em;
+    border-top: var(--border-width-base) solid var(--border-default-subtle);
+    padding-top: var(--spacing-3x);
+    display: flex;
+    justify-content: space-between;
+    gap: var(--spacing-3x);
+}
+.form-variant-card .meta strong {
+    color: var(--text-default);
+    font-weight: var(--font-weight-medium);
+}
+
+/* =========================================================
+   VERSION STAGE — Default / With-value / Error
+   Side-by-side comparison reads best at 3 columns, but
+   we cap each card at a comfortable max-width so the
+   input doesn't stretch to feel stubby.
+   ========================================================= */
+.form-version-stage {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--spacing-4x);
+}
+.form-version-card {
+    border-radius: var(--radius-lg);
+    border: var(--border-width-base) solid var(--border-glass-light);
+    background: var(--background-glass-light);
+    backdrop-filter: var(--blur-lg) saturate(140%);
+    -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
+    padding: var(--spacing-6x);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4x);
+    min-height: 220px;
+    justify-content: space-between;
+}
+.form-version-card .label {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+}
+.form-version-card .demo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.form-version-card .meta {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    color: var(--text-default-minimal);
+    letter-spacing: 0.04em;
+    border-top: var(--border-width-base) solid var(--border-default-subtle);
+    padding-top: var(--spacing-3x);
+    display: flex;
+    justify-content: space-between;
+}
+.form-version-card .meta strong {
+    color: var(--text-default);
+    font-weight: var(--font-weight-medium);
+}
+
+/* =========================================================
+   SIZE STAGE — sizes stacked vertically (inputs are full-width
+   so a horizontal layout would stretch awkwardly).
+   ========================================================= */
+.form-size-stage {
+    padding: var(--spacing-8x);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-6x);
+}
+.form-size-row {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    align-items: center;
+    gap: var(--spacing-6x);
+    padding-bottom: var(--spacing-5x);
+    border-bottom: var(--border-width-base) dashed var(--border-default);
+}
+.form-size-row:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+}
+.form-size-row .tag {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+    justify-self: start;
+}
+.form-size-row.is-focus .tag {
+    color: var(--text-primary-strong);
+    background: var(--background-primary-subtle);
+    padding: var(--spacing-half) var(--spacing-2x);
+    border-radius: var(--radius-pill);
+    border: var(--border-width-base) solid var(--border-primary-subtle);
+}
+.form-size-row .demo {
+    width: 100%;
+    max-width: 480px;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 960px) {
+    .form-variant-grid  { grid-template-columns: 1fr; }
+    .form-version-stage { grid-template-columns: 1fr; }
+    .form-size-row      { grid-template-columns: 1fr; gap: var(--spacing-3x); }
+    .form-size-row .tag { justify-self: start; }
+}

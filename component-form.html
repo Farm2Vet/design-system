@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Farm2Vet · Form — Design System</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<!-- Design system: shared, reusable foundation -->
+<link rel="stylesheet" href="styles/tokens.css" />
+<link rel="stylesheet" href="styles/base.css" />
+<link rel="stylesheet" href="styles/shell.css" />
+<link rel="stylesheet" href="styles/form.css" />
+<!-- Page-specific: only what is unique to component-form.html -->
+<link rel="stylesheet" href="styles/page-component-form.css" />
+</head>
+<body>
+
+<!-- ========================== TOP BAR ========================== -->
+<header class="topbar">
+  <a href="#top" class="brand" aria-label="Farm2Vet design system">
+    <img src="logo/logo-wordmark-color.svg" alt="Farm2Vet" class="brand-logo" />
+    <small>Design System</small>
+  </a>
+  <nav class="toc" aria-label="Section navigation">
+    <a href="#form-variants">01 Variants</a>
+    <a href="#form-versions">02 Versions</a>
+    <a href="#form-sizes">03 Sizes</a>
+    <a href="#form-tokens">04 Tokens</a>
+  </nav>
+  <span class="version mono">v 0.5 · 2026</span>
+</header>
+
+<main class="shell" id="top">
+
+  <!-- ========================== HERO ========================== -->
+  <section class="hero">
+    <div>
+      <h1 class="display reveal">
+        <span class="num">Section 04 / Components</span>
+        Form.
+      </h1>
+    </div>
+    <div>
+      <p class="lede reveal">
+        Eight input primitives that share a single shape, scale and state
+        vocabulary — text, textarea, dropdown, date, multi-select, radio,
+        file upload and checkbox. Each resolves through the same
+        <code>--form-*</code> token layer so a tweak to focus colour or
+        radius cascades across every control.
+      </p>
+    </div>
+
+    <dl class="meta-strip reveal">
+      <div><dt>Component</dt><dd>Form</dd></div>
+      <div><dt>Variants</dt><dd>8</dd></div>
+      <div><dt>Versions</dt><dd>3</dd></div>
+      <div><dt>Sizes</dt><dd>5 · LG focus</dd></div>
+    </dl>
+  </section>
+
+  <!-- ========================== FORM · VARIANTS ========================== -->
+  <section class="chunk" id="form-variants">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">01 / Form — Variants</span>
+        <h2 class="display">Variants <em>by control</em>.</h2>
+      </div>
+      <p>
+        Eight controls covering the full range of structured input:
+        free text, constrained choice, date, multi-pick and binary toggle.
+        All previews shown at the focus size: <strong>LG · 22.5px</strong>.
+      </p>
+    </header>
+
+    <div class="form-variant-grid reveal">
+
+      <!-- Text input -->
+      <article class="form-variant-card">
+        <span class="label">Text input</span>
+        <div class="demo">
+          <div class="field">
+            <label class="field__label" for="vf-text">Patient name</label>
+            <input id="vf-text" class="input" type="text" placeholder="e.g. Bessie" />
+            <span class="field__helper">Owner-confirmed identifier</span>
+          </div>
+        </div>
+        <div class="meta"><span>.input</span><strong>free text</strong></div>
+      </article>
+
+      <!-- Textarea -->
+      <article class="form-variant-card tall">
+        <span class="label">Text area</span>
+        <div class="demo">
+          <div class="field">
+            <label class="field__label" for="vf-textarea">Clinical notes</label>
+            <textarea id="vf-textarea" class="input textarea" placeholder="Observations, findings, next steps…"></textarea>
+          </div>
+        </div>
+        <div class="meta"><span>.textarea</span><strong>multi-line</strong></div>
+      </article>
+
+      <!-- Dropdown -->
+      <article class="form-variant-card">
+        <span class="label">Dropdown</span>
+        <div class="demo">
+          <div class="field">
+            <label class="field__label" for="vf-select">Species</label>
+            <select id="vf-select" class="input select">
+              <option value="" disabled selected>Choose species…</option>
+              <option>Bovine</option>
+              <option>Caprine</option>
+              <option>Ovine</option>
+              <option>Equine</option>
+              <option>Porcine</option>
+            </select>
+          </div>
+        </div>
+        <div class="meta"><span>.select</span><strong>single choice</strong></div>
+      </article>
+
+      <!-- Date picker -->
+      <article class="form-variant-card">
+        <span class="label">Date picker</span>
+        <div class="demo">
+          <div class="field">
+            <label class="field__label" for="vf-date">Date of visit</label>
+            <input id="vf-date" class="input input--date" type="date" />
+            <span class="field__helper">UTC; pickers reflect locale</span>
+          </div>
+        </div>
+        <div class="meta"><span>.input--date</span><strong>calendar</strong></div>
+      </article>
+
+      <!-- Multi-select -->
+      <article class="form-variant-card">
+        <span class="label">Multi-select</span>
+        <div class="demo">
+          <div class="field">
+            <label class="field__label" for="vf-multi">Symptoms</label>
+            <div class="input multi-select" id="vf-multi-wrap">
+              <span class="chip">Lethargy<button type="button" aria-label="Remove">×</button></span>
+              <span class="chip">Fever<button type="button" aria-label="Remove">×</button></span>
+              <input id="vf-multi" class="ms-input" type="text" placeholder="Add symptom…" />
+            </div>
+          </div>
+        </div>
+        <div class="meta"><span>.multi-select</span><strong>chips</strong></div>
+      </article>
+
+      <!-- Radio select -->
+      <article class="form-variant-card tall">
+        <span class="label">Radio select</span>
+        <div class="demo">
+          <fieldset class="field" style="border:none">
+            <legend class="field__label">Triage urgency</legend>
+            <div class="radio-group">
+              <label class="radio">
+                <input type="radio" name="vf-radio" />
+                Routine
+              </label>
+              <label class="radio">
+                <input type="radio" name="vf-radio" checked />
+                Priority
+              </label>
+              <label class="radio">
+                <input type="radio" name="vf-radio" />
+                Emergency
+              </label>
+            </div>
+          </fieldset>
+        </div>
+        <div class="meta"><span>.radio-group</span><strong>one of N</strong></div>
+      </article>
+
+      <!-- File upload -->
+      <article class="form-variant-card tall">
+        <span class="label">File upload</span>
+        <div class="demo">
+          <div class="field">
+            <span class="field__label">Lab report</span>
+            <label class="file-upload" tabindex="0">
+              <input type="file" accept=".pdf,.png,.jpg" />
+              <svg class="file-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/>
+                <line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
+              <span><span class="file-cta">Click to upload</span> or drag &amp; drop</span>
+              <span class="file-hint">PDF, PNG, JPG · up to 10 MB</span>
+            </label>
+          </div>
+        </div>
+        <div class="meta"><span>.file-upload</span><strong>dropzone</strong></div>
+      </article>
+
+      <!-- Checkbox -->
+      <article class="form-variant-card">
+        <span class="label">Checkbox</span>
+        <div class="demo">
+          <fieldset class="field" style="border:none">
+            <legend class="field__label">Pre-procedure checks</legend>
+            <div class="checkbox-group">
+              <label class="checkbox">
+                <input type="checkbox" checked />
+                NSAID withdrawal observed
+              </label>
+              <label class="checkbox">
+                <input type="checkbox" />
+                Owner consent recorded
+              </label>
+              <label class="checkbox">
+                <input type="checkbox" checked />
+                Fasting confirmed
+              </label>
+            </div>
+          </fieldset>
+        </div>
+        <div class="meta"><span>.checkbox-group</span><strong>multi binary</strong></div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ========================== FORM · VERSIONS ========================== -->
+  <section class="chunk" id="form-versions">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">02 / Form — Versions</span>
+        <h2 class="display">State <em>versions</em>.</h2>
+      </div>
+      <p>
+        Every variant moves through three states. <em>Default</em> shows the
+        empty rest state, <em>With value</em> the user-completed state, and
+        <em>Error</em> the validation-failed state with helper text replaced
+        by an error message.
+      </p>
+    </header>
+
+    <h4 class="subheading reveal">Text input <span class="tag">representative</span></h4>
+    <div class="form-version-stage reveal">
+      <article class="form-version-card">
+        <span class="label">Default</span>
+        <div class="demo">
+          <div class="field">
+            <label class="field__label" for="vv-default">Patient name</label>
+            <input id="vv-default" class="input" type="text" placeholder="e.g. Bessie" />
+            <span class="field__helper">Owner-confirmed identifier</span>
+          </div>
+        </div>
+        <div class="meta"><span>:placeholder-shown</span><strong>empty / rest</strong></div>
+      </article>
+
+      <article class="form-version-card">
+        <span class="label">With value</span>
+        <div class="demo">
+          <div class="field">
+            <label class="field__label" for="vv-value">Patient name</label>
+            <input id="vv-value" class="input" type="text" value="Bessie · Holstein, 4y" />
+            <span class="field__helper">Owner-confirmed identifier</span>
+          </div>
+        </div>
+        <div class="meta"><span>[value]</span><strong>completed</strong></div>
+      </article>
+
+      <article class="form-version-card">
+        <span class="label">Error</span>
+        <div class="demo">
+          <div class="field">
+            <label class="field__label" for="vv-error">Patient name <span class="req" aria-hidden="true">*</span></label>
+            <input id="vv-error" class="input is-error" type="text" value="" placeholder="e.g. Bessie" aria-invalid="true" aria-describedby="vv-error-msg" />
+            <span class="field__error" id="vv-error-msg">Patient name is required</span>
+          </div>
+        </div>
+        <div class="meta"><span>.is-error</span><strong>invalid</strong></div>
+      </article>
+    </div>
+
+    <h4 class="subheading reveal">Dropdown</h4>
+    <div class="form-version-stage reveal">
+      <article class="form-version-card">
+        <span class="label">Default</span>
+        <div class="demo">
+          <div class="field">
+            <label class="field__label" for="vv-sel-d">Species</label>
+            <select id="vv-sel-d" class="input select">
+              <option value="" disabled selected>Choose species…</option>
+              <option>Bovine</option><option>Caprine</option><option>Ovine</option>
+            </select>
+          </div>
+        </div>
+        <div class="meta"><span>.select</span><strong>nothing chosen</strong></div>
+      </article>
+
+      <article class="form-version-card">
+        <span class="label">With value</span>
+        <div class="demo">
+          <div class="field">
+            <label class="field__label" for="vv-sel-v">Species</label>
+            <select id="vv-sel-v" class="input select">
+              <option>Bovine</option>
+              <option selected>Caprine</option>
+              <option>Ovine</option>
+            </select>
+          </div>
+        </div>
+        <div class="meta"><span>[selected]</span><strong>chosen</strong></div>
+      </article>
+
+      <article class="form-version-card">
+        <span class="label">Error</span>
+        <div class="demo">
+          <div class="field">
+            <label class="field__label" for="vv-sel-e">Species <span class="req" aria-hidden="true">*</span></label>
+            <select id="vv-sel-e" class="input select is-error" aria-invalid="true" aria-describedby="vv-sel-e-msg">
+              <option value="" disabled selected>Choose species…</option>
+              <option>Bovine</option>
+            </select>
+            <span class="field__error" id="vv-sel-e-msg">Select a species to continue</span>
+          </div>
+        </div>
+        <div class="meta"><span>.is-error</span><strong>invalid</strong></div>
+      </article>
+    </div>
+
+    <h4 class="subheading reveal">Checkbox &amp; Radio</h4>
+    <div class="form-version-stage reveal">
+      <article class="form-version-card">
+        <span class="label">Default</span>
+        <div class="demo">
+          <div class="checkbox-group">
+            <label class="checkbox"><input type="checkbox" /> Owner consent recorded</label>
+            <label class="checkbox"><input type="checkbox" /> Fasting confirmed</label>
+          </div>
+        </div>
+        <div class="meta"><span>.checkbox</span><strong>unchecked</strong></div>
+      </article>
+
+      <article class="form-version-card">
+        <span class="label">With value</span>
+        <div class="demo">
+          <div class="checkbox-group">
+            <label class="checkbox"><input type="checkbox" checked /> Owner consent recorded</label>
+            <label class="checkbox"><input type="checkbox" checked /> Fasting confirmed</label>
+          </div>
+        </div>
+        <div class="meta"><span>:checked</span><strong>selected</strong></div>
+      </article>
+
+      <article class="form-version-card">
+        <span class="label">Error</span>
+        <div class="demo">
+          <fieldset class="field" style="border:none">
+            <legend class="field__label">Required <span class="req" aria-hidden="true">*</span></legend>
+            <div class="checkbox-group">
+              <label class="checkbox is-error"><input type="checkbox" aria-invalid="true" /> Owner consent recorded</label>
+              <label class="checkbox is-error"><input type="checkbox" aria-invalid="true" /> Fasting confirmed</label>
+            </div>
+            <span class="field__error">At least one check is required</span>
+          </fieldset>
+        </div>
+        <div class="meta"><span>.is-error</span><strong>invalid</strong></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ========================== FORM · SIZES ========================== -->
+  <section class="chunk" id="form-sizes">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">03 / Form — Sizes</span>
+        <h2 class="display">Sized for <em>density</em>.</h2>
+      </div>
+      <p>
+        Five steps along the same scale that drives type and Button. The
+        middle is canonical: <strong>Large · 22.5px</strong> for primary
+        forms in marketing surfaces and full-page intake flows.
+      </p>
+    </header>
+
+    <h4 class="subheading reveal">Text input — across all sizes <span class="tag">primary control</span></h4>
+    <div class="glass form-size-stage reveal">
+      <div class="form-size-row">
+        <span class="tag">SM · 13.33px</span>
+        <div class="demo"><input class="input input--sm" type="text" placeholder="Patient name" /></div>
+      </div>
+      <div class="form-size-row">
+        <span class="tag">MD · 16px</span>
+        <div class="demo"><input class="input input--md" type="text" placeholder="Patient name" /></div>
+      </div>
+      <div class="form-size-row is-focus">
+        <span class="tag">LG · 22.5px · focus</span>
+        <div class="demo"><input class="input input--lg" type="text" placeholder="Patient name" /></div>
+      </div>
+      <div class="form-size-row">
+        <span class="tag">XL · 27.65px</span>
+        <div class="demo"><input class="input input--xl" type="text" placeholder="Patient name" /></div>
+      </div>
+      <div class="form-size-row">
+        <span class="tag">2XL · 33.18px</span>
+        <div class="demo"><input class="input input--2xl" type="text" placeholder="Patient name" /></div>
+      </div>
+    </div>
+
+    <h4 class="subheading reveal">Dropdown — across all sizes <span class="tag">single choice</span></h4>
+    <div class="glass form-size-stage reveal">
+      <div class="form-size-row">
+        <span class="tag">SM</span>
+        <div class="demo"><select class="input select input--sm"><option>Bovine</option><option>Caprine</option></select></div>
+      </div>
+      <div class="form-size-row">
+        <span class="tag">MD</span>
+        <div class="demo"><select class="input select input--md"><option>Bovine</option><option>Caprine</option></select></div>
+      </div>
+      <div class="form-size-row is-focus">
+        <span class="tag">LG · focus</span>
+        <div class="demo"><select class="input select input--lg"><option>Bovine</option><option>Caprine</option></select></div>
+      </div>
+      <div class="form-size-row">
+        <span class="tag">XL</span>
+        <div class="demo"><select class="input select input--xl"><option>Bovine</option><option>Caprine</option></select></div>
+      </div>
+      <div class="form-size-row">
+        <span class="tag">2XL</span>
+        <div class="demo"><select class="input select input--2xl"><option>Bovine</option><option>Caprine</option></select></div>
+      </div>
+    </div>
+
+    <h4 class="subheading reveal">Checkbox — across all sizes <span class="tag">selection</span></h4>
+    <div class="glass form-size-stage reveal">
+      <div class="form-size-row">
+        <span class="tag">SM</span>
+        <div class="demo"><label class="checkbox checkbox--sm"><input type="checkbox" checked /> Fasting confirmed</label></div>
+      </div>
+      <div class="form-size-row">
+        <span class="tag">MD</span>
+        <div class="demo"><label class="checkbox checkbox--md"><input type="checkbox" checked /> Fasting confirmed</label></div>
+      </div>
+      <div class="form-size-row is-focus">
+        <span class="tag">LG · focus</span>
+        <div class="demo"><label class="checkbox checkbox--lg"><input type="checkbox" checked /> Fasting confirmed</label></div>
+      </div>
+      <div class="form-size-row">
+        <span class="tag">XL</span>
+        <div class="demo"><label class="checkbox checkbox--xl"><input type="checkbox" checked /> Fasting confirmed</label></div>
+      </div>
+      <div class="form-size-row">
+        <span class="tag">2XL</span>
+        <div class="demo"><label class="checkbox checkbox--2xl"><input type="checkbox" checked /> Fasting confirmed</label></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================== FORM · TOKENS ========================== -->
+  <section class="chunk" id="form-tokens">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">04 / Form — Component tokens</span>
+        <h2 class="display">Token <em>map</em>.</h2>
+      </div>
+      <p>
+        Every form declaration resolves through this layer. Component tokens
+        only ever reference semantic tokens — never primitives — so a focus
+        colour change cascades to inputs, radios, checkboxes and the
+        file-upload dropzone in lockstep.
+      </p>
+    </header>
+
+    <table class="token-table reveal" aria-label="Form component tokens">
+      <thead>
+        <tr>
+          <th>Component token</th>
+          <th>References</th>
+          <th>Resolves to</th>
+          <th>Preview</th>
+        </tr>
+      </thead>
+      <tbody id="formTokenTable"></tbody>
+    </table>
+  </section>
+
+  <!-- ========================== FOOTER ========================== -->
+  <footer>
+    <span class="sigil">Farm2Vet — cultivated intelligence, since 2024.</span>
+    <a href="component-button.html">← Section 03 / Button</a>
+    <span>End of Section 04 · Form</span>
+  </footer>
+
+</main>
+
+<!-- ============================================================
+     The token-table CSS (.token-table, .tk-name, .tk-ref,
+     .tk-resolved, .tk-swatch, .group-row) is defined in
+     page-component-button.css. This page reuses it; if Form
+     ever ships without Button, lift those rules into a small
+     shared `styles/token-table.css`.
+     ============================================================ -->
+<link rel="stylesheet" href="styles/page-component-button.css" />
+
+<script>
+/* =========================================================
+   COMPONENT TOKEN DATA — Form
+   Each entry: [name, semanticReference]
+   ========================================================= */
+const FORM_TOKENS = [
+  { group: 'Shared shape', tokens: [
+    ['--form-font-family',    'var(--font-sans)'],
+    ['--form-font-weight',    'var(--font-weight-regular)'],
+    ['--form-letter-spacing', '0'],
+    ['--form-radius',         'var(--radius-md)'],
+    ['--form-border-width',   'var(--border-width-base)'],
+    ['--form-gap',            'var(--spacing-2x)'],
+  ]},
+  { group: 'Sizes — focus on LG (22.5px)', tokens: [
+    ['--form-sm-font-size',   'var(--text-sm)'],
+    ['--form-sm-padding-x',   'var(--spacing-3x)'],
+    ['--form-sm-padding-y',   'var(--spacing-1x)'],
+    ['--form-md-font-size',   'var(--text-base)'],
+    ['--form-md-padding-x',   'var(--spacing-4x)'],
+    ['--form-md-padding-y',   'var(--spacing-2x)'],
+    ['--form-lg-font-size',   '22.5px /* focus */'],
+    ['--form-lg-padding-x',   'var(--spacing-6x)'],
+    ['--form-lg-padding-y',   'var(--spacing-3x)'],
+    ['--form-xl-font-size',   'var(--text-h4)'],
+    ['--form-xl-padding-x',   'var(--spacing-8x)'],
+    ['--form-xl-padding-y',   'var(--spacing-4x)'],
+    ['--form-2xl-font-size',  'var(--text-h3)'],
+    ['--form-2xl-padding-x',  'var(--spacing-10x)'],
+    ['--form-2xl-padding-y',  'var(--spacing-5x)'],
+  ]},
+  { group: 'Surface & text', tokens: [
+    ['--form-bg',          'var(--background-default)'],
+    ['--form-bg-hover',    'var(--background-default-subtle)'],
+    ['--form-bg-focus',    'var(--background-default)'],
+    ['--form-bg-disabled', 'var(--background-default-disabled)'],
+    ['--form-fg',          'var(--text-default)'],
+    ['--form-placeholder', 'var(--text-default-minimal)'],
+    ['--form-fg-disabled', 'var(--text-default-disabled)'],
+  ]},
+  { group: 'Border', tokens: [
+    ['--form-border',        'var(--border-default-input)'],
+    ['--form-border-hover',  'var(--border-default-strong)'],
+    ['--form-border-focus',  'var(--border-primary-focus)'],
+    ['--form-border-error',  'var(--border-critical-strong)'],
+    ['--form-ring-focus',    'color-mix(in srgb, var(--border-primary-focus) 20%, transparent)'],
+    ['--form-ring-error',    'color-mix(in srgb, var(--border-critical-strong) 20%, transparent)'],
+  ]},
+  { group: 'Field labels & helpers', tokens: [
+    ['--form-label-fg',    'var(--text-default)'],
+    ['--form-helper-fg',   'var(--text-default-minimal)'],
+    ['--form-error-fg',    'var(--text-critical)'],
+    ['--form-required-fg', 'var(--text-critical)'],
+  ]},
+  { group: 'Selection controls (radio, checkbox)', tokens: [
+    ['--form-control-bg',             'var(--background-default)'],
+    ['--form-control-border',         'var(--border-default-strong)'],
+    ['--form-control-checked-bg',     'var(--background-primary)'],
+    ['--form-control-checked-fg',     'var(--text-inverted)'],
+    ['--form-control-checked-border', 'var(--border-primary)'],
+    ['--form-control-error-border',   'var(--border-critical-strong)'],
+  ]},
+  { group: 'Multi-select chip', tokens: [
+    ['--form-chip-bg',     'var(--background-primary-minimal)'],
+    ['--form-chip-fg',     'var(--text-primary-strong)'],
+    ['--form-chip-border', 'transparent'],
+    ['--form-chip-radius', 'var(--radius-sm)'],
+  ]},
+  { group: 'File upload dropzone', tokens: [
+    ['--form-file-bg',           'var(--background-default-subtle)'],
+    ['--form-file-bg-hover',     'var(--background-default-minimal)'],
+    ['--form-file-border',       'var(--border-default-input)'],
+    ['--form-file-border-hover', 'var(--border-primary)'],
+    ['--form-file-fg',           'var(--text-default)'],
+    ['--form-file-icon',         'var(--icon-default)'],
+  ]},
+  { group: 'Focus ring', tokens: [
+    ['--form-focus-outline',        'var(--outline-focus)'],
+    ['--form-focus-outline-width',  '2px'],
+    ['--form-focus-outline-offset', '2px'],
+  ]},
+];
+
+/* =========================================================
+   RENDER — Form token table
+   Resolve each var() chain to a final value via getComputedStyle,
+   and decide whether the chip should render a colour or be hidden.
+   ========================================================= */
+function resolveCss(varName) {
+  const styles = getComputedStyle(document.documentElement);
+  return styles.getPropertyValue(varName).trim();
+}
+
+function isColorish(value) {
+  if (!value) return false;
+  const v = value.toLowerCase();
+  return v.startsWith('#') ||
+         v.startsWith('rgb') ||
+         v.startsWith('hsl') ||
+         v.startsWith('color-mix') ||
+         v.startsWith('linear-gradient') ||
+         v.startsWith('radial-gradient') ||
+         v === 'transparent' ||
+         /^[a-z]+$/.test(v);
+}
+
+function renderTokenTable() {
+  const tbody = document.getElementById('formTokenTable');
+  let html = '';
+  FORM_TOKENS.forEach(group => {
+    html += `<tr class="group-row"><td colspan="4">${group.group}</td></tr>`;
+    group.tokens.forEach(([name, ref]) => {
+      const resolved = resolveCss(name) || '—';
+      const isColor = isColorish(resolved);
+      const chip = isColor
+        ? `<span class="chip" style="background:${resolved}"></span>`
+        : `<span class="chip" style="background: repeating-linear-gradient(45deg, var(--neutral-100) 0 6px, var(--neutral-50) 6px 12px); opacity:.6"></span>`;
+      html += `
+        <tr>
+          <td class="tk-name">${name}</td>
+          <td class="tk-ref">${ref.replace(/</g,'&lt;')}</td>
+          <td class="tk-resolved">${resolved.length > 60 ? resolved.slice(0,57)+'…' : resolved}</td>
+          <td class="tk-swatch">${chip}</td>
+        </tr>`;
+    });
+  });
+  tbody.innerHTML = html;
+}
+
+/* =========================================================
+   REVEAL ON SCROLL
+   ========================================================= */
+function initReveal() {
+  const items = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    items.forEach(el => el.classList.add('in'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        en.target.classList.add('in');
+        io.unobserve(en.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(el => io.observe(el));
+}
+
+/* =========================================================
+   MULTI-SELECT — basic chip removal & add-on-Enter
+   ========================================================= */
+function initMultiSelect() {
+  document.querySelectorAll('.multi-select').forEach(wrap => {
+    // Remove a chip when its × button is clicked.
+    wrap.addEventListener('click', (e) => {
+      const btn = e.target.closest('.chip button');
+      if (btn) btn.closest('.chip').remove();
+    });
+    // Add a chip when Enter is pressed in the inline input.
+    const input = wrap.querySelector('.ms-input');
+    if (!input) return;
+    input.addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter') return;
+      const value = input.value.trim();
+      if (!value) return;
+      e.preventDefault();
+      const chip = document.createElement('span');
+      chip.className = 'chip';
+      chip.innerHTML = `${value}<button type="button" aria-label="Remove">×</button>`;
+      wrap.insertBefore(chip, input);
+      input.value = '';
+    });
+  });
+}
+
+/* =========================================================
+   FILE UPLOAD — reflect "with value" state when a file picks
+   ========================================================= */
+function initFileUploads() {
+  document.querySelectorAll('.file-upload input[type="file"]').forEach(input => {
+    input.addEventListener('change', () => {
+      const wrap = input.closest('.file-upload');
+      if (!wrap) return;
+      if (input.files && input.files.length) {
+        wrap.classList.add('has-file');
+        const cta = wrap.querySelector('.file-cta');
+        if (cta) cta.textContent = input.files[0].name;
+      } else {
+        wrap.classList.remove('has-file');
+      }
+    });
+  });
+}
+
+/* =========================================================
+   BOOT
+   ========================================================= */
+document.addEventListener('DOMContentLoaded', () => {
+  renderTokenTable();
+  initReveal();
+  initMultiSelect();
+  initFileUploads();
+});
+</script>
+
+</body>
+</html>

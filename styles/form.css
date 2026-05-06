@@ -1,0 +1,448 @@
+/* =========================================================
+   FARM2VET DESIGN SYSTEM — FORM COMPONENTS
+   Reusable form primitives:
+     .field            — wrapper (label + control + helper / error)
+     .input            — text input, also base for textarea, select,
+                         date input, multi-select shell
+     .textarea         — multi-line text
+     .select           — native select with custom chevron
+     .input--date      — date input with calendar affordance
+     .multi-select     — pillbox of chips + inline input
+     .radio-group      — group of .radio rows
+     .radio            — single radio row
+     .checkbox-group   — group of .checkbox rows
+     .checkbox         — single checkbox row
+     .file-upload      — drag/drop dropzone
+   All declarations resolve through --form-* component tokens
+   in tokens.css.
+   Sizes: --sm, --md, --lg (default / focus), --xl, --2xl
+   States: default, hover, focus, with-value (no extra class —
+           any non-empty input renders as "with value"), error,
+           disabled.
+   Depends on: tokens.css
+   ========================================================= */
+
+/* =========================================================
+   FIELD WRAPPER — label + control + helper / error
+   ========================================================= */
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--form-gap);
+}
+
+.field__label {
+    font-family: var(--form-font-family);
+    font-weight: var(--font-weight-medium);
+    font-size: var(--text-sm);
+    color: var(--form-label-fg);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-1x);
+    line-height: 1.3;
+}
+.field__label .req {
+    color: var(--form-required-fg);
+    font-weight: var(--font-weight-medium);
+}
+
+.field__helper {
+    font-family: var(--form-font-family);
+    font-size: var(--text-micro);
+    color: var(--form-helper-fg);
+    line-height: 1.4;
+}
+
+.field__error {
+    font-family: var(--form-font-family);
+    font-size: var(--text-micro);
+    color: var(--form-error-fg);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-1x);
+    line-height: 1.4;
+}
+.field__error::before {
+    content: '!';
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--form-error-fg);
+    color: var(--text-inverted);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: var(--font-weight-semibold);
+    flex-shrink: 0;
+}
+
+/* =========================================================
+   INPUT — base for text input, textarea, select, date input
+   Defaults to LG (the canonical focus size).
+   ========================================================= */
+.input {
+    display: block;
+    width: 100%;
+    font-family: var(--form-font-family);
+    font-weight: var(--form-font-weight);
+    letter-spacing: var(--form-letter-spacing);
+    color: var(--form-fg);
+    background: var(--form-bg);
+    border: var(--form-border-width) solid var(--form-border);
+    border-radius: var(--form-radius);
+    transition: var(--form-transition);
+    line-height: 1.3;
+
+    /* Default size = LG */
+    font-size:  var(--form-lg-font-size);
+    padding:    var(--form-lg-padding-y) var(--form-lg-padding-x);
+    min-height: var(--form-lg-height);
+}
+.input::placeholder       { color: var(--form-placeholder); opacity: 1; }
+.input:hover:not(:focus):not([disabled]):not(.is-error):not(.input--error) {
+    border-color: var(--form-border-hover);
+}
+.input:focus,
+.input:focus-visible {
+    outline: none;
+    border-color: var(--form-border-focus);
+    box-shadow: 0 0 0 3px var(--form-ring-focus);
+    background: var(--form-bg-focus);
+}
+
+/* ---- Sizes ---- */
+.input--sm  { font-size: var(--form-sm-font-size);  padding: var(--form-sm-padding-y)  var(--form-sm-padding-x);  min-height: var(--form-sm-height);  border-radius: var(--radius-sm); }
+.input--md  { font-size: var(--form-md-font-size);  padding: var(--form-md-padding-y)  var(--form-md-padding-x);  min-height: var(--form-md-height); }
+.input--lg  { font-size: var(--form-lg-font-size);  padding: var(--form-lg-padding-y)  var(--form-lg-padding-x);  min-height: var(--form-lg-height); }
+.input--xl  { font-size: var(--form-xl-font-size);  padding: var(--form-xl-padding-y)  var(--form-xl-padding-x);  min-height: var(--form-xl-height);  border-radius: var(--radius-lg); }
+.input--2xl { font-size: var(--form-2xl-font-size); padding: var(--form-2xl-padding-y) var(--form-2xl-padding-x); min-height: var(--form-2xl-height); border-radius: var(--radius-lg); }
+
+/* ---- Versions ---- */
+/* "With value" needs no class — a non-empty input renders the same as
+   default but with the text-default color, which is the normal state. */
+.input--error,
+.input.is-error {
+    border-color: var(--form-border-error);
+}
+.input--error:focus,
+.input.is-error:focus {
+    border-color: var(--form-border-error);
+    box-shadow: 0 0 0 3px var(--form-ring-error);
+}
+
+.input[disabled],
+.input--disabled {
+    background: var(--form-bg-disabled);
+    color: var(--form-fg-disabled);
+    cursor: not-allowed;
+    border-color: var(--form-border);
+    box-shadow: none;
+}
+
+/* =========================================================
+   TEXTAREA — extends .input
+   Used as `<textarea class="input textarea">…</textarea>`
+   ========================================================= */
+.textarea {
+    resize: vertical;
+    min-height: 96px;
+    line-height: var(--line-height-h5);
+}
+.input--sm.textarea  { min-height: 64px; }
+.input--xl.textarea  { min-height: 128px; }
+.input--2xl.textarea { min-height: 160px; }
+
+/* =========================================================
+   SELECT — native select with custom chevron
+   Used as `<select class="input select">…</select>`
+   ========================================================= */
+.select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23223617' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right var(--spacing-4x) center;
+    background-size: 16px 16px;
+    padding-right: calc(var(--form-lg-padding-x) + var(--spacing-6x));
+    cursor: pointer;
+}
+.select.input--sm  { background-position: right var(--spacing-3x) center; padding-right: calc(var(--form-sm-padding-x) + var(--spacing-5x)); background-size: 12px 12px; }
+.select.input--md  { background-position: right var(--spacing-3x) center; padding-right: calc(var(--form-md-padding-x) + var(--spacing-5x)); }
+.select.input--xl  { background-position: right var(--spacing-5x) center; padding-right: calc(var(--form-xl-padding-x) + var(--spacing-8x)); background-size: 20px 20px; }
+.select.input--2xl { background-position: right var(--spacing-6x) center; padding-right: calc(var(--form-2xl-padding-x) + var(--spacing-10x)); background-size: 24px 24px; }
+
+/* =========================================================
+   DATE INPUT — extends .input
+   Used as `<input type="date" class="input input--date" />`
+   The browser provides the calendar icon; we tint the
+   indicator to match the icon color.
+   ========================================================= */
+.input--date {
+    /* Reserve room for the native calendar indicator. */
+    padding-right: calc(var(--form-lg-padding-x) + var(--spacing-4x));
+    color-scheme: light;
+}
+.input--date::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.18s ease;
+}
+.input--date::-webkit-calendar-picker-indicator:hover { opacity: 1; }
+
+/* =========================================================
+   MULTI-SELECT — pillbox of chips + inline input
+   Renders as a `.input` shell containing `.chip` elements
+   followed by an inline text input.
+   ========================================================= */
+.multi-select {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--spacing-2x);
+    padding-top:    calc(var(--form-lg-padding-y) - 4px);
+    padding-bottom: calc(var(--form-lg-padding-y) - 4px);
+    cursor: text;
+}
+.multi-select .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-1x);
+    padding: var(--spacing-half) var(--spacing-2x);
+    background: var(--form-chip-bg);
+    color: var(--form-chip-fg);
+    border: var(--form-border-width) solid var(--form-chip-border);
+    border-radius: var(--form-chip-radius);
+    font-family: var(--form-font-family);
+    font-size: var(--text-sm);
+    line-height: 1.2;
+    white-space: nowrap;
+}
+.multi-select .chip button {
+    background: transparent;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    padding: 0;
+    margin-left: var(--spacing-1x);
+    font-family: inherit;
+    font-size: 1.1em;
+    line-height: 1;
+    opacity: 0.7;
+    transition: opacity 0.15s ease;
+}
+.multi-select .chip button:hover { opacity: 1; }
+.multi-select .ms-input {
+    flex: 1;
+    min-width: 80px;
+    border: none;
+    outline: none;
+    background: transparent;
+    font: inherit;
+    color: inherit;
+    padding: 0;
+}
+.multi-select .ms-input::placeholder { color: var(--form-placeholder); }
+
+/* =========================================================
+   RADIO GROUP & CHECKBOX GROUP
+   Custom-styled inputs that hide the native control and
+   re-render it from CSS.
+   ========================================================= */
+.radio-group,
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3x);
+}
+
+.radio,
+.checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-3x);
+    cursor: pointer;
+    font-family: var(--form-font-family);
+    font-weight: var(--form-font-weight);
+    font-size: var(--form-lg-font-size);
+    color: var(--form-fg);
+    line-height: 1.3;
+    user-select: none;
+}
+.radio input,
+.checkbox input {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width:  var(--form-lg-control);
+    height: var(--form-lg-control);
+    margin: 0;
+    border: var(--form-border-width) solid var(--form-control-border);
+    background: var(--form-control-bg);
+    cursor: pointer;
+    position: relative;
+    transition: var(--form-transition);
+    flex-shrink: 0;
+}
+.radio    input { border-radius: 50%; }
+.checkbox input { border-radius: var(--radius-sm); }
+
+.radio    input:hover:not(:checked):not([disabled]),
+.checkbox input:hover:not(:checked):not([disabled]) {
+    border-color: var(--form-border-hover);
+}
+.radio    input:focus-visible,
+.checkbox input:focus-visible {
+    outline: none;
+    border-color: var(--form-border-focus);
+    box-shadow: 0 0 0 3px var(--form-ring-focus);
+}
+
+.radio input:checked {
+    border-color: var(--form-control-checked-border);
+    background: var(--form-control-bg);
+}
+.radio input:checked::after {
+    content: '';
+    position: absolute;
+    inset: 22%;
+    border-radius: 50%;
+    background: var(--form-control-checked-bg);
+}
+
+.checkbox input:checked {
+    background: var(--form-control-checked-bg);
+    border-color: var(--form-control-checked-border);
+}
+.checkbox input:checked::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23F9FAF9' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='5 12 10 17 19 7'/></svg>");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 80% 80%;
+}
+
+/* Sizes — applied to the WRAPPER class, propagates to input */
+.radio--sm,    .checkbox--sm    { font-size: var(--form-sm-font-size); }
+.radio--sm    input, .checkbox--sm    input { width: var(--form-sm-control); height: var(--form-sm-control); }
+.radio--md,    .checkbox--md    { font-size: var(--form-md-font-size); }
+.radio--md    input, .checkbox--md    input { width: var(--form-md-control); height: var(--form-md-control); }
+.radio--lg,    .checkbox--lg    { font-size: var(--form-lg-font-size); }
+.radio--lg    input, .checkbox--lg    input { width: var(--form-lg-control); height: var(--form-lg-control); }
+.radio--xl,    .checkbox--xl    { font-size: var(--form-xl-font-size); }
+.radio--xl    input, .checkbox--xl    input { width: var(--form-xl-control); height: var(--form-xl-control); }
+.radio--2xl,   .checkbox--2xl   { font-size: var(--form-2xl-font-size); }
+.radio--2xl   input, .checkbox--2xl   input { width: var(--form-2xl-control); height: var(--form-2xl-control); }
+
+/* Error state */
+.radio--error    input,
+.checkbox--error input,
+.radio.is-error    input,
+.checkbox.is-error input {
+    border-color: var(--form-control-error-border);
+}
+
+/* Disabled */
+.radio    input[disabled],
+.checkbox input[disabled],
+.radio[disabled],
+.checkbox[disabled] {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* =========================================================
+   FILE UPLOAD — dropzone
+   Used as a `<label class="file-upload"><input type="file"/>…</label>`
+   ========================================================= */
+.file-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-2x);
+    width: 100%;
+    padding: var(--form-lg-padding-y) var(--form-lg-padding-x);
+    min-height: calc(var(--form-lg-height) * 2.4);
+    background: var(--form-file-bg);
+    border: 2px dashed var(--form-file-border);
+    border-radius: var(--form-radius);
+    color: var(--form-file-fg);
+    font-family: var(--form-font-family);
+    font-size: var(--form-lg-font-size);
+    text-align: center;
+    cursor: pointer;
+    transition: var(--form-transition);
+}
+.file-upload:hover {
+    background: var(--form-file-bg-hover);
+    border-color: var(--form-file-border-hover);
+}
+.file-upload:focus-within {
+    outline: none;
+    border-color: var(--form-border-focus);
+    box-shadow: 0 0 0 3px var(--form-ring-focus);
+}
+.file-upload input[type="file"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
+.file-upload .file-icon {
+    width:  var(--form-lg-control);
+    height: var(--form-lg-control);
+    color: var(--form-file-icon);
+}
+.file-upload .file-cta {
+    color: var(--text-primary);
+    font-weight: var(--font-weight-medium);
+}
+.file-upload .file-hint {
+    font-size: var(--text-sm);
+    color: var(--form-helper-fg);
+    font-weight: var(--font-weight-regular);
+}
+
+/* Sizes */
+.file-upload.input--sm  { font-size: var(--form-sm-font-size);  min-height: calc(var(--form-sm-height)  * 2.4); padding: var(--form-sm-padding-y)  var(--form-sm-padding-x);  border-radius: var(--radius-sm); }
+.file-upload.input--md  { font-size: var(--form-md-font-size);  min-height: calc(var(--form-md-height)  * 2.4); padding: var(--form-md-padding-y)  var(--form-md-padding-x); }
+.file-upload.input--lg  { font-size: var(--form-lg-font-size);  min-height: calc(var(--form-lg-height)  * 2.4); padding: var(--form-lg-padding-y)  var(--form-lg-padding-x); }
+.file-upload.input--xl  { font-size: var(--form-xl-font-size);  min-height: calc(var(--form-xl-height)  * 2.0); padding: var(--form-xl-padding-y)  var(--form-xl-padding-x);  border-radius: var(--radius-lg); }
+.file-upload.input--2xl { font-size: var(--form-2xl-font-size); min-height: calc(var(--form-2xl-height) * 2.0); padding: var(--form-2xl-padding-y) var(--form-2xl-padding-x); border-radius: var(--radius-lg); }
+
+/* "With value" — file selected. Use .file-upload.has-file. */
+.file-upload.has-file {
+    border-style: solid;
+    border-color: var(--form-border);
+    background: var(--form-bg);
+}
+.file-upload.has-file .file-cta { color: var(--text-default); }
+
+/* Error */
+.file-upload--error,
+.file-upload.is-error {
+    border-color: var(--form-border-error);
+}
+.file-upload--error:focus-within,
+.file-upload.is-error:focus-within {
+    border-color: var(--form-border-error);
+    box-shadow: 0 0 0 3px var(--form-ring-error);
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+    .input,
+    .multi-select,
+    .radio input,
+    .checkbox input,
+    .file-upload { transition: none; }
+}

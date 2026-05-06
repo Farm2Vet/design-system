@@ -1,0 +1,673 @@
+/* =========================================================
+   FARM2VET DESIGN SYSTEM — TOKENS
+   Single source of truth for all design values.
+
+   Layered architecture:
+     1. Primitive tokens — raw, immutable scale values
+     2. Semantic tokens — role-based, reference primitives only
+     3. Component tokens — component-scoped, reference semantics only
+   ========================================================= */
+
+/* =========================================================
+   1. PRIMITIVE TOKENS
+   ========================================================= */
+:root {
+    /* ---------- Base ---------- */
+    --white-base:#F9FAF9;
+    --black-base:#000000;
+
+    /* ---------- Primary — Lime ---------- */
+    --primary-50:  #f1f7ee;
+    --primary-100: #d8e9cd;
+    --primary-200: #beddac;
+    --primary-300: #a4d289;
+    --primary-400: #89c964;
+    --primary-500: #6ec13e;
+    --primary-600: #5dac2f;
+    --primary-700: #4c9622;
+    --primary-800: #3c7d17;
+    --primary-900: #2d620e;
+    --primary-950: #1e4507;
+
+    /* ---------- Secondary — Earth ---------- */
+    --secondary-50:  #f7f2ed;
+    --secondary-100: #e3cdb8;
+    --secondary-200: #d1a780;
+    --secondary-300: #c28247;
+    --secondary-400: #925e2d;
+    --secondary-500: #5c3a1a;
+    --secondary-600: #583515;
+    --secondary-700: #553110;
+    --secondary-800: #512d0c;
+    --secondary-900: #4c2908;
+    --secondary-950: #472505;
+
+    /* ---------- Accent — Forest ---------- */
+    --accent-50:  #eff6ef;
+    --accent-100: #c9e3c8;
+    --accent-200: #a1d19f;
+    --accent-300: #78c175;
+    --accent-400: #4eb24a;
+    --accent-500: #398c36;
+    --accent-600: #2d802b;
+    --accent-700: #237320;
+    --accent-800: #1a6417;
+    --accent-900: #125410;
+    --accent-950: #0c430a;
+
+    /* ---------- Neutral — Sage ---------- */
+    --neutral-50:  #f2f2f2;
+    --neutral-100: #dbdbdb;
+    --neutral-200: #c4c5c4;
+    --neutral-300: #adb1aa;
+    --neutral-400: #949e8f;
+    --neutral-500: #7c8c73;
+    --neutral-600: #697f5c;
+    --neutral-700: #567048;
+    --neutral-800: #445f35;
+    --neutral-900: #334b25;
+    --neutral-950: #223617;
+
+    /* ---------- Status families ---------- */
+    --warning-50:  var(--secondary-50);
+    --warning-300: var(--secondary-300);
+    --warning-500: var(--secondary-500);
+    --warning-700: var(--secondary-700);
+
+    --critical-50:  #FEF1F1;
+    --critical-300: #F79999;
+    --critical-500: #D13636;
+    --critical-600: #B02020;
+    --critical-700: #8A1C1C;
+
+    --safe-50:  var(--accent-50);
+    --safe-300: var(--accent-300);
+    --safe-500: var(--accent-500);
+    --safe-700: var(--accent-700);
+
+    --info-50:  #F0F5FC;
+    --info-300: #96BBEB;
+    --info-500: #3468C2;
+    --info-600: #2A55A0;
+    --info-700: #1C3C78;
+
+    /* ---------- Spacing scale ---------- */
+    --spacing-quarter: 1px;
+    --spacing-half:    2px;
+    --spacing-1x:      4px;
+    --spacing-2x:      8px;
+    --spacing-3x:      12px;
+    --spacing-4x:      16px;
+    --spacing-5x:      20px;
+    --spacing-6x:      24px;
+    --spacing-8x:      32px;
+    --spacing-10x:     40px;
+    --spacing-12x:     48px;
+    --spacing-16x:     64px;
+    --spacing-25x:     100px;
+
+    /* ---------- Type families ---------- */
+    --font-sans: 'Poppins', 'Helvetica', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    /* ---------- Type scale (ratio = 1.2) ---------- */
+    --text-h1:    2.986rem;
+    --text-h2:    2.488rem;
+    --text-h3:    2.074rem;
+    --text-h4:    1.728rem;
+    --text-h5:    1.44rem;
+    --text-h6:    1.2rem;
+    --text-base:  1rem;
+    --text-sm:    0.833rem;
+    --text-micro: 0.694rem;
+
+    /* ---------- Font weights ---------- */
+    --font-weight-regular:  400;
+    --font-weight-medium:   500;
+    --font-weight-semibold: 600;
+
+    /* ---------- Line heights ---------- */
+    --line-height-display: 1.04;
+    --line-height-heading: 1.2;
+    --line-height-h3:      1.3;
+    --line-height-h4:      1.4;
+    --line-height-h5:      1.5;
+    --line-height-h6:      1.6;
+    --line-height-body:    1.65;
+
+    /* ---------- Letter spacing ---------- */
+    --letter-spacing-display: 0.02em;
+    --letter-spacing-eyebrow: 0.18em;
+}
+
+/* =========================================================
+   2. SEMANTIC TOKENS — [Role]-[Intent]-[State]
+   All values: var() or color-mix() — no raw hex.
+   ========================================================= */
+:root {
+    /* ---------- Background ---------- */
+    --background-default:          var(--white-base);
+    --background-default-subtle:   var(--neutral-50);
+    --background-default-minimal:  var(--neutral-100);
+    --background-default-hover:    var(--neutral-200);
+    --background-default-active:   var(--neutral-300);
+    --background-default-selected: var(--primary-50);
+    --background-default-disabled: color-mix(in srgb, var(--neutral-900) 5%, transparent);
+
+    --background-inverted:         var(--primary-500);
+    --background-inverted-subtle:  var(--primary-600);
+    --background-inverted-minimal: color-mix(in srgb, var(--white-base) 10%, transparent);
+    --background-inverted-hover:   var(--primary-400);
+
+    --background-primary:          var(--primary-400);
+    --background-primary-hover:    var(--primary-500);
+    --background-primary-active:   var(--primary-600);
+    --background-primary-subtle:   var(--primary-50);
+    --background-primary-minimal:  var(--primary-100);
+    --background-primary-disabled: color-mix(in srgb, var(--neutral-900) 5%, transparent);
+
+    --background-accent:           var(--accent-500);
+    --background-accent-hover:     var(--accent-600);
+    --background-accent-active:    var(--accent-700);
+    --background-accent-subtle:    var(--accent-50);
+    --background-accent-minimal:   var(--accent-100);
+    --background-accent-disabled:  color-mix(in srgb, var(--neutral-900) 5%, transparent);
+
+    --background-secondary-minimal:var(--secondary-100);
+
+    --background-warning:          var(--warning-50);
+    --background-warning-strong:   var(--warning-500);
+    --background-warning-hover:    var(--warning-700);
+    --background-critical:         var(--critical-50);
+    --background-critical-strong:  var(--critical-500);
+    --background-critical-hover:   var(--critical-600);
+    --background-critical-active:  var(--critical-700);
+    --background-safe:             var(--safe-50);
+    --background-info:             var(--info-50);
+
+    --background-overlay:          color-mix(in srgb, var(--primary-900) 48%, transparent);
+    --background-row-hover:        color-mix(in srgb, var(--primary-50) 60%, transparent);
+    --background-toast:            color-mix(in srgb, var(--neutral-950) 92%, transparent);
+    --background-ambient:
+        radial-gradient(ellipse 80% 50% at 20% 10%, color-mix(in srgb, var(--primary-500) 18%, transparent), transparent 70%),
+        radial-gradient(ellipse 60% 40% at 90% 30%, color-mix(in srgb, var(--accent-500) 16%, transparent), transparent 70%),
+        radial-gradient(ellipse 70% 50% at 50% 90%, color-mix(in srgb, var(--secondary-300) 10%, transparent), transparent 70%),
+        var(--white-base);
+
+    /* ---------- Text ---------- */
+    --text-default:          var(--neutral-950);
+    --text-default-subtle:   color-mix(in srgb, var(--neutral-700) 60%, var(--neutral-600) 40%);
+    --text-default-minimal:  var(--neutral-600);
+    --text-default-disabled: color-mix(in srgb, var(--neutral-900) 30%, transparent);
+
+    --text-inverted:         var(--white-base);
+    --text-inverted-subtle:  color-mix(in srgb, var(--white-base) 70%, transparent);
+    --text-inverted-minimal: color-mix(in srgb, var(--white-base) 45%, transparent);
+
+    --text-primary:          var(--primary-500);
+    --text-primary-subtle:   var(--primary-400);
+    --text-primary-strong:   var(--primary-900);
+
+    --text-secondary-strong: var(--secondary-700);
+
+    --text-accent:           var(--accent-500);
+    --text-accent-subtle:    var(--accent-400);
+    --text-accent-strong:    var(--accent-900);
+
+    --text-emphasis:         var(--secondary-500);
+    --text-link:             var(--primary-600);
+
+    --text-info:             var(--info-500);
+    --text-info-subtle:      var(--info-300);
+    --text-info-strong:      var(--info-700);
+    --text-warning:          var(--warning-700);
+    --text-warning-subtle:   var(--warning-500);
+    --text-critical:         var(--critical-700);
+    --text-critical-subtle:  var(--critical-500);
+    --text-safe:             var(--safe-700);
+    --text-safe-subtle:      var(--safe-500);
+
+    /* ---------- Border ---------- */
+    --border-width-base:       1px;
+    --border-default:          color-mix(in srgb, var(--neutral-900) 9%, transparent);
+    --border-default-subtle:   color-mix(in srgb, var(--neutral-900) 5%, transparent);
+    --border-default-strong:   color-mix(in srgb, var(--neutral-900) 22%, transparent);
+    --border-default-input:    var(--neutral-300);
+    --border-default-disabled: color-mix(in srgb, var(--neutral-900) 12%, transparent);
+
+    --border-primary:        var(--primary-400);
+    --border-primary-subtle: var(--primary-200);
+    --border-primary-focus:  var(--secondary-500);
+
+    --border-accent:         var(--accent-500);
+    --border-accent-subtle:  var(--accent-200);
+
+    --border-inverted:        color-mix(in srgb, var(--white-base) 18%, transparent);
+    --border-inverted-strong: color-mix(in srgb, var(--white-base) 35%, transparent);
+
+    --border-warning:         var(--warning-300);
+    --border-critical:        var(--critical-300);
+    --border-critical-strong: var(--critical-500);
+    --border-safe:            var(--safe-300);
+    --border-info:            var(--info-300);
+
+    --border-decorator: var(--text-default-subtle);
+    --border-swatch:    color-mix(in srgb, var(--black-base) 6%, transparent);
+    --border-toast:     color-mix(in srgb, var(--white-base) 12%, transparent);
+
+    /* ---------- Outline / Focus ---------- */
+    --outline-focus: var(--primary-700);
+
+    /* ---------- Icon ---------- */
+    --icon-default:          var(--neutral-700);
+    --icon-default-subtle:   var(--neutral-500);
+    --icon-default-minimal:  var(--neutral-400);
+    --icon-default-disabled: color-mix(in srgb, var(--neutral-900) 30%, transparent);
+
+    --icon-inverted:        var(--white-base);
+    --icon-inverted-subtle: color-mix(in srgb, var(--white-base) 70%, transparent);
+
+    --icon-primary:        var(--primary-400);
+    --icon-primary-strong: var(--primary-500);
+
+    --icon-info:     var(--secondary-500);
+    --icon-warning:  var(--warning-500);
+    --icon-critical: var(--critical-500);
+    --icon-safe:     var(--safe-500);
+
+    /* ---------- Semantic spacing ---------- */
+    --margin-bottom-heading:    var(--spacing-4x);
+    --margin-bottom-subheading: var(--spacing-3x);
+    --margin-bottom-element:    var(--spacing-2x);
+    --margin-bottom-paragraph:  var(--spacing-4x);
+
+    /* ---------- Radius ---------- */
+    --radius-mc:   var(--spacing-1x);
+    --radius-sm:   var(--spacing-2x);
+    --radius-md:   var(--spacing-3x);
+    --radius-lg:   var(--spacing-4x);
+    --radius-xl:   var(--spacing-6x);
+    --radius-pill: var(--spacing-25x);
+
+    /* ---------- Shadow ---------- */
+    --shadow-sm: 0 1px 4px  color-mix(in srgb, var(--black-base) 6%,  transparent), 0 1px 2px color-mix(in srgb, var(--black-base) 4%, transparent);
+    --shadow-md: 0 4px 12px color-mix(in srgb, var(--black-base) 8%,  transparent), 0 2px 4px color-mix(in srgb, var(--black-base) 4%, transparent);
+    --shadow-lg: 0 12px 32px color-mix(in srgb, var(--black-base) 10%, transparent), 0 4px 8px color-mix(in srgb, var(--black-base) 4%, transparent);
+
+    /* ---------- Glassmorphism / blur ---------- */
+    --blur-none: blur(0px);
+    --blur-sm:   blur(var(--spacing-1x));
+    --blur-md:   blur(var(--spacing-2x));
+    --blur-lg:   blur(var(--spacing-4x));
+    --blur-xl:   blur(var(--spacing-6x));
+    --blur-2xl:  blur(var(--spacing-10x));
+
+    --background-glass-light: color-mix(in srgb, var(--white-base) 65%, transparent);
+    --background-glass-dark:  color-mix(in srgb, var(--primary-200) 35%, transparent);
+    --border-glass-light:     color-mix(in srgb, var(--white-base) 85%, transparent);
+    --border-glass-dark:      color-mix(in srgb, var(--white-base) 15%, transparent);
+
+    /* ---------- Gradients ---------- */
+    --gradient-primary-secondary-horizontal: linear-gradient(to right,  var(--primary-500),   var(--secondary-500));
+    --gradient-primary-secondary-vertical:   linear-gradient(to bottom, var(--primary-500),   var(--secondary-500));
+    --gradient-secondary-primary-horizontal: linear-gradient(to right,  var(--secondary-500), var(--primary-500));
+    --gradient-secondary-primary-vertical:   linear-gradient(to bottom, var(--secondary-500), var(--primary-500));
+    --gradient-primary-subtle:   linear-gradient(135deg, var(--primary-100)   0%, color-mix(in srgb, var(--primary-500)   18%, transparent) 100%);
+    --gradient-secondary-subtle: linear-gradient(135deg, var(--secondary-100) 0%, color-mix(in srgb, var(--secondary-500) 20%, transparent) 100%);
+    --gradient-brand:            linear-gradient(135deg, var(--primary-500)   0%, var(--accent-500) 100%);
+    --gradient-brand-mark:       conic-gradient(from 220deg, var(--primary-500), var(--accent-500), var(--secondary-400), var(--primary-500));
+    --gradient-earthy:           linear-gradient(135deg, var(--primary-50)    0%, var(--secondary-50) 100%);
+    --gradient-fade-down:        linear-gradient(180deg, var(--primary-50)    0%, transparent 100%);
+}
+
+/* =========================================================
+   3. COMPONENT TOKENS — Button
+   Component tokens reference semantic tokens strictly.
+   Sizes scale from a base font-size; LG (22.5px) is canonical.
+   ========================================================= */
+:root {
+    /* ---------- Shared shape ---------- */
+    --btn-font-family:    var(--font-sans);
+    --btn-font-weight:    var(--font-weight-medium);
+    --btn-letter-spacing: 0;
+    --btn-radius:         var(--radius-md);
+    --btn-radius-pill:    var(--radius-pill);
+    --btn-border-width:   var(--border-width-base);
+    --btn-gap:            var(--spacing-2x);
+    --btn-shadow-rest:    var(--shadow-sm);
+    --btn-shadow-hover:   var(--shadow-md);
+    --btn-transition:     background-color .18s ease, color .18s ease,
+                          border-color .18s ease, box-shadow .18s ease,
+                          transform .18s ease;
+
+    /* ---------- Sizes (LG is the focus per spec) ---------- */
+    --btn-sm-font-size:  var(--text-sm);     /* 13.33px */
+    --btn-sm-padding-x:  var(--spacing-3x);
+    --btn-sm-padding-y:  var(--spacing-1x);
+    --btn-sm-height:     28px;
+    --btn-sm-icon:       14px;
+
+    --btn-md-font-size:  var(--text-base);   /* 16px */
+    --btn-md-padding-x:  var(--spacing-4x);
+    --btn-md-padding-y:  var(--spacing-2x);
+    --btn-md-height:     36px;
+    --btn-md-icon:       18px;
+
+    --btn-lg-font-size:  22.5px;             /* FOCUS */
+    --btn-lg-padding-x:  var(--spacing-6x);
+    --btn-lg-padding-y:  var(--spacing-3x);
+    --btn-lg-height:     48px;
+    --btn-lg-icon:       22px;
+
+    --btn-xl-font-size:  var(--text-h4);     /* 27.65px */
+    --btn-xl-padding-x:  var(--spacing-8x);
+    --btn-xl-padding-y:  var(--spacing-4x);
+    --btn-xl-height:     60px;
+    --btn-xl-icon:       28px;
+
+    --btn-2xl-font-size: var(--text-h3);     /* 33.18px */
+    --btn-2xl-padding-x: var(--spacing-10x);
+    --btn-2xl-padding-y: var(--spacing-5x);
+    --btn-2xl-height:    74px;
+    --btn-2xl-icon:      32px;
+
+    /* ---------- Variant: CTA / Primary (uses ACCENT) ---------- */
+    --btn-cta-bg:        var(--background-accent);
+    --btn-cta-bg-hover:  var(--background-accent-hover);
+    --btn-cta-bg-active: var(--background-accent-active);
+    --btn-cta-fg:        var(--text-inverted);
+    --btn-cta-border:    transparent;
+    --btn-cta-shadow:    var(--shadow-sm);
+
+    /* ---------- Variant: Secondary ---------- */
+    --btn-secondary-bg:        var(--background-default);
+    --btn-secondary-bg-hover:  var(--background-default-hover);
+    --btn-secondary-bg-active: var(--background-default-active);
+    --btn-secondary-fg:        var(--text-default);
+    --btn-secondary-border:    var(--border-default-strong);
+    --btn-secondary-shadow:    var(--shadow-sm);
+
+    /* ---------- Variant: Ghost ---------- */
+    --btn-ghost-bg:        transparent;
+    --btn-ghost-bg-hover:  var(--background-default-subtle);
+    --btn-ghost-bg-active: var(--background-default-minimal);
+    --btn-ghost-fg:        var(--text-default);
+    --btn-ghost-border:    transparent;
+
+    /* ---------- Variant: Disabled ---------- */
+    --btn-disabled-bg:      var(--background-default-disabled);
+    --btn-disabled-fg:      var(--text-default-disabled);
+    --btn-disabled-border:  var(--border-default-disabled);
+    --btn-disabled-cursor:  not-allowed;
+    --btn-disabled-opacity: 1;
+
+    /* ---------- Variant: Loading ---------- */
+    --btn-loading-bg:      var(--background-primary);
+    --btn-loading-fg:      var(--text-inverted);
+    --btn-loading-spinner: var(--text-inverted);
+    --btn-loading-track:   color-mix(in srgb, var(--white-base) 35%, transparent);
+
+    /* ---------- Variant: Caution (destructive) ---------- */
+    --btn-caution-bg:        var(--background-critical-strong);
+    --btn-caution-bg-hover:  var(--background-critical-hover);
+    --btn-caution-bg-active: var(--background-critical-active);
+    --btn-caution-fg:        var(--text-inverted);
+    --btn-caution-border:    transparent;
+    --btn-caution-shadow:    var(--shadow-sm);
+
+    /* ---------- Variant: Toggle ---------- */
+    --btn-toggle-bg:        var(--background-default);
+    --btn-toggle-bg-hover:  var(--background-default-hover);
+    --btn-toggle-fg:        var(--text-default);
+    --btn-toggle-border:    var(--border-default-strong);
+    --btn-toggle-on-bg:     var(--background-primary);
+    --btn-toggle-on-fg:     var(--text-inverted);
+    --btn-toggle-on-border: var(--border-primary);
+
+    /* ---------- Variant: Switch (binary + segmented) ----------
+       Reuses the toggle variant's colour scheme and the
+       --btn-*-height scale. The aspect ratio + track padding
+       are the only new shape primitives this component needs;
+       both are kept here so any switch-like surface can reuse
+       them (e.g., language switch, segmented filter). */
+    --btn-switch-track-bg:        var(--btn-toggle-bg);
+    --btn-switch-track-bg-hover:  var(--btn-toggle-bg-hover);
+    --btn-switch-track-border:    var(--btn-toggle-border);
+    --btn-switch-fg:              var(--btn-toggle-fg);
+    --btn-switch-on-bg:           var(--btn-toggle-on-bg);
+    --btn-switch-on-border:       var(--btn-toggle-on-border);
+    --btn-switch-on-fg:           var(--btn-toggle-on-fg);
+    --btn-switch-thumb-bg:        var(--background-default);
+    --btn-switch-thumb-fg:        var(--text-default);
+    --btn-switch-thumb-shadow:    var(--shadow-sm);
+    /* Segmented active highlight — primary pill on the track,
+       distinct from the binary thumb (which stays white as a
+       contrast element on top of the coloured on-track). */
+    --btn-switch-active-bg:       var(--background-primary);
+    --btn-switch-active-fg:       var(--text-inverted);
+    --btn-switch-active-border:   transparent;
+    --btn-switch-track-pad:       3px;
+    --btn-switch-aspect:          1.85;   /* track-width = height × aspect */
+    --btn-switch-radius:          var(--btn-radius-pill);
+    --btn-switch-thumb-easing:    cubic-bezier(.4, 0, .2, 1);
+    --btn-switch-thumb-duration:  .25s;
+
+    /* ---------- Version: Inverted Surface ---------- */
+    --btn-inverted-cta-bg:           var(--background-default);
+    --btn-inverted-cta-fg:           var(--text-accent-strong);
+    --btn-inverted-cta-bg-hover:     var(--background-accent-subtle);
+    --btn-inverted-secondary-bg:     transparent;
+    --btn-inverted-secondary-fg:     var(--text-inverted);
+    --btn-inverted-secondary-border: var(--border-inverted-strong);
+    --btn-inverted-ghost-fg:         var(--text-inverted);
+    --btn-inverted-ghost-bg-hover:   var(--background-inverted-minimal);
+
+    /* ---------- Focus ring ---------- */
+    --btn-focus-outline:        var(--outline-focus);
+    --btn-focus-outline-width:  2px;
+    --btn-focus-outline-offset: 2px;
+}
+
+/* =========================================================
+   3. COMPONENT TOKENS — Form
+   Inputs (text, textarea, select, date, multi-select),
+   selection controls (radio, checkbox), file upload, and
+   the .field wrapper (label + control + helper / error).
+   Component tokens reference semantic tokens strictly.
+   Sizes scale a base font-size; LG (22.5px) is canonical.
+   ========================================================= */
+:root {
+    /* ---------- Shared shape ---------- */
+    --form-font-family:    var(--font-sans);
+    --form-font-weight:    var(--font-weight-regular);
+    --form-letter-spacing: 0;
+    --form-radius:         var(--radius-md);
+    --form-border-width:   var(--border-width-base);
+    --form-gap:            var(--spacing-2x);
+    --form-transition:     background-color .18s ease, color .18s ease,
+                           border-color .18s ease, box-shadow .18s ease;
+
+    /* ---------- Sizes (LG is the focus per spec) ---------- */
+    --form-sm-font-size:  var(--text-sm);     /* 13.33px */
+    --form-sm-padding-x:  var(--spacing-3x);
+    --form-sm-padding-y:  var(--spacing-1x);
+    --form-sm-height:     28px;
+    --form-sm-control:    14px;
+
+    --form-md-font-size:  var(--text-base);   /* 16px */
+    --form-md-padding-x:  var(--spacing-4x);
+    --form-md-padding-y:  var(--spacing-2x);
+    --form-md-height:     36px;
+    --form-md-control:    16px;
+
+    --form-lg-font-size:  22.5px;             /* FOCUS */
+    --form-lg-padding-x:  var(--spacing-6x);
+    --form-lg-padding-y:  var(--spacing-3x);
+    --form-lg-height:     48px;
+    --form-lg-control:    20px;
+
+    --form-xl-font-size:  var(--text-h4);     /* 27.65px */
+    --form-xl-padding-x:  var(--spacing-8x);
+    --form-xl-padding-y:  var(--spacing-4x);
+    --form-xl-height:     60px;
+    --form-xl-control:    24px;
+
+    --form-2xl-font-size: var(--text-h3);     /* 33.18px */
+    --form-2xl-padding-x: var(--spacing-10x);
+    --form-2xl-padding-y: var(--spacing-5x);
+    --form-2xl-height:    74px;
+    --form-2xl-control:   28px;
+
+    /* ---------- Surface & text ---------- */
+    --form-bg:           var(--background-default);
+    --form-bg-hover:     var(--background-default-subtle);
+    --form-bg-focus:     var(--background-default);
+    --form-bg-disabled:  var(--background-default-disabled);
+
+    --form-fg:           var(--text-default);
+    --form-placeholder:  var(--text-default-minimal);
+    --form-fg-disabled:  var(--text-default-disabled);
+
+    /* ---------- Border ---------- */
+    --form-border:        var(--border-default-input);
+    --form-border-hover:  var(--border-default-strong);
+    --form-border-focus:  var(--border-primary-focus);
+    --form-border-error:  var(--border-critical-strong);
+    --form-ring-focus:    color-mix(in srgb, var(--border-primary-focus) 20%, transparent);
+    --form-ring-error:    color-mix(in srgb, var(--border-critical-strong) 20%, transparent);
+
+    /* ---------- Field labels & helpers ---------- */
+    --form-label-fg:    var(--text-default);
+    --form-helper-fg:   var(--text-default-minimal);
+    --form-error-fg:    var(--text-critical);
+    --form-required-fg: var(--text-critical);
+
+    /* ---------- Selection controls (radio, checkbox) ---------- */
+    --form-control-bg:             var(--background-default);
+    --form-control-border:         var(--border-default-strong);
+    --form-control-checked-bg:     var(--background-primary);
+    --form-control-checked-fg:     var(--text-inverted);
+    --form-control-checked-border: var(--border-primary);
+    --form-control-error-border:   var(--border-critical-strong);
+
+    /* ---------- Multi-select chip ---------- */
+    --form-chip-bg:       var(--background-primary-minimal);
+    --form-chip-fg:       var(--text-primary-strong);
+    --form-chip-border:   transparent;
+    --form-chip-radius:   var(--radius-sm);
+
+    /* ---------- File upload dropzone ---------- */
+    --form-file-bg:           var(--background-default-subtle);
+    --form-file-bg-hover:     var(--background-default-minimal);
+    --form-file-border:       var(--border-default-input);
+    --form-file-border-hover: var(--border-primary);
+    --form-file-fg:           var(--text-default);
+    --form-file-icon:         var(--icon-default);
+
+    /* ---------- Focus ring ---------- */
+    --form-focus-outline:        var(--outline-focus);
+    --form-focus-outline-width:  2px;
+    --form-focus-outline-offset: 2px;
+}
+
+/* =========================================================
+   3. COMPONENT TOKENS — Form
+   Inputs (text, textarea, select, date, multi-select),
+   selection controls (radio, checkbox), file upload, and
+   the .field wrapper (label + control + helper / error).
+   Component tokens reference semantic tokens strictly.
+   Sizes scale a base font-size; LG (22.5px) is canonical.
+   ========================================================= */
+:root {
+    /* ---------- Shared shape ---------- */
+    --form-font-family:    var(--font-sans);
+    --form-font-weight:    var(--font-weight-regular);
+    --form-letter-spacing: 0;
+    --form-radius:         var(--radius-md);
+    --form-border-width:   var(--border-width-base);
+    --form-gap:            var(--spacing-2x);
+    --form-transition:     background-color .18s ease, color .18s ease,
+                           border-color .18s ease, box-shadow .18s ease;
+
+    /* ---------- Sizes (LG is the focus per spec) ---------- */
+    --form-sm-font-size:  var(--text-sm);     /* 13.33px */
+    --form-sm-padding-x:  var(--spacing-3x);
+    --form-sm-padding-y:  var(--spacing-1x);
+    --form-sm-height:     28px;
+    --form-sm-control:    14px;
+
+    --form-md-font-size:  var(--text-base);   /* 16px */
+    --form-md-padding-x:  var(--spacing-4x);
+    --form-md-padding-y:  var(--spacing-2x);
+    --form-md-height:     36px;
+    --form-md-control:    16px;
+
+    --form-lg-font-size:  22.5px;             /* FOCUS */
+    --form-lg-padding-x:  var(--spacing-6x);
+    --form-lg-padding-y:  var(--spacing-3x);
+    --form-lg-height:     48px;
+    --form-lg-control:    20px;
+
+    --form-xl-font-size:  var(--text-h4);     /* 27.65px */
+    --form-xl-padding-x:  var(--spacing-8x);
+    --form-xl-padding-y:  var(--spacing-4x);
+    --form-xl-height:     60px;
+    --form-xl-control:    24px;
+
+    --form-2xl-font-size: var(--text-h3);     /* 33.18px */
+    --form-2xl-padding-x: var(--spacing-10x);
+    --form-2xl-padding-y: var(--spacing-5x);
+    --form-2xl-height:    74px;
+    --form-2xl-control:   28px;
+
+    /* ---------- Surface & text ---------- */
+    --form-bg:           var(--background-default);
+    --form-bg-hover:     var(--background-default-subtle);
+    --form-bg-focus:     var(--background-default);
+    --form-bg-disabled:  var(--background-default-disabled);
+
+    --form-fg:           var(--text-default);
+    --form-placeholder:  var(--text-default-minimal);
+    --form-fg-disabled:  var(--text-default-disabled);
+
+    /* ---------- Border ---------- */
+    --form-border:        var(--border-default-input);
+    --form-border-hover:  var(--border-default-strong);
+    --form-border-focus:  var(--border-primary-focus);
+    --form-border-error:  var(--border-critical-strong);
+    --form-ring-focus:    color-mix(in srgb, var(--border-primary-focus) 20%, transparent);
+    --form-ring-error:    color-mix(in srgb, var(--border-critical-strong) 20%, transparent);
+
+    /* ---------- Field labels & helpers ---------- */
+    --form-label-fg:    var(--text-default);
+    --form-helper-fg:   var(--text-default-minimal);
+    --form-error-fg:    var(--text-critical);
+    --form-required-fg: var(--text-critical);
+
+    /* ---------- Selection controls (radio, checkbox) ---------- */
+    --form-control-bg:             var(--background-default);
+    --form-control-border:         var(--border-default-strong);
+    --form-control-checked-bg:     var(--background-primary);
+    --form-control-checked-fg:     var(--text-inverted);
+    --form-control-checked-border: var(--border-primary);
+    --form-control-error-border:   var(--border-critical-strong);
+
+    /* ---------- Multi-select chip ---------- */
+    --form-chip-bg:       var(--background-primary-minimal);
+    --form-chip-fg:       var(--text-primary-strong);
+    --form-chip-border:   transparent;
+    --form-chip-radius:   var(--radius-sm);
+
+    /* ---------- File upload dropzone ---------- */
+    --form-file-bg:           var(--background-default-subtle);
+    --form-file-bg-hover:     var(--background-default-minimal);
+    --form-file-border:       var(--border-default-input);
+    --form-file-border-hover: var(--border-primary);
+    --form-file-fg:           var(--text-default);
+    --form-file-icon:         var(--icon-default);
+
+    /* ---------- Focus ring ---------- */
+    --form-focus-outline:        var(--outline-focus);
+    --form-focus-outline-width:  2px;
+    --form-focus-outline-offset: 2px;
+}

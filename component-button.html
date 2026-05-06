@@ -9,1132 +9,14 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
 
-<style>
-/* =========================================================
-    RESET
-    ========================================================= */
-*,*::before,*::after{
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-html{
-    scroll-behavior: smooth;
-    scroll-padding-top: 80px;
-}
+<!-- Design system: shared, reusable foundation -->
+<link rel="stylesheet" href="styles/tokens.css" />
+<link rel="stylesheet" href="styles/base.css" />
+<link rel="stylesheet" href="styles/shell.css" />
+<link rel="stylesheet" href="styles/button.css" />
+<!-- Page-specific: only what is unique to component-button.html -->
+<link rel="stylesheet" href="styles/page-component-button.css" />
 
-/* =========================================================
-    PRIMITIVE TOKENS
-    ========================================================= */
-:root{
-    --white-base:#F9FAF9;
-    --black-base:#000000;
-
-    --primary-50: #f1f7ee;
-    --primary-100: #d8e9cd;
-    --primary-200: #beddac;
-    --primary-300: #a4d289;
-    --primary-400: #89c964;
-    --primary-500: #6ec13e;
-    --primary-600: #5dac2f;
-    --primary-700: #4c9622;
-    --primary-800: #3c7d17;
-    --primary-900: #2d620e;
-    --primary-950: #1e4507;
-
-    --secondary-50: #f7f2ed;
-    --secondary-100: #e3cdb8;
-    --secondary-200: #d1a780;
-    --secondary-300: #c28247;
-    --secondary-400: #925e2d;
-    --secondary-500: #5c3a1a;
-    --secondary-600: #583515;
-    --secondary-700: #553110;
-    --secondary-800: #512d0c;
-    --secondary-900: #4c2908;
-    --secondary-950: #472505;
-
-    --accent-50: #eff6ef;
-    --accent-100: #c9e3c8;
-    --accent-200: #a1d19f;
-    --accent-300: #78c175;
-    --accent-400: #4eb24a;
-    --accent-500: #398c36;
-    --accent-600: #2d802b;
-    --accent-700: #237320;
-    --accent-800: #1a6417;
-    --accent-900: #125410;
-    --accent-950: #0c430a;
-
-    --neutral-50: #f2f2f2;
-    --neutral-100: #dbdbdb;
-    --neutral-200: #c4c5c4;
-    --neutral-300: #adb1aa;
-    --neutral-400: #949e8f;
-    --neutral-500: #7c8c73;
-    --neutral-600: #697f5c;
-    --neutral-700: #567048;
-    --neutral-800: #445f35;
-    --neutral-900: #334b25;
-    --neutral-950: #223617;
-
-    --warning-50:var(--secondary-50);
-    --warning-300:var(--secondary-300);
-    --warning-500:var(--secondary-500);
-    --warning-700:var(--secondary-700);
-
-    --critical-50:#FEF1F1;
-    --critical-300:#F79999;
-    --critical-500:#D13636;
-    --critical-600:#B02020;
-    --critical-700:#8A1C1C;
-
-    --safe-50:var(--accent-50);
-    --safe-300:var(--accent-300);
-    --safe-500:var(--accent-500);
-    --safe-700:var(--accent-700);
-
-    --info-50:#F0F5FC;
-    --info-300:#96BBEB;
-    --info-500:#3468C2;
-    --info-600:#2A55A0;
-    --info-700:#1C3C78;
-
-    --spacing-quarter: 1px;
-    --spacing-half: 2px;
-    --spacing-1x:4px;
-    --spacing-2x:8px;
-    --spacing-3x:12px;
-    --spacing-4x:16px;
-    --spacing-5x:20px;
-    --spacing-6x:24px;
-    --spacing-8x:32px;
-    --spacing-10x:40px;
-    --spacing-12x:48px;
-    --spacing-16x:64px;
-    --spacing-25x:100px;
-
-    --font-sans: 'Poppins', 'Helvetica', sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
-
-    --text-h1:2.986rem;
-    --text-h2:2.488rem;
-    --text-h3:2.074rem;
-    --text-h4:1.728rem;
-    --text-h5:1.44rem;
-    --text-h6:1.2rem;
-    --text-base:1rem;
-    --text-sm:0.833rem;
-    --text-micro:0.694rem;
-
-    --font-weight-regular: 400;
-    --font-weight-medium: 500;
-    --font-weight-semibold: 600;
-
-    --line-height-display:1.04;
-    --line-height-heading:1.2;
-    --line-height-h3:1.3;
-    --line-height-h4:1.4;
-    --line-height-h5:1.5;
-    --line-height-h6:1.6;
-    --line-height-body:1.65;
-
-    --letter-spacing-display: 0.02em;
-    --letter-spacing-eyebrow: 0.18em;
-}
-
-/* =========================================================
-    SEMANTIC TOKENS — [Role]-[Intent]-[State]
-    ========================================================= */
-:root{
-    /* BACKGROUND */
-    --background-default:          var(--white-base);
-    --background-default-subtle:   var(--neutral-50);
-    --background-default-minimal:  var(--neutral-100);
-    --background-default-hover:    var(--neutral-200);
-    --background-default-active:   var(--neutral-300);
-    --background-default-selected: var(--primary-50);
-    --background-default-disabled: color-mix(in srgb,var(--neutral-900) 5%,transparent);
-
-    --background-inverted:         var(--primary-500);
-    --background-inverted-subtle:  var(--primary-600);
-    --background-inverted-minimal: color-mix(in srgb,var(--white-base) 10%,transparent);
-    --background-inverted-hover:   var(--primary-400);
-
-    --background-primary:          var(--primary-400);
-    --background-primary-hover:    var(--primary-500);
-    --background-primary-active:   var(--primary-600);
-    --background-primary-subtle:   var(--primary-50);
-    --background-primary-minimal:  var(--primary-100);
-    --background-primary-disabled: color-mix(in srgb,var(--neutral-900) 5%,transparent);
-
-    --background-accent:           var(--accent-500);
-    --background-accent-hover:     var(--accent-600);
-    --background-accent-active:    var(--accent-700);
-    --background-accent-subtle:    var(--accent-50);
-    --background-accent-minimal:   var(--accent-100);
-    --background-accent-disabled:  color-mix(in srgb,var(--neutral-900) 5%,transparent);
-
-    --background-secondary-minimal:var(--secondary-100);
-
-    --background-warning:          var(--warning-50);
-    --background-warning-strong:   var(--warning-500);
-    --background-warning-hover:    var(--warning-700);
-    --background-critical:         var(--critical-50);
-    --background-critical-strong:  var(--critical-500);
-    --background-critical-hover:   var(--critical-600);
-    --background-critical-active:  var(--critical-700);
-    --background-safe:             var(--safe-50);
-    --background-info:             var(--info-50);
-    --background-overlay:          color-mix(in srgb,var(--primary-900) 48%,transparent);
-    --background-row-hover:        color-mix(in srgb,var(--primary-50) 60%,transparent);
-    --background-toast:            color-mix(in srgb,var(--neutral-950) 92%,transparent);
-    --background-ambient:
-        radial-gradient(ellipse 80% 50% at 20% 10%, color-mix(in srgb, var(--primary-500) 18%, transparent), transparent 70%),
-        radial-gradient(ellipse 60% 40% at 90% 30%, color-mix(in srgb, var(--accent-500) 16%, transparent), transparent 70%),
-        radial-gradient(ellipse 70% 50% at 50% 90%, color-mix(in srgb, var(--secondary-300) 10%, transparent), transparent 70%),
-        var(--white-base);
-
-    /* TEXT */
-    --text-default:                var(--neutral-950);
-    --text-default-subtle:         color-mix(in srgb,var(--neutral-700) 60%,var(--neutral-600) 40%);
-    --text-default-minimal:        var(--neutral-600);
-    --text-default-disabled:       color-mix(in srgb,var(--neutral-900) 30%,transparent);
-
-    --text-inverted:               var(--white-base);
-    --text-inverted-subtle:        color-mix(in srgb,var(--white-base) 70%,transparent);
-    --text-inverted-minimal:       color-mix(in srgb,var(--white-base) 45%,transparent);
-
-    --text-primary:                var(--primary-500);
-    --text-primary-subtle:         var(--primary-400);
-    --text-primary-strong:         var(--primary-900);
-
-    --text-secondary-strong:       var(--secondary-700);
-
-    --text-accent:                 var(--accent-500);
-    --text-accent-subtle:          var(--accent-400);
-    --text-accent-strong:          var(--accent-900);
-
-    --text-emphasis:               var(--secondary-500);
-    --text-link:                   var(--primary-600);
-
-    --text-info:                   var(--info-500);
-    --text-info-subtle:            var(--info-300);
-    --text-info-strong:            var(--info-700);
-    --text-warning:                var(--warning-700);
-    --text-warning-subtle:         var(--warning-500);
-    --text-critical:               var(--critical-700);
-    --text-critical-subtle:        var(--critical-500);
-    --text-safe:                   var(--safe-700);
-    --text-safe-subtle:            var(--safe-500);
-
-    /* BORDER */
-    --border-width-base:           1px;
-    --border-default:              color-mix(in srgb,var(--neutral-900) 9%,transparent);
-    --border-default-subtle:       color-mix(in srgb,var(--neutral-900) 5%,transparent);
-    --border-default-strong:       color-mix(in srgb,var(--neutral-900) 22%,transparent);
-    --border-default-input:        var(--neutral-300);
-    --border-default-disabled:     color-mix(in srgb,var(--neutral-900) 12%,transparent);
-
-    --border-primary:              var(--primary-400);
-    --border-primary-subtle:       var(--primary-200);
-    --border-primary-focus:        var(--secondary-500);
-
-    --border-accent:               var(--accent-500);
-    --border-accent-subtle:        var(--accent-200);
-
-    --border-inverted:             color-mix(in srgb,var(--white-base) 18%,transparent);
-    --border-inverted-strong:      color-mix(in srgb,var(--white-base) 35%,transparent);
-
-    --border-warning:              var(--warning-300);
-    --border-critical:             var(--critical-300);
-    --border-critical-strong:      var(--critical-500);
-    --border-safe:                 var(--safe-300);
-    --border-info:                 var(--info-300);
-
-    --border-decorator:            var(--text-default-subtle);
-    --border-swatch:               color-mix(in srgb,var(--black-base) 6%,transparent);
-    --border-toast:                color-mix(in srgb,var(--white-base) 12%,transparent);
-
-    /* OUTLINE / FOCUS */
-    --outline-focus:               var(--primary-700);
-
-    /* ICON */
-    --icon-default:                var(--neutral-700);
-    --icon-default-subtle:         var(--neutral-500);
-    --icon-default-minimal:        var(--neutral-400);
-    --icon-default-disabled:       color-mix(in srgb,var(--neutral-900) 30%,transparent);
-
-    --icon-inverted:               var(--white-base);
-    --icon-inverted-subtle:        color-mix(in srgb,var(--white-base) 70%,transparent);
-
-    --icon-primary:                var(--primary-400);
-    --icon-primary-strong:         var(--primary-500);
-
-    --icon-info:                   var(--secondary-500);
-    --icon-warning:                var(--warning-500);
-    --icon-critical:               var(--critical-500);
-    --icon-safe:                   var(--safe-500);
-
-    /* SEMANTIC SPACING */
-    --margin-bottom-heading:       var(--spacing-4x);
-    --margin-bottom-subheading:    var(--spacing-3x);
-    --margin-bottom-element:       var(--spacing-2x);
-    --margin-bottom-paragraph:     var(--spacing-4x);
-
-    /* RADIUS */
-    --radius-mc:var(--spacing-1x);
-    --radius-sm:var(--spacing-2x);
-    --radius-md:var(--spacing-3x);
-    --radius-lg:var(--spacing-4x);
-    --radius-xl:var(--spacing-6x);
-    --radius-pill:var(--spacing-25x);
-
-    /* SHADOW */
-    --shadow-sm: 0 1px 4px color-mix(in srgb,var(--black-base) 6%, transparent),0 1px 2px color-mix(in srgb,var(--black-base) 4%, transparent);
-    --shadow-md: 0 4px 12px color-mix(in srgb,var(--black-base) 8%, transparent),0 2px 4px color-mix(in srgb,var(--black-base) 4%, transparent);
-    --shadow-lg: 0 12px 32px color-mix(in srgb,var(--black-base) 10%, transparent),0 4px 8px color-mix(in srgb,var(--black-base) 4%, transparent);
-
-    /* GLASSMORPHISM */
-    --blur-none: blur(0px);
-    --blur-sm:   blur(var(--spacing-1x));
-    --blur-md:   blur(var(--spacing-2x));
-    --blur-lg:   blur(var(--spacing-4x));
-    --blur-xl:   blur(var(--spacing-6x));
-    --blur-2xl:  blur(var(--spacing-10x));
-
-    --background-glass-light:      color-mix(in srgb,var(--white-base) 65%,transparent);
-    --background-glass-dark:       color-mix(in srgb,var(--primary-200) 35%,transparent);
-    --border-glass-light:          color-mix(in srgb,var(--white-base) 85%,transparent);
-    --border-glass-dark:           color-mix(in srgb,var(--white-base) 15%,transparent);
-
-    /* GRADIENTS */
-    --gradient-primary-secondary-horizontal: linear-gradient(to right, var(--primary-500), var(--secondary-500));
-    --gradient-primary-secondary-vertical:   linear-gradient(to bottom, var(--primary-500), var(--secondary-500));
-    --gradient-secondary-primary-horizontal: linear-gradient(to right, var(--secondary-500), var(--primary-500));
-    --gradient-secondary-primary-vertical:   linear-gradient(to bottom, var(--secondary-500), var(--primary-500));
-    --gradient-primary-subtle: linear-gradient(135deg, var(--primary-100) 0%, color-mix(in srgb, var(--primary-500) 18%, transparent) 100%);
-    --gradient-brand: linear-gradient(135deg, var(--primary-500) 0%, var(--accent-500) 100%);
-    --gradient-earthy: linear-gradient(135deg, var(--primary-50) 0%, var(--secondary-50) 100%);
-    --gradient-fade-down: linear-gradient(180deg, var(--primary-50) 0%, transparent 100%);
-    --gradient-secondary-subtle: linear-gradient(135deg, var(--secondary-100) 0%, color-mix(in srgb, var(--secondary-500) 20%, transparent) 100%);
-}
-
-/* =========================================================
-    COMPONENT TOKENS — Button
-    All values reference semantic tokens strictly.
-    Sizes scale a base font-size; LG (22.5px) is canonical.
-    ========================================================= */
-:root{
-    /* ---------- Shared shape ---------- */
-    --btn-font-family:             var(--font-sans);
-    --btn-font-weight:             var(--font-weight-medium);
-    --btn-letter-spacing:          0;
-    --btn-radius:                  var(--radius-md);
-    --btn-radius-pill:             var(--radius-pill);
-    --btn-border-width:            var(--border-width-base);
-    --btn-gap:                     var(--spacing-2x);
-    --btn-shadow-rest:             var(--shadow-sm);
-    --btn-shadow-hover:            var(--shadow-md);
-    --btn-transition:              background-color .18s ease, color .18s ease,
-                                   border-color .18s ease, box-shadow .18s ease,
-                                   transform .18s ease;
-
-    /* ---------- Sizes (LG is the focus per spec) ---------- */
-    --btn-sm-font-size:            var(--text-sm);     /* 13.33px */
-    --btn-sm-padding-x:            var(--spacing-3x);
-    --btn-sm-padding-y:            var(--spacing-1x);
-    --btn-sm-height:               28px;
-    --btn-sm-icon:                 14px;
-
-    --btn-md-font-size:            var(--text-base);   /* 16px */
-    --btn-md-padding-x:            var(--spacing-4x);
-    --btn-md-padding-y:            var(--spacing-2x);
-    --btn-md-height:               36px;
-    --btn-md-icon:                 18px;
-
-    --btn-lg-font-size:            22.5px;             /* FOCUS */
-    --btn-lg-padding-x:            var(--spacing-6x);
-    --btn-lg-padding-y:            var(--spacing-3x);
-    --btn-lg-height:               48px;
-    --btn-lg-icon:                 22px;
-
-    --btn-xl-font-size:            var(--text-h4);     /* 27.65px */
-    --btn-xl-padding-x:            var(--spacing-8x);
-    --btn-xl-padding-y:            var(--spacing-4x);
-    --btn-xl-height:               60px;
-    --btn-xl-icon:                 28px;
-
-    --btn-2xl-font-size:           var(--text-h3);     /* 33.18px */
-    --btn-2xl-padding-x:           var(--spacing-10x);
-    --btn-2xl-padding-y:           var(--spacing-5x);
-    --btn-2xl-height:              74px;
-    --btn-2xl-icon:                32px;
-
-    /* ---------- Variant: CTA / Primary (uses ACCENT) ---------- */
-    --btn-cta-bg:                  var(--background-accent);
-    --btn-cta-bg-hover:            var(--background-accent-hover);
-    --btn-cta-bg-active:           var(--background-accent-active);
-    --btn-cta-fg:                  var(--text-inverted);
-    --btn-cta-border:              transparent;
-    --btn-cta-shadow:              var(--shadow-sm);
-
-    /* ---------- Variant: Secondary ---------- */
-    --btn-secondary-bg:            var(--background-default);
-    --btn-secondary-bg-hover:      var(--background-default-hover);
-    --btn-secondary-bg-active:     var(--background-default-active);
-    --btn-secondary-fg:            var(--text-default);
-    --btn-secondary-border:        var(--border-default-strong);
-    --btn-secondary-shadow:        var(--shadow-sm);
-
-    /* ---------- Variant: Ghost ---------- */
-    --btn-ghost-bg:                transparent;
-    --btn-ghost-bg-hover:          var(--background-default-subtle);
-    --btn-ghost-bg-active:         var(--background-default-minimal);
-    --btn-ghost-fg:                var(--text-default);
-    --btn-ghost-border:            transparent;
-
-    /* ---------- Variant: Disabled ---------- */
-    --btn-disabled-bg:             var(--background-default-disabled);
-    --btn-disabled-fg:             var(--text-default-disabled);
-    --btn-disabled-border:         var(--border-default-disabled);
-    --btn-disabled-cursor:         not-allowed;
-    --btn-disabled-opacity:        1;
-
-    /* ---------- Variant: Loading ---------- */
-    --btn-loading-bg:              var(--background-primary);
-    --btn-loading-fg:              var(--text-inverted);
-    --btn-loading-spinner:         var(--text-inverted);
-    --btn-loading-track:           color-mix(in srgb, var(--white-base) 35%, transparent);
-
-    /* ---------- Variant: Caution (destructive) ---------- */
-    --btn-caution-bg:              var(--background-critical-strong);
-    --btn-caution-bg-hover:        var(--background-critical-hover);
-    --btn-caution-bg-active:       var(--background-critical-active);
-    --btn-caution-fg:              var(--text-inverted);
-    --btn-caution-border:          transparent;
-    --btn-caution-shadow:          var(--shadow-sm);
-
-    /* ---------- Variant: Toggle ---------- */
-    --btn-toggle-bg:               var(--background-default);
-    --btn-toggle-bg-hover:         var(--background-default-hover);
-    --btn-toggle-fg:               var(--text-default);
-    --btn-toggle-border:           var(--border-default-strong);
-    --btn-toggle-on-bg:            var(--background-primary);
-    --btn-toggle-on-fg:            var(--text-inverted);
-    --btn-toggle-on-border:        var(--border-primary);
-
-    /* ---------- Version: Inverted Surface ---------- */
-    --btn-inverted-cta-bg:         var(--background-default);
-    --btn-inverted-cta-fg:         var(--text-accent-strong);
-    --btn-inverted-cta-bg-hover:   var(--background-accent-subtle);
-    --btn-inverted-secondary-bg:   transparent;
-    --btn-inverted-secondary-fg:   var(--text-inverted);
-    --btn-inverted-secondary-border:var(--border-inverted-strong);
-    --btn-inverted-ghost-fg:       var(--text-inverted);
-    --btn-inverted-ghost-bg-hover: var(--background-inverted-minimal);
-
-    /* ---------- Focus ring ---------- */
-    --btn-focus-outline:           var(--outline-focus);
-    --btn-focus-outline-width:     2px;
-    --btn-focus-outline-offset:    2px;
-}
-
-
-/* =========================================================
-   BASE
-   ========================================================= */
-body {
-    font-family: var(--font-sans);
-    font-size: var(--text-base);
-    line-height: var(--line-height-body);
-    color: var(--text-default);
-    background: var(--background-default);
-    min-height: 100vh;
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-    overflow-x: hidden;
-}
-body::before {
-    content: '';
-    position: fixed;
-    inset: -10%;
-    z-index: -2;
-    background: var(--background-ambient);
-    animation: drift 32s ease-in-out infinite alternate;
-}
-@keyframes drift {
-    0%   { transform: translate3d(0, 0, 0) scale(1); }
-    50%  { transform: translate3d(-2%, 1%, 0) scale(1.04); }
-    100% { transform: translate3d(2%, -1%, 0) scale(1.02); }
-}
-
-h1, h2 { font-family: var(--font-sans); font-weight: var(--font-weight-regular); line-height: var(--line-height-heading); color: var(--text-default); }
-h3, h4, h5, h6 { font-family: var(--font-sans); font-weight: var(--font-weight-semibold); color: var(--text-default); }
-h1 { font-size: var(--text-h1); margin-bottom: var(--margin-bottom-heading); }
-h2 { font-size: var(--text-h2); font-style: italic; margin-bottom: var(--margin-bottom-subheading); }
-h3 { font-size: var(--text-h3); line-height: var(--line-height-h3); margin-bottom: var(--margin-bottom-subheading); }
-h4 { font-size: var(--text-h4); line-height: var(--line-height-h4); margin-bottom: var(--margin-bottom-element); }
-h5 { font-size: var(--text-h5); line-height: var(--line-height-h4); margin-bottom: var(--margin-bottom-element); }
-h6 { font-size: var(--text-h6); line-height: var(--line-height-h4); margin-bottom: var(--margin-bottom-element); }
-p  { font-size: var(--text-base); color: inherit; margin-bottom: var(--margin-bottom-paragraph); line-height: var(--line-height-body); }
-small { font-size: var(--text-sm); }
-
-code {
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    background: var(--background-default-minimal);
-    color: var(--text-default);
-    padding: var(--spacing-half) var(--spacing-1x);
-    border-radius: var(--radius-sm);
-}
-
-a { color: var(--text-link); text-decoration: none; }
-a:hover { color: var(--text-primary); }
-
-.display { font-family: var(--font-sans); font-weight: var(--font-weight-regular); line-height: var(--line-height-display); letter-spacing: var(--letter-spacing-display); }
-.display em { font-style: italic; color: var(--text-accent); }
-.mono { font-family: var(--font-mono); }
-
-.eyebrow {
-    font-family: var(--font-mono);
-    font-size: var(--text-micro);
-    font-weight: var(--font-weight-medium);
-    letter-spacing: var(--letter-spacing-eyebrow);
-    text-transform: uppercase;
-    color: var(--text-default-subtle);
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-3x);
-}
-.eyebrow::before {
-    content: '';
-    width: var(--spacing-5x);
-    height: var(--border-width-base);
-    background: var(--border-decorator);
-    display: inline-block;
-}
-
-/* =========================================================
-   NAV
-   ========================================================= */
-.topbar {
-  position: sticky; top: 0; z-index: 50;
-  padding: var(--spacing-3x) var(--spacing-8x);
-  display: flex; align-items: center; justify-content: space-between;
-  background: var(--background-glass-light);
-  backdrop-filter: var(--blur-lg) saturate(140%);
-  -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
-  border-bottom: var(--border-width-base) solid var(--border-glass-light);
-}
-.brand { display: flex; align-items: center; gap: var(--spacing-3x); }
-.brand-logo { height: var(--spacing-10x); width: auto; display: block; }
-.brand small {
-  font-family: var(--font-mono);
-  font-size: var(--text-micro);
-  letter-spacing: var(--letter-spacing-eyebrow);
-  text-transform: uppercase;
-  color: var(--text-default-minimal);
-  font-style: normal;
-  padding-left: var(--spacing-3x);
-  border-left: var(--border-width-base) solid var(--border-default);
-}
-.toc {
-  display: flex; gap: var(--spacing-1x);
-  padding: var(--spacing-1x);
-  border-radius: var(--radius-pill);
-  background: var(--background-glass-light);
-  border: var(--border-width-base) solid var(--border-glass-light);
-}
-.toc a {
-  padding: var(--spacing-2x) var(--spacing-4x);
-  font-family: var(--font-mono);
-  font-size: var(--text-micro);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-default-subtle);
-  text-decoration: none;
-  border-radius: var(--radius-pill);
-  transition: all 0.2s ease;
-}
-.toc a:hover { background: var(--background-default); color: var(--text-default); }
-.version {
-  font-family: var(--font-mono);
-  font-size: var(--text-micro);
-  letter-spacing: 0.12em;
-  color: var(--text-default-minimal);
-  padding: var(--spacing-half) var(--spacing-3x);
-  border-radius: var(--radius-pill);
-  border: var(--border-width-base) solid var(--border-default);
-}
-
-/* =========================================================
-   LAYOUT
-   ========================================================= */
-.shell { max-width: 1280px; margin: 0 auto; padding: 0 var(--spacing-8x); }
-
-.hero {
-  padding: var(--spacing-25x) 0 var(--spacing-16x);
-  display: grid;
-  grid-template-columns: 1.5fr 1fr;
-  gap: var(--spacing-16x);
-  align-items: end;
-}
-.hero h1 {
-  font-size: clamp(3.5rem, 7vw, 6.5rem);
-  font-family: var(--font-sans);
-  font-weight: var(--font-weight-regular);
-  line-height: var(--line-height-display);
-  letter-spacing: -0.035em;
-  color: var(--text-default);
-}
-.hero h1 .num {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 0.18em;
-  letter-spacing: 0.2em;
-  color: var(--text-default-minimal);
-  margin-bottom: var(--spacing-6x);
-  font-weight: var(--font-weight-medium);
-}
-.hero .lede {
-  font-size: var(--text-base);
-  line-height: var(--line-height-h5);
-  color: var(--text-default-subtle);
-  max-width: 38ch;
-}
-.meta-strip {
-  margin-top: var(--spacing-12x);
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--border-width-base);
-  background: var(--border-default);
-  border-top: var(--border-width-base) solid var(--border-default);
-  border-bottom: var(--border-width-base) solid var(--border-default);
-}
-.meta-strip > div {
-  background: var(--background-glass-light);
-  padding: var(--spacing-4x) var(--spacing-5x);
-  backdrop-filter: var(--blur-md);
-}
-.meta-strip dt {
-  font-family: var(--font-mono);
-  font-size: var(--text-micro);
-  letter-spacing: var(--letter-spacing-eyebrow);
-  text-transform: uppercase;
-  color: var(--text-default-minimal);
-  margin-bottom: var(--spacing-half);
-}
-.meta-strip dd {
-  font-family: var(--font-sans);
-  font-size: var(--text-h5);
-  font-weight: var(--font-weight-medium);
-  letter-spacing: -0.01em;
-}
-
-section.chunk { padding: var(--spacing-16x) 0; scroll-margin-top: var(--spacing-25x); }
-.chunk-head {
-  display: grid;
-  grid-template-columns: 1.5fr 1fr;
-  gap: var(--spacing-16x);
-  align-items: end;
-  margin-bottom: var(--spacing-12x);
-  padding-bottom: var(--spacing-6x);
-  border-bottom: var(--border-width-base) solid var(--border-default);
-}
-.chunk-head h2 {
-  font-family: var(--font-sans);
-  font-size: clamp(2.4rem, 4vw, 3.4rem);
-  font-weight: var(--font-weight-regular);
-  line-height: 1;
-  letter-spacing: -0.025em;
-}
-.chunk-head h2 em { font-style: italic; color: var(--text-emphasis); }
-.chunk-head .num-tag {
-  font-family: var(--font-mono);
-  font-size: var(--text-micro);
-  letter-spacing: 0.2em;
-  color: var(--text-default-minimal);
-  margin-bottom: var(--spacing-4x);
-  display: block;
-}
-.chunk-head p {
-  font-size: var(--text-base);
-  color: var(--text-default-subtle);
-  line-height: var(--line-height-body);
-}
-
-.subheading {
-  font-family: var(--font-sans);
-  font-weight: var(--font-weight-semibold);
-  font-size: var(--text-h5);
-  color: var(--text-default);
-  margin-top: var(--spacing-12x);
-  margin-bottom: var(--spacing-4x);
-  display: flex;
-  align-items: baseline;
-  gap: var(--spacing-3x);
-}
-.subheading:first-of-type { margin-top: 0; }
-.subheading .tag {
-  font-family: var(--font-mono);
-  font-size: var(--text-micro);
-  font-weight: var(--font-weight-medium);
-  letter-spacing: var(--letter-spacing-eyebrow);
-  text-transform: uppercase;
-  color: var(--text-default-minimal);
-  padding: var(--spacing-half) var(--spacing-2x);
-  border: var(--border-width-base) solid var(--border-default);
-  border-radius: var(--radius-pill);
-}
-
-.glass {
-  background: var(--background-glass-light);
-  backdrop-filter: var(--blur-lg) saturate(140%);
-  -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
-  border: var(--border-width-base) solid var(--border-glass-light);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-}
-
-/* =========================================================
-   COMPONENT — Button (base)
-   ========================================================= */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--btn-gap);
-  font-family: var(--btn-font-family);
-  font-weight: var(--btn-font-weight);
-  letter-spacing: var(--btn-letter-spacing);
-  border-radius: var(--btn-radius);
-  border: var(--btn-border-width) solid transparent;
-  cursor: pointer;
-  transition: var(--btn-transition);
-  white-space: nowrap;
-  user-select: none;
-  text-decoration: none;
-  line-height: 1;
-  /* Default is LG */
-  font-size: var(--btn-lg-font-size);
-  padding: var(--btn-lg-padding-y) var(--btn-lg-padding-x);
-  min-height: var(--btn-lg-height);
-}
-.btn:focus-visible {
-  outline: var(--btn-focus-outline-width) solid var(--btn-focus-outline);
-  outline-offset: var(--btn-focus-outline-offset);
-}
-.btn .icon { width: var(--btn-lg-icon); height: var(--btn-lg-icon); flex-shrink: 0; }
-
-/* ---- Sizes ---- */
-.btn--sm  { font-size: var(--btn-sm-font-size);  padding: var(--btn-sm-padding-y)  var(--btn-sm-padding-x);  min-height: var(--btn-sm-height); border-radius: var(--radius-sm); }
-.btn--sm .icon  { width: var(--btn-sm-icon);  height: var(--btn-sm-icon); }
-.btn--md  { font-size: var(--btn-md-font-size);  padding: var(--btn-md-padding-y)  var(--btn-md-padding-x);  min-height: var(--btn-md-height); }
-.btn--md .icon  { width: var(--btn-md-icon);  height: var(--btn-md-icon); }
-.btn--lg  { font-size: var(--btn-lg-font-size);  padding: var(--btn-lg-padding-y)  var(--btn-lg-padding-x);  min-height: var(--btn-lg-height); }
-.btn--lg .icon  { width: var(--btn-lg-icon);  height: var(--btn-lg-icon); }
-.btn--xl  { font-size: var(--btn-xl-font-size);  padding: var(--btn-xl-padding-y)  var(--btn-xl-padding-x);  min-height: var(--btn-xl-height); border-radius: var(--radius-lg); }
-.btn--xl .icon  { width: var(--btn-xl-icon);  height: var(--btn-xl-icon); }
-.btn--2xl { font-size: var(--btn-2xl-font-size); padding: var(--btn-2xl-padding-y) var(--btn-2xl-padding-x); min-height: var(--btn-2xl-height); border-radius: var(--radius-lg); }
-.btn--2xl .icon { width: var(--btn-2xl-icon); height: var(--btn-2xl-icon); }
-
-/* ---- Variants ---- */
-.btn--cta {
-  background: var(--btn-cta-bg);
-  color: var(--btn-cta-fg);
-  border-color: var(--btn-cta-border);
-  box-shadow: var(--btn-cta-shadow);
-}
-.btn--cta:hover  { background: var(--btn-cta-bg-hover);  box-shadow: var(--btn-shadow-hover); transform: translateY(-1px); }
-.btn--cta:active { background: var(--btn-cta-bg-active); transform: translateY(0); }
-
-.btn--secondary {
-  background: var(--btn-secondary-bg);
-  color: var(--btn-secondary-fg);
-  border-color: var(--btn-secondary-border);
-  box-shadow: var(--btn-secondary-shadow);
-}
-.btn--secondary:hover  { background: var(--btn-secondary-bg-hover); }
-.btn--secondary:active { background: var(--btn-secondary-bg-active); }
-
-.btn--ghost {
-  background: var(--btn-ghost-bg);
-  color: var(--btn-ghost-fg);
-  border-color: var(--btn-ghost-border);
-  box-shadow: none;
-}
-.btn--ghost:hover  { background: var(--btn-ghost-bg-hover); }
-.btn--ghost:active { background: var(--btn-ghost-bg-active); }
-
-.btn--disabled,
-.btn[disabled] {
-  background: var(--btn-disabled-bg) !important;
-  color: var(--btn-disabled-fg) !important;
-  border-color: var(--btn-disabled-border) !important;
-  cursor: var(--btn-disabled-cursor);
-  opacity: var(--btn-disabled-opacity);
-  box-shadow: none !important;
-  transform: none !important;
-}
-
-.btn--loading {
-  background: var(--btn-loading-bg);
-  color: var(--btn-loading-fg);
-  border-color: transparent;
-  cursor: progress;
-  position: relative;
-}
-.btn--loading .spinner {
-  width: 1em; height: 1em;
-  border-radius: 50%;
-  border: 2px solid var(--btn-loading-track);
-  border-top-color: var(--btn-loading-spinner);
-  animation: btn-spin .8s linear infinite;
-  flex-shrink: 0;
-}
-@keyframes btn-spin { to { transform: rotate(360deg); } }
-
-.btn--caution {
-  background: var(--btn-caution-bg);
-  color: var(--btn-caution-fg);
-  border-color: var(--btn-caution-border);
-  box-shadow: var(--btn-caution-shadow);
-}
-.btn--caution:hover  { background: var(--btn-caution-bg-hover);  box-shadow: var(--btn-shadow-hover); transform: translateY(-1px); }
-.btn--caution:active { background: var(--btn-caution-bg-active); transform: translateY(0); }
-
-.btn--toggle {
-  background: var(--btn-toggle-bg);
-  color: var(--btn-toggle-fg);
-  border-color: var(--btn-toggle-border);
-}
-.btn--toggle:hover { background: var(--btn-toggle-bg-hover); }
-.btn--toggle.is-on,
-.btn--toggle[aria-pressed="true"] {
-  background: var(--btn-toggle-on-bg);
-  color: var(--btn-toggle-on-fg);
-  border-color: var(--btn-toggle-on-border);
-}
-
-/* ---- Versions ---- */
-.btn--icon-only {
-  padding: var(--btn-lg-padding-y);
-  width: var(--btn-lg-height);
-  aspect-ratio: 1;
-}
-.btn--icon-only.btn--sm  { padding: var(--btn-sm-padding-y);  width: var(--btn-sm-height); }
-.btn--icon-only.btn--md  { padding: var(--btn-md-padding-y);  width: var(--btn-md-height); }
-.btn--icon-only.btn--xl  { padding: var(--btn-xl-padding-y);  width: var(--btn-xl-height); }
-.btn--icon-only.btn--2xl { padding: var(--btn-2xl-padding-y); width: var(--btn-2xl-height); }
-
-.btn--borderless {
-  border-color: transparent !important;
-  box-shadow: none !important;
-  background: transparent;
-}
-.btn--borderless.btn--cta      { color: var(--text-accent-strong); }
-.btn--borderless.btn--cta:hover{ background: var(--background-accent-subtle); color: var(--text-accent-strong); }
-.btn--borderless.btn--caution  { background: transparent; color: var(--text-critical); }
-.btn--borderless.btn--caution:hover { background: color-mix(in srgb, var(--critical-500) 8%, transparent); }
-.btn--borderless.btn--secondary{ background: transparent; color: var(--text-default); }
-.btn--borderless.btn--secondary:hover { background: var(--background-default-subtle); }
-
-/* On dark / inverted surface stage */
-.surface-inverted .btn--cta {
-  background: var(--btn-inverted-cta-bg);
-  color: var(--btn-inverted-cta-fg);
-}
-.surface-inverted .btn--cta:hover { background: var(--btn-inverted-cta-bg-hover); }
-
-.surface-inverted .btn--secondary {
-  background: var(--btn-inverted-secondary-bg);
-  color: var(--btn-inverted-secondary-fg);
-  border-color: var(--btn-inverted-secondary-border);
-}
-.surface-inverted .btn--secondary:hover {
-  background: var(--background-inverted-minimal);
-}
-.surface-inverted .btn--ghost {
-  color: var(--btn-inverted-ghost-fg);
-}
-.surface-inverted .btn--ghost:hover { background: var(--btn-inverted-ghost-bg-hover); }
-
-
-/* =========================================================
-   PREVIEW STAGES
-   ========================================================= */
-.preview-stage {
-  padding: var(--spacing-8x);
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-4x);
-  align-items: center;
-}
-.preview-stage.center { justify-content: center; }
-.preview-stage.column { flex-direction: column; align-items: flex-start; }
-.preview-stage.column.center { align-items: center; }
-
-.surface-inverted {
-  background:
-    radial-gradient(ellipse at 20% 20%, color-mix(in srgb, var(--accent-500) 70%, transparent), transparent 60%),
-    var(--gradient-brand);
-  border-color: var(--border-glass-dark);
-}
-
-/* Stage caption pill */
-.stage-caption {
-  font-family: var(--font-mono);
-  font-size: var(--text-micro);
-  letter-spacing: var(--letter-spacing-eyebrow);
-  text-transform: uppercase;
-  color: var(--text-default-minimal);
-  margin-bottom: var(--spacing-3x);
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-2x);
-}
-.surface-inverted + .stage-caption,
-.stage-caption.on-dark { color: var(--text-inverted-subtle); }
-
-/* Variant grid */
-.variant-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: var(--spacing-5x);
-}
-.variant-card {
-  border-radius: var(--radius-lg);
-  border: var(--border-width-base) solid var(--border-glass-light);
-  background: var(--background-glass-light);
-  backdrop-filter: var(--blur-lg) saturate(140%);
-  -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
-  padding: var(--spacing-6x);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-4x);
-  min-height: 200px;
-  justify-content: space-between;
-}
-.variant-card .label {
-  font-family: var(--font-mono);
-  font-size: var(--text-micro);
-  letter-spacing: var(--letter-spacing-eyebrow);
-  text-transform: uppercase;
-  color: var(--text-default-minimal);
-}
-.variant-card .demo {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--spacing-5x) 0;
-}
-.variant-card .meta {
-  font-family: var(--font-mono);
-  font-size: var(--text-micro);
-  color: var(--text-default-minimal);
-  letter-spacing: 0.04em;
-  border-top: var(--border-width-base) solid var(--border-default-subtle);
-  padding-top: var(--spacing-3x);
-  display: flex;
-  justify-content: space-between;
-}
-.variant-card .meta strong {
-  color: var(--text-default);
-  font-weight: var(--font-weight-medium);
-}
-
-/* size row */
-.size-stage {
-  display: flex;
-  align-items: flex-end;
-  gap: var(--spacing-5x);
-  flex-wrap: wrap;
-  padding: var(--spacing-8x);
-}
-.size-cell {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--spacing-3x);
-}
-.size-cell .tag {
-  font-family: var(--font-mono);
-  font-size: var(--text-micro);
-  letter-spacing: var(--letter-spacing-eyebrow);
-  text-transform: uppercase;
-  color: var(--text-default-minimal);
-}
-.size-cell.is-focus .tag {
-  color: var(--text-primary-strong);
-  background: var(--background-primary-subtle);
-  padding: var(--spacing-half) var(--spacing-2x);
-  border-radius: var(--radius-pill);
-  border: var(--border-width-base) solid var(--border-primary-subtle);
-}
-
-/* version row */
-.version-stage {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: var(--spacing-4x);
-}
-.version-card {
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  border: var(--border-width-base) solid var(--border-glass-light);
-  background: var(--background-glass-light);
-  display: flex;
-  flex-direction: column;
-}
-.version-card .demo {
-  padding: var(--spacing-8x) var(--spacing-6x);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: var(--spacing-3x);
-  flex: 1;
-  min-height: 160px;
-}
-.version-card.dark .demo { background: var(--gradient-brand); }
-.version-card .body {
-  padding: var(--spacing-3x) var(--spacing-5x);
-  border-top: var(--border-width-base) solid var(--border-default-subtle);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.version-card .name {
-  font-family: var(--font-sans);
-  font-weight: var(--font-weight-semibold);
-  font-size: var(--text-base);
-  color: var(--text-default);
-}
-.version-card .desc {
-  font-family: var(--font-mono);
-  font-size: var(--text-micro);
-  letter-spacing: 0.04em;
-  color: var(--text-default-minimal);
-}
-
-/* =========================================================
-   COMPONENT TOKEN TABLE
-   ========================================================= */
-table.token-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  background: var(--background-glass-light);
-  backdrop-filter: var(--blur-lg) saturate(140%);
-  -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
-  border: var(--border-width-base) solid var(--border-glass-light);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-}
-table.token-table thead th {
-  text-align: left;
-  font-family: var(--font-mono);
-  font-size: var(--text-micro);
-  letter-spacing: var(--letter-spacing-eyebrow);
-  text-transform: uppercase;
-  color: var(--text-default-minimal);
-  font-weight: var(--font-weight-medium);
-  padding: var(--spacing-4x) var(--spacing-5x);
-  background: var(--background-glass-light);
-  border-bottom: var(--border-width-base) solid var(--border-default);
-}
-table.token-table tbody td {
-  padding: var(--spacing-3x) var(--spacing-5x);
-  border-bottom: var(--border-width-base) solid var(--border-default-subtle);
-  vertical-align: middle;
-  font-size: var(--text-sm);
-}
-table.token-table tbody tr:last-child td { border-bottom: none; }
-table.token-table tbody tr:hover td { background: var(--background-row-hover); }
-table.token-table .group-row td {
-  background: color-mix(in srgb, var(--primary-50) 50%, transparent);
-  font-family: var(--font-mono);
-  font-size: var(--text-micro);
-  letter-spacing: var(--letter-spacing-eyebrow);
-  text-transform: uppercase;
-  color: var(--text-primary-strong);
-  font-weight: var(--font-weight-medium);
-  padding: var(--spacing-3x) var(--spacing-5x);
-}
-.tk-name    { font-family: var(--font-mono); color: var(--text-default); width: 30%; word-break: break-all; }
-.tk-ref     { font-family: var(--font-mono); color: var(--text-default-minimal); width: 38%; word-break: break-all; }
-.tk-resolved{ font-family: var(--font-mono); color: var(--text-default-minimal); width: 22%; word-break: break-all; font-size: var(--text-micro); }
-.tk-swatch  {
-  width: 10%;
-}
-.tk-swatch .chip {
-  display: inline-block;
-  width: 100%;
-  height: var(--spacing-6x);
-  border-radius: var(--radius-sm);
-  border: var(--border-width-base) solid var(--border-swatch);
-}
-
-/* =========================================================
-   FOOTER
-   ========================================================= */
-footer {
-  padding: var(--spacing-16x) 0 var(--spacing-12x);
-  margin-top: var(--spacing-10x);
-  border-top: var(--border-width-base) solid var(--border-default);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: var(--font-mono);
-  font-size: var(--text-micro);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-default-minimal);
-}
-footer .sigil {
-  font-family: var(--font-sans);
-  font-weight: var(--font-weight-medium);
-  font-size: var(--text-sm);
-  letter-spacing: 0;
-  text-transform: none;
-  color: var(--text-default);
-}
-
-/* =========================================================
-   REVEAL
-   ========================================================= */
-.reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(.2,.8,.2,1); }
-.reveal.in { opacity: 1; transform: translateY(0); }
-
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
-@media (max-width: 960px) {
-  .hero { grid-template-columns: 1fr; gap: var(--spacing-8x); padding-top: var(--spacing-16x); }
-  .chunk-head { grid-template-columns: 1fr; gap: var(--spacing-6x); }
-  .meta-strip { grid-template-columns: repeat(2, 1fr); }
-  .toc { display: none; }
-  .variant-grid { grid-template-columns: 1fr 1fr; }
-}
-@media (max-width: 600px) {
-  .shell { padding: 0 var(--spacing-5x); }
-  .topbar { padding: var(--spacing-3x) var(--spacing-5x); }
-  .variant-grid { grid-template-columns: 1fr; }
-  table.token-table thead { display: none; }
-  table.token-table tbody td { display: block; }
-  .tk-name, .tk-ref, .tk-resolved, .tk-swatch { width: auto; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  body::before { animation: none; }
-  .reveal { opacity: 1; transform: none; transition: none; }
-  .btn { transition: none; }
-  .btn--loading .spinner { animation: none; }
-}
-</style>
 </head>
 <body>
 
@@ -1148,7 +30,8 @@ footer .sigil {
     <a href="#button-variants">01 Variants</a>
     <a href="#button-versions">02 Versions</a>
     <a href="#button-sizes">03 Sizes</a>
-    <a href="#button-tokens">04 Tokens</a>
+    <a href="#button-switch">04 Switch</a>
+    <a href="#button-tokens">05 Tokens</a>
   </nav>
   <span class="version mono">v 0.5 · 2026</span>
 </header>
@@ -1173,7 +56,7 @@ footer .sigil {
 
     <dl class="meta-strip reveal">
       <div><dt>Component</dt><dd>Button</dd></div>
-      <div><dt>Variants</dt><dd>7</dd></div>
+      <div><dt>Variants</dt><dd>7 + switch</dd></div>
       <div><dt>Versions</dt><dd>4</dd></div>
       <div><dt>Sizes</dt><dd>5 · LG focus</dd></div>
     </dl>
@@ -1438,11 +321,159 @@ footer .sigil {
     </div>
   </section>
 
+  <!-- ========================== BUTTON · SWITCH ========================== -->
+  <section class="chunk" id="button-switch">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">04 / Button — Switch</span>
+        <h2 class="display">Switch <em>and segmented</em>.</h2>
+      </div>
+      <p>
+        A binary on/off control with a sliding thumb, plus a segmented
+        variant for one-of-N choices — the canonical shape for a
+        language switch. Both share the toggle variant's colour scheme
+        and align with the button height scale (LG · 48px focus).
+      </p>
+    </header>
+
+    <div class="variant-grid reveal">
+
+      <article class="variant-card">
+        <span class="label">Switch · Off</span>
+        <div class="demo">
+          <button class="btn-switch btn-switch--lg" role="switch" aria-checked="false" aria-label="Vitals monitor">
+            <span class="btn-switch__thumb"></span>
+          </button>
+        </div>
+        <div class="meta"><span>--btn-switch</span><strong>off state</strong></div>
+      </article>
+
+      <article class="variant-card">
+        <span class="label">Switch · On</span>
+        <div class="demo">
+          <button class="btn-switch btn-switch--lg is-on" role="switch" aria-checked="true" aria-label="Vitals monitor">
+            <span class="btn-switch__thumb"></span>
+          </button>
+        </div>
+        <div class="meta"><span>--btn-switch.is-on</span><strong>on state</strong></div>
+      </article>
+
+      <article class="variant-card">
+        <span class="label">Switch · Disabled</span>
+        <div class="demo">
+          <button class="btn-switch btn-switch--lg" role="switch" aria-checked="false" aria-label="Locked toggle" disabled>
+            <span class="btn-switch__thumb"></span>
+          </button>
+        </div>
+        <div class="meta"><span>[disabled]</span><strong>blocked</strong></div>
+      </article>
+
+      <article class="variant-card">
+        <span class="label">Language switch</span>
+        <div class="demo">
+          <div class="btn-switch btn-switch--segmented btn-switch--lg" role="group" aria-label="Language">
+            <button class="btn-switch__option is-on" type="button" aria-pressed="true">EN</button>
+            <button class="btn-switch__option" type="button" aria-pressed="false">VI</button>
+          </div>
+        </div>
+        <div class="meta"><span>--btn-switch--segmented</span><strong>EN / VI</strong></div>
+      </article>
+
+      <article class="variant-card">
+        <span class="label">Segmented · 3-way</span>
+        <div class="demo">
+          <div class="btn-switch btn-switch--segmented btn-switch--lg" role="group" aria-label="Caseload filter">
+            <button class="btn-switch__option" type="button" aria-pressed="false">All</button>
+            <button class="btn-switch__option is-on" type="button" aria-pressed="true">Active</button>
+            <button class="btn-switch__option" type="button" aria-pressed="false">Past</button>
+          </div>
+        </div>
+        <div class="meta"><span>3 options</span><strong>filter affordance</strong></div>
+      </article>
+
+      <article class="variant-card">
+        <span class="label">Language · 3-way</span>
+        <div class="demo">
+          <div class="btn-switch btn-switch--segmented btn-switch--lg" role="group" aria-label="Language">
+            <button class="btn-switch__option is-on" type="button" aria-pressed="true">EN</button>
+            <button class="btn-switch__option" type="button" aria-pressed="false">VI</button>
+            <button class="btn-switch__option" type="button" aria-pressed="false">FR</button>
+          </div>
+        </div>
+        <div class="meta"><span>3 locales</span><strong>i18n</strong></div>
+      </article>
+
+    </div>
+
+    <h4 class="subheading reveal">Switch — across all sizes <span class="tag">binary</span></h4>
+    <div class="glass size-stage reveal">
+      <div class="size-cell">
+        <button class="btn-switch btn-switch--sm" role="switch" aria-checked="false" aria-label="Demo SM"><span class="btn-switch__thumb"></span></button>
+        <span class="tag">SM</span>
+      </div>
+      <div class="size-cell">
+        <button class="btn-switch btn-switch--md" role="switch" aria-checked="false" aria-label="Demo MD"><span class="btn-switch__thumb"></span></button>
+        <span class="tag">MD</span>
+      </div>
+      <div class="size-cell is-focus">
+        <button class="btn-switch btn-switch--lg is-on" role="switch" aria-checked="true" aria-label="Demo LG"><span class="btn-switch__thumb"></span></button>
+        <span class="tag">LG · focus</span>
+      </div>
+      <div class="size-cell">
+        <button class="btn-switch btn-switch--xl" role="switch" aria-checked="false" aria-label="Demo XL"><span class="btn-switch__thumb"></span></button>
+        <span class="tag">XL</span>
+      </div>
+      <div class="size-cell">
+        <button class="btn-switch btn-switch--2xl is-on" role="switch" aria-checked="true" aria-label="Demo 2XL"><span class="btn-switch__thumb"></span></button>
+        <span class="tag">2XL</span>
+      </div>
+    </div>
+
+    <h4 class="subheading reveal">Language switch — across all sizes <span class="tag">segmented</span></h4>
+    <div class="glass size-stage reveal">
+      <div class="size-cell">
+        <div class="btn-switch btn-switch--segmented btn-switch--sm" role="group" aria-label="Language SM">
+          <button class="btn-switch__option is-on" type="button" aria-pressed="true">EN</button>
+          <button class="btn-switch__option" type="button" aria-pressed="false">VI</button>
+        </div>
+        <span class="tag">SM</span>
+      </div>
+      <div class="size-cell">
+        <div class="btn-switch btn-switch--segmented btn-switch--md" role="group" aria-label="Language MD">
+          <button class="btn-switch__option is-on" type="button" aria-pressed="true">EN</button>
+          <button class="btn-switch__option" type="button" aria-pressed="false">VI</button>
+        </div>
+        <span class="tag">MD</span>
+      </div>
+      <div class="size-cell is-focus">
+        <div class="btn-switch btn-switch--segmented btn-switch--lg" role="group" aria-label="Language LG">
+          <button class="btn-switch__option is-on" type="button" aria-pressed="true">EN</button>
+          <button class="btn-switch__option" type="button" aria-pressed="false">VI</button>
+        </div>
+        <span class="tag">LG · focus</span>
+      </div>
+      <div class="size-cell">
+        <div class="btn-switch btn-switch--segmented btn-switch--xl" role="group" aria-label="Language XL">
+          <button class="btn-switch__option is-on" type="button" aria-pressed="true">EN</button>
+          <button class="btn-switch__option" type="button" aria-pressed="false">VI</button>
+        </div>
+        <span class="tag">XL</span>
+      </div>
+      <div class="size-cell">
+        <div class="btn-switch btn-switch--segmented btn-switch--2xl" role="group" aria-label="Language 2XL">
+          <button class="btn-switch__option is-on" type="button" aria-pressed="true">EN</button>
+          <button class="btn-switch__option" type="button" aria-pressed="false">VI</button>
+        </div>
+        <span class="tag">2XL</span>
+      </div>
+    </div>
+  </section>
+
   <!-- ========================== BUTTON · TOKENS ========================== -->
   <section class="chunk" id="button-tokens">
     <header class="chunk-head reveal">
       <div>
-        <span class="num-tag">04 / Button — Component tokens</span>
+        <span class="num-tag">05 / Button — Component tokens</span>
         <h2 class="display">Token <em>map</em>.</h2>
       </div>
       <p>
@@ -1468,7 +499,7 @@ footer .sigil {
   <!-- ========================== FOOTER ========================== -->
   <footer>
     <span class="sigil">Farm2Vet — cultivated intelligence, since 2024.</span>
-    <span>End of Section 03 · Buttons</span>
+    <span>End of Section 03 · Buttons &amp; Switches</span>
   </footer>
 
 </main>
@@ -1559,6 +590,26 @@ const BTN_TOKENS = [
     ['--btn-toggle-on-bg',      'var(--background-primary)'],
     ['--btn-toggle-on-fg',      'var(--text-inverted)'],
     ['--btn-toggle-on-border',  'var(--border-primary)'],
+  ]},
+  { group: 'Variant · Switch (binary + segmented)', tokens: [
+    ['--btn-switch-track-bg',        'var(--btn-toggle-bg)'],
+    ['--btn-switch-track-bg-hover',  'var(--btn-toggle-bg-hover)'],
+    ['--btn-switch-track-border',    'var(--btn-toggle-border)'],
+    ['--btn-switch-fg',              'var(--btn-toggle-fg)'],
+    ['--btn-switch-on-bg',           'var(--btn-toggle-on-bg)'],
+    ['--btn-switch-on-border',       'var(--btn-toggle-on-border)'],
+    ['--btn-switch-on-fg',           'var(--btn-toggle-on-fg)'],
+    ['--btn-switch-thumb-bg',        'var(--background-default)'],
+    ['--btn-switch-thumb-fg',        'var(--text-default)'],
+    ['--btn-switch-thumb-shadow',    'var(--shadow-sm)'],
+    ['--btn-switch-active-bg',       'var(--background-primary)'],
+    ['--btn-switch-active-fg',       'var(--text-inverted)'],
+    ['--btn-switch-active-border',   'transparent'],
+    ['--btn-switch-track-pad',       '3px'],
+    ['--btn-switch-aspect',          '1.85'],
+    ['--btn-switch-radius',          'var(--btn-radius-pill)'],
+    ['--btn-switch-thumb-easing',    'cubic-bezier(.4, 0, .2, 1)'],
+    ['--btn-switch-thumb-duration',  '.25s'],
   ]},
   { group: 'Version · Inverted Surface', tokens: [
     ['--btn-inverted-cta-bg',         'var(--background-default)'],
@@ -1657,12 +708,43 @@ function initToggles() {
 }
 
 /* =========================================================
+   SWITCH INTERACTION — binary + segmented
+   ========================================================= */
+function initSwitches() {
+  /* Binary on/off switches */
+  document.querySelectorAll('.btn-switch:not(.btn-switch--segmented)').forEach(sw => {
+    sw.addEventListener('click', () => {
+      if (sw.hasAttribute('disabled')) return;
+      const checked = sw.getAttribute('aria-checked') === 'true';
+      sw.setAttribute('aria-checked', String(!checked));
+      sw.classList.toggle('is-on', !checked);
+    });
+  });
+  /* Segmented switches (single-select) */
+  document.querySelectorAll('.btn-switch--segmented').forEach(group => {
+    const opts = group.querySelectorAll('.btn-switch__option');
+    opts.forEach(opt => {
+      opt.addEventListener('click', () => {
+        if (opt.hasAttribute('disabled')) return;
+        opts.forEach(o => {
+          o.classList.remove('is-on');
+          o.setAttribute('aria-pressed', 'false');
+        });
+        opt.classList.add('is-on');
+        opt.setAttribute('aria-pressed', 'true');
+      });
+    });
+  });
+}
+
+/* =========================================================
    BOOT
    ========================================================= */
 document.addEventListener('DOMContentLoaded', () => {
   renderTokenTable();
   initReveal();
   initToggles();
+  initSwitches();
 });
 </script>
 

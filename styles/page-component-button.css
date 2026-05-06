@@ -1,0 +1,241 @@
+/* =========================================================
+   PAGE — COMPONENT · BUTTON
+   Styles unique to component-button.html: preview stages,
+   variant/version/size showcase cards, and the component
+   token spec table.
+   The actual button component lives in button.css.
+   Depends on: tokens.css, base.css, shell.css, button.css
+   ========================================================= */
+
+/* =========================================================
+   PREVIEW STAGES
+   ========================================================= */
+.preview-stage {
+    padding: var(--spacing-8x);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-4x);
+    align-items: center;
+}
+.preview-stage.center        { justify-content: center; }
+.preview-stage.column        { flex-direction: column; align-items: flex-start; }
+.preview-stage.column.center { align-items: center; }
+
+.surface-inverted {
+    background:
+        radial-gradient(ellipse at 20% 20%, color-mix(in srgb, var(--accent-500) 70%, transparent), transparent 60%),
+        var(--gradient-brand);
+    border-color: var(--border-glass-dark);
+}
+
+/* Stage caption pill */
+.stage-caption {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+    margin-bottom: var(--spacing-3x);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2x);
+}
+.surface-inverted + .stage-caption,
+.stage-caption.on-dark { color: var(--text-inverted-subtle); }
+
+/* =========================================================
+   VARIANT GRID — one card per button variant
+   ========================================================= */
+.variant-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--spacing-5x);
+}
+.variant-card {
+    border-radius: var(--radius-lg);
+    border: var(--border-width-base) solid var(--border-glass-light);
+    background: var(--background-glass-light);
+    backdrop-filter: var(--blur-lg) saturate(140%);
+    -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
+    padding: var(--spacing-6x);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4x);
+    min-height: 200px;
+    justify-content: space-between;
+}
+.variant-card .label {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+}
+.variant-card .demo {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-5x) 0;
+}
+.variant-card .meta {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    color: var(--text-default-minimal);
+    letter-spacing: 0.04em;
+    border-top: var(--border-width-base) solid var(--border-default-subtle);
+    padding-top: var(--spacing-3x);
+    display: flex;
+    justify-content: space-between;
+}
+.variant-card .meta strong {
+    color: var(--text-default);
+    font-weight: var(--font-weight-medium);
+}
+
+/* =========================================================
+   SIZE STAGE — buttons across all sizes
+   ========================================================= */
+.size-stage {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--spacing-5x);
+    flex-wrap: wrap;
+    padding: var(--spacing-8x);
+}
+.size-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-3x);
+}
+.size-cell .tag {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+}
+.size-cell.is-focus .tag {
+    color: var(--text-primary-strong);
+    background: var(--background-primary-subtle);
+    padding: var(--spacing-half) var(--spacing-2x);
+    border-radius: var(--radius-pill);
+    border: var(--border-width-base) solid var(--border-primary-subtle);
+}
+
+/* =========================================================
+   VERSION STAGE — same variant across surfaces
+   ========================================================= */
+.version-stage {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-4x);
+}
+.version-card {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: var(--border-width-base) solid var(--border-glass-light);
+    background: var(--background-glass-light);
+    display: flex;
+    flex-direction: column;
+}
+.version-card .demo {
+    padding: var(--spacing-8x) var(--spacing-6x);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-3x);
+    flex: 1;
+    min-height: 160px;
+}
+.version-card.dark .demo { background: var(--gradient-brand); }
+.version-card .body {
+    padding: var(--spacing-3x) var(--spacing-5x);
+    border-top: var(--border-width-base) solid var(--border-default-subtle);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.version-card .name {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--text-base);
+    color: var(--text-default);
+}
+.version-card .desc {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: 0.04em;
+    color: var(--text-default-minimal);
+}
+
+/* =========================================================
+   COMPONENT TOKEN TABLE
+   ========================================================= */
+table.token-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--background-glass-light);
+    backdrop-filter: var(--blur-lg) saturate(140%);
+    -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
+    border: var(--border-width-base) solid var(--border-glass-light);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+table.token-table thead th {
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+    font-weight: var(--font-weight-medium);
+    padding: var(--spacing-4x) var(--spacing-5x);
+    background: var(--background-glass-light);
+    border-bottom: var(--border-width-base) solid var(--border-default);
+}
+table.token-table tbody td {
+    padding: var(--spacing-3x) var(--spacing-5x);
+    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
+    vertical-align: middle;
+    font-size: var(--text-sm);
+}
+table.token-table tbody tr:last-child td { border-bottom: none; }
+table.token-table tbody tr:hover td { background: var(--background-row-hover); }
+table.token-table .group-row td {
+    background: color-mix(in srgb, var(--primary-50) 50%, transparent);
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-primary-strong);
+    font-weight: var(--font-weight-medium);
+    padding: var(--spacing-3x) var(--spacing-5x);
+}
+.tk-name     { font-family: var(--font-mono); color: var(--text-default);         width: 30%; word-break: break-all; }
+.tk-ref      { font-family: var(--font-mono); color: var(--text-default-minimal); width: 38%; word-break: break-all; }
+.tk-resolved { font-family: var(--font-mono); color: var(--text-default-minimal); width: 22%; word-break: break-all; font-size: var(--text-micro); }
+.tk-swatch   { width: 10%; }
+.tk-swatch .chip {
+    display: inline-block;
+    width: 100%;
+    height: var(--spacing-6x);
+    border-radius: var(--radius-sm);
+    border: var(--border-width-base) solid var(--border-swatch);
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 960px) {
+    .variant-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+    .variant-grid                  { grid-template-columns: 1fr; }
+    table.token-table thead        { display: none; }
+    table.token-table tbody td     { display: block; }
+    .tk-name, .tk-ref, .tk-resolved, .tk-swatch { width: auto; }
+}

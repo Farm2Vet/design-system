@@ -1,0 +1,356 @@
+/* =========================================================
+   FARM2VET DESIGN SYSTEM — SHELL
+   Page chrome shared across every section:
+   topbar / nav, shell container, hero, meta-strip, chunk
+   wrappers, glass surfaces, footer, toast, reveal-on-scroll,
+   shared interactive-card pulse animation, and base
+   responsive rules.
+   Depends on: tokens.css, base.css
+   ========================================================= */
+
+/* =========================================================
+   NAV (TOP BAR)
+   ========================================================= */
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    padding: var(--spacing-3x) var(--spacing-8x);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--background-glass-light);
+    backdrop-filter: var(--blur-lg) saturate(140%);
+    -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
+    border-bottom: var(--border-width-base) solid var(--border-glass-light);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3x);
+}
+.brand-logo {
+    height: var(--spacing-10x);
+    width: auto;
+    display: block;
+}
+.brand small {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+    font-style: normal;
+    padding-left: var(--spacing-3x);
+    border-left: var(--border-width-base) solid var(--border-default);
+}
+
+.toc {
+    display: flex;
+    gap: var(--spacing-1x);
+    padding: var(--spacing-1x);
+    border-radius: var(--radius-pill);
+    background: var(--background-glass-light);
+    border: var(--border-width-base) solid var(--border-glass-light);
+}
+.toc a {
+    padding: var(--spacing-2x) var(--spacing-4x);
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-default-subtle);
+    text-decoration: none;
+    border-radius: var(--radius-pill);
+    transition: all 0.2s ease;
+}
+.toc a:hover {
+    background: var(--background-default);
+    color: var(--text-default);
+}
+
+.version {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: 0.12em;
+    color: var(--text-default-minimal);
+    padding: var(--spacing-half) var(--spacing-3x);
+    border-radius: var(--radius-pill);
+    border: var(--border-width-base) solid var(--border-default);
+}
+
+/* =========================================================
+   LAYOUT
+   ========================================================= */
+.shell {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-8x);
+}
+
+/* =========================================================
+   HERO
+   ========================================================= */
+.hero {
+    padding: var(--spacing-25x) 0 var(--spacing-16x);
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: var(--spacing-16x);
+    align-items: end;
+}
+.hero h1 {
+    font-size: clamp(3.5rem, 7vw, 6.5rem);
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-display);
+    letter-spacing: -0.035em;
+    color: var(--text-default);
+}
+.hero h1 .num {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.18em;
+    letter-spacing: 0.2em;
+    color: var(--text-default-minimal);
+    margin-bottom: var(--spacing-6x);
+    font-weight: var(--font-weight-medium);
+}
+.hero .lede {
+    font-size: var(--text-base);
+    line-height: var(--line-height-h5);
+    color: var(--text-default-subtle);
+    max-width: 38ch;
+}
+
+/* =========================================================
+   META STRIP (4-column key/value bar in hero)
+   ========================================================= */
+.meta-strip {
+    margin-top: var(--spacing-12x);
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--border-width-base);
+    background: var(--border-default);
+    border-top: var(--border-width-base) solid var(--border-default);
+    border-bottom: var(--border-width-base) solid var(--border-default);
+}
+.meta-strip > div {
+    background: var(--background-glass-light);
+    padding: var(--spacing-4x) var(--spacing-5x);
+    backdrop-filter: var(--blur-md);
+}
+.meta-strip dt {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+    margin-bottom: var(--spacing-half);
+}
+.meta-strip dd {
+    font-family: var(--font-sans);
+    font-size: var(--text-h5);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: -0.01em;
+}
+
+/* =========================================================
+   SECTION WRAPPER
+   ========================================================= */
+section.chunk {
+    padding: var(--spacing-16x) 0;
+    scroll-margin-top: var(--spacing-25x);
+}
+.chunk-head {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: var(--spacing-16x);
+    align-items: end;
+    margin-bottom: var(--spacing-12x);
+    padding-bottom: var(--spacing-6x);
+    border-bottom: var(--border-width-base) solid var(--border-default);
+}
+.chunk-head h2 {
+    font-family: var(--font-sans);
+    font-size: clamp(2.4rem, 4vw, 3.4rem);
+    font-weight: var(--font-weight-regular);
+    line-height: 1;
+    letter-spacing: -0.025em;
+}
+.chunk-head h2 em {
+    font-style: italic;
+    color: var(--text-emphasis);
+}
+.chunk-head .num-tag {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: 0.2em;
+    color: var(--text-default-minimal);
+    margin-bottom: var(--spacing-4x);
+    display: block;
+}
+.chunk-head p {
+    font-size: var(--text-base);
+    color: var(--text-default-subtle);
+    line-height: var(--line-height-body);
+}
+
+/* =========================================================
+   SUBHEADING — section subheadings with optional .tag pill
+   ========================================================= */
+.subheading {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--text-h5);
+    color: var(--text-default);
+    margin-top: var(--spacing-12x);
+    margin-bottom: var(--spacing-4x);
+    display: flex;
+    align-items: baseline;
+    gap: var(--spacing-3x);
+}
+.subheading:first-of-type { margin-top: 0; }
+
+.subheading .tag {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+    padding: var(--spacing-half) var(--spacing-2x);
+    border: var(--border-width-base) solid var(--border-default);
+    border-radius: var(--radius-pill);
+}
+
+/* =========================================================
+   GLASS SURFACE — translucent card
+   ========================================================= */
+.glass {
+    background: var(--background-glass-light);
+    backdrop-filter: var(--blur-lg) saturate(140%);
+    -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
+    border: var(--border-width-base) solid var(--border-glass-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+footer {
+    padding: var(--spacing-16x) 0 var(--spacing-12x);
+    margin-top: var(--spacing-10x);
+    border-top: var(--border-width-base) solid var(--border-default);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+}
+footer .sigil {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-medium);
+    font-size: var(--text-sm);
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--text-default);
+}
+footer a {
+    color: var(--text-default-minimal);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2x);
+    transition: color 0.2s ease;
+}
+footer a:hover { color: var(--text-primary); }
+
+/* =========================================================
+   TOAST — copy confirmation
+   ========================================================= */
+.toast {
+    position: fixed;
+    bottom: var(--spacing-8x);
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--background-toast);
+    color: var(--text-inverted);
+    padding: var(--spacing-3x) var(--spacing-5x);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    letter-spacing: 0.04em;
+    box-shadow: var(--shadow-lg);
+    border: var(--border-width-base) solid var(--border-toast);
+    backdrop-filter: var(--blur-lg);
+    -webkit-backdrop-filter: var(--blur-lg);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s cubic-bezier(.2,.8,.2,1);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2x);
+    max-width: 90vw;
+}
+.toast::before {
+    content: '';
+    width: var(--spacing-2x);
+    height: var(--spacing-2x);
+    border-radius: 50%;
+    background: var(--background-primary);
+    box-shadow: 0 0 12px var(--background-primary);
+}
+.toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+.toast .toast-name { color: var(--text-primary-subtle); }
+.toast .toast-hex  { color: var(--text-inverted); opacity: 0.85; }
+
+/* =========================================================
+   REVEAL ON SCROLL
+   ========================================================= */
+.reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(.2,.8,.2,1);
+}
+.reveal.in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* =========================================================
+   SHARED PULSE — fired on .copied for any copy-to-clipboard
+   surface (.swatch, .token-card, etc.). Replaces the
+   page-local `pulse` and `tokenPulse` keyframes.
+   ========================================================= */
+@keyframes ds-pulse {
+    0%   { box-shadow: 0 0 0 0  color-mix(in srgb, var(--background-primary-hover) 60%, transparent); }
+    100% { box-shadow: 0 0 0 18px color-mix(in srgb, var(--background-primary-hover)  0%, transparent); }
+}
+
+/* =========================================================
+   RESPONSIVE — base shell
+   ========================================================= */
+@media (max-width: 960px) {
+    .hero        { grid-template-columns: 1fr; gap: var(--spacing-8x); padding-top: var(--spacing-16x); }
+    .chunk-head  { grid-template-columns: 1fr; gap: var(--spacing-6x); }
+    .meta-strip  { grid-template-columns: repeat(2, 1fr); }
+    .toc         { display: none; }
+}
+@media (max-width: 600px) {
+    .shell       { padding: 0 var(--spacing-5x); }
+    .topbar      { padding: var(--spacing-3x) var(--spacing-5x); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .toast  { transition: none; }
+}
