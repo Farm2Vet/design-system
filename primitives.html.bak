@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Farm2Vet · Primitives — Design System</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<!-- Design system: shared, reusable foundation -->
+<link rel="stylesheet" href="styles/tokens.css" />
+<link rel="stylesheet" href="styles/base.css" />
+<link rel="stylesheet" href="styles/shell.css" />
+<!-- Page-specific: only what is unique to primitives.html -->
+<link rel="stylesheet" href="styles/page-primitives.css" />
+
+</head>
+<body>
+
+<!-- ========================== TOP BAR ========================== -->
+<header class="topbar">
+  <a href="#top" class="brand" aria-label="Farm2Vet design system">
+    <img src="logo/logo-wordmark-color.svg" alt="Farm2Vet" class="brand-logo" />
+    <small>Design System</small>
+  </a>
+  <nav class="toc" aria-label="Section navigation">
+    <a href="#color">01 Color</a>
+    <a href="#spacing">02 Spacing</a>
+    <a href="#type">03 Type</a>
+    <a href="#shadow">04 Shadow</a>
+  </nav>
+  <span class="version mono">v 0.5 · 2026</span>
+</header>
+
+<main class="shell" id="top">
+
+  <!-- ========================== HERO ========================== -->
+  <section class="hero">
+    <div>
+      <h1 class="display reveal">
+        <span class="num">Section 01 / Foundations</span>
+        Primitives.
+      </h1>
+    </div>
+  </section>
+
+  <!-- ========================== COLOR ========================== -->
+  <section class="chunk" id="color">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">01</span>
+        <h2 class="display">Color <em>Palletes</em>.</h2>
+      </div>
+    </header>
+
+    <div class="ramp-grid">
+
+      <!-- Brand families -->
+      <article class="glass ramp-card reveal">
+        <header>
+          <h3>Primary <span style="font-style:normal;color:var(--text-default-minimal);font-size:0.7em;font-family:var(--font-mono);letter-spacing:0.1em">— Lime</span></h3>
+          <span class="ramp-meta">11 steps · growth, signal, brand</span>
+        </header>
+        <div class="swatches" data-family="primary"></div>
+      </article>
+
+      <article class="glass ramp-card reveal">
+        <header>
+          <h3>Secondary <span style="font-style:normal;color:var(--text-default-minimal);font-size:0.7em;font-family:var(--font-mono);letter-spacing:0.1em">— Earth</span></h3>
+          <span class="ramp-meta">11 steps · soil, harvest, warmth</span>
+        </header>
+        <div class="swatches" data-family="secondary"></div>
+      </article>
+
+      <article class="glass ramp-card reveal">
+        <header>
+          <h3>Accent <span style="font-style:normal;color:var(--text-default-minimal);font-size:0.7em;font-family:var(--font-mono);letter-spacing:0.1em">— Forest</span></h3>
+          <span class="ramp-meta">11 steps · accents &amp; depth</span>
+        </header>
+        <div class="swatches" data-family="accent"></div>
+      </article>
+
+      <article class="glass ramp-card reveal">
+        <header>
+          <h3>Neutral <span style="font-style:normal;color:var(--text-default-minimal);font-size:0.7em;font-family:var(--font-mono);letter-spacing:0.1em">— Sage</span></h3>
+          <span class="ramp-meta">11 steps · text, surface, rule</span>
+        </header>
+        <div class="swatches" data-family="neutral"></div>
+      </article>
+
+      <!-- Status families -->
+      <article class="glass ramp-card reveal">
+        <header>
+          <h3>Status — <em>signals</em></h3>
+          <span class="ramp-meta">4 families × 4 steps · semantic state</span>
+        </header>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:8px">
+          <div>
+            <p class="eyebrow" style="margin-bottom:10px">Safe</p>
+            <div class="swatches status-row" data-family="safe"></div>
+          </div>
+          <div>
+            <p class="eyebrow" style="margin-bottom:10px">Info</p>
+            <div class="swatches status-row" data-family="info"></div>
+          </div>
+          <div>
+            <p class="eyebrow" style="margin-bottom:10px">Warning</p>
+            <div class="swatches status-row" data-family="warning"></div>
+          </div>
+          <div>
+            <p class="eyebrow" style="margin-bottom:10px">Critical</p>
+            <div class="swatches status-row" data-family="critical"></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Base -->
+      <article class="glass ramp-card reveal">
+        <header>
+          <h3>Base <span style="font-style:normal;color:var(--text-default-minimal);font-size:0.7em;font-family:var(--font-mono);letter-spacing:0.1em">— Pure</span></h3>
+          <span class="ramp-meta">2 anchors · canvas &amp; ink</span>
+        </header>
+        <div class="swatches base-row" data-family="base"></div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ========================== SPACING ========================== -->
+  <section class="chunk" id="spacing">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">02</span>
+        <h2 class="display">Spacing.</h2>
+      </div>
+    </header>
+
+    <div class="glass space-stack reveal" id="spaceStack"></div>
+  </section>
+
+  <!-- ========================== TYPOGRAPHY ========================== -->
+  <section class="chunk" id="type">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">03</span>
+        <h2 class="display">Typography</h2>
+      </div>
+    </header>
+
+    <!-- Font family cards -->
+    <div class="type-grid reveal">
+
+      <article class="glass font-card">
+        <div>
+          <div class="glyph" style="font-family:var(--font-sans)">Aa</div>
+        </div>
+        <div class="meta">
+          <span><strong>Poppins</strong> · Sans</span>
+          <span >--font-sans</code>
+        </div>
+      </article>
+
+      <article class="glass font-card">
+        <div>
+          <div class="glyph" style="font-family:var(--font-mono)">Aa</div>
+        </div>
+        <div class="meta">
+          <span><strong>JetBrains Mono</strong> · Mono</span>
+          <code>--font-mono</code>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- Typography sizes table -->
+    <table class="type-table reveal" aria-label="Typography size scale">
+      <thead>
+        <tr>
+          <th scope="col">Variable</th>
+          <th scope="col">Value</th>
+          <th scope="col">Pixels</th>
+          <th scope="col">Preview</th>
+        </tr>
+      </thead>
+      <tbody id="typeTable"></tbody>
+    </table>
+
+    <!-- Font weights table -->
+    <h4 class="subheading reveal">Weights</h4>
+    <table class="type-table reveal" aria-label="Font weight scale">
+      <thead>
+        <tr>
+          <th scope="col">Variable</th>
+          <th scope="col">Value</th>
+          <th scope="col">Preview</th>
+        </tr>
+      </thead>
+      <tbody id="weightTable"></tbody>
+    </table>
+
+    <!-- Line heights table -->
+    <h4 class="subheading reveal">Line heights</h4>
+    <table class="type-table reveal" aria-label="Line height scale">
+      <thead>
+        <tr>
+          <th scope="col">Variable</th>
+          <th scope="col">Value</th>
+          <th scope="col">Preview</th>
+        </tr>
+      </thead>
+      <tbody id="lineHeightTable"></tbody>
+    </table>
+
+    <!-- Letter spacings table -->
+    <h4 class="subheading reveal">Letter spacing</h4>
+    <table class="type-table reveal" aria-label="Letter spacing scale">
+      <thead>
+        <tr>
+          <th scope="col">Variable</th>
+          <th scope="col">Value</th>
+          <th scope="col">Preview</th>
+        </tr>
+      </thead>
+      <tbody id="letterSpacingTable"></tbody>
+    </table>
+
+  </section>
+
+  <!-- ========================== SHADOW ========================== -->
+  <section class="chunk" id="shadow">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">04 / Shadow</span>
+        <h2 class="display">Layered <em>depth</em>.</h2>
+      </div>
+    </header>
+
+    <div class="shadow-row reveal">
+      <div class="shadow-card shadow-sm-demo">
+        <code>--shadow-sm</code>
+        <span class="shadow-desc">Subtle lift</span>
+      </div>
+      <div class="shadow-card shadow-md-demo">
+        <code>--shadow-md</code>
+        <span class="shadow-desc">Cards, panels</span>
+      </div>
+      <div class="shadow-card shadow-lg-demo">
+        <code>--shadow-lg</code>
+        <span class="shadow-desc">Modals, overlays</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================== FOOTER ========================== -->
+  <footer>
+    <span class="sigil">Farm2Vet — cultivated intelligence, since 2024.</span>
+    <span>End of Section 01</span>
+  </footer>
+
+</main>
+
+<!-- ========================== TOAST ========================== -->
+<div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<script>
+/* =========================================================
+   DATA
+   ========================================================= */
+const RAMPS = {
+  primary: [
+    ['50','#f1f7ee'], ['100','#d8e9cd'], ['200','#beddac'], ['300','#a4d289'],
+    ['400','#89c964'], ['500','#6ec13e'], ['600','#5dac2f'], ['700','#4c9622'],
+    ['800','#3c7d17'], ['900','#2d620e'], ['950','#1e4507'],
+  ],
+  secondary: [
+    ['50','#f7f2ed'], ['100','#e3cdb8'], ['200','#d1a780'], ['300','#c28247'],
+    ['400','#925e2d'], ['500','#5c3a1a'], ['600','#583515'], ['700','#553110'],
+    ['800','#512d0c'], ['900','#4c2908'], ['950','#472505'],
+  ],
+  accent: [
+    ['50','#eff6ef'], ['100','#c9e3c8'], ['200','#a1d19f'], ['300','#78c175'],
+    ['400','#4eb24a'], ['500','#398c36'], ['600','#2d802b'], ['700','#237320'],
+    ['800','#1a6417'], ['900','#125410'], ['950','#0c430a'],
+  ],
+  neutral: [
+    ['50','#f2f2f2'], ['100','#dbdbdb'], ['200','#c4c5c4'], ['300','#adb1aa'],
+    ['400','#949e8f'], ['500','#7c8c73'], ['600','#697f5c'], ['700','#567048'],
+    ['800','#445f35'], ['900','#334b25'], ['950','#223617'],
+  ],
+  safe: [
+    ['50','#eff6ef'], ['300','#78c175'], ['500','#398c36'], ['700','#237320'],
+  ],
+  info: [
+    ['50','#F0F5FC'], ['300','#96BBEB'], ['500','#3468C2'], ['700','#1C3C78'],
+  ],
+  warning: [
+    ['50','#f7f2ed'], ['300','#c28247'], ['500','#5c3a1a'], ['700','#553110'],
+  ],
+  critical: [
+    ['50','#FEF1F1'], ['300','#F79999'], ['500','#D13636'], ['700','#8A1C1C'],
+  ],
+  base: [
+    ['white-base','#F9FAF9'], ['black-base','#000000'],
+  ],
+};
+
+const SPACING = [
+  ['--spacing-quarter', 1,   '¼'],
+  ['--spacing-half',    2,   '½'],
+  ['--spacing-1x',      4,   '1×'],
+  ['--spacing-2x',      8,   '2×'],
+  ['--spacing-3x',      12,  '3×'],
+  ['--spacing-4x',      16,  '4×'],
+  ['--spacing-5x',      20,  '5×'],
+  ['--spacing-6x',      24,  '6×'],
+  ['--spacing-8x',      32,  '8×'],
+  ['--spacing-10x',     40,  '10×'],
+  ['--spacing-12x',     48,  '12×'],
+  ['--spacing-16x',     64,  '16×'],
+  ['--spacing-25x',     100, '25×'],
+];
+
+const TYPE_SIZES = [
+  ['--text-h1',    '2.986rem', '47.78', 'h1'],
+  ['--text-h2',    '2.488rem', '39.81', 'h2'],
+  ['--text-h3',    '2.074rem', '33.18', 'h3'],
+  ['--text-h4',    '1.728rem', '27.65', 'h4'],
+  ['--text-h5',    '1.44rem',  '23.04', 'h5'],
+  ['--text-h6',    '1.2rem',   '19.20', 'h6'],
+  ['--text-base',  '1rem',     '16.00', 'base'],
+  ['--text-sm',    '0.833rem', '13.33', 'sm'],
+  ['--text-micro', '0.694rem', '11.10', 'micro'],
+];
+
+const FONT_WEIGHTS = [
+  ['--font-weight-regular',  '400'],
+  ['--font-weight-medium',   '500'],
+  ['--font-weight-semibold', '600'],
+];
+
+const LINE_HEIGHTS = [
+  ['--line-height-display', '1.04'],
+  ['--line-height-heading', '1.2'],
+  ['--line-height-h3',      '1.3'],
+  ['--line-height-h4',      '1.4'],
+  ['--line-height-h5',      '1.5'],
+  ['--line-height-h6',      '1.6'],
+  ['--line-height-body',    '1.65'],
+];
+
+const LETTER_SPACINGS = [
+  ['--letter-spacing-display', '0.02em'],
+  ['--letter-spacing-eyebrow', '0.18em'],
+];
+
+/* =========================================================
+   COLOR — utility: light or dark text?
+   relative luminance per WCAG
+   ========================================================= */
+function tone(hex) {
+  const h = hex.replace('#','');
+  const r = parseInt(h.substr(0,2),16) / 255;
+  const g = parseInt(h.substr(2,2),16) / 255;
+  const b = parseInt(h.substr(4,2),16) / 255;
+  const lin = (c) => c <= 0.03928 ? c / 12.92 : Math.pow((c+0.055)/1.055, 2.4);
+  const L = 0.2126*lin(r) + 0.7152*lin(g) + 0.0722*lin(b);
+  return L > 0.55 ? 'light' : 'dark';
+}
+
+/* =========================================================
+   RENDER — color swatches
+   ========================================================= */
+function renderRamps() {
+  document.querySelectorAll('.swatches').forEach((wrap) => {
+    const fam = wrap.dataset.family;
+    const ramp = RAMPS[fam] || [];
+    const isBase = fam === 'base';
+    const html = ramp.map(([step, hex]) => {
+      const varName = isBase ? `--${step}` : `--${fam}-${step}`;
+      const label = isBase ? step : step;
+      return `
+        <button
+          type="button"
+          class="swatch"
+          style="background:${hex}"
+          data-tone="${tone(hex)}"
+          data-var="${varName}"
+          data-hex="${hex}"
+          aria-label="Copy ${varName}, ${hex}"
+        >
+          <span class="step">${label}</span>
+          <span class="hex">${hex}</span>
+        </button>`;
+    }).join('');
+    wrap.innerHTML = html;
+  });
+}
+
+/* =========================================================
+   RENDER — spacing rows
+   ========================================================= */
+function renderSpacing() {
+  const stack = document.getElementById('spaceStack');
+  const max = SPACING[SPACING.length-1][1];
+  stack.innerHTML = SPACING.map(([name, px, mult]) => `
+    <div class="space-row">
+      <code>${name}</code>
+      <span class="px">${px}px</span>
+      <div class="bar-wrap">
+        <div class="bar" style="width: ${px}px"></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* =========================================================
+   RENDER — typography table
+   ========================================================= */
+function renderType() {
+  const tbody = document.getElementById('typeTable');
+  tbody.innerHTML = TYPE_SIZES.map(([name, value, px, key]) => {
+    // h1/h2 are display weight (regular); h3-h6 are semibold; body sizes regular.
+    // h2 is italic per the system convention.
+    const isDisplayHead = key === 'h1' || key === 'h2';
+    const weight = isDisplayHead ? 400 : (key.startsWith('h') ? 600 : 400);
+    const style = key === 'h2' ? 'italic' : 'normal';
+    return `
+      <tr>
+        <td class="var-name">${name}</td>
+        <td class="var-value">${value}</td>
+        <td class="var-px">${px}px</td>
+        <td class="preview">
+          <span class="preview-text" style="font-size:var(${name});font-family:var(--font-sans);font-style:${style};font-weight:${weight}">
+            Cultivated intelligence.
+          </span>
+        </td>
+      </tr>`;
+  }).join('');
+}
+
+/* =========================================================
+   RENDER — font weights table
+   ========================================================= */
+function renderWeights() {
+  const tbody = document.getElementById('weightTable');
+  tbody.innerHTML = FONT_WEIGHTS.map(([name, value]) => `
+    <tr>
+      <td class="var-name">${name}</td>
+      <td class="var-value">${value}</td>
+      <td class="preview">
+        <span class="preview-text" style="font-weight:var(${name});font-size:var(--text-h6)">
+          Cultivated intelligence.
+        </span>
+      </td>
+    </tr>`).join('');
+}
+
+/* =========================================================
+   RENDER — line heights table
+   ========================================================= */
+function renderLineHeights() {
+  const tbody = document.getElementById('lineHeightTable');
+  tbody.innerHTML = LINE_HEIGHTS.map(([name, value]) => `
+    <tr>
+      <td class="var-name">${name}</td>
+      <td class="var-value">${value}</td>
+      <td class="preview">
+        <p style="line-height:var(${name});max-width:42ch;margin:0;font-size:var(--text-base)">
+          Cultivated intelligence — built up from the soil of agriculture, harvested into elegant code, season after season.
+        </p>
+      </td>
+    </tr>`).join('');
+}
+
+/* =========================================================
+   RENDER — letter spacings table
+   ========================================================= */
+function renderLetterSpacings() {
+  const tbody = document.getElementById('letterSpacingTable');
+  tbody.innerHTML = LETTER_SPACINGS.map(([name, value]) => `
+    <tr>
+      <td class="var-name">${name}</td>
+      <td class="var-value">${value}</td>
+      <td class="preview">
+        <span class="preview-text" style="letter-spacing:var(${name});font-family:var(--font-mono);text-transform:uppercase;font-size:var(--text-sm)">
+          Cultivated intelligence
+        </span>
+      </td>
+    </tr>`).join('');
+}
+
+/* =========================================================
+   COPY + TOAST
+   ========================================================= */
+const toast = document.getElementById('toast');
+let toastTimer;
+
+function showToast(varName, hex) {
+  toast.innerHTML = `Copied <span class="toast-name">${varName}</span><span style="opacity:.5">/</span><span class="toast-hex">${hex}</span>`;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+}
+
+async function copyHex(hex, varName, el) {
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(hex);
+    } else {
+      // Fallback
+      const ta = document.createElement('textarea');
+      ta.value = hex;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    }
+    showToast(varName, hex);
+    if (el) {
+      el.classList.remove('copied');
+      // force reflow to restart animation
+      void el.offsetWidth;
+      el.classList.add('copied');
+    }
+  } catch (err) {
+    showToast('Copy failed', hex);
+  }
+}
+
+/* Event delegation */
+document.addEventListener('click', (e) => {
+  const sw = e.target.closest('.swatch');
+  if (!sw) return;
+  copyHex(sw.dataset.hex, sw.dataset.var, sw);
+});
+
+/* Keyboard support */
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    const sw = document.activeElement.closest && document.activeElement.closest('.swatch');
+    if (sw) {
+      e.preventDefault();
+      copyHex(sw.dataset.hex, sw.dataset.var, sw);
+    }
+  }
+});
+
+/* =========================================================
+   REVEAL ON SCROLL
+   ========================================================= */
+function initReveal() {
+  const items = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    items.forEach(el => el.classList.add('in'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        en.target.classList.add('in');
+        io.unobserve(en.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(el => io.observe(el));
+}
+
+/* =========================================================
+   BOOT
+   ========================================================= */
+document.addEventListener('DOMContentLoaded', () => {
+  renderRamps();
+  renderSpacing();
+  renderType();
+  renderWeights();
+  renderLineHeights();
+  renderLetterSpacings();
+  initReveal();
+});
+</script>
+
+</body>
+</html>
+                                                                                                                                                                                                                                                                                                                                                                                    
