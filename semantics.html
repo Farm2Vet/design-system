@@ -1,0 +1,1848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Farm2Vet · Semantics — Design System</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+/* =========================================================
+    RESET
+    ========================================================= */
+*,*::before,*::after{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+html{
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+}
+
+/* =========================================================
+    PRIMITIVE TOKENS
+    ========================================================= */
+:root{
+    --white-base:#F9FAF9;
+    --black-base:#000000;
+
+    --primary-50: #f1f7ee;
+    --primary-100: #d8e9cd;
+    --primary-200: #beddac;
+    --primary-300: #a4d289;
+    --primary-400: #89c964;
+    --primary-500: #6ec13e;
+    --primary-600: #5dac2f;
+    --primary-700: #4c9622;
+    --primary-800: #3c7d17;
+    --primary-900: #2d620e;
+    --primary-950: #1e4507;
+
+    --secondary-50: #f7f2ed;
+    --secondary-100: #e3cdb8;
+    --secondary-200: #d1a780;
+    --secondary-300: #c28247;
+    --secondary-400: #925e2d;
+    --secondary-500: #5c3a1a;
+    --secondary-600: #583515;
+    --secondary-700: #553110;
+    --secondary-800: #512d0c;
+    --secondary-900: #4c2908;
+    --secondary-950: #472505;
+
+    --accent-50: #eff6ef;
+    --accent-100: #c9e3c8;
+    --accent-200: #a1d19f;
+    --accent-300: #78c175;
+    --accent-400: #4eb24a;
+    --accent-500: #398c36;
+    --accent-600: #2d802b;
+    --accent-700: #237320;
+    --accent-800: #1a6417;
+    --accent-900: #125410;
+    --accent-950: #0c430a;
+
+    --neutral-50: #f2f2f2;
+    --neutral-100: #dbdbdb;
+    --neutral-200: #c4c5c4;
+    --neutral-300: #adb1aa;
+    --neutral-400: #949e8f;
+    --neutral-500: #7c8c73;
+    --neutral-600: #697f5c;
+    --neutral-700: #567048;
+    --neutral-800: #445f35;
+    --neutral-900: #334b25;
+    --neutral-950: #223617;
+
+    --warning-50:var(--secondary-50);
+    --warning-300:var(--secondary-300);
+    --warning-500:var(--secondary-500);
+    --warning-700:var(--secondary-700);
+
+    --critical-50:#FEF1F1;
+    --critical-300:#F79999;
+    --critical-500:#D13636;
+    --critical-700:#8A1C1C;
+
+    --safe-50:var(--accent-50);
+    --safe-300:var(--accent-300);
+    --safe-500:var(--accent-500);
+    --safe-700:var(--accent-700);
+
+    --info-50:#F0F5FC;
+    --info-300:#96BBEB;
+    --info-500:#3468C2;
+    --info-600:#2A55A0;
+    --info-700:#1C3C78;
+
+    --spacing-quarter: 1px;
+    --spacing-half: 2px;
+    --spacing-1x:4px;
+    --spacing-2x:8px;
+    --spacing-3x:12px;
+    --spacing-4x:16px;
+    --spacing-5x:20px;
+    --spacing-6x:24px;
+    --spacing-8x:32px;
+    --spacing-10x:40px;
+    --spacing-12x:48px;
+    --spacing-16x:64px;
+    --spacing-25x:100px;
+
+    --font-sans: 'Helvetica', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    --text-h1:2.986rem;
+    --text-h2:2.488rem;
+    --text-h3:2.074rem;
+    --text-h4:1.728rem;
+    --text-h5:1.44rem;
+    --text-h6:1.2rem;
+    --text-base:1rem;
+    --text-sm:0.833rem;
+    --text-micro:0.694rem;
+
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+
+    --line-height-display:1.04;
+    --line-height-heading:1.2;
+    --line-height-h3:1.3;
+    --line-height-h4:1.4;
+    --line-height-h5:1.5;
+    --line-height-h6:1.6;
+    --line-height-body:1.65;
+
+    --letter-spacing-display: 0.02em;
+    --letter-spacing-eyebrow: 0.18em;
+}
+
+/* =========================================================
+    SEMANTIC TOKENS — [Role]-[Intent]-[State]
+    ========================================================= */
+:root{
+    /* BACKGROUND */
+    --background-default:          var(--white-base);
+    --background-default-subtle:   var(--neutral-50);
+    --background-default-minimal:  var(--neutral-100);
+    --background-default-hover:    var(--neutral-200);
+    --background-default-active:   var(--neutral-300);
+    --background-default-selected: var(--primary-50);
+    --background-default-disabled: color-mix(in srgb,var(--neutral-900) 5%,transparent);
+
+    --background-inverted:         var(--primary-500);
+    --background-inverted-subtle:  var(--primary-600);
+    --background-inverted-minimal: color-mix(in srgb,var(--white-base) 10%,transparent);
+    --background-inverted-hover:   var(--primary-400);
+
+    --background-primary:          var(--primary-400);
+    --background-primary-hover:    var(--primary-500);
+    --background-primary-active:   var(--primary-600);
+    --background-primary-subtle:   var(--primary-50);
+    --background-primary-minimal:  var(--primary-100);
+    --background-primary-disabled: color-mix(in srgb,var(--neutral-900) 5%,transparent);
+
+    --background-secondary-minimal:var(--secondary-100);
+
+    --background-warning:          var(--warning-50);
+    --background-critical:         var(--critical-50);
+    --background-safe:             var(--safe-50);
+    --background-info:             var(--info-50);
+    --background-overlay:          color-mix(in srgb,var(--primary-900) 48%,transparent);
+    --background-row-hover:        color-mix(in srgb,var(--primary-50) 60%,transparent);
+    --background-toast:            color-mix(in srgb,var(--neutral-950) 92%,transparent);
+    --background-ambient:
+        radial-gradient(ellipse 80% 50% at 20% 10%, color-mix(in srgb, var(--primary-500) 18%, transparent), transparent 70%),
+        radial-gradient(ellipse 60% 40% at 90% 30%, color-mix(in srgb, var(--accent-500) 16%, transparent), transparent 70%),
+        radial-gradient(ellipse 70% 50% at 50% 90%, color-mix(in srgb, var(--secondary-300) 10%, transparent), transparent 70%),
+        var(--white-base);
+
+    /* TEXT */
+    --text-default:                var(--neutral-950);
+    --text-default-subtle:         color-mix(in srgb,var(--neutral-700) 60%,var(--neutral-600) 40%);
+    --text-default-minimal:        var(--neutral-600);
+    --text-default-disabled:       color-mix(in srgb,var(--neutral-900) 30%,transparent);
+
+    --text-inverted:               var(--white-base);
+    --text-inverted-subtle:        color-mix(in srgb,var(--white-base) 70%,transparent);
+    --text-inverted-minimal:       color-mix(in srgb,var(--white-base) 45%,transparent);
+
+    --text-primary:                var(--primary-500);
+    --text-primary-subtle:         var(--primary-400);
+    --text-primary-strong:         var(--primary-900);
+
+    --text-secondary-strong:       var(--secondary-700);
+
+    --text-accent:                 var(--accent-500);
+    --text-accent-subtle:          var(--accent-400);
+
+    --text-emphasis:               var(--secondary-500);
+    --text-link:                   var(--primary-600);
+
+    --text-info:                   var(--info-500);
+    --text-info-subtle:            var(--info-300);
+    --text-info-strong:            var(--info-700);
+    --text-warning:                var(--warning-700);
+    --text-warning-subtle:         var(--warning-500);
+    --text-critical:               var(--critical-700);
+    --text-critical-subtle:        var(--critical-500);
+    --text-safe:                   var(--safe-700);
+    --text-safe-subtle:            var(--safe-500);
+
+    /* BORDER */
+    --border-width-base:           1px;
+    --border-default:              color-mix(in srgb,var(--neutral-900) 9%,transparent);
+    --border-default-subtle:       color-mix(in srgb,var(--neutral-900) 5%,transparent);
+    --border-default-strong:       color-mix(in srgb,var(--neutral-900) 22%,transparent);
+    --border-default-input:        var(--neutral-300);
+    --border-default-disabled:     color-mix(in srgb,var(--neutral-900) 12%,transparent);
+
+    --border-primary:              var(--primary-400);
+    --border-primary-subtle:       var(--primary-200);
+    --border-primary-focus:        var(--secondary-500);
+
+    --border-inverted:             color-mix(in srgb,var(--white-base) 18%,transparent);
+
+    --border-warning:              var(--warning-300);
+    --border-critical:             var(--critical-300);
+    --border-critical-strong:      var(--critical-500);
+    --border-safe:                 var(--safe-300);
+    --border-info:                 var(--info-300);
+
+    --border-decorator:            var(--text-default-subtle);
+    --border-swatch:               color-mix(in srgb,var(--black-base) 6%,transparent);
+    --border-toast:                color-mix(in srgb,var(--white-base) 12%,transparent);
+
+    /* OUTLINE / FOCUS */
+    --outline-focus:               var(--primary-700);
+
+    /* ICON */
+    --icon-default:                var(--neutral-700);
+    --icon-default-subtle:         var(--neutral-500);
+    --icon-default-minimal:        var(--neutral-400);
+    --icon-default-disabled:       color-mix(in srgb,var(--neutral-900) 30%,transparent);
+
+    --icon-inverted:               var(--white-base);
+    --icon-inverted-subtle:        color-mix(in srgb,var(--white-base) 70%,transparent);
+
+    --icon-primary:                var(--primary-400);
+    --icon-primary-strong:         var(--primary-500);
+
+    --icon-info:                   var(--secondary-500);
+    --icon-warning:                var(--warning-500);
+    --icon-critical:               var(--critical-500);
+    --icon-safe:                   var(--safe-500);
+
+    /* SEMANTIC SPACING */
+    --margin-bottom-heading:       var(--spacing-4x);
+    --margin-bottom-subheading:    var(--spacing-3x);
+    --margin-bottom-element:       var(--spacing-2x);
+    --margin-bottom-paragraph:     var(--spacing-4x);
+
+    /* RADIUS */
+    --radius-mc:var(--spacing-1x);
+    --radius-sm:var(--spacing-2x);
+    --radius-md:var(--spacing-3x);
+    --radius-lg:var(--spacing-4x);
+    --radius-xl:var(--spacing-6x);
+    --radius-pill:var(--spacing-25x);
+
+    /* SHADOW */
+    --shadow-sm: 0 1px 4px color-mix(in srgb,var(--black-base) 6%, transparent),0 1px 2px color-mix(in srgb,var(--black-base) 4%, transparent);
+    --shadow-md: 0 4px 12px color-mix(in srgb,var(--black-base) 8%, transparent),0 2px 4px color-mix(in srgb,var(--black-base) 4%, transparent);
+    --shadow-lg: 0 12px 32px color-mix(in srgb,var(--black-base) 10%, transparent),0 4px 8px color-mix(in srgb,var(--black-base) 4%, transparent);
+
+    /* GLASSMORPHISM */
+    --blur-none: blur(0px);
+    --blur-sm:   blur(var(--spacing-1x));
+    --blur-md:   blur(var(--spacing-2x));
+    --blur-lg:   blur(var(--spacing-4x));
+    --blur-xl:   blur(var(--spacing-6x));
+    --blur-2xl:  blur(var(--spacing-10x));
+
+    --background-glass-light:      color-mix(in srgb,var(--white-base) 65%,transparent);
+    --background-glass-dark:       color-mix(in srgb,var(--primary-200) 35%,transparent);
+    --border-glass-light:          color-mix(in srgb,var(--white-base) 85%,transparent);
+    --border-glass-dark:           color-mix(in srgb,var(--white-base) 15%,transparent);
+
+    /* GRADIENTS */
+    --gradient-primary-secondary-horizontal: linear-gradient(to right, var(--primary-500), var(--secondary-500));
+    --gradient-primary-secondary-vertical:   linear-gradient(to bottom, var(--primary-500), var(--secondary-500));
+    --gradient-secondary-primary-horizontal: linear-gradient(to right, var(--secondary-500), var(--primary-500));
+    --gradient-secondary-primary-vertical:   linear-gradient(to bottom, var(--secondary-500), var(--primary-500));
+    --gradient-primary-subtle: linear-gradient(135deg, var(--primary-100) 0%, color-mix(in srgb, var(--primary-500) 18%, transparent) 100%);
+    --gradient-brand: linear-gradient(135deg, var(--primary-500) 0%, var(--accent-500) 100%);
+    --gradient-brand-mark: conic-gradient(from 220deg, var(--primary-500), var(--accent-500), var(--secondary-400), var(--primary-500));
+    --gradient-earthy: linear-gradient(135deg, var(--primary-50) 0%, var(--secondary-50) 100%);
+    --gradient-fade-down: linear-gradient(180deg, var(--primary-50) 0%, transparent 100%);
+    --gradient-secondary-subtle: linear-gradient(135deg, var(--secondary-100) 0%, color-mix(in srgb, var(--secondary-500) 20%, transparent) 100%);
+}
+
+/* =========================================================
+   BASE TYPOGRAPHY & DOC SHELL
+   ========================================================= */
+body {
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--line-height-body);
+    color: var(--text-default);
+    background: var(--background-default);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+}
+body::before {
+    content: '';
+    position: fixed;
+    inset: -10%;
+    z-index: -2;
+    background: var(--background-ambient);
+    animation: drift 32s ease-in-out infinite alternate;
+}
+@keyframes drift {
+    0%   { transform: translate3d(0, 0, 0) scale(1); }
+    50%  { transform: translate3d(-2%, 1%, 0) scale(1.04); }
+    100% { transform: translate3d(2%, -1%, 0) scale(1.02); }
+}
+
+h1, h2 {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-heading);
+    color: var(--text-default);
+}
+h3, h4, h5, h6 {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-default);
+}
+h1 { font-size: var(--text-h1); margin-bottom: var(--margin-bottom-heading); }
+h2 { font-size: var(--text-h2); font-style: italic; margin-bottom: var(--margin-bottom-subheading); }
+h3 { font-size: var(--text-h3); line-height: var(--line-height-h3); margin-bottom: var(--margin-bottom-subheading); }
+h4 { font-size: var(--text-h4); line-height: var(--line-height-h4); margin-bottom: var(--margin-bottom-element); }
+h5 { font-size: var(--text-h5); line-height: var(--line-height-h4); margin-bottom: var(--margin-bottom-element); }
+h6 { font-size: var(--text-h6); line-height: var(--line-height-h4); margin-bottom: var(--margin-bottom-element); }
+p { font-size: var(--text-base); color: inherit; margin-bottom: var(--margin-bottom-paragraph); line-height: var(--line-height-body); }
+small { font-size: var(--text-sm); }
+
+code {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    background: var(--background-default-minimal);
+    color: var(--text-default);
+    padding: var(--spacing-half) var(--spacing-1x);
+    border-radius: var(--radius-sm);
+}
+
+a { color: var(--text-link); text-decoration: none; }
+a:hover { color: var(--text-primary); }
+
+.display {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-display);
+    letter-spacing: var(--letter-spacing-display);
+}
+.display em { font-style: italic; color: var(--text-accent); }
+.mono { font-family: var(--font-mono); }
+
+.eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-subtle);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-3x);
+}
+.eyebrow::before {
+    content: '';
+    width: var(--spacing-5x);
+    height: var(--border-width-base);
+    background: var(--border-decorator);
+    display: inline-block;
+}
+
+/* =========================================================
+   NAV
+   ========================================================= */
+.topbar {
+  position: sticky; top: 0; z-index: 50;
+  padding: var(--spacing-3x) var(--spacing-8x);
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--background-glass-light);
+  backdrop-filter: var(--blur-lg) saturate(140%);
+  -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
+  border-bottom: var(--border-width-base) solid var(--border-glass-light);
+}
+.brand {
+  display: flex; align-items: center; gap: var(--spacing-2x);
+  font-family: var(--font-sans);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--text-h6);
+  letter-spacing: -0.01em;
+  color: var(--text-default);
+}
+.brand-mark {
+  width: var(--spacing-8x); height: var(--spacing-8x);
+  border-radius: 50%;
+  background: var(--gradient-brand-mark);
+  box-shadow: inset 0 0 0 2px var(--background-default), var(--shadow-sm);
+}
+.brand small {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: var(--letter-spacing-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-default-minimal);
+  font-style: normal;
+  margin-left: var(--spacing-2x);
+  padding-left: var(--spacing-2x);
+  border-left: var(--border-width-base) solid var(--border-default);
+}
+
+.toc {
+  display: flex; gap: var(--spacing-1x);
+  padding: var(--spacing-1x);
+  border-radius: var(--radius-pill);
+  background: var(--background-glass-light);
+  border: var(--border-width-base) solid var(--border-glass-light);
+}
+.toc a {
+  padding: var(--spacing-2x) var(--spacing-4x);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-default-subtle);
+  text-decoration: none;
+  border-radius: var(--radius-pill);
+  transition: all 0.2s ease;
+}
+.toc a:hover { background: var(--background-default); color: var(--text-default); }
+.version {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.12em;
+  color: var(--text-default-minimal);
+  padding: var(--spacing-half) var(--spacing-3x);
+  border-radius: var(--radius-pill);
+  border: var(--border-width-base) solid var(--border-default);
+}
+
+/* =========================================================
+   LAYOUT
+   ========================================================= */
+.shell { max-width: 1280px; margin: 0 auto; padding: 0 var(--spacing-8x); }
+
+.hero {
+  padding: var(--spacing-25x) 0 var(--spacing-16x);
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: var(--spacing-16x);
+  align-items: end;
+}
+.hero h1 {
+  font-size: clamp(3.5rem, 7vw, 6.5rem);
+  font-family: var(--font-sans);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-display);
+  letter-spacing: -0.035em;
+  color: var(--text-default);
+}
+.hero h1 .num {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.18em;
+  letter-spacing: 0.2em;
+  color: var(--text-default-minimal);
+  margin-bottom: var(--spacing-6x);
+  font-weight: var(--font-weight-medium);
+}
+.hero .lede {
+  font-size: var(--text-base);
+  line-height: var(--line-height-h5);
+  color: var(--text-default-subtle);
+  max-width: 38ch;
+}
+
+/* Section wrapper */
+section.chunk { padding: var(--spacing-16x) 0; scroll-margin-top: var(--spacing-25x); }
+.chunk-head {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: var(--spacing-16x);
+  align-items: end;
+  margin-bottom: var(--spacing-12x);
+  padding-bottom: var(--spacing-6x);
+  border-bottom: var(--border-width-base) solid var(--border-default);
+}
+.chunk-head h2 {
+  font-family: var(--font-sans);
+  font-size: clamp(2.4rem, 4vw, 3.4rem);
+  font-weight: var(--font-weight-regular);
+  line-height: 1;
+  letter-spacing: -0.025em;
+}
+.chunk-head h2 em { font-style: italic; color: var(--text-emphasis); }
+.chunk-head .num-tag {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.2em;
+  color: var(--text-default-minimal);
+  margin-bottom: var(--spacing-4x);
+  display: block;
+}
+.chunk-head p {
+  font-size: var(--text-base);
+  color: var(--text-default-subtle);
+  line-height: var(--line-height-body);
+}
+
+.subheading {
+  font-family: var(--font-sans);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--text-h5);
+  color: var(--text-default);
+  margin-top: var(--spacing-12x);
+  margin-bottom: var(--spacing-4x);
+}
+.subheading:first-of-type { margin-top: 0; }
+
+/* Glass card */
+.glass {
+  background: var(--background-glass-light);
+  backdrop-filter: var(--blur-lg) saturate(140%);
+  -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
+  border: var(--border-width-base) solid var(--border-glass-light);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+/* =========================================================
+   TOKEN GRID — semantic swatch cards
+   ========================================================= */
+.token-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--spacing-4x);
+  margin-bottom: var(--spacing-8x);
+}
+.token-grid.wide {
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+.token-card {
+  position: relative;
+  border-radius: var(--radius-md);
+  border: var(--border-width-base) solid var(--border-swatch);
+  overflow: hidden;
+  cursor: pointer;
+  background: var(--background-default);
+  transition: transform 0.25s cubic-bezier(.2,.8,.2,1), box-shadow 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+}
+.token-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  z-index: 2;
+}
+.token-card:focus-visible {
+  outline: 2px solid var(--outline-focus);
+  outline-offset: 2px;
+}
+.token-card .preview {
+  height: 96px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image:
+    linear-gradient(45deg, color-mix(in srgb,var(--neutral-900) 6%,transparent) 25%, transparent 25%),
+    linear-gradient(-45deg, color-mix(in srgb,var(--neutral-900) 6%,transparent) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, color-mix(in srgb,var(--neutral-900) 6%,transparent) 75%),
+    linear-gradient(-45deg, transparent 75%, color-mix(in srgb,var(--neutral-900) 6%,transparent) 75%);
+  background-size: 16px 16px;
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+}
+.token-card .preview::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--swatch);
+}
+.token-card .body {
+  padding: var(--spacing-3x) var(--spacing-4x);
+  border-top: var(--border-width-base) solid var(--border-default-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-half);
+}
+.token-card .name {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--text-default);
+}
+.token-card .resolved {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  color: var(--text-default-minimal);
+  letter-spacing: 0.04em;
+  word-break: break-all;
+}
+.token-card.copied { animation: tokenPulse 0.6s ease; }
+@keyframes tokenPulse {
+  0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--background-primary-hover) 60%, transparent); }
+  100% { box-shadow: 0 0 0 18px color-mix(in srgb, var(--background-primary-hover) 0%, transparent); }
+}
+
+/* =========================================================
+   TEXT TOKEN ROWS
+   ========================================================= */
+.text-stack {
+  padding: var(--spacing-6x);
+  display: flex;
+  flex-direction: column;
+}
+.text-row {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  align-items: center;
+  gap: var(--spacing-5x);
+  padding: var(--spacing-3x) 0;
+  border-bottom: var(--border-width-base) dashed var(--border-default);
+}
+.text-row:last-child { border-bottom: none; }
+.text-row .label {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--text-default);
+}
+.text-row .sample {
+  font-family: var(--font-sans);
+  font-size: var(--text-h6);
+  font-weight: var(--font-weight-medium);
+}
+.text-row.inverted-row {
+  background: var(--background-inverted);
+  margin: 0 calc(var(--spacing-6x) * -1);
+  padding: var(--spacing-3x) var(--spacing-6x);
+  border-bottom-color: var(--border-inverted);
+}
+.text-row.inverted-row .label { color: var(--text-inverted); }
+
+/* =========================================================
+   BORDER DEMO
+   ========================================================= */
+.border-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--spacing-4x);
+}
+.border-card {
+  padding: var(--spacing-6x);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: var(--spacing-3x);
+  background: var(--background-default);
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  min-height: 130px;
+}
+.border-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+.border-card .demo {
+  height: var(--spacing-10x);
+  border-radius: var(--radius-sm);
+  background: var(--background-default-subtle);
+}
+.border-card.inverted-card {
+  background: var(--background-inverted);
+}
+.border-card.inverted-card .name { color: var(--text-inverted); }
+.border-card.inverted-card .demo { background: var(--background-inverted-subtle); }
+.border-card .name {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--text-default);
+}
+.border-card .resolved {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  color: var(--text-default-minimal);
+}
+.border-card.inverted-card .resolved { color: var(--text-inverted-subtle); }
+
+/* =========================================================
+   ICON GRID
+   ========================================================= */
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--spacing-4x);
+}
+.icon-card {
+  padding: var(--spacing-5x);
+  border-radius: var(--radius-md);
+  background: var(--background-default);
+  border: var(--border-width-base) solid var(--border-default);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4x);
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.icon-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+.icon-card.inverted-card {
+  background: var(--background-inverted);
+  border-color: var(--border-inverted);
+}
+.icon-card.inverted-card .name { color: var(--text-inverted); }
+.icon-card.inverted-card .resolved { color: var(--text-inverted-subtle); }
+.icon-card .icon-bubble {
+  flex-shrink: 0;
+  width: var(--spacing-12x);
+  height: var(--spacing-12x);
+  border-radius: 50%;
+  background: var(--background-default-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.icon-card.inverted-card .icon-bubble { background: var(--background-inverted-minimal); }
+.icon-card svg { width: var(--spacing-6x); height: var(--spacing-6x); }
+.icon-card .meta { display: flex; flex-direction: column; gap: var(--spacing-half); min-width: 0; }
+.icon-card .name { font-family: var(--font-mono); font-size: var(--text-sm); color: var(--text-default); }
+.icon-card .resolved { font-family: var(--font-mono); font-size: var(--text-micro); color: var(--text-default-minimal); }
+
+/* =========================================================
+   RADIUS DEMO
+   ========================================================= */
+.radius-row {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--spacing-4x);
+}
+.radius-card {
+  padding: var(--spacing-5x);
+  background: var(--background-default);
+  border: var(--border-width-base) solid var(--border-default);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-3x);
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.radius-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+.radius-card .demo {
+  width: var(--spacing-16x);
+  height: var(--spacing-16x);
+  background: var(--gradient-primary-subtle);
+  border: var(--border-width-base) solid var(--border-primary-subtle);
+}
+.radius-card.first .demo { border-radius: var(--radius-mc); }
+.radius-card.second .demo { border-radius: var(--radius-sm); }
+.radius-card.third .demo { border-radius: var(--radius-md); }
+.radius-card.fourth .demo { border-radius: var(--radius-lg); }
+.radius-card.fifth .demo { border-radius: var(--radius-xl); }
+.radius-card.sixth .demo {
+  border-radius: var(--radius-pill);
+  width: var(--spacing-25x);
+  height: var(--spacing-10x);
+}
+.radius-card .name {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--text-default);
+}
+.radius-card .resolved {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  color: var(--text-default-minimal);
+}
+
+/* =========================================================
+   SPACING SEMANTIC ROWS
+   ========================================================= */
+.semantic-space-stack {
+  padding: var(--spacing-8x);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2x);
+}
+.sem-space-row {
+  display: grid;
+  grid-template-columns: 260px 1fr 100px;
+  align-items: center;
+  gap: var(--spacing-5x);
+  padding: var(--spacing-3x) 0;
+  border-bottom: var(--border-width-base) dashed var(--border-default);
+}
+.sem-space-row:last-child { border-bottom: none; }
+.sem-space-row .label {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--text-default);
+}
+.sem-space-row .resolved {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--text-default-minimal);
+  text-align: right;
+}
+.sem-space-row .bar-wrap {
+  height: var(--spacing-8x);
+  display: flex;
+  align-items: center;
+}
+.sem-space-row .bar {
+  height: var(--spacing-4x);
+  background: var(--gradient-primary-subtle);
+  border-radius: var(--radius-mc);
+}
+
+/* =========================================================
+   GRADIENT GRID
+   ========================================================= */
+.gradient-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--spacing-4x);
+}
+.gradient-card {
+  border-radius: var(--radius-md);
+  border: var(--border-width-base) solid var(--border-default);
+  overflow: hidden;
+  background: var(--background-default);
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.gradient-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.gradient-card .preview {
+  height: 140px;
+}
+.gradient-card .body {
+  padding: var(--spacing-3x) var(--spacing-4x);
+  border-top: var(--border-width-base) solid var(--border-default-subtle);
+}
+.gradient-card .name {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--text-default);
+  margin-bottom: var(--spacing-half);
+}
+.gradient-card .desc {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  color: var(--text-default-minimal);
+  letter-spacing: 0.04em;
+}
+
+/* =========================================================
+   GLASS / BLUR DEMO
+   ========================================================= */
+.glass-stage {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  padding: var(--spacing-12x) var(--spacing-8x);
+  background: var(--gradient-brand);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-4x);
+  align-items: stretch;
+}
+.glass-tile {
+  position: relative;
+  z-index: 1;
+  padding: var(--spacing-5x);
+  border-radius: var(--radius-md);
+  background: var(--background-glass-light);
+  border: var(--border-width-base) solid var(--border-glass-light);
+  backdrop-filter: var(--blur-lg) saturate(140%);
+  -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2x);
+  cursor: pointer;
+  transition: transform 0.25s ease;
+}
+.glass-tile.dark {
+  background: var(--background-glass-dark);
+  border-color: var(--border-glass-dark);
+}
+.glass-tile:hover { transform: translateY(-3px); }
+.glass-tile .name {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--text-default);
+}
+.glass-tile.dark .name { color: var(--text-inverted); }
+.glass-tile .resolved {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  color: var(--text-default-minimal);
+}
+.glass-tile.dark .resolved { color: var(--text-inverted-subtle); }
+
+.blur-row {
+  margin-top: var(--spacing-6x);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--spacing-3x);
+}
+.blur-tile {
+  border-radius: var(--radius-md);
+  height: 110px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  border: var(--border-width-base) solid var(--border-default);
+  background:
+    radial-gradient(ellipse at 30% 30%, var(--primary-300), transparent 60%),
+    radial-gradient(ellipse at 70% 70%, var(--secondary-300), transparent 60%),
+    var(--background-default);
+}
+.blur-tile::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  backdrop-filter: var(--blur-amount);
+  -webkit-backdrop-filter: var(--blur-amount);
+}
+.blur-tile .meta {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: var(--spacing-2x) var(--spacing-3x);
+  background: var(--background-glass-light);
+  border-top: var(--border-width-base) solid var(--border-glass-light);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  color: var(--text-default);
+  z-index: 2;
+}
+
+/* =========================================================
+   SHADOW + OVERLAY MISC
+   ========================================================= */
+.misc-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--spacing-4x);
+}
+.misc-card {
+  padding: var(--spacing-6x);
+  border-radius: var(--radius-md);
+  background: var(--background-default);
+  border: var(--border-width-base) solid var(--border-default);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3x);
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  min-height: 150px;
+}
+.misc-card:hover { transform: translateY(-2px); }
+.misc-card .name {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--text-default);
+}
+.misc-card .resolved {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  color: var(--text-default-minimal);
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+footer {
+  padding: var(--spacing-16x) 0 var(--spacing-12x);
+  margin-top: var(--spacing-10x);
+  border-top: var(--border-width-base) solid var(--border-default);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-default-minimal);
+}
+footer .sigil {
+  font-family: var(--font-sans);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--text-sm);
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--text-default);
+}
+footer a {
+  color: var(--text-default-minimal);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2x);
+  transition: color 0.2s ease;
+}
+footer a:hover { color: var(--text-primary); }
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: var(--spacing-8x);
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--background-toast);
+  color: var(--text-inverted);
+  padding: var(--spacing-3x) var(--spacing-5x);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  letter-spacing: 0.04em;
+  box-shadow: var(--shadow-lg);
+  border: var(--border-width-base) solid var(--border-toast);
+  backdrop-filter: var(--blur-lg);
+  -webkit-backdrop-filter: var(--blur-lg);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s cubic-bezier(.2,.8,.2,1);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2x);
+  max-width: 90vw;
+}
+.toast::before {
+  content: '';
+  width: var(--spacing-2x); height: var(--spacing-2x);
+  border-radius: 50%;
+  background: var(--background-primary);
+  box-shadow: 0 0 12px var(--background-primary);
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast .toast-name { color: var(--text-primary-subtle); }
+
+/* Reveal */
+.reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(.2,.8,.2,1); }
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+/* Responsive */
+@media (max-width: 960px) {
+  .hero { grid-template-columns: 1fr; gap: var(--spacing-8x); padding-top: var(--spacing-16x); }
+  .chunk-head { grid-template-columns: 1fr; gap: var(--spacing-6x); }
+  .toc { display: none; }
+  .text-row { grid-template-columns: 1fr; }
+  .radius-row { grid-template-columns: repeat(3, 1fr); }
+  .sem-space-row { grid-template-columns: 1fr 100px; }
+  .sem-space-row .bar-wrap { display: none; }
+}
+@media (max-width: 600px) {
+  .shell { padding: 0 var(--spacing-5x); }
+  .topbar { padding: var(--spacing-3x) var(--spacing-5x); }
+  .radius-row { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before { animation: none; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .token-card, .border-card, .icon-card, .radius-card, .gradient-card, .glass-tile, .misc-card, .toast { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ========================== TOP BAR ========================== -->
+<header class="topbar">
+  <a href="#top" class="brand" aria-label="Farm2Vet design system">
+    <span class="brand-mark" aria-hidden="true"></span>
+    <span>Farm2Vet</span>
+    <small>Design System</small>
+  </a>
+  <nav class="toc" aria-label="Section navigation">
+    <a href="#background">01 Background</a>
+    <a href="#text">02 Text</a>
+    <a href="#border">03 Border</a>
+    <a href="#icon">04 Icon</a>
+    <a href="#radius">05 Radius</a>
+    <a href="#gradient">06 Gradient</a>
+    <a href="#glass">07 Glass</a>
+  </nav>
+  <span class="version mono">v 0.5 · 2026</span>
+</header>
+
+<main class="shell" id="top">
+
+  <!-- ========================== HERO ========================== -->
+  <section class="hero">
+    <div>
+      <h1 class="display reveal">
+        <span class="num">Section 02 / Foundations</span>
+        Semant<em>i</em>cs.
+      </h1>
+    </div>
+    <p class="lede reveal">
+      Where primitives become purpose. Each token below names an intention — a role, an
+      intent, sometimes a state — and resolves down to the primitives in Section&nbsp;01.
+      Design with these names, never the raw values beneath.
+    </p>
+  </section>
+
+  <!-- ========================== BACKGROUND ========================== -->
+  <section class="chunk" id="background">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">01 / Background</span>
+        <h2 class="display">Surfaces &amp; <em>fills</em>.</h2>
+      </div>
+      <p>
+        Every coloured surface in the product traces back to one of these tokens. Defaults
+        for canvas and rests, primaries for action, statuses for signal, and inverteds for
+        the dark side of the system.
+      </p>
+    </header>
+
+    <h4 class="subheading reveal">Default — canvas &amp; rest states</h4>
+    <div class="token-grid reveal" data-group="bg-default"></div>
+
+    <h4 class="subheading reveal">Primary — action surfaces</h4>
+    <div class="token-grid reveal" data-group="bg-primary"></div>
+
+    <h4 class="subheading reveal">Inverted — dark surfaces</h4>
+    <div class="token-grid reveal" data-group="bg-inverted"></div>
+
+    <h4 class="subheading reveal">Status — semantic signal</h4>
+    <div class="token-grid reveal" data-group="bg-status"></div>
+
+    <h4 class="subheading reveal">Utility — overlays, rows &amp; toasts</h4>
+    <div class="token-grid reveal" data-group="bg-utility"></div>
+  </section>
+
+  <!-- ========================== TEXT ========================== -->
+  <section class="chunk" id="text">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">02 / Text</span>
+        <h2 class="display">Voice &amp; <em>hierarchy</em>.</h2>
+      </div>
+      <p>
+        Text tokens carry the meaning of the words they colour. Default for body and
+        headlines, primary &amp; accent for brand, emphasis for italics, and the status
+        family for inline signal.
+      </p>
+    </header>
+
+    <h4 class="subheading reveal">Default</h4>
+    <div class="glass text-stack reveal" id="textDefault"></div>
+
+    <h4 class="subheading reveal">Inverted</h4>
+    <div class="glass text-stack reveal" id="textInverted" style="background: var(--background-inverted); border-color: var(--border-inverted);"></div>
+
+    <h4 class="subheading reveal">Brand &amp; emphasis</h4>
+    <div class="glass text-stack reveal" id="textBrand"></div>
+
+    <h4 class="subheading reveal">Status</h4>
+    <div class="glass text-stack reveal" id="textStatus"></div>
+  </section>
+
+  <!-- ========================== BORDER ========================== -->
+  <section class="chunk" id="border">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">03 / Border</span>
+        <h2 class="display">Edges &amp; <em>rules</em>.</h2>
+      </div>
+      <p>
+        Borders define the seams between surfaces. The default family scales by emphasis;
+        primary marks interactive containers; status borders accompany their backgrounds.
+      </p>
+    </header>
+
+    <h4 class="subheading reveal">Default</h4>
+    <div class="border-grid reveal" data-group="border-default"></div>
+
+    <h4 class="subheading reveal">Primary &amp; focus</h4>
+    <div class="border-grid reveal" data-group="border-primary"></div>
+
+    <h4 class="subheading reveal">Inverted</h4>
+    <div class="border-grid reveal" data-group="border-inverted"></div>
+
+    <h4 class="subheading reveal">Status</h4>
+    <div class="border-grid reveal" data-group="border-status"></div>
+
+    <h4 class="subheading reveal">Utility</h4>
+    <div class="border-grid reveal" data-group="border-utility"></div>
+  </section>
+
+  <!-- ========================== ICON ========================== -->
+  <section class="chunk" id="icon">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">04 / Icon</span>
+        <h2 class="display">Glyphs &amp; <em>signal</em>.</h2>
+      </div>
+      <p>
+        Icons inherit colour from the same intent ladder as text. Default greys carry
+        navigation; primary marks brand; the status palette never borrows its colour from
+        anywhere else.
+      </p>
+    </header>
+
+    <h4 class="subheading reveal">Default</h4>
+    <div class="icon-grid reveal" data-group="icon-default"></div>
+
+    <h4 class="subheading reveal">Primary</h4>
+    <div class="icon-grid reveal" data-group="icon-primary"></div>
+
+    <h4 class="subheading reveal">Inverted</h4>
+    <div class="icon-grid reveal" data-group="icon-inverted"></div>
+
+    <h4 class="subheading reveal">Status</h4>
+    <div class="icon-grid reveal" data-group="icon-status"></div>
+  </section>
+
+  <!-- ========================== SPACING (semantic) ========================== -->
+  <section class="chunk" id="spacing-sem">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">05 / Spacing</span>
+        <h2 class="display">Element <em>rhythm</em>.</h2>
+      </div>
+      <p>
+        Semantic margins for typography blocks. Use these in place of raw spacing
+        primitives whenever the gap is between document elements — they guarantee the
+        rhythm stays consistent across pages.
+      </p>
+    </header>
+
+    <div class="glass semantic-space-stack reveal" id="semSpacing"></div>
+  </section>
+
+  <!-- ========================== RADIUS ========================== -->
+  <section class="chunk" id="radius">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">06 / Radius</span>
+        <h2 class="display">Soft <em>corners</em>.</h2>
+      </div>
+      <p>
+        Six steps from a barely-rounded micro-corner up to a fully circular pill. Each
+        step doubles roughly along the spacing scale — pick the one that matches the
+        surface scale, not the visual taste of the moment.
+      </p>
+    </header>
+
+    <div class="radius-row reveal" id="radiusRow"></div>
+  </section>
+
+  <!-- ========================== GRADIENT ========================== -->
+  <section class="chunk" id="gradient">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">07 / Gradient</span>
+        <h2 class="display">Brand <em>washes</em>.</h2>
+      </div>
+      <p>
+        A small library of named gradients, all built from primary tokens so they age
+        cleanly with the palette. Reach for subtle washes for surfaces; reserve the bold
+        brand gradient for moments of marketing weight.
+      </p>
+    </header>
+
+    <div class="gradient-grid reveal" id="gradientGrid"></div>
+  </section>
+
+  <!-- ========================== GLASS / BLUR ========================== -->
+  <section class="chunk" id="glass">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">08 / Glass</span>
+        <h2 class="display">Translucent <em>matter</em>.</h2>
+      </div>
+      <p>
+        Two glass surfaces — a light one for app-on-light, a dark one for app-on-brand —
+        plus six blur intensities. Pair the surface with a matching border and a blur
+        large enough to neutralise the layer beneath.
+      </p>
+    </header>
+
+    <h4 class="subheading reveal">Glass surfaces</h4>
+    <div class="glass-stage reveal" id="glassStage"></div>
+
+    <h4 class="subheading reveal">Blur intensities</h4>
+    <div class="blur-row reveal" id="blurRow"></div>
+  </section>
+
+  <!-- ========================== SHADOW & OUTLINE & OVERLAY ========================== -->
+  <section class="chunk" id="misc">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">09 / Misc</span>
+        <h2 class="display">Depth, focus &amp; <em>scrims</em>.</h2>
+      </div>
+      <p>
+        Three named shadows for elevation, the focus outline that signals keyboard
+        attention, and the overlay used to dim content behind modals.
+      </p>
+    </header>
+
+    <h4 class="subheading reveal">Shadow</h4>
+    <div class="misc-row reveal" id="shadowRow"></div>
+
+    <h4 class="subheading reveal">Focus &amp; overlay</h4>
+    <div class="misc-row reveal" id="focusRow"></div>
+  </section>
+
+  <!-- ========================== FOOTER ========================== -->
+  <footer>
+    <span class="sigil">Farm2Vet — cultivated intelligence, since 2024.</span>
+    <a href="primitives.html">← Section 01 / Primitives</a>
+    <span>End of Section 02</span>
+  </footer>
+
+</main>
+
+<!-- ========================== TOAST ========================== -->
+<div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<script>
+/* =========================================================
+   TOKEN GROUPS — semantic only
+   ========================================================= */
+const BG_GROUPS = {
+  'bg-default': [
+    '--background-default',
+    '--background-default-subtle',
+    '--background-default-minimal',
+    '--background-default-hover',
+    '--background-default-active',
+    '--background-default-selected',
+    '--background-default-disabled',
+  ],
+  'bg-primary': [
+    '--background-primary',
+    '--background-primary-hover',
+    '--background-primary-active',
+    '--background-primary-subtle',
+    '--background-primary-minimal',
+    '--background-primary-disabled',
+    '--background-secondary-minimal',
+  ],
+  'bg-inverted': [
+    '--background-inverted',
+    '--background-inverted-subtle',
+    '--background-inverted-minimal',
+    '--background-inverted-hover',
+  ],
+  'bg-status': [
+    '--background-safe',
+    '--background-info',
+    '--background-warning',
+    '--background-critical',
+  ],
+  'bg-utility': [
+    '--background-overlay',
+    '--background-row-hover',
+    '--background-toast',
+  ],
+};
+
+const TEXT_DEFAULT = [
+  '--text-default',
+  '--text-default-subtle',
+  '--text-default-minimal',
+  '--text-default-disabled',
+];
+const TEXT_INVERTED = [
+  '--text-inverted',
+  '--text-inverted-subtle',
+  '--text-inverted-minimal',
+];
+const TEXT_BRAND = [
+  '--text-primary',
+  '--text-primary-subtle',
+  '--text-primary-strong',
+  '--text-secondary-strong',
+  '--text-accent',
+  '--text-accent-subtle',
+  '--text-emphasis',
+  '--text-link',
+];
+const TEXT_STATUS = [
+  '--text-safe',
+  '--text-safe-subtle',
+  '--text-info',
+  '--text-info-subtle',
+  '--text-info-strong',
+  '--text-warning',
+  '--text-warning-subtle',
+  '--text-critical',
+  '--text-critical-subtle',
+];
+
+const BORDER_GROUPS = {
+  'border-default': [
+    '--border-default',
+    '--border-default-subtle',
+    '--border-default-strong',
+    '--border-default-input',
+    '--border-default-disabled',
+  ],
+  'border-primary': [
+    '--border-primary',
+    '--border-primary-subtle',
+    '--border-primary-focus',
+    '--outline-focus',
+  ],
+  'border-inverted': [
+    '--border-inverted',
+  ],
+  'border-status': [
+    '--border-safe',
+    '--border-info',
+    '--border-warning',
+    '--border-critical',
+    '--border-critical-strong',
+  ],
+  'border-utility': [
+    '--border-decorator',
+    '--border-swatch',
+    '--border-toast',
+    '--border-glass-light',
+    '--border-glass-dark',
+  ],
+};
+
+const ICON_DEFAULT = [
+  '--icon-default',
+  '--icon-default-subtle',
+  '--icon-default-minimal',
+  '--icon-default-disabled',
+];
+const ICON_PRIMARY = [
+  '--icon-primary',
+  '--icon-primary-strong',
+];
+const ICON_INVERTED = [
+  '--icon-inverted',
+  '--icon-inverted-subtle',
+];
+const ICON_STATUS = [
+  '--icon-safe',
+  '--icon-info',
+  '--icon-warning',
+  '--icon-critical',
+];
+
+const SEM_SPACING = [
+  '--margin-bottom-heading',
+  '--margin-bottom-subheading',
+  '--margin-bottom-element',
+  '--margin-bottom-paragraph',
+];
+
+const RADIUS_TOKENS = [
+  ['--radius-mc',   'first',  'micro corner'],
+  ['--radius-sm',   'second', 'small'],
+  ['--radius-md',   'third',  'medium'],
+  ['--radius-lg',   'fourth', 'large'],
+  ['--radius-xl',   'fifth',  'extra large'],
+  ['--radius-pill', 'sixth',  'pill'],
+];
+
+const GRADIENTS = [
+  ['--gradient-primary-secondary-horizontal', 'Primary → Secondary, horizontal'],
+  ['--gradient-primary-secondary-vertical',   'Primary → Secondary, vertical'],
+  ['--gradient-secondary-primary-horizontal', 'Secondary → Primary, horizontal'],
+  ['--gradient-secondary-primary-vertical',   'Secondary → Primary, vertical'],
+  ['--gradient-primary-subtle',               'Subtle lime wash'],
+  ['--gradient-brand',                        'Bold brand — lime → forest'],
+  ['--gradient-brand-mark',                   'Brand mark — conic'],
+  ['--gradient-earthy',                       'Earthy transition — lime → brown'],
+  ['--gradient-fade-down',                    'Fade to transparent'],
+  ['--gradient-secondary-subtle',             'Subtle earthy wash'],
+];
+
+const GLASS_SURFACES = [
+  ['--background-glass-light', '--border-glass-light', false],
+  ['--background-glass-dark',  '--border-glass-dark',  true],
+];
+
+const BLURS = [
+  '--blur-none',
+  '--blur-sm',
+  '--blur-md',
+  '--blur-lg',
+  '--blur-xl',
+  '--blur-2xl',
+];
+
+const SHADOWS = [
+  ['--shadow-sm', 'Subtle lift'],
+  ['--shadow-md', 'Cards & panels'],
+  ['--shadow-lg', 'Modals & overlays'],
+];
+
+const FOCUS_OVERLAY = [
+  ['--outline-focus',     'Keyboard focus ring'],
+  ['--background-overlay','Modal scrim'],
+];
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+const cs = getComputedStyle(document.documentElement);
+function resolve(varName) {
+  return cs.getPropertyValue(varName).trim();
+}
+
+/* =========================================================
+   RENDER — background token cards
+   ========================================================= */
+function renderBackgroundGroups() {
+  Object.entries(BG_GROUPS).forEach(([group, list]) => {
+    const wrap = document.querySelector(`[data-group="${group}"]`);
+    if (!wrap) return;
+    wrap.innerHTML = list.map(name => `
+      <button type="button" class="token-card" data-var="${name}" aria-label="Copy ${name}"
+              style="--swatch: var(${name})">
+        <div class="preview"></div>
+        <div class="body">
+          <span class="name">${name}</span>
+          <span class="resolved">${escapeHtml(resolve(name)) || '—'}</span>
+        </div>
+      </button>
+    `).join('');
+  });
+}
+
+/* =========================================================
+   RENDER — text token rows
+   ========================================================= */
+function renderTextRow(containerId, list, opts = {}) {
+  const wrap = document.getElementById(containerId);
+  if (!wrap) return;
+  wrap.innerHTML = list.map(name => {
+    const rowClass = opts.inverted ? 'text-row inverted-row' : 'text-row';
+    return `
+      <div class="${rowClass}" data-var="${name}" tabindex="0" role="button" aria-label="Copy ${name}">
+        <span class="label">${name}</span>
+        <span class="sample" style="color: var(${name})">Cultivated intelligence — Aa Bb 1234</span>
+      </div>
+    `;
+  }).join('');
+}
+
+/* =========================================================
+   RENDER — border cards
+   ========================================================= */
+function renderBorderGroups() {
+  Object.entries(BORDER_GROUPS).forEach(([group, list]) => {
+    const wrap = document.querySelector(`[data-group="${group}"]`);
+    if (!wrap) return;
+    const isInverted = group === 'border-inverted';
+    wrap.innerHTML = list.map(name => {
+      const cardClass = isInverted ? 'border-card inverted-card' : 'border-card';
+      const value = resolve(name) || '—';
+      return `
+        <button type="button" class="${cardClass}" data-var="${name}" aria-label="Copy ${name}"
+                style="border: var(--border-width-base) solid var(${name})">
+          <div class="demo" style="border: var(--border-width-base) solid var(${name})"></div>
+          <span class="name">${name}</span>
+          <span class="resolved">${escapeHtml(value)}</span>
+        </button>
+      `;
+    }).join('');
+  });
+}
+
+/* =========================================================
+   RENDER — icon cards (single SVG glyph)
+   ========================================================= */
+const ICON_SVG = `
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M12 2C9 6 5 8 5 13a7 7 0 0 0 14 0c0-5-4-7-7-11Z"/>
+    <path d="M12 9v9"/>
+  </svg>
+`;
+function renderIconGroup(group, list, opts = {}) {
+  const wrap = document.querySelector(`[data-group="${group}"]`);
+  if (!wrap) return;
+  wrap.innerHTML = list.map(name => {
+    const cardClass = opts.inverted ? 'icon-card inverted-card' : 'icon-card';
+    const value = resolve(name) || '—';
+    return `
+      <button type="button" class="${cardClass}" data-var="${name}" aria-label="Copy ${name}">
+        <span class="icon-bubble" style="color: var(${name})">${ICON_SVG}</span>
+        <span class="meta">
+          <span class="name">${name}</span>
+          <span class="resolved">${escapeHtml(value)}</span>
+        </span>
+      </button>
+    `;
+  }).join('');
+}
+
+/* =========================================================
+   RENDER — semantic spacing
+   ========================================================= */
+function renderSemSpacing() {
+  const wrap = document.getElementById('semSpacing');
+  if (!wrap) return;
+  wrap.innerHTML = SEM_SPACING.map(name => {
+    const value = resolve(name) || '—';
+    return `
+      <div class="sem-space-row" data-var="${name}" tabindex="0" role="button" aria-label="Copy ${name}">
+        <span class="label">${name}</span>
+        <div class="bar-wrap">
+          <div class="bar" style="width: var(${name})"></div>
+        </div>
+        <span class="resolved">${escapeHtml(value)}</span>
+      </div>
+    `;
+  }).join('');
+}
+
+/* =========================================================
+   RENDER — radius
+   ========================================================= */
+function renderRadius() {
+  const wrap = document.getElementById('radiusRow');
+  if (!wrap) return;
+  wrap.innerHTML = RADIUS_TOKENS.map(([name, modifier, label]) => {
+    const value = resolve(name) || '—';
+    return `
+      <button type="button" class="radius-card ${modifier}" data-var="${name}" aria-label="Copy ${name}">
+        <div class="demo"></div>
+        <span class="name">${name}</span>
+        <span class="resolved">${escapeHtml(value)}</span>
+      </button>
+    `;
+  }).join('');
+}
+
+/* =========================================================
+   RENDER — gradients
+   ========================================================= */
+function renderGradients() {
+  const wrap = document.getElementById('gradientGrid');
+  if (!wrap) return;
+  wrap.innerHTML = GRADIENTS.map(([name, desc]) => `
+    <button type="button" class="gradient-card" data-var="${name}" aria-label="Copy ${name}">
+      <div class="preview" style="background: var(${name})"></div>
+      <div class="body">
+        <div class="name">${name}</div>
+        <div class="desc">${desc}</div>
+      </div>
+    </button>
+  `).join('');
+}
+
+/* =========================================================
+   RENDER — glass surfaces & blur
+   ========================================================= */
+function renderGlassStage() {
+  const wrap = document.getElementById('glassStage');
+  if (!wrap) return;
+  wrap.innerHTML = GLASS_SURFACES.map(([bgName, borderName, isDark]) => `
+    <div class="glass-tile ${isDark ? 'dark' : ''}" data-var="${bgName}" tabindex="0" role="button" aria-label="Copy ${bgName}">
+      <span class="name">${bgName}</span>
+      <span class="resolved">${escapeHtml(resolve(bgName) || '—')}</span>
+      <span class="name" style="margin-top: var(--spacing-2x)">${borderName}</span>
+      <span class="resolved">${escapeHtml(resolve(borderName) || '—')}</span>
+    </div>
+  `).join('');
+}
+
+function renderBlurRow() {
+  const wrap = document.getElementById('blurRow');
+  if (!wrap) return;
+  wrap.innerHTML = BLURS.map(name => `
+    <div class="blur-tile" data-var="${name}" tabindex="0" role="button" aria-label="Copy ${name}"
+         style="--blur-amount: var(${name})">
+      <span class="meta">${name}</span>
+    </div>
+  `).join('');
+}
+
+/* =========================================================
+   RENDER — shadow / focus / overlay
+   ========================================================= */
+function renderShadows() {
+  const wrap = document.getElementById('shadowRow');
+  if (!wrap) return;
+  wrap.innerHTML = SHADOWS.map(([name, label]) => `
+    <button type="button" class="misc-card" data-var="${name}" aria-label="Copy ${name}"
+            style="box-shadow: var(${name})">
+      <span class="name">${name}</span>
+      <span class="resolved">${label}</span>
+    </button>
+  `).join('');
+}
+
+function renderFocusOverlay() {
+  const wrap = document.getElementById('focusRow');
+  if (!wrap) return;
+  wrap.innerHTML = FOCUS_OVERLAY.map(([name, label]) => {
+    const isOutline = name === '--outline-focus';
+    const styleAttr = isOutline
+      ? `outline: 3px solid var(${name}); outline-offset: 4px;`
+      : `background: var(${name}); color: var(--text-inverted); border-color: transparent;`;
+    return `
+      <button type="button" class="misc-card" data-var="${name}" aria-label="Copy ${name}" style="${styleAttr}">
+        <span class="name" ${isOutline ? '' : 'style="color: var(--text-inverted)"'}>${name}</span>
+        <span class="resolved" ${isOutline ? '' : 'style="color: var(--text-inverted-subtle)"'}>${label}</span>
+      </button>
+    `;
+  }).join('');
+}
+
+/* =========================================================
+   COPY + TOAST (delegated)
+   ========================================================= */
+const toast = document.getElementById('toast');
+let toastTimer;
+function showToast(varName) {
+  toast.innerHTML = `Copied <span class="toast-name">${varName}</span>`;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 2000);
+}
+async function copyVar(varName, el) {
+  const text = `var(${varName})`;
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+    } else {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    }
+    showToast(varName);
+    if (el && el.classList) {
+      el.classList.remove('copied');
+      void el.offsetWidth;
+      el.classList.add('copied');
+    }
+  } catch (err) {
+    showToast('Copy failed');
+  }
+}
+function getCopyTarget(el) {
+  if (!el) return null;
+  return el.closest('[data-var]');
+}
+document.addEventListener('click', (e) => {
+  const target = getCopyTarget(e.target);
+  if (target) copyVar(target.dataset.var, target);
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const target = getCopyTarget(document.activeElement);
+  if (target) {
+    e.preventDefault();
+    copyVar(target.dataset.var, target);
+  }
+});
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, m => ({
+    '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+  })[m]);
+}
+
+/* =========================================================
+   REVEAL ON SCROLL
+   ========================================================= */
+function initReveal() {
+  const items = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    items.forEach(el => el.classList.add('in'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        en.target.classList.add('in');
+        io.unobserve(en.target);
+      }
+    });
+  }, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(el => io.observe(el));
+}
+
+/* =========================================================
+   BOOT
+   ========================================================= */
+document.addEventListener('DOMContentLoaded', () => {
+  renderBackgroundGroups();
+  renderTextRow('textDefault',  TEXT_DEFAULT);
+  renderTextRow('textInverted', TEXT_INVERTED, { inverted: true });
+  renderTextRow('textBrand',    TEXT_BRAND);
+  renderTextRow('textStatus',   TEXT_STATUS);
+  renderBorderGroups();
+  renderIconGroup('icon-default',  ICON_DEFAULT);
+  renderIconGroup('icon-primary',  ICON_PRIMARY);
+  renderIconGroup('icon-inverted', ICON_INVERTED, { inverted: true });
+  renderIconGroup('icon-status',   ICON_STATUS);
+  renderSemSpacing();
+  renderRadius();
+  renderGradients();
+  renderGlassStage();
+  renderBlurRow();
+  renderShadows();
+  renderFocusOverlay();
+  initReveal();
+});
+</script>
+
+</body>
+</html>

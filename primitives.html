@@ -7,7 +7,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
 
 <style>
 /* =========================================================
@@ -112,8 +112,7 @@ html{
     --spacing-16x:64px;
     --spacing-25x:100px;
 
-    --font-sans: 'Helvetica', sans-serif; 
-    --font-display: 'Georgia', serif; 
+    --font-sans: 'Poppins', 'Helvetica', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
 
     /* Scale ratio = 1.2 */
@@ -328,9 +327,6 @@ html{
       
       /* Bold Brand (Lime to Dark Leaf) */
       --gradient-brand: linear-gradient(135deg, var(--primary-500) 0%, var(--accent-500) 100%);
-
-      /* Brand Mark (conic logo dot) */
-      --gradient-brand-mark: conic-gradient(from 220deg, var(--primary-500), var(--accent-500), var(--secondary-400), var(--primary-500));
       
       /* Earthy Transition (Lime to Brown) */
       --gradient-earthy: linear-gradient(135deg, var(--primary-50) 0%, var(--secondary-50) 100%);
@@ -375,7 +371,7 @@ html{
     BASE TYPOGRAPHY & DOC SHELL
     ========================================================= */
   h1, h2 {
-      font-family: var(--font-display);
+      font-family: var(--font-sans);
       font-weight: var(--font-weight-regular);
       line-height: var(--line-height-heading);
       color: var(--text-default);
@@ -411,7 +407,7 @@ html{
 
   /* Shell Utility Classes */
   .display { 
-      font-family: var(--font-display); 
+      font-family: var(--font-sans); 
       font-weight: var(--font-weight-regular); 
       line-height: var(--line-height-display); 
       letter-spacing: var(--letter-spacing-display); 
@@ -463,17 +459,12 @@ html{
   border-bottom: var(--border-width-base) solid var(--border-glass-light);
 }
 .brand {
-  display: flex; align-items: center; gap: var(--spacing-2x);
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: var(--text-h6);
-  letter-spacing: -0.01em;
+  display: flex; align-items: center; gap: var(--spacing-3x);
 }
-.brand-mark {
-  width: var(--spacing-8x); height: var(--spacing-8x);
-  border-radius: 50%;
-  background: var(--gradient-brand-mark);
-  box-shadow: inset 0 0 0 2px var(--background-default), var(--shadow-sm);
+.brand-logo {
+  height: var(--spacing-10x);
+  width: auto;
+  display: block;
 }
 .brand small {
   font-family: var(--font-mono);
@@ -482,8 +473,7 @@ html{
   text-transform: uppercase;
   color: var(--text-default-minimal);
   font-style: normal;
-  margin-left: var(--spacing-2x);
-  padding-left: var(--spacing-2x);
+  padding-left: var(--spacing-3x);
   border-left: var(--border-width-base) solid var(--border-default);
 }
 
@@ -534,7 +524,7 @@ html{
 }
 .hero h1 {
   font-size: clamp(3.5rem, 7vw, 6.5rem);
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-weight: var(--font-weight-regular);
   line-height: var(--line-height-display);
   letter-spacing: -0.035em;
@@ -579,9 +569,9 @@ html{
   margin-bottom: var(--spacing-half);
 }
 .meta-strip dd {
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-size: var(--text-h5);
-  font-style: italic;
+  font-weight: var(--font-weight-medium);
   letter-spacing: -0.01em;
 }
 
@@ -599,7 +589,7 @@ section.chunk { padding: var(--spacing-16x) 0; scroll-margin-top: var(--spacing-
   border-bottom: var(--border-width-base) solid var(--border-default);
 }
 .chunk-head h2 {
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-size: clamp(2.4rem, 4vw, 3.4rem);
   font-weight: var(--font-weight-regular);
   line-height: 1;
@@ -654,10 +644,9 @@ section.chunk { padding: var(--spacing-16x) 0; scroll-margin-top: var(--spacing-
   gap: var(--spacing-4x);
 }
 .ramp-card h3 {
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-size: var(--text-h6);
-  font-style: italic;
-  font-weight: var(--font-weight-regular);
+  font-weight: var(--font-weight-semibold);
   letter-spacing: -0.01em;
 }
 .ramp-card .ramp-meta {
@@ -787,29 +776,57 @@ section.chunk { padding: var(--spacing-16x) 0; scroll-margin-top: var(--spacing-
    ========================================================= */
 
 .shadow-row{
-  display:flex;
-  gap:var(--spacing-6x);
-  flex-wrap:wrap;
-  margin-bottom:var(--spacing-6x);
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:var(--spacing-8x);
 }
 .shadow-card{
-  padding:var(--spacing-5x) var(--spacing-6x);
+  padding:var(--spacing-10x) var(--spacing-6x);
   border-radius:var(--radius-md);
   background:var(--background-default);
-  font-size:var(--text-sm);
   text-align:center;
-  min-width:120px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:var(--spacing-2x);
+  min-height:160px;
+}
+.shadow-card code {
+  font-family:var(--font-mono);
+  font-size:var(--text-sm);
+  background:transparent;
+  padding:0;
+}
+.shadow-card .shadow-desc {
+  font-family:var(--font-mono);
+  font-size:var(--text-micro);
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--text-default-minimal);
 }
 .shadow-sm-demo{box-shadow:var(--shadow-sm);}
 .shadow-md-demo{box-shadow:var(--shadow-md);}
 .shadow-lg-demo{box-shadow:var(--shadow-lg);}
 
+@media (max-width: 600px) {
+  .shadow-row { grid-template-columns:1fr; gap:var(--spacing-5x); }
+}
+
 /* =========================================================
    TYPOGRAPHY
    ========================================================= */
+.subheading {
+  font-family: var(--font-sans);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--text-h5);
+  color: var(--text-default);
+  margin-top: var(--spacing-12x);
+  margin-bottom: var(--spacing-4x);
+}
 .type-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: var(--spacing-5x);
   margin-bottom: var(--spacing-10x);
 }
@@ -895,7 +912,6 @@ td.preview .preview-text { line-height: 1.1; letter-spacing: -0.01em; }
   background: var(--background-primary-minimal);
   color: var(--text-primary-strong);
 }
-.family-pill[data-fam="display"]  { background: var(--background-secondary-minimal); color: var(--text-secondary-strong); }
 .family-pill[data-fam="mono"]     { background: var(--background-default-minimal); color: var(--text-default); }
 
 /* =========================================================
@@ -915,8 +931,8 @@ footer {
   color: var(--text-default-minimal);
 }
 footer .sigil {
-  font-family: var(--font-display);
-  font-style: italic;
+  font-family: var(--font-sans);
+  font-weight: var(--font-weight-medium);
   font-size: var(--text-sm);
   letter-spacing: 0;
   text-transform: none;
@@ -1009,14 +1025,14 @@ footer .sigil {
 <!-- ========================== TOP BAR ========================== -->
 <header class="topbar">
   <a href="#top" class="brand" aria-label="Farm2Vet design system">
-    <span class="brand-mark" aria-hidden="true"></span>
-    <span>Farm2Vet</span>
+    <img src="logo/logo-wordmark-color.svg" alt="Farm2Vet" class="brand-logo" />
     <small>Design System</small>
   </a>
   <nav class="toc" aria-label="Section navigation">
     <a href="#color">01 Color</a>
     <a href="#spacing">02 Spacing</a>
     <a href="#type">03 Type</a>
+    <a href="#shadow">04 Shadow</a>
   </nav>
   <span class="version mono">v 0.5 · 2026</span>
 </header>
@@ -1131,12 +1147,9 @@ footer .sigil {
   <section class="chunk" id="type">
     <header class="chunk-head reveal">
       <div>
-        <span class="num-tag">03 / Typography</span>
-        <h2 class="display">Voice in <em>type</em>.</h2>
+        <span class="num-tag">03</span>
+        <h2 class="display">Typography</h2>
       </div>
-      <p>
-        Three families: a humanist sans for the body of work, a serif with editorial weight for moments that matter, and a monospaced cut for code and metadata. Type sizes follow a 1.2 modular scale.
-      </p>
     </header>
 
     <!-- Font family cards -->
@@ -1147,18 +1160,8 @@ footer .sigil {
           <div class="glyph" style="font-family:var(--font-sans)">Aa</div>
         </div>
         <div class="meta">
-          <span><strong>Helvetica</strong> · Sans</span>
+          <span><strong>Poppins</strong> · Sans</span>
           <code>--font-sans</code>
-        </div>
-      </article>
-
-      <article class="glass font-card">
-        <div>
-          <div class="glyph" style="font-family:var(--font-display)"><em>Aa</em></div>
-        </div>
-        <div class="meta">
-          <span><strong>Georgia</strong> · Display</span>
-          <code>--font-display</code>
         </div>
       </article>
 
@@ -1187,13 +1190,74 @@ footer .sigil {
       <tbody id="typeTable"></tbody>
     </table>
 
-    <div class="shadow-row">
-      <div class="shadow-card shadow-sm-demo"><code>--shadow-sm</code><br><span style="font-size:var(--text-sm);color:var(--text-default-minimal)">Subtle lift</span></div>
-      <div class="shadow-card shadow-md-demo"><code>--shadow-md</code><br><span style="font-size:var(--text-sm);color:var(--text-default-minimal)">Cards, panels</span></div>
-      <div class="shadow-card shadow-lg-demo"><code>--shadow-lg</code><br><span style="font-size:var(--text-sm);color:var(--text-default-minimal)">Modals, overlays</span></div>
+    <!-- Font weights table -->
+    <h4 class="subheading reveal">Weights</h4>
+    <table class="type-table reveal" aria-label="Font weight scale">
+      <thead>
+        <tr>
+          <th scope="col">Variable</th>
+          <th scope="col">Value</th>
+          <th scope="col">Preview</th>
+        </tr>
+      </thead>
+      <tbody id="weightTable"></tbody>
+    </table>
+
+    <!-- Line heights table -->
+    <h4 class="subheading reveal">Line heights</h4>
+    <table class="type-table reveal" aria-label="Line height scale">
+      <thead>
+        <tr>
+          <th scope="col">Variable</th>
+          <th scope="col">Value</th>
+          <th scope="col">Preview</th>
+        </tr>
+      </thead>
+      <tbody id="lineHeightTable"></tbody>
+    </table>
+
+    <!-- Letter spacings table -->
+    <h4 class="subheading reveal">Letter spacing</h4>
+    <table class="type-table reveal" aria-label="Letter spacing scale">
+      <thead>
+        <tr>
+          <th scope="col">Variable</th>
+          <th scope="col">Value</th>
+          <th scope="col">Preview</th>
+        </tr>
+      </thead>
+      <tbody id="letterSpacingTable"></tbody>
+    </table>
+
+  </section>
+
+  <!-- ========================== SHADOW ========================== -->
+  <section class="chunk" id="shadow">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">04 / Shadow</span>
+        <h2 class="display">Layered <em>depth</em>.</h2>
+      </div>
+      <p>
+        Three elevation steps, from the gentlest lift to the strongest separation. Reach for small to define a subtle surface, medium for interactive cards and panels, and large for floating overlays.
+      </p>
+    </header>
+
+    <div class="shadow-row reveal">
+      <div class="shadow-card shadow-sm-demo">
+        <code>--shadow-sm</code>
+        <span class="shadow-desc">Subtle lift</span>
+      </div>
+      <div class="shadow-card shadow-md-demo">
+        <code>--shadow-md</code>
+        <span class="shadow-desc">Cards, panels</span>
+      </div>
+      <div class="shadow-card shadow-lg-demo">
+        <code>--shadow-lg</code>
+        <span class="shadow-desc">Modals, overlays</span>
+      </div>
     </div>
   </section>
-  
 
   <!-- ========================== FOOTER ========================== -->
   <footer>
@@ -1249,17 +1313,19 @@ const RAMPS = {
 };
 
 const SPACING = [
-  ['--spacing-1x',  4,   '1×'],
-  ['--spacing-2x',  8,   '2×'],
-  ['--spacing-3x',  12,  '3×'],
-  ['--spacing-4x',  16,  '4×'],
-  ['--spacing-5x',  20,  '5×'],
-  ['--spacing-6x',  24,  '6×'],
-  ['--spacing-8x',  32,  '8×'],
-  ['--spacing-10x', 40,  '10×'],
-  ['--spacing-12x', 48,  '12×'],
-  ['--spacing-16x', 64,  '16×'],
-  ['--spacing-25x', 100, '25×'],
+  ['--spacing-quarter', 1,   '¼'],
+  ['--spacing-half',    2,   '½'],
+  ['--spacing-1x',      4,   '1×'],
+  ['--spacing-2x',      8,   '2×'],
+  ['--spacing-3x',      12,  '3×'],
+  ['--spacing-4x',      16,  '4×'],
+  ['--spacing-5x',      20,  '5×'],
+  ['--spacing-6x',      24,  '6×'],
+  ['--spacing-8x',      32,  '8×'],
+  ['--spacing-10x',     40,  '10×'],
+  ['--spacing-12x',     48,  '12×'],
+  ['--spacing-16x',     64,  '16×'],
+  ['--spacing-25x',     100, '25×'],
 ];
 
 const TYPE_SIZES = [
@@ -1272,6 +1338,27 @@ const TYPE_SIZES = [
   ['--text-base',  '1rem',     '16.00', 'base'],
   ['--text-sm',    '0.833rem', '13.33', 'sm'],
   ['--text-micro', '0.694rem', '11.10', 'micro'],
+];
+
+const FONT_WEIGHTS = [
+  ['--font-weight-regular',  '400'],
+  ['--font-weight-medium',   '500'],
+  ['--font-weight-semibold', '600'],
+];
+
+const LINE_HEIGHTS = [
+  ['--line-height-display', '1.04'],
+  ['--line-height-heading', '1.2'],
+  ['--line-height-h3',      '1.3'],
+  ['--line-height-h4',      '1.4'],
+  ['--line-height-h5',      '1.5'],
+  ['--line-height-h6',      '1.6'],
+  ['--line-height-body',    '1.65'],
+];
+
+const LETTER_SPACINGS = [
+  ['--letter-spacing-display', '0.02em'],
+  ['--letter-spacing-eyebrow', '0.18em'],
 ];
 
 /* =========================================================
@@ -1340,23 +1427,74 @@ function renderSpacing() {
 function renderType() {
   const tbody = document.getElementById('typeTable');
   tbody.innerHTML = TYPE_SIZES.map(([name, value, px, key]) => {
-    // Display sizes h1/h2 use serif italic per system; rest use sans
-    const useSerif = key === 'h1' || key === 'h2';
-    const family = useSerif ? 'var(--font-display)' : 'var(--font-sans)';
-    const style = useSerif ? 'italic' : 'normal';
-    const weight = useSerif ? 400 : (key.startsWith('h') ? 600 : 400);
+    // h1/h2 are display weight (regular); h3-h6 are semibold; body sizes regular.
+    // h2 is italic per the system convention.
+    const isDisplayHead = key === 'h1' || key === 'h2';
+    const weight = isDisplayHead ? 400 : (key.startsWith('h') ? 600 : 400);
+    const style = key === 'h2' ? 'italic' : 'normal';
     return `
       <tr>
         <td class="var-name">${name}</td>
         <td class="var-value">${value}</td>
         <td class="var-px">${px}px</td>
         <td class="preview">
-          <span class="preview-text" style="font-size:var(${name});font-family:${family};font-style:${style};font-weight:${weight}">
+          <span class="preview-text" style="font-size:var(${name});font-family:var(--font-sans);font-style:${style};font-weight:${weight}">
             Cultivated intelligence.
           </span>
         </td>
       </tr>`;
   }).join('');
+}
+
+/* =========================================================
+   RENDER — font weights table
+   ========================================================= */
+function renderWeights() {
+  const tbody = document.getElementById('weightTable');
+  tbody.innerHTML = FONT_WEIGHTS.map(([name, value]) => `
+    <tr>
+      <td class="var-name">${name}</td>
+      <td class="var-value">${value}</td>
+      <td class="preview">
+        <span class="preview-text" style="font-weight:var(${name});font-size:var(--text-h6)">
+          Cultivated intelligence.
+        </span>
+      </td>
+    </tr>`).join('');
+}
+
+/* =========================================================
+   RENDER — line heights table
+   ========================================================= */
+function renderLineHeights() {
+  const tbody = document.getElementById('lineHeightTable');
+  tbody.innerHTML = LINE_HEIGHTS.map(([name, value]) => `
+    <tr>
+      <td class="var-name">${name}</td>
+      <td class="var-value">${value}</td>
+      <td class="preview">
+        <p style="line-height:var(${name});max-width:42ch;margin:0;font-size:var(--text-base)">
+          Cultivated intelligence — built up from the soil of agriculture, harvested into elegant code, season after season.
+        </p>
+      </td>
+    </tr>`).join('');
+}
+
+/* =========================================================
+   RENDER — letter spacings table
+   ========================================================= */
+function renderLetterSpacings() {
+  const tbody = document.getElementById('letterSpacingTable');
+  tbody.innerHTML = LETTER_SPACINGS.map(([name, value]) => `
+    <tr>
+      <td class="var-name">${name}</td>
+      <td class="var-value">${value}</td>
+      <td class="preview">
+        <span class="preview-text" style="letter-spacing:var(${name});font-family:var(--font-mono);text-transform:uppercase;font-size:var(--text-sm)">
+          Cultivated intelligence
+        </span>
+      </td>
+    </tr>`).join('');
 }
 
 /* =========================================================
@@ -1444,6 +1582,9 @@ document.addEventListener('DOMContentLoaded', () => {
   renderRamps();
   renderSpacing();
   renderType();
+  renderWeights();
+  renderLineHeights();
+  renderLetterSpacings();
   initReveal();
 });
 </script>
