@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>VinAllergy — Hồ sơ dị ứng cá nhân</title>
+<style>
+  :root {
+    /* Primary = #6ec13e (vivid lime green, dominant brand color) */
+    --va-primary: #6ec13e;
+    --va-primary-dark: #58a02f;
+    --va-primary-50: #f3faec;
+    --va-primary-100: #e3f3d3;
+    /* Accent = #398c36 (deep forest green, used sparingly for emphasis) */
+    --va-accent: #398c36;
+    --va-accent-dark: #2c6e2a;
+    --va-accent-100: #d7ebd5;
+    /* Secondary = #5c3a1a (woody walnut brown) */
+    --va-secondary: #5c3a1a;
+    --va-secondary-dark: #3d2510;
+    --va-secondary-light: #a07550;
+    --va-secondary-50: #f5ede0;
+    --va-secondary-100: #e6d3b5;
+    /* Legacy aliases — keep selectors working. Accent is reserved for CTAs only. */
+    --va-green: var(--va-primary);
+    --va-green-dark: var(--va-primary-dark);
+    --va-green-light: var(--va-primary);
+    --va-green-100: var(--va-primary-100);
+    --va-green-50: var(--va-primary-50);
+    --va-brown: var(--va-secondary);
+    --va-brown-dark: var(--va-secondary-dark);
+    --va-brown-light: var(--va-secondary-light);
+    --va-brown-50: var(--va-secondary-50);
+    --va-brown-100: var(--va-secondary-100);
+    --va-text-primary: #1f2a1c;
+    --va-text-secondary: #4a5a47;
+    --va-text-muted: #7c8a78;
+    --va-bg: #fafdf7;
+    --va-bg-muted: #eef5e8;
+    --va-ink-100: #e3ecdd;
+    --va-card: #ffffff;
+    --va-border: rgba(57, 140, 54, 0.12);
+    --va-shadow: 0 4px 24px rgba(57, 140, 54, 0.08);
+    --va-shadow-lg: 0 12px 40px rgba(57, 140, 54, 0.14);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Geist", system-ui, sans-serif;
+    background: var(--va-bg);
+    color: var(--va-text-primary);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* Aurora background */
+  .va-aurora-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 80% 50% at 20% 10%, rgba(110, 193, 62, 0.18), transparent 70%),
+      radial-gradient(ellipse 60% 40% at 90% 30%, rgba(57, 140, 54, 0.16), transparent 70%),
+      radial-gradient(ellipse 70% 50% at 50% 90%, rgba(160, 120, 86, 0.10), transparent 70%);
+  }
+
+  .container {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 0 32px;
+    background: rgba(255,255,255,0.72);
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    border-bottom: 1px solid rgba(57, 140, 54, 0.12);
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    font-size: 17px;
+    color: var(--va-text-primary);
+  }
+  .brand-mark {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: var(--va-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 800;
+    font-size: 14px;
+    box-shadow: 0 2px 8px rgba(110, 193, 62, 0.35);
+  }
+  .vinmec-tag {
+    margin-left: 6px;
+    border-radius: 999px;
+    background: var(--va-brown-100);
+    color: var(--va-brown-dark);
+    padding: 2px 10px;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+  .nav-links {
+    margin-left: 24px;
+    display: flex;
+    gap: 4px;
+  }
+  .nav-links a {
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--va-text-secondary);
+    text-decoration: none;
+    transition: background 0.15s, color 0.15s;
+  }
+  .nav-links a:hover {
+    background: var(--va-bg-muted);
+    color: var(--va-text-primary);
+  }
+  .nav-actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .lang-pick {
+    background: transparent;
+    border: none;
+    font-size: 13px;
+    color: var(--va-text-primary);
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .lang-pick:hover { background: var(--va-bg-muted); }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 38px;
+    padding: 0 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: transform 0.1s, box-shadow 0.15s, background 0.15s;
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--va-text-primary);
+  }
+  .btn-ghost:hover { background: var(--va-bg-muted); }
+  .btn-primary {
+    background: var(--va-accent);
+    color: white;
+    box-shadow: 0 4px 12px rgba(57, 140, 54, 0.3);
+  }
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    background: var(--va-accent-dark);
+    box-shadow: 0 6px 20px rgba(57, 140, 54, 0.4);
+  }
+  .btn-outline {
+    background: white;
+    color: var(--va-brown-dark);
+    border: 1.5px solid var(--va-brown-light);
+  }
+  .btn-outline:hover {
+    background: var(--va-brown-50);
+    border-color: var(--va-brown);
+  }
+
+  /* HERO */
+  .hero {
+    padding: 96px 0 80px;
+    text-align: center;
+  }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--va-green-100);
+    color: var(--va-green-dark);
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    border: 1px solid rgba(57, 140, 54, 0.2);
+  }
+  .pill .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: var(--va-green-light);
+    box-shadow: 0 0 0 4px rgba(110, 193, 62, 0.18);
+  }
+  h1 {
+    font-size: clamp(36px, 5.5vw, 64px);
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    color: var(--va-text-primary);
+    max-width: 880px;
+    margin: 0 auto 24px;
+  }
+  h1 .accent {
+    color: var(--va-primary);
+  }
+  .hero-sub {
+    font-size: clamp(16px, 1.4vw, 19px);
+    color: var(--va-text-secondary);
+    max-width: 720px;
+    margin: 0 auto 36px;
+    line-height: 1.65;
+  }
+  .hero-ctas {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 56px;
+  }
+  .hero-ctas .btn { height: 48px; padding: 0 24px; font-size: 15px; }
+
+  /* Integration row */
+  .integrations {
+    margin-top: 48px;
+    padding: 24px 0;
+    border-top: 1px solid var(--va-border);
+    border-bottom: 1px solid var(--va-border);
+  }
+  .integrations-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--va-text-muted);
+    margin-bottom: 16px;
+  }
+  .integrations-list {
+    display: flex;
+    gap: 36px;
+    justify-content: center;
+    flex-wrap: wrap;
+    color: var(--va-brown);
+    font-weight: 600;
+    font-size: 15px;
+    opacity: 0.78;
+  }
+
+  /* Sections */
+  section { padding: 96px 0; position: relative; z-index: 1; }
+  .eyebrow {
+    text-align: center;
+    color: var(--va-green-dark);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  h2 {
+    font-size: clamp(28px, 3.5vw, 44px);
+    font-weight: 800;
+    text-align: center;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-bottom: 16px;
+    color: var(--va-text-primary);
+  }
+  .section-sub {
+    text-align: center;
+    color: var(--va-text-secondary);
+    max-width: 640px;
+    margin: 0 auto 56px;
+    font-size: 17px;
+  }
+
+  /* Feature grid */
+  .features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  .feature-card {
+    background: var(--va-card);
+    border: 1px solid var(--va-border);
+    border-radius: 18px;
+    padding: 28px;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  }
+  .feature-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--va-shadow-lg);
+    border-color: rgba(57, 140, 54, 0.3);
+  }
+  .feature-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--va-green-100) 0%, rgba(110,193,62,0.18) 100%);
+    color: var(--va-green-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+    font-size: 22px;
+  }
+  .feature-card.brown .feature-icon {
+    background: linear-gradient(135deg, var(--va-brown-100) 0%, rgba(160, 120, 86, 0.2) 100%);
+    color: var(--va-brown-dark);
+  }
+  .feature-card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+  .feature-card p {
+    font-size: 14.5px;
+    color: var(--va-text-secondary);
+    line-height: 1.6;
+  }
+
+  /* How it works */
+  .how-bg {
+    background: linear-gradient(180deg, var(--va-green-50) 0%, transparent 100%);
+  }
+  .steps {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: center;
+  }
+  .steps-list { display: flex; flex-direction: column; gap: 28px; }
+  .step {
+    display: flex;
+    gap: 18px;
+  }
+  .step-num {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--va-primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 18px;
+    box-shadow: 0 4px 12px rgba(110, 193, 62, 0.35);
+  }
+  .step h4 {
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .step p {
+    font-size: 14.5px;
+    color: var(--va-text-secondary);
+  }
+
+  /* Profile preview card */
+  .profile-card {
+    background: white;
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: var(--va-shadow-lg);
+    border: 1px solid var(--va-border);
+  }
+  .profile-card .head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--va-bg-muted);
+    margin-bottom: 18px;
+  }
+  .profile-card .head h5 {
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .profile-card .head .count {
+    font-size: 13px;
+    color: var(--va-text-muted);
+  }
+  .allergen {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--va-bg-muted);
+  }
+  .allergen:last-child { border-bottom: none; }
+  .allergen-info h6 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .allergen-info span {
+    font-size: 13px;
+    color: var(--va-text-secondary);
+  }
+  .badge {
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+  .badge.severe {
+    background: var(--va-brown-100);
+    color: var(--va-brown-dark);
+  }
+  .badge.mild {
+    background: var(--va-green-100);
+    color: var(--va-green-dark);
+  }
+  .category-tag {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 11px;
+    color: var(--va-brown-light);
+    font-weight: 600;
+  }
+
+  /* Testimonial */
+  .testimonial {
+    margin-top: 60px;
+    background: linear-gradient(135deg, var(--va-green-50) 0%, var(--va-brown-50) 100%);
+    border: 1px solid var(--va-border);
+    border-radius: 20px;
+    padding: 36px;
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+  .testimonial blockquote {
+    font-size: 19px;
+    color: var(--va-text-primary);
+    line-height: 1.5;
+    font-weight: 500;
+    margin-bottom: 18px;
+    letter-spacing: -0.01em;
+  }
+  .testimonial-author {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+  }
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--va-primary) 0%, var(--va-secondary) 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+  }
+  .author-name { font-weight: 700; font-size: 14px; }
+  .author-meta { font-size: 13px; color: var(--va-text-muted); }
+
+  /* Safety */
+  .safety {
+    background: var(--va-brown-50);
+  }
+  .safety-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+  }
+  .safety-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .safety-list li {
+    display: flex;
+    gap: 14px;
+    padding: 14px 18px;
+    background: white;
+    border: 1px solid var(--va-border);
+    border-radius: 12px;
+    font-size: 15px;
+    color: var(--va-text-secondary);
+  }
+  .safety-list li::before {
+    content: "✓";
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    background: var(--va-primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 800;
+  }
+  .stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  .stat-card {
+    background: white;
+    border: 1px solid var(--va-border);
+    border-radius: 16px;
+    padding: 24px;
+  }
+  .stat-num {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--va-primary-dark);
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+  .stat-card.brown .stat-num { color: var(--va-secondary); }
+  .stat-label {
+    font-size: 13px;
+    color: var(--va-text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+  }
+  .stat-detail { font-size: 14px; color: var(--va-text-secondary); }
+
+  /* CTA */
+  .final-cta {
+    text-align: center;
+    background: var(--va-accent);
+    color: white;
+    border-radius: 28px;
+    padding: 72px 32px;
+    margin: 0 24px;
+    box-shadow: 0 16px 48px rgba(57, 140, 54, 0.3);
+    position: relative;
+    overflow: hidden;
+  }
+  .final-cta::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .final-cta > * { position: relative; z-index: 1; }
+  .final-cta h2 {
+    color: white;
+    margin-bottom: 16px;
+  }
+  .final-cta p {
+    font-size: 17px;
+    color: rgba(255,255,255,0.88);
+    max-width: 560px;
+    margin: 0 auto 32px;
+  }
+  .btn-white {
+    background: white;
+    color: var(--va-accent);
+    height: 48px;
+    padding: 0 28px;
+    font-size: 15px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  }
+  .btn-white:hover { background: var(--va-primary-50); transform: translateY(-1px); }
+
+  /* Footer */
+  footer {
+    padding: 48px 24px 36px;
+    text-align: center;
+    color: var(--va-text-muted);
+    font-size: 14px;
+  }
+  footer .brand { justify-content: center; margin-bottom: 12px; }
+  footer .footer-meta { font-size: 13px; margin-bottom: 14px; }
+  footer .footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    font-size: 13px;
+  }
+  footer .footer-links a {
+    color: var(--va-text-secondary);
+    text-decoration: none;
+  }
+  footer .footer-links a:hover { color: var(--va-green-dark); }
+  footer .sep { color: var(--va-text-muted); }
+
+  @media (max-width: 880px) {
+    .nav-links { display: none; }
+    section { padding: 64px 0; }
+    .hero { padding: 56px 0; }
+    .steps, .safety-grid { grid-template-columns: 1fr; gap: 36px; }
+    .stats { grid-template-columns: 1fr 1fr; }
+    .integrations-list { gap: 18px; font-size: 13px; }
+    .final-cta { padding: 48px 24px; margin: 0 16px; }
+  }
+</style>
+</head>
+<body>
+  <div class="va-aurora-bg" aria-hidden="true"></div>
+
+  <nav>
+    <div class="brand">
+      <div class="brand-mark">V</div>
+      <span>VinAllergy</span>
+      <span class="vinmec-tag">VINMEC</span>
+    </div>
+    <div class="nav-links">
+      <a href="#features">Tính năng</a>
+      <a href="#how">Cách hoạt động</a>
+      <a href="#safety">An toàn</a>
+      <a href="#faq">Câu hỏi thường gặp</a>
+    </div>
+    <div class="nav-actions">
+      <button class="lang-pick">Tiếng Việt ▾</button>
+      <a href="#" class="btn btn-ghost">Đăng nhập</a>
+      <a href="#" class="btn btn-primary">Bắt đầu ngay</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="container">
+      <div class="pill"><span class="dot"></span>Phát triển cùng Bệnh viện VinMec</div>
+      <h1>Hồ sơ dị ứng của bạn,<br/><span class="accent">luôn trong tầm tay.</span></h1>
+      <p class="hero-sub">VinAllergy giữ hồ sơ dị ứng cá nhân của bạn luôn cập nhật, hiển thị kế hoạch xử trí phù hợp khi cần, và chia sẻ thông tin thiết yếu cho nhân viên cấp cứu chỉ qua một lần quét QR.</p>
+      <div class="hero-ctas">
+        <a href="#" class="btn btn-primary">Tạo hồ sơ của bạn</a>
+        <a href="#" class="btn btn-outline">Xem ví dụ PAP</a>
+      </div>
+
+      <div class="integrations">
+        <div class="integrations-label">Tích hợp với</div>
+        <div class="integrations-list">
+          <span>VinMec</span>
+          <span>VinFast Care</span>
+          <span>eHIS Vietnam</span>
+          <span>HL7 FHIR</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- FEATURES -->
+  <section id="features">
+    <div class="container">
+      <div class="eyebrow">Bạn nhận được gì</div>
+      <h2>Công cụ chuẩn lâm sàng,<br/>dùng được mỗi ngày.</h2>
+      <p class="section-sub">Theo dõi dị nguyên, triệu chứng và mức độ nghiêm trọng tại một nơi. Giao diện tinh gọn; thông tin rõ ràng.</p>
+
+      <div class="features">
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Ưu tiên theo mức độ</h3>
+          <p>Phản ứng nhẹ và nặng được phân biệt bằng màu sắc trong toàn bộ ứng dụng, giúp điều quan trọng nhất luôn hiển thị rõ ràng.</p>
+        </div>
+        <div class="feature-card brown">
+          <div class="feature-icon">⚠</div>
+          <h3>Cảnh báo dị nguyên chéo</h3>
+          <p>Hệ thống tự động cảnh báo các dị nguyên có khả năng phản ứng chéo dựa trên hồ sơ của bạn, kèm nguồn tham chiếu và mức độ tin cậy.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">✚</div>
+          <h3>Kế hoạch xử trí cá nhân hoá</h3>
+          <p>Mỗi dị nguyên đi kèm một kế hoạch xử trí phù hợp với mức độ — kháng histamin cho phản ứng nhẹ, epinephrine ưu tiên cho phản ứng nặng.</p>
+        </div>
+        <div class="feature-card brown">
+          <div class="feature-icon">▦</div>
+          <h3>Hồ sơ cấp cứu chia sẻ được</h3>
+          <p>Liên kết công khai chỉ đọc kèm mã QR giúp nhân viên cấp cứu thấy đúng những gì cần, mà không lộ toàn bộ hồ sơ của bạn.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🌐</div>
+          <h3>Song ngữ mặc định</h3>
+          <p>Mọi màn hình đều có sẵn cả tiếng Anh và tiếng Việt. Chuyển ngôn ngữ tức thì, hoặc chia sẻ liên kết bằng ngôn ngữ tuỳ chọn.</p>
+        </div>
+        <div class="feature-card brown">
+          <div class="feature-icon">🔒</div>
+          <h3>Bảo mật chuẩn bệnh viện</h3>
+          <p>Kết nối với hệ thống lâm sàng của VinMec với phân quyền theo vai trò. Dữ liệu là của bạn; chia sẻ là tự nguyện và có thể thu hồi.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW -->
+  <section id="how" class="how-bg">
+    <div class="container">
+      <div class="eyebrow">Cách hoạt động</div>
+      <h2>Ba bước nhỏ,<br/>một ngày yên tâm hơn.</h2>
+      <p class="section-sub">Thiết lập một lần và quên đi — cho đến khoảnh khắc nó thực sự cần.</p>
+
+      <div class="steps">
+        <div class="steps-list">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div>
+              <h4>Xây hồ sơ của bạn</h4>
+              <p>Thêm các dị nguyên bạn đã biết. Chọn từ thư viện của VinMec hoặc bắt đầu từ mục trống.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div>
+              <h4>Gắn triệu chứng và mức độ</h4>
+              <p>Với mỗi dị nguyên, liên kết các triệu chứng đã gặp và đánh dấu mức độ. Kế hoạch xử trí sẽ tự cập nhật.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div>
+              <h4>Chia sẻ QR với người bạn tin tưởng</h4>
+              <p>In ra để mang ví, lưu vào màn hình khoá điện thoại — nhân viên cấp cứu chỉ thấy đúng những gì cần thiết.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-card">
+          <div class="head">
+            <h5>Hồ sơ dị ứng cá nhân</h5>
+            <span class="count">3 dị nguyên</span>
+          </div>
+          <div class="allergen">
+            <div class="allergen-info">
+              <h6>Đậu phộng</h6>
+              <span>Mề đay · Khò khè · Sốc phản vệ</span>
+              <div class="category-tag">Thực phẩm</div>
+            </div>
+            <span class="badge severe">Nặng</span>
+          </div>
+          <div class="allergen">
+            <div class="allergen-info">
+              <h6>Penicillin</h6>
+              <span>Phát ban · Ngứa</span>
+              <div class="category-tag">Thuốc</div>
+            </div>
+            <span class="badge mild">Nhẹ</span>
+          </div>
+          <div class="allergen">
+            <div class="allergen-info">
+              <h6>Mạt bụi nhà</h6>
+              <span>Hắt hơi · Chảy nước mắt</span>
+              <div class="category-tag">Hô hấp</div>
+            </div>
+            <span class="badge mild">Nhẹ</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial">
+        <blockquote>"Thẻ QR luôn nằm trong hộp cơm của con trai tôi. Trường mầm non biết cần làm gì mà không phải gọi tôi trước."</blockquote>
+        <div class="testimonial-author">
+          <div class="avatar">L</div>
+          <div style="text-align:left">
+            <div class="author-name">Linh, mẹ của hai bé</div>
+            <div class="author-meta">Hà Nội</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SAFETY -->
+  <section id="safety" class="safety">
+    <div class="container">
+      <div class="eyebrow">An toàn &amp; quyền riêng tư</div>
+      <h2>Thiết kế cùng bác sĩ.<br/>Thuộc về bạn.</h2>
+      <p class="section-sub">VinAllergy được xây dựng trong hệ sinh thái Bệnh viện VinMec và được các bác sĩ dị ứng thẩm định. Mô hình dữ liệu tuân theo các khái niệm lâm sàng tiêu chuẩn để luôn đi cùng bạn.</p>
+
+      <div class="safety-grid">
+        <ul class="safety-list">
+          <li>Mã hoá khi lưu trữ và khi truyền tải</li>
+          <li>Chia sẻ là tự nguyện, có thể thu hồi và được ghi log</li>
+          <li>Hồ sơ tương thích HL7 FHIR — dữ liệu của bạn có thể di chuyển</li>
+          <li>Được khoa Dị ứng VinMec rà soát hàng quý</li>
+        </ul>
+
+        <div class="stats">
+          <div class="stat-card">
+            <div class="stat-label">Bệnh nhân</div>
+            <div class="stat-num">38k+</div>
+            <div class="stat-detail">trên 7 cơ sở VinMec</div>
+          </div>
+          <div class="stat-card brown">
+            <div class="stat-label">Thiết lập</div>
+            <div class="stat-num">3 phút</div>
+            <div class="stat-detail">để có một PAP hoàn chỉnh</div>
+          </div>
+          <div class="stat-card brown">
+            <div class="stat-label">Ngôn ngữ</div>
+            <div class="stat-num">2</div>
+            <div class="stat-detail">Tiếng Việt · English</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Lượt quét QR</div>
+            <div class="stat-num">12k</div>
+            <div class="stat-detail">trong 30 ngày qua</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section id="faq">
+    <div class="final-cta">
+      <h2>Thiết lập trong ba phút.<br/>Mang theo cả đời.</h2>
+      <p>Hồ sơ của bạn đồng hành cùng bạn qua mọi lần khám VinMec, mọi lần chuyển viện, mọi tình huống cấp cứu.</p>
+      <a href="#" class="btn btn-white">Tạo hồ sơ của bạn</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="brand">
+      <div class="brand-mark">V</div>
+      <span>VinAllergy</span>
+    </div>
+    <div class="footer-meta">Xây dựng trong hệ thống Bệnh viện VinMec · © 2026</div>
+    <div class="footer-links">
+      <a href="#">Quyền riêng tư</a>
+      <span class="sep">·</span>
+      <a href="#">Điều khoản</a>
+      <span class="sep">·</span>
+      <a href="#">Cổng bác sĩ</a>
+      <span class="sep">·</span>
+      <a href="#">Liên hệ</a>
+    </div>
+  </footer>
+</body>
+</html>
