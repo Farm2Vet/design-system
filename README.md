@@ -52,7 +52,11 @@ II. Semantic Tokens Matrix
   - Font + scaling
 
 III. Component Library
-Components token table + Component Preview
+Each component must contains:
+  Component Preview
+  Components token table: includes all component tokens for the corresponding component, these reference defined semantic tokens strictly.
+Each component may has Variants, Versions, and Sizes. Size is the optimized version for each text size. Focus on Large text size (22.5px) only.
+
 
 - Buttons
   - Variants: CTA (Primary), Secondary, Ghost, Disabled, Loading, Caution, Toggle, 

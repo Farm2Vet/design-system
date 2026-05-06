@@ -7,7 +7,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
 
 <style>
 /* =========================================================
@@ -113,7 +113,7 @@ html{
     --spacing-16x:64px;
     --spacing-25x:100px;
 
-    --font-sans: 'Helvetica', sans-serif;
+    --font-sans: 'Poppins', 'Helvetica', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
 
     --text-h1:2.986rem;
@@ -404,18 +404,12 @@ a:hover { color: var(--text-primary); }
   border-bottom: var(--border-width-base) solid var(--border-glass-light);
 }
 .brand {
-  display: flex; align-items: center; gap: var(--spacing-2x);
-  font-family: var(--font-sans);
-  font-weight: var(--font-weight-medium);
-  font-size: var(--text-h6);
-  letter-spacing: -0.01em;
-  color: var(--text-default);
+  display: flex; align-items: center; gap: var(--spacing-3x);
 }
-.brand-mark {
-  width: var(--spacing-8x); height: var(--spacing-8x);
-  border-radius: 50%;
-  background: var(--gradient-brand-mark);
-  box-shadow: inset 0 0 0 2px var(--background-default), var(--shadow-sm);
+.brand-logo {
+  height: var(--spacing-10x);
+  width: auto;
+  display: block;
 }
 .brand small {
   font-family: var(--font-mono);
@@ -424,8 +418,7 @@ a:hover { color: var(--text-primary); }
   text-transform: uppercase;
   color: var(--text-default-minimal);
   font-style: normal;
-  margin-left: var(--spacing-2x);
-  padding-left: var(--spacing-2x);
+  padding-left: var(--spacing-3x);
   border-left: var(--border-width-base) solid var(--border-default);
 }
 
@@ -1095,8 +1088,7 @@ footer a:hover { color: var(--text-primary); }
 <!-- ========================== TOP BAR ========================== -->
 <header class="topbar">
   <a href="#top" class="brand" aria-label="Farm2Vet design system">
-    <span class="brand-mark" aria-hidden="true"></span>
-    <span>Farm2Vet</span>
+    <img src="logo/logo-wordmark-color.svg" alt="Farm2Vet" class="brand-logo" />
     <small>Design System</small>
   </a>
   <nav class="toc" aria-label="Section navigation">
@@ -1118,14 +1110,9 @@ footer a:hover { color: var(--text-primary); }
     <div>
       <h1 class="display reveal">
         <span class="num">Section 02 / Foundations</span>
-        Semant<em>i</em>cs.
+        Semantics.
       </h1>
     </div>
-    <p class="lede reveal">
-      Where primitives become purpose. Each token below names an intention — a role, an
-      intent, sometimes a state — and resolves down to the primitives in Section&nbsp;01.
-      Design with these names, never the raw values beneath.
-    </p>
   </section>
 
   <!-- ========================== BACKGROUND ========================== -->
@@ -1135,11 +1122,6 @@ footer a:hover { color: var(--text-primary); }
         <span class="num-tag">01 / Background</span>
         <h2 class="display">Surfaces &amp; <em>fills</em>.</h2>
       </div>
-      <p>
-        Every coloured surface in the product traces back to one of these tokens. Defaults
-        for canvas and rests, primaries for action, statuses for signal, and inverteds for
-        the dark side of the system.
-      </p>
     </header>
 
     <h4 class="subheading reveal">Default — canvas &amp; rest states</h4>
@@ -1165,11 +1147,6 @@ footer a:hover { color: var(--text-primary); }
         <span class="num-tag">02 / Text</span>
         <h2 class="display">Voice &amp; <em>hierarchy</em>.</h2>
       </div>
-      <p>
-        Text tokens carry the meaning of the words they colour. Default for body and
-        headlines, primary &amp; accent for brand, emphasis for italics, and the status
-        family for inline signal.
-      </p>
     </header>
 
     <h4 class="subheading reveal">Default</h4>
@@ -1192,10 +1169,6 @@ footer a:hover { color: var(--text-primary); }
         <span class="num-tag">03 / Border</span>
         <h2 class="display">Edges &amp; <em>rules</em>.</h2>
       </div>
-      <p>
-        Borders define the seams between surfaces. The default family scales by emphasis;
-        primary marks interactive containers; status borders accompany their backgrounds.
-      </p>
     </header>
 
     <h4 class="subheading reveal">Default</h4>
@@ -1221,11 +1194,6 @@ footer a:hover { color: var(--text-primary); }
         <span class="num-tag">04 / Icon</span>
         <h2 class="display">Glyphs &amp; <em>signal</em>.</h2>
       </div>
-      <p>
-        Icons inherit colour from the same intent ladder as text. Default greys carry
-        navigation; primary marks brand; the status palette never borrows its colour from
-        anywhere else.
-      </p>
     </header>
 
     <h4 class="subheading reveal">Default</h4>
@@ -1248,11 +1216,6 @@ footer a:hover { color: var(--text-primary); }
         <span class="num-tag">05 / Spacing</span>
         <h2 class="display">Element <em>rhythm</em>.</h2>
       </div>
-      <p>
-        Semantic margins for typography blocks. Use these in place of raw spacing
-        primitives whenever the gap is between document elements — they guarantee the
-        rhythm stays consistent across pages.
-      </p>
     </header>
 
     <div class="glass semantic-space-stack reveal" id="semSpacing"></div>
@@ -1265,11 +1228,6 @@ footer a:hover { color: var(--text-primary); }
         <span class="num-tag">06 / Radius</span>
         <h2 class="display">Soft <em>corners</em>.</h2>
       </div>
-      <p>
-        Six steps from a barely-rounded micro-corner up to a fully circular pill. Each
-        step doubles roughly along the spacing scale — pick the one that matches the
-        surface scale, not the visual taste of the moment.
-      </p>
     </header>
 
     <div class="radius-row reveal" id="radiusRow"></div>
@@ -1282,11 +1240,6 @@ footer a:hover { color: var(--text-primary); }
         <span class="num-tag">07 / Gradient</span>
         <h2 class="display">Brand <em>washes</em>.</h2>
       </div>
-      <p>
-        A small library of named gradients, all built from primary tokens so they age
-        cleanly with the palette. Reach for subtle washes for surfaces; reserve the bold
-        brand gradient for moments of marketing weight.
-      </p>
     </header>
 
     <div class="gradient-grid reveal" id="gradientGrid"></div>
@@ -1299,11 +1252,6 @@ footer a:hover { color: var(--text-primary); }
         <span class="num-tag">08 / Glass</span>
         <h2 class="display">Translucent <em>matter</em>.</h2>
       </div>
-      <p>
-        Two glass surfaces — a light one for app-on-light, a dark one for app-on-brand —
-        plus six blur intensities. Pair the surface with a matching border and a blur
-        large enough to neutralise the layer beneath.
-      </p>
     </header>
 
     <h4 class="subheading reveal">Glass surfaces</h4>
@@ -1320,10 +1268,6 @@ footer a:hover { color: var(--text-primary); }
         <span class="num-tag">09 / Misc</span>
         <h2 class="display">Depth, focus &amp; <em>scrims</em>.</h2>
       </div>
-      <p>
-        Three named shadows for elevation, the focus outline that signals keyboard
-        attention, and the overlay used to dim content behind modals.
-      </p>
     </header>
 
     <h4 class="subheading reveal">Shadow</h4>
