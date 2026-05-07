@@ -58,20 +58,18 @@
     </div>
     <div>
       <p class="lede reveal">
-        The container the rest of the system lives inside. One shared shape
-        adapts across three style variants, three layouts, four functional
-        modes, four content patterns, a five-tier glass scale, and a full
-        state matrix — all resolved through the <code>--card-*</code> token
-        layer so a tweak to surface, border, or selected colour cascades to
-        every card on the screen.
+        A bounded container that groups related content. Composed from a
+        slot-based anatomy and modified through style, layout, functional,
+        and surface variants. All declarations resolve through the
+        <code>--card-*</code> token layer.
       </p>
     </div>
 
     <dl class="meta-strip reveal">
       <div><dt>Component</dt><dd>Card</dd></div>
-      <div><dt>Style variants</dt><dd>3 + 5 glass</dd></div>
-      <div><dt>Layouts</dt><dd>Vertical · Horizontal · List</dd></div>
-      <div><dt>States</dt><dd>5 + selected</dd></div>
+      <div><dt>Style</dt><dd>3 base + 5 glass + left-bar</dd></div>
+      <div><dt>Layout</dt><dd>Vertical · Horizontal · Content-only · List</dd></div>
+      <div><dt>States</dt><dd>5 + is-selected</dd></div>
     </dl>
   </section>
 
@@ -80,13 +78,12 @@
     <div class="card-callout reveal" role="note">
       <span class="label">Architectural note · scope boundary</span>
       <p>
-        <strong>FAQ-style Q&amp;A is the Accordion component's responsibility,
-        not Card's.</strong> A question that expands to reveal an answer is a
-        disclosure pattern with its own keyboard model, animation, and aria
-        contract — different in kind from a content container. The Card
-        system therefore does not ship a <code>.card--question</code>
-        variant; the equivalent affordance lives under
-        <em>component-accordion.html</em> (in a future release).
+        <strong>FAQ / Q&amp;A patterns are documented under Accordion,
+        not Card.</strong> A disclosure that expands to reveal hidden
+        content has its own keyboard contract, animation timing, and
+        aria semantics. Card therefore does not ship a
+        <code>.card--question</code> variant; the equivalent
+        affordance lives under <em>component-accordion.html</em>.
       </p>
     </div>
   </section>
@@ -99,11 +96,9 @@
         <h2 class="display">A shared <em>structure</em>.</h2>
       </div>
       <p>
-        Every variant is composed from the same set of slots — an optional
-        media area, an eyebrow, a title, an optional subtitle, a body, and a
-        footer with actions. Plus configurable sub-components: badges,
-        prices, ratings, metrics, and avatars. Variants differ in
-        <em>which</em> slots they expose, not in the underlying layout.
+        Slot-based composition. Every variant exposes a subset of the
+        slots below; sub-components (badges, prices, ratings, metrics,
+        avatars) attach into any slot that accepts content.
       </p>
     </header>
 
@@ -161,19 +156,21 @@
         <h2 class="display">Style <em>by elevation</em>.</h2>
       </div>
       <p>
-        Three style treatments along a single axis: how loudly the card
-        announces itself against the canvas. <em>Elevated</em> is the
-        workhorse default; <em>Filled</em> mutes it for secondary content;
-        <em>Outlined</em> trades shadow for a confident border in dense
-        layouts.
+        Modifiers that control the card's surface treatment.
+        <em>Elevated</em>: shadow plus border (default).
+        <em>Filled</em>: tinted background, no shadow.
+        <em>Outlined</em>: thicker border, no shadow.
+        <em>Left-bar</em>: composes with any of the above; adds a leading-edge
+        accent in primary or status colour.
       </p>
     </header>
 
     <p class="usage-note reveal">
-      <strong>One style per region.</strong> Mixing Elevated and Outlined
-      cards in the same grid creates competing depth cues. Pick the style
-      that matches the region's elevation budget — marketing surfaces tend
-      Elevated, dashboards and admin tooling tend Outlined or Filled.
+      <strong>Apply one style per region.</strong> Mixing Elevated and
+      Outlined cards in the same grid creates competing depth cues. Pick
+      the style that matches the region's elevation budget: content
+      surfaces use Elevated; dashboards and admin tooling use Outlined or
+      Filled.
     </p>
 
     <div class="card-showcase reveal">
@@ -182,7 +179,7 @@
       <article class="card-showcase__tile size-md">
         <span class="label">Elevated · default</span>
         <div class="demo">
-          <article class="card is-interactive" tabindex="0">
+          <article class="card">
             <span class="card__eyebrow">Caseload · 2026-05-07</span>
             <header class="card__header">
               <h3 class="card__title">Bessie · Holstein, 4y</h3>
@@ -200,10 +197,11 @@
           </article>
         </div>
         <dl class="card-showcase__note">
-          <dt>Use case</dt><dd>The system default — content blocks on marketing surfaces, intake forms, primary feed cards.</dd>
-          <dt>States</dt><dd>Default, hover (lifts), focus (ring), pressed (settles), disabled.</dd>
-          <dt>Interactions</dt><dd>One primary action; up to two secondary. Whole card may be a link via <code>a.card</code>.</dd>
-          <dt>Responsive</dt><dd>Stacks 1-up on mobile; 2–3 per row on tablet; 3–4 in dashboard grids.</dd>
+          <dt>Definition</dt><dd>Default style. Subtle shadow plus a 1px border.</dd>
+          <dt>Use case</dt><dd>Content blocks, intake forms, feed items where elevation distinguishes the card from the canvas.</dd>
+          <dt>States</dt><dd>Default · hover (lift + shadow deepens) · focus (ring) · pressed (settle + primary aura) · disabled. Only when the card is the affordance — see the interactivity guideline above.</dd>
+          <dt>Interactions</dt><dd>If actions live inside the footer, the card surface is non-interactive. If the surface is the affordance, omit inner buttons.</dd>
+          <dt>Responsive</dt><dd>1-up on mobile · 2–3 per row on tablet · 3–4 in dashboard grids.</dd>
         </dl>
         <div class="meta"><span>.card</span><strong>shadow + border</strong></div>
       </article>
@@ -219,16 +217,17 @@
               <p class="card__subtitle">3 settings · last edited yesterday</p>
             </header>
             <p class="card__body">
-              No drop shadow. The subtle background tint provides
-              just-enough separation from the canvas.
+              No drop shadow. A subtle background tint separates the
+              card from the canvas.
             </p>
           </article>
         </div>
         <dl class="card-showcase__note">
-          <dt>Use case</dt><dd>Secondary blocks within a parent surface — settings groups, inline panels, quiet list items.</dd>
-          <dt>States</dt><dd>Default, hover (deeper tint), focus, pressed, disabled.</dd>
-          <dt>Interactions</dt><dd>Often the whole tile is the affordance (entire row is clickable). Single primary CTA inside is unusual.</dd>
-          <dt>Responsive</dt><dd>Always full-width inside its parent column; stacks vertically on every breakpoint.</dd>
+          <dt>Definition</dt><dd>Tinted background, no shadow, transparent border.</dd>
+          <dt>Use case</dt><dd>Secondary blocks within a parent surface — settings groups, inline panels, list items in a parent card.</dd>
+          <dt>States</dt><dd>Default · hover (deeper tint) · focus · pressed (primary aura) · disabled.</dd>
+          <dt>Interactions</dt><dd>Typical pattern: surface is the affordance, no inner buttons. Add inner buttons only when the surface is non-interactive.</dd>
+          <dt>Responsive</dt><dd>Full-width inside its parent column. Stacks vertically on every breakpoint.</dd>
         </dl>
         <div class="meta"><span>.card--filled</span><strong>tint, no shadow</strong></div>
       </article>
@@ -244,16 +243,17 @@
               <p class="card__subtitle">Cattle · dairy &amp; beef</p>
             </header>
             <p class="card__body">
-              High contrast against busy dashboards. The thicker border
-              survives layouts where shadow noise would compound.
+              Thicker border, no shadow. Holds separation in dense
+              layouts where shadows would compound.
             </p>
           </article>
         </div>
         <dl class="card-showcase__note">
-          <dt>Use case</dt><dd>Dense pickers, admin tooling, comparison grids, dashboard tiles where depth would be visual noise.</dd>
-          <dt>States</dt><dd>Default, hover (border turns primary), focus, pressed, disabled. <code>.is-selected</code> is common.</dd>
-          <dt>Interactions</dt><dd>Frequently used as a selectable surface — pair with <code>.card--selectable</code>.</dd>
-          <dt>Responsive</dt><dd>Wraps in a grid; on mobile, the border keeps cards distinct without shadows blooming.</dd>
+          <dt>Definition</dt><dd>1.5px border, no shadow, default background.</dd>
+          <dt>Use case</dt><dd>Dense pickers, admin tooling, comparison grids, dashboard tiles.</dd>
+          <dt>States</dt><dd>Default · hover (border turns primary) · focus · pressed (primary aura) · disabled. Often combined with <code>.is-selected</code>.</dd>
+          <dt>Interactions</dt><dd>Common surface for the Selectable functional variant.</dd>
+          <dt>Responsive</dt><dd>Wraps in a grid. The border maintains separation on mobile without shadow bloom.</dd>
         </dl>
         <div class="meta"><span>.card--outlined</span><strong>border, no shadow</strong></div>
       </article>
@@ -262,14 +262,15 @@
 
     <h4 class="subheading reveal">Left-bar <span class="tag">callout / alert / highlight</span></h4>
     <p class="usage-note reveal">
-      <strong>An asymmetric leading-edge border</strong> in primary or
-      status colour. Composes with any other style. The thicker left
-      border is the affordance — a recognised modern callout pattern
-      (Material alert cards, Tailwind UI alerts, Carbon notification
-      cards). Pair with status modifiers
-      (<code>.is-info</code> · <code>.is-warning</code> ·
+      <strong>Definition.</strong> A thicker leading-edge border in
+      primary or status colour. Composes with any other style.
+      <strong>Use case.</strong> Inline notifications, doc callouts,
+      highlighted feed items, sidebar nav active state.
+      <strong>Status modifiers.</strong>
+      <code>.is-info</code> · <code>.is-warning</code> ·
       <code>.is-critical</code> · <code>.is-safe</code> ·
-      <code>.is-primary</code>) so the colour communicates intent.
+      <code>.is-primary</code>. Match the modifier to the message's
+      semantic intent — colour alone is not the affordance.
     </p>
 
     <div class="card-showcase card-showcase--stack reveal">
@@ -400,12 +401,11 @@
         <h2 class="display">Four <em>orientations</em>.</h2>
       </div>
       <p>
-        Vertical stacks media on top of content. Horizontal places media on
-        the leading edge — these are previewed full-width below so the
-        length-greater-than-width form actually reads. Content-only drops
-        media entirely. List bleeds rows to the card's edge for stacked
-        content. Pick by viewport and scan direction, not by aesthetic
-        preference.
+        Modifiers that control how content arranges within the card.
+        <em>Vertical</em>: media on top, content below (default).
+        <em>Horizontal</em>: media on the leading edge.
+        <em>Content-only</em>: no media slot.
+        <em>List</em>: rows bleeding to the card's edges.
       </p>
     </header>
 
@@ -521,12 +521,13 @@
 
     <h4 class="subheading reveal">Horizontal <span class="tag">media · leading edge</span></h4>
     <p class="usage-note reveal">
-      <strong>Stack-mode preview.</strong> Horizontal cards are previewed
-      one-per-row at full width so the
-      length-greater-than-width form actually reads. In production they
-      typically live inside a vertical scroll list (search results, news
-      feeds, recent activity) — a side-by-side grid would flatten them
-      back to square.
+      <strong>Definition.</strong> Horizontal layout places media on the
+      leading edge and content beside it. The card's intrinsic ratio is
+      length &gt; width. <strong>Use case.</strong> Vertical scroll
+      lists: search results, news feeds, recent activity, conversation
+      lists. <strong>Layout note.</strong> Avoid placing horizontal
+      cards in side-by-side grids — that contradicts the intended scan
+      direction.
     </p>
 
     <div class="card-showcase card-showcase--stack reveal">
@@ -541,33 +542,30 @@
               <span class="card__eyebrow">News · 2026-05-07</span>
               <h3 class="card__title">New dairy welfare guidelines published</h3>
               <p class="card__body">
-                The agriculture ministry has published an updated welfare
-                framework covering housing, milk-yield monitoring, and
-                emergency-response protocols. Read the breakdown.
+                Updated welfare framework covering housing, milk-yield
+                monitoring, and emergency-response protocols.
               </p>
               <footer class="card__footer">
                 <span class="card__eyebrow">2 min read · Dr. Pham Hong</span>
-                <div class="card__actions">
-                  <button class="btn btn--ghost btn--sm" type="button">Save</button>
-                </div>
               </footer>
             </div>
           </a>
         </div>
         <dl class="card-showcase__note">
-          <dt>Use case</dt><dd>Mobile list rows, search result rows, recent activity, news feeds — any scan-down vertical list.</dd>
-          <dt>States</dt><dd>Inherits all base states. Hover commonly tints the entire row, not just the title.</dd>
-          <dt>Interactions</dt><dd>Whole card → link is the canonical pattern. Inline secondary actions on the right.</dd>
-          <dt>Responsive</dt><dd>Full-width across viewports. On narrow screens (&lt; 480px), media collapses to a smaller leading thumbnail or to vertical layout.</dd>
+          <dt>Definition</dt><dd>Horizontal layout where the entire surface is the affordance. No inner buttons.</dd>
+          <dt>Use case</dt><dd>Mobile list rows, search results, recent activity, news feeds.</dd>
+          <dt>States</dt><dd>Inherits the full state matrix; hover tints the entire row.</dd>
+          <dt>Interactions</dt><dd>Whole card → single destination. Per the interactivity guideline, no inner actions are added.</dd>
+          <dt>Responsive</dt><dd>Full-width across viewports. Below ~480px the media collapses to a smaller leading thumbnail.</dd>
         </dl>
-        <div class="meta"><span>.card--horizontal</span><strong>media · left</strong></div>
+        <div class="meta"><span>.card--horizontal</span><strong>whole-card link</strong></div>
       </article>
 
       <!-- HORIZONTAL · PRODUCT ROW -->
       <article class="card-showcase__tile size-full">
         <span class="label">Horizontal · product row</span>
         <div class="demo">
-          <article class="card card--horizontal is-interactive" tabindex="0">
+          <article class="card card--horizontal">
             <div class="card__media" aria-hidden="true"></div>
             <div class="card__content">
               <div class="card__badge-row">
@@ -575,7 +573,7 @@
                 <span class="card__badge">Bestseller</span>
               </div>
               <header class="card__header">
-                <h3 class="card__title">Vinallergy · oral suspension</h3>
+                <h3 class="card__title"><a href="#" onclick="event.preventDefault()">Vinallergy · oral suspension</a></h3>
                 <p class="card__subtitle">Anti-inflammatory · 250 ml · ref VL-250</p>
               </header>
               <p class="card__body">
@@ -596,12 +594,13 @@
           </article>
         </div>
         <dl class="card-showcase__note">
-          <dt>Use case</dt><dd>Catalog list-view, search results, cart line items, "people also bought" rails on detail pages.</dd>
-          <dt>States</dt><dd>Default, hover (lift + tint), focus, pressed, disabled (out-of-stock greys the CTA).</dd>
-          <dt>Interactions</dt><dd>Whole card → product detail; "Add to cart" is the in-card primary CTA; "Save" secondary.</dd>
-          <dt>Responsive</dt><dd>At &lt; 600px, footer wraps so price and CTAs stack vertically inside the content column.</dd>
+          <dt>Definition</dt><dd>Horizontal layout where inner controls are the affordances. The card surface itself is non-interactive; the title carries the link.</dd>
+          <dt>Use case</dt><dd>Catalog list-view, cart line items, "people also bought" rails.</dd>
+          <dt>States</dt><dd>The card has no hover/pressed state; the inner buttons and title link own their own states. Disabled (out-of-stock) greys the primary CTA.</dd>
+          <dt>Interactions</dt><dd>Title-link → detail page; "Add to cart" → primary CTA; "Save" → secondary. Three click targets, all explicit.</dd>
+          <dt>Responsive</dt><dd>Below ~600px, footer wraps so price and CTAs stack vertically.</dd>
         </dl>
-        <div class="meta"><span>.card--horizontal</span><strong>commerce row</strong></div>
+        <div class="meta"><span>.card--horizontal</span><strong>inner controls</strong></div>
       </article>
 
       <!-- HORIZONTAL · LEFT-BAR · ALERT -->
@@ -655,12 +654,25 @@
         <h2 class="display">Behaviour <em>modifiers</em>.</h2>
       </div>
       <p>
-        Four functional behaviours that wrap any style or layout variant.
-        Apply additively — a Selectable + Outlined + Vertical card is
-        legitimate; a Selectable + Featured card usually isn't (one
-        attention-grabber per region).
+        Modifiers that add behaviour to a card. Compose with style and
+        layout variants.
       </p>
     </header>
+
+    <div class="card-callout reveal" role="note">
+      <span class="label">Guideline · one level of interactivity</span>
+      <p>
+        <strong>A card has at most one interactive surface.</strong>
+        If the card contains its own buttons or links
+        (<code>.card__actions</code>, links inside the body, etc.), the
+        card itself must NOT also be made interactive — no
+        <code>.is-interactive</code>, no <code>&lt;a class="card"&gt;</code>
+        wrapper, no hover/pressed state on the surface. Nested click
+        targets create ambiguous affordances and break keyboard order.
+        Choose: either the surface is the affordance, or the inner
+        controls are.
+      </p>
+    </div>
 
     <div class="card-showcase reveal">
 
@@ -765,9 +777,8 @@
               <span class="card__price-strike">3,200,000 ₫</span>
             </div>
             <p class="card__body">
-              Use one Featured card per region. Pairs the accent border
-              with a soft tint and a corner ribbon for instant scan
-              priority.
+              Accent border, soft accent-tinted background, and a corner
+              ribbon. Use one per region.
             </p>
             <footer class="card__footer">
               <div class="card__actions" style="margin-left:auto">
@@ -777,14 +788,130 @@
           </article>
         </div>
         <dl class="card-showcase__note">
-          <dt>Use case</dt><dd>Editor's pick, recommended plan in pricing, featured product, top-of-list suggestion.</dd>
-          <dt>States</dt><dd>Inherits base states; the accent ring stays visible across hover/focus.</dd>
-          <dt>Interactions</dt><dd>One primary CTA strongly prescribed; the Featured treatment <em>is</em> the secondary signal.</dd>
-          <dt>Responsive</dt><dd>One per visual region. On mobile, slot it as the first card; on desktop, the middle of a pricing row.</dd>
+          <dt>Definition</dt><dd>Highlight modifier — accent border, accent-tinted background, corner ribbon.</dd>
+          <dt>Use case</dt><dd>Recommended plan in pricing, editor's pick, featured product, top-of-list suggestion.</dd>
+          <dt>States</dt><dd>Inherits the underlying card's state matrix; the accent ring persists across hover, focus, and pressed.</dd>
+          <dt>Interactions</dt><dd>One primary CTA inside the card. The Featured treatment is the secondary signal — do not stack with .is-interactive on the surface.</dd>
+          <dt>Responsive</dt><dd>One per region. Position as the first card on mobile, mid-row on desktop.</dd>
         </dl>
         <div class="meta"><span>.card--featured</span><strong>one per region</strong></div>
       </article>
 
+    </div>
+
+    <h4 class="subheading reveal">Draggable in context <span class="tag">kanban mock-up</span></h4>
+    <p class="usage-note reveal">
+      <strong>Reorder within a column · move across columns.</strong>
+      Each column is a drop target; each card is a drag source via its
+      handle. The CSS provides the affordance; movement is wired via
+      the host page's dnd implementation. The example below uses the
+      native HTML5 drag API for demonstration.
+    </p>
+
+    <div class="card-kanban reveal" data-kanban>
+      <section class="card-kanban__column">
+        <header class="card-kanban__column-head">
+          <span class="card__eyebrow">Backlog · 3</span>
+          <h4>To do</h4>
+        </header>
+        <div class="card-kanban__list" data-kanban-list>
+          <article class="card card--filled card--draggable" draggable="true">
+            <span class="card__drag-handle" aria-label="Drag to reorder">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <circle cx="9" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/>
+                <circle cx="15" cy="6" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="15" cy="18" r="1.6"/>
+              </svg>
+            </span>
+            <span class="card__eyebrow">Caseload</span>
+            <h5 class="card__title" style="font-size: var(--text-base)">Mastitis screen — Bessie</h5>
+            <p class="card__body">SCC trending up over 2 weeks.</p>
+          </article>
+          <article class="card card--filled card--draggable" draggable="true">
+            <span class="card__drag-handle" aria-label="Drag to reorder">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <circle cx="9" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/>
+                <circle cx="15" cy="6" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="15" cy="18" r="1.6"/>
+              </svg>
+            </span>
+            <span class="card__eyebrow">Vaccination</span>
+            <h5 class="card__title" style="font-size: var(--text-base)">Annual schedule — Atlas</h5>
+            <p class="card__body">Quarter horse, 8y. Consent on file.</p>
+          </article>
+          <article class="card card--filled card--draggable" draggable="true">
+            <span class="card__drag-handle" aria-label="Drag to reorder">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <circle cx="9" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/>
+                <circle cx="15" cy="6" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="15" cy="18" r="1.6"/>
+              </svg>
+            </span>
+            <span class="card__eyebrow">Lab</span>
+            <h5 class="card__title" style="font-size: var(--text-base)">Bloodwork — Penny</h5>
+            <p class="card__body">Awaiting external lab return.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="card-kanban__column">
+        <header class="card-kanban__column-head">
+          <span class="card__eyebrow">Active · 2</span>
+          <h4>In progress</h4>
+        </header>
+        <div class="card-kanban__list" data-kanban-list>
+          <article class="card card--filled card--draggable" draggable="true">
+            <span class="card__drag-handle" aria-label="Drag to reorder">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <circle cx="9" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/>
+                <circle cx="15" cy="6" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="15" cy="18" r="1.6"/>
+              </svg>
+            </span>
+            <span class="card__eyebrow">Treatment</span>
+            <h5 class="card__title" style="font-size: var(--text-base)">NSAID protocol — Bessie</h5>
+            <p class="card__body">Day 2 of 5. Withdrawal countdown active.</p>
+          </article>
+          <article class="card card--filled card--draggable" draggable="true">
+            <span class="card__drag-handle" aria-label="Drag to reorder">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <circle cx="9" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/>
+                <circle cx="15" cy="6" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="15" cy="18" r="1.6"/>
+              </svg>
+            </span>
+            <span class="card__eyebrow">Recovery</span>
+            <h5 class="card__title" style="font-size: var(--text-base)">Post-kid — Penny</h5>
+            <p class="card__body">Day 4 monitoring. Vitals stable.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="card-kanban__column">
+        <header class="card-kanban__column-head">
+          <span class="card__eyebrow">Closed · 2</span>
+          <h4>Done</h4>
+        </header>
+        <div class="card-kanban__list" data-kanban-list>
+          <article class="card card--filled card--draggable" draggable="true">
+            <span class="card__drag-handle" aria-label="Drag to reorder">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <circle cx="9" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/>
+                <circle cx="15" cy="6" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="15" cy="18" r="1.6"/>
+              </svg>
+            </span>
+            <span class="card__eyebrow">Visit · 2026-05-04</span>
+            <h5 class="card__title" style="font-size: var(--text-base)">Hoof trim — Atlas</h5>
+            <p class="card__body">No further action required.</p>
+          </article>
+          <article class="card card--filled card--draggable" draggable="true">
+            <span class="card__drag-handle" aria-label="Drag to reorder">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <circle cx="9" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/>
+                <circle cx="15" cy="6" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="15" cy="18" r="1.6"/>
+              </svg>
+            </span>
+            <span class="card__eyebrow">Visit · 2026-05-02</span>
+            <h5 class="card__title" style="font-size: var(--text-base)">Annual exam — Daisy</h5>
+            <p class="card__body">Owner notified. Records updated.</p>
+          </article>
+        </div>
+      </section>
     </div>
   </section>
 
@@ -796,11 +923,9 @@
         <h2 class="display">Composed <em>shapes</em>.</h2>
       </div>
       <p>
-        Four canonical compositions — Product, Profile, KPI, Article —
-        built entirely from the slots and sub-components defined in the
-        Anatomy section. They are <em>not</em> new variants, just
-        documented recipes for the most common card shapes in modern
-        product UIs.
+        Recipes — compositions of existing slots and sub-components.
+        Not new variants. Four canonical shapes: Product, Profile, KPI,
+        Article.
       </p>
     </header>
 
@@ -810,14 +935,14 @@
       <article class="card-showcase__tile size-md">
         <span class="label">Product · commerce</span>
         <div class="demo">
-          <article class="card is-interactive" tabindex="0">
+          <article class="card">
             <div class="card__media" aria-hidden="true"></div>
             <div class="card__badge-row">
               <span class="card__badge">New</span>
               <span class="card__badge card__badge--safe">In stock</span>
             </div>
             <header class="card__header">
-              <h3 class="card__title">Vinallergy · oral suspension</h3>
+              <h3 class="card__title"><a href="#" onclick="event.preventDefault()">Vinallergy · oral suspension</a></h3>
               <p class="card__subtitle">Anti-inflammatory · 250 ml</p>
             </header>
             <div class="card__rating">
@@ -837,10 +962,11 @@
           </article>
         </div>
         <dl class="card-showcase__note">
-          <dt>Use case</dt><dd>Catalog grids, search results, recommendations. Image · badges · title · rating · price · CTA.</dd>
-          <dt>States</dt><dd>Inherits Interactive states. Out-of-stock badge disables the primary action.</dd>
-          <dt>Interactions</dt><dd>Whole-card link to product detail; "Add to cart" is the in-card primary CTA; "Save" secondary.</dd>
-          <dt>Responsive</dt><dd>2-up on mobile, 3–4 up on desktop. Image aspect held constant via <code>.card__media</code>.</dd>
+          <dt>Definition</dt><dd>Recipe composing media · badges · title · rating · price · footer actions. Surface is non-interactive because the footer carries explicit CTAs.</dd>
+          <dt>Use case</dt><dd>Catalog grids, search results, recommendation rails.</dd>
+          <dt>States</dt><dd>Inner controls own their states. Out-of-stock disables "Add to cart" via <code>[disabled]</code>.</dd>
+          <dt>Interactions</dt><dd>Three explicit targets: title link → detail; "Add to cart" → primary; "Save" → secondary.</dd>
+          <dt>Responsive</dt><dd>2-up on mobile · 3–4 up on desktop. Media aspect held constant by <code>.card__media</code>.</dd>
         </dl>
         <div class="meta"><span>recipe</span><strong>commerce</strong></div>
       </article>
@@ -947,30 +1073,29 @@
         <h2 class="display">Blur and <em>transparency</em>.</h2>
       </div>
       <p>
-        Five glass tiers, ordered by frostiness. Each pair of values
-        (<code>--card-glass-{tier}-blur</code> and
-        <code>--card-glass-{tier}-bg</code>) is designed in concert: more
-        blur is paired with higher tint opacity, less blur with a clearer
-        base. Backdrop is a soft pastel atmosphere, not a brand wash.
+        Translucent surface modifiers with backdrop blur. Five tiers
+        ordered by frost density: Clear, Light (default), Frost, Heavy,
+        Tinted. Each tier pairs a blur value with a tint opacity —
+        higher blur correlates with higher opacity to keep content
+        legible.
       </p>
     </header>
 
     <p class="usage-note reveal">
-      <strong>Pick the tier by what's behind the card.</strong>
-      <code>.card--glass-clear</code> for floating overlays;
-      <code>.card--glass</code> for hero callouts on subtle backdrops;
-      <code>.card--glass-frost</code> for content surfaces over busy
-      imagery; <code>.card--glass-heavy</code> for modal-grade slabs;
-      <code>.card--glass-tinted</code> when the brand should colour the
+      <strong>Tier selection.</strong> Pick by the visual density of
+      what sits behind the card.
+      <code>.card--glass-clear</code>: floating overlays.
+      <code>.card--glass</code>: callouts on subtle backdrops.
+      <code>.card--glass-frost</code>: content surfaces over busy imagery.
+      <code>.card--glass-heavy</code>: modal-grade sheets.
+      <code>.card--glass-tinted</code>: when the brand should colour the
       glass itself.
     </p>
 
     <p class="usage-note reveal">
-      <strong>Glass cards are fully interactive.</strong> Every tier ships
-      with hover and pressed states that <em>tint up</em> rather than
-      flipping to opaque white — the blur is preserved, the surface just
-      reads slightly more lit. All five demos below are tabbable; hover
-      or focus to see the state shift.
+      <strong>Interactive states are preserved.</strong> Every tier's
+      hover/pressed states tint up rather than flipping to an opaque
+      surface. Blur and translucency persist across all states.
     </p>
 
     <div class="card-showcase reveal">
@@ -1077,12 +1202,13 @@
         <h2 class="display">Five interaction <em>states</em>.</h2>
       </div>
       <p>
-        Default, Hover, Focus, Pressed, Disabled — applied automatically to
-        any interactive card (an <code>&lt;a&gt;</code>, a
-        <code>&lt;button&gt;</code>, or <code>.is-interactive</code>). The
-        hover lift and pressed settle are the same micro-animations used
-        by the Button component, kept under 200 ms so the UI never feels
-        sluggish.
+        Five interaction states applied automatically when the card is
+        the affordance — i.e. an <code>&lt;a&gt;</code>, a
+        <code>&lt;button&gt;</code>, or carries
+        <code>.is-interactive</code>. Pressed releases a primary-tinted
+        aura that mirrors the swatch-pulse behaviour on the primitives
+        page. Cards with internal buttons or links must NOT carry these
+        states — see the interactivity guideline in section 04.
       </p>
     </header>
 
@@ -1126,13 +1252,13 @@
       <article class="card-showcase__tile size-md">
         <div class="demo">
           <article class="card is-interactive" tabindex="0"
-                   style="background: var(--card-bg-pressed); box-shadow: var(--card-shadow); transform: translateY(0);">
-            <span class="card__eyebrow">Pressed</span>
-            <h3 class="card__title">Settled in.</h3>
-            <p class="card__body">Tile drops back to baseline; bg darkens one step.</p>
+                   style="animation: ds-pulse 1.6s ease infinite; background: var(--card-bg-pressed); transform: translateY(0);">
+            <span class="card__eyebrow">Pressed · click release</span>
+            <h3 class="card__title">Primary aura emanates.</h3>
+            <p class="card__body">Reuses the shared <code>ds-pulse</code> keyframe — identical to the swatch-copy pulse. Click any interactive card to fire it once.</p>
           </article>
         </div>
-        <div class="body"><span class="name">Pressed</span><span class="desc">:active</span></div>
+        <div class="body"><span class="name">Pressed</span><span class="desc">:active + ds-pulse</span></div>
       </article>
 
       <article class="card-showcase__tile size-md">
@@ -1157,11 +1283,13 @@
         <h2 class="display">Surface <em>adaptations</em>.</h2>
       </div>
       <p>
-        Beyond the per-state matrix, two surface-level adaptations:
-        <em>Inverted</em> re-wires every colour role for dark / brand
-        backdrops, and <em>is-selected</em> marks the active card across
-        any variant with a primary-tinted background, primary border,
-        and a primary ring shadow.
+        Surface adaptations beyond the state matrix.
+        <em>Default</em>: light canvas (rest).
+        <em>Inverted</em>: re-wires every colour role for dark or brand
+        backdrops.
+        <em>is-selected</em>: state modifier marking the active card in a
+        navigation list with a primary-tinted background, primary border,
+        and primary ring shadow.
       </p>
     </header>
 
@@ -1221,10 +1349,9 @@
         <h2 class="display">Token <em>map</em>.</h2>
       </div>
       <p>
-        Every card declaration resolves through this layer. Component tokens
-        only ever reference semantic tokens — never primitives — so a change
-        to surface, border, or selected colour cascades to every variant in
-        lockstep.
+        Component-scoped tokens that resolve to semantic tokens. Card
+        declarations reference only this layer; semantic-layer changes
+        cascade through automatically.
       </p>
     </header>
 
@@ -1503,6 +1630,102 @@ function initSelectableCards() {
 }
 
 /* =========================================================
+   PRESS PULSE — fire ds-pulse on click
+   Mirrors the swatch / token-card copy-pulse pattern from
+   primitives.html and semantics.html. Add .is-pulsing,
+   force a reflow with offsetWidth, re-add to restart. The
+   animation runs once (0.6s) then ends; the class stays
+   until the next click resets it.
+   ========================================================= */
+function initCardPress() {
+  const cards = document.querySelectorAll(
+    '.card.is-interactive, a.card, button.card, .card--selectable'
+  );
+  cards.forEach(card => {
+    card.addEventListener('click', () => {
+      card.classList.remove('is-pulsing');
+      // force reflow so the animation restarts on a repeat click
+      void card.offsetWidth;
+      card.classList.add('is-pulsing');
+    });
+  });
+}
+
+/* =========================================================
+   KANBAN — drag-and-drop demo
+   Uses the native HTML5 drag API. The CSS variant
+   .card--draggable provides the affordance (handle, cursor,
+   .is-dragging style); this wires the actual movement.
+   Production usage would typically wrap a library
+   (react-dnd, dnd-kit, SortableJS) for accessibility +
+   keyboard reorder support.
+   ========================================================= */
+function initKanban() {
+  const board = document.querySelector('[data-kanban]');
+  if (!board) return;
+  const lists = Array.from(board.querySelectorAll('[data-kanban-list]'));
+  if (!lists.length) return;
+
+  let dragged = null;
+
+  // Cards: dragstart / dragend
+  board.querySelectorAll('.card--draggable').forEach(card => {
+    card.addEventListener('dragstart', (e) => {
+      dragged = card;
+      card.classList.add('is-dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      // Required for Firefox to register the drag
+      try { e.dataTransfer.setData('text/plain', ''); } catch (_) {}
+    });
+    card.addEventListener('dragend', () => {
+      card.classList.remove('is-dragging');
+      lists.forEach(l => l.classList.remove('is-drop-target'));
+      dragged = null;
+    });
+  });
+
+  // Lists: dragover / dragleave / drop
+  lists.forEach(list => {
+    list.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      list.classList.add('is-drop-target');
+      if (!dragged) return;
+      const after = getAfterCard(list, e.clientY);
+      if (!after) {
+        list.appendChild(dragged);
+      } else if (after !== dragged) {
+        list.insertBefore(dragged, after);
+      }
+    });
+    list.addEventListener('dragleave', (e) => {
+      // Only clear when leaving the list entirely
+      if (!list.contains(e.relatedTarget)) {
+        list.classList.remove('is-drop-target');
+      }
+    });
+    list.addEventListener('drop', (e) => {
+      e.preventDefault();
+      list.classList.remove('is-drop-target');
+    });
+  });
+
+  // Find the card whose vertical centre is closest below the
+  // cursor; the dragged card should be inserted before it.
+  function getAfterCard(list, y) {
+    const cards = Array.from(list.querySelectorAll('.card--draggable:not(.is-dragging)'));
+    return cards.reduce((closest, card) => {
+      const rect = card.getBoundingClientRect();
+      const offset = y - rect.top - rect.height / 2;
+      if (offset < 0 && offset > closest.offset) {
+        return { offset: offset, element: card };
+      }
+      return closest;
+    }, { offset: Number.NEGATIVE_INFINITY, element: null }).element;
+  }
+}
+
+/* =========================================================
    REVEAL ON SCROLL
    ========================================================= */
 function initReveal() {
@@ -1528,6 +1751,8 @@ function initReveal() {
 document.addEventListener('DOMContentLoaded', () => {
   renderTokenTable();
   initSelectableCards();
+  initCardPress();
+  initKanban();
   initReveal();
 });
 </script>

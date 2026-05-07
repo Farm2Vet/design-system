@@ -269,6 +269,24 @@ button.card:active {
     transform: translateY(0);
 }
 
+/* =========================================================
+   PRESS PULSE — primary-tinted aura released on click
+   Reuses the shared ds-pulse keyframe (defined in shell.css)
+   so the effect is identical to the swatch-copy pulse on the
+   primitives and semantics pages. JS adds .is-pulsing on
+   click; re-firing requires remove + offsetWidth reflow +
+   add (same restart pattern used elsewhere in the system).
+
+   Applies to every interactive card surface — Elevated,
+   Filled, Outlined, all glass tiers, Inverted, Selectable,
+   and Draggable — because the keyframe replaces box-shadow
+   for the duration of the animation regardless of the
+   variant's resting shadow.
+   ========================================================= */
+.card.is-pulsing {
+    animation: ds-pulse 0.6s ease;
+}
+
 .card.is-interactive:focus-visible,
 a.card:focus-visible,
 button.card:focus-visible,
@@ -483,6 +501,13 @@ button.card.card--filled:hover {
     box-shadow: none;
     border-color: var(--card-filled-border);
 }
+.card--filled.is-interactive:active,
+a.card.card--filled:active,
+button.card.card--filled:active {
+    background: var(--card-filled-bg-hover);
+    box-shadow: none;
+    transform: translateY(0);
+}
 
 /* =========================================================
    STYLE VARIANT — Outlined (border-led, no fill)
@@ -500,6 +525,14 @@ button.card.card--outlined:hover {
     background: var(--card-outlined-bg-hover);
     border-color: var(--border-primary);
     box-shadow: none;
+}
+.card--outlined.is-interactive:active,
+a.card.card--outlined:active,
+button.card.card--outlined:active {
+    background: var(--card-outlined-bg-hover);
+    border-color: var(--border-primary);
+    box-shadow: none;
+    transform: translateY(0);
 }
 
 /* =========================================================
