@@ -1,0 +1,413 @@
+/* =========================================================
+   PAGE — COMPONENT · TOAST
+   Layout unique to component-toast.html: showcase tiles for
+   floating toasts, viewport-stage simulators that contain
+   floating toast regions inside the document flow, position
+   grid, and same-tone stack demo.
+   Token-table styling, .preview-stage and .stage-caption
+   are reused from page-component-button.css; usage-note
+   styling is reused from page-component-form.css; the
+   anatomy panel pattern mirrors page-component-alert.css's
+   .alert-anatomy.
+   The actual component lives in toast.css.
+   Depends on: tokens.css, base.css, shell.css, toast.css
+   ========================================================= */
+
+/* =========================================================
+   TOAST SHOWCASE — single-column stack of demo tiles
+   Toasts are length-greater-than-width by nature, so a
+   vertical stack reads more honestly than a side-by-side
+   grid would.
+   ========================================================= */
+.toast-showcase {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-5x);
+}
+.toast-showcase__tile {
+    border-radius: var(--radius-lg);
+    border: var(--border-width-base) solid var(--border-glass-light);
+    background: var(--background-glass-light);
+    backdrop-filter: var(--blur-lg) saturate(140%);
+    -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
+    padding: var(--spacing-5x);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4x);
+}
+.toast-showcase__tile .label {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+}
+.toast-showcase__tile .demo {
+    display: flex;
+    align-items: stretch;
+}
+.toast-showcase__tile .demo > .toast { width: 100%; }
+/* Snackbar is intrinsic-width by design — pill should size to
+   its text, never stretch to fill the demo tile. */
+.toast-showcase__tile .demo > .toast.toast--snackbar { width: max-content; }
+.toast-showcase__tile .meta {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    color: var(--text-default-minimal);
+    letter-spacing: 0.04em;
+    border-top: var(--border-width-base) solid var(--border-default-subtle);
+    padding-top: var(--spacing-3x);
+    display: flex;
+    justify-content: space-between;
+    gap: var(--spacing-3x);
+}
+.toast-showcase__tile .meta strong {
+    color: var(--text-default);
+    font-weight: var(--font-weight-medium);
+}
+
+/* =========================================================
+   ANATOMY DIAGRAM — slot vocabulary for .toast
+   Mirrors the .alert-anatomy panel used on
+   component-alert.html so the documentation cadence stays
+   consistent.
+   ========================================================= */
+.toast-anatomy {
+    padding: var(--spacing-8x);
+    display: grid;
+    grid-template-columns: minmax(360px, 1fr) minmax(260px, 360px);
+    gap: var(--spacing-8x);
+    align-items: center;
+}
+.toast-anatomy .legend {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3x);
+}
+.toast-anatomy .legend dt {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-primary-strong);
+    margin-bottom: var(--spacing-half);
+}
+.toast-anatomy .legend dd {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--text-default-subtle);
+    line-height: var(--line-height-body);
+    margin: 0 0 var(--spacing-3x);
+}
+
+/* =========================================================
+   TOAST × LIST — vertical column of tone variations under
+   one heading, used for the tone matrix.
+   ========================================================= */
+.toast-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3x);
+}
+.toast-list > .toast { width: 100%; }
+
+/* =========================================================
+   VIEWPORT STAGE — simulates a real browser viewport so
+   the floating .toast-region renders in-flow on the
+   documentation page. Without this stage the regions
+   would attach to the actual viewport and overlap with
+   the page chrome.
+   ========================================================= */
+.viewport-stage {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    border: var(--border-width-base) solid var(--border-default);
+    background:
+        radial-gradient(ellipse 70% 50% at 70% 25%, color-mix(in srgb, var(--accent-200) 22%, transparent), transparent 70%),
+        linear-gradient(180deg, var(--background-default) 0%, var(--background-default-subtle) 100%);
+    min-height: 360px;
+    isolation: isolate;
+}
+.viewport-stage__chrome {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2x);
+    padding: var(--spacing-3x) var(--spacing-4x);
+    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
+    background: color-mix(in srgb, var(--background-default) 80%, transparent);
+    backdrop-filter: var(--blur-sm);
+    -webkit-backdrop-filter: var(--blur-sm);
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+}
+.viewport-stage__chrome .dots {
+    display: inline-flex;
+    gap: var(--spacing-1x);
+    margin-right: var(--spacing-3x);
+}
+.viewport-stage__chrome .dots span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--neutral-400) 50%, transparent);
+}
+.viewport-stage__chrome .dots span:nth-child(1) { background: color-mix(in srgb, var(--critical-500) 70%, transparent); }
+.viewport-stage__chrome .dots span:nth-child(2) { background: color-mix(in srgb, var(--warning-500) 70%, transparent); }
+.viewport-stage__chrome .dots span:nth-child(3) { background: color-mix(in srgb, var(--safe-500)    70%, transparent); }
+.viewport-stage__chrome .url {
+    flex: 1 1 auto;
+    text-align: center;
+    color: var(--text-default-subtle);
+    font-family: var(--font-mono);
+    text-transform: none;
+    letter-spacing: 0;
+}
+.viewport-stage__body {
+    position: relative;
+    padding: var(--spacing-6x);
+    min-height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.viewport-stage__placeholder {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+    text-align: center;
+    line-height: var(--line-height-body);
+}
+
+/* When a region is dropped inside the stage we want it to
+   anchor to the stage's edges rather than the real
+   viewport. The stage establishes a containing block via
+   contain: layout. */
+.viewport-stage .toast-region {
+    position: absolute;
+}
+
+/* =========================================================
+   POSITION GRID — six anchor points, six labelled tiles.
+   ========================================================= */
+.position-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-4x);
+}
+.position-grid__tile {
+    border-radius: var(--radius-lg);
+    border: var(--border-width-base) solid var(--border-default);
+    background: var(--background-default-subtle);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+.position-grid__tile .stage {
+    position: relative;
+    height: 200px;
+    background:
+        radial-gradient(ellipse 70% 50% at 50% 30%, color-mix(in srgb, var(--accent-200) 18%, transparent), transparent 70%),
+        var(--background-default);
+}
+.position-grid__tile .stage .toast-region {
+    position: absolute;
+}
+.position-grid__tile .stage .toast {
+    min-width: 0;
+    box-shadow: var(--shadow-md);
+}
+.position-grid__tile .stage .toast__title {
+    font-size: var(--text-sm);
+}
+.position-grid__tile .label {
+    padding: var(--spacing-3x) var(--spacing-4x);
+    border-top: var(--border-width-base) solid var(--border-default-subtle);
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+    display: flex;
+    justify-content: space-between;
+    gap: var(--spacing-2x);
+}
+.position-grid__tile .label strong {
+    color: var(--text-default);
+    font-weight: var(--font-weight-medium);
+}
+
+/* The inner toasts of the position grid are size-scaled
+   down so they fit the small tile dimensions cleanly. */
+.position-grid__tile .stage .toast {
+    --toast-md-min-width: 200px;
+    font-size: var(--text-sm);
+    padding: var(--spacing-2x) var(--spacing-3x);
+}
+.position-grid__tile .stage .toast__icon {
+    width: 16px;
+    height: 16px;
+}
+.position-grid__tile .stage .toast-region {
+    --toast-region-padding: var(--spacing-3x);
+}
+
+/* =========================================================
+   STACK DEMO — shows three toasts of one tone collapsing
+   into a peek-behind pile. A separate "expanded" tile
+   illustrates the hover/focus fan-out.
+   ========================================================= */
+.stack-demo {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: var(--spacing-5x);
+}
+.stack-demo .viewport-stage { min-height: 320px; }
+.stack-demo .viewport-stage__body { padding: 0; }
+.stack-demo .viewport-stage .toast-region {
+    --toast-region-padding: var(--spacing-5x);
+}
+
+/* =========================================================
+   STAGE CAPTION — small mono label inside a viewport-stage
+   chrome, used to identify each stage's purpose.
+   ========================================================= */
+.viewport-stage .stage-tag {
+    position: absolute;
+    bottom: var(--spacing-3x);
+    left: var(--spacing-4x);
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+    pointer-events: none;
+}
+
+/* =========================================================
+   TRIGGER ROW — "Try it" affordances inside demo tiles
+   The button row spawns a real toast into a viewport-anchored
+   region so users can preview the variant in motion.
+   ========================================================= */
+.toast-showcase__tile .triggers,
+.toast-list-triggers,
+.tone-triggers,
+.size-triggers,
+.layout-triggers,
+.style-triggers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-2x);
+    align-items: center;
+}
+.toast-showcase__tile .triggers {
+    margin-top: calc(var(--spacing-1x) * -1);
+}
+.toast-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-1x);
+    padding: var(--spacing-1x) var(--spacing-3x);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default);
+    background: color-mix(in srgb, var(--background-default) 92%, transparent);
+    border: var(--border-width-base) solid var(--border-default);
+    cursor: pointer;
+    transition: background-color .18s ease, border-color .18s ease, color .18s ease, transform .12s ease;
+    white-space: nowrap;
+}
+.toast-trigger:hover {
+    background: var(--background-default);
+    border-color: var(--border-default-strong);
+    color: var(--text-primary-strong);
+}
+.toast-trigger:active {
+    transform: translateY(1px);
+}
+.toast-trigger:focus-visible {
+    outline: 2px solid var(--outline-focus);
+    outline-offset: 2px;
+}
+.toast-trigger::before {
+    content: '▶';
+    font-size: 9px;
+    color: var(--text-primary-strong);
+    margin-right: 2px;
+}
+.toast-trigger.is-tone-info     { border-color: var(--border-info); }
+.toast-trigger.is-tone-safe     { border-color: var(--border-safe); }
+.toast-trigger.is-tone-warning  { border-color: var(--border-warning); }
+.toast-trigger.is-tone-critical { border-color: var(--border-critical); }
+.toast-trigger.is-tone-info::before     { color: var(--text-info); }
+.toast-trigger.is-tone-safe::before     { color: var(--text-safe); }
+.toast-trigger.is-tone-warning::before  { color: var(--text-warning); }
+.toast-trigger.is-tone-critical::before { color: var(--text-critical); }
+
+/* "Reset" affordance — clears any active toasts on the page. */
+.toast-trigger.is-reset {
+    background: transparent;
+    border-style: dashed;
+    color: var(--text-default-subtle);
+}
+.toast-trigger.is-reset::before { content: '⟳'; font-size: 11px; }
+
+.tone-triggers,
+.size-triggers,
+.layout-triggers,
+.style-triggers {
+    margin-bottom: var(--spacing-4x);
+}
+
+/* Trigger sits below each position-grid tile */
+.position-grid__tile .label {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-2x);
+}
+.position-grid__tile .label .toast-trigger {
+    align-self: flex-start;
+}
+
+/* =========================================================
+   PROGRESS / PROMISE / SNACKBAR — special-tile variations
+   ========================================================= */
+.toast-showcase__tile.is-snackbar .demo {
+    position: relative;
+    min-height: 96px;
+    border-radius: var(--radius-md);
+    background: var(--background-inverted);
+    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+}
+.toast-showcase__tile.is-snackbar .demo .toast--snackbar {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    transform: none;
+    opacity: 1;
+    pointer-events: auto;
+    width: max-content;
+    max-width: calc(100% - var(--spacing-6x));
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 960px) {
+    .toast-anatomy { grid-template-columns: 1fr; gap: var(--spacing-5x); }
+    .position-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+    .position-grid { grid-template-columns: 1fr; }
+    .toast-showcase__tile .demo > .toast { font-size: var(--text-sm); }
+}

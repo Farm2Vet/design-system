@@ -1,0 +1,734 @@
+/* =========================================================
+   FARM2VET DESIGN SYSTEM — TOAST COMPONENT
+   A transient, non-blocking notification surface that floats
+   above the main content. Toasts auto-dismiss; they do not
+   take focus and do not interrupt the task flow. For
+   in-flow status messages use Alert; for blocking messages
+   use Modal. The Snackbar variant (legacy bottom-centre
+   pill, used for copy-to-clipboard confirmations) lives
+   here so the Toast family is the single source for all
+   transient feedback.
+
+   One shared shape adapts across:
+     • Status tones — Info, Safe (success), Warning,
+                      Critical, Neutral
+     • Style        — Soft (default), Solid, Inverted
+     • Layout       — Default, Compact, With body,
+                      With actions, With auto-dismiss
+                      progress, Promise / loading,
+                      Snackbar (one-line copy pill)
+     • Sizes        — SM · MD (default) · LG
+     • Region       — Fixed-position container, six
+                      anchors (top/bottom × left/centre/right)
+     • Stack        — Same-tone toasts collapse into a
+                      peek-behind pile so a flood of one
+                      tone never escapes the viewport.
+   Depends on: tokens.css
+   ========================================================= */
+
+/* =========================================================
+   COMPONENT TOKENS — Toast
+   Component tokens reference semantic tokens strictly.
+   Tone tokens echo the Alert family one-for-one so the
+   two feedback components share a single status colour
+   vocabulary.
+   ========================================================= */
+:root {
+    /* ---------- Shared shape ---------- */
+    --toast-font-family:      var(--font-sans);
+    --toast-radius:           var(--radius-md);
+    --toast-border-width:     var(--border-width-base);
+    --toast-shadow:           var(--shadow-lg);
+    --toast-gap:              var(--spacing-3x);
+    --toast-gap-tight:        var(--spacing-2x);
+    --toast-icon-offset:      2px;
+    --toast-bar-width:        4px;
+    --toast-transition:       background-color .18s ease, color .18s ease,
+                              border-color .18s ease, box-shadow .18s ease,
+                              opacity .25s ease, transform .3s cubic-bezier(.2,.8,.2,1);
+
+    /* ---------- Sizes (MD is the default per spec) ---------- */
+    --toast-sm-font-size:     var(--text-sm);
+    --toast-sm-padding-x:     var(--spacing-3x);
+    --toast-sm-padding-y:     var(--spacing-2x);
+    --toast-sm-icon:          16px;
+    --toast-sm-title:         var(--text-sm);
+    --toast-sm-min-width:     240px;
+
+    --toast-md-font-size:     var(--text-base);
+    --toast-md-padding-x:     var(--spacing-4x);
+    --toast-md-padding-y:     var(--spacing-3x);
+    --toast-md-icon:          20px;
+    --toast-md-title:         var(--text-base);
+    --toast-md-min-width:     320px;
+
+    --toast-lg-font-size:     var(--text-base);
+    --toast-lg-padding-x:     var(--spacing-5x);
+    --toast-lg-padding-y:     var(--spacing-4x);
+    --toast-lg-icon:          24px;
+    --toast-lg-title:         var(--text-h6);
+    --toast-lg-min-width:     360px;
+
+    --toast-max-width:        420px;
+
+    /* ---------- Tone: Info (default) ---------- */
+    --toast-info-bg:          var(--background-info);
+    --toast-info-border:      var(--border-info);
+    --toast-info-fg:          var(--text-info-strong);
+    --toast-info-fg-body:     var(--text-default);
+    --toast-info-icon:        var(--text-info);
+    --toast-info-bar:         var(--info-500);
+    --toast-info-solid-bg:    var(--info-500);
+    --toast-info-solid-fg:    var(--text-inverted);
+
+    /* ---------- Tone: Safe (success) ---------- */
+    --toast-safe-bg:          var(--background-safe);
+    --toast-safe-border:      var(--border-safe);
+    --toast-safe-fg:          var(--text-safe-strong, var(--text-safe));
+    --toast-safe-fg-body:     var(--text-default);
+    --toast-safe-icon:        var(--text-safe);
+    --toast-safe-bar:         var(--safe-500);
+    --toast-safe-solid-bg:    var(--safe-500);
+    --toast-safe-solid-fg:    var(--text-inverted);
+
+    /* ---------- Tone: Warning ---------- */
+    --toast-warning-bg:       var(--background-warning);
+    --toast-warning-border:   var(--border-warning);
+    --toast-warning-fg:       var(--text-warning);
+    --toast-warning-fg-body:  var(--text-default);
+    --toast-warning-icon:     var(--text-warning);
+    --toast-warning-bar:      var(--warning-500);
+    --toast-warning-solid-bg: var(--warning-500);
+    --toast-warning-solid-fg: var(--text-inverted);
+
+    /* ---------- Tone: Critical (error) ---------- */
+    --toast-critical-bg:      var(--background-critical);
+    --toast-critical-border:  var(--border-critical);
+    --toast-critical-fg:      var(--text-critical);
+    --toast-critical-fg-body: var(--text-default);
+    --toast-critical-icon:    var(--text-critical);
+    --toast-critical-bar:     var(--critical-500);
+    --toast-critical-solid-bg:var(--critical-500);
+    --toast-critical-solid-fg:var(--text-inverted);
+
+    /* ---------- Tone: Neutral ---------- */
+    --toast-neutral-bg:       var(--background-default);
+    --toast-neutral-border:   var(--border-default);
+    --toast-neutral-fg:       var(--text-default);
+    --toast-neutral-fg-body:  var(--text-default-subtle);
+    --toast-neutral-icon:     var(--icon-default);
+    --toast-neutral-bar:      var(--neutral-400);
+    --toast-neutral-solid-bg: var(--neutral-700);
+    --toast-neutral-solid-fg: var(--text-inverted);
+
+    /* ---------- Inverted style — dark glass for light pages ---------- */
+    --toast-inverted-bg:      color-mix(in srgb, var(--neutral-950) 92%, transparent);
+    --toast-inverted-border:  color-mix(in srgb, var(--white-base) 12%, transparent);
+    --toast-inverted-fg:      var(--text-inverted);
+    --toast-inverted-fg-body: var(--text-inverted-subtle);
+    --toast-inverted-icon:    var(--text-inverted);
+
+    /* ---------- Slot typography ---------- */
+    --toast-title-weight:     var(--font-weight-semibold);
+    --toast-title-fg:         inherit;
+    --toast-body-fg:          var(--text-default-subtle);
+    --toast-body-line:        var(--line-height-body);
+
+    /* ---------- Dismiss / close ---------- */
+    --toast-close-size:       28px;
+    --toast-close-radius:     var(--radius-sm);
+    --toast-close-fg:         var(--icon-default);
+    --toast-close-fg-hover:   var(--text-default);
+    --toast-close-bg-hover:   color-mix(in srgb, var(--neutral-900) 6%, transparent);
+
+    /* ---------- Auto-dismiss progress bar ---------- */
+    --toast-progress-height:  3px;
+    --toast-progress-bg:      color-mix(in srgb, currentColor 22%, transparent);
+    --toast-progress-fg:      currentColor;
+    --toast-progress-duration:5s;
+
+    /* ---------- Loading / promise spinner ---------- */
+    --toast-spinner-size:     16px;
+    --toast-spinner-track:    color-mix(in srgb, currentColor 18%, transparent);
+    --toast-spinner-thumb:    currentColor;
+
+    /* ---------- Region (viewport-anchored container) ---------- */
+    --toast-region-padding:   var(--spacing-6x);
+    --toast-region-gap:       var(--spacing-3x);
+    --toast-region-width:     min(420px, calc(100vw - var(--spacing-8x)));
+
+    /* ---------- Stack (same-tone grouping) ---------- */
+    --toast-stack-gap:        var(--spacing-3x);
+    --toast-stack-tone-gap:   var(--spacing-5x);   /* gap between two stacks of different tones */
+
+    /* ---------- Snackbar variant (legacy copy-confirmation pill) ---------- */
+    --toast-snackbar-bg:      var(--background-toast);
+    --toast-snackbar-border:  var(--border-toast);
+    --toast-snackbar-fg:      var(--text-inverted);
+    --toast-snackbar-radius:  var(--radius-pill);
+    --toast-snackbar-padding-x: var(--spacing-5x);
+    --toast-snackbar-padding-y: var(--spacing-3x);
+    --toast-snackbar-z:       100;
+
+    /* ---------- Focus ring ---------- */
+    --toast-focus-outline:        var(--outline-focus);
+    --toast-focus-outline-width:  2px;
+    --toast-focus-outline-offset: 2px;
+}
+
+/* =========================================================
+   BASE — .toast
+   The default style is "Soft": tinted background, thin
+   coloured border, leading icon, optional close button.
+   Layout is a 3-column flex strip:
+       [icon] [content (title + body)] [actions/×]
+   Mirrors .alert's slot vocabulary one-for-one.
+   ========================================================= */
+.toast {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--toast-gap);
+    padding: var(--toast-md-padding-y) var(--toast-md-padding-x);
+    min-width: var(--toast-md-min-width);
+    max-width: var(--toast-max-width);
+    background: var(--toast-bg, var(--toast-info-bg));
+    color: var(--toast-fg-body, var(--toast-info-fg-body));
+    border: var(--toast-border-width) solid var(--toast-border, var(--toast-info-border));
+    border-radius: var(--toast-radius);
+    box-shadow: var(--toast-shadow);
+    font-family: var(--toast-font-family);
+    font-size: var(--toast-md-font-size);
+    line-height: var(--toast-body-line);
+    transition: var(--toast-transition);
+    position: relative;
+    overflow: hidden;
+    pointer-events: auto;
+}
+
+/* Leading icon — uses currentColor so a single SVG works
+   across tones; the tone selector below paints the colour. */
+.toast__icon {
+    flex: 0 0 auto;
+    width: var(--toast-md-icon);
+    height: var(--toast-md-icon);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--toast-icon, var(--toast-info-icon));
+    margin-top: var(--toast-icon-offset);
+}
+.toast__icon svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Content stack — title + body. */
+.toast__content {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--toast-gap-tight);
+}
+.toast__title {
+    font-family: var(--toast-font-family);
+    font-size: var(--toast-md-title);
+    font-weight: var(--toast-title-weight);
+    color: var(--toast-fg, var(--toast-info-fg));
+    line-height: var(--line-height-h5);
+    margin: 0;
+}
+.toast__body {
+    font-size: var(--text-sm);
+    color: inherit;
+    line-height: var(--toast-body-line);
+    margin: 0;
+}
+.toast__body :where(p) { margin: 0; }
+.toast__body :where(a) {
+    color: var(--toast-fg, var(--toast-info-fg));
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 1px;
+}
+.toast__body :where(a):hover { text-decoration-thickness: 2px; }
+
+/* Trailing action region — for inline buttons (Undo, Retry,
+   View). The close × follows last in DOM order. */
+.toast__actions {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2x);
+    flex: 0 0 auto;
+    margin-left: auto;
+    align-self: center;
+}
+
+/* Inline action — text-button look, tone-aware. Mirrors
+   .alert__action so the visual language is shared. */
+.toast__action {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-1x);
+    padding: var(--spacing-1x) var(--spacing-3x);
+    border-radius: var(--radius-sm);
+    font-family: var(--toast-font-family);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--toast-fg, var(--toast-info-fg));
+    background: transparent;
+    border: var(--toast-border-width) solid transparent;
+    cursor: pointer;
+    transition: var(--toast-transition);
+    text-decoration: none;
+    white-space: nowrap;
+}
+.toast__action:hover {
+    background: color-mix(in srgb, currentColor 8%, transparent);
+}
+.toast__action:focus-visible {
+    outline: var(--toast-focus-outline-width) solid var(--toast-focus-outline);
+    outline-offset: var(--toast-focus-outline-offset);
+}
+.toast__action--strong {
+    background: var(--toast-fg, var(--toast-info-fg));
+    color: var(--background-default);
+    border-color: transparent;
+}
+.toast__action--strong:hover {
+    filter: brightness(0.95);
+    background: var(--toast-fg, var(--toast-info-fg));
+}
+
+/* Close (×) — square ghost button sized to the title cap. */
+.toast__close {
+    flex: 0 0 auto;
+    width: var(--toast-close-size);
+    height: var(--toast-close-size);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: var(--toast-close-radius);
+    background: transparent;
+    color: var(--toast-close-fg);
+    cursor: pointer;
+    transition: var(--toast-transition);
+    align-self: flex-start;
+    margin-top: calc(var(--toast-icon-offset) * -1);
+}
+.toast__close:hover {
+    background: var(--toast-close-bg-hover);
+    color: var(--toast-close-fg-hover);
+}
+.toast__close:focus-visible {
+    outline: var(--toast-focus-outline-width) solid var(--toast-focus-outline);
+    outline-offset: var(--toast-focus-outline-offset);
+}
+.toast__close svg {
+    width: 16px;
+    height: 16px;
+    display: block;
+}
+
+/* Auto-dismiss progress bar — visualises remaining lifetime.
+   The width animation is re-started by JS when the toast
+   regains focus or hover, so the timer can pause. */
+.toast__progress {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: var(--toast-progress-height);
+    width: 100%;
+    background: var(--toast-progress-bg);
+    overflow: hidden;
+    pointer-events: none;
+}
+.toast__progress::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: var(--toast-progress-fg);
+    transform-origin: left center;
+    animation: toast-progress var(--toast-progress-duration) linear forwards;
+}
+@keyframes toast-progress {
+    from { transform: scaleX(1); }
+    to   { transform: scaleX(0); }
+}
+
+/* Loading spinner — replaces the leading icon when the
+   toast is announcing a promise. */
+.toast__spinner {
+    flex: 0 0 auto;
+    width: var(--toast-spinner-size);
+    height: var(--toast-spinner-size);
+    border-radius: 50%;
+    border: 2px solid var(--toast-spinner-track);
+    border-top-color: var(--toast-spinner-thumb);
+    animation: toast-spin 0.9s linear infinite;
+    margin-top: var(--toast-icon-offset);
+    color: var(--toast-icon, var(--toast-info-icon));
+}
+@keyframes toast-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* =========================================================
+   STATUS TONES — apply tone tokens to the toast vars
+   ========================================================= */
+.toast.is-info,
+.toast {
+    --toast-bg:        var(--toast-info-bg);
+    --toast-border:    var(--toast-info-border);
+    --toast-fg:        var(--toast-info-fg);
+    --toast-fg-body:   var(--toast-info-fg-body);
+    --toast-icon:      var(--toast-info-icon);
+    --toast-bar:       var(--toast-info-bar);
+    --toast-solid-bg:  var(--toast-info-solid-bg);
+    --toast-solid-fg:  var(--toast-info-solid-fg);
+}
+.toast.is-safe {
+    --toast-bg:        var(--toast-safe-bg);
+    --toast-border:    var(--toast-safe-border);
+    --toast-fg:        var(--toast-safe-fg);
+    --toast-fg-body:   var(--toast-safe-fg-body);
+    --toast-icon:      var(--toast-safe-icon);
+    --toast-bar:       var(--toast-safe-bar);
+    --toast-solid-bg:  var(--toast-safe-solid-bg);
+    --toast-solid-fg:  var(--toast-safe-solid-fg);
+}
+.toast.is-warning {
+    --toast-bg:        var(--toast-warning-bg);
+    --toast-border:    var(--toast-warning-border);
+    --toast-fg:        var(--toast-warning-fg);
+    --toast-fg-body:   var(--toast-warning-fg-body);
+    --toast-icon:      var(--toast-warning-icon);
+    --toast-bar:       var(--toast-warning-bar);
+    --toast-solid-bg:  var(--toast-warning-solid-bg);
+    --toast-solid-fg:  var(--toast-warning-solid-fg);
+}
+.toast.is-critical {
+    --toast-bg:        var(--toast-critical-bg);
+    --toast-border:    var(--toast-critical-border);
+    --toast-fg:        var(--toast-critical-fg);
+    --toast-fg-body:   var(--toast-critical-fg-body);
+    --toast-icon:      var(--toast-critical-icon);
+    --toast-bar:       var(--toast-critical-bar);
+    --toast-solid-bg:  var(--toast-critical-solid-bg);
+    --toast-solid-fg:  var(--toast-critical-solid-fg);
+}
+.toast.is-neutral {
+    --toast-bg:        var(--toast-neutral-bg);
+    --toast-border:    var(--toast-neutral-border);
+    --toast-fg:        var(--toast-neutral-fg);
+    --toast-fg-body:   var(--toast-neutral-fg-body);
+    --toast-icon:      var(--toast-neutral-icon);
+    --toast-bar:       var(--toast-neutral-bar);
+    --toast-solid-bg:  var(--toast-neutral-solid-bg);
+    --toast-solid-fg:  var(--toast-neutral-solid-fg);
+}
+
+/* =========================================================
+   STYLE MODIFIERS
+   Surface treatment that composes with any tone.
+   ========================================================= */
+
+/* Solid — high-emphasis, white-on-tone. Reserved for the
+   most urgent transient feedback (sync failure, irreversible
+   action confirmations). */
+.toast--solid {
+    background: var(--toast-solid-bg);
+    color: var(--toast-solid-fg);
+    border-color: transparent;
+}
+.toast--solid .toast__title,
+.toast--solid .toast__icon,
+.toast--solid .toast__close {
+    color: var(--toast-solid-fg);
+}
+.toast--solid .toast__action,
+.toast--solid .toast__body :where(a) {
+    color: var(--toast-solid-fg);
+}
+.toast--solid .toast__action--strong {
+    background: var(--toast-solid-fg);
+    color: var(--toast-solid-bg);
+}
+.toast--solid .toast__close:hover {
+    background: color-mix(in srgb, var(--white-base) 18%, transparent);
+    color: var(--toast-solid-fg);
+}
+
+/* Inverted — dark glass surface. The most "marketed"
+   notification look (think OS-level toasts). Tone is
+   carried by the leading icon glyph only; surface stays
+   constant so a stack of mixed tones reads as one
+   uniform ribbon. */
+.toast--inverted {
+    background: var(--toast-inverted-bg);
+    color: var(--toast-inverted-fg-body);
+    border-color: var(--toast-inverted-border);
+    backdrop-filter: var(--blur-lg);
+    -webkit-backdrop-filter: var(--blur-lg);
+}
+.toast--inverted .toast__title,
+.toast--inverted .toast__action {
+    color: var(--toast-inverted-fg);
+}
+.toast--inverted .toast__close {
+    color: var(--text-inverted-subtle);
+}
+.toast--inverted .toast__close:hover {
+    background: color-mix(in srgb, var(--white-base) 12%, transparent);
+    color: var(--text-inverted);
+}
+.toast--inverted .toast__action--strong {
+    background: var(--text-inverted);
+    color: var(--neutral-950);
+}
+.toast--inverted .toast__progress {
+    background: color-mix(in srgb, var(--white-base) 14%, transparent);
+}
+
+/* Compact — single-line, tight padding, no body slot. */
+.toast--compact {
+    padding: var(--toast-sm-padding-y) var(--toast-sm-padding-x);
+    align-items: center;
+    font-size: var(--toast-sm-font-size);
+    min-width: var(--toast-sm-min-width);
+}
+.toast--compact .toast__icon {
+    width: var(--toast-sm-icon);
+    height: var(--toast-sm-icon);
+    margin-top: 0;
+}
+.toast--compact .toast__title {
+    font-size: var(--toast-sm-title);
+    font-weight: var(--font-weight-medium);
+}
+.toast--compact .toast__close {
+    align-self: center;
+    margin-top: 0;
+}
+
+/* =========================================================
+   SIZES — composes with any tone or style.
+   ========================================================= */
+.toast--sm {
+    padding: var(--toast-sm-padding-y) var(--toast-sm-padding-x);
+    font-size: var(--toast-sm-font-size);
+    gap: var(--toast-gap-tight);
+    min-width: var(--toast-sm-min-width);
+}
+.toast--sm .toast__icon {
+    width: var(--toast-sm-icon);
+    height: var(--toast-sm-icon);
+}
+.toast--sm .toast__title { font-size: var(--toast-sm-title); }
+
+.toast--lg {
+    padding: var(--toast-lg-padding-y) var(--toast-lg-padding-x);
+    font-size: var(--toast-lg-font-size);
+    gap: var(--spacing-4x);
+    min-width: var(--toast-lg-min-width);
+}
+.toast--lg .toast__icon {
+    width: var(--toast-lg-icon);
+    height: var(--toast-lg-icon);
+}
+.toast--lg .toast__title { font-size: var(--toast-lg-title); }
+
+/* =========================================================
+   ENTER / EXIT MOTION
+   The default transform reflects the region's anchor edge
+   so the toast appears to "slide in from" the viewport
+   edge it lives on. JS toggles .is-entering / .is-leaving.
+   ========================================================= */
+.toast {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+.toast.is-entering   { opacity: 0; transform: translateY(8px) scale(.98); }
+.toast.is-leaving    { opacity: 0; transform: translateY(-4px) scale(.98); pointer-events: none; }
+
+[data-position^="bottom"] .toast.is-entering { transform: translateY(8px) scale(.98); }
+[data-position^="top"]    .toast.is-entering { transform: translateY(-8px) scale(.98); }
+
+/* =========================================================
+   REGION — viewport-anchored container
+   The region is fixed-position, fills no space when empty,
+   and lets clicks pass through to the page everywhere
+   except on the toasts themselves.
+   Six anchor positions — composable with any toast.
+   ========================================================= */
+.toast-region {
+    position: fixed;
+    z-index: 80;
+    display: flex;
+    flex-direction: column;
+    gap: var(--toast-region-gap);
+    padding: var(--toast-region-padding);
+    pointer-events: none;
+    width: var(--toast-region-width);
+    max-height: 100vh;
+    overflow: visible;
+}
+.toast-region > * { pointer-events: auto; }
+
+/* Top-positioned regions stack newest at top of the column. */
+.toast-region[data-position="top-left"]      { top: 0; left: 0; align-items: flex-start; }
+.toast-region[data-position="top-right"]     { top: 0; right: 0; align-items: flex-end; }
+.toast-region[data-position="top-center"]    { top: 0; left: 50%; transform: translateX(-50%); align-items: center; }
+
+/* Bottom-positioned regions stack newest at bottom and
+   reverse the visual order so the most recent toast sits
+   closest to the viewport edge. */
+.toast-region[data-position="bottom-left"]   { bottom: 0; left: 0; align-items: flex-start; flex-direction: column-reverse; }
+.toast-region[data-position="bottom-right"]  { bottom: 0; right: 0; align-items: flex-end; flex-direction: column-reverse; }
+.toast-region[data-position="bottom-center"] { bottom: 0; left: 50%; transform: translateX(-50%); align-items: center; flex-direction: column-reverse; }
+
+/* =========================================================
+   STACK — same-tone grouping
+   A .toast-stack groups toasts of one tone inside a
+   region so a Critical pile and a Safe pile read as
+   separate channels rather than one mixed column. The
+   stack is a simple vertical flow with shared gap; toasts
+   inside it follow the region's enter/exit motion.
+   The DOM order is "oldest first → newest last".
+   Bottom-anchored regions invert the column flow (via
+   .toast-region[data-position^="bottom"]) so the newest
+   toast still sits closest to the viewport edge.
+   ========================================================= */
+.toast-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--toast-stack-gap);
+    width: 100%;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+/* Adjacent stacks of different tones inside one region
+   get extra breathing space so the two channels read as
+   distinct piles rather than a single mixed column. */
+.toast-stack + .toast-stack {
+    margin-top: calc(var(--toast-stack-tone-gap) - var(--toast-stack-gap));
+}
+
+/* =========================================================
+   SNACKBAR VARIANT — legacy bottom-centre copy pill
+   The original .toast in shell.css has been folded into the
+   Toast family as .toast--snackbar. It bypasses the slot
+   vocabulary so legacy JS that injects raw HTML
+   (`toast.innerHTML = "Copied <span class='toast-name'>…</span>"`)
+   keeps working unchanged.
+
+   Snackbar is a single-line pill — no icon slot, no actions,
+   no close × — used for ephemeral confirmations that have
+   no actionable consequence (copied to clipboard, draft
+   saved, undo expired). Use a .toast (notification) for
+   anything the user might need to act on.
+   ========================================================= */
+.toast--snackbar {
+    /* Reset the base slot layout so this variant can host
+       raw text injected by legacy JS. */
+    display: inline-flex;
+    align-items: center;
+    flex-direction: row;
+    gap: var(--spacing-2x);
+    min-width: 0;
+    width: max-content;
+    max-width: 90vw;
+
+    position: fixed;
+    bottom: var(--spacing-8x);
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+
+    background: var(--toast-snackbar-bg);
+    color: var(--toast-snackbar-fg);
+    padding: var(--toast-snackbar-padding-y) var(--toast-snackbar-padding-x);
+    border-radius: var(--toast-snackbar-radius);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    letter-spacing: 0.04em;
+    box-shadow: var(--shadow-lg);
+    border: var(--toast-border-width) solid var(--toast-snackbar-border);
+    backdrop-filter: var(--blur-lg);
+    -webkit-backdrop-filter: var(--blur-lg);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s cubic-bezier(.2,.8,.2,1);
+    z-index: var(--toast-snackbar-z);
+    overflow: visible;
+}
+.toast--snackbar::before {
+    content: '';
+    width: var(--spacing-2x);
+    height: var(--spacing-2x);
+    border-radius: 50%;
+    background: var(--background-primary);
+    box-shadow: 0 0 12px var(--background-primary);
+    flex: 0 0 auto;
+}
+.toast--snackbar.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+.toast--snackbar .toast-name { color: var(--text-primary-subtle); }
+.toast--snackbar .toast-hex  { color: var(--text-inverted); opacity: 0.85; }
+
+/* =========================================================
+   STATES
+   ========================================================= */
+.toast.is-dismissed {
+    opacity: 0;
+    transform: translateY(-4px) scale(.98);
+    pointer-events: none;
+}
+.toast[role="alert"]:focus-visible,
+.toast:focus-visible {
+    outline: var(--toast-focus-outline-width) solid var(--toast-focus-outline);
+    outline-offset: var(--toast-focus-outline-offset);
+}
+
+/* When a toast is hovered, pause the auto-dismiss progress. */
+.toast:hover .toast__progress::after,
+.toast:focus-within .toast__progress::after {
+    animation-play-state: paused;
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+    .toast,
+    .toast__action,
+    .toast__close,
+    .toast--snackbar { transition: none; }
+    .toast.is-dismissed { transform: none; }
+    .toast__progress::after { animation: none; transform: scaleX(0); }
+    .toast__spinner { animation-duration: 2.4s; }
+}
+
+/* =========================================================
+   RESPONSIVE — base toast/region rules
+   ========================================================= */
+@media (max-width: 600px) {
+    .toast-region {
+        padding: var(--spacing-3x);
+        --toast-region-width: calc(100vw - var(--spacing-6x));
+    }
+    .toast-region[data-position="top-center"],
+    .toast-region[data-position="bottom-center"] {
+        left: var(--spacing-3x);
+        right: var(--spacing-3x);
+        width: auto;
+        transform: none;
+        align-items: stretch;
+    }
+    .toast { min-width: 0; max-width: 100%; }
+}

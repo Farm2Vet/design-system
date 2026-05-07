@@ -67,7 +67,7 @@ Each component may has Variants, Versions, and Sizes. Size is the optimized vers
   - Version: Default, With-value, Error
   - Size: Small, Medium, Large (focus), XL, 2XL
 - SLider: ...
-- Cards
+- Cards (done)
   - Variants: Default, Question Card, List Card, Glass-default
   - Version: Default, Inverted Surface, Selected
 - Modal Dialog

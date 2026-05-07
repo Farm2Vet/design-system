@@ -285,47 +285,15 @@ footer a {
 footer a:hover { color: var(--text-primary); }
 
 /* =========================================================
-   TOAST — copy confirmation
+   TOAST — moved out of shell.
+   The transient feedback surface (notification + snackbar)
+   has graduated to its own component file at
+   styles/toast.css. The legacy bottom-centre copy pill is
+   still available as the .toast.toast--snackbar variant of
+   that component. Pages that need the snackbar must include
+   toast.css and apply both classes on the host element.
+   See component-toast.html for full documentation.
    ========================================================= */
-.toast {
-    position: fixed;
-    bottom: var(--spacing-8x);
-    left: 50%;
-    transform: translateX(-50%) translateY(20px);
-    background: var(--background-toast);
-    color: var(--text-inverted);
-    padding: var(--spacing-3x) var(--spacing-5x);
-    border-radius: var(--radius-pill);
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    letter-spacing: 0.04em;
-    box-shadow: var(--shadow-lg);
-    border: var(--border-width-base) solid var(--border-toast);
-    backdrop-filter: var(--blur-lg);
-    -webkit-backdrop-filter: var(--blur-lg);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.25s ease, transform 0.25s cubic-bezier(.2,.8,.2,1);
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-2x);
-    max-width: 90vw;
-}
-.toast::before {
-    content: '';
-    width: var(--spacing-2x);
-    height: var(--spacing-2x);
-    border-radius: 50%;
-    background: var(--background-primary);
-    box-shadow: 0 0 12px var(--background-primary);
-}
-.toast.show {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-}
-.toast .toast-name { color: var(--text-primary-subtle); }
-.toast .toast-hex  { color: var(--text-inverted); opacity: 0.85; }
 
 /* =========================================================
    REVEAL ON SCROLL
@@ -366,5 +334,4 @@ footer a:hover { color: var(--text-primary); }
 
 @media (prefers-reduced-motion: reduce) {
     .reveal { opacity: 1; transform: none; transition: none; }
-    .toast  { transition: none; }
 }
