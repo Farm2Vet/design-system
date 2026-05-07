@@ -67,8 +67,11 @@
     --toast-lg-padding-y:     var(--spacing-4x);
     --toast-lg-icon:          24px;
     --toast-lg-title:         var(--text-h6);
-    --toast-lg-min-width:     360px;
+    --toast-lg-min-width:     420px;
+    --toast-lg-max-width:     560px;
 
+    /* Default cap for SM/MD; LG has its own wider bound above
+       because the larger title and additional slots need room. */
     --toast-max-width:        420px;
 
     /* ---------- Tone: Info (default) ---------- */
@@ -152,10 +155,13 @@
     --toast-spinner-track:    color-mix(in srgb, currentColor 18%, transparent);
     --toast-spinner-thumb:    currentColor;
 
-    /* ---------- Region (viewport-anchored container) ---------- */
+    /* ---------- Region (viewport-anchored container) ----------
+       Region width sets the upper bound for LG toasts; SM/MD
+       are capped lower by --toast-max-width and stay narrow
+       even when the region is wider. */
     --toast-region-padding:   var(--spacing-6x);
     --toast-region-gap:       var(--spacing-3x);
-    --toast-region-width:     min(420px, calc(100vw - var(--spacing-8x)));
+    --toast-region-width:     min(560px, calc(100vw - var(--spacing-8x)));
 
     /* ---------- Stack (same-tone grouping) ---------- */
     --toast-stack-gap:        var(--spacing-3x);
@@ -534,12 +540,24 @@
     font-size: var(--toast-lg-font-size);
     gap: var(--spacing-4x);
     min-width: var(--toast-lg-min-width);
+    max-width: var(--toast-lg-max-width);
+    /* Let actions/close wrap below content when the host
+       region constrains LG below its preferred width — this
+       prevents the title from wrapping one word per line. */
+    flex-wrap: wrap;
+    row-gap: var(--spacing-3x);
 }
 .toast--lg .toast__icon {
     width: var(--toast-lg-icon);
     height: var(--toast-lg-icon);
 }
 .toast--lg .toast__title { font-size: var(--toast-lg-title); }
+/* Reserve a sensible content basis so the title prefers to
+   stay on a single line; if there isn't room for actions
+   alongside, they wrap to the next row instead of squeezing
+   the title into a one-word column. */
+.toast--lg .toast__content { flex: 1 1 260px; }
+.toast--lg .toast__actions { margin-left: auto; }
 
 /* =========================================================
    ENTER / EXIT MOTION
