@@ -181,14 +181,31 @@
    indicator to match the icon color.
    ========================================================= */
 .input--date {
-    /* Reserve room for the native calendar indicator. */
-    padding-right: calc(var(--form-lg-padding-x) + var(--spacing-4x));
+    /* Right padding mirrors left padding so the native calendar
+       indicator sits with the same inset from the right border
+       that the placeholder text has from the left border.
+       Default = LG. */
+    padding-right: var(--form-lg-padding-x);
     color-scheme: light;
 }
+/* Size-aware symmetric padding so the calendar icon stays
+   visually balanced regardless of which size class is applied. */
+.input--sm.input--date  { padding-right: var(--form-sm-padding-x); }
+.input--md.input--date  { padding-right: var(--form-md-padding-x); }
+.input--xl.input--date  { padding-right: var(--form-xl-padding-x); }
+.input--2xl.input--date { padding-right: var(--form-2xl-padding-x); }
+
 .input--date::-webkit-calendar-picker-indicator {
     cursor: pointer;
     opacity: 0.6;
     transition: opacity 0.18s ease;
+    /* Strip Chrome's default ~4px outer margin and any padding
+       so the indicator sits flush against the right edge of the
+       content box. With symmetric input padding above, the icon
+       then ends up inset from the right border by exactly one
+       padding step — the same gap as the placeholder on the left. */
+    margin: 0;
+    padding: 0;
 }
 .input--date::-webkit-calendar-picker-indicator:hover { opacity: 1; }
 
