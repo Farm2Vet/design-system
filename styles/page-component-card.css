@@ -1,0 +1,287 @@
+/* =========================================================
+   PAGE — COMPONENT · CARD
+   Styles unique to component-card.html: showcase tile
+   layout, the per-card use-case note panel, and the
+   anatomy diagram. Token-table styling is reused from
+   page-component-button.css; usage-note styling is reused
+   from page-component-form.css.
+   The actual Card component lives in card.css.
+   Depends on: tokens.css, base.css, shell.css, card.css
+   ========================================================= */
+
+/* =========================================================
+   SHOWCASE — natural card sizes, content-driven width
+   Cards are NOT forced into a fixed-column grid. Each tile
+   sizes to its inner card's natural width via --tile-w
+   (per-tile width hint), and the row wraps. This keeps a
+   Horizontal card wider than a Vertical card without
+   reaching for a separate layout primitive.
+   ========================================================= */
+.card-showcase {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-5x);
+    align-items: flex-start;
+}
+
+/* Tile — wraps the demo card with a label + meta strip and
+   an optional note panel describing use case, states,
+   interactions, and responsiveness. */
+.card-showcase__tile {
+    --tile-w: 380px;
+    flex: 0 0 auto;
+    width: var(--tile-w);
+    max-width: 100%;
+    border-radius: var(--radius-lg);
+    border: var(--border-width-base) solid var(--border-glass-light);
+    background: var(--background-glass-light);
+    backdrop-filter: var(--blur-lg) saturate(140%);
+    -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
+    padding: var(--spacing-5x);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4x);
+}
+
+.card-showcase__tile.size-sm { --tile-w: 320px; }
+.card-showcase__tile.size-md { --tile-w: 380px; }
+.card-showcase__tile.size-lg { --tile-w: 460px; }
+.card-showcase__tile.size-xl { --tile-w: 540px; }
+.card-showcase__tile.size-2xl{ --tile-w: 640px; }
+
+.card-showcase__tile .label {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+}
+
+.card-showcase__tile .demo {
+    display: flex;
+    align-items: stretch;
+}
+.card-showcase__tile .demo > .card { width: 100%; }
+
+.card-showcase__tile .meta {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    color: var(--text-default-minimal);
+    letter-spacing: 0.04em;
+    border-top: var(--border-width-base) solid var(--border-default-subtle);
+    padding-top: var(--spacing-3x);
+    display: flex;
+    justify-content: space-between;
+    gap: var(--spacing-3x);
+}
+.card-showcase__tile .meta strong {
+    color: var(--text-default);
+    font-weight: var(--font-weight-medium);
+}
+
+/* =========================================================
+   PER-CARD NOTE PANEL
+   Use case · States · Interactions · Responsiveness.
+   Displayed inside the showcase tile, beneath the demo.
+   Each row is its own dt/dd pair so screen readers parse
+   it as a definition list.
+   ========================================================= */
+.card-showcase__note {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: var(--spacing-1x) var(--spacing-3x);
+    padding: var(--spacing-3x);
+    border: var(--border-width-base) dashed var(--border-default);
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--background-default-subtle) 60%, transparent);
+}
+.card-showcase__note dt {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-primary-strong);
+    font-weight: var(--font-weight-medium);
+    align-self: start;
+    padding-top: 2px;
+}
+.card-showcase__note dd {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    line-height: var(--line-height-body);
+    color: var(--text-default-subtle);
+    margin: 0;
+}
+.card-showcase__note dd strong {
+    color: var(--text-default);
+    font-weight: var(--font-weight-medium);
+}
+.card-showcase__note code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    color: var(--text-primary-strong);
+    background: var(--background-primary-minimal);
+    padding: 0.05em 0.4em;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+}
+
+/* =========================================================
+   ON-VIVID — subtle atmosphere for GLASS demos
+   Replaces the previous loud brand-wash. The new wash is
+   built from primary-200 / accent-200 / secondary-100 at
+   low opacity over the default surface — enough texture
+   for backdrop-filter to read, far calmer than the old
+   gradient-brand. The surface stays light enough that
+   default text colours still pass contrast, so no
+   inverted-text override is needed here.
+   ========================================================= */
+.card-showcase__tile.on-vivid {
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(ellipse 80% 60% at 20% 15%, color-mix(in srgb, var(--primary-200) 45%, transparent), transparent 65%),
+        radial-gradient(ellipse 70% 55% at 85% 90%, color-mix(in srgb, var(--accent-200)  35%, transparent), transparent 60%),
+        radial-gradient(ellipse 60% 40% at 70% 30%, color-mix(in srgb, var(--secondary-100) 30%, transparent), transparent 70%),
+        var(--background-default);
+    border-color: var(--border-default);
+    padding: var(--spacing-6x);
+}
+
+/* =========================================================
+   ON-DARK — quiet dark backdrop for INVERTED-CARD demos
+   The inverted card's surface is near-transparent white
+   that needs darkness to read against. A pure brand-wash
+   is too vivid; a flat black is too cold. This is a deep
+   neutral with a single accent radial hint — restrained,
+   brand-aware, and dark enough that --card-inverted-bg
+   shows up as a coherent surface.
+   ========================================================= */
+.card-showcase__tile.on-dark {
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(ellipse 90% 70% at 25% 20%, color-mix(in srgb, var(--accent-500) 22%, transparent), transparent 65%),
+        linear-gradient(160deg, var(--neutral-800) 0%, var(--neutral-950) 100%);
+    border-color: var(--border-glass-dark);
+    padding: var(--spacing-6x);
+    color: var(--text-inverted);
+}
+.card-showcase__tile.on-dark .label,
+.card-showcase__tile.on-dark .meta {
+    color: var(--text-inverted-subtle);
+}
+.card-showcase__tile.on-dark .meta { border-top-color: var(--border-inverted); }
+.card-showcase__tile.on-dark .meta strong { color: var(--text-inverted); }
+.card-showcase__tile.on-dark .body { border-top-color: var(--border-inverted); }
+.card-showcase__tile.on-dark .body .name { color: var(--text-inverted); }
+.card-showcase__tile.on-dark .body .desc { color: var(--text-inverted-subtle); }
+
+/* =========================================================
+   VERSION META STRIP — small caption beneath demos in the
+   Versions / States sections.
+   ========================================================= */
+.card-showcase__tile .body {
+    padding-top: var(--spacing-3x);
+    border-top: var(--border-width-base) solid var(--border-default-subtle);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-3x);
+}
+.card-showcase__tile .body .name {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--text-base);
+    color: var(--text-default);
+}
+.card-showcase__tile .body .desc {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: 0.04em;
+    color: var(--text-default-minimal);
+}
+
+/* =========================================================
+   ANATOMY DIAGRAM — labelled card showing slot vocabulary
+   ========================================================= */
+.card-anatomy {
+    padding: var(--spacing-8x);
+    display: grid;
+    grid-template-columns: minmax(260px, 360px) 1fr;
+    gap: var(--spacing-8x);
+    align-items: center;
+}
+.card-anatomy .legend {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3x);
+}
+.card-anatomy .legend dt {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-primary-strong);
+    margin-bottom: var(--spacing-half);
+}
+.card-anatomy .legend dd {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--text-default-subtle);
+    line-height: var(--line-height-body);
+    margin: 0 0 var(--spacing-3x);
+}
+
+/* =========================================================
+   ARCHITECTURAL CALLOUT — for the FAQ → Accordion redirect
+   and other system-level decisions that don't fit in
+   .usage-note. Reads as a quiet aside, not a loud warning.
+   ========================================================= */
+.card-callout {
+    padding: var(--spacing-5x) var(--spacing-6x);
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--background-info) 60%, var(--background-default));
+    border-left: 3px solid var(--border-info);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2x);
+    margin-bottom: var(--spacing-8x);
+}
+.card-callout .label {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-info-strong);
+    font-weight: var(--font-weight-medium);
+}
+.card-callout p {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    line-height: var(--line-height-body);
+    color: var(--text-default);
+    margin: 0;
+}
+.card-callout strong {
+    color: var(--text-info-strong);
+    font-weight: var(--font-weight-semibold);
+}
+.card-callout code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    color: var(--text-info-strong);
+    background: color-mix(in srgb, var(--background-info) 80%, transparent);
+    padding: 0.05em 0.4em;
+    border-radius: var(--radius-sm);
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 720px) {
+    .card-showcase__tile { width: 100%; }
+}
+@media (max-width: 960px) {
+    .card-anatomy { grid-template-columns: 1fr; gap: var(--spacing-5x); }
+}

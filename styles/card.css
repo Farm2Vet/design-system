@@ -1,0 +1,850 @@
+/* =========================================================
+   FARM2VET DESIGN SYSTEM — CARD COMPONENT
+   The container the rest of the system lives inside. One
+   shared shape adapts across:
+     • Style variants — Elevated (default), Filled, Outlined
+     • Layout         — Vertical (default), Horizontal, List
+     • Functional     — Interactive, Selectable, Draggable,
+                        Featured
+     • Glass scale    — Clear · Light · Frost · Heavy · Tinted
+     • Surface        — Default · Inverted · is-selected state
+     • States         — Default / Hover / Focus / Pressed /
+                        Disabled
+   FAQ-style Q&A patterns belong to the Accordion component,
+   not Card; they are intentionally NOT documented here.
+   Depends on: tokens.css
+   ========================================================= */
+
+/* =========================================================
+   COMPONENT TOKENS — Card
+   Component tokens reference semantic tokens strictly.
+   ========================================================= */
+:root {
+    /* ---------- Shared shape ---------- */
+    --card-font-family:    var(--font-sans);
+    --card-radius:         var(--radius-lg);
+    --card-radius-inner:   var(--radius-md);
+    --card-border-width:   var(--border-width-base);
+    --card-padding-x:      var(--spacing-6x);
+    --card-padding-y:      var(--spacing-6x);
+    --card-gap:            var(--spacing-4x);
+    --card-gap-tight:      var(--spacing-2x);
+    --card-transition:     background-color .2s ease, color .2s ease,
+                           border-color .2s ease, box-shadow .2s ease,
+                           transform .2s cubic-bezier(.2,.8,.2,1);
+
+    /* ---------- Style variant: Elevated (default) ---------- */
+    --card-bg:             var(--background-default);
+    --card-bg-hover:       var(--background-default-subtle);
+    --card-bg-pressed:     var(--background-default-minimal);
+    --card-fg:             var(--text-default);
+    --card-fg-subtle:      var(--text-default-subtle);
+    --card-fg-minimal:     var(--text-default-minimal);
+    --card-border:         var(--border-default);
+    --card-border-hover:   var(--border-default-strong);
+    --card-shadow:         var(--shadow-sm);
+    --card-shadow-hover:   var(--shadow-md);
+
+    /* ---------- Style variant: Filled (no shadow, tinted bg) ---------- */
+    --card-filled-bg:           var(--background-default-subtle);
+    --card-filled-bg-hover:     var(--background-default-minimal);
+    --card-filled-border:       transparent;
+    --card-filled-shadow:       none;
+
+    /* ---------- Style variant: Outlined (border-led) ---------- */
+    --card-outlined-bg:           var(--background-default);
+    --card-outlined-bg-hover:     var(--background-default-subtle);
+    --card-outlined-border:       var(--border-default-strong);
+    --card-outlined-border-width: 1.5px;
+    --card-outlined-shadow:       none;
+
+    /* ---------- Layout: Horizontal (media-on-side) ---------- */
+    --card-horizontal-media-w:    38%;
+    --card-horizontal-media-min:  140px;
+
+    /* ---------- Variant: List (row stack) ---------- */
+    --card-list-bg:           var(--background-default);
+    --card-list-border:       var(--border-default);
+    --card-list-row-divider:  var(--border-default-subtle);
+    --card-list-row-bg-hover: var(--background-row-hover);
+    --card-list-row-pad-x:    var(--spacing-5x);
+    --card-list-row-pad-y:    var(--spacing-3x);
+    --card-list-radius:       var(--card-radius);
+
+    /* ---------- Variant: Glass — shared ---------- */
+    --card-glass-saturate:  140%;
+    --card-glass-border:    var(--border-glass-light);
+
+    /* Default tier — light frost (the baseline `.card--glass`) */
+    --card-glass-bg:        var(--background-glass-light);
+    --card-glass-blur:      var(--blur-lg);
+
+    /* Clear — barely-there, only a whisper of blur */
+    --card-glass-clear-bg:     color-mix(in srgb, var(--white-base) 25%, transparent);
+    --card-glass-clear-blur:   var(--blur-sm);
+    --card-glass-clear-border: color-mix(in srgb, var(--white-base) 40%, transparent);
+
+    /* Frost — medium tier, primary content surface on vivid bg */
+    --card-glass-frost-bg:     color-mix(in srgb, var(--white-base) 75%, transparent);
+    --card-glass-frost-blur:   var(--blur-xl);
+    --card-glass-frost-border: color-mix(in srgb, var(--white-base) 70%, transparent);
+
+    /* Heavy — near-opaque slab, modal-grade frosted glass */
+    --card-glass-heavy-bg:     color-mix(in srgb, var(--white-base) 92%, transparent);
+    --card-glass-heavy-blur:   var(--blur-2xl);
+    --card-glass-heavy-border: color-mix(in srgb, var(--white-base) 90%, transparent);
+
+    /* Tinted — primary-tinted frost (brand-aware glass) */
+    --card-glass-tinted-bg:     var(--background-glass-dark);
+    --card-glass-tinted-blur:   var(--blur-lg);
+    --card-glass-tinted-border: var(--border-glass-dark);
+
+    /* ---------- Functional: Selectable ---------- */
+    --card-check-size:           24px;
+    --card-check-bg:             var(--background-default);
+    --card-check-border:         var(--border-default-strong);
+    --card-check-checked-bg:     var(--background-primary);
+    --card-check-checked-fg:     var(--text-inverted);
+    --card-check-checked-border: var(--border-primary);
+
+    /* ---------- Functional: Draggable ---------- */
+    --card-drag-handle-fg:       var(--icon-default-minimal);
+    --card-drag-handle-fg-hover: var(--icon-default);
+
+    /* ---------- Functional: Featured ---------- */
+    --card-featured-border:       var(--border-accent);
+    --card-featured-border-width: 2px;
+    --card-featured-bg-tint:      color-mix(in srgb, var(--accent-50) 70%, transparent);
+    --card-featured-ring:         0 0 0 4px color-mix(in srgb, var(--accent-300) 25%, transparent);
+
+    /* ---------- Surface version: Inverted ---------- */
+    --card-inverted-bg:           color-mix(in srgb, var(--white-base) 8%, transparent);
+    --card-inverted-bg-hover:     color-mix(in srgb, var(--white-base) 14%, transparent);
+    --card-inverted-fg:           var(--text-inverted);
+    --card-inverted-fg-subtle:    var(--text-inverted-subtle);
+    --card-inverted-fg-minimal:   var(--text-inverted-minimal);
+    --card-inverted-border:       var(--border-inverted);
+    --card-inverted-border-strong:var(--border-inverted-strong);
+    --card-inverted-divider:      color-mix(in srgb, var(--white-base) 14%, transparent);
+    --card-inverted-mark-bg:      color-mix(in srgb, var(--white-base) 16%, transparent);
+    --card-inverted-mark-fg:      var(--text-inverted);
+
+    /* ---------- State: is-selected (active in a list) ---------- */
+    --card-selected-bg:      var(--background-default-selected);
+    --card-selected-fg:      var(--text-default);
+    --card-selected-border:  var(--border-primary);
+    --card-selected-shadow:  0 0 0 3px color-mix(in srgb, var(--primary-400) 22%, transparent),
+                             var(--shadow-md);
+    --card-selected-accent:  var(--background-primary);
+
+    /* ---------- State: Disabled ---------- */
+    --card-disabled-bg:      var(--background-default-disabled);
+    --card-disabled-fg:      var(--text-default-disabled);
+    --card-disabled-border:  var(--border-default-disabled);
+    --card-disabled-opacity: 0.6;
+
+    /* ---------- Header / body / footer slots ---------- */
+    --card-eyebrow-fg:      var(--text-default-minimal);
+    --card-title-fg:        var(--text-default);
+    --card-subtitle-fg:     var(--text-default-subtle);
+    --card-body-fg:         var(--text-default-subtle);
+    --card-footer-divider:  var(--border-default-subtle);
+
+    --card-title-font-size:    var(--text-h5);
+    --card-subtitle-font-size: var(--text-sm);
+    --card-eyebrow-font-size:  var(--text-micro);
+    --card-body-font-size:     var(--text-base);
+
+    /* ---------- Sub-components ---------- */
+    --card-badge-bg:        var(--background-primary-minimal);
+    --card-badge-fg:        var(--text-primary-strong);
+    --card-badge-radius:    var(--radius-pill);
+
+    --card-badge-info-bg:       var(--background-info);
+    --card-badge-info-fg:       var(--text-info-strong);
+    --card-badge-warning-bg:    var(--background-warning);
+    --card-badge-warning-fg:    var(--text-warning);
+    --card-badge-critical-bg:   var(--background-critical);
+    --card-badge-critical-fg:   var(--text-critical);
+    --card-badge-safe-bg:       var(--background-safe);
+    --card-badge-safe-fg:       var(--text-safe);
+
+    --card-price-fg:        var(--text-default);
+    --card-price-strike-fg: var(--text-default-minimal);
+    --card-rating-fg:       var(--secondary-300);
+    --card-rating-empty-fg: var(--neutral-200);
+
+    --card-metric-fg:           var(--text-default);
+    --card-metric-label-fg:     var(--text-default-minimal);
+    --card-metric-delta-up:     var(--text-safe);
+    --card-metric-delta-down:   var(--text-critical);
+
+    /* ---------- Focus ring ---------- */
+    --card-focus-outline:        var(--outline-focus);
+    --card-focus-outline-width:  2px;
+    --card-focus-outline-offset: 2px;
+}
+
+/* =========================================================
+   BASE
+   Default style is Elevated (subtle shadow, default border).
+   ========================================================= */
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--card-gap);
+    background: var(--card-bg);
+    color: var(--card-fg);
+    border: var(--card-border-width) solid var(--card-border);
+    border-radius: var(--card-radius);
+    padding: var(--card-padding-y) var(--card-padding-x);
+    box-shadow: var(--card-shadow);
+    font-family: var(--card-font-family);
+    transition: var(--card-transition);
+    text-decoration: none;
+}
+
+/* When the card itself is an <a>, base.css's `a:hover` would
+   recolour its text. Pin colour to the card's foreground
+   token across all states so the inner content reads
+   consistently regardless of element. */
+a.card,
+a.card:hover,
+a.card:focus,
+a.card:active { color: var(--card-fg); }
+a.card.card--inverted,
+a.card.card--inverted:hover,
+a.card.card--inverted:focus,
+a.card.card--inverted:active { color: var(--card-inverted-fg); }
+
+/* =========================================================
+   STATES — Hover · Focus · Pressed · Disabled
+   Applied automatically when the card is interactive
+   (`.is-interactive`, an <a>/<button>, or has `tabindex`).
+   ========================================================= */
+.card.is-interactive,
+a.card,
+button.card {
+    cursor: pointer;
+}
+
+.card.is-interactive:hover,
+a.card:hover,
+button.card:hover {
+    background: var(--card-bg-hover);
+    border-color: var(--card-border-hover);
+    box-shadow: var(--card-shadow-hover);
+    transform: translateY(-1px);
+}
+
+.card.is-interactive:active,
+a.card:active,
+button.card:active {
+    background: var(--card-bg-pressed);
+    box-shadow: var(--card-shadow);
+    transform: translateY(0);
+}
+
+.card.is-interactive:focus-visible,
+a.card:focus-visible,
+button.card:focus-visible,
+.card[tabindex]:focus-visible {
+    outline: var(--card-focus-outline-width) solid var(--card-focus-outline);
+    outline-offset: var(--card-focus-outline-offset);
+}
+
+.card.is-disabled,
+.card[aria-disabled="true"] {
+    background: var(--card-disabled-bg);
+    color: var(--card-disabled-fg);
+    border-color: var(--card-disabled-border);
+    box-shadow: none;
+    opacity: var(--card-disabled-opacity);
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+/* =========================================================
+   STRUCTURE — header, body, footer, eyebrow, title, subtitle
+   ========================================================= */
+.card__eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--card-eyebrow-font-size);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--card-eyebrow-fg);
+}
+.card__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--card-gap-tight);
+}
+.card__title {
+    font-family: var(--font-sans);
+    font-size: var(--card-title-font-size);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-h4);
+    color: var(--card-title-fg);
+    margin: 0;
+}
+.card__subtitle {
+    font-family: var(--font-sans);
+    font-size: var(--card-subtitle-font-size);
+    color: var(--card-subtitle-fg);
+    margin: 0;
+}
+.card__body {
+    font-size: var(--card-body-font-size);
+    color: var(--card-body-fg);
+    line-height: var(--line-height-body);
+    margin: 0;
+}
+.card__media {
+    margin: calc(var(--card-padding-y) * -1) calc(var(--card-padding-x) * -1) 0;
+    border-top-left-radius: calc(var(--card-radius) - var(--card-border-width));
+    border-top-right-radius: calc(var(--card-radius) - var(--card-border-width));
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    background:
+        radial-gradient(ellipse at 30% 20%, color-mix(in srgb, var(--primary-300) 60%, transparent), transparent 60%),
+        var(--gradient-brand);
+}
+.card__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--card-gap);
+    padding-top: var(--card-gap);
+    border-top: var(--card-border-width) solid var(--card-footer-divider);
+    flex-wrap: wrap;
+}
+.card__actions {
+    display: flex;
+    gap: var(--spacing-2x);
+    align-items: center;
+    flex-wrap: wrap;
+}
+.card__icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+/* =========================================================
+   SUB-COMPONENTS — Badges · Price · Rating · Metric · Avatar
+   Compositional parts shared across content patterns
+   (Product, Profile, KPI, Article).
+   ========================================================= */
+.card__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-1x);
+    padding: var(--spacing-half) var(--spacing-3x);
+    border-radius: var(--card-badge-radius);
+    background: var(--card-badge-bg);
+    color: var(--card-badge-fg);
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    line-height: 1.4;
+}
+.card__badge--info     { background: var(--card-badge-info-bg);     color: var(--card-badge-info-fg); }
+.card__badge--warning  { background: var(--card-badge-warning-bg);  color: var(--card-badge-warning-fg); }
+.card__badge--critical { background: var(--card-badge-critical-bg); color: var(--card-badge-critical-fg); }
+.card__badge--safe     { background: var(--card-badge-safe-bg);     color: var(--card-badge-safe-fg); }
+
+.card__badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-2x);
+}
+
+.card__price {
+    display: flex;
+    align-items: baseline;
+    gap: var(--spacing-2x);
+    font-family: var(--font-sans);
+    font-size: var(--text-h4);
+    font-weight: var(--font-weight-semibold);
+    color: var(--card-price-fg);
+}
+.card__price-strike {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-regular);
+    color: var(--card-price-strike-fg);
+    text-decoration: line-through;
+}
+
+.card__rating {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-1x);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--card-fg-subtle);
+}
+.card__rating-stars {
+    display: inline-flex;
+    color: var(--card-rating-fg);
+    letter-spacing: 1px;
+}
+.card__rating-stars .empty {
+    color: var(--card-rating-empty-fg);
+}
+
+.card__metric {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1x);
+}
+.card__metric-value {
+    font-family: var(--font-sans);
+    font-size: var(--text-h2);
+    font-weight: var(--font-weight-semibold);
+    color: var(--card-metric-fg);
+    line-height: 1;
+    letter-spacing: -0.02em;
+}
+.card__metric-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--card-metric-label-fg);
+}
+.card__metric-delta {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+}
+.card__metric-delta.is-up   { color: var(--card-metric-delta-up); }
+.card__metric-delta.is-down { color: var(--card-metric-delta-down); }
+
+.card__avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: var(--radius-pill);
+    background: var(--background-primary-minimal);
+    color: var(--text-primary-strong);
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--text-h6);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* =========================================================
+   STYLE VARIANT — Filled (no shadow, tinted background)
+   Use case: secondary content blocks, inline groupings,
+   reduced-elevation lists where the underlying page
+   already provides hierarchy.
+   ========================================================= */
+.card--filled {
+    background: var(--card-filled-bg);
+    border-color: var(--card-filled-border);
+    box-shadow: var(--card-filled-shadow);
+}
+.card--filled.is-interactive:hover,
+a.card.card--filled:hover,
+button.card.card--filled:hover {
+    background: var(--card-filled-bg-hover);
+    box-shadow: none;
+    border-color: var(--card-filled-border);
+}
+
+/* =========================================================
+   STYLE VARIANT — Outlined (border-led, no fill)
+   Use case: dense layouts where shadow noise would
+   compound; high-contrast pickers.
+   ========================================================= */
+.card--outlined {
+    background: var(--card-outlined-bg);
+    border: var(--card-outlined-border-width) solid var(--card-outlined-border);
+    box-shadow: var(--card-outlined-shadow);
+}
+.card--outlined.is-interactive:hover,
+a.card.card--outlined:hover,
+button.card.card--outlined:hover {
+    background: var(--card-outlined-bg-hover);
+    border-color: var(--border-primary);
+    box-shadow: none;
+}
+
+/* =========================================================
+   LAYOUT — Horizontal (media on the side)
+   Use case: list/feed rows, mobile-friendly compact cards,
+   article rows with thumbnail.
+   ========================================================= */
+.card--horizontal {
+    flex-direction: row;
+    align-items: stretch;
+    gap: var(--card-gap);
+    padding: 0;
+}
+.card--horizontal > .card__media {
+    margin: 0;
+    flex-shrink: 0;
+    width: var(--card-horizontal-media-w);
+    min-width: var(--card-horizontal-media-min);
+    aspect-ratio: auto;
+    border-top-left-radius: calc(var(--card-radius) - var(--card-border-width));
+    border-bottom-left-radius: calc(var(--card-radius) - var(--card-border-width));
+    border-top-right-radius: 0;
+}
+.card--horizontal > .card__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--card-gap);
+    padding: var(--card-padding-y) var(--card-padding-x);
+    min-width: 0;
+}
+
+/* =========================================================
+   LAYOUT — Content-only (no media)
+   No CSS needed — the default `.card` already covers this.
+   `.card--content-only` exists as an opt-in marker for
+   tooling / Figma-style variant pickers.
+   ========================================================= */
+.card--content-only { /* marker class — no styles */ }
+
+/* =========================================================
+   LAYOUT — List (row stack)
+   Bleeds rows to the card edge so dividers read as
+   full-width separators. Used for settings groups, member
+   lists, recent activity feeds.
+   ========================================================= */
+.card--list {
+    padding: 0;
+    background: var(--card-list-bg);
+    border-color: var(--card-list-border);
+    gap: 0;
+    overflow: hidden;
+}
+.card--list > .card__list-header {
+    padding: var(--card-padding-y) var(--card-padding-x) var(--spacing-4x);
+    display: flex;
+    flex-direction: column;
+    gap: var(--card-gap-tight);
+    border-bottom: var(--card-border-width) solid var(--card-list-row-divider);
+}
+.card--list > .card__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+.card--list .card__list-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: var(--spacing-4x);
+    padding: var(--card-list-row-pad-y) var(--card-list-row-pad-x);
+    border-bottom: var(--card-border-width) solid var(--card-list-row-divider);
+    color: var(--card-fg);
+    transition: background-color .15s ease;
+}
+.card--list .card__list-item:last-child { border-bottom: none; }
+.card--list .card__list-item.is-interactive { cursor: pointer; }
+.card--list .card__list-item.is-interactive:hover {
+    background: var(--card-list-row-bg-hover);
+}
+.card--list .card__list-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-pill);
+    background: var(--background-primary-minimal);
+    color: var(--text-primary-strong);
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--text-sm);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.card--list .card__list-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+.card--list .card__list-title {
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    color: var(--card-fg);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.card--list .card__list-meta {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--card-fg-subtle);
+    margin: 0;
+}
+.card--list .card__list-trail {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: 0.04em;
+    color: var(--card-fg-minimal);
+    text-align: right;
+}
+.card--list > .card__list-footer {
+    padding: var(--spacing-3x) var(--card-padding-x);
+    border-top: var(--card-border-width) solid var(--card-list-row-divider);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--card-gap);
+    color: var(--card-fg-minimal);
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+}
+
+/* =========================================================
+   FUNCTIONAL VARIANT — Selectable (checkbox affordance)
+   Use case: multi-select grids, content pickers, bulk
+   operations. Toggle `.is-selected` on click.
+   ========================================================= */
+.card--selectable {
+    padding-right: calc(var(--card-padding-x) + var(--card-check-size) + var(--spacing-3x));
+}
+.card--selectable .card__check {
+    position: absolute;
+    top: var(--spacing-4x);
+    right: var(--spacing-4x);
+    width: var(--card-check-size);
+    height: var(--card-check-size);
+    border-radius: var(--radius-sm);
+    background: var(--card-check-bg);
+    border: var(--card-border-width) solid var(--card-check-border);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--card-transition);
+}
+.card--selectable .card__check svg {
+    width: 16px;
+    height: 16px;
+    color: var(--card-check-checked-fg);
+    opacity: 0;
+    transform: scale(0.6);
+    transition: opacity .15s ease, transform .15s cubic-bezier(.2,.8,.2,1);
+}
+.card--selectable.is-selected .card__check {
+    background: var(--card-check-checked-bg);
+    border-color: var(--card-check-checked-border);
+}
+.card--selectable.is-selected .card__check svg {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* =========================================================
+   FUNCTIONAL VARIANT — Draggable (handle affordance)
+   Use case: kanban boards, sortable lists, dashboard
+   tile reordering. Wire up via dnd library; the CSS only
+   provides the affordance.
+   ========================================================= */
+.card--draggable {
+    padding-left: calc(var(--card-padding-x) + 18px + var(--spacing-3x));
+}
+.card--draggable .card__drag-handle {
+    position: absolute;
+    top: var(--spacing-4x);
+    left: var(--spacing-3x);
+    width: 18px;
+    height: 18px;
+    color: var(--card-drag-handle-fg);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+    transition: color .15s ease;
+}
+.card--draggable .card__drag-handle:hover { color: var(--card-drag-handle-fg-hover); }
+.card--draggable.is-dragging {
+    cursor: grabbing;
+    opacity: 0.85;
+    box-shadow: var(--shadow-lg);
+    transform: rotate(-1deg);
+}
+
+/* =========================================================
+   FUNCTIONAL VARIANT — Featured (highlighted, prominent)
+   Use case: editor's pick, highlighted plan in a pricing
+   grid, featured product. Use sparingly — one per view.
+   ========================================================= */
+.card--featured {
+    border: var(--card-featured-border-width) solid var(--card-featured-border);
+    background:
+        linear-gradient(180deg, var(--card-featured-bg-tint) 0%, transparent 60%),
+        var(--card-bg);
+    box-shadow: var(--card-featured-ring), var(--card-shadow-hover);
+}
+.card--featured .card__featured-mark {
+    position: absolute;
+    top: calc(var(--card-featured-border-width) * -1);
+    right: var(--spacing-5x);
+    transform: translateY(-50%);
+    padding: var(--spacing-half) var(--spacing-3x);
+    background: var(--background-accent);
+    color: var(--text-inverted);
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    border-radius: var(--radius-pill);
+}
+
+/* =========================================================
+   GLASS SCALE — five tiers
+   .card--glass-clear  · barely-there
+   .card--glass        · light frost (default)
+   .card--glass-frost  · content-grade
+   .card--glass-heavy  · modal-grade slab
+   .card--glass-tinted · brand-aware
+   All tiers suppress shadow and rely on backdrop blur.
+   ========================================================= */
+.card--glass,
+.card--glass-clear,
+.card--glass-frost,
+.card--glass-heavy,
+.card--glass-tinted { box-shadow: none; }
+
+.card--glass {
+    background: var(--card-glass-bg);
+    border-color: var(--card-glass-border);
+    backdrop-filter: var(--card-glass-blur) saturate(var(--card-glass-saturate));
+    -webkit-backdrop-filter: var(--card-glass-blur) saturate(var(--card-glass-saturate));
+}
+.card--glass-clear {
+    background: var(--card-glass-clear-bg);
+    border-color: var(--card-glass-clear-border);
+    backdrop-filter: var(--card-glass-clear-blur) saturate(var(--card-glass-saturate));
+    -webkit-backdrop-filter: var(--card-glass-clear-blur) saturate(var(--card-glass-saturate));
+}
+.card--glass-frost {
+    background: var(--card-glass-frost-bg);
+    border-color: var(--card-glass-frost-border);
+    backdrop-filter: var(--card-glass-frost-blur) saturate(var(--card-glass-saturate));
+    -webkit-backdrop-filter: var(--card-glass-frost-blur) saturate(var(--card-glass-saturate));
+}
+.card--glass-heavy {
+    background: var(--card-glass-heavy-bg);
+    border-color: var(--card-glass-heavy-border);
+    backdrop-filter: var(--card-glass-heavy-blur) saturate(var(--card-glass-saturate));
+    -webkit-backdrop-filter: var(--card-glass-heavy-blur) saturate(var(--card-glass-saturate));
+}
+.card--glass-tinted {
+    background: var(--card-glass-tinted-bg);
+    border-color: var(--card-glass-tinted-border);
+    backdrop-filter: var(--card-glass-tinted-blur) saturate(var(--card-glass-saturate));
+    -webkit-backdrop-filter: var(--card-glass-tinted-blur) saturate(var(--card-glass-saturate));
+}
+
+/* =========================================================
+   SURFACE VERSION — Inverted
+   Card sits on a dark / brand background. Re-wires every
+   colour role to the inverted token family. Works with any
+   variant.
+   ========================================================= */
+.card--inverted {
+    background: var(--card-inverted-bg);
+    border-color: var(--card-inverted-border);
+    color: var(--card-inverted-fg);
+    box-shadow: none;
+}
+.card--inverted.is-interactive:hover,
+a.card.card--inverted:hover,
+button.card.card--inverted:hover {
+    background: var(--card-inverted-bg-hover);
+    border-color: var(--card-inverted-border-strong);
+}
+.card--inverted .card__eyebrow,
+.card--inverted .card__list-meta,
+.card--inverted .card__list-trail,
+.card--inverted .card__metric-label,
+.card--inverted > .card__list-footer {
+    color: var(--card-inverted-fg-minimal);
+}
+.card--inverted .card__title,
+.card--inverted .card__list-title,
+.card--inverted .card__metric-value,
+.card--inverted .card__price {
+    color: var(--card-inverted-fg);
+}
+.card--inverted .card__subtitle,
+.card--inverted .card__body {
+    color: var(--card-inverted-fg-subtle);
+}
+.card--inverted .card__footer,
+.card--inverted.card--list > .card__list-header,
+.card--inverted.card--list .card__list-item,
+.card--inverted.card--list > .card__list-footer {
+    border-color: var(--card-inverted-divider);
+}
+.card--inverted.card--list .card__list-avatar,
+.card--inverted .card__avatar {
+    background: var(--card-inverted-mark-bg);
+    color: var(--card-inverted-fg);
+}
+.card--inverted.card--list .card__list-item.is-interactive:hover {
+    background: var(--card-inverted-bg-hover);
+}
+
+/* =========================================================
+   STATE — is-selected (active card in a navigation list)
+   Promoted from a "version" to a state since any variant
+   can carry it.
+   ========================================================= */
+.card.is-selected,
+.card--selected {
+    background: var(--card-selected-bg);
+    border-color: var(--card-selected-border);
+    color: var(--card-selected-fg);
+    box-shadow: var(--card-selected-shadow);
+}
+.card.is-selected::before,
+.card--selected::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 4px;
+    background: var(--card-selected-accent);
+    border-top-left-radius: var(--card-radius);
+    border-bottom-left-radius: var(--card-radius);
+}
+.card.is-selected.card--list,
+.card--selected.card--list { padding: 0; }
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+    .card,
+    .card.is-interactive:hover,
+    .card.is-interactive:active,
+    a.card:hover, a.card:active,
+    button.card:hover, button.card:active,
+    .card--list .card__list-item,
+    .card--draggable.is-dragging {
+        transition: none;
+        transform: none;
+    }
+}

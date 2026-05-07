@@ -8,6 +8,23 @@
    ========================================================= */
 
 /* =========================================================
+   STACKING — lift any showcase card whose dropdown is open
+   The .form-variant-card / .form-version-card surfaces use
+   backdrop-filter for their glass treatment, which creates a
+   new stacking context per card. That traps the dropdown menu
+   inside the card it lives in — so a long menu paints under
+   the next card in the grid even with high z-index on the
+   menu itself. Lifting the parent card via :has() promotes
+   the entire stacking context above its siblings while open.
+   ========================================================= */
+.form-variant-card:has(.dropdown.is-open),
+.form-version-card:has(.dropdown.is-open),
+.form-size-row:has(.dropdown.is-open) {
+    position: relative;
+    z-index: 50;
+}
+
+/* =========================================================
    USAGE NOTE — instructional paragraph
    Lifted from page-semantics.css so any component-page that
    imports this file inherits the same usage-note pattern.

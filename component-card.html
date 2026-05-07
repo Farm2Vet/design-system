@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Farm2Vet · Card — Design System</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<!-- Design system: shared, reusable foundation -->
+<link rel="stylesheet" href="styles/tokens.css" />
+<link rel="stylesheet" href="styles/base.css" />
+<link rel="stylesheet" href="styles/shell.css" />
+<link rel="stylesheet" href="styles/button.css" />
+<link rel="stylesheet" href="styles/card.css" />
+<!-- Page-specific layout -->
+<link rel="stylesheet" href="styles/page-component-card.css" />
+<!-- Reuse: usage-note pattern + token-table styling -->
+<link rel="stylesheet" href="styles/page-component-form.css" />
+<link rel="stylesheet" href="styles/page-component-button.css" />
+</head>
+<body>
+
+<!-- ========================== TOP BAR ========================== -->
+<header class="topbar">
+  <a href="#top" class="brand" aria-label="Farm2Vet design system">
+    <img src="logo/logo-wordmark-color.svg" alt="Farm2Vet" class="brand-logo" />
+    <small>Design System</small>
+  </a>
+  <nav class="toc" aria-label="Section navigation">
+    <a href="#card-anatomy">01 Anatomy</a>
+    <a href="#card-style">02 Style</a>
+    <a href="#card-layout">03 Layout</a>
+    <a href="#card-functional">04 Functional</a>
+    <a href="#card-content">05 Content</a>
+    <a href="#card-glass-scale">06 Glass</a>
+    <a href="#card-states">07 States</a>
+    <a href="#card-versions">08 Versions</a>
+    <a href="#card-tokens">09 Tokens</a>
+  </nav>
+  <span class="version mono">v 0.5 · 2026</span>
+</header>
+
+<main class="shell" id="top">
+
+  <!-- ========================== HERO ========================== -->
+  <section class="hero">
+    <div>
+      <h1 class="display reveal">
+        <span class="num">Section 05 / Components</span>
+        Card.
+      </h1>
+    </div>
+    <div>
+      <p class="lede reveal">
+        The container the rest of the system lives inside. One shared shape
+        adapts across three style variants, three layouts, four functional
+        modes, four content patterns, a five-tier glass scale, and a full
+        state matrix — all resolved through the <code>--card-*</code> token
+        layer so a tweak to surface, border, or selected colour cascades to
+        every card on the screen.
+      </p>
+    </div>
+
+    <dl class="meta-strip reveal">
+      <div><dt>Component</dt><dd>Card</dd></div>
+      <div><dt>Style variants</dt><dd>3 + 5 glass</dd></div>
+      <div><dt>Layouts</dt><dd>Vertical · Horizontal · List</dd></div>
+      <div><dt>States</dt><dd>5 + selected</dd></div>
+    </dl>
+  </section>
+
+  <!-- ========================== ARCHITECTURAL CALLOUT ========================== -->
+  <section class="chunk" style="padding-top: var(--spacing-8x); padding-bottom: 0;">
+    <div class="card-callout reveal" role="note">
+      <span class="label">Architectural note · scope boundary</span>
+      <p>
+        <strong>FAQ-style Q&amp;A is the Accordion component's responsibility,
+        not Card's.</strong> A question that expands to reveal an answer is a
+        disclosure pattern with its own keyboard model, animation, and aria
+        contract — different in kind from a content container. The Card
+        system therefore does not ship a <code>.card--question</code>
+        variant; the equivalent affordance lives under
+        <em>component-accordion.html</em> (in a future release).
+      </p>
+    </div>
+  </section>
+
+  <!-- ========================== ANATOMY ========================== -->
+  <section class="chunk" id="card-anatomy">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">01 / Card — Anatomy</span>
+        <h2 class="display">A shared <em>structure</em>.</h2>
+      </div>
+      <p>
+        Every variant is composed from the same set of slots — an optional
+        media area, an eyebrow, a title, an optional subtitle, a body, and a
+        footer with actions. Plus configurable sub-components: badges,
+        prices, ratings, metrics, and avatars. Variants differ in
+        <em>which</em> slots they expose, not in the underlying layout.
+      </p>
+    </header>
+
+    <div class="glass card-anatomy reveal">
+      <article class="card">
+        <span class="card__eyebrow">Eyebrow · category</span>
+        <header class="card__header">
+          <h3 class="card__title">Card title</h3>
+          <p class="card__subtitle">Optional supporting subtitle</p>
+        </header>
+        <div class="card__badge-row">
+          <span class="card__badge">New</span>
+          <span class="card__badge card__badge--info">Verified</span>
+        </div>
+        <p class="card__body">
+          Body copy explains the card's purpose with one or two short sentences.
+          Keep it scannable; long-form belongs in a detail page.
+        </p>
+        <footer class="card__footer">
+          <span class="card__eyebrow">Footer · meta</span>
+          <div class="card__actions">
+            <button class="btn btn--ghost btn--sm">Skip</button>
+            <button class="btn btn--cta btn--sm">Open</button>
+          </div>
+        </footer>
+      </article>
+
+      <dl class="legend">
+        <dt>.card__media</dt>
+        <dd>Image, video, or graphic — top in vertical, leading edge in horizontal.</dd>
+
+        <dt>.card__eyebrow</dt>
+        <dd>Mono micro-label for category, status, or section. Optional.</dd>
+
+        <dt>.card__title · .card__subtitle</dt>
+        <dd>Semibold H5 headline + subtle small-text descriptor. Title is the only required slot.</dd>
+
+        <dt>.card__badge-row</dt>
+        <dd>Status pills (default · info · safe · warning · critical).</dd>
+
+        <dt>.card__body</dt>
+        <dd>Body prose, lists, or any free content.</dd>
+
+        <dt>.card__footer · .card__actions</dt>
+        <dd>Divider-separated row holding meta on the left and ≤ 2–3 actions on the right.</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ========================== STYLE VARIANTS ========================== -->
+  <section class="chunk" id="card-style">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">02 / Card — Style variants</span>
+        <h2 class="display">Style <em>by elevation</em>.</h2>
+      </div>
+      <p>
+        Three style treatments along a single axis: how loudly the card
+        announces itself against the canvas. <em>Elevated</em> is the
+        workhorse default; <em>Filled</em> mutes it for secondary content;
+        <em>Outlined</em> trades shadow for a confident border in dense
+        layouts.
+      </p>
+    </header>
+
+    <p class="usage-note reveal">
+      <strong>One style per region.</strong> Mixing Elevated and Outlined
+      cards in the same grid creates competing depth cues. Pick the style
+      that matches the region's elevation budget — marketing surfaces tend
+      Elevated, dashboards and admin tooling tend Outlined or Filled.
+    </p>
+
+    <div class="card-showcase reveal">
+
+      <!-- ELEVATED -->
+      <article class="card-showcase__tile size-md">
+        <span class="label">Elevated · default</span>
+        <div class="demo">
+          <article class="card is-interactive" tabindex="0">
+            <span class="card__eyebrow">Caseload · 2026-05-07</span>
+            <header class="card__header">
+              <h3 class="card__title">Bessie · Holstein, 4y</h3>
+              <p class="card__subtitle">Owner: Nguyen Minh · Farm 12B</p>
+            </header>
+            <p class="card__body">
+              Recurrent left-fore lameness, grade 2/5. Vitals stable.
+            </p>
+            <footer class="card__footer">
+              <span class="card__eyebrow">Updated 14 m</span>
+              <div class="card__actions">
+                <button class="btn btn--cta btn--sm">Open chart</button>
+              </div>
+            </footer>
+          </article>
+        </div>
+        <dl class="card-showcase__note">
+          <dt>Use case</dt><dd>The system default — content blocks on marketing surfaces, intake forms, primary feed cards.</dd>
+          <dt>States</dt><dd>Default, hover (lifts), focus (ring), pressed (settles), disabled.</dd>
+          <dt>Interactions</dt><dd>One primary action; up to two secondary. Whole card may be a link via <code>a.card</code>.</dd>
+          <dt>Responsive</dt><dd>Stacks 1-up on mobile; 2–3 per row on tablet; 3–4 in dashboard grids.</dd>
+        </dl>
+        <div class="meta"><span>.card</span><strong>shadow + border</strong></div>
+      </article>
+
+      <!-- FILLED -->
+      <article class="card-showcase__tile size-md">
+        <span class="label">Filled · muted</span>
+        <div class="demo">
+          <article class="card card--filled is-interactive" tabindex="0">
+            <span class="card__eyebrow">Settings · group</span>
+            <header class="card__header">
+              <h3 class="card__title">Notification preferences</h3>
+              <p class="card__subtitle">3 settings · last edited yesterday</p>
+            </header>
+            <p class="card__body">
+              No drop shadow. The subtle background tint provides
+              just-enough separation from the canvas.
+            </p>
+          </article>
+        </div>
+        <dl class="card-showcase__note">
+          <dt>Use case</dt><dd>Secondary blocks within a parent surface — settings groups, inline panels, quiet list items.</dd>
+          <dt>States</dt><dd>Default, hover (deeper tint), focus, pressed, disabled.</dd>
+          <dt>Interactions</dt><dd>Often the whole tile is the affordance (entire row is clickable). Single primary CTA inside is unusual.</dd>
+          <dt>Responsive</dt><dd>Always full-width inside its parent column; stacks vertically on every breakpoint.</dd>
+        </dl>
+        <div class="meta"><span>.card--filled</span><strong>tint, no shadow</strong></div>
+      </article>
+
+      <!-- OUTLINED -->
+      <article class="card-showcase__tile size-md">
+        <span class="label">Outlined · border-led</span>
+        <div class="demo">
+          <article class="card card--outlined is-interactive" tabindex="0">
+            <span class="card__eyebrow">Picker · option</span>
+            <header class="card__header">
+              <h3 class="card__title">Bovine</h3>
+              <p class="card__subtitle">Cattle · dairy &amp; beef</p>
+            </header>
+            <p class="card__body">
+              High contrast against busy dashboards. The thicker border
+              survives layouts where shadow noise would compound.
+            </p>
+          </article>
+        </div>
+        <dl class="card-showcase__note">
+          <dt>Use case</dt><dd>Dense pickers, admin tooling, comparison grids, dashboard tiles where depth would be visual noise.</dd>
+          <dt>States</dt><dd>Default, hover (border turns primary), focus, pressed, disabled. <code>.is-selected</code> is common.</dd>
+          <dt>Interactions</dt><dd>Frequently used as a selectable surface — pair with <code>.card--selectable</code>.</dd>
+          <dt>Responsive</dt><dd>Wraps in a grid; on mobile, the border keeps cards distinct without shadows blooming.</dd>
+        </dl>
+        <div class="meta"><span>.card--outlined</span><strong>border, no shadow</strong></div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ========================== LAYOUT & ORIENTATION ========================== -->
+  <section class="chunk" id="card-layout">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">03 / Card — Layout &amp; orientation</span>
+        <h2 class="display">Three <em>orientations</em>.</h2>
+      </div>
+      <p>
+        Vertical stacks media on top of content. Horizontal places media on
+        the leading edge. Content-only drops media entirely. List bleeds
+        rows to the card's edge for stacked content. Pick by viewport and
+        scan direction, not by aesthetic preference.
+      </p>
+    </header>
+
+    <div class="card-showcase reveal">
+
+      <!-- VERTICAL -->
+      <article class="card-showcase__tile size-md">
+        <span class="label">Vertical · standard</span>
+        <div class="demo">
+          <article class="card">
+            <div class="card__media" aria-hidden="true"></div>
+            <span class="card__eyebrow">Field guide · article</span>
+            <header class="card__header">
+              <h3 class="card__title">Recognising early-stage mastitis</h3>
+              <p class="card__subtitle">5 min read · clinical</p>
+            </header>
+            <p class="card__body">
+              Media on top, content beneath. The canonical browse-feed and
+              gallery shape.
+            </p>
+          </article>
+        </div>
+        <dl class="card-showcase__note">
+          <dt>Use case</dt><dd>Browse feeds, galleries, marketing grids, blog/article cards, product cards.</dd>
+          <dt>States</dt><dd>Inherits all base states. Media area can carry its own hover effect (zoom, overlay).</dd>
+          <dt>Interactions</dt><dd>Whole card link is typical. CTA in footer optional; ≤ 2 secondary actions.</dd>
+          <dt>Responsive</dt><dd>Best in 2–4 column grids on desktop, single column on mobile.</dd>
+        </dl>
+        <div class="meta"><span>default flow</span><strong>media · top</strong></div>
+      </article>
+
+      <!-- HORIZONTAL -->
+      <article class="card-showcase__tile size-xl">
+        <span class="label">Horizontal · row</span>
+        <div class="demo">
+          <article class="card card--horizontal">
+            <div class="card__media" aria-hidden="true"></div>
+            <div class="card__content">
+              <span class="card__eyebrow">News · 2026-05-07</span>
+              <h3 class="card__title">New dairy welfare guidelines</h3>
+              <p class="card__body">
+                Media on the leading edge — ideal for compact list rows on
+                mobile and search results on desktop.
+              </p>
+              <footer class="card__footer">
+                <span class="card__eyebrow">2 min read</span>
+                <div class="card__actions">
+                  <button class="btn btn--ghost btn--sm">Read</button>
+                </div>
+              </footer>
+            </div>
+          </article>
+        </div>
+        <dl class="card-showcase__note">
+          <dt>Use case</dt><dd>Mobile list rows, search result rows, recent activity, news feeds — any scan-down vertical list.</dd>
+          <dt>States</dt><dd>Inherits all base states. Hover commonly tints the entire row, not just the title.</dd>
+          <dt>Interactions</dt><dd>Whole card → link. Inline actions on the right (kebab menu, save).</dd>
+          <dt>Responsive</dt><dd>Reads well at full width across viewports. On very narrow screens, collapses to vertical.</dd>
+        </dl>
+        <div class="meta"><span>.card--horizontal</span><strong>media · left</strong></div>
+      </article>
+
+      <!-- CONTENT-ONLY -->
+      <article class="card-showcase__tile size-md">
+        <span class="label">Content-only · text + meta</span>
+        <div class="demo">
+          <article class="card card--content-only">
+            <span class="card__eyebrow">Note · clinical</span>
+            <header class="card__header">
+              <h3 class="card__title">No media required.</h3>
+              <p class="card__subtitle">Text-first cards for notes, quotes, callouts.</p>
+            </header>
+            <p class="card__body">
+              The default <code>.card</code> already supports this — the
+              <code>.card--content-only</code> marker is an opt-in label
+              for tooling, not a behavioural override.
+            </p>
+            <footer class="card__footer">
+              <span class="card__eyebrow">Author · Dr. Pham</span>
+            </footer>
+          </article>
+        </div>
+        <dl class="card-showcase__note">
+          <dt>Use case</dt><dd>Quotes, internal notes, definitions, FAQs (use Accordion for collapsible Q&amp;A), informational callouts.</dd>
+          <dt>States</dt><dd>Default, hover, focus — disabled rare since content-only is usually static.</dd>
+          <dt>Interactions</dt><dd>Often non-interactive (information display). Otherwise inherits base behaviour.</dd>
+          <dt>Responsive</dt><dd>Reflows fluidly; body copy max-width caps at ~64ch for legibility on wide screens.</dd>
+        </dl>
+        <div class="meta"><span>.card--content-only</span><strong>marker only</strong></div>
+      </article>
+
+      <!-- LIST -->
+      <article class="card-showcase__tile size-md">
+        <span class="label">List · stacked rows</span>
+        <div class="demo">
+          <article class="card card--list">
+            <header class="card__list-header">
+              <span class="card__eyebrow">Recent activity</span>
+              <h3 class="card__title">This week's caseload</h3>
+            </header>
+            <ul class="card__list">
+              <li class="card__list-item is-interactive">
+                <span class="card__list-avatar" aria-hidden="true">BH</span>
+                <span class="card__list-text">
+                  <span class="card__list-title">Bessie · Holstein</span>
+                  <span class="card__list-meta">Lameness · grade 2/5</span>
+                </span>
+                <span class="card__list-trail">14 m</span>
+              </li>
+              <li class="card__list-item is-interactive">
+                <span class="card__list-avatar" aria-hidden="true">PB</span>
+                <span class="card__list-text">
+                  <span class="card__list-title">Penny · Boer goat</span>
+                  <span class="card__list-meta">Post-kid recovery</span>
+                </span>
+                <span class="card__list-trail">2 h</span>
+              </li>
+              <li class="card__list-item is-interactive">
+                <span class="card__list-avatar" aria-hidden="true">AT</span>
+                <span class="card__list-text">
+                  <span class="card__list-title">Atlas · Quarter horse</span>
+                  <span class="card__list-meta">Annual vaccination</span>
+                </span>
+                <span class="card__list-trail">1 d</span>
+              </li>
+            </ul>
+            <footer class="card__list-footer">
+              <span>3 of 28</span>
+              <span>View all →</span>
+            </footer>
+          </article>
+        </div>
+        <dl class="card-showcase__note">
+          <dt>Use case</dt><dd>Settings groups, member lists, recent activity, conversation lists — anything where rows share schema.</dd>
+          <dt>States</dt><dd>Default + hover applies <em>per row</em>, not per card. The card itself can also be <code>.is-selected</code>.</dd>
+          <dt>Interactions</dt><dd>Each row is independently interactive. Header / footer are static.</dd>
+          <dt>Responsive</dt><dd>Stacks full-width; rows stay legible because the avatar / trail columns auto-shrink before the title clips.</dd>
+        </dl>
+        <div class="meta"><span>.card--list</span><strong>row stack</strong></div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ========================== FUNCTIONAL VARIANTS ========================== -->
+  <section class="chunk" id="card-functional">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">04 / Card — Functional variants</span>
+        <h2 class="display">Behaviour <em>modifiers</em>.</h2>
+      </div>
+      <p>
+        Four functional behaviours that wrap any style or layout variant.
+        Apply additively — a Selectable + Outlined + Vertical card is
+        legitimate; a Selectable + Featured card usually isn't (one
+        attention-grabber per region).
+      </p>
+    </header>
+
+    <div class="card-showcase reveal">
+
+      <!-- INTERACTIVE -->
+      <article class="card-showcase__tile size-md">
+        <span class="label">Interactive · whole-card link</span>
+        <div class="demo">
+          <a class="card" href="#" onclick="event.preventDefault()">
+            <span class="card__eyebrow">Caseload</span>
+            <header class="card__header">
+              <h3 class="card__title">Bessie · Holstein</h3>
+              <p class="card__subtitle">Click anywhere on the card.</p>
+            </header>
+            <p class="card__body">
+              Wrap any card with an <code>&lt;a&gt;</code> or
+              <code>&lt;button&gt;</code> — or apply
+              <code>.is-interactive</code> — to enable hover/focus/pressed states.
+            </p>
+          </a>
+        </div>
+        <dl class="card-showcase__note">
+          <dt>Use case</dt><dd>Feed cards, navigation tiles, dashboard shortcuts — anywhere the entire surface should be the affordance.</dd>
+          <dt>States</dt><dd>Default → Hover (lift + shadow) → Pressed (settle) → Focus (ring). Disabled supported.</dd>
+          <dt>Interactions</dt><dd>Single primary action only. Avoid nested clickable elements that aren't buttons.</dd>
+          <dt>Responsive</dt><dd>Hover is a desktop affordance; on touch, the pressed state should still register tactile feedback.</dd>
+        </dl>
+        <div class="meta"><span>.is-interactive · a · button</span><strong>whole-card link</strong></div>
+      </article>
+
+      <!-- SELECTABLE -->
+      <article class="card-showcase__tile size-md">
+        <span class="label">Selectable · checkbox affordance</span>
+        <div class="demo">
+          <article class="card card--outlined card--selectable is-selected" data-card-selectable tabindex="0" aria-pressed="true">
+            <span class="card__check" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>
+            </span>
+            <span class="card__eyebrow">Picker · species</span>
+            <header class="card__header">
+              <h3 class="card__title">Bovine</h3>
+              <p class="card__subtitle">Cattle · dairy &amp; beef</p>
+            </header>
+            <p class="card__body">
+              Tap to toggle. Multi-select is the default; single-select wires
+              up via JS (clear other <code>.is-selected</code> on click).
+            </p>
+          </article>
+        </div>
+        <dl class="card-showcase__note">
+          <dt>Use case</dt><dd>Multi-select grids (species, symptoms, treatments), content pickers, bulk operations.</dd>
+          <dt>States</dt><dd>Default · hover · focus · <code>.is-selected</code> (check fills, border tints) · disabled.</dd>
+          <dt>Interactions</dt><dd>Click toggles. Keyboard: Space / Enter toggles when card is focused.</dd>
+          <dt>Responsive</dt><dd>Wraps in 2–4 column grids on desktop; single column on mobile with check anchored top-right.</dd>
+        </dl>
+        <div class="meta"><span>.card--selectable</span><strong>multi-select</strong></div>
+      </article>
+
+      <!-- DRAGGABLE -->
+      <article class="card-showcase__tile size-md">
+        <span class="label">Draggable · sortable handle</span>
+        <div class="demo">
+          <article class="card card--filled card--draggable">
+            <span class="card__drag-handle" aria-label="Drag to reorder" role="button">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <circle cx="9" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/>
+                <circle cx="15" cy="6" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="15" cy="18" r="1.6"/>
+              </svg>
+            </span>
+            <span class="card__eyebrow">Kanban · in progress</span>
+            <header class="card__header">
+              <h3 class="card__title">Lab results · Bessie</h3>
+              <p class="card__subtitle">Awaiting return from external lab</p>
+            </header>
+            <p class="card__body">
+              Grab the handle to reorder. The CSS provides the affordance;
+              wire up movement via your dnd library of choice.
+            </p>
+          </article>
+        </div>
+        <dl class="card-showcase__note">
+          <dt>Use case</dt><dd>Kanban boards, sortable lists, dashboard tile reordering, prioritised queues.</dd>
+          <dt>States</dt><dd>Default · hover (handle darkens) · <code>.is-dragging</code> (rotates, lifts) · disabled.</dd>
+          <dt>Interactions</dt><dd>Mouse drag from the handle. Keyboard reorder requires JS (Space to grab, arrows to move, Space to drop).</dd>
+          <dt>Responsive</dt><dd>On touch, the entire card surface accepts a long-press to begin drag; handle remains visible as an affordance hint.</dd>
+        </dl>
+        <div class="meta"><span>.card--draggable</span><strong>sortable</strong></div>
+      </article>
+
+      <!-- FEATURED -->
+      <article class="card-showcase__tile size-md">
+        <span class="label">Featured · highlighted</span>
+        <div class="demo">
+          <article class="card card--featured">
+            <span class="card__featured-mark">Recommended</span>
+            <span class="card__eyebrow">Plan · clinic</span>
+            <header class="card__header">
+              <h3 class="card__title">Pro · 12 vets</h3>
+              <p class="card__subtitle">Most popular for mid-size clinics</p>
+            </header>
+            <div class="card__price">
+              <span>2,400,000 ₫</span>
+              <span class="card__price-strike">3,200,000 ₫</span>
+            </div>
+            <p class="card__body">
+              Use one Featured card per region. Pairs the accent border
+              with a soft tint and a corner ribbon for instant scan
+              priority.
+            </p>
+            <footer class="card__footer">
+              <div class="card__actions" style="margin-left:auto">
+                <button class="btn btn--cta btn--sm">Choose plan</button>
+              </div>
+            </footer>
+          </article>
+        </div>
+        <dl class="card-showcase__note">
+          <dt>Use case</dt><dd>Editor's pick, recommended plan in pricing, featured product, top-of-list suggestion.</dd>
+          <dt>States</dt><dd>Inherits base states; the accent ring stays visible across hover/focus.</dd>
+          <dt>Interactions</dt><dd>One primary CTA strongly prescribed; the Featured treatment <em>is</em> the secondary signal.</dd>
+          <dt>Responsive</dt><dd>One per visual region. On mobile, slot it as the first card; on desktop, the middle of a pricing row.</dd>
+        </dl>
+        <div class="meta"><span>.card--featured</span><strong>one per region</strong></div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ========================== CONTENT PATTERNS ========================== -->
+  <section class="chunk" id="card-content">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">05 / Card — Content patterns</span>
+        <h2 class="display">Composed <em>shapes</em>.</h2>
+      </div>
+      <p>
+        Four canonical compositions — Product, Profile, KPI, Article —
+        built entirely from the slots and sub-components defined in the
+        Anatomy section. They are <em>not</em> new variants, just
+        documented recipes for the most common card shapes in modern
+        product UIs.
+      </p>
+    </header>
+
+    <div class="card-showcase reveal">
+
+      <!-- PRODUCT -->
+      <article class="card-showcase__tile size-md">
+        <span class="label">Product · commerce</span>
+        <div class="demo">
+          <article class="card is-interactive" tabindex="0">
+            <div class="card__media" aria-hidden="true"></div>
+            <div class="card__badge-row">
+              <span class="card__badge">New</span>
+              <span class="card__badge card__badge--safe">In stock</span>
+            </div>
+            <header class="card__header">
+              <h3 class="card__title">Vinallergy · oral suspension</h3>
+              <p class="card__subtitle">Anti-inflammatory · 250 ml</p>
+            </header>
+            <div class="card__rating">
+              <span class="card__rating-stars" aria-label="4.5 of 5">★★★★<span class="empty">★</span></span>
+              <span>4.5 · 128 reviews</span>
+            </div>
+            <div class="card__price">
+              <span>185,000 ₫</span>
+              <span class="card__price-strike">220,000 ₫</span>
+            </div>
+            <footer class="card__footer">
+              <div class="card__actions" style="margin-left:auto">
+                <button class="btn btn--secondary btn--sm">Save</button>
+                <button class="btn btn--cta btn--sm">Add to cart</button>
+              </div>
+            </footer>
+          </article>
+        </div>
+        <dl class="card-showcase__note">
+          <dt>Use case</dt><dd>Catalog grids, search results, recommendations. Image · badges · title · rating · price · CTA.</dd>
+          <dt>States</dt><dd>Inherits Interactive states. Out-of-stock badge disables the primary action.</dd>
+          <dt>Interactions</dt><dd>Whole-card link to product detail; "Add to cart" is the in-card primary CTA; "Save" secondary.</dd>
+          <dt>Responsive</dt><dd>2-up on mobile, 3–4 up on desktop. Image aspect held constant via <code>.card__media</code>.</dd>
+        </dl>
+        <div class="meta"><span>recipe</span><strong>commerce</strong></div>
+      </article>
+
+      <!-- PROFILE -->
+      <article class="card-showcase__tile size-md">
+        <span class="label">Profile · person</span>
+        <div class="demo">
+          <article class="card">
+            <header class="card__header" style="flex-direction:row; align-items:center; gap: var(--spacing-4x)">
+              <span class="card__avatar" aria-hidden="true">DP</span>
+              <div>
+                <h3 class="card__title">Dr. Pham Hong</h3>
+                <p class="card__subtitle">Senior vet · large animals</p>
+              </div>
+            </header>
+            <div class="card__badge-row">
+              <span class="card__badge">12 yrs</span>
+              <span class="card__badge card__badge--info">Verified</span>
+            </div>
+            <p class="card__body">
+              Reproductive medicine, dairy welfare, post-partum care.
+            </p>
+            <footer class="card__footer">
+              <span class="card__eyebrow">Hà Nội · Farm 12B</span>
+              <div class="card__actions">
+                <button class="btn btn--ghost btn--sm">Message</button>
+                <button class="btn btn--cta btn--sm">Follow</button>
+              </div>
+            </footer>
+          </article>
+        </div>
+        <dl class="card-showcase__note">
+          <dt>Use case</dt><dd>Team rosters, contributor lists, vet directory, follow / message panels.</dd>
+          <dt>States</dt><dd>Inherits base states. Follow button toggles between primary and secondary on engagement.</dd>
+          <dt>Interactions</dt><dd>Two CTAs is the cap (Follow + Message). Avatar / name link to a profile detail page.</dd>
+          <dt>Responsive</dt><dd>Avatar shrinks to 48px on mobile; CTAs stack full-width below the body.</dd>
+        </dl>
+        <div class="meta"><span>recipe</span><strong>person</strong></div>
+      </article>
+
+      <!-- KPI / DASHBOARD -->
+      <article class="card-showcase__tile size-md">
+        <span class="label">KPI · dashboard metric</span>
+        <div class="demo">
+          <article class="card card--outlined">
+            <div class="card__metric">
+              <span class="card__metric-label">Active cases · this week</span>
+              <span class="card__metric-value">28</span>
+              <span class="card__metric-delta is-up" aria-label="up 12 percent">▲ 12% · vs last week</span>
+            </div>
+            <div style="height: 56px; border-radius: var(--radius-sm); background:
+                linear-gradient(180deg, color-mix(in srgb, var(--primary-300) 35%, transparent), transparent),
+                repeating-linear-gradient(90deg, var(--primary-100) 0 22px, transparent 22px 26px);"
+                 aria-hidden="true"></div>
+          </article>
+        </div>
+        <dl class="card-showcase__note">
+          <dt>Use case</dt><dd>Dashboard widgets — single metric + trend, optionally with sparkline/chart. Pair with date-range filter.</dd>
+          <dt>States</dt><dd>Default. Metric delta colour signals direction (safe up / critical down). Loading uses skeleton shimmer.</dd>
+          <dt>Interactions</dt><dd>Often non-interactive at the card level; the chart inside drives drill-down.</dd>
+          <dt>Responsive</dt><dd>2-up on tablet, 3–4 up on desktop. Sparkline scales to card width; metric stays at H2.</dd>
+        </dl>
+        <div class="meta"><span>recipe</span><strong>kpi</strong></div>
+      </article>
+
+      <!-- ARTICLE / BLOG -->
+      <article class="card-showcase__tile size-md">
+        <span class="label">Article · blog</span>
+        <div class="demo">
+          <a class="card" href="#" onclick="event.preventDefault()">
+            <div class="card__media" aria-hidden="true"></div>
+            <span class="card__eyebrow">Field guide · 5 min</span>
+            <header class="card__header">
+              <h3 class="card__title">Recognising early-stage mastitis</h3>
+            </header>
+            <p class="card__body">
+              Subclinical mastitis often presents without obvious udder signs.
+              Watch SCC trends and be alert to small dips in yield.
+            </p>
+            <footer class="card__footer">
+              <span class="card__eyebrow">Dr. Pham Hong</span>
+              <span class="card__eyebrow">2026-04-22</span>
+            </footer>
+          </a>
+        </div>
+        <dl class="card-showcase__note">
+          <dt>Use case</dt><dd>Editorial / content feeds — featured image, headline, dek, byline, date.</dd>
+          <dt>States</dt><dd>Inherits Interactive states (whole card → article).</dd>
+          <dt>Interactions</dt><dd>Single affordance: open article. No nested CTAs.</dd>
+          <dt>Responsive</dt><dd>Vertical at all sizes — preserves the headline-led scan path. Switch to <code>.card--horizontal</code> for compact lists.</dd>
+        </dl>
+        <div class="meta"><span>recipe</span><strong>blog / article</strong></div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ========================== GLASS SCALE ========================== -->
+  <section class="chunk" id="card-glass-scale">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">06 / Card — Glass scale</span>
+        <h2 class="display">Blur and <em>transparency</em>.</h2>
+      </div>
+      <p>
+        Five glass tiers, ordered by frostiness. Each pair of values
+        (<code>--card-glass-{tier}-blur</code> and
+        <code>--card-glass-{tier}-bg</code>) is designed in concert: more
+        blur is paired with higher tint opacity, less blur with a clearer
+        base. Backdrop is a soft pastel atmosphere, not a brand wash.
+      </p>
+    </header>
+
+    <p class="usage-note reveal">
+      <strong>Pick the tier by what's behind the card.</strong>
+      <code>.card--glass-clear</code> for floating overlays;
+      <code>.card--glass</code> for hero callouts on subtle backdrops;
+      <code>.card--glass-frost</code> for content surfaces over busy
+      imagery; <code>.card--glass-heavy</code> for modal-grade slabs;
+      <code>.card--glass-tinted</code> when the brand should colour the
+      glass itself.
+    </p>
+
+    <div class="card-showcase reveal">
+
+      <article class="card-showcase__tile size-md on-vivid">
+        <span class="label">Clear · barely there</span>
+        <div class="demo">
+          <article class="card card--glass-clear">
+            <span class="card__eyebrow">Tier 01 · clear</span>
+            <header class="card__header">
+              <h3 class="card__title">Whisper of blur.</h3>
+              <p class="card__subtitle">--blur-sm · ~25% white tint</p>
+            </header>
+            <p class="card__body">
+              Lightest tier — floating chips and toolbars over imagery
+              that should remain dominant.
+            </p>
+          </article>
+        </div>
+        <div class="meta"><span>.card--glass-clear</span><strong>low blur · low tint</strong></div>
+      </article>
+
+      <article class="card-showcase__tile size-md on-vivid">
+        <span class="label">Light · default tier</span>
+        <div class="demo">
+          <article class="card card--glass">
+            <span class="card__eyebrow">Tier 02 · light</span>
+            <header class="card__header">
+              <h3 class="card__title">Balanced frost.</h3>
+              <p class="card__subtitle">--blur-lg · light tint</p>
+            </header>
+            <p class="card__body">
+              The system default. Visible blur without dominating; the
+              canvas still informs the surface.
+            </p>
+          </article>
+        </div>
+        <div class="meta"><span>.card--glass</span><strong>baseline</strong></div>
+      </article>
+
+      <article class="card-showcase__tile size-md on-vivid">
+        <span class="label">Frost · content-grade</span>
+        <div class="demo">
+          <article class="card card--glass-frost">
+            <span class="card__eyebrow">Tier 03 · frost</span>
+            <header class="card__header">
+              <h3 class="card__title">Reads on busy imagery.</h3>
+              <p class="card__subtitle">--blur-xl · ~75% white tint</p>
+            </header>
+            <p class="card__body">
+              Content surfaces that need to dampen a complex backdrop while
+              still feeling translucent.
+            </p>
+          </article>
+        </div>
+        <div class="meta"><span>.card--glass-frost</span><strong>high blur · medium tint</strong></div>
+      </article>
+
+      <article class="card-showcase__tile size-md on-vivid">
+        <span class="label">Heavy · modal-grade</span>
+        <div class="demo">
+          <article class="card card--glass-heavy">
+            <span class="card__eyebrow">Tier 04 · heavy</span>
+            <header class="card__header">
+              <h3 class="card__title">Near-opaque slab.</h3>
+              <p class="card__subtitle">--blur-2xl · ~92% white tint</p>
+            </header>
+            <p class="card__body">
+              Frostiest tier. Sheets and modals where legibility trumps
+              visual continuity.
+            </p>
+          </article>
+        </div>
+        <div class="meta"><span>.card--glass-heavy</span><strong>max blur · max tint</strong></div>
+      </article>
+
+      <article class="card-showcase__tile size-md on-vivid">
+        <span class="label">Tinted · brand-aware</span>
+        <div class="demo">
+          <article class="card card--glass-tinted">
+            <span class="card__eyebrow">Tier 05 · tinted</span>
+            <header class="card__header">
+              <h3 class="card__title">Glass with a brand pulse.</h3>
+              <p class="card__subtitle">--blur-lg · primary-tinted base</p>
+            </header>
+            <p class="card__body">
+              Uses <code>--background-glass-dark</code> so the surface
+              itself carries a quiet brand wash. Best on photographic
+              backdrops.
+            </p>
+          </article>
+        </div>
+        <div class="meta"><span>.card--glass-tinted</span><strong>brand wash</strong></div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ========================== STATES ========================== -->
+  <section class="chunk" id="card-states">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">07 / Card — States</span>
+        <h2 class="display">Five interaction <em>states</em>.</h2>
+      </div>
+      <p>
+        Default, Hover, Focus, Pressed, Disabled — applied automatically to
+        any interactive card (an <code>&lt;a&gt;</code>, a
+        <code>&lt;button&gt;</code>, or <code>.is-interactive</code>). The
+        hover lift and pressed settle are the same micro-animations used
+        by the Button component, kept under 200 ms so the UI never feels
+        sluggish.
+      </p>
+    </header>
+
+    <div class="card-showcase reveal">
+
+      <article class="card-showcase__tile size-md">
+        <div class="demo">
+          <article class="card is-interactive" tabindex="0">
+            <span class="card__eyebrow">Default</span>
+            <h3 class="card__title">Resting state.</h3>
+            <p class="card__body">Subtle shadow, default border.</p>
+          </article>
+        </div>
+        <div class="body"><span class="name">Default</span><span class="desc">rest</span></div>
+      </article>
+
+      <article class="card-showcase__tile size-md">
+        <div class="demo">
+          <article class="card is-interactive" tabindex="0"
+                   style="background: var(--card-bg-hover); border-color: var(--card-border-hover); box-shadow: var(--card-shadow-hover); transform: translateY(-1px);">
+            <span class="card__eyebrow">Hover</span>
+            <h3 class="card__title">Lifted, brighter.</h3>
+            <p class="card__body">Tile lifts 1px; shadow deepens; border strengthens.</p>
+          </article>
+        </div>
+        <div class="body"><span class="name">Hover</span><span class="desc">:hover</span></div>
+      </article>
+
+      <article class="card-showcase__tile size-md">
+        <div class="demo">
+          <article class="card is-interactive" tabindex="0"
+                   style="outline: 2px solid var(--outline-focus); outline-offset: 2px;">
+            <span class="card__eyebrow">Focus</span>
+            <h3 class="card__title">Keyboard ring.</h3>
+            <p class="card__body">2px outline + 2px offset. Inherits the system focus colour.</p>
+          </article>
+        </div>
+        <div class="body"><span class="name">Focus</span><span class="desc">:focus-visible</span></div>
+      </article>
+
+      <article class="card-showcase__tile size-md">
+        <div class="demo">
+          <article class="card is-interactive" tabindex="0"
+                   style="background: var(--card-bg-pressed); box-shadow: var(--card-shadow); transform: translateY(0);">
+            <span class="card__eyebrow">Pressed</span>
+            <h3 class="card__title">Settled in.</h3>
+            <p class="card__body">Tile drops back to baseline; bg darkens one step.</p>
+          </article>
+        </div>
+        <div class="body"><span class="name">Pressed</span><span class="desc">:active</span></div>
+      </article>
+
+      <article class="card-showcase__tile size-md">
+        <div class="demo">
+          <article class="card is-disabled" aria-disabled="true">
+            <span class="card__eyebrow">Disabled</span>
+            <h3 class="card__title">Not available.</h3>
+            <p class="card__body">Pointer-events suppressed; opacity reduced; no shadow.</p>
+          </article>
+        </div>
+        <div class="body"><span class="name">Disabled</span><span class="desc">.is-disabled</span></div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ========================== VERSIONS ========================== -->
+  <section class="chunk" id="card-versions">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">08 / Card — Versions</span>
+        <h2 class="display">Surface <em>adaptations</em>.</h2>
+      </div>
+      <p>
+        Beyond the per-state matrix, two surface-level adaptations:
+        <em>Inverted</em> re-wires every colour role for dark / brand
+        backdrops, and <em>is-selected</em> marks the active card across
+        any variant with a primary tint, ring, and leading accent stripe.
+      </p>
+    </header>
+
+    <h4 class="subheading reveal">Default · Inverted · Selected <span class="tag">applied to elevated</span></h4>
+    <div class="card-showcase reveal">
+
+      <article class="card-showcase__tile size-md">
+        <div class="demo">
+          <article class="card">
+            <span class="card__eyebrow">Caseload</span>
+            <header class="card__header">
+              <h3 class="card__title">Bessie · Holstein</h3>
+              <p class="card__subtitle">Lameness, grade 2/5</p>
+            </header>
+            <p class="card__body">Vitals stable. Bloodwork pending lab return.</p>
+          </article>
+        </div>
+        <div class="body"><span class="name">Default</span><span class="desc">light surface</span></div>
+      </article>
+
+      <article class="card-showcase__tile size-md on-dark">
+        <div class="demo">
+          <article class="card card--inverted">
+            <span class="card__eyebrow">Caseload</span>
+            <header class="card__header">
+              <h3 class="card__title">Bessie · Holstein</h3>
+              <p class="card__subtitle">Lameness, grade 2/5</p>
+            </header>
+            <p class="card__body">Vitals stable. Bloodwork pending lab return.</p>
+          </article>
+        </div>
+        <div class="body"><span class="name">Inverted</span><span class="desc">on quiet dark wash</span></div>
+      </article>
+
+      <article class="card-showcase__tile size-md">
+        <div class="demo">
+          <article class="card is-selected" aria-current="true">
+            <span class="card__eyebrow">Caseload · selected</span>
+            <header class="card__header">
+              <h3 class="card__title">Bessie · Holstein</h3>
+              <p class="card__subtitle">Lameness, grade 2/5</p>
+            </header>
+            <p class="card__body">Vitals stable. Bloodwork pending lab return.</p>
+          </article>
+        </div>
+        <div class="body"><span class="name">Selected</span><span class="desc">.is-selected · primary tint</span></div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ========================== TOKENS ========================== -->
+  <section class="chunk" id="card-tokens">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">09 / Card — Component tokens</span>
+        <h2 class="display">Token <em>map</em>.</h2>
+      </div>
+      <p>
+        Every card declaration resolves through this layer. Component tokens
+        only ever reference semantic tokens — never primitives — so a change
+        to surface, border, or selected colour cascades to every variant in
+        lockstep.
+      </p>
+    </header>
+
+    <table class="token-table reveal" aria-label="Card component tokens">
+      <thead>
+        <tr>
+          <th>Component token</th>
+          <th>References</th>
+          <th>Resolves to</th>
+          <th>Preview</th>
+        </tr>
+      </thead>
+      <tbody id="cardTokenTable"></tbody>
+    </table>
+  </section>
+
+  <!-- ========================== FOOTER ========================== -->
+  <footer>
+    <span class="sigil">Farm2Vet — cultivated intelligence, since 2024.</span>
+    <a href="component-dropdown.html">← Section 04b / Dropdown</a>
+    <span>End of Section 05 · Card</span>
+  </footer>
+
+</main>
+
+<!-- ========================== TOAST ========================== -->
+<div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<script>
+/* =========================================================
+   COMPONENT TOKEN DATA — Card
+   Each entry: [name, semanticReference]
+   ========================================================= */
+const CARD_TOKENS = [
+  { group: 'Shared shape', tokens: [
+    ['--card-font-family',   'var(--font-sans)'],
+    ['--card-radius',        'var(--radius-lg)'],
+    ['--card-radius-inner',  'var(--radius-md)'],
+    ['--card-border-width',  'var(--border-width-base)'],
+    ['--card-padding-x',     'var(--spacing-6x)'],
+    ['--card-padding-y',     'var(--spacing-6x)'],
+    ['--card-gap',           'var(--spacing-4x)'],
+    ['--card-gap-tight',     'var(--spacing-2x)'],
+  ]},
+  { group: 'Style · Elevated (default)', tokens: [
+    ['--card-bg',            'var(--background-default)'],
+    ['--card-bg-hover',      'var(--background-default-subtle)'],
+    ['--card-bg-pressed',    'var(--background-default-minimal)'],
+    ['--card-fg',            'var(--text-default)'],
+    ['--card-fg-subtle',     'var(--text-default-subtle)'],
+    ['--card-fg-minimal',    'var(--text-default-minimal)'],
+    ['--card-border',        'var(--border-default)'],
+    ['--card-border-hover',  'var(--border-default-strong)'],
+    ['--card-shadow',        'var(--shadow-sm)'],
+    ['--card-shadow-hover',  'var(--shadow-md)'],
+  ]},
+  { group: 'Style · Filled', tokens: [
+    ['--card-filled-bg',         'var(--background-default-subtle)'],
+    ['--card-filled-bg-hover',   'var(--background-default-minimal)'],
+    ['--card-filled-border',     'transparent'],
+    ['--card-filled-shadow',     'none'],
+  ]},
+  { group: 'Style · Outlined', tokens: [
+    ['--card-outlined-bg',           'var(--background-default)'],
+    ['--card-outlined-bg-hover',     'var(--background-default-subtle)'],
+    ['--card-outlined-border',       'var(--border-default-strong)'],
+    ['--card-outlined-border-width', '1.5px'],
+    ['--card-outlined-shadow',       'none'],
+  ]},
+  { group: 'Layout · Horizontal', tokens: [
+    ['--card-horizontal-media-w',   '38%'],
+    ['--card-horizontal-media-min', '140px'],
+  ]},
+  { group: 'Layout · List (row stack)', tokens: [
+    ['--card-list-bg',           'var(--background-default)'],
+    ['--card-list-border',       'var(--border-default)'],
+    ['--card-list-row-divider',  'var(--border-default-subtle)'],
+    ['--card-list-row-bg-hover', 'var(--background-row-hover)'],
+    ['--card-list-row-pad-x',    'var(--spacing-5x)'],
+    ['--card-list-row-pad-y',    'var(--spacing-3x)'],
+  ]},
+  { group: 'Functional · Selectable', tokens: [
+    ['--card-check-size',           '24px'],
+    ['--card-check-bg',             'var(--background-default)'],
+    ['--card-check-border',         'var(--border-default-strong)'],
+    ['--card-check-checked-bg',     'var(--background-primary)'],
+    ['--card-check-checked-fg',     'var(--text-inverted)'],
+    ['--card-check-checked-border', 'var(--border-primary)'],
+  ]},
+  { group: 'Functional · Draggable', tokens: [
+    ['--card-drag-handle-fg',       'var(--icon-default-minimal)'],
+    ['--card-drag-handle-fg-hover', 'var(--icon-default)'],
+  ]},
+  { group: 'Functional · Featured', tokens: [
+    ['--card-featured-border',       'var(--border-accent)'],
+    ['--card-featured-border-width', '2px'],
+    ['--card-featured-bg-tint',      'color-mix(in srgb, var(--accent-50) 70%, transparent)'],
+    ['--card-featured-ring',         '0 0 0 4px color-mix(in srgb, var(--accent-300) 25%, transparent)'],
+  ]},
+  { group: 'Glass scale · shared', tokens: [
+    ['--card-glass-saturate',   '140%'],
+    ['--card-glass-border',     'var(--border-glass-light)'],
+  ]},
+  { group: 'Glass · Light (default tier)', tokens: [
+    ['--card-glass-bg',         'var(--background-glass-light)'],
+    ['--card-glass-blur',       'var(--blur-lg)'],
+  ]},
+  { group: 'Glass · Clear (tier 01)', tokens: [
+    ['--card-glass-clear-bg',     'color-mix(in srgb, var(--white-base) 25%, transparent)'],
+    ['--card-glass-clear-blur',   'var(--blur-sm)'],
+    ['--card-glass-clear-border', 'color-mix(in srgb, var(--white-base) 40%, transparent)'],
+  ]},
+  { group: 'Glass · Frost (tier 03)', tokens: [
+    ['--card-glass-frost-bg',     'color-mix(in srgb, var(--white-base) 75%, transparent)'],
+    ['--card-glass-frost-blur',   'var(--blur-xl)'],
+    ['--card-glass-frost-border', 'color-mix(in srgb, var(--white-base) 70%, transparent)'],
+  ]},
+  { group: 'Glass · Heavy (tier 04)', tokens: [
+    ['--card-glass-heavy-bg',     'color-mix(in srgb, var(--white-base) 92%, transparent)'],
+    ['--card-glass-heavy-blur',   'var(--blur-2xl)'],
+    ['--card-glass-heavy-border', 'color-mix(in srgb, var(--white-base) 90%, transparent)'],
+  ]},
+  { group: 'Glass · Tinted (tier 05)', tokens: [
+    ['--card-glass-tinted-bg',     'var(--background-glass-dark)'],
+    ['--card-glass-tinted-blur',   'var(--blur-lg)'],
+    ['--card-glass-tinted-border', 'var(--border-glass-dark)'],
+  ]},
+  { group: 'Surface · Inverted', tokens: [
+    ['--card-inverted-bg',            'color-mix(in srgb, var(--white-base) 8%, transparent)'],
+    ['--card-inverted-bg-hover',      'color-mix(in srgb, var(--white-base) 14%, transparent)'],
+    ['--card-inverted-fg',            'var(--text-inverted)'],
+    ['--card-inverted-fg-subtle',     'var(--text-inverted-subtle)'],
+    ['--card-inverted-fg-minimal',    'var(--text-inverted-minimal)'],
+    ['--card-inverted-border',        'var(--border-inverted)'],
+    ['--card-inverted-border-strong', 'var(--border-inverted-strong)'],
+    ['--card-inverted-divider',       'color-mix(in srgb, var(--white-base) 14%, transparent)'],
+    ['--card-inverted-mark-bg',       'color-mix(in srgb, var(--white-base) 16%, transparent)'],
+    ['--card-inverted-mark-fg',       'var(--text-inverted)'],
+  ]},
+  { group: 'State · is-selected', tokens: [
+    ['--card-selected-bg',      'var(--background-default-selected)'],
+    ['--card-selected-fg',      'var(--text-default)'],
+    ['--card-selected-border',  'var(--border-primary)'],
+    ['--card-selected-shadow',  'ring + var(--shadow-md)'],
+    ['--card-selected-accent',  'var(--background-primary)'],
+  ]},
+  { group: 'State · Disabled', tokens: [
+    ['--card-disabled-bg',      'var(--background-default-disabled)'],
+    ['--card-disabled-fg',      'var(--text-default-disabled)'],
+    ['--card-disabled-border',  'var(--border-default-disabled)'],
+    ['--card-disabled-opacity', '0.6'],
+  ]},
+  { group: 'Slots · header / body / footer', tokens: [
+    ['--card-eyebrow-fg',     'var(--text-default-minimal)'],
+    ['--card-title-fg',       'var(--text-default)'],
+    ['--card-subtitle-fg',    'var(--text-default-subtle)'],
+    ['--card-body-fg',        'var(--text-default-subtle)'],
+    ['--card-footer-divider', 'var(--border-default-subtle)'],
+    ['--card-title-font-size',    'var(--text-h5)'],
+    ['--card-subtitle-font-size', 'var(--text-sm)'],
+    ['--card-eyebrow-font-size',  'var(--text-micro)'],
+    ['--card-body-font-size',     'var(--text-base)'],
+  ]},
+  { group: 'Sub-components · Badge / Price / Rating / Metric', tokens: [
+    ['--card-badge-bg',          'var(--background-primary-minimal)'],
+    ['--card-badge-fg',          'var(--text-primary-strong)'],
+    ['--card-badge-radius',      'var(--radius-pill)'],
+    ['--card-badge-info-bg',     'var(--background-info)'],
+    ['--card-badge-warning-bg',  'var(--background-warning)'],
+    ['--card-badge-critical-bg', 'var(--background-critical)'],
+    ['--card-badge-safe-bg',     'var(--background-safe)'],
+    ['--card-price-fg',          'var(--text-default)'],
+    ['--card-price-strike-fg',   'var(--text-default-minimal)'],
+    ['--card-rating-fg',         'var(--secondary-300)'],
+    ['--card-rating-empty-fg',   'var(--neutral-200)'],
+    ['--card-metric-fg',         'var(--text-default)'],
+    ['--card-metric-label-fg',   'var(--text-default-minimal)'],
+    ['--card-metric-delta-up',   'var(--text-safe)'],
+    ['--card-metric-delta-down', 'var(--text-critical)'],
+  ]},
+  { group: 'Focus ring', tokens: [
+    ['--card-focus-outline',         'var(--outline-focus)'],
+    ['--card-focus-outline-width',   '2px'],
+    ['--card-focus-outline-offset',  '2px'],
+  ]},
+];
+
+/* =========================================================
+   RENDER — Card token table
+   Resolve each var() chain to a final value via
+   getComputedStyle, and decide whether the chip should
+   render a colour or be hidden.
+   ========================================================= */
+function resolveCss(varName) {
+  const styles = getComputedStyle(document.documentElement);
+  return styles.getPropertyValue(varName).trim();
+}
+
+function isColorish(value) {
+  if (!value) return false;
+  const v = value.toLowerCase();
+  return v.startsWith('#') ||
+         v.startsWith('rgb') ||
+         v.startsWith('hsl') ||
+         v.startsWith('color-mix') ||
+         v.startsWith('linear-gradient') ||
+         v.startsWith('radial-gradient') ||
+         v === 'transparent' ||
+         /^[a-z]+$/.test(v);
+}
+
+function renderTokenTable() {
+  const tbody = document.getElementById('cardTokenTable');
+  let html = '';
+  CARD_TOKENS.forEach(group => {
+    html += `<tr class="group-row"><td colspan="4">${group.group}</td></tr>`;
+    group.tokens.forEach(([name, ref]) => {
+      const resolved = resolveCss(name) || '—';
+      const isColor = isColorish(resolved);
+      const chip = isColor
+        ? `<span class="chip" style="background:${resolved}"></span>`
+        : `<span class="chip" style="background: repeating-linear-gradient(45deg, var(--neutral-100) 0 6px, var(--neutral-50) 6px 12px); opacity:.6"></span>`;
+      html += `
+        <tr>
+          <td class="tk-name">${name}</td>
+          <td class="tk-ref">${ref.replace(/</g,'&lt;')}</td>
+          <td class="tk-resolved">${resolved.length > 60 ? resolved.slice(0,57)+'…' : resolved}</td>
+          <td class="tk-swatch">${chip}</td>
+        </tr>`;
+    });
+  });
+  tbody.innerHTML = html;
+}
+
+/* =========================================================
+   SELECTABLE CARDS — toggle is-selected on click / Space
+   ========================================================= */
+function initSelectableCards() {
+  document.querySelectorAll('[data-card-selectable]').forEach(card => {
+    const toggle = () => {
+      const next = !card.classList.contains('is-selected');
+      card.classList.toggle('is-selected', next);
+      card.setAttribute('aria-pressed', String(next));
+    };
+    card.addEventListener('click', toggle);
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggle();
+      }
+    });
+  });
+}
+
+/* =========================================================
+   REVEAL ON SCROLL
+   ========================================================= */
+function initReveal() {
+  const items = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    items.forEach(el => el.classList.add('in'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        en.target.classList.add('in');
+        io.unobserve(en.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(el => io.observe(el));
+}
+
+/* =========================================================
+   BOOT
+   ========================================================= */
+document.addEventListener('DOMContentLoaded', () => {
+  renderTokenTable();
+  initSelectableCards();
+  initReveal();
+});
+</script>
+
+</body>
+</html>

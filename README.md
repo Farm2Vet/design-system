@@ -58,11 +58,11 @@ Each component must contains:
 Each component may has Variants, Versions, and Sizes. Size is the optimized version for each text size. Focus on Large text size (22.5px) only.
 
 
-- Buttons
+- Buttons (done)
   - Variants: CTA (Primary), Secondary, Ghost, Disabled, Loading, Caution, Toggle, 
   - Version: Default, Inverted Surface, Icon Only, borderless
   - Size: Small, Medium, Large (focus), XL, 2XL
-- Form
+- Form (done)
   - Variants: Text inputs, Text area, Dropdown, Date Picker, Multi-select, Radio-select, File Upload, Checkbox
   - Version: Default, With-value, Error
   - Size: Small, Medium, Large (focus), XL, 2XL
