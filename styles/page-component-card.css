@@ -43,11 +43,26 @@
     gap: var(--spacing-4x);
 }
 
-.card-showcase__tile.size-sm { --tile-w: 320px; }
-.card-showcase__tile.size-md { --tile-w: 380px; }
-.card-showcase__tile.size-lg { --tile-w: 460px; }
-.card-showcase__tile.size-xl { --tile-w: 540px; }
-.card-showcase__tile.size-2xl{ --tile-w: 640px; }
+.card-showcase__tile.size-sm   { --tile-w: 320px; }
+.card-showcase__tile.size-md   { --tile-w: 380px; }
+.card-showcase__tile.size-lg   { --tile-w: 460px; }
+.card-showcase__tile.size-xl   { --tile-w: 540px; }
+.card-showcase__tile.size-2xl  { --tile-w: 640px; }
+.card-showcase__tile.size-full { --tile-w: 100%; }
+
+/* Stack mode — single column, full-width tiles. Use for
+   showcasing horizontally-oriented cards (Horizontal
+   layout, horizontal Article / Product recipes) where
+   length > width is the point and a side-by-side grid
+   would visually flatten the proportions back to square. */
+.card-showcase--stack {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: var(--spacing-4x);
+}
+.card-showcase--stack .card-showcase__tile {
+    width: 100%;
+}
 
 .card-showcase__tile .label {
     font-family: var(--font-mono);

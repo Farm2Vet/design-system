@@ -256,6 +256,137 @@
       </article>
 
     </div>
+
+    <h4 class="subheading reveal">Left-bar <span class="tag">callout / alert / highlight</span></h4>
+    <p class="usage-note reveal">
+      <strong>An asymmetric leading-edge border</strong> in primary or
+      status colour. Composes with any other style. The thicker left
+      border is the affordance — a recognised modern callout pattern
+      (Material alert cards, Tailwind UI alerts, Carbon notification
+      cards). Pair with status modifiers
+      (<code>.is-info</code> · <code>.is-warning</code> ·
+      <code>.is-critical</code> · <code>.is-safe</code> ·
+      <code>.is-primary</code>) so the colour communicates intent.
+    </p>
+
+    <div class="card-showcase card-showcase--stack reveal">
+
+      <!-- LEFT-BAR · PRIMARY -->
+      <article class="card-showcase__tile size-full">
+        <span class="label">Left-bar · primary (default)</span>
+        <div class="demo">
+          <article class="card card--left-bar is-primary">
+            <span class="card__eyebrow">Reminder · 2026-05-07</span>
+            <header class="card__header">
+              <h3 class="card__title">Bessie's bloodwork is back.</h3>
+              <p class="card__subtitle">Awaiting your sign-off before dispatch</p>
+            </header>
+            <p class="card__body">
+              Default tone. Use for general highlights and pinned items
+              without an explicit status meaning.
+            </p>
+          </article>
+        </div>
+        <dl class="card-showcase__note">
+          <dt>Use case</dt><dd>Pinned items, sidebar nav active state, neutral highlights.</dd>
+          <dt>States</dt><dd>Default · hover · focus · pressed · disabled — inherits the underlying style's state matrix.</dd>
+          <dt>Interactions</dt><dd>Often static (informational) but can be made interactive when the callout itself is a link.</dd>
+          <dt>Responsive</dt><dd>Full-width inside its column at every breakpoint; the bar reads at any width.</dd>
+        </dl>
+        <div class="meta"><span>.card--left-bar.is-primary</span><strong>neutral highlight</strong></div>
+      </article>
+
+      <!-- LEFT-BAR · INFO -->
+      <article class="card-showcase__tile size-full">
+        <span class="label">Left-bar · info</span>
+        <div class="demo">
+          <article class="card card--left-bar is-info">
+            <div class="card__badge-row">
+              <span class="card__badge card__badge--info">Info</span>
+            </div>
+            <header class="card__header">
+              <h3 class="card__title">Scheduled maintenance · Sunday 03:00 UTC</h3>
+              <p class="card__subtitle">~15 minutes of downtime expected</p>
+            </header>
+            <p class="card__body">
+              Use info tone for system messages, scheduled events, and
+              non-blocking advisories.
+            </p>
+          </article>
+        </div>
+        <div class="meta"><span>.card--left-bar.is-info</span><strong>system message</strong></div>
+      </article>
+
+      <!-- LEFT-BAR · WARNING -->
+      <article class="card-showcase__tile size-full">
+        <span class="label">Left-bar · warning</span>
+        <div class="demo">
+          <article class="card card--left-bar is-warning">
+            <div class="card__badge-row">
+              <span class="card__badge card__badge--warning">Warning</span>
+            </div>
+            <header class="card__header">
+              <h3 class="card__title">NSAID withdrawal incomplete</h3>
+              <p class="card__subtitle">42 hours remaining before milk dispatch</p>
+            </header>
+            <p class="card__body">
+              Warning tone surfaces caution-worthy state — the user can
+              proceed but should know.
+            </p>
+          </article>
+        </div>
+        <div class="meta"><span>.card--left-bar.is-warning</span><strong>caution</strong></div>
+      </article>
+
+      <!-- LEFT-BAR · CRITICAL -->
+      <article class="card-showcase__tile size-full">
+        <span class="label">Left-bar · critical</span>
+        <div class="demo">
+          <article class="card card--left-bar is-critical">
+            <div class="card__badge-row">
+              <span class="card__badge card__badge--critical">Critical</span>
+            </div>
+            <header class="card__header">
+              <h3 class="card__title">Lab connection failed · cannot sync results</h3>
+              <p class="card__subtitle">Last successful sync: 3 hours ago</p>
+            </header>
+            <p class="card__body">
+              Critical tone is reserved for failures and blocking errors
+              that need attention now. Pair with a clear remediation CTA.
+            </p>
+            <footer class="card__footer">
+              <span class="card__eyebrow">External lab API</span>
+              <div class="card__actions">
+                <button class="btn btn--secondary btn--sm">Retry sync</button>
+              </div>
+            </footer>
+          </article>
+        </div>
+        <div class="meta"><span>.card--left-bar.is-critical</span><strong>blocking error</strong></div>
+      </article>
+
+      <!-- LEFT-BAR · SAFE / SUCCESS -->
+      <article class="card-showcase__tile size-full">
+        <span class="label">Left-bar · safe (success)</span>
+        <div class="demo">
+          <article class="card card--left-bar is-safe">
+            <div class="card__badge-row">
+              <span class="card__badge card__badge--safe">Confirmed</span>
+            </div>
+            <header class="card__header">
+              <h3 class="card__title">Vaccination schedule updated</h3>
+              <p class="card__subtitle">Atlas · Quarter horse · next due 2026-08-12</p>
+            </header>
+            <p class="card__body">
+              Safe tone confirms a successful state without claiming
+              attention the way a Critical tone does.
+            </p>
+          </article>
+        </div>
+        <div class="meta"><span>.card--left-bar.is-safe</span><strong>success / confirmed</strong></div>
+      </article>
+
+    </div>
   </section>
 
   <!-- ========================== LAYOUT & ORIENTATION ========================== -->
@@ -263,16 +394,19 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">03 / Card — Layout &amp; orientation</span>
-        <h2 class="display">Three <em>orientations</em>.</h2>
+        <h2 class="display">Four <em>orientations</em>.</h2>
       </div>
       <p>
         Vertical stacks media on top of content. Horizontal places media on
-        the leading edge. Content-only drops media entirely. List bleeds
-        rows to the card's edge for stacked content. Pick by viewport and
-        scan direction, not by aesthetic preference.
+        the leading edge — these are previewed full-width below so the
+        length-greater-than-width form actually reads. Content-only drops
+        media entirely. List bleeds rows to the card's edge for stacked
+        content. Pick by viewport and scan direction, not by aesthetic
+        preference.
       </p>
     </header>
 
+    <h4 class="subheading reveal">Vertical · Content-only · List <span class="tag">grid layouts</span></h4>
     <div class="card-showcase reveal">
 
       <!-- VERTICAL -->
@@ -299,37 +433,6 @@
           <dt>Responsive</dt><dd>Best in 2–4 column grids on desktop, single column on mobile.</dd>
         </dl>
         <div class="meta"><span>default flow</span><strong>media · top</strong></div>
-      </article>
-
-      <!-- HORIZONTAL -->
-      <article class="card-showcase__tile size-xl">
-        <span class="label">Horizontal · row</span>
-        <div class="demo">
-          <article class="card card--horizontal">
-            <div class="card__media" aria-hidden="true"></div>
-            <div class="card__content">
-              <span class="card__eyebrow">News · 2026-05-07</span>
-              <h3 class="card__title">New dairy welfare guidelines</h3>
-              <p class="card__body">
-                Media on the leading edge — ideal for compact list rows on
-                mobile and search results on desktop.
-              </p>
-              <footer class="card__footer">
-                <span class="card__eyebrow">2 min read</span>
-                <div class="card__actions">
-                  <button class="btn btn--ghost btn--sm">Read</button>
-                </div>
-              </footer>
-            </div>
-          </article>
-        </div>
-        <dl class="card-showcase__note">
-          <dt>Use case</dt><dd>Mobile list rows, search result rows, recent activity, news feeds — any scan-down vertical list.</dd>
-          <dt>States</dt><dd>Inherits all base states. Hover commonly tints the entire row, not just the title.</dd>
-          <dt>Interactions</dt><dd>Whole card → link. Inline actions on the right (kebab menu, save).</dd>
-          <dt>Responsive</dt><dd>Reads well at full width across viewports. On very narrow screens, collapses to vertical.</dd>
-        </dl>
-        <div class="meta"><span>.card--horizontal</span><strong>media · left</strong></div>
       </article>
 
       <!-- CONTENT-ONLY -->
@@ -409,6 +512,133 @@
           <dt>Responsive</dt><dd>Stacks full-width; rows stay legible because the avatar / trail columns auto-shrink before the title clips.</dd>
         </dl>
         <div class="meta"><span>.card--list</span><strong>row stack</strong></div>
+      </article>
+
+    </div>
+
+    <h4 class="subheading reveal">Horizontal <span class="tag">media · leading edge</span></h4>
+    <p class="usage-note reveal">
+      <strong>Stack-mode preview.</strong> Horizontal cards are previewed
+      one-per-row at full width so the
+      length-greater-than-width form actually reads. In production they
+      typically live inside a vertical scroll list (search results, news
+      feeds, recent activity) — a side-by-side grid would flatten them
+      back to square.
+    </p>
+
+    <div class="card-showcase card-showcase--stack reveal">
+
+      <!-- HORIZONTAL · NEWS -->
+      <article class="card-showcase__tile size-full">
+        <span class="label">Horizontal · article row</span>
+        <div class="demo">
+          <a class="card card--horizontal" href="#" onclick="event.preventDefault()">
+            <div class="card__media" aria-hidden="true"></div>
+            <div class="card__content">
+              <span class="card__eyebrow">News · 2026-05-07</span>
+              <h3 class="card__title">New dairy welfare guidelines published</h3>
+              <p class="card__body">
+                The agriculture ministry has published an updated welfare
+                framework covering housing, milk-yield monitoring, and
+                emergency-response protocols. Read the breakdown.
+              </p>
+              <footer class="card__footer">
+                <span class="card__eyebrow">2 min read · Dr. Pham Hong</span>
+                <div class="card__actions">
+                  <button class="btn btn--ghost btn--sm" type="button">Save</button>
+                </div>
+              </footer>
+            </div>
+          </a>
+        </div>
+        <dl class="card-showcase__note">
+          <dt>Use case</dt><dd>Mobile list rows, search result rows, recent activity, news feeds — any scan-down vertical list.</dd>
+          <dt>States</dt><dd>Inherits all base states. Hover commonly tints the entire row, not just the title.</dd>
+          <dt>Interactions</dt><dd>Whole card → link is the canonical pattern. Inline secondary actions on the right.</dd>
+          <dt>Responsive</dt><dd>Full-width across viewports. On narrow screens (&lt; 480px), media collapses to a smaller leading thumbnail or to vertical layout.</dd>
+        </dl>
+        <div class="meta"><span>.card--horizontal</span><strong>media · left</strong></div>
+      </article>
+
+      <!-- HORIZONTAL · PRODUCT ROW -->
+      <article class="card-showcase__tile size-full">
+        <span class="label">Horizontal · product row</span>
+        <div class="demo">
+          <article class="card card--horizontal is-interactive" tabindex="0">
+            <div class="card__media" aria-hidden="true"></div>
+            <div class="card__content">
+              <div class="card__badge-row">
+                <span class="card__badge card__badge--safe">In stock</span>
+                <span class="card__badge">Bestseller</span>
+              </div>
+              <header class="card__header">
+                <h3 class="card__title">Vinallergy · oral suspension</h3>
+                <p class="card__subtitle">Anti-inflammatory · 250 ml · ref VL-250</p>
+              </header>
+              <p class="card__body">
+                Broad-spectrum NSAID for cattle and small ruminants.
+                Withdrawal: 96 h milk · 14 d meat.
+              </p>
+              <footer class="card__footer">
+                <div class="card__price">
+                  <span>185,000 ₫</span>
+                  <span class="card__price-strike">220,000 ₫</span>
+                </div>
+                <div class="card__actions">
+                  <button class="btn btn--secondary btn--sm">Save</button>
+                  <button class="btn btn--cta btn--sm">Add to cart</button>
+                </div>
+              </footer>
+            </div>
+          </article>
+        </div>
+        <dl class="card-showcase__note">
+          <dt>Use case</dt><dd>Catalog list-view, search results, cart line items, "people also bought" rails on detail pages.</dd>
+          <dt>States</dt><dd>Default, hover (lift + tint), focus, pressed, disabled (out-of-stock greys the CTA).</dd>
+          <dt>Interactions</dt><dd>Whole card → product detail; "Add to cart" is the in-card primary CTA; "Save" secondary.</dd>
+          <dt>Responsive</dt><dd>At &lt; 600px, footer wraps so price and CTAs stack vertically inside the content column.</dd>
+        </dl>
+        <div class="meta"><span>.card--horizontal</span><strong>commerce row</strong></div>
+      </article>
+
+      <!-- HORIZONTAL · LEFT-BAR · ALERT -->
+      <article class="card-showcase__tile size-full">
+        <span class="label">Horizontal · left-bar alert</span>
+        <div class="demo">
+          <article class="card card--horizontal card--left-bar is-warning">
+            <div class="card__media" aria-hidden="true"
+                 style="background:
+                    radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--warning-300) 60%, transparent), transparent 65%),
+                    var(--background-warning);"></div>
+            <div class="card__content">
+              <div class="card__badge-row">
+                <span class="card__badge card__badge--warning">Attention</span>
+              </div>
+              <header class="card__header">
+                <h3 class="card__title">Three patients overdue for follow-up</h3>
+                <p class="card__subtitle">Last visit &gt; 30 days ago · please review</p>
+              </header>
+              <p class="card__body">
+                Composes left-bar with horizontal layout. The leading
+                bar carries the status hue while the media slot stays
+                free for an icon or illustration.
+              </p>
+              <footer class="card__footer">
+                <span class="card__eyebrow">Caseload · alert</span>
+                <div class="card__actions">
+                  <button class="btn btn--secondary btn--sm">Review now</button>
+                </div>
+              </footer>
+            </div>
+          </article>
+        </div>
+        <dl class="card-showcase__note">
+          <dt>Use case</dt><dd>Inline notifications inside a list, prioritised attention items, dashboard alert rows.</dd>
+          <dt>States</dt><dd>Inherits horizontal + left-bar; the bar colour persists across all states.</dd>
+          <dt>Interactions</dt><dd>One CTA inside the row drives remediation. Clicking the body navigates to context.</dd>
+          <dt>Responsive</dt><dd>Bar reads at every width; on mobile the layout collapses to vertical with the bar still on the leading edge.</dd>
+        </dl>
+        <div class="meta"><span>.card--horizontal.card--left-bar</span><strong>composed</strong></div>
       </article>
 
     </div>
@@ -732,12 +962,20 @@
       glass itself.
     </p>
 
+    <p class="usage-note reveal">
+      <strong>Glass cards are fully interactive.</strong> Every tier ships
+      with hover and pressed states that <em>tint up</em> rather than
+      flipping to opaque white — the blur is preserved, the surface just
+      reads slightly more lit. All five demos below are tabbable; hover
+      or focus to see the state shift.
+    </p>
+
     <div class="card-showcase reveal">
 
       <article class="card-showcase__tile size-md on-vivid">
         <span class="label">Clear · barely there</span>
         <div class="demo">
-          <article class="card card--glass-clear">
+          <article class="card card--glass-clear is-interactive" tabindex="0">
             <span class="card__eyebrow">Tier 01 · clear</span>
             <header class="card__header">
               <h3 class="card__title">Whisper of blur.</h3>
@@ -755,7 +993,7 @@
       <article class="card-showcase__tile size-md on-vivid">
         <span class="label">Light · default tier</span>
         <div class="demo">
-          <article class="card card--glass">
+          <article class="card card--glass is-interactive" tabindex="0">
             <span class="card__eyebrow">Tier 02 · light</span>
             <header class="card__header">
               <h3 class="card__title">Balanced frost.</h3>
@@ -773,7 +1011,7 @@
       <article class="card-showcase__tile size-md on-vivid">
         <span class="label">Frost · content-grade</span>
         <div class="demo">
-          <article class="card card--glass-frost">
+          <article class="card card--glass-frost is-interactive" tabindex="0">
             <span class="card__eyebrow">Tier 03 · frost</span>
             <header class="card__header">
               <h3 class="card__title">Reads on busy imagery.</h3>
@@ -791,7 +1029,7 @@
       <article class="card-showcase__tile size-md on-vivid">
         <span class="label">Heavy · modal-grade</span>
         <div class="demo">
-          <article class="card card--glass-heavy">
+          <article class="card card--glass-heavy is-interactive" tabindex="0">
             <span class="card__eyebrow">Tier 04 · heavy</span>
             <header class="card__header">
               <h3 class="card__title">Near-opaque slab.</h3>
@@ -809,7 +1047,7 @@
       <article class="card-showcase__tile size-md on-vivid">
         <span class="label">Tinted · brand-aware</span>
         <div class="demo">
-          <article class="card card--glass-tinted">
+          <article class="card card--glass-tinted is-interactive" tabindex="0">
             <span class="card__eyebrow">Tier 05 · tinted</span>
             <header class="card__header">
               <h3 class="card__title">Glass with a brand pulse.</h3>
@@ -1057,6 +1295,15 @@ const CARD_TOKENS = [
     ['--card-horizontal-media-w',   '38%'],
     ['--card-horizontal-media-min', '140px'],
   ]},
+  { group: 'Style · Left-bar (callout / alert)', tokens: [
+    ['--card-left-bar-width',    '4px'],
+    ['--card-left-bar-color',    'var(--border-primary)'],
+    ['--card-left-bar-info',     'var(--border-info)'],
+    ['--card-left-bar-warning',  'var(--border-warning)'],
+    ['--card-left-bar-critical', 'var(--border-critical-strong)'],
+    ['--card-left-bar-safe',     'var(--border-safe)'],
+    ['--card-left-bar-primary',  'var(--border-primary)'],
+  ]},
   { group: 'Layout · List (row stack)', tokens: [
     ['--card-list-bg',           'var(--background-default)'],
     ['--card-list-border',       'var(--border-default)'],
@@ -1087,29 +1334,44 @@ const CARD_TOKENS = [
     ['--card-glass-saturate',   '140%'],
     ['--card-glass-border',     'var(--border-glass-light)'],
   ]},
-  { group: 'Glass · Light (default tier)', tokens: [
-    ['--card-glass-bg',         'var(--background-glass-light)'],
-    ['--card-glass-blur',       'var(--blur-lg)'],
+  { group: 'Glass · Light (default tier) — interactive states', tokens: [
+    ['--card-glass-bg',           'var(--background-glass-light)'],
+    ['--card-glass-bg-hover',     'color-mix(in srgb, var(--white-base) 80%, transparent)'],
+    ['--card-glass-bg-pressed',   'color-mix(in srgb, var(--white-base) 88%, transparent)'],
+    ['--card-glass-border-hover', 'color-mix(in srgb, var(--white-base) 95%, transparent)'],
+    ['--card-glass-blur',         'var(--blur-lg)'],
   ]},
-  { group: 'Glass · Clear (tier 01)', tokens: [
-    ['--card-glass-clear-bg',     'color-mix(in srgb, var(--white-base) 25%, transparent)'],
-    ['--card-glass-clear-blur',   'var(--blur-sm)'],
-    ['--card-glass-clear-border', 'color-mix(in srgb, var(--white-base) 40%, transparent)'],
+  { group: 'Glass · Clear (tier 01) — interactive states', tokens: [
+    ['--card-glass-clear-bg',           'color-mix(in srgb, var(--white-base) 25%, transparent)'],
+    ['--card-glass-clear-bg-hover',     'color-mix(in srgb, var(--white-base) 42%, transparent)'],
+    ['--card-glass-clear-bg-pressed',   'color-mix(in srgb, var(--white-base) 50%, transparent)'],
+    ['--card-glass-clear-blur',         'var(--blur-sm)'],
+    ['--card-glass-clear-border',       'color-mix(in srgb, var(--white-base) 40%, transparent)'],
+    ['--card-glass-clear-border-hover', 'color-mix(in srgb, var(--white-base) 60%, transparent)'],
   ]},
-  { group: 'Glass · Frost (tier 03)', tokens: [
-    ['--card-glass-frost-bg',     'color-mix(in srgb, var(--white-base) 75%, transparent)'],
-    ['--card-glass-frost-blur',   'var(--blur-xl)'],
-    ['--card-glass-frost-border', 'color-mix(in srgb, var(--white-base) 70%, transparent)'],
+  { group: 'Glass · Frost (tier 03) — interactive states', tokens: [
+    ['--card-glass-frost-bg',           'color-mix(in srgb, var(--white-base) 75%, transparent)'],
+    ['--card-glass-frost-bg-hover',     'color-mix(in srgb, var(--white-base) 85%, transparent)'],
+    ['--card-glass-frost-bg-pressed',   'color-mix(in srgb, var(--white-base) 92%, transparent)'],
+    ['--card-glass-frost-blur',         'var(--blur-xl)'],
+    ['--card-glass-frost-border',       'color-mix(in srgb, var(--white-base) 70%, transparent)'],
+    ['--card-glass-frost-border-hover', 'color-mix(in srgb, var(--white-base) 88%, transparent)'],
   ]},
-  { group: 'Glass · Heavy (tier 04)', tokens: [
-    ['--card-glass-heavy-bg',     'color-mix(in srgb, var(--white-base) 92%, transparent)'],
-    ['--card-glass-heavy-blur',   'var(--blur-2xl)'],
-    ['--card-glass-heavy-border', 'color-mix(in srgb, var(--white-base) 90%, transparent)'],
+  { group: 'Glass · Heavy (tier 04) — interactive states', tokens: [
+    ['--card-glass-heavy-bg',           'color-mix(in srgb, var(--white-base) 92%, transparent)'],
+    ['--card-glass-heavy-bg-hover',     'color-mix(in srgb, var(--white-base) 96%, transparent)'],
+    ['--card-glass-heavy-bg-pressed',   'color-mix(in srgb, var(--white-base) 98%, transparent)'],
+    ['--card-glass-heavy-blur',         'var(--blur-2xl)'],
+    ['--card-glass-heavy-border',       'color-mix(in srgb, var(--white-base) 90%, transparent)'],
+    ['--card-glass-heavy-border-hover', 'color-mix(in srgb, var(--white-base) 98%, transparent)'],
   ]},
-  { group: 'Glass · Tinted (tier 05)', tokens: [
-    ['--card-glass-tinted-bg',     'var(--background-glass-dark)'],
-    ['--card-glass-tinted-blur',   'var(--blur-lg)'],
-    ['--card-glass-tinted-border', 'var(--border-glass-dark)'],
+  { group: 'Glass · Tinted (tier 05) — interactive states', tokens: [
+    ['--card-glass-tinted-bg',           'var(--background-glass-dark)'],
+    ['--card-glass-tinted-bg-hover',     'color-mix(in srgb, var(--primary-200) 50%, transparent)'],
+    ['--card-glass-tinted-bg-pressed',   'color-mix(in srgb, var(--primary-200) 60%, transparent)'],
+    ['--card-glass-tinted-blur',         'var(--blur-lg)'],
+    ['--card-glass-tinted-border',       'var(--border-glass-dark)'],
+    ['--card-glass-tinted-border-hover', 'color-mix(in srgb, var(--white-base) 35%, transparent)'],
   ]},
   { group: 'Surface · Inverted', tokens: [
     ['--card-inverted-bg',            'color-mix(in srgb, var(--white-base) 8%, transparent)'],

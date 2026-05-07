@@ -62,6 +62,15 @@
     --card-horizontal-media-w:    38%;
     --card-horizontal-media-min:  140px;
 
+    /* ---------- Style variant: Left-bar (callout / alert) ---------- */
+    --card-left-bar-width:    4px;
+    --card-left-bar-color:    var(--border-primary);
+    --card-left-bar-info:     var(--border-info);
+    --card-left-bar-warning:  var(--border-warning);
+    --card-left-bar-critical: var(--border-critical-strong);
+    --card-left-bar-safe:     var(--border-safe);
+    --card-left-bar-primary:  var(--border-primary);
+
     /* ---------- Variant: List (row stack) ---------- */
     --card-list-bg:           var(--background-default);
     --card-list-border:       var(--border-default);
@@ -76,28 +85,43 @@
     --card-glass-border:    var(--border-glass-light);
 
     /* Default tier — light frost (the baseline `.card--glass`) */
-    --card-glass-bg:        var(--background-glass-light);
-    --card-glass-blur:      var(--blur-lg);
+    --card-glass-bg:           var(--background-glass-light);
+    --card-glass-bg-hover:     color-mix(in srgb, var(--white-base) 80%, transparent);
+    --card-glass-bg-pressed:   color-mix(in srgb, var(--white-base) 88%, transparent);
+    --card-glass-border-hover: color-mix(in srgb, var(--white-base) 95%, transparent);
+    --card-glass-blur:         var(--blur-lg);
 
     /* Clear — barely-there, only a whisper of blur */
-    --card-glass-clear-bg:     color-mix(in srgb, var(--white-base) 25%, transparent);
-    --card-glass-clear-blur:   var(--blur-sm);
-    --card-glass-clear-border: color-mix(in srgb, var(--white-base) 40%, transparent);
+    --card-glass-clear-bg:           color-mix(in srgb, var(--white-base) 25%, transparent);
+    --card-glass-clear-bg-hover:     color-mix(in srgb, var(--white-base) 42%, transparent);
+    --card-glass-clear-bg-pressed:   color-mix(in srgb, var(--white-base) 50%, transparent);
+    --card-glass-clear-blur:         var(--blur-sm);
+    --card-glass-clear-border:       color-mix(in srgb, var(--white-base) 40%, transparent);
+    --card-glass-clear-border-hover: color-mix(in srgb, var(--white-base) 60%, transparent);
 
     /* Frost — medium tier, primary content surface on vivid bg */
-    --card-glass-frost-bg:     color-mix(in srgb, var(--white-base) 75%, transparent);
-    --card-glass-frost-blur:   var(--blur-xl);
-    --card-glass-frost-border: color-mix(in srgb, var(--white-base) 70%, transparent);
+    --card-glass-frost-bg:           color-mix(in srgb, var(--white-base) 75%, transparent);
+    --card-glass-frost-bg-hover:     color-mix(in srgb, var(--white-base) 85%, transparent);
+    --card-glass-frost-bg-pressed:   color-mix(in srgb, var(--white-base) 92%, transparent);
+    --card-glass-frost-blur:         var(--blur-xl);
+    --card-glass-frost-border:       color-mix(in srgb, var(--white-base) 70%, transparent);
+    --card-glass-frost-border-hover: color-mix(in srgb, var(--white-base) 88%, transparent);
 
     /* Heavy — near-opaque slab, modal-grade frosted glass */
-    --card-glass-heavy-bg:     color-mix(in srgb, var(--white-base) 92%, transparent);
-    --card-glass-heavy-blur:   var(--blur-2xl);
-    --card-glass-heavy-border: color-mix(in srgb, var(--white-base) 90%, transparent);
+    --card-glass-heavy-bg:           color-mix(in srgb, var(--white-base) 92%, transparent);
+    --card-glass-heavy-bg-hover:     color-mix(in srgb, var(--white-base) 96%, transparent);
+    --card-glass-heavy-bg-pressed:   color-mix(in srgb, var(--white-base) 98%, transparent);
+    --card-glass-heavy-blur:         var(--blur-2xl);
+    --card-glass-heavy-border:       color-mix(in srgb, var(--white-base) 90%, transparent);
+    --card-glass-heavy-border-hover: color-mix(in srgb, var(--white-base) 98%, transparent);
 
     /* Tinted — primary-tinted frost (brand-aware glass) */
-    --card-glass-tinted-bg:     var(--background-glass-dark);
-    --card-glass-tinted-blur:   var(--blur-lg);
-    --card-glass-tinted-border: var(--border-glass-dark);
+    --card-glass-tinted-bg:           var(--background-glass-dark);
+    --card-glass-tinted-bg-hover:     color-mix(in srgb, var(--primary-200) 50%, transparent);
+    --card-glass-tinted-bg-pressed:   color-mix(in srgb, var(--primary-200) 60%, transparent);
+    --card-glass-tinted-blur:         var(--blur-lg);
+    --card-glass-tinted-border:       var(--border-glass-dark);
+    --card-glass-tinted-border-hover: color-mix(in srgb, var(--white-base) 35%, transparent);
 
     /* ---------- Functional: Selectable ---------- */
     --card-check-size:           24px;
@@ -479,6 +503,40 @@ button.card.card--outlined:hover {
 }
 
 /* =========================================================
+   STYLE VARIANT — Left-bar (callout / alert / highlight)
+   Adds a thicker leading-edge border in primary or status
+   colour. Composes with any other style (Elevated, Filled,
+   Outlined). The asymmetric left border is the affordance —
+   a known modern callout pattern (Material alert cards,
+   Tailwind UI alerts, Carbon notification cards).
+
+   Use case: inline notifications, doc callouts,
+   highlighted feed items, sidebar nav active state.
+   ========================================================= */
+.card--left-bar {
+    border-left-width: var(--card-left-bar-width);
+    border-left-color: var(--card-left-bar-color);
+    /* Compensate so content doesn't shift right relative to a
+       non-left-bar card sitting in the same column. */
+    padding-left: calc(var(--card-padding-x) - (var(--card-left-bar-width) - var(--card-border-width)));
+}
+.card--left-bar.is-info     { --card-left-bar-color: var(--card-left-bar-info); }
+.card--left-bar.is-warning  { --card-left-bar-color: var(--card-left-bar-warning); }
+.card--left-bar.is-critical { --card-left-bar-color: var(--card-left-bar-critical); }
+.card--left-bar.is-safe     { --card-left-bar-color: var(--card-left-bar-safe); }
+.card--left-bar.is-primary  { --card-left-bar-color: var(--card-left-bar-primary); }
+
+/* When .card--horizontal is combined with .card--left-bar,
+   the inner .card__content carries the padding (since the
+   outer card has padding: 0). Move the compensation there. */
+.card--horizontal.card--left-bar {
+    padding: 0;
+}
+.card--horizontal.card--left-bar > .card__content {
+    padding-left: calc(var(--card-padding-x) - (var(--card-left-bar-width) - var(--card-border-width)) + var(--card-gap));
+}
+
+/* =========================================================
    LAYOUT — Horizontal (media on the side)
    Use case: list/feed rows, mobile-friendly compact cards,
    article rows with thumbnail.
@@ -755,6 +813,107 @@ button.card.card--outlined:hover {
     border-color: var(--card-glass-tinted-border);
     backdrop-filter: var(--card-glass-tinted-blur) saturate(var(--card-glass-saturate));
     -webkit-backdrop-filter: var(--card-glass-tinted-blur) saturate(var(--card-glass-saturate));
+}
+
+/* =========================================================
+   GLASS — interactive states
+   The base `.card.is-interactive:hover` rule would replace
+   the glass tint with an opaque white, killing the blur.
+   These per-tier overrides preserve the glass treatment on
+   hover/pressed by tinting up (more "lit") instead of going
+   solid. Box-shadow stays suppressed; the tier's blur and
+   border-color shift instead.
+   ========================================================= */
+.card--glass.is-interactive,
+.card--glass-clear.is-interactive,
+.card--glass-frost.is-interactive,
+.card--glass-heavy.is-interactive,
+.card--glass-tinted.is-interactive,
+a.card.card--glass, a.card.card--glass-clear, a.card.card--glass-frost,
+a.card.card--glass-heavy, a.card.card--glass-tinted,
+button.card.card--glass, button.card.card--glass-clear, button.card.card--glass-frost,
+button.card.card--glass-heavy, button.card.card--glass-tinted {
+    cursor: pointer;
+}
+
+.card--glass.is-interactive:hover,
+a.card.card--glass:hover,
+button.card.card--glass:hover {
+    background: var(--card-glass-bg-hover);
+    border-color: var(--card-glass-border-hover);
+    box-shadow: none;
+    transform: translateY(-1px);
+}
+.card--glass.is-interactive:active,
+a.card.card--glass:active,
+button.card.card--glass:active {
+    background: var(--card-glass-bg-pressed);
+    box-shadow: none;
+    transform: translateY(0);
+}
+
+.card--glass-clear.is-interactive:hover,
+a.card.card--glass-clear:hover,
+button.card.card--glass-clear:hover {
+    background: var(--card-glass-clear-bg-hover);
+    border-color: var(--card-glass-clear-border-hover);
+    box-shadow: none;
+    transform: translateY(-1px);
+}
+.card--glass-clear.is-interactive:active,
+a.card.card--glass-clear:active,
+button.card.card--glass-clear:active {
+    background: var(--card-glass-clear-bg-pressed);
+    box-shadow: none;
+    transform: translateY(0);
+}
+
+.card--glass-frost.is-interactive:hover,
+a.card.card--glass-frost:hover,
+button.card.card--glass-frost:hover {
+    background: var(--card-glass-frost-bg-hover);
+    border-color: var(--card-glass-frost-border-hover);
+    box-shadow: none;
+    transform: translateY(-1px);
+}
+.card--glass-frost.is-interactive:active,
+a.card.card--glass-frost:active,
+button.card.card--glass-frost:active {
+    background: var(--card-glass-frost-bg-pressed);
+    box-shadow: none;
+    transform: translateY(0);
+}
+
+.card--glass-heavy.is-interactive:hover,
+a.card.card--glass-heavy:hover,
+button.card.card--glass-heavy:hover {
+    background: var(--card-glass-heavy-bg-hover);
+    border-color: var(--card-glass-heavy-border-hover);
+    box-shadow: none;
+    transform: translateY(-1px);
+}
+.card--glass-heavy.is-interactive:active,
+a.card.card--glass-heavy:active,
+button.card.card--glass-heavy:active {
+    background: var(--card-glass-heavy-bg-pressed);
+    box-shadow: none;
+    transform: translateY(0);
+}
+
+.card--glass-tinted.is-interactive:hover,
+a.card.card--glass-tinted:hover,
+button.card.card--glass-tinted:hover {
+    background: var(--card-glass-tinted-bg-hover);
+    border-color: var(--card-glass-tinted-border-hover);
+    box-shadow: none;
+    transform: translateY(-1px);
+}
+.card--glass-tinted.is-interactive:active,
+a.card.card--glass-tinted:active,
+button.card.card--glass-tinted:active {
+    background: var(--card-glass-tinted-bg-pressed);
+    box-shadow: none;
+    transform: translateY(0);
 }
 
 /* =========================================================
