@@ -1,0 +1,486 @@
+/* =========================================================
+   FARM2VET DESIGN SYSTEM — INLINE ALERT COMPONENT
+   A horizontal feedback surface for status messages, system
+   notices, validation summaries, and inline guidance.
+   One shared shape adapts across:
+     • Status tones — Info, Safe (success), Warning, Critical,
+                      Neutral
+     • Style        — Soft (default), Solid, Outlined, Banner
+     • Layout       — Inline (with body), Compact (one-liner),
+                      With-action (trailing CTAs)
+     • Sizes        — SM · MD (default) · LG
+     • Affordances  — Leading icon (default), Title + body,
+                      Description list of sub-issues,
+                      Dismissible (×)
+   Status Badges live in a sibling file (badge.css). The
+   Card component's own .card__badge sub-component is
+   intentionally scoped to in-card use; for any standalone
+   pill, prefer .badge.
+   Depends on: tokens.css
+   ========================================================= */
+
+/* =========================================================
+   COMPONENT TOKENS — Alert
+   Component tokens reference semantic tokens strictly.
+   ========================================================= */
+:root {
+    /* ---------- Shared shape ---------- */
+    --alert-font-family:    var(--font-sans);
+    --alert-radius:         var(--radius-md);
+    --alert-border-width:   var(--border-width-base);
+    --alert-gap:            var(--spacing-3x);
+    --alert-gap-tight:      var(--spacing-2x);
+    --alert-icon-offset:    2px;          /* nudge icon down to align with cap height of title */
+    --alert-bar-width:      4px;          /* leading accent bar (banner / inline tone) */
+    --alert-transition:     background-color .18s ease, color .18s ease,
+                            border-color .18s ease, box-shadow .18s ease,
+                            opacity .18s ease, transform .18s ease;
+
+    /* ---------- Sizes (MD is the default per spec) ---------- */
+    --alert-sm-font-size:  var(--text-sm);
+    --alert-sm-padding-x:  var(--spacing-3x);
+    --alert-sm-padding-y:  var(--spacing-2x);
+    --alert-sm-icon:       16px;
+    --alert-sm-title:      var(--text-sm);
+
+    --alert-md-font-size:  var(--text-base);    /* 16px — DEFAULT */
+    --alert-md-padding-x:  var(--spacing-4x);
+    --alert-md-padding-y:  var(--spacing-3x);
+    --alert-md-icon:       20px;
+    --alert-md-title:      var(--text-base);
+
+    --alert-lg-font-size:  var(--text-base);
+    --alert-lg-padding-x:  var(--spacing-5x);
+    --alert-lg-padding-y:  var(--spacing-4x);
+    --alert-lg-icon:       24px;
+    --alert-lg-title:      var(--text-h6);
+
+    /* ---------- Tone: Info (default) ---------- */
+    --alert-info-bg:        var(--background-info);
+    --alert-info-border:    var(--border-info);
+    --alert-info-fg:        var(--text-info-strong);
+    --alert-info-fg-body:   var(--text-default);
+    --alert-info-icon:      var(--text-info);
+    --alert-info-bar:       var(--info-500);
+    --alert-info-solid-bg:  var(--info-500);
+    --alert-info-solid-fg:  var(--text-inverted);
+
+    /* ---------- Tone: Safe (success) ---------- */
+    --alert-safe-bg:        var(--background-safe);
+    --alert-safe-border:    var(--border-safe);
+    --alert-safe-fg:        var(--text-safe-strong, var(--text-safe));
+    --alert-safe-fg-body:   var(--text-default);
+    --alert-safe-icon:      var(--text-safe);
+    --alert-safe-bar:       var(--safe-500);
+    --alert-safe-solid-bg:  var(--safe-500);
+    --alert-safe-solid-fg:  var(--text-inverted);
+
+    /* ---------- Tone: Warning ---------- */
+    --alert-warning-bg:        var(--background-warning);
+    --alert-warning-border:    var(--border-warning);
+    --alert-warning-fg:        var(--text-warning);
+    --alert-warning-fg-body:   var(--text-default);
+    --alert-warning-icon:      var(--text-warning);
+    --alert-warning-bar:       var(--warning-500);
+    --alert-warning-solid-bg:  var(--warning-500);
+    --alert-warning-solid-fg:  var(--text-inverted);
+
+    /* ---------- Tone: Critical (error) ---------- */
+    --alert-critical-bg:        var(--background-critical);
+    --alert-critical-border:    var(--border-critical);
+    --alert-critical-fg:        var(--text-critical);
+    --alert-critical-fg-body:   var(--text-default);
+    --alert-critical-icon:      var(--text-critical);
+    --alert-critical-bar:       var(--critical-500);
+    --alert-critical-solid-bg:  var(--critical-500);
+    --alert-critical-solid-fg:  var(--text-inverted);
+
+    /* ---------- Tone: Neutral (system / generic) ---------- */
+    --alert-neutral-bg:        var(--background-default-subtle);
+    --alert-neutral-border:    var(--border-default);
+    --alert-neutral-fg:        var(--text-default);
+    --alert-neutral-fg-body:   var(--text-default-subtle);
+    --alert-neutral-icon:      var(--icon-default);
+    --alert-neutral-bar:       var(--neutral-400);
+    --alert-neutral-solid-bg:  var(--neutral-700);
+    --alert-neutral-solid-fg:  var(--text-inverted);
+
+    /* ---------- Slot typography ---------- */
+    --alert-title-weight:   var(--font-weight-semibold);
+    --alert-title-fg:       inherit;
+    --alert-body-fg:        var(--text-default-subtle);
+    --alert-body-line:      var(--line-height-body);
+
+    /* ---------- Dismiss / close ---------- */
+    --alert-close-size:      28px;
+    --alert-close-radius:    var(--radius-sm);
+    --alert-close-fg:        var(--icon-default);
+    --alert-close-fg-hover:  var(--text-default);
+    --alert-close-bg-hover:  color-mix(in srgb, var(--neutral-900) 6%, transparent);
+
+    /* ---------- Focus ring ---------- */
+    --alert-focus-outline:        var(--outline-focus);
+    --alert-focus-outline-width:  2px;
+    --alert-focus-outline-offset: 2px;
+}
+
+/* =========================================================
+   BASE — .alert
+   The default style is "Soft": tinted background, thin
+   coloured border, leading icon, optional close button.
+   Layout is a 3-column flex strip:
+       [icon] [content (title + body + extras)] [actions/×]
+   ========================================================= */
+.alert {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--alert-gap);
+    padding: var(--alert-md-padding-y) var(--alert-md-padding-x);
+    background: var(--alert-bg, var(--alert-info-bg));
+    color: var(--alert-fg-body, var(--alert-info-fg-body));
+    border: var(--alert-border-width) solid var(--alert-border, var(--alert-info-border));
+    border-radius: var(--alert-radius);
+    font-family: var(--alert-font-family);
+    font-size: var(--alert-md-font-size);
+    line-height: var(--alert-body-line);
+    transition: var(--alert-transition);
+    position: relative;
+}
+
+/* Leading icon — uses currentColor so a single SVG works
+   across tones; the wrapper sets the tone-specific colour
+   so the icon picks it up naturally. */
+.alert__icon {
+    flex: 0 0 auto;
+    width: var(--alert-md-icon);
+    height: var(--alert-md-icon);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--alert-icon, var(--alert-info-icon));
+    margin-top: var(--alert-icon-offset);
+}
+.alert__icon svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Content stack — title + body + optional list/links/etc. */
+.alert__content {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--alert-gap-tight);
+}
+.alert__title {
+    font-family: var(--alert-font-family);
+    font-size: var(--alert-md-title);
+    font-weight: var(--alert-title-weight);
+    color: var(--alert-fg, var(--alert-info-fg));
+    line-height: var(--line-height-h5);
+    margin: 0;
+}
+.alert__body {
+    font-size: inherit;
+    color: inherit;
+    line-height: var(--alert-body-line);
+    margin: 0;
+}
+.alert__body :where(p) { margin: 0; }
+.alert__body :where(p + p) { margin-top: var(--spacing-2x); }
+.alert__body :where(a) {
+    color: var(--alert-fg, var(--alert-info-fg));
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 1px;
+}
+.alert__body :where(a):hover { text-decoration-thickness: 2px; }
+
+/* Bullet list of sub-issues (validation summary) */
+.alert__list {
+    margin: 0;
+    padding-left: var(--spacing-5x);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-half);
+    color: inherit;
+}
+.alert__list li::marker { color: var(--alert-icon, currentColor); }
+
+/* Trailing action row — for inline links or buttons that
+   sit to the right of the content. Rendered next to the
+   close button (× sits last). */
+.alert__actions {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2x);
+    flex: 0 0 auto;
+    margin-left: auto;
+    align-self: center;
+}
+
+/* Inline action affordance — text-button look, tone-aware */
+.alert__action {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-1x);
+    padding: var(--spacing-1x) var(--spacing-3x);
+    border-radius: var(--radius-sm);
+    font-family: var(--alert-font-family);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--alert-fg, var(--alert-info-fg));
+    background: transparent;
+    border: var(--alert-border-width) solid transparent;
+    cursor: pointer;
+    transition: var(--alert-transition);
+    text-decoration: none;
+    white-space: nowrap;
+}
+.alert__action:hover {
+    background: color-mix(in srgb, currentColor 8%, transparent);
+}
+.alert__action:focus-visible {
+    outline: var(--alert-focus-outline-width) solid var(--alert-focus-outline);
+    outline-offset: var(--alert-focus-outline-offset);
+}
+.alert__action--strong {
+    background: var(--alert-fg, var(--alert-info-fg));
+    color: var(--background-default);
+    border-color: transparent;
+}
+.alert__action--strong:hover {
+    filter: brightness(0.95);
+    background: var(--alert-fg, var(--alert-info-fg));
+}
+
+/* Close (×) — square ghost button sized to the title cap. */
+.alert__close {
+    flex: 0 0 auto;
+    width: var(--alert-close-size);
+    height: var(--alert-close-size);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: var(--alert-close-radius);
+    background: transparent;
+    color: var(--alert-close-fg);
+    cursor: pointer;
+    transition: var(--alert-transition);
+    align-self: flex-start;
+    margin-top: calc(var(--alert-icon-offset) * -1);
+}
+.alert__close:hover {
+    background: var(--alert-close-bg-hover);
+    color: var(--alert-close-fg-hover);
+}
+.alert__close:focus-visible {
+    outline: var(--alert-focus-outline-width) solid var(--alert-focus-outline);
+    outline-offset: var(--alert-focus-outline-offset);
+}
+.alert__close svg {
+    width: 16px;
+    height: 16px;
+    display: block;
+}
+
+/* =========================================================
+   STATUS TONES — apply tone tokens to the alert vars
+   The five canonical tones each set the bg/border/fg/icon
+   variables. Style modifiers (--solid, --outlined, --banner)
+   override only the surface treatment, not the tone.
+   ========================================================= */
+.alert.is-info,
+.alert {
+    --alert-bg:      var(--alert-info-bg);
+    --alert-border:  var(--alert-info-border);
+    --alert-fg:      var(--alert-info-fg);
+    --alert-fg-body: var(--alert-info-fg-body);
+    --alert-icon:    var(--alert-info-icon);
+    --alert-bar:     var(--alert-info-bar);
+    --alert-solid-bg: var(--alert-info-solid-bg);
+    --alert-solid-fg: var(--alert-info-solid-fg);
+}
+.alert.is-safe {
+    --alert-bg:      var(--alert-safe-bg);
+    --alert-border:  var(--alert-safe-border);
+    --alert-fg:      var(--alert-safe-fg);
+    --alert-fg-body: var(--alert-safe-fg-body);
+    --alert-icon:    var(--alert-safe-icon);
+    --alert-bar:     var(--alert-safe-bar);
+    --alert-solid-bg: var(--alert-safe-solid-bg);
+    --alert-solid-fg: var(--alert-safe-solid-fg);
+}
+.alert.is-warning {
+    --alert-bg:      var(--alert-warning-bg);
+    --alert-border:  var(--alert-warning-border);
+    --alert-fg:      var(--alert-warning-fg);
+    --alert-fg-body: var(--alert-warning-fg-body);
+    --alert-icon:    var(--alert-warning-icon);
+    --alert-bar:     var(--alert-warning-bar);
+    --alert-solid-bg: var(--alert-warning-solid-bg);
+    --alert-solid-fg: var(--alert-warning-solid-fg);
+}
+.alert.is-critical {
+    --alert-bg:      var(--alert-critical-bg);
+    --alert-border:  var(--alert-critical-border);
+    --alert-fg:      var(--alert-critical-fg);
+    --alert-fg-body: var(--alert-critical-fg-body);
+    --alert-icon:    var(--alert-critical-icon);
+    --alert-bar:     var(--alert-critical-bar);
+    --alert-solid-bg: var(--alert-critical-solid-bg);
+    --alert-solid-fg: var(--alert-critical-solid-fg);
+}
+.alert.is-neutral {
+    --alert-bg:      var(--alert-neutral-bg);
+    --alert-border:  var(--alert-neutral-border);
+    --alert-fg:      var(--alert-neutral-fg);
+    --alert-fg-body: var(--alert-neutral-fg-body);
+    --alert-icon:    var(--alert-neutral-icon);
+    --alert-bar:     var(--alert-neutral-bar);
+    --alert-solid-bg: var(--alert-neutral-solid-bg);
+    --alert-solid-fg: var(--alert-neutral-solid-fg);
+}
+
+/* =========================================================
+   STYLE MODIFIERS
+   Each modifier overrides only the surface treatment so
+   tones cleanly compose with style.
+   ========================================================= */
+
+/* Solid — high-emphasis, white-on-tone. For full-width
+   page banners and blocking criticals. */
+.alert--solid {
+    background: var(--alert-solid-bg);
+    color: var(--alert-solid-fg);
+    border-color: transparent;
+}
+.alert--solid .alert__title,
+.alert--solid .alert__icon,
+.alert--solid .alert__close {
+    color: var(--alert-solid-fg);
+}
+.alert--solid .alert__action,
+.alert--solid .alert__body :where(a) {
+    color: var(--alert-solid-fg);
+}
+.alert--solid .alert__action--strong {
+    background: var(--alert-solid-fg);
+    color: var(--alert-solid-bg);
+}
+.alert--solid .alert__close:hover {
+    background: color-mix(in srgb, var(--white-base) 18%, transparent);
+    color: var(--alert-solid-fg);
+}
+
+/* Outlined — border-led, transparent surface. Quiet
+   alternative for dense forms / dashboards. */
+.alert--outlined {
+    background: transparent;
+    border-color: var(--alert-border);
+}
+
+/* Banner — full-bleed, asymmetric leading bar + tinted
+   background. Used for page-top system messages. The
+   bar is rendered with a left border in the tone colour,
+   echoing the .card--left-bar pattern but at alert scale. */
+.alert--banner {
+    border-radius: 0;
+    border-left-width: var(--alert-bar-width);
+    border-color: var(--alert-border);
+    border-left-color: var(--alert-bar);
+    background: var(--alert-bg);
+}
+
+/* Compact — single-line, tight padding, no body slot. */
+.alert--compact {
+    padding: var(--alert-sm-padding-y) var(--alert-sm-padding-x);
+    align-items: center;
+    font-size: var(--alert-sm-font-size);
+}
+.alert--compact .alert__icon {
+    width: var(--alert-sm-icon);
+    height: var(--alert-sm-icon);
+    margin-top: 0;
+}
+.alert--compact .alert__title {
+    font-size: var(--alert-sm-title);
+    font-weight: var(--font-weight-medium);
+}
+.alert--compact .alert__close {
+    align-self: center;
+    margin-top: 0;
+}
+
+/* =========================================================
+   SIZES
+   Composes with any tone or style modifier.
+   ========================================================= */
+.alert--sm {
+    padding: var(--alert-sm-padding-y) var(--alert-sm-padding-x);
+    font-size: var(--alert-sm-font-size);
+    gap: var(--alert-gap-tight);
+}
+.alert--sm .alert__icon {
+    width: var(--alert-sm-icon);
+    height: var(--alert-sm-icon);
+}
+.alert--sm .alert__title { font-size: var(--alert-sm-title); }
+
+.alert--lg {
+    padding: var(--alert-lg-padding-y) var(--alert-lg-padding-x);
+    font-size: var(--alert-lg-font-size);
+    gap: var(--spacing-4x);
+}
+.alert--lg .alert__icon {
+    width: var(--alert-lg-icon);
+    height: var(--alert-lg-icon);
+}
+.alert--lg .alert__title { font-size: var(--alert-lg-title); }
+
+/* =========================================================
+   STATES
+   ========================================================= */
+.alert.is-dismissed {
+    opacity: 0;
+    transform: translateY(-4px);
+    pointer-events: none;
+}
+
+.alert[role="alert"]:focus-visible,
+.alert:focus-visible {
+    outline: var(--alert-focus-outline-width) solid var(--alert-focus-outline);
+    outline-offset: var(--alert-focus-outline-offset);
+}
+
+/* =========================================================
+   VERTICAL VARIANT — for narrow columns (sidebars, tooltips)
+   Stacks icon → content → actions vertically when the
+   container is too narrow for a horizontal strip.
+   ========================================================= */
+.alert--stacked {
+    flex-direction: column;
+    align-items: stretch;
+}
+.alert--stacked .alert__actions {
+    margin-left: 0;
+    align-self: flex-end;
+}
+.alert--stacked .alert__close {
+    position: absolute;
+    top: var(--spacing-2x);
+    right: var(--spacing-2x);
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+    .alert,
+    .alert__action,
+    .alert__close { transition: none; }
+    .alert.is-dismissed { transform: none; }
+}

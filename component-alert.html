@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Farm2Vet · Alert &amp; Badge — Design System</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<!-- Design system: shared, reusable foundation -->
+<link rel="stylesheet" href="styles/tokens.css" />
+<link rel="stylesheet" href="styles/base.css" />
+<link rel="stylesheet" href="styles/shell.css" />
+<link rel="stylesheet" href="styles/button.css" />
+<link rel="stylesheet" href="styles/alert.css" />
+<link rel="stylesheet" href="styles/badge.css" />
+<!-- Page-specific layout -->
+<link rel="stylesheet" href="styles/page-component-alert.css" />
+<!-- Reuse: usage-note pattern + token-table styling + .card-callout -->
+<link rel="stylesheet" href="styles/page-component-form.css" />
+<link rel="stylesheet" href="styles/page-component-button.css" />
+<link rel="stylesheet" href="styles/page-component-card.css" />
+
+<!-- Shared behaviour: scroll-spy highlights the in-view TOC link -->
+<script src="scripts/scroll-spy.js" defer></script>
+</head>
+<body>
+
+<!-- ========================== TOP BAR ========================== -->
+<header class="topbar">
+  <a href="#top" class="brand" aria-label="Farm2Vet design system">
+    <img src="logo/logo-wordmark-color.svg" alt="Farm2Vet" class="brand-logo" />
+    <small>Design System</small>
+  </a>
+  <nav class="toc" aria-label="Section navigation">
+    <a href="#alert-anatomy">01 Alert · Anatomy</a>
+    <a href="#alert-tones">02 Tones</a>
+    <a href="#alert-styles">03 Styles</a>
+    <a href="#alert-layouts">04 Layouts</a>
+    <a href="#alert-sizes">05 Sizes</a>
+    <a href="#badge-anatomy">06 Badge · Anatomy</a>
+    <a href="#badge-matrix">07 Tone × Style</a>
+    <a href="#badge-sizes">08 Sizes</a>
+    <a href="#badge-variants">09 Variants</a>
+    <a href="#alert-tokens">10 Tokens</a>
+  </nav>
+  <span class="version mono">v 0.5 · 2026</span>
+</header>
+
+<main class="shell" id="top">
+
+  <!-- ========================== HERO ========================== -->
+  <section class="hero">
+    <div>
+      <h1 class="display reveal">
+        <span class="num">Section 06 / Components</span>
+        Alert &amp; Badge.
+      </h1>
+    </div>
+    <div>
+      <p class="lede reveal">
+        Two feedback components. <em>Alert</em> is a horizontal strip
+        composed of icon, title, body, optional actions, and optional
+        dismiss. <em>Badge</em> is an inline pill composed of label,
+        optional dot or icon, optional count, and optional close. Both
+        resolve through component-scoped token layers
+        (<code>--alert-*</code>, <code>--badge-*</code>) that reference
+        the system's shared status colour families.
+      </p>
+    </div>
+
+    <dl class="meta-strip reveal">
+      <div><dt>Components</dt><dd>2</dd></div>
+      <div><dt>Tones</dt><dd>5 · 7</dd></div>
+      <div><dt>Styles</dt><dd>4 · 4</dd></div>
+      <div><dt>Sizes</dt><dd>3 · 4</dd></div>
+    </dl>
+  </section>
+
+  <!-- ========================== ARCHITECTURAL CALLOUT ========================== -->
+  <section class="chunk" style="padding-top: var(--spacing-8x); padding-bottom: 0;">
+    <div class="card-callout reveal" role="note">
+      <span class="label">Architectural note · scope boundaries</span>
+      <p>
+        <strong>Alert is the non-blocking, in-flow message surface.</strong>
+        A blocking message that interrupts the task flow is a Modal. A
+        transient message that auto-dismisses is a Toast. A status
+        message pinned inside a card's content slots is
+        <code>.card.card--left-bar</code>, documented under
+        <em>component-card.html</em>. Alert covers page-top banners,
+        section-level system messages, validation summaries, and inline
+        guidance attached to form fields.
+      </p>
+    </div>
+
+    <div class="card-callout reveal" role="note" style="margin-top: var(--spacing-4x);">
+      <span class="label">Architectural note · badge vs. card__badge</span>
+      <p>
+        <strong>The standalone <code>.badge</code> is the canonical pill.</strong>
+        The Card component ships its own <code>.card__badge</code>
+        sub-component scoped to the <code>.card__badge-row</code> slot —
+        same visual language, pre-positioned for in-card use. Outside of
+        a card surface (tables, list rows, page headers, alerts, status
+        rails) the standalone <code>.badge</code> is the correct primitive.
+      </p>
+    </div>
+  </section>
+
+  <!-- ========================== ALERT · ANATOMY ========================== -->
+  <section class="chunk" id="alert-anatomy">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">01 / Alert — Anatomy</span>
+        <h2 class="display">A shared <em>strip</em>.</h2>
+      </div>
+      <p>
+        An Alert is a horizontal strip composed of three regions: a
+        leading icon, a content stack containing title and body, and a
+        trailing region containing actions and a dismiss button. Variants
+        differ only in which slots they expose; the underlying strip is
+        constant.
+      </p>
+    </header>
+
+    <p class="usage-note reveal">
+      <strong>Title is the only required slot.</strong> An Alert without
+      a title resolves as a Compact one-liner (see Layouts). Alerts
+      without an icon are valid for purely textual notices but lose the
+      tonal glance-cue, so use only when the surrounding context already
+      conveys the tone.
+    </p>
+
+    <div class="glass alert-anatomy reveal">
+      <div class="alert is-info" role="status">
+        <span class="alert__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        </span>
+        <div class="alert__content">
+          <p class="alert__title">Bessie's bloodwork is back.</p>
+          <p class="alert__body">
+            Awaiting your sign-off before dispatch. <a href="#">Open chart</a>
+            for the full workup.
+          </p>
+        </div>
+        <div class="alert__actions">
+          <button type="button" class="alert__action">Remind later</button>
+          <button type="button" class="alert__action alert__action--strong">Sign off</button>
+        </div>
+        <button type="button" class="alert__close" aria-label="Dismiss alert">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+
+      <dl class="legend">
+        <dt>.alert__icon</dt>
+        <dd>Tone-bearing leading glyph (info / safe / warning / critical / neutral). Inherits <code>currentColor</code> so a single SVG works across tones.</dd>
+
+        <dt>.alert__content</dt>
+        <dd>Vertical stack: title, then body. Body slot accepts a paragraph, a link, or a <code>.alert__list</code> of sub-issues for validation summaries.</dd>
+
+        <dt>.alert__title</dt>
+        <dd>Required for default and large sizes. Optional for compact one-liners — the body alone is enough.</dd>
+
+        <dt>.alert__actions</dt>
+        <dd>Optional trailing region for ≤ 2 actions. Use <code>.alert__action--strong</code> for the primary affordance.</dd>
+
+        <dt>.alert__close</dt>
+        <dd>Always last in DOM order. Wires to <code>data-alert-dismiss</code> for the demo behaviour on this page.</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ========================== ALERT · TONES ========================== -->
+  <section class="chunk" id="alert-tones">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">02 / Alert — Tone matrix</span>
+        <h2 class="display">Five <em>tones</em>.</h2>
+      </div>
+      <p>
+        Five canonical tones — Info, Safe, Warning, Critical, Neutral —
+        each remap the alert's surface, border, foreground, and icon
+        token slots. Tones map 1:1 with the system's status colour
+        families and with the Card component's <code>.is-*</code>
+        modifiers.
+      </p>
+    </header>
+
+    <p class="usage-note reveal">
+      <strong>Tone is selected by intent, not aesthetics.</strong>
+      Info for advisories and system messages. Safe for confirmation of
+      a successful state. Warning for non-blocking caution. Critical for
+      failures and blocking errors. Neutral for tips, hints, and notices
+      with no status meaning. A tone selected for visual impact rather
+      than meaning erodes the system's status semantics.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>One Alert per intent.</strong> Multiple Critical banners
+      stacked together flatten the meaning of Critical. When several
+      issues share a single intent, condense them into one Alert with
+      an <code>.alert__list</code> of sub-issues.
+    </p>
+
+    <div class="alert-list reveal">
+
+      <!-- INFO -->
+      <div class="alert is-info" role="status">
+        <span class="alert__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        </span>
+        <div class="alert__content">
+          <p class="alert__title">Scheduled maintenance · Sunday 03:00 UTC</p>
+          <p class="alert__body">~15 minutes of downtime expected. Schedules will resync automatically.</p>
+        </div>
+      </div>
+
+      <!-- SAFE / SUCCESS -->
+      <div class="alert is-safe" role="status">
+        <span class="alert__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        </span>
+        <div class="alert__content">
+          <p class="alert__title">Vaccination schedule updated</p>
+          <p class="alert__body">Atlas · Quarter horse · next due 2026-08-12.</p>
+        </div>
+      </div>
+
+      <!-- WARNING -->
+      <div class="alert is-warning" role="status">
+        <span class="alert__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+        </span>
+        <div class="alert__content">
+          <p class="alert__title">NSAID withdrawal incomplete</p>
+          <p class="alert__body">42 hours remaining before the next milk dispatch can be cleared.</p>
+        </div>
+      </div>
+
+      <!-- CRITICAL / ERROR -->
+      <div class="alert is-critical" role="alert">
+        <span class="alert__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+        </span>
+        <div class="alert__content">
+          <p class="alert__title">Lab connection failed · cannot sync results</p>
+          <p class="alert__body">Last successful sync 3 hours ago. Retry, or work offline and reconcile when the connection recovers.</p>
+        </div>
+        <div class="alert__actions">
+          <button type="button" class="alert__action alert__action--strong">Retry sync</button>
+        </div>
+      </div>
+
+      <!-- NEUTRAL -->
+      <div class="alert is-neutral" role="status">
+        <span class="alert__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+        </span>
+        <div class="alert__content">
+          <p class="alert__title">Tip · keyboard shortcut</p>
+          <p class="alert__body">Press <code>?</code> anywhere to open the shortcut sheet.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================== ALERT · STYLE VARIANTS ========================== -->
+  <section class="chunk" id="alert-styles">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">03 / Alert — Style variants</span>
+        <h2 class="display">Style by <em>emphasis</em>.</h2>
+      </div>
+      <p>
+        Four style treatments along an emphasis axis. <em>Soft</em>
+        (default): tinted surface with a thin coloured border.
+        <em>Solid</em>: white-on-tone fill, no border.
+        <em>Outlined</em>: transparent surface with a coloured border.
+        <em>Banner</em>: full-bleed, zero radius, with a leading accent
+        bar (<code>--alert-bar-width</code>) in the tone colour.
+      </p>
+    </header>
+
+    <p class="usage-note reveal">
+      <strong>Style is selected by surface, not by tone.</strong> Soft is
+      the default inside content surfaces. Solid is reserved for
+      page-top banners covering platform-level events (incidents,
+      outages, billing blocks). Outlined is for inline notices in dense
+      forms or dashboards where a tinted surface would compound visual
+      noise. Banner is exclusive to the full-bleed page-top region.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>One style per region.</strong> Mixing Soft and Outlined
+      Alerts within the same section creates competing emphasis cues.
+      Resolve to a single style per region.
+    </p>
+
+    <div class="alert-showcase reveal">
+
+      <!-- SOFT (default) -->
+      <article class="alert-showcase__tile">
+        <span class="label">Soft · default</span>
+        <div class="demo">
+          <div class="alert is-info">
+            <span class="alert__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+            </span>
+            <div class="alert__content">
+              <p class="alert__title">New caseload assignment available</p>
+              <p class="alert__body">Three new cases were routed to your queue overnight.</p>
+            </div>
+          </div>
+        </div>
+        <div class="meta"><span>.alert</span><strong>tinted bg + thin border</strong></div>
+      </article>
+
+      <!-- SOLID -->
+      <article class="alert-showcase__tile">
+        <span class="label">Solid · high emphasis</span>
+        <div class="demo">
+          <div class="alert alert--solid is-critical" role="alert">
+            <span class="alert__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+            </span>
+            <div class="alert__content">
+              <p class="alert__title">Service incident · API degraded</p>
+              <p class="alert__body">Most requests are succeeding with elevated latency. <a href="#">View status page</a>.</p>
+            </div>
+            <button type="button" class="alert__close" aria-label="Dismiss alert">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="meta"><span>.alert--solid</span><strong>white-on-tone</strong></div>
+      </article>
+
+      <!-- OUTLINED -->
+      <article class="alert-showcase__tile">
+        <span class="label">Outlined · transparent surface</span>
+        <div class="demo">
+          <div class="alert alert--outlined is-warning">
+            <span class="alert__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+            </span>
+            <div class="alert__content">
+              <p class="alert__title">Records older than 7 years are read-only</p>
+              <p class="alert__body">Editing is locked per the records-retention policy.</p>
+            </div>
+          </div>
+        </div>
+        <div class="meta"><span>.alert--outlined</span><strong>border-led, no fill</strong></div>
+      </article>
+
+      <!-- BANNER -->
+      <article class="alert-showcase__tile">
+        <span class="label">Banner · full-bleed page top</span>
+        <div class="demo">
+          <div class="alert alert--banner is-info">
+            <span class="alert__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+            </span>
+            <div class="alert__content">
+              <p class="alert__title">Read-only mode · scheduled maintenance Sunday 03:00 UTC</p>
+            </div>
+            <div class="alert__actions">
+              <button type="button" class="alert__action">Details</button>
+            </div>
+            <button type="button" class="alert__close" aria-label="Dismiss banner">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="meta"><span>.alert--banner</span><strong>asymmetric bar + zero radius</strong></div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ========================== ALERT · LAYOUTS ========================== -->
+  <section class="chunk" id="alert-layouts">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">04 / Alert — Layouts</span>
+        <h2 class="display">Four <em>shapes</em>.</h2>
+      </div>
+      <p>
+        Four layout modes resolve from the same DOM by exposing or
+        hiding slots. <em>Default</em>: title and body. <em>Compact</em>
+        (<code>.alert--compact</code>): title-only, single-line, reduced
+        padding. <em>With actions</em>: trailing
+        <code>.alert__actions</code> group with up to two affordances.
+        <em>Stacked</em> (<code>.alert--stacked</code>): icon, content,
+        and actions arranged vertically. Dismissibility is orthogonal
+        to layout — the close button is a slot, not a variant.
+      </p>
+    </header>
+
+    <p class="usage-note reveal">
+      <strong>Cap trailing actions at two.</strong> The
+      <code>.alert__actions</code> region is sized for one primary
+      (<code>.alert__action--strong</code>) and one secondary
+      affordance. A third action belongs in the surrounding flow, not
+      inside the Alert.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>Use <code>.alert__list</code> for validation summaries.</strong>
+      When a single Alert needs to surface multiple sub-issues (form
+      validation, batch error report), nest a <code>&lt;ul&gt;</code>
+      with the <code>.alert__list</code> class inside
+      <code>.alert__content</code>. Avoid stacking multiple Critical
+      Alerts to convey the same intent.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>Stacked is for narrow columns only.</strong> Reach for
+      <code>.alert--stacked</code> when the host column is below
+      ~420 px (sidebars, drawers, modal panels). At wider widths the
+      vertical stack wastes horizontal real estate.
+    </p>
+
+    <div class="alert-showcase reveal">
+
+      <!-- COMPACT -->
+      <article class="alert-showcase__tile">
+        <span class="label">Compact · single-line</span>
+        <div class="demo">
+          <div class="alert alert--compact is-safe">
+            <span class="alert__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            </span>
+            <div class="alert__content">
+              <p class="alert__title">Saved · changes synced 2 s ago</p>
+            </div>
+          </div>
+        </div>
+        <div class="meta"><span>.alert--compact</span><strong>no body, tight padding</strong></div>
+      </article>
+
+      <!-- DEFAULT WITH BODY + LIST -->
+      <article class="alert-showcase__tile">
+        <span class="label">Default · with description list (validation summary)</span>
+        <div class="demo">
+          <div class="alert is-critical" role="alert">
+            <span class="alert__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+            </span>
+            <div class="alert__content">
+              <p class="alert__title">Cannot submit · 3 fields need attention</p>
+              <ul class="alert__list">
+                <li>Patient weight is required</li>
+                <li>Withdrawal period must be a positive number</li>
+                <li>Vet signature is missing on the dispatch form</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="meta"><span>.alert__list</span><strong>nested bullets</strong></div>
+      </article>
+
+      <!-- WITH ACTIONS -->
+      <article class="alert-showcase__tile">
+        <span class="label">With actions · trailing CTAs</span>
+        <div class="demo">
+          <div class="alert is-warning">
+            <span class="alert__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+            </span>
+            <div class="alert__content">
+              <p class="alert__title">Unsaved draft · 4 minutes since last edit</p>
+              <p class="alert__body">Auto-save is paused while you're offline. Save now to push to the cloud.</p>
+            </div>
+            <div class="alert__actions">
+              <button type="button" class="alert__action">Discard</button>
+              <button type="button" class="alert__action alert__action--strong">Save now</button>
+            </div>
+          </div>
+        </div>
+        <div class="meta"><span>.alert__actions</span><strong>≤ 2 trailing actions</strong></div>
+      </article>
+
+      <!-- DISMISSIBLE -->
+      <article class="alert-showcase__tile">
+        <span class="label">Dismissible · with close (×)</span>
+        <div class="demo">
+          <div class="alert is-info" data-alert-dismiss>
+            <span class="alert__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+            </span>
+            <div class="alert__content">
+              <p class="alert__title">Welcome to Farm2Vet 0.5</p>
+              <p class="alert__body">Try the new caseload board — rows are now drag-reorderable.</p>
+            </div>
+            <button type="button" class="alert__close" aria-label="Dismiss alert">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="meta"><span>data-alert-dismiss</span><strong>fade + collapse</strong></div>
+      </article>
+
+      <!-- STACKED -->
+      <article class="alert-showcase__tile" style="max-width: 420px;">
+        <span class="label">Stacked · narrow column</span>
+        <div class="demo">
+          <div class="alert alert--stacked is-safe">
+            <span class="alert__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            </span>
+            <div class="alert__content">
+              <p class="alert__title">Bessie's chart synced to the lab portal</p>
+              <p class="alert__body">Bloodwork and weight history are now both available to the external reviewer.</p>
+            </div>
+            <div class="alert__actions">
+              <button type="button" class="alert__action alert__action--strong">Open chart</button>
+            </div>
+          </div>
+        </div>
+        <div class="meta"><span>.alert--stacked</span><strong>icon → content → actions</strong></div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ========================== ALERT · SIZES ========================== -->
+  <section class="chunk" id="alert-sizes">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">05 / Alert — Sizes</span>
+        <h2 class="display">Three <em>scales</em>.</h2>
+      </div>
+      <p>
+        Three sizes scale padding, icon glyph, and title font-size in
+        lockstep. <em>SM</em>: <code>--text-sm</code> font, 16 px icon,
+        compact padding. <em>MD</em> (default): <code>--text-base</code>
+        font, 20 px icon. <em>LG</em>: <code>--text-h6</code> title,
+        24 px icon, generous padding. Body line-height is shared
+        (<code>--alert-body-line</code>) across all sizes.
+      </p>
+    </header>
+
+    <p class="usage-note reveal">
+      <strong>Size is selected by hierarchy, not by tone.</strong> SM
+      is reserved for inline guidance attached to a form field or
+      embedded inside another component. MD is the default for
+      section-level Alerts. LG is reserved for the dominant Alert above
+      a container — never more than one LG Alert per view.
+    </p>
+
+    <div class="preview-stage column glass-surface reveal">
+      <span class="stage-caption">SM · helper-line under inputs</span>
+      <div class="alert alert--sm is-info">
+        <span class="alert__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        </span>
+        <div class="alert__content">
+          <p class="alert__title">Withdrawal periods are derived from the active species' formulary.</p>
+        </div>
+      </div>
+
+      <span class="stage-caption">MD · default</span>
+      <div class="alert is-info">
+        <span class="alert__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        </span>
+        <div class="alert__content">
+          <p class="alert__title">New: bulk caseload reassignment</p>
+          <p class="alert__body">Select multiple cases on the board and reassign to a colleague in one move.</p>
+        </div>
+      </div>
+
+      <span class="stage-caption">LG · dominant section Alert</span>
+      <div class="alert alert--lg is-info">
+        <span class="alert__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        </span>
+        <div class="alert__content">
+          <p class="alert__title">Quarterly compliance review starts Monday</p>
+          <p class="alert__body">All open dispatch forms must be signed off before 2026-05-12. Use the bulk-sign-off action on the records page to clear the queue.</p>
+        </div>
+        <div class="alert__actions">
+          <button type="button" class="alert__action alert__action--strong">Open records</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================== BADGE · ANATOMY ========================== -->
+  <section class="chunk" id="badge-anatomy">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">06 / Badge — Anatomy</span>
+        <h2 class="display">A shared <em>pill</em>.</h2>
+      </div>
+      <p>
+        A Status Badge is an inline pill composed of up to four slots:
+        a leading dot (<code>.badge__dot</code>) or icon
+        (<code>.badge__icon</code>), a label
+        (<code>.badge__label</code>), and an optional trailing close
+        button (<code>.badge__close</code>) for removable chips. The
+        <code>.badge--count</code> modifier turns the same pill into a
+        numeric count badge. Variants compose by adding or removing
+        slots; the underlying shape is constant.
+      </p>
+    </header>
+
+    <p class="usage-note reveal">
+      <strong>Label content is a noun or short adjective phrase.</strong>
+      Status (<em>Active</em>, <em>Pending</em>), role
+      (<em>Owner</em>, <em>Vet</em>), or attribute (<em>New</em>,
+      <em>Premium</em>). Sentences belong in body text, not in a badge.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>Dot and icon are mutually exclusive.</strong> A badge
+      with both leading slots filled creates a redundant visual cue.
+      Pair the dot with verb-state labels (live status); pair the icon
+      with category or attribute labels.
+    </p>
+
+    <div class="glass alert-anatomy reveal">
+      <div style="display: flex; align-items: center; gap: var(--spacing-3x); flex-wrap: wrap;">
+        <span class="badge is-safe">
+          <span class="badge__dot"></span>
+          <span class="badge__label">Active</span>
+        </span>
+        <span class="badge is-info">
+          <span class="badge__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          </span>
+          <span class="badge__label">Verified</span>
+        </span>
+        <span class="badge is-warning">
+          <span class="badge__label">Pending review</span>
+          <button type="button" class="badge__close" aria-label="Remove">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          </button>
+        </span>
+        <span class="badge badge--solid is-critical">
+          <span class="badge__label">12</span>
+        </span>
+      </div>
+
+      <dl class="legend">
+        <dt>.badge__dot</dt>
+        <dd>Coloured pip drawn before the label. Use for live status (open / on-call / online). Compose with <code>.is-pulse</code> for animated rings.</dd>
+
+        <dt>.badge__icon</dt>
+        <dd>Optional leading SVG. Sized by the badge size token; uses <code>currentColor</code> to inherit tone.</dd>
+
+        <dt>.badge__label</dt>
+        <dd>The badge text. Should be a noun or adjective phrase (status, role, attribute), never a sentence.</dd>
+
+        <dt>.badge__close</dt>
+        <dd>Trailing × for removable chips (filter pills, multi-select selections). Always last in DOM order.</dd>
+
+        <dt>.badge--count</dt>
+        <dd>Numeric pill, anchorable to a host element via <code>.badge-host</code>. Tabular numerals, semibold weight.</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ========================== BADGE · TONE × STYLE MATRIX ========================== -->
+  <section class="chunk" id="badge-matrix">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">07 / Badge — Tone × Style</span>
+        <h2 class="display">Tone <em>by emphasis</em>.</h2>
+      </div>
+      <p>
+        Seven tones — Neutral, Primary, Info, Safe, Warning, Critical,
+        Accent — compose with four styles. <em>Soft</em> (default):
+        tinted background, transparent border. <em>Solid</em>: opaque
+        tone fill, white foreground. <em>Outlined</em>: transparent
+        background, coloured border. <em>Ghost</em>: transparent
+        background, no border, tone-coloured text only.
+      </p>
+    </header>
+
+    <p class="usage-note reveal">
+      <strong>Status tones are reserved for status meaning.</strong>
+      <code>.is-info</code> always denotes information,
+      <code>.is-safe</code> success, <code>.is-warning</code> caution,
+      <code>.is-critical</code> error. Non-status concepts
+      (<em>Premium</em>, <em>Beta</em>, <em>Featured</em>) take the
+      Neutral, Primary, or Accent tones — never a status colour
+      borrowed for visual impact.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>Style is selected by surrounding density.</strong> Soft
+      is the default for inline metadata. Solid is reserved for badges
+      that must read at a glance (count badges, severity stamps).
+      Outlined replaces Soft in dense layouts where additional tinted
+      surfaces would compound visual noise. Ghost is for the lowest
+      emphasis read — typically a labelled status dot in a list row.
+    </p>
+
+    <div class="badge-row reveal">
+      <span class="row-label">Soft</span>
+      <span class="badge is-neutral"><span class="badge__label">Neutral</span></span>
+      <span class="badge is-primary"><span class="badge__label">Primary</span></span>
+      <span class="badge is-info"><span class="badge__label">Info</span></span>
+      <span class="badge is-safe"><span class="badge__label">Safe</span></span>
+      <span class="badge is-warning"><span class="badge__label">Warning</span></span>
+      <span class="badge is-critical"><span class="badge__label">Critical</span></span>
+      <span class="badge is-accent"><span class="badge__label">Accent</span></span>
+    </div>
+
+    <div class="badge-row reveal">
+      <span class="row-label">Solid</span>
+      <span class="badge badge--solid is-neutral"><span class="badge__label">Neutral</span></span>
+      <span class="badge badge--solid is-primary"><span class="badge__label">Primary</span></span>
+      <span class="badge badge--solid is-info"><span class="badge__label">Info</span></span>
+      <span class="badge badge--solid is-safe"><span class="badge__label">Safe</span></span>
+      <span class="badge badge--solid is-warning"><span class="badge__label">Warning</span></span>
+      <span class="badge badge--solid is-critical"><span class="badge__label">Critical</span></span>
+      <span class="badge badge--solid is-accent"><span class="badge__label">Accent</span></span>
+    </div>
+
+    <div class="badge-row reveal">
+      <span class="row-label">Outlined</span>
+      <span class="badge badge--outlined is-neutral"><span class="badge__label">Neutral</span></span>
+      <span class="badge badge--outlined is-primary"><span class="badge__label">Primary</span></span>
+      <span class="badge badge--outlined is-info"><span class="badge__label">Info</span></span>
+      <span class="badge badge--outlined is-safe"><span class="badge__label">Safe</span></span>
+      <span class="badge badge--outlined is-warning"><span class="badge__label">Warning</span></span>
+      <span class="badge badge--outlined is-critical"><span class="badge__label">Critical</span></span>
+      <span class="badge badge--outlined is-accent"><span class="badge__label">Accent</span></span>
+    </div>
+
+    <div class="badge-row reveal">
+      <span class="row-label">Ghost</span>
+      <span class="badge badge--ghost is-neutral"><span class="badge__dot"></span><span class="badge__label">Neutral</span></span>
+      <span class="badge badge--ghost is-primary"><span class="badge__dot"></span><span class="badge__label">Primary</span></span>
+      <span class="badge badge--ghost is-info"><span class="badge__dot"></span><span class="badge__label">Info</span></span>
+      <span class="badge badge--ghost is-safe"><span class="badge__dot"></span><span class="badge__label">Safe</span></span>
+      <span class="badge badge--ghost is-warning"><span class="badge__dot"></span><span class="badge__label">Warning</span></span>
+      <span class="badge badge--ghost is-critical"><span class="badge__dot"></span><span class="badge__label">Critical</span></span>
+      <span class="badge badge--ghost is-accent"><span class="badge__dot"></span><span class="badge__label">Accent</span></span>
+    </div>
+  </section>
+
+  <!-- ========================== BADGE · SIZES ========================== -->
+  <section class="chunk" id="badge-sizes">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">08 / Badge — Sizes</span>
+        <h2 class="display">Four <em>sizes</em>.</h2>
+      </div>
+      <p>
+        Four sizes scale font-size, padding, and pill height in
+        lockstep. <em>XS</em>: 10 px font, 16 px height.
+        <em>SM</em>: <code>--text-micro</code>, 20 px height.
+        <em>MD</em> (default): <code>--text-sm</code>, 24 px height.
+        <em>LG</em>: <code>--text-base</code>, 32 px height. Letter
+        spacing and font weight are shared across all sizes.
+      </p>
+    </header>
+
+    <p class="usage-note reveal">
+      <strong>Size is selected by host context.</strong> XS is reserved
+      for badges nested inside other components (count badges, in-row
+      indicators); never use XS as a standalone label. SM is for
+      inline metadata in dense lists or compact rows. MD is the default
+      for badges sitting next to body copy. LG is for badges paired
+      with a heading at H4 or larger.
+    </p>
+
+    <div class="badge-row reveal">
+      <span class="row-label">XS</span>
+      <span class="badge badge--xs is-info"><span class="badge__label">Info</span></span>
+      <span class="badge badge--xs is-safe"><span class="badge__label">12</span></span>
+      <span class="badge badge--xs is-critical"><span class="badge__label">New</span></span>
+    </div>
+
+    <div class="badge-row reveal">
+      <span class="row-label">SM</span>
+      <span class="badge badge--sm is-info"><span class="badge__label">Info</span></span>
+      <span class="badge badge--sm is-safe"><span class="badge__label">Active</span></span>
+      <span class="badge badge--sm is-warning"><span class="badge__label">Pending</span></span>
+      <span class="badge badge--sm is-critical"><span class="badge__label">Failed</span></span>
+    </div>
+
+    <div class="badge-row reveal">
+      <span class="row-label">MD · default</span>
+      <span class="badge is-info"><span class="badge__label">Info</span></span>
+      <span class="badge is-safe"><span class="badge__label">Active</span></span>
+      <span class="badge is-warning"><span class="badge__label">Pending</span></span>
+      <span class="badge is-critical"><span class="badge__label">Failed</span></span>
+    </div>
+
+    <div class="badge-row reveal">
+      <span class="row-label">LG</span>
+      <span class="badge badge--lg is-info"><span class="badge__label">Info</span></span>
+      <span class="badge badge--lg is-safe"><span class="badge__label">Active</span></span>
+      <span class="badge badge--lg is-warning"><span class="badge__label">Pending</span></span>
+      <span class="badge badge--lg is-critical"><span class="badge__label">Failed</span></span>
+    </div>
+  </section>
+
+  <!-- ========================== BADGE · VARIANTS / RECIPES ========================== -->
+  <section class="chunk" id="badge-variants">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">09 / Badge — Variants &amp; recipes</span>
+        <h2 class="display">Common <em>shapes</em>.</h2>
+      </div>
+      <p>
+        Eight conventional badge shapes composed from the slot
+        vocabulary above: with leading dot, with pulsing dot, with
+        leading icon, removable chip, square monogram, count badge,
+        count-anchored host, and standalone dot indicator.
+      </p>
+    </header>
+
+    <h4 class="subheading reveal">With leading dot <span class="tag">live status</span></h4>
+    <p class="usage-note reveal">
+      <strong>The dot is paired with verb-state labels.</strong>
+      <em>Active</em>, <em>Idle</em>, <em>Offline</em>,
+      <em>Awaiting review</em>. Pairing the dot with a non-status noun
+      (<em>Premium</em>, <em>Beta</em>) is incorrect — the dot is a
+      live-state cue, not a generic accent.
+    </p>
+    <div class="badge-row reveal">
+      <span class="badge is-safe"><span class="badge__dot is-pulse"></span><span class="badge__label">Live</span></span>
+      <span class="badge is-info"><span class="badge__dot"></span><span class="badge__label">Idle · 4 m</span></span>
+      <span class="badge is-warning"><span class="badge__dot"></span><span class="badge__label">Awaiting review</span></span>
+      <span class="badge is-critical"><span class="badge__dot"></span><span class="badge__label">Offline</span></span>
+      <span class="badge is-neutral"><span class="badge__dot"></span><span class="badge__label">Archived</span></span>
+    </div>
+
+    <h4 class="subheading reveal">With leading icon</h4>
+    <p class="usage-note reveal">
+      <strong>Icons reinforce; they do not replace the label.</strong>
+      Every badge with an icon also carries a textual label. Icons add
+      glanceability for dense rows and improve recognition in
+      multi-language contexts.
+    </p>
+    <div class="badge-row reveal">
+      <span class="badge is-safe">
+        <span class="badge__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        </span>
+        <span class="badge__label">Verified</span>
+      </span>
+      <span class="badge is-warning">
+        <span class="badge__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </span>
+        <span class="badge__label">Awaiting · 2 h</span>
+      </span>
+      <span class="badge is-critical">
+        <span class="badge__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+        </span>
+        <span class="badge__label">Action needed</span>
+      </span>
+      <span class="badge is-info">
+        <span class="badge__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 1.9 5.8L20 9.7l-5 4.4 1.5 6.2L12 17l-4.5 3.3L9 14.1 4 9.7l6.1-.9z"/></svg>
+        </span>
+        <span class="badge__label">Premium</span>
+      </span>
+    </div>
+
+    <h4 class="subheading reveal">Removable / dismissible chip</h4>
+    <p class="usage-note reveal">
+      <strong>Removable badges represent user-applied state.</strong>
+      Filter pills, multi-select selections, applied tags. The
+      <code>.badge__close</code> button is always visible — never
+      revealed on hover only, since touch surfaces have no hover state.
+    </p>
+    <div class="badge-row reveal">
+      <span class="badge is-primary">
+        <span class="badge__label">Bovine</span>
+        <button type="button" class="badge__close" aria-label="Remove Bovine filter">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </span>
+      <span class="badge is-primary">
+        <span class="badge__label">Lameness</span>
+        <button type="button" class="badge__close" aria-label="Remove Lameness filter">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </span>
+      <span class="badge is-primary">
+        <span class="badge__label">Last 7 days</span>
+        <button type="button" class="badge__close" aria-label="Remove date filter">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </span>
+      <span class="badge is-neutral">
+        <span class="badge__label">Owner: Nguyen Minh</span>
+        <button type="button" class="badge__close" aria-label="Remove owner filter">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </span>
+    </div>
+
+    <h4 class="subheading reveal">Square · monogram</h4>
+    <p class="usage-note reveal">
+      <strong>Square radius is reserved for codes and identifiers.</strong>
+      <code>.badge--square</code> swaps the pill radius for
+      <code>--badge-radius-square</code>. Use for SKU labels, version
+      tags, plate numbers, draft / beta stamps — fixed-format strings
+      where the pill shape would misread as status.
+    </p>
+    <div class="badge-row reveal">
+      <span class="badge badge--square is-neutral"><span class="badge__label">SKU-12-088</span></span>
+      <span class="badge badge--square is-info"><span class="badge__label">v0.5.2</span></span>
+      <span class="badge badge--square badge--solid is-accent"><span class="badge__label">BETA</span></span>
+      <span class="badge badge--square badge--outlined is-warning"><span class="badge__label">Draft</span></span>
+    </div>
+
+    <h4 class="subheading reveal">Count badges <span class="tag">numeric</span></h4>
+    <p class="usage-note reveal">
+      <strong>Count badges represent quantitative state.</strong>
+      Unread items, queued tasks, overdue records.
+      <code>.badge--count</code> applies tabular numerals, semibold
+      weight, and the count-specific token slots
+      (<code>--badge-count-bg</code>, <code>--badge-count-fg</code>).
+      Wrap the host element in <code>.badge-host</code> to anchor the
+      count in the top-right corner with a 2-px ring against the host
+      surface.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>Cap displayed values at three digits.</strong> Counts
+      above 999 are rendered as <code>99+</code> or <code>999+</code>.
+      The exact value belongs in a tooltip or the destination view, not
+      in the pill itself. Use <code>.badge--count.is-empty</code> for
+      a presence-only pip when the exact count is irrelevant.
+    </p>
+    <div class="count-host-rail glass reveal">
+      <div class="host-cell">
+        <span class="badge-host">
+          <span class="icon-stub" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+          </span>
+          <span class="badge badge--count" aria-label="3 notifications">3</span>
+        </span>
+        <span class="tag">Bell · 3</span>
+      </div>
+
+      <div class="host-cell">
+        <span class="badge-host">
+          <span class="icon-stub" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </span>
+          <span class="badge badge--count" aria-label="12 messages">12</span>
+        </span>
+        <span class="tag">Inbox · 12</span>
+      </div>
+
+      <div class="host-cell">
+        <span class="badge-host">
+          <span class="icon-stub" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
+          </span>
+          <span class="badge badge--count" aria-label="99 plus items">99+</span>
+        </span>
+        <span class="tag">Cart · 99+</span>
+      </div>
+
+      <div class="host-cell">
+        <span class="badge-host">
+          <span class="avatar-stub" aria-hidden="true">DP</span>
+          <span class="badge badge--count is-empty" aria-label="Has unread"></span>
+        </span>
+        <span class="tag">Avatar · pip</span>
+      </div>
+
+      <div class="host-cell">
+        <span class="badge-host">
+          <span class="icon-stub" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </span>
+          <span class="badge badge--count" style="--badge-count-bg: var(--background-warning); --badge-count-fg: var(--text-warning); font-weight: var(--font-weight-semibold);" aria-label="2 overdue">2</span>
+        </span>
+        <span class="tag">Calendar · 2 overdue</span>
+      </div>
+    </div>
+
+    <h4 class="subheading reveal">Standalone dot</h4>
+    <p class="usage-note reveal">
+      <strong><code>.badge--dot-only</code> is the minimum status
+      affordance.</strong> A bare coloured dot, no label, no pill.
+      Reserved for list rows or cells where a full pill would dominate
+      the row's vertical rhythm. Pair with adjacent text (the row's
+      title) so the dot's meaning resolves from context.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong><code>.is-pulse</code> denotes an actively live state.</strong>
+      Incidents in progress, on-call status, recording, real-time sync.
+      Animation must not be applied to non-live status (a pulsing
+      "Archived" pip misreads as motion-for-motion's-sake) and is
+      automatically disabled under <code>prefers-reduced-motion</code>.
+    </p>
+
+    <div class="status-list reveal">
+      <div class="status-row">
+        <span class="badge badge--dot-only is-safe is-pulse" aria-label="Live"></span>
+        <span class="name">Caseload board · realtime sync</span>
+        <span class="meta">Connected · 14 m</span>
+      </div>
+      <div class="status-row">
+        <span class="badge badge--dot-only is-safe" aria-label="Online"></span>
+        <span class="name">Lab portal · external API</span>
+        <span class="meta">Healthy · 1 m ago</span>
+      </div>
+      <div class="status-row">
+        <span class="badge badge--dot-only is-warning" aria-label="Degraded"></span>
+        <span class="name">Imaging pipeline · DICOM ingest</span>
+        <span class="meta">Degraded · 6 m</span>
+      </div>
+      <div class="status-row">
+        <span class="badge badge--dot-only is-critical is-pulse" aria-label="Down"></span>
+        <span class="name">Dispatch printer · bay 3</span>
+        <span class="meta">Down · 18 m</span>
+      </div>
+      <div class="status-row">
+        <span class="badge badge--dot-only is-neutral" aria-label="Disabled"></span>
+        <span class="name">Legacy SMS gateway</span>
+        <span class="meta">Disabled by admin</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================== TOKENS ========================== -->
+  <section class="chunk" id="alert-tokens">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">10 / Alert &amp; Badge — Component tokens</span>
+        <h2 class="display">Token <em>map</em>.</h2>
+      </div>
+      <p>
+        The component token layer for both Alert and Badge. Each
+        component token references a semantic token (never a primitive
+        directly), so changes to a status colour family or surface
+        token propagate through every alert and badge consistently.
+      </p>
+    </header>
+
+    <table class="token-table reveal" aria-label="Alert and Badge component tokens">
+      <thead>
+        <tr>
+          <th>Component token</th>
+          <th>References</th>
+          <th>Resolves to</th>
+          <th>Preview</th>
+        </tr>
+      </thead>
+      <tbody id="alertTokenTable"></tbody>
+    </table>
+  </section>
+
+  <!-- ========================== FOOTER ========================== -->
+  <footer>
+    <span class="sigil">Farm2Vet — cultivated intelligence, since 2024.</span>
+    <a href="component-card.html">← Section 05 / Card</a>
+    <span>End of Section 06 · Alert &amp; Badge</span>
+  </footer>
+
+</main>
+
+<!-- ========================== TOAST ========================== -->
+<div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<script>
+/* =========================================================
+   COMPONENT TOKEN DATA — Alert + Badge
+   Each entry: [name, semanticReference]
+   ========================================================= */
+const ALERT_TOKENS = [
+  { group: 'Alert · Shared shape', tokens: [
+    ['--alert-font-family',   'var(--font-sans)'],
+    ['--alert-radius',        'var(--radius-md)'],
+    ['--alert-border-width',  'var(--border-width-base)'],
+    ['--alert-gap',           'var(--spacing-3x)'],
+    ['--alert-gap-tight',     'var(--spacing-2x)'],
+    ['--alert-bar-width',     '4px'],
+  ]},
+  { group: 'Alert · Sizes', tokens: [
+    ['--alert-sm-font-size',  'var(--text-sm)'],
+    ['--alert-sm-padding-x',  'var(--spacing-3x)'],
+    ['--alert-sm-padding-y',  'var(--spacing-2x)'],
+    ['--alert-sm-icon',       '16px'],
+    ['--alert-md-font-size',  'var(--text-base)'],
+    ['--alert-md-padding-x',  'var(--spacing-4x)'],
+    ['--alert-md-padding-y',  'var(--spacing-3x)'],
+    ['--alert-md-icon',       '20px'],
+    ['--alert-lg-font-size',  'var(--text-base)'],
+    ['--alert-lg-padding-x',  'var(--spacing-5x)'],
+    ['--alert-lg-padding-y',  'var(--spacing-4x)'],
+    ['--alert-lg-icon',       '24px'],
+  ]},
+  { group: 'Alert · Tone — Info (default)', tokens: [
+    ['--alert-info-bg',        'var(--background-info)'],
+    ['--alert-info-border',    'var(--border-info)'],
+    ['--alert-info-fg',        'var(--text-info-strong)'],
+    ['--alert-info-fg-body',   'var(--text-default)'],
+    ['--alert-info-icon',      'var(--text-info)'],
+    ['--alert-info-bar',       'var(--info-500)'],
+    ['--alert-info-solid-bg',  'var(--info-500)'],
+    ['--alert-info-solid-fg',  'var(--text-inverted)'],
+  ]},
+  { group: 'Alert · Tone — Safe (success)', tokens: [
+    ['--alert-safe-bg',        'var(--background-safe)'],
+    ['--alert-safe-border',    'var(--border-safe)'],
+    ['--alert-safe-fg',        'var(--text-safe)'],
+    ['--alert-safe-icon',      'var(--text-safe)'],
+    ['--alert-safe-bar',       'var(--safe-500)'],
+    ['--alert-safe-solid-bg',  'var(--safe-500)'],
+    ['--alert-safe-solid-fg',  'var(--text-inverted)'],
+  ]},
+  { group: 'Alert · Tone — Warning', tokens: [
+    ['--alert-warning-bg',        'var(--background-warning)'],
+    ['--alert-warning-border',    'var(--border-warning)'],
+    ['--alert-warning-fg',        'var(--text-warning)'],
+    ['--alert-warning-icon',      'var(--text-warning)'],
+    ['--alert-warning-bar',       'var(--warning-500)'],
+    ['--alert-warning-solid-bg',  'var(--warning-500)'],
+    ['--alert-warning-solid-fg',  'var(--text-inverted)'],
+  ]},
+  { group: 'Alert · Tone — Critical (error)', tokens: [
+    ['--alert-critical-bg',        'var(--background-critical)'],
+    ['--alert-critical-border',    'var(--border-critical)'],
+    ['--alert-critical-fg',        'var(--text-critical)'],
+    ['--alert-critical-icon',      'var(--text-critical)'],
+    ['--alert-critical-bar',       'var(--critical-500)'],
+    ['--alert-critical-solid-bg',  'var(--critical-500)'],
+    ['--alert-critical-solid-fg',  'var(--text-inverted)'],
+  ]},
+  { group: 'Alert · Tone — Neutral', tokens: [
+    ['--alert-neutral-bg',        'var(--background-default-subtle)'],
+    ['--alert-neutral-border',    'var(--border-default)'],
+    ['--alert-neutral-fg',        'var(--text-default)'],
+    ['--alert-neutral-fg-body',   'var(--text-default-subtle)'],
+    ['--alert-neutral-icon',      'var(--icon-default)'],
+    ['--alert-neutral-bar',       'var(--neutral-400)'],
+    ['--alert-neutral-solid-bg',  'var(--neutral-700)'],
+    ['--alert-neutral-solid-fg',  'var(--text-inverted)'],
+  ]},
+  { group: 'Alert · Slots & dismiss', tokens: [
+    ['--alert-title-weight',  'var(--font-weight-semibold)'],
+    ['--alert-body-fg',       'var(--text-default-subtle)'],
+    ['--alert-body-line',     'var(--line-height-body)'],
+    ['--alert-close-size',    '28px'],
+    ['--alert-close-radius',  'var(--radius-sm)'],
+    ['--alert-close-fg',      'var(--icon-default)'],
+    ['--alert-close-fg-hover','var(--text-default)'],
+  ]},
+  { group: 'Alert · Focus ring', tokens: [
+    ['--alert-focus-outline',         'var(--outline-focus)'],
+    ['--alert-focus-outline-width',   '2px'],
+    ['--alert-focus-outline-offset',  '2px'],
+  ]},
+  { group: 'Badge · Shared shape', tokens: [
+    ['--badge-font-family',    'var(--font-sans)'],
+    ['--badge-font-weight',    'var(--font-weight-medium)'],
+    ['--badge-letter-spacing', '0.01em'],
+    ['--badge-radius',         'var(--radius-pill)'],
+    ['--badge-radius-square',  'var(--radius-sm)'],
+    ['--badge-border-width',   'var(--border-width-base)'],
+    ['--badge-gap',            'var(--spacing-1x)'],
+  ]},
+  { group: 'Badge · Sizes', tokens: [
+    ['--badge-xs-font-size', '10px'],
+    ['--badge-xs-height',    '16px'],
+    ['--badge-sm-font-size', 'var(--text-micro)'],
+    ['--badge-sm-height',    '20px'],
+    ['--badge-md-font-size', 'var(--text-sm)'],
+    ['--badge-md-height',    '24px'],
+    ['--badge-lg-font-size', 'var(--text-base)'],
+    ['--badge-lg-height',    '32px'],
+  ]},
+  { group: 'Badge · Tone — Neutral (default)', tokens: [
+    ['--badge-neutral-soft-bg',        'var(--background-default-minimal)'],
+    ['--badge-neutral-soft-fg',        'var(--text-default)'],
+    ['--badge-neutral-solid-bg',       'var(--neutral-700)'],
+    ['--badge-neutral-solid-fg',       'var(--text-inverted)'],
+    ['--badge-neutral-outlined-fg',    'var(--text-default)'],
+    ['--badge-neutral-outlined-border','var(--border-default-strong)'],
+    ['--badge-neutral-dot',            'var(--neutral-500)'],
+  ]},
+  { group: 'Badge · Tone — Primary', tokens: [
+    ['--badge-primary-soft-bg',        'var(--background-primary-minimal)'],
+    ['--badge-primary-soft-fg',        'var(--text-primary-strong)'],
+    ['--badge-primary-solid-bg',       'var(--background-primary)'],
+    ['--badge-primary-solid-fg',       'var(--text-inverted)'],
+    ['--badge-primary-outlined-fg',    'var(--text-primary-strong)'],
+    ['--badge-primary-outlined-border','var(--border-primary)'],
+    ['--badge-primary-dot',            'var(--primary-500)'],
+  ]},
+  { group: 'Badge · Tone — Info', tokens: [
+    ['--badge-info-soft-bg',        'var(--background-info)'],
+    ['--badge-info-soft-fg',        'var(--text-info-strong)'],
+    ['--badge-info-solid-bg',       'var(--info-500)'],
+    ['--badge-info-solid-fg',       'var(--text-inverted)'],
+    ['--badge-info-outlined-fg',    'var(--text-info-strong)'],
+    ['--badge-info-outlined-border','var(--border-info)'],
+    ['--badge-info-dot',            'var(--info-500)'],
+  ]},
+  { group: 'Badge · Tone — Safe (success)', tokens: [
+    ['--badge-safe-soft-bg',        'var(--background-safe)'],
+    ['--badge-safe-soft-fg',        'var(--text-safe)'],
+    ['--badge-safe-solid-bg',       'var(--safe-500)'],
+    ['--badge-safe-solid-fg',       'var(--text-inverted)'],
+    ['--badge-safe-outlined-fg',    'var(--text-safe)'],
+    ['--badge-safe-outlined-border','var(--border-safe)'],
+    ['--badge-safe-dot',            'var(--safe-500)'],
+  ]},
+  { group: 'Badge · Tone — Warning', tokens: [
+    ['--badge-warning-soft-bg',        'var(--background-warning)'],
+    ['--badge-warning-soft-fg',        'var(--text-warning)'],
+    ['--badge-warning-solid-bg',       'var(--warning-500)'],
+    ['--badge-warning-solid-fg',       'var(--text-inverted)'],
+    ['--badge-warning-outlined-fg',    'var(--text-warning)'],
+    ['--badge-warning-outlined-border','var(--border-warning)'],
+    ['--badge-warning-dot',            'var(--warning-500)'],
+  ]},
+  { group: 'Badge · Tone — Critical (error)', tokens: [
+    ['--badge-critical-soft-bg',        'var(--background-critical)'],
+    ['--badge-critical-soft-fg',        'var(--text-critical)'],
+    ['--badge-critical-solid-bg',       'var(--critical-500)'],
+    ['--badge-critical-solid-fg',       'var(--text-inverted)'],
+    ['--badge-critical-outlined-fg',    'var(--text-critical)'],
+    ['--badge-critical-outlined-border','var(--border-critical-strong)'],
+    ['--badge-critical-dot',            'var(--critical-500)'],
+  ]},
+  { group: 'Badge · Tone — Accent (Forest)', tokens: [
+    ['--badge-accent-soft-bg',        'var(--background-accent-minimal)'],
+    ['--badge-accent-soft-fg',        'var(--text-accent-strong)'],
+    ['--badge-accent-solid-bg',       'var(--background-accent)'],
+    ['--badge-accent-solid-fg',       'var(--text-inverted)'],
+    ['--badge-accent-outlined-fg',    'var(--text-accent-strong)'],
+    ['--badge-accent-outlined-border','var(--border-accent)'],
+    ['--badge-accent-dot',            'var(--accent-500)'],
+  ]},
+  { group: 'Badge · Count', tokens: [
+    ['--badge-count-bg',         'var(--critical-500)'],
+    ['--badge-count-fg',         'var(--text-inverted)'],
+    ['--badge-count-min-w',      '18px'],
+    ['--badge-count-height',     '18px'],
+    ['--badge-count-font-size',  '11px'],
+  ]},
+  { group: 'Badge · Dot', tokens: [
+    ['--badge-dot-size',  '8px'],
+    ['--badge-dot-ring',  'color-mix(in srgb, currentColor 30%, transparent)'],
+  ]},
+  { group: 'Badge · Focus ring', tokens: [
+    ['--badge-focus-outline',         'var(--outline-focus)'],
+    ['--badge-focus-outline-width',   '2px'],
+    ['--badge-focus-outline-offset',  '2px'],
+  ]},
+];
+
+/* =========================================================
+   RENDER — Alert & Badge token table
+   ========================================================= */
+function resolveCss(varName) {
+  const styles = getComputedStyle(document.documentElement);
+  return styles.getPropertyValue(varName).trim();
+}
+
+function isColorish(value) {
+  if (!value) return false;
+  const v = value.toLowerCase();
+  return v.startsWith('#') ||
+         v.startsWith('rgb') ||
+         v.startsWith('hsl') ||
+         v.startsWith('color-mix') ||
+         v.startsWith('linear-gradient') ||
+         v.startsWith('radial-gradient') ||
+         v === 'transparent' ||
+         /^[a-z]+$/.test(v);
+}
+
+function renderTokenTable() {
+  const tbody = document.getElementById('alertTokenTable');
+  if (!tbody) return;
+  let html = '';
+  ALERT_TOKENS.forEach(group => {
+    html += `<tr class="group-row"><td colspan="4">${group.group}</td></tr>`;
+    group.tokens.forEach(([name, ref]) => {
+      const resolved = resolveCss(name) || '—';
+      const isColor = isColorish(resolved);
+      const chip = isColor
+        ? `<span class="chip" style="background:${resolved}"></span>`
+        : `<span class="chip" style="background: repeating-linear-gradient(45deg, var(--neutral-100) 0 6px, var(--neutral-50) 6px 12px); opacity:.6"></span>`;
+      html += `
+        <tr>
+          <td class="tk-name">${name}</td>
+          <td class="tk-ref">${ref.replace(/</g,'&lt;')}</td>
+          <td class="tk-resolved">${resolved.length > 60 ? resolved.slice(0,57)+'…' : resolved}</td>
+          <td class="tk-swatch">${chip}</td>
+        </tr>`;
+    });
+  });
+  tbody.innerHTML = html;
+}
+
+/* =========================================================
+   DISMISS BEHAVIOUR — fade + collapse on close click
+   ========================================================= */
+function initDismiss() {
+  document.querySelectorAll('.alert .alert__close').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const alertEl = btn.closest('.alert');
+      if (!alertEl) return;
+      alertEl.classList.add('is-dismissed');
+      setTimeout(() => {
+        alertEl.style.display = 'none';
+      }, 220);
+    });
+  });
+
+  document.querySelectorAll('.badge .badge__close').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const badgeEl = btn.closest('.badge');
+      if (!badgeEl) return;
+      badgeEl.style.transition = 'opacity .15s ease, transform .15s ease';
+      badgeEl.style.opacity = '0';
+      badgeEl.style.transform = 'scale(.92)';
+      setTimeout(() => {
+        badgeEl.style.display = 'none';
+      }, 160);
+    });
+  });
+}
+
+/* =========================================================
+   REVEAL ON SCROLL
+   ========================================================= */
+function initReveal() {
+  const items = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    items.forEach(el => el.classList.add('in'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        en.target.classList.add('in');
+        io.unobserve(en.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(el => io.observe(el));
+}
+
+/* =========================================================
+   BOOT
+   ========================================================= */
+document.addEventListener('DOMContentLoaded', () => {
+  renderTokenTable();
+  initDismiss();
+  initReveal();
+});
+</script>
+
+</body>
+</html>

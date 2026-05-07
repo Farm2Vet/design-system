@@ -1,0 +1,283 @@
+/* =========================================================
+   PAGE — COMPONENT · ALERT & BADGE
+   Styles unique to component-alert.html: showcase tile
+   layout for inline-alert demos and the badge wall used
+   to tour every tone × style × size combination.
+   Token-table styling is reused from
+   page-component-button.css; usage-note styling is reused
+   from page-component-form.css. Showcase tile patterns
+   are reused from page-component-card.css.
+   The actual components live in alert.css and badge.css.
+   Depends on: tokens.css, base.css, shell.css,
+               alert.css, badge.css
+   ========================================================= */
+
+/* =========================================================
+   ALERT SHOWCASE — single-column stack
+   Alerts are length-greater-than-width by nature, so
+   stacking them vertically reads more honestly than a
+   side-by-side grid would.
+   ========================================================= */
+.alert-showcase {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-5x);
+}
+.alert-showcase__tile {
+    border-radius: var(--radius-lg);
+    border: var(--border-width-base) solid var(--border-glass-light);
+    background: var(--background-glass-light);
+    backdrop-filter: var(--blur-lg) saturate(140%);
+    -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
+    padding: var(--spacing-5x);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4x);
+}
+.alert-showcase__tile .label {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+}
+.alert-showcase__tile .demo {
+    display: flex;
+    align-items: stretch;
+}
+.alert-showcase__tile .demo > .alert { width: 100%; }
+.alert-showcase__tile .meta {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    color: var(--text-default-minimal);
+    letter-spacing: 0.04em;
+    border-top: var(--border-width-base) solid var(--border-default-subtle);
+    padding-top: var(--spacing-3x);
+    display: flex;
+    justify-content: space-between;
+    gap: var(--spacing-3x);
+}
+.alert-showcase__tile .meta strong {
+    color: var(--text-default);
+    font-weight: var(--font-weight-medium);
+}
+
+/* =========================================================
+   ANATOMY DIAGRAM — slot vocabulary for .alert
+   Mirrors the .card-anatomy panel used on component-card.html
+   so the documentation cadence stays consistent.
+   ========================================================= */
+.alert-anatomy {
+    padding: var(--spacing-8x);
+    display: grid;
+    grid-template-columns: minmax(360px, 1fr) minmax(260px, 360px);
+    gap: var(--spacing-8x);
+    align-items: center;
+}
+.alert-anatomy .legend {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3x);
+}
+.alert-anatomy .legend dt {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-primary-strong);
+    margin-bottom: var(--spacing-half);
+}
+.alert-anatomy .legend dd {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--text-default-subtle);
+    line-height: var(--line-height-body);
+    margin: 0 0 var(--spacing-3x);
+}
+
+/* =========================================================
+   BADGE WALL — many-pills-per-row showcase
+   The badge component is small enough that a vertical
+   stack would waste horizontal real-estate. Use a flex-wrap
+   strip instead, grouped by tone or style depending on
+   what the row is comparing.
+   ========================================================= */
+.badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--spacing-3x);
+    padding: var(--spacing-5x) var(--spacing-6x);
+    border-radius: var(--radius-lg);
+    border: var(--border-width-base) solid var(--border-glass-light);
+    background: var(--background-glass-light);
+    backdrop-filter: var(--blur-lg) saturate(140%);
+    -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
+}
+.badge-row + .badge-row { margin-top: var(--spacing-3x); }
+.badge-row .row-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+    min-width: 96px;
+    flex: 0 0 auto;
+}
+
+/* =========================================================
+   BADGE GRID — when each badge needs its own labelled
+   tile (style / tone matrix demo).
+   ========================================================= */
+.badge-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: var(--spacing-3x);
+}
+.badge-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-2x);
+    padding: var(--spacing-4x) var(--spacing-5x);
+    border-radius: var(--radius-md);
+    border: var(--border-width-base) dashed var(--border-default);
+    background: color-mix(in srgb, var(--background-default-subtle) 60%, transparent);
+}
+.badge-tile .tag {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+}
+
+/* =========================================================
+   ALERT × LIST — vertical stack of tone variations under
+   one heading, used for the tone matrix.
+   ========================================================= */
+.alert-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3x);
+}
+
+/* =========================================================
+   ALERT STAGE — vertical, glass-surfaced container that
+   shows multiple sizes / states stacked on the same page.
+   Reuses the .preview-stage NAMING and .stage-caption
+   from page-component-button.css; this rule only adds the
+   glass surface and column flow that the alert showcase
+   needs (button's stage is horizontal, ours is vertical).
+   Composes as <div class="preview-stage column glass-surface">.
+   ========================================================= */
+.preview-stage.glass-surface {
+    border-radius: var(--radius-lg);
+    border: var(--border-width-base) solid var(--border-glass-light);
+    background: var(--background-glass-light);
+    backdrop-filter: var(--blur-lg) saturate(140%);
+    -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
+    padding: var(--spacing-6x);
+}
+/* Stretch column children so alerts span the stage width
+   instead of shrinking to their natural content size. */
+.preview-stage.column.glass-surface { align-items: stretch; }
+.preview-stage.column.glass-surface > .alert { width: 100%; }
+
+/* =========================================================
+   COUNT-BADGE HOST RAIL — for showing badge--count attached
+   to icons / avatars / tabs.
+   ========================================================= */
+.count-host-rail {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-6x);
+    padding: var(--spacing-6x);
+}
+.count-host-rail .host-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-2x);
+}
+.count-host-rail .host-cell .tag {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+}
+/* Stand-in icon button surface so the count-badge anchor
+   is visible without pulling in another component. */
+.count-host-rail .icon-stub {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    background: var(--background-default-subtle);
+    border: var(--border-width-base) solid var(--border-default);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--icon-default);
+}
+.count-host-rail .icon-stub svg { width: 20px; height: 20px; }
+.count-host-rail .avatar-stub {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--gradient-brand);
+    color: var(--text-inverted);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--text-sm);
+}
+
+/* =========================================================
+   LIVE-STATUS RAIL — labelled rows that demonstrate
+   dot + pulse next to a status string.
+   ========================================================= */
+.status-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1x);
+    padding: var(--spacing-5x) var(--spacing-6x);
+    border-radius: var(--radius-lg);
+    border: var(--border-width-base) solid var(--border-default);
+    background: var(--background-default);
+}
+.status-list .status-row {
+    display: grid;
+    grid-template-columns: 28px 1fr auto;
+    align-items: center;
+    gap: var(--spacing-3x);
+    padding: var(--spacing-2x) 0;
+    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
+}
+.status-list .status-row:last-child { border-bottom: none; }
+.status-list .status-row .name {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--text-default);
+}
+.status-list .status-row .meta {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    color: var(--text-default-minimal);
+    letter-spacing: 0.04em;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 960px) {
+    .alert-anatomy { grid-template-columns: 1fr; gap: var(--spacing-5x); }
+}
+@media (max-width: 600px) {
+    .badge-row { flex-direction: column; align-items: flex-start; padding: var(--spacing-4x); }
+    .badge-row .row-label { min-width: 0; }
+    .alert-showcase__tile .demo > .alert { font-size: var(--text-sm); }
+}

@@ -1,0 +1,475 @@
+/* =========================================================
+   FARM2VET DESIGN SYSTEM — STATUS BADGE COMPONENT
+   A small, freestanding status / metadata pill. The
+   canonical pill component for any inline label outside
+   of a card slot. (Inside a card, the .card__badge
+   sub-component plays the same visual language but is
+   pre-positioned for the card__badge-row container.)
+   One shared shape adapts across:
+     • Style          — Soft (default), Solid, Outlined,
+                        Subtle ghost
+     • Tone           — Neutral, Primary, Info, Safe,
+                        Warning, Critical, Accent
+     • Sizes          — XS · SM · MD (default) · LG
+     • Affordances    — Leading dot, Pulse (live), Leading
+                        icon, Trailing close (removable),
+                        Numeric count
+   Depends on: tokens.css
+   ========================================================= */
+
+/* =========================================================
+   COMPONENT TOKENS — Badge
+   Component tokens reference semantic tokens strictly.
+   ========================================================= */
+:root {
+    /* ---------- Shared shape ---------- */
+    --badge-font-family:    var(--font-sans);
+    --badge-font-weight:    var(--font-weight-medium);
+    --badge-letter-spacing: 0.01em;
+    --badge-radius:         var(--radius-pill);
+    --badge-radius-square:  var(--radius-sm);
+    --badge-border-width:   var(--border-width-base);
+    --badge-gap:            var(--spacing-1x);
+    --badge-transition:     background-color .15s ease, color .15s ease,
+                            border-color .15s ease, box-shadow .15s ease,
+                            opacity .15s ease;
+
+    /* ---------- Sizes (MD is default) ---------- */
+    --badge-xs-font-size: 10px;
+    --badge-xs-padding-x: var(--spacing-1x);
+    --badge-xs-padding-y: 1px;
+    --badge-xs-height:    16px;
+    --badge-xs-icon:      10px;
+    --badge-xs-dot:       6px;
+
+    --badge-sm-font-size: var(--text-micro);   /* ~11px */
+    --badge-sm-padding-x: var(--spacing-2x);
+    --badge-sm-padding-y: var(--spacing-half);
+    --badge-sm-height:    20px;
+    --badge-sm-icon:      12px;
+    --badge-sm-dot:       6px;
+
+    --badge-md-font-size: var(--text-sm);      /* ~13.3px */
+    --badge-md-padding-x: var(--spacing-3x);
+    --badge-md-padding-y: var(--spacing-1x);
+    --badge-md-height:    24px;
+    --badge-md-icon:      14px;
+    --badge-md-dot:       8px;
+
+    --badge-lg-font-size: var(--text-base);
+    --badge-lg-padding-x: var(--spacing-4x);
+    --badge-lg-padding-y: var(--spacing-2x);
+    --badge-lg-height:    32px;
+    --badge-lg-icon:      16px;
+    --badge-lg-dot:       10px;
+
+    /* ---------- Tone — Neutral (default) ---------- */
+    --badge-neutral-soft-bg:        var(--background-default-minimal);
+    --badge-neutral-soft-fg:        var(--text-default);
+    --badge-neutral-soft-border:    transparent;
+    --badge-neutral-solid-bg:       var(--neutral-700);
+    --badge-neutral-solid-fg:       var(--text-inverted);
+    --badge-neutral-outlined-fg:    var(--text-default);
+    --badge-neutral-outlined-border:var(--border-default-strong);
+    --badge-neutral-dot:            var(--neutral-500);
+
+    /* ---------- Tone — Primary ---------- */
+    --badge-primary-soft-bg:        var(--background-primary-minimal);
+    --badge-primary-soft-fg:        var(--text-primary-strong);
+    --badge-primary-soft-border:    transparent;
+    --badge-primary-solid-bg:       var(--background-primary);
+    --badge-primary-solid-fg:       var(--text-inverted);
+    --badge-primary-outlined-fg:    var(--text-primary-strong);
+    --badge-primary-outlined-border:var(--border-primary);
+    --badge-primary-dot:            var(--primary-500);
+
+    /* ---------- Tone — Info ---------- */
+    --badge-info-soft-bg:        var(--background-info);
+    --badge-info-soft-fg:        var(--text-info-strong);
+    --badge-info-soft-border:    transparent;
+    --badge-info-solid-bg:       var(--info-500);
+    --badge-info-solid-fg:       var(--text-inverted);
+    --badge-info-outlined-fg:    var(--text-info-strong);
+    --badge-info-outlined-border:var(--border-info);
+    --badge-info-dot:            var(--info-500);
+
+    /* ---------- Tone — Safe (success) ---------- */
+    --badge-safe-soft-bg:        var(--background-safe);
+    --badge-safe-soft-fg:        var(--text-safe);
+    --badge-safe-soft-border:    transparent;
+    --badge-safe-solid-bg:       var(--safe-500);
+    --badge-safe-solid-fg:       var(--text-inverted);
+    --badge-safe-outlined-fg:    var(--text-safe);
+    --badge-safe-outlined-border:var(--border-safe);
+    --badge-safe-dot:            var(--safe-500);
+
+    /* ---------- Tone — Warning ---------- */
+    --badge-warning-soft-bg:        var(--background-warning);
+    --badge-warning-soft-fg:        var(--text-warning);
+    --badge-warning-soft-border:    transparent;
+    --badge-warning-solid-bg:       var(--warning-500);
+    --badge-warning-solid-fg:       var(--text-inverted);
+    --badge-warning-outlined-fg:    var(--text-warning);
+    --badge-warning-outlined-border:var(--border-warning);
+    --badge-warning-dot:            var(--warning-500);
+
+    /* ---------- Tone — Critical (error) ---------- */
+    --badge-critical-soft-bg:        var(--background-critical);
+    --badge-critical-soft-fg:        var(--text-critical);
+    --badge-critical-soft-border:    transparent;
+    --badge-critical-solid-bg:       var(--critical-500);
+    --badge-critical-solid-fg:       var(--text-inverted);
+    --badge-critical-outlined-fg:    var(--text-critical);
+    --badge-critical-outlined-border:var(--border-critical-strong);
+    --badge-critical-dot:            var(--critical-500);
+
+    /* ---------- Tone — Accent (Forest) ---------- */
+    --badge-accent-soft-bg:        var(--background-accent-minimal);
+    --badge-accent-soft-fg:        var(--text-accent-strong);
+    --badge-accent-soft-border:    transparent;
+    --badge-accent-solid-bg:       var(--background-accent);
+    --badge-accent-solid-fg:       var(--text-inverted);
+    --badge-accent-outlined-fg:    var(--text-accent-strong);
+    --badge-accent-outlined-border:var(--border-accent);
+    --badge-accent-dot:            var(--accent-500);
+
+    /* ---------- Removable close button ---------- */
+    --badge-close-fg:        currentColor;
+    --badge-close-fg-hover:  currentColor;
+    --badge-close-bg-hover:  color-mix(in srgb, currentColor 14%, transparent);
+    --badge-close-radius:    50%;
+
+    /* ---------- Numeric count badge ---------- */
+    --badge-count-bg:        var(--critical-500);
+    --badge-count-fg:        var(--text-inverted);
+    --badge-count-min-w:     18px;
+    --badge-count-height:    18px;
+    --badge-count-font-size: 11px;
+    --badge-count-padding-x: var(--spacing-1x);
+
+    /* ---------- Dot indicator ---------- */
+    --badge-dot-size:    8px;
+    --badge-dot-ring:    color-mix(in srgb, currentColor 30%, transparent);
+
+    /* ---------- Focus ring ---------- */
+    --badge-focus-outline:        var(--outline-focus);
+    --badge-focus-outline-width:  2px;
+    --badge-focus-outline-offset: 2px;
+}
+
+/* =========================================================
+   BASE — .badge
+   Inline-flex pill with a leading-icon slot, label, and a
+   trailing slot (count / × / chevron). Defaults:
+   Neutral tone · Soft style · MD size.
+   ========================================================= */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--badge-gap);
+    padding: var(--badge-md-padding-y) var(--badge-md-padding-x);
+    min-height: var(--badge-md-height);
+    border-radius: var(--badge-radius);
+    border: var(--badge-border-width) solid var(--badge-soft-border, var(--badge-neutral-soft-border));
+    background: var(--badge-soft-bg, var(--badge-neutral-soft-bg));
+    color: var(--badge-soft-fg, var(--badge-neutral-soft-fg));
+    font-family: var(--badge-font-family);
+    font-size: var(--badge-md-font-size);
+    font-weight: var(--badge-font-weight);
+    letter-spacing: var(--badge-letter-spacing);
+    line-height: 1.2;
+    white-space: nowrap;
+    transition: var(--badge-transition);
+    user-select: none;
+    vertical-align: middle;
+}
+
+.badge__icon {
+    width: var(--badge-md-icon);
+    height: var(--badge-md-icon);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+}
+.badge__icon svg { width: 100%; height: 100%; display: block; }
+
+.badge__label {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Leading status dot — drawn before the label, picks up
+   tone via --badge-dot. */
+.badge__dot {
+    width: var(--badge-md-dot);
+    height: var(--badge-md-dot);
+    border-radius: 50%;
+    background: var(--badge-dot, var(--badge-neutral-dot));
+    flex: 0 0 auto;
+    display: inline-block;
+}
+
+/* Pulse — animated ring around the dot for "live" status. */
+.badge__dot.is-pulse {
+    position: relative;
+    box-shadow: 0 0 0 0 var(--badge-dot-ring);
+    animation: badge-dot-pulse 1.6s cubic-bezier(.4,0,.6,1) infinite;
+}
+@keyframes badge-dot-pulse {
+    0%   { box-shadow: 0 0 0 0   var(--badge-dot-ring); }
+    70%  { box-shadow: 0 0 0 6px color-mix(in srgb, currentColor 0%, transparent); }
+    100% { box-shadow: 0 0 0 0   color-mix(in srgb, currentColor 0%, transparent); }
+}
+
+/* Trailing close (×) for removable / dismissible chips.
+   Sized to match the badge cap; transparent until hover. */
+.badge__close {
+    width: 16px;
+    height: 16px;
+    margin-left: var(--spacing-half);
+    margin-right: calc(var(--spacing-1x) * -1);
+    border: 0;
+    border-radius: var(--badge-close-radius);
+    background: transparent;
+    color: var(--badge-close-fg);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: var(--badge-transition);
+}
+.badge__close svg { width: 10px; height: 10px; }
+.badge__close:hover {
+    background: var(--badge-close-bg-hover);
+    color: var(--badge-close-fg-hover);
+}
+.badge__close:focus-visible {
+    outline: var(--badge-focus-outline-width) solid var(--badge-focus-outline);
+    outline-offset: 1px;
+}
+
+/* =========================================================
+   STYLE — Soft (default — already applied by .badge)
+   The defaults above resolve to soft/neutral. Tone classes
+   below remap the soft/solid/outlined token slots so
+   tone × style composes cleanly.
+   ========================================================= */
+
+/* Tone applies a tone-namespaced soft palette by default. */
+.badge.is-neutral,
+.badge {
+    --badge-soft-bg:        var(--badge-neutral-soft-bg);
+    --badge-soft-fg:        var(--badge-neutral-soft-fg);
+    --badge-soft-border:    var(--badge-neutral-soft-border);
+    --badge-solid-bg:       var(--badge-neutral-solid-bg);
+    --badge-solid-fg:       var(--badge-neutral-solid-fg);
+    --badge-outlined-fg:    var(--badge-neutral-outlined-fg);
+    --badge-outlined-border:var(--badge-neutral-outlined-border);
+    --badge-dot:            var(--badge-neutral-dot);
+}
+.badge.is-primary {
+    --badge-soft-bg:        var(--badge-primary-soft-bg);
+    --badge-soft-fg:        var(--badge-primary-soft-fg);
+    --badge-soft-border:    var(--badge-primary-soft-border);
+    --badge-solid-bg:       var(--badge-primary-solid-bg);
+    --badge-solid-fg:       var(--badge-primary-solid-fg);
+    --badge-outlined-fg:    var(--badge-primary-outlined-fg);
+    --badge-outlined-border:var(--badge-primary-outlined-border);
+    --badge-dot:            var(--badge-primary-dot);
+}
+.badge.is-info {
+    --badge-soft-bg:        var(--badge-info-soft-bg);
+    --badge-soft-fg:        var(--badge-info-soft-fg);
+    --badge-soft-border:    var(--badge-info-soft-border);
+    --badge-solid-bg:       var(--badge-info-solid-bg);
+    --badge-solid-fg:       var(--badge-info-solid-fg);
+    --badge-outlined-fg:    var(--badge-info-outlined-fg);
+    --badge-outlined-border:var(--badge-info-outlined-border);
+    --badge-dot:            var(--badge-info-dot);
+}
+.badge.is-safe {
+    --badge-soft-bg:        var(--badge-safe-soft-bg);
+    --badge-soft-fg:        var(--badge-safe-soft-fg);
+    --badge-soft-border:    var(--badge-safe-soft-border);
+    --badge-solid-bg:       var(--badge-safe-solid-bg);
+    --badge-solid-fg:       var(--badge-safe-solid-fg);
+    --badge-outlined-fg:    var(--badge-safe-outlined-fg);
+    --badge-outlined-border:var(--badge-safe-outlined-border);
+    --badge-dot:            var(--badge-safe-dot);
+}
+.badge.is-warning {
+    --badge-soft-bg:        var(--badge-warning-soft-bg);
+    --badge-soft-fg:        var(--badge-warning-soft-fg);
+    --badge-soft-border:    var(--badge-warning-soft-border);
+    --badge-solid-bg:       var(--badge-warning-solid-bg);
+    --badge-solid-fg:       var(--badge-warning-solid-fg);
+    --badge-outlined-fg:    var(--badge-warning-outlined-fg);
+    --badge-outlined-border:var(--badge-warning-outlined-border);
+    --badge-dot:            var(--badge-warning-dot);
+}
+.badge.is-critical {
+    --badge-soft-bg:        var(--badge-critical-soft-bg);
+    --badge-soft-fg:        var(--badge-critical-soft-fg);
+    --badge-soft-border:    var(--badge-critical-soft-border);
+    --badge-solid-bg:       var(--badge-critical-solid-bg);
+    --badge-solid-fg:       var(--badge-critical-solid-fg);
+    --badge-outlined-fg:    var(--badge-critical-outlined-fg);
+    --badge-outlined-border:var(--badge-critical-outlined-border);
+    --badge-dot:            var(--badge-critical-dot);
+}
+.badge.is-accent {
+    --badge-soft-bg:        var(--badge-accent-soft-bg);
+    --badge-soft-fg:        var(--badge-accent-soft-fg);
+    --badge-soft-border:    var(--badge-accent-soft-border);
+    --badge-solid-bg:       var(--badge-accent-solid-bg);
+    --badge-solid-fg:       var(--badge-accent-solid-fg);
+    --badge-outlined-fg:    var(--badge-accent-outlined-fg);
+    --badge-outlined-border:var(--badge-accent-outlined-border);
+    --badge-dot:            var(--badge-accent-dot);
+}
+
+/* =========================================================
+   STYLE MODIFIERS
+   ========================================================= */
+.badge--solid {
+    background: var(--badge-solid-bg);
+    color: var(--badge-solid-fg);
+    border-color: transparent;
+}
+.badge--outlined {
+    background: transparent;
+    color: var(--badge-outlined-fg);
+    border-color: var(--badge-outlined-border);
+}
+.badge--ghost {
+    background: transparent;
+    color: var(--badge-soft-fg);
+    border-color: transparent;
+}
+
+/* Square — for monogram-like, dense, or numeric badges
+   that read better with sharper corners. */
+.badge--square { border-radius: var(--badge-radius-square); }
+
+/* =========================================================
+   SIZES — composes with any tone or style modifier
+   ========================================================= */
+.badge--xs {
+    padding: var(--badge-xs-padding-y) var(--badge-xs-padding-x);
+    min-height: var(--badge-xs-height);
+    font-size: var(--badge-xs-font-size);
+}
+.badge--xs .badge__icon { width: var(--badge-xs-icon); height: var(--badge-xs-icon); }
+.badge--xs .badge__dot  { width: var(--badge-xs-dot);  height: var(--badge-xs-dot); }
+
+.badge--sm {
+    padding: var(--badge-sm-padding-y) var(--badge-sm-padding-x);
+    min-height: var(--badge-sm-height);
+    font-size: var(--badge-sm-font-size);
+}
+.badge--sm .badge__icon { width: var(--badge-sm-icon); height: var(--badge-sm-icon); }
+.badge--sm .badge__dot  { width: var(--badge-sm-dot);  height: var(--badge-sm-dot); }
+
+.badge--lg {
+    padding: var(--badge-lg-padding-y) var(--badge-lg-padding-x);
+    min-height: var(--badge-lg-height);
+    font-size: var(--badge-lg-font-size);
+}
+.badge--lg .badge__icon { width: var(--badge-lg-icon); height: var(--badge-lg-icon); }
+.badge--lg .badge__dot  { width: var(--badge-lg-dot);  height: var(--badge-lg-dot); }
+
+/* =========================================================
+   STANDALONE DOT — bare colored dot, no label. Useful as
+   an unread indicator next to icons or list rows.
+   ========================================================= */
+.badge--dot-only {
+    width: var(--badge-md-dot);
+    height: var(--badge-md-dot);
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--badge-dot, var(--badge-neutral-dot));
+}
+.badge--dot-only.badge--sm  { width: var(--badge-sm-dot);  height: var(--badge-sm-dot); }
+.badge--dot-only.badge--lg  { width: var(--badge-lg-dot);  height: var(--badge-lg-dot); }
+.badge--dot-only.is-pulse {
+    position: relative;
+    box-shadow: 0 0 0 0 var(--badge-dot, var(--badge-neutral-dot));
+    animation: badge-dot-only-pulse 1.6s cubic-bezier(.4,0,.6,1) infinite;
+}
+@keyframes badge-dot-only-pulse {
+    0%   { box-shadow: 0 0 0 0   color-mix(in srgb, var(--badge-dot, var(--badge-neutral-dot)) 60%, transparent); }
+    70%  { box-shadow: 0 0 0 8px color-mix(in srgb, var(--badge-dot, var(--badge-neutral-dot))  0%, transparent); }
+    100% { box-shadow: 0 0 0 0   color-mix(in srgb, var(--badge-dot, var(--badge-neutral-dot))  0%, transparent); }
+}
+
+/* =========================================================
+   COUNT BADGE — small numeric pill, anchored to a host
+   element (icon button, avatar, tab). Use .badge-count to
+   wrap a host and position the count in the top-right.
+   ========================================================= */
+.badge--count {
+    background: var(--badge-count-bg);
+    color: var(--badge-count-fg);
+    border-color: transparent;
+    min-width: var(--badge-count-min-w);
+    min-height: var(--badge-count-height);
+    padding: 0 var(--badge-count-padding-x);
+    font-size: var(--badge-count-font-size);
+    font-weight: var(--font-weight-semibold);
+    font-variant-numeric: tabular-nums;
+}
+.badge--count.is-empty {
+    /* Notification-only — no number, just a pip. */
+    min-width: 8px;
+    min-height: 8px;
+    padding: 0;
+    width: 8px;
+    height: 8px;
+}
+
+.badge-host {
+    position: relative;
+    display: inline-flex;
+}
+.badge-host > .badge--count {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    box-shadow: 0 0 0 2px var(--background-default);
+    z-index: 1;
+}
+
+/* =========================================================
+   STATES
+   ========================================================= */
+.badge.is-disabled,
+.badge[disabled] {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+.badge:focus-visible {
+    outline: var(--badge-focus-outline-width) solid var(--badge-focus-outline);
+    outline-offset: var(--badge-focus-outline-offset);
+}
+.badge.is-interactive {
+    cursor: pointer;
+}
+.badge.is-interactive:hover {
+    filter: brightness(0.97);
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+    .badge,
+    .badge__close { transition: none; }
+    .badge__dot.is-pulse,
+    .badge--dot-only.is-pulse { animation: none; }
+}
