@@ -1,0 +1,249 @@
+/* =========================================================
+   FARM2VET DESIGN SYSTEM — DROPDOWN (PREMIUM)
+   Custom listbox built from divs/buttons with ARIA semantics.
+   Replaces native <select> on premium surfaces (hero forms,
+   plan pickers, primary filters) where consistent cross-OS
+   appearance, primary-tinted option highlights, and a gentle
+   open/close animation are worth the JS cost.
+   For utility forms or where mobile-native picker UX matters,
+   keep using .select (native) from form.css as the fallback.
+
+   Required structure:
+     <div class="dropdown" data-dropdown>
+       <button type="button" class="dropdown__trigger"
+               aria-haspopup="listbox" aria-expanded="false">
+         <span class="dropdown__value">Choose…</span>
+         <svg class="dropdown__chevron">…</svg>
+       </button>
+       <div class="dropdown__menu" role="listbox">
+         <button type="button" class="dropdown__option"
+                 role="option" data-value="bovine">
+           Bovine
+           <svg class="dropdown__check">…</svg>
+         </button>
+         …
+       </div>
+     </div>
+
+   Sizes: --sm, --md, --lg (default / focus), --xl, --2xl
+   States: rest, hover, focus, open, with-value, error, disabled
+   Depends on: tokens.css, form.css (token chain)
+   ========================================================= */
+
+/* =========================================================
+   CONTAINER — anchors the absolutely-positioned menu
+   ========================================================= */
+.dropdown {
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+/* =========================================================
+   TRIGGER — looks/feels like .input.select but is a button
+   ========================================================= */
+.dropdown__trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-3x);
+    width: 100%;
+    font-family: var(--form-font-family);
+    font-weight: var(--form-font-weight);
+    letter-spacing: var(--form-letter-spacing);
+    color: var(--dropdown-trigger-fg);
+    background: var(--dropdown-trigger-bg);
+    border: var(--form-border-width) solid var(--dropdown-trigger-border);
+    border-radius: var(--dropdown-trigger-radius);
+    cursor: pointer;
+    text-align: left;
+    line-height: 1.3;
+    transition: var(--form-transition);
+
+    /* Default size = LG (matches the .input default) */
+    font-size:  var(--form-lg-font-size);
+    padding:    var(--form-lg-padding-y) var(--form-lg-padding-x);
+    min-height: var(--form-lg-height);
+}
+
+.dropdown__trigger:hover:not([disabled]):not(.is-error) {
+    border-color: var(--dropdown-trigger-border-hover);
+}
+
+.dropdown__trigger:focus-visible,
+.dropdown.is-open .dropdown__trigger {
+    outline: none;
+    border-color: var(--dropdown-trigger-border-focus);
+    box-shadow: 0 0 0 3px var(--dropdown-trigger-ring-focus);
+}
+
+.dropdown__value {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.dropdown__trigger.is-empty .dropdown__value {
+    color: var(--dropdown-trigger-placeholder);
+}
+
+.dropdown__chevron {
+    width:  var(--dropdown-chevron-size);
+    height: var(--dropdown-chevron-size);
+    color:  var(--dropdown-chevron-color);
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+}
+.dropdown.is-open .dropdown__chevron {
+    transform: rotate(180deg);
+}
+
+/* =========================================================
+   MENU — absolutely positioned, animated open/close
+   The animation pattern uses opacity + transform with a
+   delayed visibility transition so the menu is removed from
+   the a11y tree (and the document flow keystrokes) when closed,
+   not just visually hidden.
+   ========================================================= */
+.dropdown__menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: var(--dropdown-menu-offset);
+    max-height: var(--dropdown-menu-max-height);
+    overflow-y: auto;
+    background: var(--dropdown-menu-bg);
+    border: var(--form-border-width) solid var(--dropdown-menu-border);
+    border-radius: var(--dropdown-menu-radius);
+    box-shadow: var(--dropdown-menu-shadow);
+    padding: var(--dropdown-menu-padding);
+    z-index: 100;
+
+    /* Closed state */
+    opacity: 0;
+    transform: translateY(calc(-1 * var(--dropdown-anim-translate))) scale(0.98);
+    transform-origin: top center;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+        opacity   var(--dropdown-anim-duration) var(--dropdown-anim-easing),
+        transform var(--dropdown-anim-duration) var(--dropdown-anim-easing),
+        visibility 0s linear var(--dropdown-anim-duration);
+}
+.dropdown.is-open .dropdown__menu {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    visibility: visible;
+    pointer-events: auto;
+    transition:
+        opacity   var(--dropdown-anim-duration) var(--dropdown-anim-easing),
+        transform var(--dropdown-anim-duration) var(--dropdown-anim-easing),
+        visibility 0s;
+}
+
+/* =========================================================
+   OPTION — primary-tinted hover & selected states + checkmark
+   ========================================================= */
+.dropdown__option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-2x);
+    width: 100%;
+    padding: var(--dropdown-option-padding-y) var(--dropdown-option-padding-x);
+    border: none;
+    border-radius: var(--dropdown-option-radius);
+    background: transparent;
+    color: var(--dropdown-option-fg);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+.dropdown__option:hover,
+.dropdown__option.is-focus {
+    background: var(--dropdown-option-bg-hover);
+    color: var(--dropdown-option-fg-hover);
+}
+
+.dropdown__option.is-selected {
+    background: var(--dropdown-option-bg-selected);
+    color: var(--dropdown-option-fg-selected);
+    font-weight: var(--font-weight-medium);
+}
+
+.dropdown__check {
+    width:  16px;
+    height: 16px;
+    color: var(--dropdown-option-check-color);
+    flex-shrink: 0;
+    opacity: 0;
+    transition: opacity 0.12s ease;
+}
+.dropdown__option.is-selected .dropdown__check {
+    opacity: 1;
+}
+
+/* Optional secondary line under the option label (description) */
+.dropdown__option-meta {
+    display: block;
+    font-size: var(--text-sm);
+    color: var(--text-default-minimal);
+    font-weight: var(--font-weight-regular);
+    margin-top: 2px;
+}
+
+/* =========================================================
+   SIZES — applied to .dropdown wrapper, propagates to trigger
+   Mirrors the .input--sm/md/lg/xl/2xl scale exactly so a
+   premium dropdown can be swapped in for a native .select
+   without any sizing drift.
+   ========================================================= */
+.dropdown--sm .dropdown__trigger  { font-size: var(--form-sm-font-size);  padding: var(--form-sm-padding-y)  var(--form-sm-padding-x);  min-height: var(--form-sm-height);  border-radius: var(--radius-sm); }
+.dropdown--md .dropdown__trigger  { font-size: var(--form-md-font-size);  padding: var(--form-md-padding-y)  var(--form-md-padding-x);  min-height: var(--form-md-height); }
+.dropdown--lg .dropdown__trigger  { font-size: var(--form-lg-font-size);  padding: var(--form-lg-padding-y)  var(--form-lg-padding-x);  min-height: var(--form-lg-height); }
+.dropdown--xl .dropdown__trigger  { font-size: var(--form-xl-font-size);  padding: var(--form-xl-padding-y)  var(--form-xl-padding-x);  min-height: var(--form-xl-height);  border-radius: var(--radius-lg); }
+.dropdown--2xl .dropdown__trigger { font-size: var(--form-2xl-font-size); padding: var(--form-2xl-padding-y) var(--form-2xl-padding-x); min-height: var(--form-2xl-height); border-radius: var(--radius-lg); }
+
+/* =========================================================
+   ERROR & DISABLED — mirror .input states
+   ========================================================= */
+.dropdown.is-error .dropdown__trigger {
+    border-color: var(--form-border-error);
+}
+.dropdown.is-error .dropdown__trigger:focus-visible,
+.dropdown.is-error.is-open .dropdown__trigger {
+    border-color: var(--form-border-error);
+    box-shadow: 0 0 0 3px var(--form-ring-error);
+}
+
+.dropdown__trigger[disabled],
+.dropdown.is-disabled .dropdown__trigger {
+    background: var(--form-bg-disabled);
+    color: var(--form-fg-disabled);
+    cursor: not-allowed;
+    border-color: var(--form-border);
+    box-shadow: none;
+}
+
+/* =========================================================
+   REDUCED MOTION — drop the slide, keep the fade
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+    .dropdown__menu {
+        transform: none;
+        transition:
+            opacity 0.01ms,
+            visibility 0s linear var(--dropdown-anim-duration);
+    }
+    .dropdown.is-open .dropdown__menu {
+        transform: none;
+        transition:
+            opacity 0.01ms,
+            visibility 0s;
+    }
+    .dropdown__chevron,
+    .dropdown__option { transition: none; }
+}

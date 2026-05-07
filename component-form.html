@@ -106,9 +106,9 @@
         <div class="meta"><span>.textarea</span><strong>multi-line</strong></div>
       </article>
 
-      <!-- Dropdown -->
+      <!-- Dropdown (native fallback) — premium version lives in component-dropdown.html -->
       <article class="form-variant-card">
-        <span class="label">Dropdown</span>
+        <span class="label">Dropdown · native fallback</span>
         <div class="demo">
           <div class="field">
             <label class="field__label" for="vf-select">Species</label>
@@ -120,9 +120,17 @@
               <option>Equine</option>
               <option>Porcine</option>
             </select>
+            <span class="field__helper">
+              <strong>Default to <a href="component-dropdown.html"><code>.dropdown</code></a></strong>
+              on every selector across the product. <code>.select</code> is
+              kept only for edge cases (bulk-edit grids, internal admin
+              tooling, mobile-native picker flows). See
+              <a href="component-dropdown.html#dropdown-intro">Dropdown · Usage</a>
+              for the exact boundary.
+            </span>
           </div>
         </div>
-        <div class="meta"><span>.select</span><strong>single choice</strong></div>
+        <div class="meta"><span>.select</span><strong>edge case only</strong></div>
       </article>
 
       <!-- Date picker -->
@@ -840,6 +848,7 @@
   <footer>
     <span class="sigil">Farm2Vet — cultivated intelligence, since 2024.</span>
     <a href="component-button.html">← Section 03 / Button</a>
+    <a href="component-dropdown.html">Section 04b / Dropdown →</a>
     <span>End of Section 04 · Form</span>
   </footer>
 
@@ -897,9 +906,9 @@ const FORM_TOKENS = [
   { group: 'Border', tokens: [
     ['--form-border',        'var(--border-default-input)'],
     ['--form-border-hover',  'var(--border-default-strong)'],
-    ['--form-border-focus',  'var(--border-primary-focus)'],
+    ['--form-border-focus',  'var(--border-primary)'],
     ['--form-border-error',  'var(--border-critical-strong)'],
-    ['--form-ring-focus',    'color-mix(in srgb, var(--border-primary-focus) 20%, transparent)'],
+    ['--form-ring-focus',    'color-mix(in srgb, var(--border-primary) 25%, transparent)'],
     ['--form-ring-error',    'color-mix(in srgb, var(--border-critical-strong) 20%, transparent)'],
   ]},
   { group: 'Field labels & helpers', tokens: [

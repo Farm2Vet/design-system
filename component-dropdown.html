@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Farm2Vet · Dropdown (Premium) — Design System</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<!-- Design system: shared, reusable foundation -->
+<link rel="stylesheet" href="styles/tokens.css" />
+<link rel="stylesheet" href="styles/base.css" />
+<link rel="stylesheet" href="styles/shell.css" />
+<link rel="stylesheet" href="styles/form.css" />
+<link rel="stylesheet" href="styles/dropdown.css" />
+<!-- Page-specific layout: reuse the form page's variant/version/size grids
+     since the showcase pattern is identical. -->
+<link rel="stylesheet" href="styles/page-component-form.css" />
+<!-- Token table styling lives on the button page; reuse it. -->
+<link rel="stylesheet" href="styles/page-component-button.css" />
+</head>
+<body>
+
+<!-- ========================== TOP BAR ========================== -->
+<header class="topbar">
+  <a href="#top" class="brand" aria-label="Farm2Vet design system">
+    <img src="logo/logo-wordmark-color.svg" alt="Farm2Vet" class="brand-logo" />
+    <small>Design System</small>
+  </a>
+  <nav class="toc" aria-label="Section navigation">
+    <a href="#dropdown-intro">01 Usage</a>
+    <a href="#dropdown-variants">02 Variants</a>
+    <a href="#dropdown-versions">03 States</a>
+    <a href="#dropdown-sizes">04 Sizes</a>
+    <a href="#dropdown-tokens">05 Tokens</a>
+  </nav>
+  <span class="version mono">v 0.5 · 2026</span>
+</header>
+
+<main class="shell" id="top">
+
+  <!-- ========================== HERO ========================== -->
+  <section class="hero">
+    <div>
+      <h1 class="display reveal">
+        <span class="num">Section 04b / Components</span>
+        Dropdown.
+      </h1>
+    </div>
+    <div>
+      <p class="lede reveal">
+        The system's <strong>default selector</strong>. Reach for
+        <code>.dropdown</code> on every form, filter, and picker across the
+        product — it carries the brand into the most-touched surface in any
+        UI, with primary-tinted option highlights, a checkmark on the active
+        choice, and a 180ms slide-fade-down on open. The native
+        <a href="component-form.html#form-variants"><code>.select</code></a>
+        remains in the system but is documented strictly as a fallback for the
+        narrow edge cases listed below. <em>If you have to ask which to use,
+        the answer is <code>.dropdown</code>.</em>
+      </p>
+    </div>
+
+    <dl class="meta-strip reveal">
+      <div><dt>Component</dt><dd>Dropdown</dd></div>
+      <div><dt>Default for</dt><dd>All selectors</dd></div>
+      <div><dt>Pattern</dt><dd>ARIA listbox</dd></div>
+      <div><dt>Sizes</dt><dd>5 · LG focus</dd></div>
+    </dl>
+  </section>
+
+  <!-- ========================== USAGE / DEFAULT vs EDGE CASE ========================== -->
+  <section class="chunk" id="dropdown-intro">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">01 / Dropdown — Usage</span>
+        <h2 class="display">Default <em>everywhere</em>, fallback rarely.</h2>
+      </div>
+      <p>
+        Two cards defining the boundary between the system default
+        (<code>.dropdown</code>, used everywhere) and the narrow set of edge
+        cases where the native <code>.select</code> still earns its place.
+      </p>
+    </header>
+
+    <div class="form-version-stage reveal" style="grid-template-columns: repeat(2, minmax(0, 1fr));">
+      <article class="form-version-card">
+        <span class="label">Default — use .dropdown</span>
+        <div class="demo">
+          <p style="font-size: var(--text-base); line-height: 1.55; color: var(--text-default); margin: 0 0 var(--spacing-3x);">
+            Every product surface a user will actually see. The premium dropdown
+            is the brand's most repeated micro-interaction — opening it should
+            feel like F2V, not like the OS.
+          </p>
+          <ul style="font-size: var(--text-sm); line-height: 1.65; color: var(--text-default); padding-left: var(--spacing-5x); margin: 0;">
+            <li>Intake forms (new patient, new visit, new case)</li>
+            <li>Filters on dashboards, tables, search results</li>
+            <li>Settings, profile, and account preferences</li>
+            <li>Onboarding flows where polish builds trust</li>
+            <li>Marketing-page forms (contact, demo, sign-up)</li>
+            <li>Anywhere options carry descriptions, icons, or rich content</li>
+          </ul>
+        </div>
+        <div class="meta"><span>.dropdown</span><strong>system default</strong></div>
+      </article>
+
+      <article class="form-version-card">
+        <span class="label">Edge case — fall back to .select</span>
+        <div class="demo">
+          <p style="font-size: var(--text-base); line-height: 1.55; color: var(--text-default); margin: 0 0 var(--spacing-3x);">
+            A short list of contexts where the native control's constraints
+            actually serve the user better. If the case isn't on this list,
+            it isn't an edge case.
+          </p>
+          <ul style="font-size: var(--text-sm); line-height: 1.65; color: var(--text-default); padding-left: var(--spacing-5x); margin: 0;">
+            <li>Bulk-edit grids with hundreds of selectors per screen — the JS cost of a custom dropdown per row is real</li>
+            <li>Internal admin tooling not exposed to customers</li>
+            <li>Mobile-first flows where OS keyboard / spinner integration is the whole point (date / time / native pickers)</li>
+            <li>Quick prototypes before the design is locked</li>
+          </ul>
+        </div>
+        <div class="meta"><span>.select</span><strong>edge case only</strong></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ========================== VARIANTS ========================== -->
+  <section class="chunk" id="dropdown-variants">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">02 / Dropdown — Variants</span>
+        <h2 class="display">Three patterns, <em>three contexts</em>.</h2>
+      </div>
+      <p>
+        Three variants, each tuned to a distinct user task: making a
+        first-time choice, revising a saved value, or weighing options with
+        explanatory copy.
+      </p>
+    </header>
+
+    <p class="usage-note reveal">
+      <strong>Match the variant to the user's task, not to the field.</strong>
+      A first-time choice reads differently than revising a saved value, and
+      weighing options with descriptions is a different mental task than
+      picking from a flat list. Don't default to the placeholder variant out
+      of habit — when re-opening a record with an existing value, render
+      with-value; when the user must compare options, use descriptions.
+    </p>
+
+    <div class="form-variant-grid reveal">
+
+      <!-- Variant: Placeholder — first-time selection -->
+      <article class="form-variant-card tall">
+        <span class="label">Placeholder · first-time selection</span>
+        <div class="demo">
+          <div class="field">
+            <label class="field__label">Species</label>
+            <div class="dropdown dropdown--md" data-dropdown>
+              <button type="button" class="dropdown__trigger is-empty"
+                      aria-haspopup="listbox" aria-expanded="false"
+                      data-placeholder="Choose species…">
+                <span class="dropdown__value">Choose species…</span>
+                <svg class="dropdown__chevron" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </button>
+              <div class="dropdown__menu" role="listbox">
+                <button type="button" class="dropdown__option" role="option" data-value="bovine">
+                  Bovine
+                  <svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>
+                </button>
+                <button type="button" class="dropdown__option" role="option" data-value="caprine">
+                  Caprine
+                  <svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>
+                </button>
+                <button type="button" class="dropdown__option" role="option" data-value="ovine">
+                  Ovine
+                  <svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>
+                </button>
+                <button type="button" class="dropdown__option" role="option" data-value="equine">
+                  Equine
+                  <svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>
+                </button>
+                <button type="button" class="dropdown__option" role="option" data-value="porcine">
+                  Porcine
+                  <svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>
+                </button>
+              </div>
+            </div>
+            <span class="field__helper">
+              <strong>Use for:</strong> new-record forms (new patient, new
+              visit, new case), onboarding intake, filters before the user
+              has narrowed their view. Placeholder copy should mirror the
+              field label as a quiet call to action — "Choose species…" not
+              "Select an option".
+            </span>
+          </div>
+        </div>
+        <div class="meta"><span>.is-empty</span><strong>no prior value</strong></div>
+      </article>
+
+      <!-- Variant: With value — editing or revisiting -->
+      <article class="form-variant-card tall">
+        <span class="label">With value · editing existing data</span>
+        <div class="demo">
+          <div class="field">
+            <label class="field__label">Visit type</label>
+            <div class="dropdown dropdown--md" data-dropdown>
+              <button type="button" class="dropdown__trigger"
+                      aria-haspopup="listbox" aria-expanded="false">
+                <span class="dropdown__value">Routine check-up</span>
+                <svg class="dropdown__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="dropdown__menu" role="listbox">
+                <button type="button" class="dropdown__option is-selected" role="option" data-value="routine">
+                  Routine check-up
+                  <svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>
+                </button>
+                <button type="button" class="dropdown__option" role="option" data-value="vaccination">
+                  Vaccination
+                  <svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>
+                </button>
+                <button type="button" class="dropdown__option" role="option" data-value="emergency">
+                  Emergency
+                  <svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>
+                </button>
+                <button type="button" class="dropdown__option" role="option" data-value="followup">
+                  Follow-up
+                  <svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>
+                </button>
+              </div>
+            </div>
+            <span class="field__helper">
+              <strong>Use for:</strong> edit-record forms (patient details,
+              account settings), persisted filters after a page reload, any
+              form a user has opened to revise — not create. The current
+              value replaces the placeholder; the open menu marks it with a
+              checkmark so the user can re-confirm without scanning.
+            </span>
+          </div>
+        </div>
+        <div class="meta"><span>.is-selected</span><strong>committed value</strong></div>
+      </article>
+
+      <!-- Variant: With descriptions — comparison & decision -->
+      <article class="form-variant-card tall">
+        <span class="label">With descriptions · comparing options</span>
+        <div class="demo">
+          <div class="field">
+            <label class="field__label">Plan</label>
+            <div class="dropdown dropdown--md" data-dropdown>
+              <button type="button" class="dropdown__trigger"
+                      aria-haspopup="listbox" aria-expanded="false">
+                <span class="dropdown__value">Practice — Pro</span>
+                <svg class="dropdown__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="dropdown__menu" role="listbox">
+                <button type="button" class="dropdown__option" role="option" data-value="solo">
+                  <span>
+                    Solo
+                    <span class="dropdown__option-meta">For independent vets — 1 user</span>
+                  </span>
+                  <svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>
+                </button>
+                <button type="button" class="dropdown__option is-selected" role="option" data-value="pro">
+                  <span>
+                    Practice — Pro
+                    <span class="dropdown__option-meta">Up to 10 users · multi-site</span>
+                  </span>
+                  <svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>
+                </button>
+                <button type="button" class="dropdown__option" role="option" data-value="enterprise">
+                  <span>
+                    Enterprise
+                    <span class="dropdown__option-meta">Unlimited · SSO · custom SLA</span>
+                  </span>
+                  <svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>
+                </button>
+              </div>
+            </div>
+            <span class="field__helper">
+              <strong>Use for:</strong> plan / pricing pickers, persona or
+              role selection during onboarding, configuration choices with
+              real consequences (storage tier, region, model size).
+              Reach for this whenever the option's <em>label alone</em> isn't
+              enough for the user to decide. Wrap the secondary line in
+              <code>.dropdown__option-meta</code>; the trigger always shows
+              the label, never the description.
+            </span>
+          </div>
+        </div>
+        <div class="meta"><span>.dropdown__option-meta</span><strong>label + description</strong></div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ========================== VERSIONS ========================== -->
+  <section class="chunk" id="dropdown-versions">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">03 / Dropdown — States</span>
+        <h2 class="display">Three states, <em>one vocabulary</em>.</h2>
+      </div>
+      <p>
+        Three states shared with every other form control in the system:
+        default (no value yet), with value (the user has committed a choice),
+        and error (validation failed).
+      </p>
+    </header>
+
+    <p class="usage-note reveal">
+      <strong>Three states, never a fourth.</strong> Default → with-value →
+      error is the vocabulary every form control in the system uses.
+      Inventing a "warning" or "loading" state for one dropdown breaks the
+      visual language users have learned across the rest of the product —
+      use the existing helper text and disabled patterns instead.
+    </p>
+
+    <div class="form-version-stage reveal">
+      <article class="form-version-card">
+        <span class="label">Default · before selection</span>
+        <div class="demo">
+          <div class="field">
+            <label class="field__label">Species</label>
+            <div class="dropdown dropdown--md" data-dropdown>
+              <button type="button" class="dropdown__trigger is-empty" aria-haspopup="listbox" aria-expanded="false">
+                <span class="dropdown__value">Choose species…</span>
+                <svg class="dropdown__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="dropdown__menu" role="listbox">
+                <button type="button" class="dropdown__option" role="option" data-value="b">Bovine<svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></button>
+                <button type="button" class="dropdown__option" role="option" data-value="c">Caprine<svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></button>
+              </div>
+            </div>
+            <span class="field__helper">
+              The starting state for any new form. Apply <code>.is-empty</code>
+              on the trigger to render the placeholder colour. Placeholder copy
+              should phrase the field as a quiet ask, not a generic "Select…".
+            </span>
+          </div>
+        </div>
+        <div class="meta"><span>.is-empty</span><strong>placeholder shown</strong></div>
+      </article>
+
+      <article class="form-version-card">
+        <span class="label">With value · after selection</span>
+        <div class="demo">
+          <div class="field">
+            <label class="field__label">Species</label>
+            <div class="dropdown dropdown--md" data-dropdown>
+              <button type="button" class="dropdown__trigger" aria-haspopup="listbox" aria-expanded="false">
+                <span class="dropdown__value">Bovine</span>
+                <svg class="dropdown__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="dropdown__menu" role="listbox">
+                <button type="button" class="dropdown__option is-selected" role="option" data-value="b">Bovine<svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></button>
+                <button type="button" class="dropdown__option" role="option" data-value="c">Caprine<svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></button>
+              </div>
+            </div>
+            <span class="field__helper">
+              Rendered after the user picks an option, or when re-opening a
+              saved record. Drop the <code>.is-empty</code> class so text
+              colour shifts to <code>--text-default</code>; the matching
+              option in the menu carries <code>.is-selected</code> and shows
+              the checkmark for fast re-confirmation.
+            </span>
+          </div>
+        </div>
+        <div class="meta"><span>.is-selected</span><strong>committed value</strong></div>
+      </article>
+
+      <article class="form-version-card">
+        <span class="label">Error · validation failed</span>
+        <div class="demo">
+          <div class="field">
+            <label class="field__label">Species <span class="req" aria-hidden="true">*</span></label>
+            <div class="dropdown dropdown--md is-error" data-dropdown>
+              <button type="button" class="dropdown__trigger is-empty" aria-haspopup="listbox" aria-expanded="false" aria-invalid="true">
+                <span class="dropdown__value">Choose species…</span>
+                <svg class="dropdown__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="dropdown__menu" role="listbox">
+                <button type="button" class="dropdown__option" role="option" data-value="b">Bovine<svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></button>
+                <button type="button" class="dropdown__option" role="option" data-value="c">Caprine<svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></button>
+              </div>
+            </div>
+            <span class="field__error">Select a species to continue</span>
+          </div>
+        </div>
+        <div class="meta"><span>.is-error</span><strong>blocks submission</strong></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ========================== SIZES ========================== -->
+  <section class="chunk" id="dropdown-sizes">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">04 / Dropdown — Sizes</span>
+        <h2 class="display">Match the <em>surface</em>, not the field's importance.</h2>
+      </div>
+      <p>
+        Five steps along the same scale that drives Type, Button, and Form.
+        Canonical: <strong>Large · 22.5px</strong>.
+      </p>
+    </header>
+
+    <p class="usage-note reveal">
+      <strong>Pick by surface, not importance.</strong> SM lives in dense
+      table headers and admin toolbars; MD is the product default for forms
+      in dialogs and edit panels; LG (canonical) anchors marketing pages,
+      hero intake, and onboarding flows; XL and 2XL are reserved for
+      showcase pickers and display demos. When in doubt on a product
+      surface, default to MD.
+    </p>
+
+    <div class="glass form-size-stage reveal">
+      <div class="form-size-row">
+        <span class="tag">SM · 13.33px</span>
+        <div class="demo">
+          <div class="dropdown dropdown--sm" data-dropdown>
+            <button type="button" class="dropdown__trigger" aria-haspopup="listbox" aria-expanded="false"><span class="dropdown__value">Bovine</span><svg class="dropdown__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="dropdown__menu" role="listbox">
+              <button type="button" class="dropdown__option is-selected" role="option" data-value="b">Bovine<svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></button>
+              <button type="button" class="dropdown__option" role="option" data-value="c">Caprine<svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-size-row">
+        <span class="tag">MD · 16px</span>
+        <div class="demo">
+          <div class="dropdown dropdown--md" data-dropdown>
+            <button type="button" class="dropdown__trigger" aria-haspopup="listbox" aria-expanded="false"><span class="dropdown__value">Bovine</span><svg class="dropdown__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="dropdown__menu" role="listbox">
+              <button type="button" class="dropdown__option is-selected" role="option" data-value="b">Bovine<svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></button>
+              <button type="button" class="dropdown__option" role="option" data-value="c">Caprine<svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-size-row is-focus">
+        <span class="tag">LG · 22.5px · focus</span>
+        <div class="demo">
+          <div class="dropdown dropdown--lg" data-dropdown>
+            <button type="button" class="dropdown__trigger" aria-haspopup="listbox" aria-expanded="false"><span class="dropdown__value">Bovine</span><svg class="dropdown__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="dropdown__menu" role="listbox">
+              <button type="button" class="dropdown__option is-selected" role="option" data-value="b">Bovine<svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></button>
+              <button type="button" class="dropdown__option" role="option" data-value="c">Caprine<svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-size-row">
+        <span class="tag">XL · 27.65px</span>
+        <div class="demo">
+          <div class="dropdown dropdown--xl" data-dropdown>
+            <button type="button" class="dropdown__trigger" aria-haspopup="listbox" aria-expanded="false"><span class="dropdown__value">Bovine</span><svg class="dropdown__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="dropdown__menu" role="listbox">
+              <button type="button" class="dropdown__option is-selected" role="option" data-value="b">Bovine<svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></button>
+              <button type="button" class="dropdown__option" role="option" data-value="c">Caprine<svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-size-row">
+        <span class="tag">2XL · 33.18px</span>
+        <div class="demo">
+          <div class="dropdown dropdown--2xl" data-dropdown>
+            <button type="button" class="dropdown__trigger" aria-haspopup="listbox" aria-expanded="false"><span class="dropdown__value">Bovine</span><svg class="dropdown__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="dropdown__menu" role="listbox">
+              <button type="button" class="dropdown__option is-selected" role="option" data-value="b">Bovine<svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></button>
+              <button type="button" class="dropdown__option" role="option" data-value="c">Caprine<svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ========================== TOKENS ========================== -->
+  <section class="chunk" id="dropdown-tokens">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">05 / Dropdown — Component tokens</span>
+        <h2 class="display">One layer to <em>tune the feel</em>.</h2>
+      </div>
+      <p>
+        The full <code>--dropdown-*</code> token map, grouped by surface
+        layer (trigger, menu, option, motion).
+      </p>
+    </header>
+
+    <p class="usage-note reveal">
+      <strong>Override at the component-token layer, never at the call site.</strong>
+      Trigger tokens re-export the <code>--form-*</code> chain so the closed
+      dropdown matches a native <code>.select</code> — change those on
+      <code>:root</code> in the form layer and both follow. Menu, option,
+      and motion tokens are dedicated to this component and own the premium
+      feel; tune <code>--dropdown-anim-easing</code> once and every dropdown
+      across the product opens with a different cadence.
+    </p>
+
+    <table class="token-table reveal" aria-label="Dropdown component tokens">
+      <thead>
+        <tr>
+          <th>Component token</th>
+          <th>References</th>
+          <th>Resolves to</th>
+          <th>Preview</th>
+        </tr>
+      </thead>
+      <tbody id="dropdownTokenTable"></tbody>
+    </table>
+  </section>
+
+  <!-- ========================== FOOTER ========================== -->
+  <footer>
+    <span class="sigil">Farm2Vet — cultivated intelligence, since 2024.</span>
+    <a href="component-form.html">← Section 04 / Form</a>
+    <span>End of Section 04b · Dropdown</span>
+  </footer>
+
+</main>
+
+<script>
+/* =========================================================
+   COMPONENT TOKEN DATA — Dropdown
+   ========================================================= */
+const DROPDOWN_TOKENS = [
+  { group: 'Trigger (inherits .input chain)', tokens: [
+    ['--dropdown-trigger-bg',           'var(--form-bg)'],
+    ['--dropdown-trigger-bg-hover',     'var(--form-bg-hover)'],
+    ['--dropdown-trigger-fg',           'var(--form-fg)'],
+    ['--dropdown-trigger-placeholder',  'var(--form-placeholder)'],
+    ['--dropdown-trigger-border',       'var(--form-border)'],
+    ['--dropdown-trigger-border-hover', 'var(--form-border-hover)'],
+    ['--dropdown-trigger-border-focus', 'var(--form-border-focus)'],
+    ['--dropdown-trigger-ring-focus',   'var(--form-ring-focus)'],
+    ['--dropdown-trigger-radius',       'var(--form-radius)'],
+  ]},
+  { group: 'Chevron', tokens: [
+    ['--dropdown-chevron-color', 'var(--icon-default)'],
+    ['--dropdown-chevron-size',  '16px'],
+  ]},
+  { group: 'Menu surface', tokens: [
+    ['--dropdown-menu-bg',         'var(--background-default)'],
+    ['--dropdown-menu-border',     'var(--border-default)'],
+    ['--dropdown-menu-radius',     'var(--radius-md)'],
+    ['--dropdown-menu-shadow',     'var(--shadow-lg)'],
+    ['--dropdown-menu-offset',     'var(--spacing-1x)'],
+    ['--dropdown-menu-padding',    'var(--spacing-1x)'],
+    ['--dropdown-menu-max-height', '280px'],
+  ]},
+  { group: 'Option (primary-tinted)', tokens: [
+    ['--dropdown-option-padding-x',   'var(--spacing-3x)'],
+    ['--dropdown-option-padding-y',   'var(--spacing-2x)'],
+    ['--dropdown-option-radius',      'var(--radius-sm)'],
+    ['--dropdown-option-fg',          'var(--text-default)'],
+    ['--dropdown-option-bg-hover',    'var(--background-primary-subtle)'],
+    ['--dropdown-option-fg-hover',    'var(--text-primary-strong)'],
+    ['--dropdown-option-bg-selected', 'var(--background-primary-minimal)'],
+    ['--dropdown-option-fg-selected', 'var(--text-primary-strong)'],
+    ['--dropdown-option-check-color', 'var(--text-primary-strong)'],
+  ]},
+  { group: 'Animation', tokens: [
+    ['--dropdown-anim-duration',  '180ms'],
+    ['--dropdown-anim-easing',    'cubic-bezier(.16, 1, .3, 1)'],
+    ['--dropdown-anim-translate', '8px'],
+  ]},
+];
+
+function resolveCss(varName) {
+  const styles = getComputedStyle(document.documentElement);
+  return styles.getPropertyValue(varName).trim();
+}
+function isColorish(value) {
+  if (!value) return false;
+  const v = value.toLowerCase();
+  return v.startsWith('#') || v.startsWith('rgb') || v.startsWith('hsl') ||
+         v.startsWith('color-mix') || v.startsWith('linear-gradient') ||
+         v.startsWith('radial-gradient') || v === 'transparent' ||
+         /^[a-z]+$/.test(v);
+}
+function renderTokenTable() {
+  const tbody = document.getElementById('dropdownTokenTable');
+  let html = '';
+  DROPDOWN_TOKENS.forEach(group => {
+    html += `<tr class="group-row"><td colspan="4">${group.group}</td></tr>`;
+    group.tokens.forEach(([name, ref]) => {
+      const resolved = resolveCss(name) || '—';
+      const isColor = isColorish(resolved);
+      const chip = isColor
+        ? `<span class="chip" style="background:${resolved}"></span>`
+        : `<span class="chip" style="background: repeating-linear-gradient(45deg, var(--neutral-100) 0 6px, var(--neutral-50) 6px 12px); opacity:.6"></span>`;
+      html += `<tr>
+        <td class="tk-name">${name}</td>
+        <td class="tk-ref">${ref.replace(/</g,'&lt;')}</td>
+        <td class="tk-resolved">${resolved.length > 60 ? resolved.slice(0,57)+'…' : resolved}</td>
+        <td class="tk-swatch">${chip}</td>
+      </tr>`;
+    });
+  });
+  tbody.innerHTML = html;
+}
+
+/* =========================================================
+   REVEAL ON SCROLL
+   ========================================================= */
+function initReveal() {
+  const items = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    items.forEach(el => el.classList.add('in'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        en.target.classList.add('in');
+        io.unobserve(en.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(el => io.observe(el));
+}
+
+/* =========================================================
+   DROPDOWN CONTROLLER
+   Implements the ARIA listbox pattern:
+   - Click trigger to open; click outside / Escape / Tab to close
+   - ArrowUp / ArrowDown to move focus inside the menu
+   - Enter / Space to select the focused option
+   - Hover / focus highlights the option with primary tint
+   - Selected option gets a checkmark and stays highlighted
+   ========================================================= */
+function initDropdowns() {
+  document.querySelectorAll('[data-dropdown]').forEach(dropdown => {
+    const trigger  = dropdown.querySelector('.dropdown__trigger');
+    const menu     = dropdown.querySelector('.dropdown__menu');
+    const valueEl  = dropdown.querySelector('.dropdown__value');
+    const options  = Array.from(dropdown.querySelectorAll('.dropdown__option'));
+    const placeholder = trigger.dataset.placeholder ||
+                        (trigger.classList.contains('is-empty') ? valueEl.textContent : null);
+    let focusIdx = -1;
+
+    function open() {
+      // Close any other open dropdowns first.
+      document.querySelectorAll('.dropdown.is-open').forEach(d => {
+        if (d !== dropdown) d.classList.remove('is-open');
+      });
+      dropdown.classList.add('is-open');
+      trigger.setAttribute('aria-expanded', 'true');
+      const selected = dropdown.querySelector('.dropdown__option.is-selected');
+      focusIdx = selected ? options.indexOf(selected) : 0;
+      updateFocus();
+    }
+    function close() {
+      dropdown.classList.remove('is-open');
+      trigger.setAttribute('aria-expanded', 'false');
+      focusIdx = -1;
+      options.forEach(o => o.classList.remove('is-focus'));
+    }
+    function toggle() {
+      dropdown.classList.contains('is-open') ? close() : open();
+    }
+    function select(option) {
+      options.forEach(o => o.classList.remove('is-selected'));
+      option.classList.add('is-selected');
+      // Take only the first text node so descriptions don't end up in the trigger.
+      const labelNode = option.querySelector('span') || option;
+      const labelText = (labelNode.firstChild && labelNode.firstChild.nodeType === 3)
+        ? labelNode.firstChild.textContent.trim()
+        : option.textContent.trim();
+      valueEl.textContent = labelText;
+      trigger.classList.remove('is-empty');
+      dropdown.dispatchEvent(new CustomEvent('dropdown:change', {
+        detail: { value: option.dataset.value, label: labelText }
+      }));
+      close();
+      trigger.focus();
+    }
+    function updateFocus() {
+      options.forEach((o, i) => {
+        o.classList.toggle('is-focus', i === focusIdx);
+        if (i === focusIdx) o.scrollIntoView({ block: 'nearest' });
+      });
+    }
+
+    // --- Trigger interactions ---
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggle();
+    });
+    trigger.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (!dropdown.classList.contains('is-open')) open();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (!dropdown.classList.contains('is-open')) {
+          open();
+          focusIdx = options.length - 1;
+          updateFocus();
+        }
+      }
+    });
+
+    // --- Option interactions ---
+    options.forEach((option, i) => {
+      option.addEventListener('click', (e) => {
+        e.stopPropagation();
+        select(option);
+      });
+      option.addEventListener('mouseenter', () => {
+        focusIdx = i;
+        updateFocus();
+      });
+    });
+
+    // --- Keyboard navigation while open ---
+    dropdown.addEventListener('keydown', (e) => {
+      if (!dropdown.classList.contains('is-open')) return;
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        close();
+        trigger.focus();
+      } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        focusIdx = (focusIdx + 1) % options.length;
+        updateFocus();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        focusIdx = focusIdx <= 0 ? options.length - 1 : focusIdx - 1;
+        updateFocus();
+      } else if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        if (focusIdx >= 0) select(options[focusIdx]);
+      } else if (e.key === 'Tab') {
+        close();
+      }
+    });
+
+    // --- Click outside to dismiss ---
+    document.addEventListener('click', (e) => {
+      if (!dropdown.contains(e.target)) close();
+    });
+  });
+}
+
+/* =========================================================
+   BOOT
+   ========================================================= */
+document.addEventListener('DOMContentLoaded', () => {
+  renderTokenTable();
+  initReveal();
+  initDropdowns();
+});
+</script>
+
+</body>
+</html>

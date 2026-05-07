@@ -8,6 +8,41 @@
    ========================================================= */
 
 /* =========================================================
+   USAGE NOTE — instructional paragraph
+   Lifted from page-semantics.css so any component-page that
+   imports this file inherits the same usage-note pattern.
+   Use as <p class="usage-note reveal">…</p> placed BEFORE
+   the content it governs (above a grid, table, or demo).
+   Lead with a <strong> phrase, then the rule.
+   ========================================================= */
+.usage-note {
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--line-height-body);
+    color: var(--text-default-subtle);
+    max-width: 72ch;
+    margin: calc(var(--spacing-2x) * -1) 0 var(--spacing-8x) 0;
+    padding: var(--spacing-3x) 0 var(--spacing-3x) var(--spacing-4x);
+    border-left: 2px solid var(--border-primary-subtle);
+}
+.usage-note + .usage-note {
+    margin-top: var(--spacing-3x);
+}
+.usage-note strong {
+    color: var(--text-default);
+    font-weight: var(--font-weight-semibold);
+}
+.usage-note code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    color: var(--text-primary-strong);
+    background: var(--background-primary-minimal);
+    padding: 0.1em 0.4em;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+}
+
+/* =========================================================
    VARIANT GRID — one card per form variant
    Fixed at 2 columns on desktop. LG inputs (22.5px font,
    ~480px content width) need real horizontal room — a
