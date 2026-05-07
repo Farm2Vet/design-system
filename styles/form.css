@@ -219,10 +219,19 @@
     flex-wrap: wrap;
     align-items: center;
     gap: var(--spacing-2x);
+    /* Default = LG. Vertical padding is reduced so chips don't push
+       the shell taller than a same-size single-line input. */
     padding-top:    calc(var(--form-lg-padding-y) - 4px);
     padding-bottom: calc(var(--form-lg-padding-y) - 4px);
     cursor: text;
 }
+/* Size-aware vertical padding so multi-select keeps its single-line
+   sibling's height across all sizes. */
+.multi-select.input--sm  { padding-top: calc(var(--form-sm-padding-y)  - 2px); padding-bottom: calc(var(--form-sm-padding-y)  - 2px); }
+.multi-select.input--md  { padding-top: calc(var(--form-md-padding-y)  - 2px); padding-bottom: calc(var(--form-md-padding-y)  - 2px); }
+.multi-select.input--lg  { padding-top: calc(var(--form-lg-padding-y)  - 4px); padding-bottom: calc(var(--form-lg-padding-y)  - 4px); }
+.multi-select.input--xl  { padding-top: calc(var(--form-xl-padding-y)  - 6px); padding-bottom: calc(var(--form-xl-padding-y)  - 6px); }
+.multi-select.input--2xl { padding-top: calc(var(--form-2xl-padding-y) - 8px); padding-bottom: calc(var(--form-2xl-padding-y) - 8px); }
 .multi-select .chip {
     display: inline-flex;
     align-items: center;
@@ -371,6 +380,76 @@
     cursor: not-allowed;
     opacity: 0.6;
 }
+
+/* =========================================================
+   OPTION LIST — bordered, scannable selection list
+   Two variants share the same visual treatment but differ
+   in selection semantics:
+     .checkbox-list — multi-select (any number selected)
+     .radio-list    — single-select (selecting one clears others)
+   Composes existing .checkbox / .radio items inside a bordered
+   shell with zebra rows and a primary-tinted hover. Use when
+   the option set is long (5+) or labels are wordy and a bare
+   .checkbox-group / .radio-group would feel scrappy.
+   Used as:
+     <div class="checkbox-list">
+       <label class="checkbox checkbox-list__row">…</label>
+       …
+     </div>
+     <div class="radio-list">
+       <label class="radio radio-list__row">…</label>
+       …
+     </div>
+   ========================================================= */
+.checkbox-list,
+.radio-list {
+    display: flex;
+    flex-direction: column;
+    background: var(--form-list-bg);
+    border: var(--form-border-width) solid var(--form-list-border);
+    border-radius: var(--form-list-radius);
+    overflow: hidden;
+}
+.checkbox-list__row,
+.radio-list__row {
+    /* Override the inline-flex from .checkbox / .radio so each row
+       spans the full width of the list and behaves as a proper
+       hit target. */
+    display: flex;
+    width: 100%;
+    padding: var(--form-list-row-padding-y) var(--form-list-row-padding-x);
+    gap: var(--spacing-3x);
+    align-items: center;
+    border-bottom: var(--border-width-base) solid var(--form-list-row-border);
+    background: transparent;
+    transition: background-color .15s ease;
+}
+.checkbox-list__row:last-child,
+.radio-list__row:last-child {
+    border-bottom: none;
+}
+.checkbox-list__row:nth-child(even),
+.radio-list__row:nth-child(even) {
+    background: var(--form-list-bg-stripe);
+}
+.checkbox-list__row:hover,
+.radio-list__row:hover {
+    background: var(--form-list-bg-hover);
+}
+
+/* Size modifiers — applied to the list wrapper, override row padding
+   to match the size of the inner control. The control size still
+   comes from the .checkbox--sm / .radio--md / etc. on each row. */
+.checkbox-list--sm  .checkbox-list__row,
+.radio-list--sm     .radio-list__row    { padding: var(--form-sm-padding-y)  var(--form-sm-padding-x); }
+.checkbox-list--md  .checkbox-list__row,
+.radio-list--md     .radio-list__row    { padding: var(--form-md-padding-y)  var(--form-md-padding-x); }
+.checkbox-list--lg  .checkbox-list__row,
+.radio-list--lg     .radio-list__row    { padding: var(--form-lg-padding-y)  var(--form-lg-padding-x); }
+.checkbox-list--xl  .checkbox-list__row,
+.radio-list--xl     .radio-list__row    { padding: var(--form-xl-padding-y)  var(--form-xl-padding-x); }
+.checkbox-list--2xl .checkbox-list__row,
+.radio-list--2xl    .radio-list__row    { padding: var(--form-2xl-padding-y) var(--form-2xl-padding-x); }
 
 /* =========================================================
    FILE UPLOAD — dropzone

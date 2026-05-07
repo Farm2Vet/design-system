@@ -56,7 +56,7 @@
 
     <dl class="meta-strip reveal">
       <div><dt>Component</dt><dd>Form</dd></div>
-      <div><dt>Variants</dt><dd>8</dd></div>
+      <div><dt>Variants</dt><dd>10</dd></div>
       <div><dt>Versions</dt><dd>3</dd></div>
       <div><dt>Sizes</dt><dd>5 · LG focus</dd></div>
     </dl>
@@ -70,8 +70,9 @@
         <h2 class="display">Variants <em>by control</em>.</h2>
       </div>
       <p>
-        Eight controls covering the full range of structured input:
-        free text, constrained choice, date, multi-pick and binary toggle.
+        Ten controls covering the full range of structured input:
+        free text, constrained choice, date, multi-pick, binary toggle,
+        and bordered checkbox / radio lists for longer option sets.
         Previews are shown at <strong>MD · 16px</strong> so the label and helper
         scale read evenly inside the card. The canonical focus size — <strong>LG · 22.5px</strong> —
         is showcased in the Sizes section below.
@@ -222,6 +223,61 @@
           </fieldset>
         </div>
         <div class="meta"><span>.checkbox-group</span><strong>multi binary</strong></div>
+      </article>
+
+      <!-- Checkbox list -->
+      <article class="form-variant-card tall">
+        <span class="label">Checkbox list</span>
+        <div class="demo">
+          <div class="field">
+            <span class="field__label">Affected species</span>
+            <div class="checkbox-list">
+              <label class="checkbox checkbox--md checkbox-list__row">
+                <input type="checkbox" /> Cattle
+              </label>
+              <label class="checkbox checkbox--md checkbox-list__row">
+                <input type="checkbox" checked /> Pigs / Swine
+              </label>
+              <label class="checkbox checkbox--md checkbox-list__row">
+                <input type="checkbox" /> Poultry
+              </label>
+              <label class="checkbox checkbox--md checkbox-list__row">
+                <input type="checkbox" /> Aquaculture
+              </label>
+              <label class="checkbox checkbox--md checkbox-list__row">
+                <input type="checkbox" /> Small ruminants (goat/sheep)
+              </label>
+            </div>
+            <span class="field__helper">Select all affected species for this case.</span>
+          </div>
+        </div>
+        <div class="meta"><span>.checkbox-list</span><strong>option list</strong></div>
+      </article>
+
+      <!-- Radio list -->
+      <article class="form-variant-card tall">
+        <span class="label">Radio list</span>
+        <div class="demo">
+          <div class="field">
+            <span class="field__label">Triage urgency</span>
+            <div class="radio-list">
+              <label class="radio radio--md radio-list__row">
+                <input type="radio" name="vf-radio-list" /> Routine — non-urgent observation
+              </label>
+              <label class="radio radio--md radio-list__row">
+                <input type="radio" name="vf-radio-list" checked /> Priority — see within 24h
+              </label>
+              <label class="radio radio--md radio-list__row">
+                <input type="radio" name="vf-radio-list" /> Urgent — see today
+              </label>
+              <label class="radio radio--md radio-list__row">
+                <input type="radio" name="vf-radio-list" /> Emergency — immediate
+              </label>
+            </div>
+            <span class="field__helper">Selecting one clears the others.</span>
+          </div>
+        </div>
+        <div class="meta"><span>.radio-list</span><strong>single-select list</strong></div>
       </article>
 
     </div>
@@ -377,9 +433,10 @@
         <h2 class="display">Sized for <em>density</em>.</h2>
       </div>
       <p>
-        Five steps along the same scale that drives type and Button. The
-        middle is canonical: <strong>Large · 22.5px</strong> for primary
-        forms in marketing surfaces and full-page intake flows.
+        Five steps along the same scale that drives type and Button — applied
+        across every variant so the family stays in lockstep. The middle is
+        canonical: <strong>Large · 22.5px</strong> for primary forms in
+        marketing surfaces and full-page intake flows.
       </p>
     </header>
 
@@ -407,6 +464,30 @@
       </div>
     </div>
 
+    <h4 class="subheading reveal">Textarea — across all sizes <span class="tag">multi-line</span></h4>
+    <div class="glass form-size-stage reveal">
+      <div class="form-size-row">
+        <span class="tag">SM · 13.33px</span>
+        <div class="demo"><textarea class="input textarea input--sm" placeholder="Clinical notes…"></textarea></div>
+      </div>
+      <div class="form-size-row">
+        <span class="tag">MD · 16px</span>
+        <div class="demo"><textarea class="input textarea input--md" placeholder="Clinical notes…"></textarea></div>
+      </div>
+      <div class="form-size-row is-focus">
+        <span class="tag">LG · 22.5px · focus</span>
+        <div class="demo"><textarea class="input textarea input--lg" placeholder="Clinical notes…"></textarea></div>
+      </div>
+      <div class="form-size-row">
+        <span class="tag">XL · 27.65px</span>
+        <div class="demo"><textarea class="input textarea input--xl" placeholder="Clinical notes…"></textarea></div>
+      </div>
+      <div class="form-size-row">
+        <span class="tag">2XL · 33.18px</span>
+        <div class="demo"><textarea class="input textarea input--2xl" placeholder="Clinical notes…"></textarea></div>
+      </div>
+    </div>
+
     <h4 class="subheading reveal">Dropdown — across all sizes <span class="tag">single choice</span></h4>
     <div class="glass form-size-stage reveal">
       <div class="form-size-row">
@@ -431,6 +512,179 @@
       </div>
     </div>
 
+    <h4 class="subheading reveal">Date picker — across all sizes <span class="tag">calendar</span></h4>
+    <div class="glass form-size-stage reveal">
+      <div class="form-size-row">
+        <span class="tag">SM</span>
+        <div class="demo"><input class="input input--date input--sm" type="date" /></div>
+      </div>
+      <div class="form-size-row">
+        <span class="tag">MD</span>
+        <div class="demo"><input class="input input--date input--md" type="date" /></div>
+      </div>
+      <div class="form-size-row is-focus">
+        <span class="tag">LG · focus</span>
+        <div class="demo"><input class="input input--date input--lg" type="date" /></div>
+      </div>
+      <div class="form-size-row">
+        <span class="tag">XL</span>
+        <div class="demo"><input class="input input--date input--xl" type="date" /></div>
+      </div>
+      <div class="form-size-row">
+        <span class="tag">2XL</span>
+        <div class="demo"><input class="input input--date input--2xl" type="date" /></div>
+      </div>
+    </div>
+
+    <h4 class="subheading reveal">Multi-select — across all sizes <span class="tag">chips</span></h4>
+    <div class="glass form-size-stage reveal">
+      <div class="form-size-row">
+        <span class="tag">SM</span>
+        <div class="demo">
+          <div class="input multi-select input--sm">
+            <span class="chip">Lethargy<button type="button" aria-label="Remove">×</button></span>
+            <input class="ms-input" type="text" placeholder="Add…" />
+          </div>
+        </div>
+      </div>
+      <div class="form-size-row">
+        <span class="tag">MD</span>
+        <div class="demo">
+          <div class="input multi-select input--md">
+            <span class="chip">Lethargy<button type="button" aria-label="Remove">×</button></span>
+            <input class="ms-input" type="text" placeholder="Add…" />
+          </div>
+        </div>
+      </div>
+      <div class="form-size-row is-focus">
+        <span class="tag">LG · focus</span>
+        <div class="demo">
+          <div class="input multi-select input--lg">
+            <span class="chip">Lethargy<button type="button" aria-label="Remove">×</button></span>
+            <span class="chip">Fever<button type="button" aria-label="Remove">×</button></span>
+            <input class="ms-input" type="text" placeholder="Add symptom…" />
+          </div>
+        </div>
+      </div>
+      <div class="form-size-row">
+        <span class="tag">XL</span>
+        <div class="demo">
+          <div class="input multi-select input--xl">
+            <span class="chip">Lethargy<button type="button" aria-label="Remove">×</button></span>
+            <input class="ms-input" type="text" placeholder="Add…" />
+          </div>
+        </div>
+      </div>
+      <div class="form-size-row">
+        <span class="tag">2XL</span>
+        <div class="demo">
+          <div class="input multi-select input--2xl">
+            <span class="chip">Lethargy<button type="button" aria-label="Remove">×</button></span>
+            <input class="ms-input" type="text" placeholder="Add…" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h4 class="subheading reveal">Radio — across all sizes <span class="tag">one of N</span></h4>
+    <div class="glass form-size-stage reveal">
+      <div class="form-size-row">
+        <span class="tag">SM</span>
+        <div class="demo">
+          <div class="radio-group">
+            <label class="radio radio--sm"><input type="radio" name="vs-radio-sm" checked /> Routine</label>
+            <label class="radio radio--sm"><input type="radio" name="vs-radio-sm" /> Priority</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-size-row">
+        <span class="tag">MD</span>
+        <div class="demo">
+          <div class="radio-group">
+            <label class="radio radio--md"><input type="radio" name="vs-radio-md" checked /> Routine</label>
+            <label class="radio radio--md"><input type="radio" name="vs-radio-md" /> Priority</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-size-row is-focus">
+        <span class="tag">LG · focus</span>
+        <div class="demo">
+          <div class="radio-group">
+            <label class="radio radio--lg"><input type="radio" name="vs-radio-lg" checked /> Routine</label>
+            <label class="radio radio--lg"><input type="radio" name="vs-radio-lg" /> Priority</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-size-row">
+        <span class="tag">XL</span>
+        <div class="demo">
+          <div class="radio-group">
+            <label class="radio radio--xl"><input type="radio" name="vs-radio-xl" checked /> Routine</label>
+            <label class="radio radio--xl"><input type="radio" name="vs-radio-xl" /> Priority</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-size-row">
+        <span class="tag">2XL</span>
+        <div class="demo">
+          <div class="radio-group">
+            <label class="radio radio--2xl"><input type="radio" name="vs-radio-2xl" checked /> Routine</label>
+            <label class="radio radio--2xl"><input type="radio" name="vs-radio-2xl" /> Priority</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h4 class="subheading reveal">File upload — across all sizes <span class="tag">dropzone</span></h4>
+    <div class="glass form-size-stage reveal">
+      <div class="form-size-row">
+        <span class="tag">SM</span>
+        <div class="demo">
+          <label class="file-upload input--sm" tabindex="0">
+            <input type="file" />
+            <span><span class="file-cta">Click to upload</span> or drag &amp; drop</span>
+          </label>
+        </div>
+      </div>
+      <div class="form-size-row">
+        <span class="tag">MD</span>
+        <div class="demo">
+          <label class="file-upload input--md" tabindex="0">
+            <input type="file" />
+            <span><span class="file-cta">Click to upload</span> or drag &amp; drop</span>
+          </label>
+        </div>
+      </div>
+      <div class="form-size-row is-focus">
+        <span class="tag">LG · focus</span>
+        <div class="demo">
+          <label class="file-upload input--lg" tabindex="0">
+            <input type="file" />
+            <span><span class="file-cta">Click to upload</span> or drag &amp; drop</span>
+            <span class="file-hint">PDF, PNG, JPG · up to 10 MB</span>
+          </label>
+        </div>
+      </div>
+      <div class="form-size-row">
+        <span class="tag">XL</span>
+        <div class="demo">
+          <label class="file-upload input--xl" tabindex="0">
+            <input type="file" />
+            <span><span class="file-cta">Click to upload</span> or drag &amp; drop</span>
+          </label>
+        </div>
+      </div>
+      <div class="form-size-row">
+        <span class="tag">2XL</span>
+        <div class="demo">
+          <label class="file-upload input--2xl" tabindex="0">
+            <input type="file" />
+            <span><span class="file-cta">Click to upload</span> or drag &amp; drop</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
     <h4 class="subheading reveal">Checkbox — across all sizes <span class="tag">selection</span></h4>
     <div class="glass form-size-stage reveal">
       <div class="form-size-row">
@@ -452,6 +706,104 @@
       <div class="form-size-row">
         <span class="tag">2XL</span>
         <div class="demo"><label class="checkbox checkbox--2xl"><input type="checkbox" checked /> Fasting confirmed</label></div>
+      </div>
+    </div>
+
+    <h4 class="subheading reveal">Checkbox list — across all sizes <span class="tag">option list</span></h4>
+    <div class="glass form-size-stage reveal">
+      <div class="form-size-row">
+        <span class="tag">SM</span>
+        <div class="demo">
+          <div class="checkbox-list checkbox-list--sm">
+            <label class="checkbox checkbox--sm checkbox-list__row"><input type="checkbox" checked /> Cattle</label>
+            <label class="checkbox checkbox--sm checkbox-list__row"><input type="checkbox" /> Poultry</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-size-row">
+        <span class="tag">MD</span>
+        <div class="demo">
+          <div class="checkbox-list checkbox-list--md">
+            <label class="checkbox checkbox--md checkbox-list__row"><input type="checkbox" checked /> Cattle</label>
+            <label class="checkbox checkbox--md checkbox-list__row"><input type="checkbox" /> Poultry</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-size-row is-focus">
+        <span class="tag">LG · focus</span>
+        <div class="demo">
+          <div class="checkbox-list checkbox-list--lg">
+            <label class="checkbox checkbox--lg checkbox-list__row"><input type="checkbox" checked /> Cattle</label>
+            <label class="checkbox checkbox--lg checkbox-list__row"><input type="checkbox" /> Poultry</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-size-row">
+        <span class="tag">XL</span>
+        <div class="demo">
+          <div class="checkbox-list checkbox-list--xl">
+            <label class="checkbox checkbox--xl checkbox-list__row"><input type="checkbox" checked /> Cattle</label>
+            <label class="checkbox checkbox--xl checkbox-list__row"><input type="checkbox" /> Poultry</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-size-row">
+        <span class="tag">2XL</span>
+        <div class="demo">
+          <div class="checkbox-list checkbox-list--2xl">
+            <label class="checkbox checkbox--2xl checkbox-list__row"><input type="checkbox" checked /> Cattle</label>
+            <label class="checkbox checkbox--2xl checkbox-list__row"><input type="checkbox" /> Poultry</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h4 class="subheading reveal">Radio list — across all sizes <span class="tag">single-select list</span></h4>
+    <div class="glass form-size-stage reveal">
+      <div class="form-size-row">
+        <span class="tag">SM</span>
+        <div class="demo">
+          <div class="radio-list radio-list--sm">
+            <label class="radio radio--sm radio-list__row"><input type="radio" name="vs-rl-sm" checked /> Routine</label>
+            <label class="radio radio--sm radio-list__row"><input type="radio" name="vs-rl-sm" /> Urgent</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-size-row">
+        <span class="tag">MD</span>
+        <div class="demo">
+          <div class="radio-list radio-list--md">
+            <label class="radio radio--md radio-list__row"><input type="radio" name="vs-rl-md" checked /> Routine</label>
+            <label class="radio radio--md radio-list__row"><input type="radio" name="vs-rl-md" /> Urgent</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-size-row is-focus">
+        <span class="tag">LG · focus</span>
+        <div class="demo">
+          <div class="radio-list radio-list--lg">
+            <label class="radio radio--lg radio-list__row"><input type="radio" name="vs-rl-lg" checked /> Routine</label>
+            <label class="radio radio--lg radio-list__row"><input type="radio" name="vs-rl-lg" /> Urgent</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-size-row">
+        <span class="tag">XL</span>
+        <div class="demo">
+          <div class="radio-list radio-list--xl">
+            <label class="radio radio--xl radio-list__row"><input type="radio" name="vs-rl-xl" checked /> Routine</label>
+            <label class="radio radio--xl radio-list__row"><input type="radio" name="vs-rl-xl" /> Urgent</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-size-row">
+        <span class="tag">2XL</span>
+        <div class="demo">
+          <div class="radio-list radio-list--2xl">
+            <label class="radio radio--2xl radio-list__row"><input type="radio" name="vs-rl-2xl" checked /> Routine</label>
+            <label class="radio radio--2xl radio-list__row"><input type="radio" name="vs-rl-2xl" /> Urgent</label>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -572,11 +924,21 @@ const FORM_TOKENS = [
   ]},
   { group: 'File upload dropzone', tokens: [
     ['--form-file-bg',           'var(--background-default-subtle)'],
-    ['--form-file-bg-hover',     'var(--background-default-minimal)'],
+    ['--form-file-bg-hover',     'color-mix(in srgb, var(--primary-50) 70%, transparent)'],
     ['--form-file-border',       'var(--border-default-input)'],
     ['--form-file-border-hover', 'var(--border-primary)'],
     ['--form-file-fg',           'var(--text-default)'],
     ['--form-file-icon',         'var(--icon-default)'],
+  ]},
+  { group: 'Option list (checkbox-list / radio-list)', tokens: [
+    ['--form-list-bg',            'var(--background-default)'],
+    ['--form-list-bg-stripe',     'var(--background-default-subtle)'],
+    ['--form-list-bg-hover',      'color-mix(in srgb, var(--primary-50) 70%, transparent)'],
+    ['--form-list-border',        'var(--border-default-input)'],
+    ['--form-list-row-border',    'var(--border-default-subtle)'],
+    ['--form-list-radius',        'var(--form-radius)'],
+    ['--form-list-row-padding-x', 'var(--form-md-padding-x)'],
+    ['--form-list-row-padding-y', 'var(--form-md-padding-y)'],
   ]},
   { group: 'Focus ring', tokens: [
     ['--form-focus-outline',        'var(--outline-focus)'],
