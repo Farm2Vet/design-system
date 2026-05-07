@@ -1,0 +1,590 @@
+/* =========================================================
+   FARM2VET DESIGN SYSTEM — MODAL DIALOG COMPONENT
+   A blocking, focus-trapping container that interrupts the
+   task flow until the user dismisses or completes the action
+   inside it. Modal is the system's surface for:
+     • Confirmations that block the underlying view
+     • Destructive / irreversible actions (Alert dialog)
+     • Short, self-contained tasks (Form dialog)
+     • Detail views and reveals that need a focus boundary
+   For non-blocking, in-flow messages use Alert. For
+   transient feedback that auto-dismisses use Toast.
+
+   One shared shape adapts across:
+     • Surface     — Centered (default), Drawer (4 edges),
+                     Bottom-sheet, Fullscreen
+     • Tones       — Neutral (default), Info, Safe, Warning,
+                     Critical (alert dialog)
+     • Style       — Default, Compact, Scrollable, Stretched
+     • Sizes       — XS · SM · MD (default) · LG · XL
+     • Slots       — Header (title + close), description,
+                     body, footer (≤ 3 actions)
+     • Behaviour   — Backdrop click, Escape, focus trap,
+                     scroll-lock on body, return focus on
+                     close, reduced-motion fallbacks
+   Depends on: tokens.css, button.css (for footer actions)
+   ========================================================= */
+
+/* =========================================================
+   COMPONENT TOKENS — Modal
+   Component tokens reference semantic tokens strictly.
+   ========================================================= */
+:root {
+    /* ---------- Shared shape ---------- */
+    --modal-font-family:      var(--font-sans);
+    --modal-radius:           var(--radius-lg);
+    --modal-radius-sheet:     var(--radius-lg);
+    --modal-border-width:     var(--border-width-base);
+    --modal-shadow:           var(--shadow-lg);
+    --modal-gap:              var(--spacing-4x);
+    --modal-gap-tight:        var(--spacing-2x);
+    --modal-z-backdrop:       80;
+    --modal-z-surface:        81;
+    --modal-transition:       background-color .18s ease, color .18s ease,
+                              border-color .18s ease, box-shadow .18s ease,
+                              opacity .22s ease, transform .26s cubic-bezier(.2,.8,.2,1);
+
+    /* ---------- Sizes (MD is the default per spec) ----------
+       Modal sizes resolve to a max-width cap. Height is content-
+       driven up to a viewport-relative ceiling, after which the
+       body slot scrolls (see .modal--scrollable). */
+    --modal-xs-width:         320px;
+    --modal-xs-padding-x:     var(--spacing-5x);
+    --modal-xs-padding-y:     var(--spacing-5x);
+
+    --modal-sm-width:         440px;
+    --modal-sm-padding-x:     var(--spacing-6x);
+    --modal-sm-padding-y:     var(--spacing-6x);
+
+    --modal-md-width:         560px;     /* DEFAULT */
+    --modal-md-padding-x:     var(--spacing-6x);
+    --modal-md-padding-y:     var(--spacing-6x);
+
+    --modal-lg-width:         720px;
+    --modal-lg-padding-x:     var(--spacing-8x);
+    --modal-lg-padding-y:     var(--spacing-6x);
+
+    --modal-xl-width:         960px;
+    --modal-xl-padding-x:     var(--spacing-8x);
+    --modal-xl-padding-y:     var(--spacing-8x);
+
+    /* Body height cap — after which the body scrolls. */
+    --modal-max-height:       min(86vh, 720px);
+
+    /* ---------- Surface ---------- */
+    --modal-bg:               var(--background-default);
+    --modal-fg:               var(--text-default);
+    --modal-fg-subtle:        var(--text-default-subtle);
+    --modal-border:           var(--border-default);
+    --modal-divider:          var(--border-default-subtle);
+
+    /* ---------- Backdrop / scrim ---------- */
+    --modal-backdrop:         var(--background-overlay);
+    --modal-backdrop-blur:    var(--blur-sm);
+
+    /* ---------- Header ---------- */
+    --modal-header-padding-y: var(--spacing-5x);
+    --modal-header-gap:       var(--spacing-3x);
+    --modal-title-font:       var(--text-h6);
+    --modal-title-weight:     var(--font-weight-semibold);
+    --modal-title-line:       var(--line-height-h6);
+    --modal-eyebrow-fg:       var(--text-default-minimal);
+
+    /* ---------- Description / body ---------- */
+    --modal-description-fg:   var(--text-default-subtle);
+    --modal-body-line:        var(--line-height-body);
+    --modal-body-gap:         var(--spacing-3x);
+
+    /* ---------- Footer ---------- */
+    --modal-footer-gap:       var(--spacing-3x);
+    --modal-footer-padding-y: var(--spacing-4x);
+    --modal-footer-bg:        var(--background-default-subtle);
+    --modal-footer-border:    var(--border-default-subtle);
+
+    /* ---------- Close affordance ---------- */
+    --modal-close-size:       32px;
+    --modal-close-radius:     var(--radius-sm);
+    --modal-close-fg:         var(--icon-default);
+    --modal-close-fg-hover:   var(--text-default);
+    --modal-close-bg-hover:   var(--background-default-hover);
+
+    /* ---------- Tones (alert dialog accent) ---------- */
+    --modal-tone-info-bg:        var(--background-info);
+    --modal-tone-info-fg:        var(--text-info-strong);
+    --modal-tone-info-icon:      var(--text-info);
+    --modal-tone-info-border:    var(--border-info);
+
+    --modal-tone-safe-bg:        var(--background-safe);
+    --modal-tone-safe-fg:        var(--text-safe);
+    --modal-tone-safe-icon:      var(--text-safe);
+    --modal-tone-safe-border:    var(--border-safe);
+
+    --modal-tone-warning-bg:     var(--background-warning);
+    --modal-tone-warning-fg:     var(--text-warning);
+    --modal-tone-warning-icon:   var(--text-warning);
+    --modal-tone-warning-border: var(--border-warning);
+
+    --modal-tone-critical-bg:        var(--background-critical);
+    --modal-tone-critical-fg:        var(--text-critical);
+    --modal-tone-critical-icon:      var(--text-critical);
+    --modal-tone-critical-border:    var(--border-critical);
+
+    /* ---------- Drawer & sheet ---------- */
+    --modal-drawer-width:     420px;
+    --modal-drawer-width-lg:  560px;
+    --modal-sheet-height:     min(72vh, 640px);
+
+    /* ---------- Animation ---------- */
+    --modal-anim-duration:    260ms;
+    --modal-anim-easing:      cubic-bezier(.2, .8, .2, 1);
+    --modal-anim-translate:   12px;
+
+    /* ---------- Focus ring ---------- */
+    --modal-focus-outline:        var(--outline-focus);
+    --modal-focus-outline-width:  2px;
+    --modal-focus-outline-offset: 2px;
+}
+
+/* =========================================================
+   ROOT — body lock when a modal is open
+   Pages add .has-modal-open on <body> while any dialog is
+   visible to suppress background scroll. The class is owned
+   by the page script, not by the modal itself.
+   ========================================================= */
+body.has-modal-open {
+    overflow: hidden;
+}
+
+/* =========================================================
+   BACKDROP — dim layer behind the dialog
+   The backdrop owns z-index, fade animation, and the click
+   target for the light-dismiss behaviour. The dialog surface
+   centers itself inside the backdrop via flex.
+   ========================================================= */
+.modal {
+    position: fixed;
+    inset: 0;
+    z-index: var(--modal-z-backdrop);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-6x);
+    background: var(--modal-backdrop);
+    backdrop-filter: var(--modal-backdrop-blur);
+    -webkit-backdrop-filter: var(--modal-backdrop-blur);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--modal-anim-duration) var(--modal-anim-easing);
+}
+.modal.is-open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Permit edge-anchored variants to override the centre-flex
+   alignment so drawers / sheets sit flush to one side. */
+.modal--drawer-right { justify-content: flex-end; align-items: stretch; padding: 0; }
+.modal--drawer-left  { justify-content: flex-start; align-items: stretch; padding: 0; }
+.modal--drawer-top   { align-items: flex-start; justify-content: stretch; padding: 0; }
+.modal--drawer-bottom,
+.modal--sheet        { align-items: flex-end; justify-content: stretch; padding: 0; }
+.modal--fullscreen   { padding: 0; }
+
+/* =========================================================
+   SURFACE — the dialog box itself
+   role="dialog" container. Focus trap and ARIA wiring are
+   the page script's responsibility; this layer owns shape,
+   surface, animation, and slot layout.
+   ========================================================= */
+.modal__surface {
+    position: relative;
+    z-index: var(--modal-z-surface);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: var(--modal-md-width);
+    max-height: var(--modal-max-height);
+    background: var(--modal-bg);
+    color: var(--modal-fg);
+    border-radius: var(--modal-radius);
+    border: var(--modal-border-width) solid var(--modal-border);
+    box-shadow: var(--modal-shadow);
+    overflow: hidden;
+    font-family: var(--modal-font-family);
+    transform: translateY(var(--modal-anim-translate)) scale(.98);
+    transition: transform var(--modal-anim-duration) var(--modal-anim-easing),
+                opacity var(--modal-anim-duration) var(--modal-anim-easing);
+    opacity: 0;
+}
+.modal.is-open .modal__surface {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+
+/* =========================================================
+   SIZES — width caps
+   Height stays content-driven up to --modal-max-height.
+   ========================================================= */
+.modal--xs .modal__surface { max-width: var(--modal-xs-width); }
+.modal--sm .modal__surface { max-width: var(--modal-sm-width); }
+.modal--md .modal__surface { max-width: var(--modal-md-width); }   /* default */
+.modal--lg .modal__surface { max-width: var(--modal-lg-width); }
+.modal--xl .modal__surface { max-width: var(--modal-xl-width); }
+
+/* =========================================================
+   HEADER — title + optional eyebrow + close
+   ========================================================= */
+.modal__header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    column-gap: var(--modal-header-gap);
+    align-items: start;
+    padding: var(--modal-header-padding-y) var(--modal-md-padding-x);
+    border-bottom: var(--modal-border-width) solid transparent;
+}
+.modal__heading {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1x);
+    min-width: 0;
+}
+.modal__eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--modal-eyebrow-fg);
+    margin: 0;
+}
+.modal__title {
+    font-family: var(--font-sans);
+    font-size: var(--modal-title-font);
+    font-weight: var(--modal-title-weight);
+    line-height: var(--modal-title-line);
+    color: var(--modal-fg);
+    letter-spacing: -0.01em;
+    margin: 0;
+}
+.modal__description {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    line-height: var(--modal-body-line);
+    color: var(--modal-description-fg);
+    margin: var(--spacing-1x) 0 0 0;
+}
+
+/* Title-leading icon — used by alert dialogs to carry the
+   tone glyph. The icon inherits currentColor so the wrapping
+   tone class controls its colour. */
+.modal__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    flex: 0 0 auto;
+    border-radius: var(--radius-md);
+    background: var(--background-default-subtle);
+    color: var(--icon-default);
+    margin-right: var(--spacing-3x);
+}
+.modal__icon svg { width: 22px; height: 22px; }
+
+/* If an icon is present, lay header out as [icon][heading][close]. */
+.modal__header.has-icon {
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+}
+
+/* Dismiss button — top-right of every dismissible dialog. */
+.modal__close {
+    width: var(--modal-close-size);
+    height: var(--modal-close-size);
+    border-radius: var(--modal-close-radius);
+    background: transparent;
+    border: 0;
+    color: var(--modal-close-fg);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color .15s ease, color .15s ease;
+}
+.modal__close:hover {
+    background: var(--modal-close-bg-hover);
+    color: var(--modal-close-fg-hover);
+}
+.modal__close:focus-visible {
+    outline: var(--modal-focus-outline-width) solid var(--modal-focus-outline);
+    outline-offset: var(--modal-focus-outline-offset);
+}
+.modal__close svg { width: 18px; height: 18px; }
+
+/* =========================================================
+   BODY — primary content slot
+   Independently scrollable when content overflows the
+   surface height cap. The default sets sensible padding so
+   simple confirmation dialogs read with no extra wrapper.
+   ========================================================= */
+.modal__body {
+    padding: 0 var(--modal-md-padding-x) var(--modal-md-padding-y);
+    overflow-y: auto;
+    flex: 1 1 auto;
+    color: var(--modal-fg);
+    font-size: var(--text-base);
+    line-height: var(--modal-body-line);
+    display: flex;
+    flex-direction: column;
+    gap: var(--modal-body-gap);
+}
+.modal__body p { margin: 0; }
+.modal__body p + p { margin-top: var(--spacing-2x); }
+
+/* When the dialog has no header, the body owns the top
+   padding so the content keeps a consistent gutter. */
+.modal__surface > .modal__body:first-child {
+    padding-top: var(--modal-md-padding-y);
+}
+
+/* =========================================================
+   FOOTER — action region
+   Right-aligned by convention. Up to 3 actions: a primary
+   CTA, an optional secondary, and an optional tertiary
+   (typically a left-justified link or "learn more"). The
+   left-justified slot uses .modal__footer-aux.
+   ========================================================= */
+.modal__footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--modal-footer-gap);
+    padding: var(--modal-footer-padding-y) var(--modal-md-padding-x);
+    border-top: var(--modal-border-width) solid var(--modal-footer-border);
+    background: var(--modal-footer-bg);
+}
+.modal__footer-aux {
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3x);
+    font-size: var(--text-sm);
+    color: var(--modal-fg-subtle);
+}
+.modal__footer-aux a {
+    color: var(--text-link);
+    text-decoration: none;
+}
+.modal__footer-aux a:hover { text-decoration: underline; }
+
+/* Stack actions vertically when the surface narrows below
+   the safe two-button width. */
+.modal--stack-actions .modal__footer {
+    flex-direction: column-reverse;
+    align-items: stretch;
+}
+.modal--stack-actions .modal__footer .btn { width: 100%; }
+.modal--stack-actions .modal__footer-aux {
+    margin-right: 0;
+    justify-content: center;
+    margin-top: var(--spacing-2x);
+}
+
+/* =========================================================
+   PADDING — propagate size-specific padding tokens to header,
+   body, and footer so the gutters stay aligned across slots.
+   ========================================================= */
+.modal--xs .modal__header,
+.modal--xs .modal__body,
+.modal--xs .modal__footer {
+    padding-left: var(--modal-xs-padding-x);
+    padding-right: var(--modal-xs-padding-x);
+}
+.modal--sm .modal__header,
+.modal--sm .modal__body,
+.modal--sm .modal__footer {
+    padding-left: var(--modal-sm-padding-x);
+    padding-right: var(--modal-sm-padding-x);
+}
+.modal--lg .modal__header,
+.modal--lg .modal__body,
+.modal--lg .modal__footer {
+    padding-left: var(--modal-lg-padding-x);
+    padding-right: var(--modal-lg-padding-x);
+}
+.modal--xl .modal__header,
+.modal--xl .modal__body,
+.modal--xl .modal__footer {
+    padding-left: var(--modal-xl-padding-x);
+    padding-right: var(--modal-xl-padding-x);
+}
+
+/* =========================================================
+   ALERT DIALOG — destructive / urgent confirmations
+   Tonal accent on the leading icon; the underlying surface
+   stays neutral so the dialog reads as a confirmation, not
+   as an Alert banner.
+   ========================================================= */
+.modal--tone-info     .modal__icon { background: var(--modal-tone-info-bg);     color: var(--modal-tone-info-icon); }
+.modal--tone-safe     .modal__icon { background: var(--modal-tone-safe-bg);     color: var(--modal-tone-safe-icon); }
+.modal--tone-warning  .modal__icon { background: var(--modal-tone-warning-bg);  color: var(--modal-tone-warning-icon); }
+.modal--tone-critical .modal__icon { background: var(--modal-tone-critical-bg); color: var(--modal-tone-critical-icon); }
+
+/* =========================================================
+   COMPACT — confirm dialog with no separate body slot
+   Title + description fit inside a single condensed surface.
+   Used for short yes/no prompts, sign-off confirmations.
+   ========================================================= */
+.modal--compact .modal__header { padding-bottom: var(--spacing-3x); }
+.modal--compact .modal__body { padding-top: 0; }
+.modal--compact .modal__footer {
+    background: transparent;
+    border-top: 0;
+    padding-top: var(--spacing-2x);
+}
+
+/* =========================================================
+   SCROLLABLE — sticky header + sticky footer over a
+   scrolling body. Activates the divider rule so the seam
+   between the slot and the scrolling content reads.
+   ========================================================= */
+.modal--scrollable .modal__header {
+    border-bottom-color: var(--modal-divider);
+}
+.modal--scrollable .modal__footer {
+    border-top-color: var(--modal-divider);
+}
+.modal--scrollable .modal__body {
+    /* explicit max-height so the body has something to
+       scroll inside even when the surface is short. */
+    max-height: 60vh;
+}
+
+/* =========================================================
+   STRETCHED — surface fills the viewport height ceiling
+   For long forms or long content where the modal should
+   feel like a page within a page.
+   ========================================================= */
+.modal--stretched .modal__surface {
+    height: var(--modal-max-height);
+}
+
+/* =========================================================
+   DRAWER VARIANTS — edge-anchored side sheets
+   Animate from the corresponding edge instead of the
+   centre. Width / height collapses to 100% of the cross-axis.
+   ========================================================= */
+.modal--drawer-right .modal__surface,
+.modal--drawer-left  .modal__surface {
+    max-width: var(--modal-drawer-width);
+    height: 100%;
+    max-height: 100vh;
+    border-radius: 0;
+}
+.modal--drawer-right.modal--lg .modal__surface,
+.modal--drawer-left.modal--lg  .modal__surface { max-width: var(--modal-drawer-width-lg); }
+
+.modal--drawer-right .modal__surface { transform: translateX(var(--modal-anim-translate)); }
+.modal--drawer-left  .modal__surface { transform: translateX(calc(var(--modal-anim-translate) * -1)); }
+.modal--drawer-right.is-open .modal__surface,
+.modal--drawer-left.is-open  .modal__surface { transform: translateX(0); }
+
+.modal--drawer-top .modal__surface,
+.modal--drawer-bottom .modal__surface,
+.modal--sheet .modal__surface {
+    max-width: 100%;
+    width: 100%;
+    border-radius: 0;
+    max-height: var(--modal-sheet-height);
+}
+.modal--drawer-top  .modal__surface { transform: translateY(calc(var(--modal-anim-translate) * -1)); }
+.modal--drawer-bottom .modal__surface,
+.modal--sheet .modal__surface { transform: translateY(var(--modal-anim-translate)); }
+.modal--drawer-top.is-open  .modal__surface,
+.modal--drawer-bottom.is-open .modal__surface,
+.modal--sheet.is-open .modal__surface { transform: translateY(0); }
+
+/* Bottom-sheet rounds only the top corners, mirroring the
+   prevailing mobile convention. */
+.modal--sheet .modal__surface {
+    border-top-left-radius: var(--modal-radius-sheet);
+    border-top-right-radius: var(--modal-radius-sheet);
+}
+
+/* Optional grab handle for sheets — a small pill at the top
+   centre of the surface, meant for drag-to-dismiss UIs. */
+.modal__handle {
+    width: 40px;
+    height: 4px;
+    border-radius: var(--radius-pill);
+    background: var(--border-default-strong);
+    margin: var(--spacing-3x) auto var(--spacing-1x);
+    flex: 0 0 auto;
+}
+
+/* =========================================================
+   FULLSCREEN — covers the entire viewport
+   Used on small viewports for immersive flows (image
+   viewers, long forms, multi-step wizards) and on
+   destructive confirmations that must dominate the screen.
+   ========================================================= */
+.modal--fullscreen .modal__surface {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 0;
+    border: 0;
+}
+.modal--fullscreen .modal__header {
+    padding-left: var(--spacing-8x);
+    padding-right: var(--spacing-8x);
+    border-bottom: var(--modal-border-width) solid var(--modal-divider);
+}
+
+/* =========================================================
+   ACCESSIBILITY — focus trap visual hint
+   The actual trap logic lives in the page script. This rule
+   only prevents stray pointer events from leaking through to
+   the page underneath while the dialog is opening.
+   ========================================================= */
+.modal[aria-hidden="true"] {
+    pointer-events: none;
+}
+
+/* =========================================================
+   REDUCED MOTION
+   Suppresses translate/scale entry; only opacity remains.
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+    .modal,
+    .modal__surface {
+        transition: opacity .15s ease;
+    }
+    .modal__surface,
+    .modal--drawer-right .modal__surface,
+    .modal--drawer-left  .modal__surface,
+    .modal--drawer-top   .modal__surface,
+    .modal--drawer-bottom .modal__surface,
+    .modal--sheet .modal__surface {
+        transform: none;
+    }
+}
+
+/* =========================================================
+   RESPONSIVE — at small widths every centred modal collapses
+   to the bottom-sheet anchor so the surface stays reachable
+   one-handed. Drawer variants stay edge-anchored as drawn.
+   ========================================================= */
+@media (max-width: 600px) {
+    .modal:not(.modal--drawer-right):not(.modal--drawer-left):not(.modal--drawer-top):not(.modal--fullscreen) {
+        align-items: flex-end;
+        padding: 0;
+    }
+    .modal:not(.modal--drawer-right):not(.modal--drawer-left):not(.modal--drawer-top):not(.modal--fullscreen) .modal__surface {
+        max-width: 100%;
+        width: 100%;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        max-height: var(--modal-sheet-height);
+    }
+}

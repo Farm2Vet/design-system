@@ -1,0 +1,406 @@
+/* =========================================================
+   PAGE — COMPONENT · MODAL DIALOG
+   Styles unique to component-modal.html: inline preview
+   stages that render dialog surfaces in-place (without the
+   live overlay so the documentation is readable end-to-end),
+   variant grids, and the trigger row used for the live
+   demos.
+   Token-table styling is reused from page-component-button.css.
+   Usage-note styling and .card-callout pattern are reused
+   from page-component-form.css and page-component-card.css.
+   The actual component lives in modal.css.
+   Depends on: tokens.css, base.css, shell.css, modal.css,
+               button.css
+   ========================================================= */
+
+/* =========================================================
+   INLINE DIALOG PREVIEW — renders the .modal__surface
+   stand-alone, without the fixed-position overlay. Lets the
+   reader inspect the dialog's anatomy and slot composition
+   on the page itself. The live versions are reachable via
+   the trigger row at the top of the section.
+   ========================================================= */
+.dialog-preview {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-8x);
+    border-radius: var(--radius-lg);
+    border: var(--border-width-base) solid var(--border-glass-light);
+    background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, color-mix(in srgb, var(--primary-50) 60%, transparent), transparent 70%),
+        var(--background-glass-light);
+    backdrop-filter: var(--blur-lg) saturate(140%);
+    -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
+    overflow: hidden;
+    min-height: 320px;
+}
+.dialog-preview__surface {
+    /* Static stand-in for .modal__surface so the reader sees
+       the dialog without the overlay swallowing the page. */
+    position: relative;
+    z-index: 1;
+    transform: none !important;
+    opacity: 1 !important;
+    box-shadow: var(--shadow-lg);
+    width: 100%;
+    max-width: 560px;
+    background: var(--background-default);
+    border-radius: var(--radius-lg);
+    border: var(--border-width-base) solid var(--border-default);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+.dialog-preview--xs .dialog-preview__surface { max-width: 320px; }
+.dialog-preview--sm .dialog-preview__surface { max-width: 440px; }
+.dialog-preview--md .dialog-preview__surface { max-width: 560px; }
+.dialog-preview--lg .dialog-preview__surface { max-width: 720px; }
+.dialog-preview--xl .dialog-preview__surface { max-width: 100%; }
+
+/* Dim the host glass plate so the dialog reads as raised
+   above its surrounding context, like the live overlay. */
+.dialog-preview::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: color-mix(in srgb, var(--neutral-950) 4%, transparent);
+    pointer-events: none;
+}
+
+/* When a preview demonstrates an edge-anchored surface
+   (drawer, sheet), the surface stretches across one axis
+   and pins to the edge instead of centring. */
+.dialog-preview.is-drawer-right { justify-content: flex-end; padding: 0; }
+.dialog-preview.is-drawer-left  { justify-content: flex-start; padding: 0; }
+.dialog-preview.is-sheet        { align-items: flex-end; padding: 0; }
+.dialog-preview.is-fullscreen   { padding: 0; align-items: stretch; justify-content: stretch; }
+.dialog-preview.is-drawer-right .dialog-preview__surface,
+.dialog-preview.is-drawer-left  .dialog-preview__surface {
+    max-width: 380px;
+    height: 100%;
+    border-radius: 0;
+}
+.dialog-preview.is-sheet .dialog-preview__surface {
+    max-width: 100%;
+    width: 100%;
+    border-radius: 0;
+    border-top-left-radius: var(--radius-lg);
+    border-top-right-radius: var(--radius-lg);
+}
+.dialog-preview.is-fullscreen .dialog-preview__surface {
+    max-width: 100%;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    flex: 1 1 auto;
+}
+
+/* Ambient page mock — a dim slab behind the dialog that
+   suggests the underlying view. Used in size + variant
+   showcases where the page texture matters. */
+.dialog-preview__ambient {
+    position: absolute;
+    inset: 0;
+    background:
+        repeating-linear-gradient(0deg,
+            color-mix(in srgb, var(--neutral-300) 35%, transparent) 0 1px,
+            transparent 1px 14px);
+    opacity: .35;
+    pointer-events: none;
+}
+
+/* =========================================================
+   ANATOMY DIAGRAM — slot vocabulary for .modal
+   Mirrors .alert-anatomy / .card-anatomy so the cadence
+   stays consistent across component pages.
+   ========================================================= */
+.dialog-anatomy {
+    padding: var(--spacing-8x);
+    display: grid;
+    grid-template-columns: minmax(360px, 1fr) minmax(260px, 360px);
+    gap: var(--spacing-8x);
+    align-items: start;
+}
+.dialog-anatomy .legend {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3x);
+}
+.dialog-anatomy .legend dt {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-primary-strong);
+    margin-bottom: var(--spacing-half);
+}
+.dialog-anatomy .legend dd {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--text-default-subtle);
+    line-height: var(--line-height-body);
+    margin: 0 0 var(--spacing-3x);
+}
+
+/* =========================================================
+   VARIANT SHOWCASE — labelled tile around an inline preview
+   ========================================================= */
+.dialog-showcase {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: var(--spacing-5x);
+}
+.dialog-showcase__tile {
+    border-radius: var(--radius-lg);
+    border: var(--border-width-base) solid var(--border-glass-light);
+    background: var(--background-glass-light);
+    backdrop-filter: var(--blur-lg) saturate(140%);
+    -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
+    padding: var(--spacing-5x);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4x);
+}
+.dialog-showcase__tile .label {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+}
+.dialog-showcase__tile .demo {
+    display: flex;
+    align-items: stretch;
+    flex: 1;
+}
+.dialog-showcase__tile .demo .dialog-preview {
+    flex: 1;
+    min-height: 280px;
+    padding: var(--spacing-4x);
+}
+.dialog-showcase__tile .meta {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    color: var(--text-default-minimal);
+    letter-spacing: 0.04em;
+    border-top: var(--border-width-base) solid var(--border-default-subtle);
+    padding-top: var(--spacing-3x);
+    display: flex;
+    justify-content: space-between;
+    gap: var(--spacing-3x);
+}
+.dialog-showcase__tile .meta strong {
+    color: var(--text-default);
+    font-weight: var(--font-weight-medium);
+}
+
+/* =========================================================
+   SIZE STAGE — every modal width side-by-side
+   Vertical stack so each surface keeps its full max-width
+   and the size cap reads honestly.
+   ========================================================= */
+.dialog-size-stage {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-5x);
+    padding: var(--spacing-6x);
+    border-radius: var(--radius-lg);
+    border: var(--border-width-base) solid var(--border-glass-light);
+    background: var(--background-glass-light);
+    backdrop-filter: var(--blur-lg) saturate(140%);
+    -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
+}
+.dialog-size-stage .size-row {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    align-items: center;
+    gap: var(--spacing-4x);
+    padding: var(--spacing-4x) 0;
+    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
+}
+.dialog-size-stage .size-row:last-child { border-bottom: none; }
+.dialog-size-stage .size-row .tag {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+}
+.dialog-size-stage .size-row.is-default .tag {
+    color: var(--text-primary-strong);
+    background: var(--background-primary-subtle);
+    padding: var(--spacing-half) var(--spacing-2x);
+    border-radius: var(--radius-pill);
+    border: var(--border-width-base) solid var(--border-primary-subtle);
+    text-align: center;
+}
+.dialog-size-stage .size-row .stub {
+    height: 64px;
+    border-radius: var(--radius-md);
+    background: var(--background-default);
+    border: var(--border-width-base) solid var(--border-default);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    align-items: center;
+    padding: 0 var(--spacing-5x);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--text-default-subtle);
+}
+.dialog-size-stage .size-row .meta {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    color: var(--text-default-minimal);
+}
+
+/* Width caps mirror the modal size tokens so the visual
+   row matches the documented width exactly. */
+.dialog-size-stage .stub.w-xs { width: 320px; }
+.dialog-size-stage .stub.w-sm { width: 440px; }
+.dialog-size-stage .stub.w-md { width: 560px; }
+.dialog-size-stage .stub.w-lg { width: 720px; }
+.dialog-size-stage .stub.w-xl { width: 100%; max-width: 960px; }
+
+/* =========================================================
+   TRIGGER ROW — buttons that open live dialogs
+   ========================================================= */
+.dialog-triggers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-3x);
+    padding: var(--spacing-5x) var(--spacing-6x);
+    border-radius: var(--radius-lg);
+    border: var(--border-width-base) solid var(--border-glass-light);
+    background: var(--background-glass-light);
+    backdrop-filter: var(--blur-lg) saturate(140%);
+    -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
+}
+
+/* =========================================================
+   BEHAVIOUR TABLE — keyboard / pointer / aria summary
+   Compact spec strip for the accessibility section.
+   ========================================================= */
+.dialog-behaviour-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--background-glass-light);
+    backdrop-filter: var(--blur-lg) saturate(140%);
+    -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
+    border: var(--border-width-base) solid var(--border-glass-light);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    font-family: var(--font-sans);
+}
+.dialog-behaviour-table th,
+.dialog-behaviour-table td {
+    text-align: left;
+    padding: var(--spacing-3x) var(--spacing-5x);
+    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
+}
+.dialog-behaviour-table thead th {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+    font-weight: var(--font-weight-medium);
+    background: var(--background-default-subtle);
+}
+.dialog-behaviour-table tbody td {
+    font-size: var(--text-sm);
+    color: var(--text-default);
+    line-height: var(--line-height-body);
+}
+.dialog-behaviour-table tbody tr:last-child td { border-bottom: 0; }
+.dialog-behaviour-table .key {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    color: var(--text-primary-strong);
+    background: var(--background-primary-minimal);
+    padding: 0.05em 0.45em;
+    border-radius: var(--radius-sm);
+    margin-right: var(--spacing-1x);
+}
+
+/* =========================================================
+   STAND-IN BODY CONTENT — used inside dialog previews so
+   the body slot reads convincingly without pulling in
+   another component.
+   ========================================================= */
+.dialog-content-stub {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3x);
+}
+.dialog-content-stub .field-stub {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1x);
+}
+.dialog-content-stub .field-stub .lbl {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+}
+.dialog-content-stub .field-stub .ctrl {
+    height: 36px;
+    border-radius: var(--radius-md);
+    border: var(--border-width-base) solid var(--border-default-input);
+    background: var(--background-default);
+    padding: 0 var(--spacing-3x);
+    display: flex;
+    align-items: center;
+    font-size: var(--text-sm);
+    color: var(--text-default);
+}
+.dialog-content-stub .field-stub .ctrl.is-placeholder { color: var(--text-default-minimal); }
+.dialog-content-stub .field-stub .ctrl.area { height: 80px; align-items: flex-start; padding: var(--spacing-2x) var(--spacing-3x); }
+
+.dialog-content-stub .row-list {
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--radius-md);
+    border: var(--border-width-base) solid var(--border-default-input);
+    overflow: hidden;
+}
+.dialog-content-stub .row-list .li {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: var(--spacing-3x);
+    padding: var(--spacing-3x) var(--spacing-4x);
+    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+}
+.dialog-content-stub .row-list .li:last-child { border-bottom: 0; }
+.dialog-content-stub .row-list .li .meta {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    color: var(--text-default-minimal);
+    letter-spacing: 0.04em;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 960px) {
+    .dialog-anatomy { grid-template-columns: 1fr; gap: var(--spacing-5x); }
+    .dialog-size-stage .size-row { grid-template-columns: 80px 1fr; }
+    .dialog-size-stage .size-row .meta { grid-column: 2; }
+}
+@media (max-width: 600px) {
+    .dialog-preview { padding: var(--spacing-4x); min-height: 240px; }
+    .dialog-showcase { grid-template-columns: 1fr; }
+    .dialog-size-stage .size-row { grid-template-columns: 1fr; }
+    .dialog-size-stage .stub.w-xs,
+    .dialog-size-stage .stub.w-sm,
+    .dialog-size-stage .stub.w-md,
+    .dialog-size-stage .stub.w-lg,
+    .dialog-size-stage .stub.w-xl { width: 100%; }
+}

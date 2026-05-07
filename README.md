@@ -72,9 +72,9 @@ Each component may has Variants, Versions, and Sizes. Size is the optimized vers
   - Version: Default, Inverted Surface, Selected
 - Modal Dialog
 - Side Panel
-- Toast
-- Inline Alert
-- badge
+- Toast (done)
+- Inline Alert (done)
+- badge (done)
 - Header
 - Sidebar
 - Text
