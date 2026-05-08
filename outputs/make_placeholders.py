@@ -51,7 +51,7 @@ NAV_BLOCK = '''<!-- ========================== GLOBAL NAV ======================
                 <li><a href="III-08-toast.html"><span class="global-nav__index">08</span><span>Toast</span></a></li>
                 <li><a href="III-09-alert-badges.html"><span class="global-nav__index">09</span><span>Alert &amp; Badge</span></a></li>
                 <li><a href="III-10-header-navigation.html"><span class="global-nav__index">10</span><span>Header &amp; Nav Bar</span></a></li>
-                <li><a href="III-12-sidebar.html" class="is-placeholder"><span class="global-nav__index">12</span><span>Sidebar</span></a></li>
+                <li><a href="III-12-sidebar.html"><span class="global-nav__index">12</span><span>Sidebar</span></a></li>
                 <li><a href="III-14-tabs.html"><span class="global-nav__index">14</span><span>Tabs</span></a></li>
               </ul>
             </div>
@@ -122,25 +122,6 @@ PLACEHOLDERS = [
             ['Sizes', 'Three width scales aligned to the form-input width grid.'],
             ['Edges', 'Left and right attachment; bottom sheet variant.'],
             ['Behaviour', 'Open animation, focus trap, dismiss rules.'],
-        ],
-    },
-    {
-        'file': 'III-12-sidebar.html',
-        'title': 'Sidebar',
-        'section_eyebrow': 'Section 12 / Components',
-        'h1': 'Sidebar.',
-        'lede': (
-            'Reserved page. The persistent sidebar — used for primary in-app '
-            'navigation, not for the system-level header documented in '
-            'Section 10 — will define its rail anatomy, expanded and collapsed '
-            'modes, item density, and section-grouping conventions once '
-            'authored.'
-        ),
-        'todo': [
-            ['Anatomy', 'Rail, item, group label, footer slot.'],
-            ['Modes', 'Expanded · collapsed · responsive overlay.'],
-            ['Density', 'Compact, default, comfortable.'],
-            ['Selection', 'Single-active item, sub-item disclosure.'],
         ],
     },
     {
