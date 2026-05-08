@@ -801,18 +801,70 @@ function initSwitches() {
       sw.classList.toggle('is-on', !checked);
     });
   });
-  /* Segmented switches (single-select) */
+  /* Segmented switches (single-select) — single sliding indicator
+     glides between options instead of the active background snapping. */
   document.querySelectorAll('.btn-switch--segmented').forEach(group => {
-    const opts = group.querySelectorAll('.btn-switch__option');
+    const opts = Array.from(group.querySelectorAll('.btn-switch__option'));
+    if (opts.length === 0) return;
+
+    /* Inject the sliding pill once per group. */
+    let indicator = group.querySelector(':scope > .btn-switch__indicator');
+    if (!indicator) {
+      indicator = document.createElement('span');
+      indicator.className = 'btn-switch__indicator is-initial';
+      indicator.setAttribute('aria-hidden', 'true');
+      group.prepend(indicator);
+    }
+
+    const activeOpt = () =>
+      opts.find(o => o.classList.contains('is-on')
+                  || o.getAttribute('aria-pressed') === 'true'
+                  || o.getAttribute('aria-selected') === 'true')
+      || opts[0];
+
+    const positionIndicator = (animate) => {
+      const target = activeOpt();
+      if (!target) return;
+      if (!animate) indicator.classList.add('is-initial');
+      /* Use rects so positioning is correct regardless of group border /
+         box-sizing. Indicator (position:absolute; left:0) is anchored to
+         the group's padding edge, which is borderLeft px inside the
+         group's bounding rect — subtract it to align with the option. */
+      const groupRect  = group.getBoundingClientRect();
+      const targetRect = target.getBoundingClientRect();
+      const borderLeft = parseFloat(getComputedStyle(group).borderLeftWidth) || 0;
+      const x = targetRect.left - groupRect.left - borderLeft;
+      indicator.style.width = targetRect.width + 'px';
+      indicator.style.transform = `translateX(${x}px)`;
+      if (!animate) {
+        /* Re-enable transitions on the next frame so the first selection
+           change after load slides smoothly. */
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => indicator.classList.remove('is-initial'));
+        });
+      }
+    };
+
+    /* First paint — measure without animating. */
+    positionIndicator(false);
+
+    /* Recompute on resize / font-load — layout shifts shouldn't desync the pill. */
+    window.addEventListener('resize', () => positionIndicator(false));
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => positionIndicator(false));
+    }
+
     opts.forEach(opt => {
       opt.addEventListener('click', () => {
         if (opt.hasAttribute('disabled')) return;
+        if (opt.classList.contains('is-on')) return; /* no-op re-selecting active */
         opts.forEach(o => {
           o.classList.remove('is-on');
           o.setAttribute('aria-pressed', 'false');
         });
         opt.classList.add('is-on');
         opt.setAttribute('aria-pressed', 'true');
+        positionIndicator(true);
       });
     });
   });

@@ -254,15 +254,39 @@
    SEGMENTED SWITCH — multi-option (e.g., language switch).
    Compose as: .btn-switch.btn-switch--segmented containing
    .btn-switch__option children; the active child carries
-   .is-on (or aria-pressed="true").
+   .is-on (or aria-pressed="true"). A single .btn-switch__indicator
+   is injected at runtime as the sliding active pill so the
+   highlight glides between options instead of snapping.
    ========================================================= */
 .btn-switch.btn-switch--segmented {
+    position: relative;
     width: auto;
     align-items: stretch;
     gap: 0;
     padding: var(--_pad);
     cursor: default;
 }
+
+.btn-switch__indicator {
+    position: absolute;
+    top: var(--_pad);
+    left: 0;
+    height: calc(100% - var(--_pad) * 2 - var(--btn-border-width) * 2);
+    width: 0;
+    background:    var(--btn-switch-active-bg);
+    border:        var(--btn-border-width) solid var(--btn-switch-active-border);
+    border-radius: var(--btn-switch-radius);
+    box-shadow:    var(--btn-switch-thumb-shadow);
+    transform: translateX(0);
+    pointer-events: none;
+    will-change: transform, width;
+    transition: transform var(--btn-switch-thumb-duration) var(--btn-switch-thumb-easing),
+                width     var(--btn-switch-thumb-duration) var(--btn-switch-thumb-easing);
+}
+/* First paint: skip the slide-in from x=0 by suppressing the transition
+   until the indicator has been measured into place. JS removes this class
+   on the next frame after positioning. */
+.btn-switch__indicator.is-initial { transition: none; }
 
 .btn-switch__option {
     appearance: none;
@@ -281,20 +305,21 @@
     align-items: center;
     justify-content: center;
     min-width: var(--_thumb);
-    transition: background-color .18s ease, color .18s ease, box-shadow .18s ease;
+    position: relative;
+    z-index: 1;                                /* sit above the sliding indicator */
+    transition: color .18s ease;
 }
 .btn-switch__option:hover { color: var(--text-default); }
 .btn-switch__option:focus-visible {
     outline: var(--btn-focus-outline-width) solid var(--btn-focus-outline);
     outline-offset: 0;
 }
+/* Active state — visual fill is provided by .btn-switch__indicator,
+   the option only adopts the active foreground colour. */
 .btn-switch__option.is-on,
 .btn-switch__option[aria-pressed="true"],
 .btn-switch__option[aria-selected="true"] {
-    background:   var(--btn-switch-active-bg);
-    color:        var(--btn-switch-active-fg);
-    border-color: var(--btn-switch-active-border);
-    box-shadow:   var(--btn-switch-thumb-shadow);
+    color: var(--btn-switch-active-fg);
 }
 .btn-switch__option.is-on:hover,
 .btn-switch__option[aria-pressed="true"]:hover,
@@ -365,5 +390,6 @@
     .btn--loading .spinner { animation: none; }
     .btn-switch,
     .btn-switch__thumb,
+    .btn-switch__indicator,
     .btn-switch__option   { transition: none; }
 }

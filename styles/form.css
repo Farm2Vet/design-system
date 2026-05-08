@@ -309,11 +309,19 @@
     background: var(--form-control-bg);
     cursor: pointer;
     position: relative;
-    transition: var(--form-transition);
+    transition: var(--form-transition),
+                transform 140ms cubic-bezier(.34, 1.56, .64, 1);
     flex-shrink: 0;
 }
 .radio    input { border-radius: 50%; }
 .checkbox input { border-radius: var(--radius-sm); }
+
+/* Subtle pressed feedback on the radio circle — a tiny squish on
+   mousedown, then a soft overshoot release. Felt rather than seen. */
+.radio input:not([disabled]):active {
+    transform: scale(0.88);
+    transition: transform 80ms ease-out;
+}
 
 .radio    input:hover:not(:checked):not([disabled]),
 .checkbox input:hover:not(:checked):not([disabled]) {
@@ -330,12 +338,23 @@
     border-color: var(--form-control-checked-border);
     background: var(--form-control-bg);
 }
-.radio input:checked::after {
+/* The inner dot is rendered up-front at scale(0) so we can transition
+   it; checked grows it to full size with a gentle overshoot — a small
+   "bloom" that gives the click a happy little kick. */
+.radio input::after {
     content: '';
     position: absolute;
     inset: 22%;
     border-radius: 50%;
     background: var(--form-control-checked-bg);
+    transform: scale(0);
+    opacity: 0;
+    transition: transform 220ms cubic-bezier(.34, 1.56, .64, 1),
+                opacity   140ms ease-out;
+}
+.radio input:checked::after {
+    transform: scale(1);
+    opacity: 1;
 }
 
 .checkbox input:checked {
@@ -539,6 +558,8 @@
     .input,
     .multi-select,
     .radio input,
+    .radio input::after,
     .checkbox input,
     .file-upload { transition: none; }
+    .radio input:not([disabled]):active { transform: none; }
 }
