@@ -539,4 +539,104 @@ function renderLetterSpacings() {
       <td class="var-name">${name}</td>
       <td class="var-value">${value}</td>
       <td class="preview">
-        <span class="preview-text" style="letter-spacing:var(${name});font-family:var(--f
+        <span class="preview-text" style="letter-spacing:var(${name});font-family:var(--font-mono);text-transform:uppercase;font-size:var(--text-sm)">
+          Cultivated intelligence
+        </span>
+      </td>
+    </tr>`).join('');
+}
+
+/* =========================================================
+   COPY + TOAST
+   ========================================================= */
+const toast = document.getElementById('toast');
+let toastTimer;
+
+function showToast(varName, hex) {
+  toast.innerHTML = `Copied <span class="toast-name">${varName}</span><span style="opacity:.5">/</span><span class="toast-hex">${hex}</span>`;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+}
+
+async function copyHex(hex, varName, el) {
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(hex);
+    } else {
+      // Fallback
+      const ta = document.createElement('textarea');
+      ta.value = hex;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    }
+    showToast(varName, hex);
+    if (el) {
+      el.classList.remove('copied');
+      // force reflow to restart animation
+      void el.offsetWidth;
+      el.classList.add('copied');
+    }
+  } catch (err) {
+    showToast('Copy failed', hex);
+  }
+}
+
+/* Event delegation */
+document.addEventListener('click', (e) => {
+  const sw = e.target.closest('.swatch');
+  if (!sw) return;
+  copyHex(sw.dataset.hex, sw.dataset.var, sw);
+});
+
+/* Keyboard support */
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    const sw = document.activeElement.closest && document.activeElement.closest('.swatch');
+    if (sw) {
+      e.preventDefault();
+      copyHex(sw.dataset.hex, sw.dataset.var, sw);
+    }
+  }
+});
+
+/* =========================================================
+   REVEAL ON SCROLL
+   ========================================================= */
+function initReveal() {
+  const items = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    items.forEach(el => el.classList.add('in'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        en.target.classList.add('in');
+        io.unobserve(en.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(el => io.observe(el));
+}
+
+/* =========================================================
+   BOOT
+   ========================================================= */
+document.addEventListener('DOMContentLoaded', () => {
+  renderRamps();
+  renderSpacing();
+  renderType();
+  renderWeights();
+  renderLineHeights();
+  renderLetterSpacings();
+  initReveal();
+});
+</script>
+
+</body>
+</html>
