@@ -1,0 +1,311 @@
+/* =========================================================
+   FARM2VET DESIGN SYSTEM — GLOBAL NAV
+   The header chrome shared by every design-system page.
+   Replaces the legacy per-page in-page TOC topbar with a
+   sticky, two-tier navigation surface:
+     · Tier 1 (top row): five Section entries — Primitives,
+       Semantics, Components, Assets, Mockups — plus the
+       brand mark on the left and the version pill on the
+       right.
+     · Tier 2 (panel): an absolutely-positioned panel that
+       expands below the bar on hover or focus, listing
+       every Subsection (each linking to a separate HTML
+       page). Sections that are documented in a single
+       file (Primitives, Semantics) do not expand.
+   Depends on: tokens.css, base.css
+   ========================================================= */
+
+/* =========================================================
+   01 / BAR
+   ========================================================= */
+.global-nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--background-glass-light);
+    backdrop-filter: var(--blur-lg) saturate(140%);
+    -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
+    border-bottom: var(--border-width-base) solid var(--border-glass-light);
+}
+
+.global-nav__inner {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: var(--spacing-6x);
+    padding: var(--spacing-3x) var(--spacing-8x);
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
+/* =========================================================
+   02 / BRAND
+   ========================================================= */
+.global-nav__brand {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3x);
+    text-decoration: none;
+}
+.global-nav__logo {
+    height: var(--spacing-10x);
+    width: auto;
+    display: block;
+}
+.global-nav__brand small {
+    font-family:    var(--font-mono);
+    font-size:      var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color:          var(--text-default-minimal);
+    font-style:     normal;
+    padding-left:   var(--spacing-3x);
+    border-left:    var(--border-width-base) solid var(--border-default);
+}
+
+/* =========================================================
+   03 / SECTION LIST (TIER 1)
+   ========================================================= */
+.global-nav__sections {
+    justify-self: center;
+}
+.global-nav__list {
+    list-style: none;
+    margin: 0;
+    padding: var(--spacing-1x);
+    display: flex;
+    gap: var(--spacing-1x);
+    border-radius: var(--radius-pill);
+    background: var(--background-glass-light);
+    border: var(--border-width-base) solid var(--border-glass-light);
+}
+.global-nav__item {
+    /* Static positioning is intentional. The expanded panel
+       is positioned against the .global-nav header instead
+       of the item itself, so it can span full bar width. */
+    position: static;
+}
+
+.global-nav__link,
+.global-nav__trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-1x);
+    padding: var(--spacing-2x) var(--spacing-4x);
+    font-family:    var(--font-mono);
+    font-size:      var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    color:          var(--text-default-subtle);
+    background:     transparent;
+    border:         none;
+    border-radius:  var(--radius-pill);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.18s ease, color 0.18s ease;
+    white-space: nowrap;
+}
+.global-nav__link:hover,
+.global-nav__trigger:hover,
+.global-nav__item--has-panel:hover .global-nav__trigger,
+.global-nav__item--has-panel:focus-within .global-nav__trigger {
+    background: var(--background-default);
+    color:      var(--text-default);
+}
+
+.global-nav__link.is-current,
+.global-nav__trigger.is-current {
+    background:  var(--background-primary-subtle);
+    color:       var(--text-primary-strong);
+    font-weight: var(--font-weight-medium);
+}
+.global-nav__link.is-current:hover,
+.global-nav__trigger.is-current:hover {
+    background: var(--background-primary-minimal);
+    color:      var(--text-primary-strong);
+}
+
+.global-nav__chev {
+    width:  var(--spacing-3x);
+    height: var(--spacing-3x);
+    transition: transform 0.18s ease;
+    opacity: 0.6;
+}
+.global-nav__item--has-panel:hover .global-nav__chev,
+.global-nav__item--has-panel.is-open .global-nav__chev {
+    transform: rotate(180deg);
+}
+
+/* =========================================================
+   04 / VERSION PILL
+   ========================================================= */
+.global-nav__version {
+    font-family:    var(--font-mono);
+    font-size:      var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-wide);
+    color:          var(--text-default-minimal);
+    padding:        var(--spacing-half) var(--spacing-3x);
+    border-radius:  var(--radius-pill);
+    border:         var(--border-width-base) solid var(--border-default);
+    white-space: nowrap;
+}
+
+/* =========================================================
+   05 / EXPANDING PANEL (TIER 2)
+   The panel sits absolutely below the bar and expands
+   on hover of either the trigger or the panel itself,
+   or on click (.is-open) for keyboard / touch users.
+   ========================================================= */
+.global-nav__panel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    background: var(--background-default);
+    border-bottom: var(--border-width-base) solid var(--border-default);
+    box-shadow: var(--shadow-md);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-4px);
+    pointer-events: none;
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease,
+        visibility 0s linear 0.2s;
+    z-index: 49;
+}
+
+.global-nav__item--has-panel:hover .global-nav__panel,
+.global-nav__item--has-panel:focus-within .global-nav__panel,
+.global-nav__item--has-panel.is-open .global-nav__panel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease,
+        visibility 0s;
+}
+
+.global-nav__panel-inner {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: var(--spacing-12x) var(--spacing-8x);
+}
+
+.global-nav__panel-eyebrow {
+    font-family:    var(--font-mono);
+    font-size:      var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color:          var(--text-default-minimal);
+    margin: 0 0 var(--spacing-6x);
+}
+
+.global-nav__panel-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: var(--spacing-12x);
+    row-gap: var(--spacing-1x);
+}
+.global-nav__panel--compact .global-nav__panel-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: none;
+}
+
+.global-nav__panel-list li { margin: 0; }
+
+.global-nav__panel-list a {
+    display: flex;
+    align-items: baseline;
+    gap: var(--spacing-3x);
+    padding: var(--spacing-2x) 0;
+    font-family: var(--font-sans);
+    font-size:   var(--text-h6);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-default);
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+.global-nav__panel-list a:hover,
+.global-nav__panel-list a:focus-visible {
+    color: var(--text-primary-strong);
+}
+.global-nav__panel-list a.is-current {
+    color: var(--text-primary-strong);
+}
+.global-nav__panel-list a.is-current::before {
+    content: '';
+    display: inline-block;
+    width:  var(--spacing-1x);
+    height: var(--spacing-1x);
+    margin-right: calc(-1 * var(--spacing-1x));
+    border-radius: 50%;
+    background: var(--background-primary);
+    transform: translateX(-12px);
+}
+
+.global-nav__panel-list a.is-placeholder {
+    color: var(--text-default-minimal);
+}
+.global-nav__panel-list a.is-placeholder:hover {
+    color: var(--text-default-subtle);
+}
+.global-nav__panel-list a.is-placeholder::after {
+    content: 'placeholder';
+    margin-left: var(--spacing-2x);
+    font-family:    var(--font-mono);
+    font-size:      var(--text-eyebrow);
+    font-weight:    var(--font-weight-regular);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+    border: var(--border-width-base) solid var(--border-default);
+    padding: 0 var(--spacing-1x);
+    border-radius: var(--radius-mc);
+}
+
+.global-nav__index {
+    font-family:    var(--font-mono);
+    font-size:      var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-wide);
+    color:          var(--text-default-minimal);
+    min-width: 2.25ch;
+    flex-shrink: 0;
+}
+
+/* =========================================================
+   06 / RESPONSIVE
+   The panel grid collapses on narrow viewports, and the
+   tier-1 list scrolls horizontally rather than wrapping.
+   ========================================================= */
+@media (max-width: 960px) {
+    .global-nav__inner {
+        grid-template-columns: auto 1fr;
+        gap: var(--spacing-3x);
+    }
+    .global-nav__version { display: none; }
+    .global-nav__sections {
+        justify-self: end;
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+    .global-nav__sections::-webkit-scrollbar { display: none; }
+    .global-nav__panel-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: var(--spacing-6x);
+    }
+    .global-nav__panel-inner {
+        padding: var(--spacing-8x) var(--spacing-6x);
+    }
+}
+@media (max-width: 600px) {
+    .global-nav__brand small { display: none; }
+    .global-nav__panel-list {
+        grid-template-columns: 1fr;
+    }
+}

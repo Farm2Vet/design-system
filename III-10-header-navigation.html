@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Farm2Vet · Header &amp; Navigation Bar — Design System</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<!-- Design system: shared, reusable foundation -->
+<link rel="stylesheet" href="styles/tokens.css" />
+<link rel="stylesheet" href="styles/base.css" />
+<link rel="stylesheet" href="styles/typography.css" />
+<link rel="stylesheet" href="styles/shell.css" />
+<link rel="stylesheet" href="styles/global-nav.css" />
+<!-- Toast component (provides the .toast--snackbar copy-confirmation pill) -->
+<link rel="stylesheet" href="styles/toast.css" />
+<!-- Page-specific layout for III-10 -->
+<link rel="stylesheet" href="styles/page-section-10.css" />
+<!-- Reuse: usage-note pattern + token-table styling + .card-callout -->
+<link rel="stylesheet" href="styles/page-section-04.css" />
+<link rel="stylesheet" href="styles/page-section-03.css" />
+<link rel="stylesheet" href="styles/page-section-05.css" />
+
+<script src="scripts/global-nav.js" defer></script>
+
+</head>
+<body data-page="III-10-header-navigation">
+
+<!-- ========================== GLOBAL NAV ========================== -->
+<header class="global-nav" aria-label="Design system navigation">
+  <div class="global-nav__inner">
+
+    <a href="design-system-v1.html" class="global-nav__brand" aria-label="Farm2Vet design system home">
+      <img src="logo/logo-wordmark-color.svg" alt="Farm2Vet" class="global-nav__logo" />
+      <small>Design System</small>
+    </a>
+
+    <nav class="global-nav__sections" aria-label="Design system sections">
+      <ul class="global-nav__list">
+        <li class="global-nav__item">
+          <a class="global-nav__link" href="I-primitives.html">I. Primitives</a>
+        </li>
+        <li class="global-nav__item">
+          <a class="global-nav__link" href="II-semantics.html">II. Semantics</a>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="components">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-components">
+            III. Components
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-components" class="global-nav__panel" role="region" aria-label="Components">
+            <div class="global-nav__panel-inner">
+              <p class="global-nav__panel-eyebrow">Component pages</p>
+              <ul class="global-nav__panel-list">
+                <li><a href="III-01-typography.html"><span class="global-nav__index">01</span><span>Typography</span></a></li>
+                <li><a href="III-02-buttons.html"><span class="global-nav__index">02</span><span>Buttons</span></a></li>
+                <li><a href="III-03-form.html"><span class="global-nav__index">03</span><span>Form</span></a></li>
+                <li><a href="III-04-dropdowns.html"><span class="global-nav__index">04</span><span>Dropdowns</span></a></li>
+                <li><a href="III-05-cards.html"><span class="global-nav__index">05</span><span>Cards</span></a></li>
+                <li><a href="III-06-modal.html"><span class="global-nav__index">06</span><span>Modal Dialog</span></a></li>
+                <li><a href="III-07-side-panel.html" class="is-placeholder"><span class="global-nav__index">07</span><span>Side Panel</span></a></li>
+                <li><a href="III-08-toast.html"><span class="global-nav__index">08</span><span>Toast</span></a></li>
+                <li><a href="III-09-alert-badges.html"><span class="global-nav__index">09</span><span>Alert &amp; Badge</span></a></li>
+                <li><a href="III-10-header-navigation.html"><span class="global-nav__index">10</span><span>Header &amp; Nav Bar</span></a></li>
+                <li><a href="III-12-sidebar.html" class="is-placeholder"><span class="global-nav__index">12</span><span>Sidebar</span></a></li>
+                <li><a href="III-14-tabs.html" class="is-placeholder"><span class="global-nav__index">14</span><span>Tabs</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="assets">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-assets">
+            IV. Assets
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-assets" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Assets">
+            <div class="global-nav__panel-inner">
+              <p class="global-nav__panel-eyebrow">Asset libraries</p>
+              <ul class="global-nav__panel-list">
+                <li><a href="IV-01-logo.html"   class="is-placeholder"><span class="global-nav__index">01</span><span>Logo</span></a></li>
+                <li><a href="IV-02-icons.html"  class="is-placeholder"><span class="global-nav__index">02</span><span>Icons</span></a></li>
+                <li><a href="IV-03-images.html" class="is-placeholder"><span class="global-nav__index">03</span><span>Images</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="mockups">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-mockups">
+            V. Mockups
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-mockups" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Mockups">
+            <div class="global-nav__panel-inner">
+              <p class="global-nav__panel-eyebrow">Reference mockups</p>
+              <ul class="global-nav__panel-list">
+                <li><a href="V-01-wiki.html"    class="is-placeholder"><span class="global-nav__index">01</span><span>Wiki</span></a></li>
+                <li><a href="V-02-chatbot.html" class="is-placeholder"><span class="global-nav__index">02</span><span>Chatbot</span></a></li>
+                <li><a href="V-03-hero.html"    class="is-placeholder"><span class="global-nav__index">03</span><span>Hero</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+      </ul>
+    </nav>
+
+    <span class="global-nav__version">v 0.5 · 2026</span>
+  </div>
+</header>
+
+<main class="shell" id="top">
+
+  <!-- ========================== HERO ========================== -->
+  <section class="hero">
+    <div>
+      <h1 class="text-display reveal">
+        <span class="num">Section 10 / Components</span>
+        Header &amp; <em>Navigation Bar</em>.
+      </h1>
+    </div>
+    <div>
+      <p class="lede reveal">
+        The shared page chrome rendered at the top of every design-system
+        page. A two-tier surface: a sticky bar exposing the five top-level
+        Sections of the system, and an expanding panel that lists every
+        Subsection (each a dedicated HTML page) for the three Sections that
+        contain more than one. Resolves through the
+        <code>--global-nav-*</code> pattern back into the system's shared
+        glass, primary, and mono-label tokens.
+      </p>
+    </div>
+
+    <dl class="meta-strip reveal">
+      <div><dt>Tiers</dt><dd>2</dd></div>
+      <div><dt>Sections</dt><dd>5</dd></div>
+      <div><dt>Panels</dt><dd>3 · expanding</dd></div>
+      <div><dt>Position</dt><dd>sticky</dd></div>
+    </dl>
+  </section>
+
+  <!-- ========================== ARCHITECTURAL CALLOUT ========================== -->
+  <section class="chunk" style="padding-top: var(--spacing-8x); padding-bottom: 0;">
+    <div class="card-callout reveal" role="note">
+      <span class="label">Architectural note · scope boundaries</span>
+      <p>
+        <strong>The global nav is the system-level surface.</strong>
+        It exposes the structure of the design system itself —
+        Primitives, Semantics, Components, Assets, Mockups — and is
+        identical across every documentation page. In-page anchors,
+        on-page tables of contents, breadcrumbs, and product-level
+        navigation belong to other components and must not be merged
+        into this bar.
+      </p>
+    </div>
+
+    <div class="card-callout reveal" role="note" style="margin-top: var(--spacing-4x);">
+      <span class="label">Architectural note · single source of truth</span>
+      <p>
+        <strong>The bar is rendered by every page from the same markup.</strong>
+        The active Subsection is resolved at runtime from
+        <code>&lt;body data-page=&quot;…&quot;&gt;</code> by
+        <code>scripts/global-nav.js</code>. Pages do not author per-link
+        active classes; if a page is renamed, only its
+        <code>data-page</code> attribute and the link inside the panel
+        need to change.
+      </p>
+    </div>
+  </section>
+
+  <!-- ========================== 01 / ANATOMY ========================== -->
+  <section class="chunk" id="anatomy">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">01 / Anatomy</span>
+        <h2 class="text-display-sm">Three slots, one row.</h2>
+      </div>
+      <p>
+        The bar (<code>.global-nav__inner</code>) is a three-column
+        grid: brand left, section list centred, version pill right.
+        The expanding panel is positioned against the bar itself —
+        not against any individual section item — so its left and
+        right edges align with the page, regardless of which Section
+        triggered it.
+      </p>
+    </header>
+
+    <div class="nav-anatomy reveal" aria-label="Header anatomy diagram">
+      <div class="nav-anatomy__bar">
+        <div class="nav-anatomy__brand">
+          <span class="nav-anatomy__tag">A · brand</span>
+          Farm2Vet · Design System
+        </div>
+        <div class="nav-anatomy__sections">
+          <span class="nav-anatomy__tag">B · sections (tier 1)</span>
+          <span>I. Primitives</span>
+          <span>II. Semantics</span>
+          <span class="is-current">III. Components</span>
+          <span>IV. Assets</span>
+          <span>V. Mockups</span>
+        </div>
+        <div class="nav-anatomy__version">
+          <span class="nav-anatomy__tag">C · version</span>
+          v 0.5 · 2026
+        </div>
+      </div>
+    </div>
+
+    <ul class="spec-list reveal" aria-label="Slot specification">
+      <li>
+        <span class="spec-key">A · brand</span>
+        <span class="spec-val">
+          The wordmark plus the system label. Acts as the home anchor;
+          links to <code>design-system-v1.html</code>. Required on every
+          page. The label is rendered in mono-eyebrow type and is divided
+          from the wordmark by the standard left-rule.
+        </span>
+      </li>
+      <li>
+        <span class="spec-key">B · sections</span>
+        <span class="spec-val">
+          The five top-level Sections of the design system. Rendered as
+          a single pill-grouped list (<code>.global-nav__list</code>).
+          Two of the five (Primitives, Semantics) link directly to a
+          single page; three (Components, Assets, Mockups) are
+          <code>.global-nav__item--has-panel</code> triggers and open
+          tier 2. Section identity is fixed; do not add or remove items
+          from this list outside a documented system version bump.
+        </span>
+      </li>
+      <li>
+        <span class="spec-key">C · version</span>
+        <span class="spec-val">
+          The system version pill. Read-only, mono type. Reflects the
+          token-set version, not any per-page revision.
+        </span>
+      </li>
+      <li>
+        <span class="spec-key">Tier 2 · panel</span>
+        <span class="spec-val">
+          A full-bar-width panel (<code>.global-nav__panel</code>) that
+          opens below the bar on hover, focus, or click of a Section
+          trigger. Contains a single eyebrow label and a multi-column
+          grid of Subsection links. Subsections that have not yet been
+          authored are marked <code>.is-placeholder</code> and rendered
+          in muted type with an inline <em>placeholder</em> tag.
+        </span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ========================== 02 / TIER 1 — SECTION LIST ========================== -->
+  <section class="chunk" id="tier-1">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">02 / Tier 1 — Section list</span>
+        <h2 class="text-display-sm">Direct links and triggers.</h2>
+      </div>
+      <p>
+        Each tier-1 entry is one of two element types. A direct link
+        (<code>.global-nav__link</code>) points to a single page;
+        a trigger (<code>.global-nav__trigger</code>) is a
+        <code>&lt;button&gt;</code> that toggles its associated
+        panel. Both share the same visual language — a pill-shaped
+        hover background, mono-eyebrow type, and the primary-tinted
+        active state — so that tier-1 reads as a single uniform list
+        even though it mixes the two element types.
+      </p>
+    </header>
+
+    <p class="usage-note reveal">
+      <strong>Use a direct link when the Section maps to one page.</strong>
+      Primitive Tokens and Semantic Tokens each fit on a single page;
+      no expansion is offered for them. Adding an empty panel to a
+      single-page Section dilutes the affordance — the chevron has to
+      mean something.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>Use a trigger when the Section is composed of multiple
+      pages.</strong> Components, Assets, and Mockups are
+      multi-page Sections. The trigger renders a chevron glyph
+      (<code>.global-nav__chev</code>) that rotates 180° on
+      hover and on <code>.is-open</code>, signalling that the row
+      reveals more content below.
+    </p>
+  </section>
+
+  <!-- ========================== 03 / TIER 2 — PANEL ========================== -->
+  <section class="chunk" id="tier-2">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">03 / Tier 2 — Panel</span>
+        <h2 class="text-display-sm">A single-purpose surface.</h2>
+      </div>
+      <p>
+        A panel lists every page that belongs to its parent Section.
+        The list is a CSS grid with up to three columns
+        (<code>.global-nav__panel-list</code>) collapsed to one column
+        on narrow viewports. Each entry is a two-part link: a mono
+        index (<code>01</code>, <code>02</code>, …) followed by the
+        Subsection's title. Subsection numbers match the system's
+        canonical ordering and do not renumber when items are
+        inserted; the index is the page's identity, not its position.
+      </p>
+    </header>
+
+    <p class="usage-note reveal">
+      <strong>One panel per multi-page Section, never more.</strong>
+      Nested panels — a panel that opens a sub-panel — are not
+      supported. If a Section grows beyond a single panel can hold
+      legibly, split it into a new top-level Section with a
+      documented system version bump.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>Width, not column count, owns the layout.</strong>
+      The panel inner width is capped at the system's shell width
+      (<code>1040px</code>) so its columns line up with page content
+      below. Three columns on desktop, two on tablet, one on mobile.
+      Column count is a function of viewport, not item count.
+    </p>
+  </section>
+
+  <!-- ========================== 04 / STATES ========================== -->
+  <section class="chunk" id="states">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">04 / States</span>
+        <h2 class="text-display-sm">Rest, hover, current.</h2>
+      </div>
+      <p>
+        Three resolved states for tier-1 entries. The active state is
+        applied by the runtime to the Section that contains the
+        current page, so the bar reflects location even when the
+        panel is collapsed.
+      </p>
+    </header>
+
+    <div class="state-grid reveal" aria-label="Tier-1 link states">
+
+      <article class="state-card">
+        <span class="label">Rest</span>
+        <div class="demo">
+          <span class="pill is-rest">III. Components</span>
+        </div>
+        <div class="meta"><span>color</span><strong>--text-default-subtle</strong></div>
+      </article>
+
+      <article class="state-card">
+        <span class="label">Hover / focus</span>
+        <div class="demo">
+          <span class="pill is-hover">III. Components</span>
+        </div>
+        <div class="meta"><span>background</span><strong>--background-default</strong></div>
+      </article>
+
+      <article class="state-card">
+        <span class="label">Current section</span>
+        <div class="demo">
+          <span class="pill is-current">III. Components</span>
+        </div>
+        <div class="meta"><span>token</span><strong>--background-primary-subtle</strong></div>
+      </article>
+
+    </div>
+
+    <p class="usage-note reveal" style="margin-top: var(--spacing-8x);">
+      <strong>Inside the panel, the current page wears a leading
+      dot.</strong> The current Subsection link receives
+      <code>.is-current</code>, applied by the runtime. The dot is a
+      <code>::before</code> pseudo-element rendered in
+      <code>--background-primary</code>; no extra markup is required.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>Placeholders are dimmed and tagged.</strong>
+      Subsection links pointing to pages that have not yet been
+      authored carry <code>.is-placeholder</code>. The class lowers
+      the link's contrast and appends a mono <em>placeholder</em> tag
+      via <code>::after</code>, signalling that the destination
+      exists in the structure but is not yet documented.
+    </p>
+  </section>
+
+  <!-- ========================== 05 / BEHAVIOUR ========================== -->
+  <section class="chunk" id="behaviour">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">05 / Behaviour</span>
+        <h2 class="text-display-sm">Open, dismiss, follow.</h2>
+      </div>
+      <p>
+        Behaviour is split between CSS and the bar's runtime.
+        Hovering and focus-within toggling is owned by CSS so the
+        bar works without JavaScript; click-to-toggle and dismiss
+        live in <code>scripts/global-nav.js</code>.
+      </p>
+    </header>
+
+    <table class="behaviour-table reveal" aria-label="Behaviour matrix">
+      <thead>
+        <tr>
+          <th>Input</th>
+          <th>Outcome</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Pointer enters trigger</td>
+          <td>The trigger's panel opens, driven by the
+          <code>:hover</code> selector. No JS involvement; the
+          panel stays open while the pointer is over either the
+          trigger or the panel.</td>
+        </tr>
+        <tr>
+          <td>Pointer leaves both</td>
+          <td>The panel closes after a 200ms opacity transition.
+          Visibility is toggled by the same selector — there is no
+          delay-to-close timer.</td>
+        </tr>
+        <tr>
+          <td>Trigger receives keyboard focus</td>
+          <td>The panel opens via <code>:focus-within</code>. Tab
+          progresses through the panel's links; Shift+Tab returns
+          to the trigger.</td>
+        </tr>
+        <tr>
+          <td>Trigger is clicked</td>
+          <td>The runtime toggles <code>.is-open</code> on the
+          parent item and updates <code>aria-expanded</code>.
+          Other open panels are closed first; only one panel is
+          open at a time.</td>
+        </tr>
+        <tr>
+          <td><code>Esc</code> pressed</td>
+          <td>The runtime closes every open panel and resets
+          <code>aria-expanded</code> on each trigger.</td>
+        </tr>
+        <tr>
+          <td>Click outside the bar</td>
+          <td>The runtime closes every open panel. Clicks inside
+          the panel are passed through to their target link.</td>
+        </tr>
+        <tr>
+          <td>Page scrolls</td>
+          <td>The bar remains pinned at the top via
+          <code>position: sticky</code>. The panel sits absolutely
+          beneath the bar and follows it.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ========================== 06 / ACTIVE PAGE RESOLUTION ========================== -->
+  <section class="chunk" id="active-page">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">06 / Active page resolution</span>
+        <h2 class="text-display-sm">One attribute, two highlights.</h2>
+      </div>
+      <p>
+        Each page declares its own filename via
+        <code>&lt;body data-page=&quot;…&quot;&gt;</code>. On
+        <code>DOMContentLoaded</code> the runtime reads that value,
+        finds the matching link inside the panel, and applies
+        <code>.is-current</code>. If the link is inside a panel,
+        the parent Section trigger is also marked <code>.is-current</code>
+        so the bar reflects the active Section even when the panel
+        is collapsed.
+      </p>
+    </header>
+
+    <p class="usage-note reveal">
+      <strong>The attribute value is the filename without the
+      <code>.html</code> extension.</strong> The runtime accepts
+      either form, but pages should normalise to the bare stem.
+    </p>
+
+<pre class="code reveal"><span class="com">&lt;!-- Single line each page must change --&gt;</span>
+<span class="tag">&lt;body</span> <span class="attr">data-page</span>=<span class="str">"III-10-header-navigation"</span><span class="tag">&gt;</span></pre>
+
+    <p class="usage-note reveal">
+      <strong>Renaming a page is a two-step edit.</strong>
+      Update <code>data-page</code> on the page itself, and update
+      the link inside the matching panel of every page (the panel
+      markup is identical across pages, so a single search-replace
+      across the directory completes the rename).
+    </p>
+  </section>
+
+  <!-- ========================== 07 / ACCESSIBILITY ========================== -->
+  <section class="chunk" id="accessibility">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">07 / Accessibility</span>
+        <h2 class="text-display-sm">Roles, labels, focus.</h2>
+      </div>
+      <p>
+        The bar uses native semantics where possible. The outer
+        <code>&lt;header&gt;</code> declares <code>aria-label="Design
+        system navigation"</code>; the section list is a
+        <code>&lt;nav&gt;</code> with its own
+        <code>aria-label</code>; each Section's panel is a
+        <code>role=&quot;region&quot;</code> with the Section's name
+        as label.
+      </p>
+    </header>
+
+    <ul class="spec-list reveal" aria-label="Accessibility specification">
+      <li>
+        <span class="spec-key">Trigger</span>
+        <span class="spec-val">
+          Rendered as <code>&lt;button type=&quot;button&quot;&gt;</code>,
+          not <code>&lt;a&gt;</code>. <code>aria-expanded</code> is kept
+          in sync with the panel's open state by the runtime;
+          <code>aria-controls</code> points to the panel's
+          <code>id</code>.
+        </span>
+      </li>
+      <li>
+        <span class="spec-key">Panel</span>
+        <span class="spec-val">
+          Each panel carries <code>role=&quot;region&quot;</code> and an
+          <code>aria-label</code> matching its parent Section name.
+          When closed the panel has <code>visibility: hidden</code> and
+          <code>pointer-events: none</code>, removing it from the tab
+          order without changing the DOM.
+        </span>
+      </li>
+      <li>
+        <span class="spec-key">Keyboard</span>
+        <span class="spec-val">
+          Tab progresses through each tier-1 entry in document order.
+          A trigger opens its panel on focus; subsequent Tab steps move
+          through the panel's links. Shift+Tab reverses. <code>Esc</code>
+          closes the open panel and returns focus to the trigger.
+        </span>
+      </li>
+      <li>
+        <span class="spec-key">Visible focus</span>
+        <span class="spec-val">
+          Focus rings inherit the system's default
+          <code>:focus-visible</code> ring from <code>base.css</code>.
+          The bar does not suppress focus styles.
+        </span>
+      </li>
+      <li>
+        <span class="spec-key">Reduced motion</span>
+        <span class="spec-val">
+          The panel's translate-and-fade transition respects the
+          system's <code>prefers-reduced-motion</code> rule from
+          <code>base.css</code>. No bar-specific animation is added
+          beyond the shared opacity transition.
+        </span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ========================== 08 / RESPONSIVE ========================== -->
+  <section class="chunk" id="responsive">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">08 / Responsive</span>
+        <h2 class="text-display-sm">Three breakpoints.</h2>
+      </div>
+      <p>
+        The bar collapses in two stages. Below
+        <code>960px</code> the version pill is dropped and the
+        section list scrolls horizontally; the panel grid drops to
+        two columns. Below <code>600px</code> the brand label is
+        hidden and the panel grid collapses to a single column.
+      </p>
+    </header>
+
+    <ul class="spec-list reveal" aria-label="Responsive specification">
+      <li>
+        <span class="spec-key">≥ 960px</span>
+        <span class="spec-val">
+          Full bar: brand, centred section list, version pill. Panel
+          grid renders three columns.
+        </span>
+      </li>
+      <li>
+        <span class="spec-key">601–959px</span>
+        <span class="spec-val">
+          Version pill hidden; section list right-aligned and
+          horizontally scrollable. Panel grid renders two columns.
+        </span>
+      </li>
+      <li>
+        <span class="spec-key">≤ 600px</span>
+        <span class="spec-val">
+          Brand label hidden (logo only). Panel grid collapses to a
+          single column.
+        </span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ========================== 09 / USAGE ========================== -->
+  <section class="chunk" id="usage">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">09 / Usage</span>
+        <h2 class="text-display-sm">Drop in, declare the page.</h2>
+      </div>
+      <p>
+        Every page renders the same nav markup. Three lines of
+        per-page configuration are required: the
+        <code>data-page</code> attribute, the
+        <code>global-nav.css</code> link, and the
+        <code>global-nav.js</code> script.
+      </p>
+    </header>
+
+<pre class="code reveal"><span class="com">&lt;!-- 1. Stylesheet, after shell.css --&gt;</span>
+<span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="str">"stylesheet"</span> <span class="attr">href</span>=<span class="str">"styles/global-nav.css"</span> <span class="tag">/&gt;</span>
+
+<span class="com">&lt;!-- 2. Runtime, deferred --&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="str">"scripts/global-nav.js"</span> <span class="attr">defer</span><span class="tag">&gt;&lt;/script&gt;</span>
+
+<span class="com">&lt;!-- 3. Page identity --&gt;</span>
+<span class="tag">&lt;body</span> <span class="attr">data-page</span>=<span class="str">"III-02-buttons"</span><span class="tag">&gt;</span>
+
+<span class="com">&lt;!-- 4. Bar markup, identical across pages --&gt;</span>
+<span class="tag">&lt;header</span> <span class="attr">class</span>=<span class="str">"global-nav"</span> <span class="attr">aria-label</span>=<span class="str">"Design system navigation"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"global-nav__inner"</span><span class="tag">&gt;</span>
+    <span class="com">&lt;!-- brand · sections · version --&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/header&gt;</span></pre>
+
+    <p class="usage-note reveal">
+      <strong>Do not author per-link <code>.is-current</code>
+      classes by hand.</strong> The runtime resolves the active
+      page from <code>data-page</code>. Hard-coded active classes
+      drift out of sync with the filename and produce two
+      conflicting highlights.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>Do not nest a second navigation surface inside the
+      bar.</strong> Breadcrumbs, in-page tables of contents, and
+      contextual sub-navigation are separate components. The bar
+      is reserved for the system-level structure.
+    </p>
+  </section>
+
+  <!-- ========================== 10 / TOKENS ========================== -->
+  <section class="chunk" id="tokens">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">10 / Component tokens</span>
+        <h2 class="text-display-sm">Token <em>map</em>.</h2>
+      </div>
+      <p>
+        The component does not introduce its own
+        <code>--global-nav-*</code> token namespace; every value
+        resolves directly to a semantic token. The map below
+        enumerates the semantic tokens consumed by the bar so that
+        a change to any of them propagates through the navigation
+        surface in step with the rest of the system.
+      </p>
+    </header>
+
+    <table class="token-table reveal" aria-label="Header & navigation bar tokens">
+      <thead>
+        <tr>
+          <th>Slot</th>
+          <th>References</th>
+          <th>Resolves to</th>
+          <th>Preview</th>
+        </tr>
+      </thead>
+      <tbody id="navTokenTable"></tbody>
+    </table>
+  </section>
+
+  <!-- ========================== FOOTER ========================== -->
+  <footer>
+    <span class="sigil">Farm2Vet — cultivated intelligence, since 2024.</span>
+    <a href="III-09-alert-badges.html">← Section 09 / Alert &amp; Badge</a>
+    <a href="III-12-sidebar.html">Section 12 / Sidebar →</a>
+    <span>End of Section 10 · Header &amp; Navigation Bar</span>
+  </footer>
+
+</main>
+
+<!-- ========================== TOAST · COPY-CONFIRMATION SNACKBAR ========================== -->
+<div class="toast toast--snackbar" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<script>
+/* =========================================================
+   COMPONENT TOKEN DATA — Header & Navigation Bar
+   The bar references semantic tokens directly (no
+   --global-nav-* namespace). The list below documents which
+   semantic tokens are consumed by which slot.
+   ========================================================= */
+const NAV_TOKENS = [
+  { group: 'Bar · surface', tokens: [
+    ['--global-nav · background',      'var(--background-glass-light)'],
+    ['--global-nav · border-bottom',   'var(--border-glass-light)'],
+    ['--global-nav · backdrop-filter', 'var(--blur-lg) saturate(140%)'],
+    ['--global-nav · z-index',         '50'],
+  ]},
+  { group: 'Brand', tokens: [
+    ['brand · logo height',     'var(--spacing-10x)'],
+    ['brand · label font',      'var(--font-mono)'],
+    ['brand · label size',      'var(--text-eyebrow)'],
+    ['brand · label tracking',  'var(--letter-spacing-eyebrow)'],
+    ['brand · label color',     'var(--text-default-minimal)'],
+    ['brand · divider',         'var(--border-default)'],
+  ]},
+  { group: 'Tier 1 · section list', tokens: [
+    ['list · background',           'var(--background-glass-light)'],
+    ['list · border',               'var(--border-glass-light)'],
+    ['list · radius',               'var(--radius-pill)'],
+    ['link · font',                 'var(--font-mono)'],
+    ['link · size',                 'var(--text-eyebrow)'],
+    ['link · tracking',             'var(--letter-spacing-wide)'],
+    ['link · color (rest)',         'var(--text-default-subtle)'],
+    ['link · color (hover)',        'var(--text-default)'],
+    ['link · background (hover)',   'var(--background-default)'],
+    ['link · color (current)',      'var(--text-primary-strong)'],
+    ['link · background (current)', 'var(--background-primary-subtle)'],
+  ]},
+  { group: 'Tier 2 · panel', tokens: [
+    ['panel · background',         'var(--background-default)'],
+    ['panel · border-bottom',      'var(--border-default)'],
+    ['panel · shadow',             'var(--shadow-md)'],
+    ['panel · inner max-width',    '1040px'],
+    ['panel · inner padding',      'var(--spacing-12x) var(--spacing-8x)'],
+    ['eyebrow · font',             'var(--font-mono)'],
+    ['eyebrow · size',             'var(--text-eyebrow)'],
+    ['eyebrow · tracking',         'var(--letter-spacing-eyebrow)'],
+    ['eyebrow · color',            'var(--text-default-minimal)'],
+    ['link · font',                'var(--font-sans)'],
+    ['link · size',                'var(--text-h6)'],
+    ['link · weight',              'var(--font-weight-medium)'],
+    ['link · color (rest)',        'var(--text-default)'],
+    ['link · color (hover)',       'var(--text-primary-strong)'],
+    ['index · font',               'var(--font-mono)'],
+    ['index · size',               'var(--text-eyebrow)'],
+    ['index · tracking',           'var(--letter-spacing-wide)'],
+    ['index · color',              'var(--text-default-minimal)'],
+    ['placeholder · color',        'var(--text-default-minimal)'],
+    ['placeholder · tag border',   'var(--border-default)'],
+    ['current · dot color',        'var(--background-primary)'],
+  ]},
+  { group: 'Version pill', tokens: [
+    ['pill · font',     'var(--font-mono)'],
+    ['pill · size',     'var(--text-eyebrow)'],
+    ['pill · tracking', 'var(--letter-spacing-wide)'],
+    ['pill · color',    'var(--text-default-minimal)'],
+    ['pill · border',   'var(--border-default)'],
+    ['pill · radius',   'var(--radius-pill)'],
+  ]},
+  { group: 'Motion', tokens: [
+    ['panel · open transition',  'opacity 0.2s ease, transform 0.2s ease'],
+    ['panel · enter offset',     'translateY(-4px)'],
+    ['link · transition',        'background 0.18s ease, color 0.18s ease'],
+    ['chevron · transition',     'transform 0.18s ease'],
+    ['chevron · open transform', 'rotate(180deg)'],
+  ]},
+];
+
+/* =========================================================
+   RESOLVED VALUES — read each var(--…) reference off the
+   document root so the resolved column reflects whatever
+   the running token set evaluates to. Non-var entries are
+   shown verbatim.
+   ========================================================= */
+function resolveCss(value) {
+    if (!value) return '';
+    const match = String(value).match(/^var\((--[^)]+)\)$/);
+    if (!match) return String(value).trim();
+    const v = getComputedStyle(document.documentElement)
+        .getPropertyValue(match[1]).trim();
+    return v || String(value).trim();
+}
+function isColorish(v) {
+    if (!v) return false;
+    return v.startsWith('#')
+        || v.startsWith('rgb')
+        || v.startsWith('hsl')
+        || v.startsWith('color-mix')
+        || v === 'transparent'
+        || /^[a-z]+$/.test(v);
+}
+
+function renderTokenTable() {
+    const tbody = document.getElementById('navTokenTable');
+    if (!tbody) return;
+    let html = '';
+    NAV_TOKENS.forEach(group => {
+        html += `<tr class="group-row"><td colspan="4">${group.group}</td></tr>`;
+        group.tokens.forEach(([name, ref]) => {
+            const resolved = resolveCss(ref) || '—';
+            const isColor = isColorish(resolved);
+            const chip = isColor
+                ? `<span class="chip" style="background:${resolved}"></span>`
+                : `<span class="chip" style="background: repeating-linear-gradient(45deg, var(--neutral-100) 0 6px, var(--neutral-50) 6px 12px); opacity:.6"></span>`;
+            html += `
+                <tr>
+                  <td class="tk-name">${name}</td>
+                  <td class="tk-ref">${ref.replace(/</g,'&lt;')}</td>
+                  <td class="tk-resolved">${resolved.length > 60 ? resolved.slice(0,57)+'…' : resolved}</td>
+                  <td class="tk-swatch">${chip}</td>
+                </tr>`;
+        });
+    });
+    tbody.innerHTML = html;
+}
+
+/* =========================================================
+   COPY-ON-CLICK — reuse the snackbar pattern. Clicking a
+   token name in the .token-table copies var(--name) to the
+   clipboard and shows the bottom-centre snackbar pill.
+   ========================================================= */
+const snackbarEl = document.getElementById('toast');
+let snackbarTimer;
+function showSnackbar(label) {
+    if (!snackbarEl) return;
+    snackbarEl.innerHTML = `Copied <span class="toast-name">${label}</span>`;
+    snackbarEl.classList.add('show');
+    clearTimeout(snackbarTimer);
+    snackbarTimer = setTimeout(() => snackbarEl.classList.remove('show'), 2000);
+}
+async function copyToken(text, label) {
+    try {
+        if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(text);
+        } else {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            ta.remove();
+        }
+        showSnackbar(label);
+    } catch (_e) { /* swallow — clipboard isn't a hard requirement here */ }
+}
+document.addEventListener('click', (e) => {
+    const cell = e.target.closest('.token-table .tk-name');
+    if (!cell) return;
+    const text = cell.textContent.trim();
+    if (text.startsWith('--')) {
+        copyToken(`var(${text})`, text);
+    }
+});
+
+/* =========================================================
+   REVEAL — fade-up content as it scrolls into view.
+   Mirrors the behaviour used on every other section page.
+   ========================================================= */
+function initReveal() {
+    const targets = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) {
+        targets.forEach(el => el.classList.add('is-visible'));
+        return;
+    }
+    const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                io.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.12 });
+    targets.forEach(el => io.observe(el));
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    renderTokenTable();
+    initReveal();
+});
+</script>
+
+</body>
+</html>

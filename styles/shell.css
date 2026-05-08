@@ -315,7 +315,78 @@ footer a:hover { color: var(--text-primary); }
    still available as the .toast.toast--snackbar variant of
    that component. Pages that need the snackbar must include
    toast.css and apply both classes on the host element.
-   See section-07-toast.html for full documentation.
+   See III-08-toast.html for full documentation.
    ========================================================= */
 
-/* ============================================
+/* =========================================================
+   REVEAL ON SCROLL
+   Every page tags introductory blocks with class="reveal";
+   per-page IntersectionObserver scripts (initReveal) add the
+   .in class as each block scrolls into view. The element
+   fades up and settles. Without the observer running the
+   element must still be visible — see the no-IntersectionObserver
+   fallback in initReveal which marks every .reveal as .in
+   immediately.
+   ========================================================= */
+.reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+        opacity   0.7s ease,
+        transform 0.7s cubic-bezier(.2, .8, .2, 1);
+}
+.reveal.in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* =========================================================
+   SHARED PRESSED AURA — "ds-pulse"
+   A radiating ring fired on any copy-to-clipboard surface
+   the moment its content is committed to the system pasteboard.
+   Consumers attach the keyframe to a transient state class:
+       .swatch.copied      { animation: ds-pulse 0.6s ease; }
+       .token-card.copied  { animation: ds-pulse 0.6s ease; }
+       .card.is-pulsing    { animation: ds-pulse 0.6s ease; }
+   The animation runs once; the JS removes the trigger class
+   on animationend. Replaces the page-local `pulse` and
+   `tokenPulse` keyframes that previously diverged across
+   pages.
+   ========================================================= */
+@keyframes ds-pulse {
+    0% {
+        box-shadow: 0 0 0 0
+            color-mix(in srgb, var(--background-primary-hover) 60%, transparent);
+    }
+    100% {
+        box-shadow: 0 0 0 var(--spacing-5x)
+            color-mix(in srgb, var(--background-primary-hover)  0%, transparent);
+    }
+}
+
+/* =========================================================
+   RESPONSIVE — base shell
+   Component pages may extend these rules; this is the
+   shared baseline.
+   ========================================================= */
+@media (max-width: 960px) {
+    .hero        { grid-template-columns: 1fr; gap: var(--spacing-8x); padding-top: var(--spacing-16x); }
+    .chunk-head  { grid-template-columns: 1fr; gap: var(--spacing-6x); }
+    .meta-strip  { grid-template-columns: repeat(2, 1fr); }
+    .toc         { display: none; }
+}
+@media (max-width: 600px) {
+    .shell       { padding: 0 var(--spacing-5x); }
+    .topbar      { padding: var(--spacing-3x) var(--spacing-5x); }
+}
+
+/* =========================================================
+   REDUCED MOTION — silence reveal motion when the user has
+   set the system-level preference. The pulse keyframe is
+   short and tactile and is left enabled; component-level
+   stylesheets that fire longer animations should add their
+   own override here.
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+}

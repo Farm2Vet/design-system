@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="styles/base.css" />
 <link rel="stylesheet" href="styles/typography.css" />
 <link rel="stylesheet" href="styles/shell.css" />
+<link rel="stylesheet" href="styles/global-nav.css" />
 <link rel="stylesheet" href="styles/button.css" />
 <link rel="stylesheet" href="styles/card.css" />
 <!-- Toast component (provides the .toast--snackbar copy-confirmation pill) -->
@@ -26,29 +27,104 @@
 
 <!-- Shared behaviour: scroll-spy highlights the in-view TOC link -->
 <script src="scripts/scroll-spy.js" defer></script>
+<script src="scripts/global-nav.js" defer></script>
+
 </head>
-<body>
+<body data-page="III-05-cards">
 
-<!-- ========================== TOP BAR ========================== -->
-<header class="topbar">
-  <a href="#top" class="brand" aria-label="Farm2Vet design system">
-    <img src="logo/logo-wordmark-color.svg" alt="Farm2Vet" class="brand-logo" />
-    <small>Design System</small>
-  </a>
-  <nav class="toc" aria-label="Section navigation">
-    <a href="#card-anatomy">01 Anatomy</a>
-    <a href="#card-style">02 Style</a>
-    <a href="#card-layout">03 Layout</a>
-    <a href="#card-functional">04 Functional</a>
-    <a href="#card-content">05 Content</a>
-    <a href="#card-glass-scale">06 Glass</a>
-    <a href="#card-states">07 States</a>
-    <a href="#card-versions">08 Versions</a>
-    <a href="#card-tokens">09 Tokens</a>
-  </nav>
-  <span class="version mono">v 0.5 · 2026</span>
+<!-- ========================== GLOBAL NAV ========================== -->
+<header class="global-nav" aria-label="Design system navigation">
+  <div class="global-nav__inner">
+
+    <a href="design-system-v1.html" class="global-nav__brand" aria-label="Farm2Vet design system home">
+      <img src="logo/logo-wordmark-color.svg" alt="Farm2Vet" class="global-nav__logo" />
+      <small>Design System</small>
+    </a>
+
+    <nav class="global-nav__sections" aria-label="Design system sections">
+      <ul class="global-nav__list">
+        <li class="global-nav__item">
+          <a class="global-nav__link" href="I-primitives.html">I. Primitives</a>
+        </li>
+        <li class="global-nav__item">
+          <a class="global-nav__link" href="II-semantics.html">II. Semantics</a>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="components">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-components">
+            III. Components
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-components" class="global-nav__panel" role="region" aria-label="Components">
+            <div class="global-nav__panel-inner">
+              <p class="global-nav__panel-eyebrow">Component pages</p>
+              <ul class="global-nav__panel-list">
+                <li><a href="III-01-typography.html"><span class="global-nav__index">01</span><span>Typography</span></a></li>
+                <li><a href="III-02-buttons.html"><span class="global-nav__index">02</span><span>Buttons</span></a></li>
+                <li><a href="III-03-form.html"><span class="global-nav__index">03</span><span>Form</span></a></li>
+                <li><a href="III-04-dropdowns.html"><span class="global-nav__index">04</span><span>Dropdowns</span></a></li>
+                <li><a href="III-05-cards.html"><span class="global-nav__index">05</span><span>Cards</span></a></li>
+                <li><a href="III-06-modal.html"><span class="global-nav__index">06</span><span>Modal Dialog</span></a></li>
+                <li><a href="III-07-side-panel.html" class="is-placeholder"><span class="global-nav__index">07</span><span>Side Panel</span></a></li>
+                <li><a href="III-08-toast.html"><span class="global-nav__index">08</span><span>Toast</span></a></li>
+                <li><a href="III-09-alert-badges.html"><span class="global-nav__index">09</span><span>Alert &amp; Badge</span></a></li>
+                <li><a href="III-10-header-navigation.html"><span class="global-nav__index">10</span><span>Header &amp; Nav Bar</span></a></li>
+                <li><a href="III-12-sidebar.html" class="is-placeholder"><span class="global-nav__index">12</span><span>Sidebar</span></a></li>
+                <li><a href="III-14-tabs.html" class="is-placeholder"><span class="global-nav__index">14</span><span>Tabs</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="assets">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-assets">
+            IV. Assets
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-assets" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Assets">
+            <div class="global-nav__panel-inner">
+              <p class="global-nav__panel-eyebrow">Asset libraries</p>
+              <ul class="global-nav__panel-list">
+                <li><a href="IV-01-logo.html"   class="is-placeholder"><span class="global-nav__index">01</span><span>Logo</span></a></li>
+                <li><a href="IV-02-icons.html"  class="is-placeholder"><span class="global-nav__index">02</span><span>Icons</span></a></li>
+                <li><a href="IV-03-images.html" class="is-placeholder"><span class="global-nav__index">03</span><span>Images</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="mockups">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-mockups">
+            V. Mockups
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-mockups" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Mockups">
+            <div class="global-nav__panel-inner">
+              <p class="global-nav__panel-eyebrow">Reference mockups</p>
+              <ul class="global-nav__panel-list">
+                <li><a href="V-01-wiki.html"    class="is-placeholder"><span class="global-nav__index">01</span><span>Wiki</span></a></li>
+                <li><a href="V-02-chatbot.html" class="is-placeholder"><span class="global-nav__index">02</span><span>Chatbot</span></a></li>
+                <li><a href="V-03-hero.html"    class="is-placeholder"><span class="global-nav__index">03</span><span>Hero</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+      </ul>
+    </nav>
+
+    <span class="global-nav__version">v 0.5 · 2026</span>
+  </div>
 </header>
-
 <main class="shell" id="top">
 
   <!-- ========================== HERO ========================== -->
@@ -1374,14 +1450,14 @@
   <!-- ========================== FOOTER ========================== -->
   <footer>
     <span class="sigil">Farm2Vet — cultivated intelligence, since 2024.</span>
-    <a href="section-04b-dropdown.html">← Section 04b / Dropdown</a>
+    <a href="III-04-dropdowns.html">← Section 04b / Dropdown</a>
     <span>End of Section 05 · Card</span>
   </footer>
 
 </main>
 
 <!-- ========================== TOAST ========================== -->
-<!-- Copy-confirmation snackbar — see section-07-toast.html -->
+<!-- Copy-confirmation snackbar — see III-08-toast.html -->
 <div class="toast toast--snackbar" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
 <script>
@@ -1636,7 +1712,7 @@ function initSelectableCards() {
 /* =========================================================
    PRESS PULSE — fire ds-pulse on click
    Mirrors the swatch / token-card copy-pulse pattern from
-   section-01-primitives.html and section-02-semantics.html. Add .is-pulsing,
+   I-primitives.html and II-semantics.html. Add .is-pulsing,
    force a reflow with offsetWidth, re-add to restart. The
    animation runs once (0.6s) then ends; the class stays
    until the next click resets it.
@@ -1703,4 +1779,63 @@ function initKanban() {
       }
     });
     list.addEventListener('dragleave', (e) => {
-      // Only
+      // Only clear when leaving the list entirely
+      if (!list.contains(e.relatedTarget)) {
+        list.classList.remove('is-drop-target');
+      }
+    });
+    list.addEventListener('drop', (e) => {
+      e.preventDefault();
+      list.classList.remove('is-drop-target');
+    });
+  });
+
+  // Find the card whose vertical centre is closest below the
+  // cursor; the dragged card should be inserted before it.
+  function getAfterCard(list, y) {
+    const cards = Array.from(list.querySelectorAll('.card--draggable:not(.is-dragging)'));
+    return cards.reduce((closest, card) => {
+      const rect = card.getBoundingClientRect();
+      const offset = y - rect.top - rect.height / 2;
+      if (offset < 0 && offset > closest.offset) {
+        return { offset: offset, element: card };
+      }
+      return closest;
+    }, { offset: Number.NEGATIVE_INFINITY, element: null }).element;
+  }
+}
+
+/* =========================================================
+   REVEAL ON SCROLL
+   ========================================================= */
+function initReveal() {
+  const items = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    items.forEach(el => el.classList.add('in'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        en.target.classList.add('in');
+        io.unobserve(en.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(el => io.observe(el));
+}
+
+/* =========================================================
+   BOOT
+   ========================================================= */
+document.addEventListener('DOMContentLoaded', () => {
+  renderTokenTable();
+  initSelectableCards();
+  initCardPress();
+  initKanban();
+  initReveal();
+});
+</script>
+
+</body>
+</html>

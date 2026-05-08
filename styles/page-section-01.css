@@ -321,4 +321,30 @@ td.preview .preview-text { line-height: var(--line-height-display); }
 .primitive-note a    { text-decoration: underline; }
 
 /* =========================================================
-   
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 960px) {
+    .type-grid { grid-template-columns: 1fr; }
+    .swatches  { grid-template-columns: repeat(6, 1fr) !important; }
+}
+@media (max-width: 600px) {
+    .shadow-row              { grid-template-columns: 1fr; gap: var(--spacing-5x); }
+    .swatches                { grid-template-columns: repeat(4, 1fr) !important; }
+    .swatches.status-row     { grid-template-columns: repeat(4, 1fr) !important; }
+    .swatches.base-row       { grid-template-columns: repeat(2, 1fr) !important; }
+    .space-row               { grid-template-columns: 150px 50px 1fr; }
+    .space-row .multiplier   { display: none; }
+    table.type-table thead   { display: none; }
+    table.type-table tbody td { display: block; padding: var(--spacing-2x) var(--spacing-4x); border-bottom: none; }
+    table.type-table tbody tr { display: block; padding: var(--spacing-4x) 0; border-bottom: var(--border-width-base) solid var(--border-default); }
+    td.var-name, td.var-value, td.var-px { width: auto; }
+}
+
+/* =========================================================
+   REDUCED MOTION — silence the swatch press transition.
+   The shared ds-pulse keyframe (shell.css) is short and
+   tactile and is left enabled.
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+    .swatch { transition: none; }
+}

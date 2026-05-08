@@ -1,0 +1,268 @@
+/* =========================================================
+   PAGE — COMPONENT · HEADER & NAVIGATION BAR
+   Styles unique to III-10-header-navigation.html: the slot
+   anatomy diagram, the panel-state cards, the behaviour
+   table, and the code-snippet block. The component itself
+   lives in styles/global-nav.css.
+   Depends on: tokens.css, base.css, shell.css, global-nav.css
+   ========================================================= */
+
+/* =========================================================
+   ANATOMY — labelled diagram of the bar's slots
+   The diagram renders a static reduced copy of the bar so
+   slot boundaries can be drawn around the real components
+   rather than abstract boxes. Slot labels ride above the
+   diagram on numbered tags.
+   ========================================================= */
+.nav-anatomy {
+    border-radius: var(--radius-lg);
+    border: var(--border-width-base) solid var(--border-default);
+    background: var(--background-default-subtle);
+    padding: var(--spacing-8x);
+    overflow: hidden;
+}
+
+.nav-anatomy__bar {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: var(--spacing-6x);
+    align-items: center;
+    padding: var(--spacing-3x) var(--spacing-4x);
+    background: var(--background-default);
+    border: var(--border-width-base) solid var(--border-default);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+}
+.nav-anatomy__brand,
+.nav-anatomy__sections,
+.nav-anatomy__version {
+    position: relative;
+    padding: var(--spacing-2x) var(--spacing-3x);
+    border: 1px dashed var(--border-primary-subtle);
+    border-radius: var(--radius-sm);
+}
+.nav-anatomy__brand   { color: var(--text-default); font-family: var(--font-sans); font-weight: var(--font-weight-semibold); }
+.nav-anatomy__sections {
+    display: flex;
+    gap: var(--spacing-2x);
+    justify-content: center;
+}
+.nav-anatomy__sections span {
+    font-family:    var(--font-mono);
+    font-size:      var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    color:          var(--text-default-subtle);
+    padding:        var(--spacing-1x) var(--spacing-3x);
+    border-radius:  var(--radius-pill);
+    border:         var(--border-width-base) solid var(--border-default);
+}
+.nav-anatomy__sections span.is-current {
+    background: var(--background-primary-subtle);
+    color:      var(--text-primary-strong);
+    border-color: transparent;
+}
+.nav-anatomy__version {
+    font-family:    var(--font-mono);
+    font-size:      var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-wide);
+    color:          var(--text-default-minimal);
+}
+.nav-anatomy__tag {
+    position: absolute;
+    top: calc(-1 * var(--spacing-6x));
+    left: 0;
+    font-family:    var(--font-mono);
+    font-size:      var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color:          var(--text-primary-strong);
+    background:     var(--background-primary-subtle);
+    padding:        var(--spacing-half) var(--spacing-2x);
+    border-radius:  var(--radius-mc);
+    white-space: nowrap;
+}
+
+/* =========================================================
+   SPEC LIST — slot table for the anatomy diagram
+   ========================================================= */
+.spec-list {
+    list-style: none;
+    margin: var(--spacing-8x) 0 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    border-top: var(--border-width-base) solid var(--border-default);
+}
+.spec-list > li {
+    display: grid;
+    grid-template-columns: 12ch 1fr;
+    column-gap: var(--spacing-6x);
+    padding: var(--spacing-4x) 0;
+    border-bottom: var(--border-width-base) solid var(--border-default);
+}
+.spec-list .spec-key {
+    font-family:    var(--font-mono);
+    font-size:      var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color:          var(--text-default-minimal);
+    padding-top:    var(--spacing-half);
+}
+.spec-list .spec-val {
+    font-family: var(--font-sans);
+    font-size:   var(--text-body);
+    color:       var(--text-default);
+    line-height: var(--line-height-body);
+}
+.spec-list .spec-val code {
+    font-family: var(--font-mono);
+    font-size:   var(--text-body-sm);
+    color:       var(--text-primary-strong);
+    background:  var(--background-primary-minimal);
+    padding: 0.1em 0.4em;
+    border-radius: var(--radius-sm);
+}
+
+/* =========================================================
+   STATE GRID — small showcase cards for link states
+   ========================================================= */
+.state-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-5x);
+    margin-top: var(--spacing-2x);
+}
+.state-card {
+    border-radius: var(--radius-lg);
+    border: var(--border-width-base) solid var(--border-glass-light);
+    background: var(--background-glass-light);
+    backdrop-filter: var(--blur-lg) saturate(140%);
+    -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
+    padding: var(--spacing-6x);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4x);
+}
+.state-card .label {
+    font-family:    var(--font-mono);
+    font-size:      var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color:          var(--text-default-minimal);
+}
+.state-card .demo {
+    flex: 1 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 64px;
+    padding: var(--spacing-4x);
+    background: var(--background-default);
+    border-radius: var(--radius-md);
+    border: var(--border-width-base) solid var(--border-default);
+}
+.state-card .demo .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-1x);
+    padding: var(--spacing-2x) var(--spacing-4x);
+    font-family:    var(--font-mono);
+    font-size:      var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    color: var(--text-default-subtle);
+    border-radius: var(--radius-pill);
+}
+.state-card .demo .pill.is-hover   { background: var(--background-default-subtle); color: var(--text-default); }
+.state-card .demo .pill.is-current { background: var(--background-primary-subtle); color: var(--text-primary-strong); font-weight: var(--font-weight-medium); }
+.state-card .demo .pill.is-rest    { color: var(--text-default-subtle); }
+.state-card .meta {
+    display: flex;
+    justify-content: space-between;
+    font-family:    var(--font-mono);
+    font-size:      var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-mono);
+    color:          var(--text-default-minimal);
+}
+.state-card .meta strong {
+    color: var(--text-default);
+    font-weight: var(--font-weight-medium);
+}
+
+/* =========================================================
+   BEHAVIOUR MATRIX — input × outcome two-column table
+   ========================================================= */
+table.behaviour-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-sans);
+    font-size:   var(--text-body);
+    color:       var(--text-default);
+    margin-top:  var(--spacing-2x);
+}
+table.behaviour-table thead th {
+    text-align: left;
+    font-family:    var(--font-mono);
+    font-size:      var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color:          var(--text-default-minimal);
+    padding:        var(--spacing-3x) var(--spacing-4x);
+    border-bottom:  var(--border-width-base) solid var(--border-default);
+    background:     var(--background-default-subtle);
+}
+table.behaviour-table tbody td {
+    padding: var(--spacing-4x);
+    border-bottom: var(--border-width-base) solid var(--border-default);
+    vertical-align: top;
+    line-height: var(--line-height-body);
+}
+table.behaviour-table tbody tr:last-child td { border-bottom: none; }
+table.behaviour-table tbody td:first-child {
+    font-family:    var(--font-mono);
+    font-size:      var(--text-body-sm);
+    color:          var(--text-primary-strong);
+    white-space:    nowrap;
+    width: 26ch;
+}
+table.behaviour-table code {
+    font-family: var(--font-mono);
+    font-size:   var(--text-body-sm);
+    color:       var(--text-primary-strong);
+    background:  var(--background-primary-minimal);
+    padding: 0.1em 0.4em;
+    border-radius: var(--radius-sm);
+}
+
+/* =========================================================
+   CODE SNIPPET — fenced code block reused for HTML examples
+   ========================================================= */
+pre.code {
+    font-family: var(--font-mono);
+    font-size:   var(--text-body-sm);
+    line-height: var(--line-height-body);
+    color:       var(--text-default);
+    background:  var(--background-default-subtle);
+    border:      var(--border-width-base) solid var(--border-default);
+    border-radius: var(--radius-md);
+    padding:    var(--spacing-5x) var(--spacing-6x);
+    overflow-x: auto;
+    margin: var(--spacing-2x) 0 var(--spacing-8x);
+    white-space: pre;
+    tab-size: 2;
+}
+pre.code .tag    { color: var(--text-primary-strong); }
+pre.code .attr   { color: var(--text-default-subtle); }
+pre.code .str    { color: var(--accent-700); }
+pre.code .com    { color: var(--text-default-minimal); font-style: italic; }
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 880px) {
+    .state-grid { grid-template-columns: 1fr; }
+    .spec-list > li { grid-template-columns: 1fr; row-gap: var(--spacing-1x); }
+    table.behaviour-table tbody td:first-child { white-space: normal; width: auto; }
+}
