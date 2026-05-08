@@ -406,9 +406,12 @@
       </div>
       <p>
         Behaviour is split between CSS and the bar's runtime.
-        Hovering and focus-within toggling is owned by CSS so the
-        bar works without JavaScript; click-to-toggle and dismiss
-        live in <code>scripts/global-nav.js</code>.
+        <code>:focus-within</code> reveal — the keyboard fallback
+        when JavaScript is unavailable — is owned by CSS. Pointer
+        open / close, panel swapping, click-to-toggle, the dim
+        backdrop, and dismiss all live in
+        <code>scripts/global-nav.js</code>; running the runtime is
+        what gives the bar its single-panel-at-a-time guarantee.
       </p>
     </header>
 
@@ -422,20 +425,32 @@
       <tbody>
         <tr>
           <td>Pointer enters trigger</td>
-          <td>The trigger's panel opens, driven by the
-          <code>:hover</code> selector. No JS involvement; the
-          panel stays open while the pointer is over either the
-          trigger or the panel.</td>
+          <td>The runtime adds <code>.is-open</code> to the
+          trigger's parent item on <code>mouseenter</code>, which
+          reveals the panel. The panel persists while the pointer
+          is anywhere inside the bar — the gap between triggers,
+          the brand, the version pill, or the panel itself — so
+          users can travel down into the panel without losing it.</td>
         </tr>
         <tr>
-          <td>Pointer leaves both</td>
-          <td>The panel closes after a 200ms opacity transition.
-          Visibility is toggled by the same selector — there is no
-          delay-to-close timer.</td>
+          <td>Pointer enters another trigger</td>
+          <td>The newly-hovered trigger opens its panel and the
+          previously-open panel closes — including a panel that
+          was opened by click. Only one panel is open at a time;
+          hovering Assets while Components is open swaps cleanly.</td>
+        </tr>
+        <tr>
+          <td>Pointer leaves the bar</td>
+          <td>The runtime listens for <code>mouseleave</code> on
+          <code>.global-nav</code> and closes every open panel.
+          Because the panel is a DOM child of the bar, this fires
+          only when the pointer exits both bar and panel — there
+          is no delay-to-close timer.</td>
         </tr>
         <tr>
           <td>Trigger receives keyboard focus</td>
-          <td>The panel opens via <code>:focus-within</code>. Tab
+          <td>The panel opens via <code>:focus-within</code> — the
+          one purely-CSS open path, kept as a no-JS fallback. Tab
           progresses through the panel's links; Shift+Tab returns
           to the trigger.</td>
         </tr>
@@ -445,6 +460,13 @@
           parent item and updates <code>aria-expanded</code>.
           Other open panels are closed first; only one panel is
           open at a time.</td>
+        </tr>
+        <tr>
+          <td>Any panel open</td>
+          <td>The runtime adds <code>.is-visible</code> to a
+          fixed full-viewport <code>.global-nav__backdrop</code>
+          (injected on init), dimming and lightly blurring the
+          page so the panel reads as an elevated surface.</td>
         </tr>
         <tr>
           <td><code>Esc</code> pressed</td>

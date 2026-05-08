@@ -131,8 +131,8 @@
     transition: transform 0.18s ease;
     opacity: 0.6;
 }
-.global-nav__item--has-panel:hover .global-nav__chev,
-.global-nav__item--has-panel.is-open .global-nav__chev {
+.global-nav__item--has-panel.is-open .global-nav__chev,
+.global-nav__item--has-panel:focus-within .global-nav__chev {
     transform: rotate(180deg);
 }
 
@@ -152,9 +152,12 @@
 
 /* =========================================================
    05 / EXPANDING PANEL (TIER 2)
-   The panel sits absolutely below the bar and expands
-   on hover of either the trigger or the panel itself,
-   or on click (.is-open) for keyboard / touch users.
+   The panel sits absolutely below the bar. Visibility is
+   driven by `.is-open` (set by the runtime on mouseenter
+   of a trigger or on click) and by `:focus-within` for
+   keyboard users. The runtime owns hover-open/close so
+   the panel can persist while the pointer is anywhere in
+   the bar — not just over the triggering item.
    ========================================================= */
 .global-nav__panel {
     position: absolute;
@@ -175,7 +178,6 @@
     z-index: 49;
 }
 
-.global-nav__item--has-panel:hover .global-nav__panel,
 .global-nav__item--has-panel:focus-within .global-nav__panel,
 .global-nav__item--has-panel.is-open .global-nav__panel {
     opacity: 1;
@@ -186,6 +188,40 @@
         opacity 0.2s ease,
         transform 0.2s ease,
         visibility 0s;
+}
+
+/* =========================================================
+   05a / BACKDROP
+   When a panel is open, dim and blur the rest of the page
+   so the panel reads as an elevated surface. The backdrop
+   element is injected by the runtime (scripts/global-nav.js)
+   on init, so pages do not need to author markup for it.
+   Sits below the panel (z-49) and the bar (z-50) but above
+   the page content.
+   ========================================================= */
+.global-nav__backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.32);
+    backdrop-filter: blur(2px) saturate(110%);
+    -webkit-backdrop-filter: blur(2px) saturate(110%);
+    z-index: 48;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+        opacity 0.2s ease,
+        visibility 0s linear 0.2s;
+}
+.global-nav__backdrop.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transition:
+        opacity 0.2s ease,
+        visibility 0s;
+}
+@media (prefers-reduced-motion: reduce) {
+    .global-nav__backdrop { transition: none; }
 }
 
 .global-nav__panel-inner {
