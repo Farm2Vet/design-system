@@ -812,3 +812,199 @@
     --form-focus-outline-width:  2px;
     --form-focus-outline-offset: 2px;
 }
+
+/* =========================================================
+   3. COMPONENT TOKENS — Tabs (and related navigation)
+   Tabs select one-of-N peer views of the SAME content area;
+   the active tab maps to a panel mounted directly below the
+   list. The component shares the size scale with Form and
+   Button (LG · 22.5px is canonical) and the active-state
+   tint with Dropdown so a tab feels native to any surface
+   that mixes form, button, and dropdown vocabulary.
+
+   For one-of-N FILTERING without a separate panel (a quick
+   sort, a unit toggle), reach for .btn-switch--segmented in
+   button.css instead — that contract is "input", not "view".
+   The same boundary applies to navigating between PAGES
+   (use the global header, Section 10) versus peer views
+   inside a single page (Tabs).
+
+   Sibling primitives that share a layout zone with Tabs —
+   breadcrumb (path display) and pagination (numeric step
+   navigation) — declare their tokens here so the entire
+   navigation family can be retuned from a single layer.
+   Component tokens reference semantic tokens strictly.
+   ========================================================= */
+:root {
+    /* ---------- Shared shape ---------- */
+    --tabs-font-family:    var(--font-sans);
+    --tabs-font-weight:    var(--font-weight-medium);
+    --tabs-letter-spacing: 0;
+    --tabs-gap:            var(--spacing-1x);
+    --tabs-transition:     background-color .18s ease, color .18s ease,
+                           border-color .18s ease, box-shadow .18s ease;
+
+    /* ---------- Sizes (LG is the focus per spec) ---------- */
+    --tabs-sm-font-size:  var(--text-sm);     /* 13.33px */
+    --tabs-sm-padding-x:  var(--spacing-3x);
+    --tabs-sm-padding-y:  var(--spacing-1x);
+    --tabs-sm-height:     28px;
+    --tabs-sm-icon:       14px;
+
+    --tabs-md-font-size:  var(--text-base);   /* 16px */
+    --tabs-md-padding-x:  var(--spacing-4x);
+    --tabs-md-padding-y:  var(--spacing-2x);
+    --tabs-md-height:     36px;
+    --tabs-md-icon:       18px;
+
+    --tabs-lg-font-size:  22.5px;             /* FOCUS */
+    --tabs-lg-padding-x:  var(--spacing-6x);
+    --tabs-lg-padding-y:  var(--spacing-3x);
+    --tabs-lg-height:     48px;
+    --tabs-lg-icon:       22px;
+
+    --tabs-xl-font-size:  var(--text-h4);     /* 27.65px */
+    --tabs-xl-padding-x:  var(--spacing-8x);
+    --tabs-xl-padding-y:  var(--spacing-4x);
+    --tabs-xl-height:     60px;
+    --tabs-xl-icon:       28px;
+
+    --tabs-2xl-font-size: var(--text-h3);     /* 33.18px */
+    --tabs-2xl-padding-x: var(--spacing-10x);
+    --tabs-2xl-padding-y: var(--spacing-5x);
+    --tabs-2xl-height:    74px;
+    --tabs-2xl-icon:      32px;
+
+    /* ---------- Tab — base text/colour states ----------
+       Used by every variant. Variants override only the
+       surface and indicator tokens below; foreground colour
+       transitions are unified here so the system reads as
+       one component family across visual treatments. */
+    --tabs-tab-fg:            var(--text-default-subtle);
+    --tabs-tab-fg-hover:      var(--text-default);
+    --tabs-tab-fg-selected:   var(--text-primary-strong);
+    --tabs-tab-fg-disabled:   var(--text-default-disabled);
+    --tabs-tab-bg:            transparent;
+    --tabs-tab-bg-hover:      var(--background-default-subtle);
+    --tabs-tab-bg-selected:   transparent;
+    --tabs-tab-icon:          var(--icon-default);
+    --tabs-tab-icon-selected: var(--icon-primary-strong);
+    --tabs-tab-radius:        var(--radius-sm);
+
+    /* ---------- Variant: Line (default) ----------
+       Bottom-border indicator. Rest tabs are quiet, the
+       selected tab carries a 2px primary underline that
+       slides on selection change. The default product
+       treatment — picks up cleanly on any surface. */
+    --tabs-line-list-border:         var(--border-default);
+    --tabs-line-indicator-bg:        var(--background-primary);
+    --tabs-line-indicator-thickness: 2px;
+
+    /* ---------- Variant: Enclosed (folder) ----------
+       Tabs sit on a baseline like browser folder tabs;
+       the selected tab keeps the surface colour and joins
+       the panel by erasing its bottom border. Use when
+       the panel is a clearly-bounded card and the tabs
+       must read as part of that card. */
+    --tabs-enclosed-list-border:         var(--border-default);
+    --tabs-enclosed-tab-border:          transparent;
+    --tabs-enclosed-tab-bg-hover:        var(--background-default-subtle);
+    --tabs-enclosed-tab-bg-selected:     var(--background-default);
+    --tabs-enclosed-tab-border-selected: var(--border-default);
+    --tabs-enclosed-radius:              var(--radius-md);
+
+    /* ---------- Variant: Pill ----------
+       Free-floating pill on hover and on selected. Use on
+       inverted or glass surfaces where an underline reads
+       as noise; reads as a quiet button group. */
+    --tabs-pill-bg:           transparent;
+    --tabs-pill-bg-hover:     var(--background-default-subtle);
+    --tabs-pill-bg-selected:  var(--background-primary-minimal);
+    --tabs-pill-fg-selected:  var(--text-primary-strong);
+    --tabs-pill-radius:       var(--radius-pill);
+
+    /* ---------- Variant: Segmented ----------
+       Bordered track with an animated active bubble that
+       slides between options. Visually adjacent to
+       .btn-switch--segmented (button.css) — the contract,
+       not the colour, is what differs: tabs mount panels,
+       segmented switches return values. */
+    --tabs-segmented-track-bg:        var(--background-default-subtle);
+    --tabs-segmented-track-border:    var(--border-default);
+    --tabs-segmented-track-pad:       3px;
+    --tabs-segmented-radius:          var(--radius-md);
+    --tabs-segmented-active-bg:       var(--background-default);
+    --tabs-segmented-active-fg:       var(--text-primary-strong);
+    --tabs-segmented-active-shadow:   var(--shadow-sm);
+
+    /* ---------- Vertical orientation ----------
+       Same colour vocabulary as the horizontal Line
+       variant; only the indicator axis flips. The list
+       itself becomes a column and the indicator paints
+       on the inline-start edge. */
+    --tabs-vertical-list-border:    var(--border-default);
+    --tabs-vertical-indicator-bg:   var(--background-primary);
+    --tabs-vertical-indicator-w:    2px;
+
+    /* ---------- Indicator motion ----------
+       Sliding-indicator easing for Line, Vertical, and
+       Segmented variants. Tune once; every tab list
+       across the product re-times together. */
+    --tabs-indicator-duration:  220ms;
+    --tabs-indicator-easing:    cubic-bezier(.2, .8, .2, 1);
+
+    /* ---------- Badge slot (count / status) ----------
+       Reuses the multi-select-chip vocabulary from form.css
+       so a tab badge reads as the same family as the chip
+       on any other surface (filter chip, dropdown chip).
+       The muted variant is for zero-count or de-emphasised
+       contexts (e.g., archive tabs). */
+    --tabs-badge-bg:        var(--background-primary-minimal);
+    --tabs-badge-fg:        var(--text-primary-strong);
+    --tabs-badge-bg-muted:  var(--background-default-minimal);
+    --tabs-badge-fg-muted:  var(--text-default-subtle);
+    --tabs-badge-radius:    var(--radius-pill);
+    --tabs-badge-pad-x:     var(--spacing-2x);
+
+    /* ---------- Focus ring ----------
+       Matches the button / form rings so tabbing through
+       a screen produces one consistent outline shape. */
+    --tabs-focus-outline:        var(--outline-focus);
+    --tabs-focus-outline-width:  2px;
+    --tabs-focus-outline-offset: 2px;
+
+    /* ---------- Breadcrumb (sibling navigation primitive) ----------
+       Path display, not view switching. Lives in this file
+       because consumers reach for breadcrumb or tabs in the
+       same layout zone (page header). Trail items are quiet
+       links; the current item is the only non-link node and
+       carries no hover state. */
+    --breadcrumb-font-family:   var(--font-sans);
+    --breadcrumb-font-size:     var(--text-sm);
+    --breadcrumb-fg:            var(--text-default-subtle);
+    --breadcrumb-fg-current:    var(--text-default);
+    --breadcrumb-fg-hover:      var(--text-primary-strong);
+    --breadcrumb-separator-fg:  var(--text-default-minimal);
+    --breadcrumb-gap:           var(--spacing-2x);
+    --breadcrumb-icon-size:     14px;
+
+    /* ---------- Pagination (numeric step navigation) ----------
+       Page-N-of-M for paged result sets. Sibling primitive
+       because it shares the segmented-list visual contract
+       and lives in the same toolbar zone as filter tabs.
+       Uses mono type to match the table-row identity tokens
+       elsewhere in the system. */
+    --pagination-font-family:    var(--font-mono);
+    --pagination-font-size:      var(--text-sm);
+    --pagination-fg:             var(--text-default-subtle);
+    --pagination-fg-hover:       var(--text-default);
+    --pagination-fg-current:     var(--text-inverted);
+    --pagination-fg-disabled:    var(--text-default-disabled);
+    --pagination-bg:             transparent;
+    --pagination-bg-hover:       var(--background-default-subtle);
+    --pagination-bg-current:     var(--background-primary);
+    --pagination-border:         var(--border-default);
+    --pagination-radius:         var(--radius-sm);
+    --pagination-size:           var(--btn-md-height);
+    --pagination-gap:            var(--spacing-1x);
+}

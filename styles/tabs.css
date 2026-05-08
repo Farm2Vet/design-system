@@ -1,0 +1,624 @@
+/* =========================================================
+   FARM2VET DESIGN SYSTEM — TABS (and related navigation)
+   Tabs select one-of-N peer views of the SAME content area.
+   The selected tab MUST map to a single panel rendered
+   directly below the list; without a panel, the contract
+   is "input" (a segmented switch — see button.css) or
+   "navigation" (the global header — see global-nav.css).
+
+   Required structure:
+     <div class="tabs tabs--line tabs--lg" data-tabs>
+       <div class="tabs__list" role="tablist" aria-label="…">
+         <button type="button" class="tabs__tab is-selected"
+                 role="tab" id="tab-overview"
+                 aria-controls="panel-overview"
+                 aria-selected="true" tabindex="0">
+           <svg class="tabs__icon">…</svg>
+           <span class="tabs__label">Overview</span>
+           <span class="tabs__badge">12</span>
+         </button>
+         …
+         <span class="tabs__indicator" aria-hidden="true"></span>
+       </div>
+       <section class="tabs__panel"
+                role="tabpanel" id="panel-overview"
+                aria-labelledby="tab-overview" tabindex="0">
+         …
+       </section>
+       …
+     </div>
+
+   Variants: --line (default), --enclosed, --pill,
+             --segmented, --vertical
+   Sizes:    --sm, --md, --lg (default / focus), --xl, --2xl
+   States:   rest, hover, focus-visible, selected, disabled
+   Modifiers: --full-width (justify space-between, equal share),
+              --scrollable (horizontal overflow), --with-rule
+              (panel border that joins the enclosed list)
+
+   Depends on: tokens.css, base.css
+   ========================================================= */
+
+/* =========================================================
+   ROOT — wrapper that scopes the local size variables
+   The outer .tabs element exposes one local size var per
+   axis (--_pad-x, --_pad-y, --_h, --_fs, --_icon) so the
+   variant rules below stay variant-specific and never
+   need to know which size is active.
+   ========================================================= */
+.tabs {
+    --_pad-x: var(--tabs-lg-padding-x);
+    --_pad-y: var(--tabs-lg-padding-y);
+    --_h:     var(--tabs-lg-height);
+    --_fs:    var(--tabs-lg-font-size);
+    --_icon:  var(--tabs-lg-icon);
+
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+    font-family: var(--tabs-font-family);
+}
+
+.tabs--sm  { --_pad-x: var(--tabs-sm-padding-x);  --_pad-y: var(--tabs-sm-padding-y);  --_h: var(--tabs-sm-height);  --_fs: var(--tabs-sm-font-size);  --_icon: var(--tabs-sm-icon); }
+.tabs--md  { --_pad-x: var(--tabs-md-padding-x);  --_pad-y: var(--tabs-md-padding-y);  --_h: var(--tabs-md-height);  --_fs: var(--tabs-md-font-size);  --_icon: var(--tabs-md-icon); }
+.tabs--lg  { --_pad-x: var(--tabs-lg-padding-x);  --_pad-y: var(--tabs-lg-padding-y);  --_h: var(--tabs-lg-height);  --_fs: var(--tabs-lg-font-size);  --_icon: var(--tabs-lg-icon); }
+.tabs--xl  { --_pad-x: var(--tabs-xl-padding-x);  --_pad-y: var(--tabs-xl-padding-y);  --_h: var(--tabs-xl-height);  --_fs: var(--tabs-xl-font-size);  --_icon: var(--tabs-xl-icon); }
+.tabs--2xl { --_pad-x: var(--tabs-2xl-padding-x); --_pad-y: var(--tabs-2xl-padding-y); --_h: var(--tabs-2xl-height); --_fs: var(--tabs-2xl-font-size); --_icon: var(--tabs-2xl-icon); }
+
+/* =========================================================
+   LIST — the tablist container. Common geometry across
+   every horizontal variant; vertical orientation overrides
+   below. The relative position is required so the
+   .tabs__indicator can paint on the same axis.
+   ========================================================= */
+.tabs__list {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    gap: var(--tabs-gap);
+}
+
+/* =========================================================
+   TAB — base button. Inherits the local size variables;
+   variants override surface, border, and indicator only.
+   ========================================================= */
+.tabs__tab {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-2x);
+    flex: 0 0 auto;
+
+    font-family:    inherit;
+    font-weight:    var(--tabs-font-weight);
+    font-size:      var(--_fs);
+    letter-spacing: var(--tabs-letter-spacing);
+    line-height:    1;
+
+    padding:    var(--_pad-y) var(--_pad-x);
+    min-height: var(--_h);
+
+    color:           var(--tabs-tab-fg);
+    background:      var(--tabs-tab-bg);
+    border:          var(--border-width-base) solid transparent;
+    border-radius:   var(--tabs-tab-radius);
+
+    cursor: pointer;
+    user-select: none;
+    transition: var(--tabs-transition);
+    white-space: nowrap;
+}
+.tabs__tab:hover:not([disabled]):not(.is-disabled) {
+    color: var(--tabs-tab-fg-hover);
+    background: var(--tabs-tab-bg-hover);
+}
+.tabs__tab.is-selected,
+.tabs__tab[aria-selected="true"] {
+    color: var(--tabs-tab-fg-selected);
+}
+.tabs__tab:focus-visible {
+    outline: var(--tabs-focus-outline-width) solid var(--tabs-focus-outline);
+    outline-offset: var(--tabs-focus-outline-offset);
+}
+.tabs__tab[disabled],
+.tabs__tab.is-disabled {
+    color: var(--tabs-tab-fg-disabled);
+    cursor: not-allowed;
+}
+
+/* Optional icon and badge slots inside the tab. The icon
+   sits before the label, the badge after — order is fixed
+   so screen readers always announce the same sequence. */
+.tabs__icon {
+    width:  var(--_icon);
+    height: var(--_icon);
+    flex-shrink: 0;
+    color: var(--tabs-tab-icon);
+}
+.tabs__tab.is-selected .tabs__icon,
+.tabs__tab[aria-selected="true"] .tabs__icon {
+    color: var(--tabs-tab-icon-selected);
+}
+.tabs__label { display: inline-block; }
+.tabs__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: calc(var(--_icon) + var(--spacing-1x));
+    padding: 0 var(--tabs-badge-pad-x);
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    line-height: 1.6;
+    letter-spacing: var(--letter-spacing-mono);
+    color: var(--tabs-badge-fg-muted);
+    background: var(--tabs-badge-bg-muted);
+    border-radius: var(--tabs-badge-radius);
+}
+.tabs__tab.is-selected .tabs__badge,
+.tabs__tab[aria-selected="true"] .tabs__badge {
+    color: var(--tabs-badge-fg);
+    background: var(--tabs-badge-bg);
+}
+
+/* =========================================================
+   INDICATOR — the moving primary marker.
+   Used by .tabs--line, .tabs--vertical, and .tabs--segmented.
+   Position is driven by JS that reads the offset of the
+   selected tab and writes --_x and --_w (or --_y and --_h
+   for vertical) onto the host. The transition is owned by
+   the indicator itself so layout changes in the host don't
+   re-trigger animations on hover.
+   ========================================================= */
+.tabs__indicator {
+    position: absolute;
+    pointer-events: none;
+    transition:
+        transform var(--tabs-indicator-duration) var(--tabs-indicator-easing),
+        width     var(--tabs-indicator-duration) var(--tabs-indicator-easing),
+        height    var(--tabs-indicator-duration) var(--tabs-indicator-easing);
+}
+
+/* =========================================================
+   PANEL — the content rendered for the selected tab.
+   The panel is a peer of the list, not nested inside it,
+   so the panel can be scrolled, focused, and styled as a
+   first-class block. Authors must include exactly one
+   panel per tab; orphan tabs are an authoring error.
+   ========================================================= */
+.tabs__panel {
+    padding: var(--spacing-6x) 0;
+    color: var(--text-default);
+    font-size: var(--text-body);
+    line-height: var(--line-height-body);
+}
+.tabs__panel:focus-visible {
+    outline: var(--tabs-focus-outline-width) solid var(--tabs-focus-outline);
+    outline-offset: var(--tabs-focus-outline-offset);
+    border-radius: var(--radius-sm);
+}
+.tabs__panel[hidden] { display: none; }
+
+/* =========================================================
+   VARIANT — LINE (default)
+   Bottom rule across the full list; the selected tab
+   carries a primary-tinted underline that slides between
+   tabs on selection change.
+   ========================================================= */
+.tabs--line .tabs__list {
+    border-bottom: var(--border-width-base) solid var(--tabs-line-list-border);
+}
+.tabs--line .tabs__tab {
+    border-radius: 0;
+    /* Reserve the indicator track so the rule below the
+       list doesn't collide with the tab text. */
+    padding-bottom: calc(var(--_pad-y) + var(--tabs-line-indicator-thickness));
+    margin-bottom: calc(var(--tabs-line-indicator-thickness) * -1);
+}
+.tabs--line .tabs__indicator {
+    left: 0;
+    bottom: 0;
+    height: var(--tabs-line-indicator-thickness);
+    width: var(--_w, 0px);
+    background: var(--tabs-line-indicator-bg);
+    border-radius: var(--tabs-line-indicator-thickness);
+    transform: translateX(var(--_x, 0));
+}
+
+/* =========================================================
+   VARIANT — ENCLOSED (folder)
+   Tabs render as folder tabs that join the panel below.
+   The selected tab keeps the surface colour and erases
+   its bottom border so the tab and the panel read as one
+   continuous shape.
+   ========================================================= */
+.tabs--enclosed .tabs__list {
+    border-bottom: var(--border-width-base) solid var(--tabs-enclosed-list-border);
+    gap: 0;
+    padding: 0 var(--spacing-2x);
+}
+.tabs--enclosed .tabs__tab {
+    border: var(--border-width-base) solid var(--tabs-enclosed-tab-border);
+    border-bottom: none;
+    border-top-left-radius:  var(--tabs-enclosed-radius);
+    border-top-right-radius: var(--tabs-enclosed-radius);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    margin-bottom: calc(var(--border-width-base) * -1);
+    padding-bottom: calc(var(--_pad-y) + var(--border-width-base));
+}
+.tabs--enclosed .tabs__tab:hover:not(.is-selected):not([disabled]) {
+    background: var(--tabs-enclosed-tab-bg-hover);
+}
+.tabs--enclosed .tabs__tab.is-selected,
+.tabs--enclosed .tabs__tab[aria-selected="true"] {
+    background:    var(--tabs-enclosed-tab-bg-selected);
+    border-color:  var(--tabs-enclosed-tab-border-selected);
+}
+.tabs--enclosed .tabs__indicator { display: none; }
+
+/* Panel that visually joins an enclosed list. Apply
+   .tabs__panel--rule when the panel must show its top
+   rule meeting the tab's bottom edge. */
+.tabs--enclosed .tabs__panel--rule {
+    border: var(--border-width-base) solid var(--tabs-enclosed-list-border);
+    border-top: none;
+    border-bottom-left-radius:  var(--tabs-enclosed-radius);
+    border-bottom-right-radius: var(--tabs-enclosed-radius);
+    padding: var(--spacing-6x);
+}
+
+/* =========================================================
+   VARIANT — PILL
+   Free-floating pill on hover and on selected. Use on
+   inverted or glass surfaces, or when the tabs sit on a
+   page header without an underlying rule.
+   ========================================================= */
+.tabs--pill .tabs__list {
+    gap: var(--tabs-gap);
+}
+.tabs--pill .tabs__tab {
+    border-radius: var(--tabs-pill-radius);
+    background: var(--tabs-pill-bg);
+}
+.tabs--pill .tabs__tab:hover:not(.is-selected):not([disabled]) {
+    background: var(--tabs-pill-bg-hover);
+}
+.tabs--pill .tabs__tab.is-selected,
+.tabs--pill .tabs__tab[aria-selected="true"] {
+    background: var(--tabs-pill-bg-selected);
+    color:      var(--tabs-pill-fg-selected);
+}
+.tabs--pill .tabs__indicator { display: none; }
+
+/* =========================================================
+   VARIANT — SEGMENTED
+   Bordered track with an animated active bubble. Reads
+   as adjacent to .btn-switch--segmented but mounts panels
+   instead of returning a form value. Track padding is
+   declared once at the host so the bubble's coordinates
+   align with the tabs' inner box.
+   ========================================================= */
+.tabs--segmented .tabs__list {
+    background:    var(--tabs-segmented-track-bg);
+    border:        var(--border-width-base) solid var(--tabs-segmented-track-border);
+    border-radius: var(--tabs-segmented-radius);
+    padding:       var(--tabs-segmented-track-pad);
+    gap:           0;
+}
+.tabs--segmented .tabs__tab {
+    border-radius: calc(var(--tabs-segmented-radius) - var(--tabs-segmented-track-pad));
+    background:    transparent;
+    z-index: 1;
+}
+.tabs--segmented .tabs__tab:hover:not(.is-selected):not([disabled]) {
+    background: transparent;
+    color: var(--tabs-tab-fg-hover);
+}
+.tabs--segmented .tabs__tab.is-selected,
+.tabs--segmented .tabs__tab[aria-selected="true"] {
+    color: var(--tabs-segmented-active-fg);
+}
+.tabs--segmented .tabs__indicator {
+    top:    var(--tabs-segmented-track-pad);
+    left:   var(--tabs-segmented-track-pad);
+    height: calc(100% - var(--tabs-segmented-track-pad) * 2);
+    width:  var(--_w, 0px);
+    background:    var(--tabs-segmented-active-bg);
+    box-shadow:    var(--tabs-segmented-active-shadow);
+    border-radius: calc(var(--tabs-segmented-radius) - var(--tabs-segmented-track-pad));
+    transform:     translateX(var(--_x, 0));
+    z-index: 0;
+}
+
+/* =========================================================
+   VARIANT — VERTICAL
+   The list becomes a column, the indicator paints on the
+   inline-start edge. Use in settings panels or doc
+   layouts where labels are long enough to justify the
+   vertical column.
+   ========================================================= */
+.tabs--vertical {
+    flex-direction: row;
+    align-items: stretch;
+    gap: var(--spacing-8x);
+}
+.tabs--vertical .tabs__list {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-1x);
+    border-bottom: none;
+    border-right: var(--border-width-base) solid var(--tabs-vertical-list-border);
+    min-width: 220px;
+    padding-right: var(--spacing-3x);
+}
+.tabs--vertical .tabs__tab {
+    justify-content: flex-start;
+    border-radius: var(--tabs-tab-radius);
+    padding: var(--_pad-y) var(--_pad-x);
+    margin: 0;
+}
+.tabs--vertical .tabs__indicator {
+    top: 0;
+    right: calc(var(--spacing-3x) * -1 - var(--tabs-vertical-indicator-w) / 2);
+    width: var(--tabs-vertical-indicator-w);
+    height: var(--_h-active, 0px);
+    background: var(--tabs-vertical-indicator-bg);
+    border-radius: var(--tabs-vertical-indicator-w);
+    transform: translateY(var(--_y, 0));
+}
+.tabs--vertical .tabs__panel {
+    flex: 1 1 0;
+    padding: 0;
+}
+
+/* =========================================================
+   MODIFIER — FULL-WIDTH
+   Tabs share the available width equally. Use only when
+   the labels are roughly comparable in length; otherwise
+   scrollable is the safer choice.
+   ========================================================= */
+.tabs--full-width:not(.tabs--vertical) .tabs__list {
+    width: 100%;
+}
+.tabs--full-width:not(.tabs--vertical) .tabs__tab {
+    flex: 1 1 0;
+}
+
+/* =========================================================
+   MODIFIER — SCROLLABLE
+   Horizontal overflow. The list scrolls on the inline
+   axis with a soft fade on either side so the user knows
+   more content exists. Use on narrow viewports or when
+   the tab count is dynamic and unknown at design time.
+   ========================================================= */
+.tabs--scrollable .tabs__list {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    mask-image: linear-gradient(
+        to right,
+        transparent 0,
+        var(--white-base) var(--spacing-4x),
+        var(--white-base) calc(100% - var(--spacing-4x)),
+        transparent 100%
+    );
+}
+.tabs--scrollable .tabs__list::-webkit-scrollbar { display: none; }
+
+/* =========================================================
+   BREADCRUMB — sibling primitive (path display)
+   Not a tab. Breadcrumb shows where the user IS in a
+   hierarchy; tabs let the user MOVE between peer views.
+   The two never replace each other.
+
+   Required structure:
+     <nav class="breadcrumb" aria-label="Breadcrumb">
+       <ol class="breadcrumb__list">
+         <li class="breadcrumb__item">
+           <a href="…" class="breadcrumb__link">Patients</a>
+         </li>
+         <li class="breadcrumb__item" aria-current="page">
+           <span class="breadcrumb__current">#1284 · Bessie</span>
+         </li>
+       </ol>
+     </nav>
+   ========================================================= */
+.breadcrumb {
+    font-family: var(--breadcrumb-font-family);
+    font-size:   var(--breadcrumb-font-size);
+    color:       var(--breadcrumb-fg);
+    line-height: var(--line-height-body);
+}
+.breadcrumb__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--breadcrumb-gap);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.breadcrumb__item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--breadcrumb-gap);
+}
+/* Separator — owned by the item, painted via ::before so
+   the trail stays semantically a list. The first item
+   suppresses the separator. */
+.breadcrumb__item + .breadcrumb__item::before {
+    content: '/';
+    color: var(--breadcrumb-separator-fg);
+    font-family: var(--font-mono);
+}
+/* Chevron separator alternative — opt-in via a host
+   class on the .breadcrumb element so the separator
+   reads as a glyph instead of a slash. */
+.breadcrumb--chevron .breadcrumb__item + .breadcrumb__item::before {
+    content: '';
+    width:  var(--breadcrumb-icon-size);
+    height: var(--breadcrumb-icon-size);
+    background: currentColor;
+    color: var(--breadcrumb-separator-fg);
+    -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='9 6 15 12 9 18'/></svg>") center / contain no-repeat;
+            mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='9 6 15 12 9 18'/></svg>") center / contain no-repeat;
+}
+
+.breadcrumb__link {
+    color: var(--breadcrumb-fg);
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+    transition: color .18s ease;
+}
+.breadcrumb__link:hover {
+    color: var(--breadcrumb-fg-hover);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+.breadcrumb__link:focus-visible {
+    outline: var(--tabs-focus-outline-width) solid var(--tabs-focus-outline);
+    outline-offset: var(--tabs-focus-outline-offset);
+}
+.breadcrumb__current {
+    color: var(--breadcrumb-fg-current);
+    font-weight: var(--font-weight-medium);
+}
+.breadcrumb__icon {
+    width:  var(--breadcrumb-icon-size);
+    height: var(--breadcrumb-icon-size);
+    color: var(--breadcrumb-separator-fg);
+    flex-shrink: 0;
+}
+/* Truncated middle — long trails collapse to first / … / last.
+   Apply on the middle items the consumer wants to hide; the
+   ellipsis row is a single .breadcrumb__item with class
+   .breadcrumb__item--ellipsis. */
+.breadcrumb__item--ellipsis {
+    color: var(--breadcrumb-separator-fg);
+    cursor: default;
+}
+
+/* =========================================================
+   PAGINATION — sibling primitive (numeric step navigation)
+   Lists pages 1..N for paged result sets. Lives in the
+   same toolbar zone as filter tabs and shares the
+   segmented-list visual contract.
+
+   Required structure:
+     <nav class="pagination" aria-label="Pagination">
+       <button class="pagination__step" data-direction="prev"
+               aria-label="Previous page">‹</button>
+       <ol class="pagination__list">
+         <li><a class="pagination__page" href="?p=1">1</a></li>
+         <li><a class="pagination__page is-current"
+                href="?p=2" aria-current="page">2</a></li>
+         <li><span class="pagination__ellipsis">…</span></li>
+         <li><a class="pagination__page" href="?p=12">12</a></li>
+       </ol>
+       <button class="pagination__step" data-direction="next"
+               aria-label="Next page">›</button>
+     </nav>
+   ========================================================= */
+.pagination {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--pagination-gap);
+    font-family: var(--pagination-font-family);
+    font-size:   var(--pagination-font-size);
+    color:       var(--pagination-fg);
+}
+.pagination__list {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--pagination-gap);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.pagination__page,
+.pagination__step {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: var(--pagination-size);
+    height:    var(--pagination-size);
+    padding:   0 var(--spacing-2x);
+    color:           var(--pagination-fg);
+    background:      var(--pagination-bg);
+    border:          var(--border-width-base) solid transparent;
+    border-radius:   var(--pagination-radius);
+    text-decoration: none;
+    cursor: pointer;
+    transition: var(--tabs-transition);
+    font-family: inherit;
+    font-size: inherit;
+}
+.pagination__page:hover,
+.pagination__step:hover:not([disabled]) {
+    color: var(--pagination-fg-hover);
+    background: var(--pagination-bg-hover);
+    border-color: var(--pagination-border);
+}
+.pagination__page.is-current,
+.pagination__page[aria-current="page"] {
+    color: var(--pagination-fg-current);
+    background: var(--pagination-bg-current);
+    border-color: transparent;
+    font-weight: var(--font-weight-medium);
+    pointer-events: none;
+}
+.pagination__page:focus-visible,
+.pagination__step:focus-visible {
+    outline: var(--tabs-focus-outline-width) solid var(--tabs-focus-outline);
+    outline-offset: var(--tabs-focus-outline-offset);
+}
+.pagination__step[disabled],
+.pagination__step.is-disabled {
+    color: var(--pagination-fg-disabled);
+    cursor: not-allowed;
+    background: transparent;
+    border-color: transparent;
+}
+.pagination__ellipsis {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: var(--pagination-size);
+    height:    var(--pagination-size);
+    color: var(--pagination-fg);
+    user-select: none;
+}
+
+/* Compact pagination — strips the borders and uses a
+   text-only treatment. Use in dense table footers. */
+.pagination--compact .pagination__page,
+.pagination--compact .pagination__step {
+    border-color: transparent;
+    background: transparent;
+}
+.pagination--compact .pagination__page.is-current,
+.pagination--compact .pagination__page[aria-current="page"] {
+    background: transparent;
+    color: var(--text-primary-strong);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 2px;
+}
+
+/* =========================================================
+   REDUCED MOTION — silence the sliding indicator and the
+   bubble when the user has set the system-level
+   preference. Selection still updates colour and aria
+   attributes; only the transition is stripped.
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+    .tabs__indicator,
+    .pagination__page,
+    .pagination__step,
+    .tabs__tab {
+        transition: none;
+    }
+}

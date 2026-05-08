@@ -15,51 +15,570 @@
 <link rel="stylesheet" href="styles/typography.css" />
 <link rel="stylesheet" href="styles/shell.css" />
 <link rel="stylesheet" href="styles/global-nav.css" />
-<!-- Reuse: usage-note pattern + .card-callout -->
+<!-- Reuse: usage-note pattern + variant grid surfaces -->
 <link rel="stylesheet" href="styles/page-section-04.css" />
+<!-- Reuse: token-table styling + preview stages -->
+<link rel="stylesheet" href="styles/page-section-03.css" />
+<!-- Reuse: card-callout pattern -->
 <link rel="stylesheet" href="styles/page-section-05.css" />
+<!-- Reuse: spec-list, state-grid, behaviour-table, pre.code, anatomy diagram chrome -->
+<link rel="stylesheet" href="styles/page-section-10.css" />
 
 <script src="scripts/global-nav.js" defer></script>
 
 <style>
-  .placeholder-card {
-    margin-top: var(--spacing-12x);
-    padding: var(--spacing-8x);
-    background: var(--background-default-subtle);
-    border: var(--border-width-base) solid var(--border-default);
-    border-radius: var(--radius-lg);
+  /* =========================================================
+     COMPONENT — SIDEBAR
+     Persistent in-app primary navigation. A vertical rail
+     anchored to the viewport edge; renders an icon + label
+     row per destination, grouped by mono-eyebrow labels,
+     with an optional pinned footer slot for account / utility
+     links. Three modes (expanded · rail · overlay) and three
+     densities (compact · default · comfortable). Component
+     tokens (--sidebar-*) reference semantic tokens strictly.
+     Inlined on this page rather than promoted to a separate
+     stylesheet because no other page consumes the sidebar
+     yet — promote to styles/sidebar.css when a second
+     consumer arrives.
+     ========================================================= */
+  :root {
+    /* ---------- Container ---------- */
+    --sidebar-width-expanded:  264px;
+    --sidebar-width-rail:      64px;
+    --sidebar-bg:              var(--background-default-subtle);
+    --sidebar-border:          var(--border-default);
+    --sidebar-padding-x:       var(--spacing-3x);
+    --sidebar-padding-y:       var(--spacing-4x);
+    --sidebar-gap:             var(--spacing-1x);
+    --sidebar-group-gap:       var(--spacing-6x);
+    --sidebar-shadow-overlay:  var(--shadow-lg);
+    --sidebar-z-rail:          40;
+    --sidebar-z-overlay:       70;
+    --sidebar-transition:      width .22s cubic-bezier(.2,.8,.2,1),
+                               transform .22s cubic-bezier(.2,.8,.2,1),
+                               background-color .18s ease, color .18s ease,
+                               border-color .18s ease;
+
+    /* ---------- Header slot ---------- */
+    --sidebar-header-pad-y:    var(--spacing-3x);
+    --sidebar-header-border:   var(--border-default-subtle);
+
+    /* ---------- Item — shared ---------- */
+    --sidebar-item-radius:     var(--radius-md);
+    --sidebar-item-gap:        var(--spacing-3x);
+    --sidebar-item-padding-x:  var(--spacing-3x);
+    --sidebar-item-icon-size:  20px;
+
+    /* Density: compact · default · comfortable */
+    --sidebar-item-padding-y-compact:     var(--spacing-1x);
+    --sidebar-item-height-compact:        32px;
+    --sidebar-item-padding-y-default:     var(--spacing-2x);
+    --sidebar-item-height-default:        40px;
+    --sidebar-item-padding-y-comfortable: var(--spacing-3x);
+    --sidebar-item-height-comfortable:    48px;
+
+    /* ---------- Item — colour ---------- */
+    --sidebar-item-fg:           var(--text-default-subtle);
+    --sidebar-item-fg-hover:     var(--text-default);
+    --sidebar-item-bg-hover:     var(--background-default-hover);
+    --sidebar-item-fg-current:   var(--text-primary-strong);
+    --sidebar-item-bg-current:   var(--background-primary-subtle);
+    --sidebar-item-fg-disabled:  var(--text-default-disabled);
+    --sidebar-item-icon:         var(--icon-default-subtle);
+    --sidebar-item-icon-hover:   var(--icon-default);
+    --sidebar-item-icon-current: var(--icon-primary-strong);
+
+    /* ---------- Group label ---------- */
+    --sidebar-group-label-font:     var(--font-mono);
+    --sidebar-group-label-size:     var(--text-eyebrow);
+    --sidebar-group-label-tracking: var(--letter-spacing-eyebrow);
+    --sidebar-group-label-color:    var(--text-default-minimal);
+    --sidebar-group-label-pad-x:    var(--spacing-3x);
+    --sidebar-group-label-pad-y:    var(--spacing-2x);
+
+    /* ---------- Sub-list (disclosure) ---------- */
+    --sidebar-sublist-indent:    calc(var(--sidebar-item-icon-size) + var(--sidebar-item-gap));
+    --sidebar-sublist-rail:      var(--border-default-subtle);
+
+    /* ---------- Trailing slot (badge / chevron) ---------- */
+    --sidebar-trailing-color:    var(--text-default-minimal);
+    --sidebar-chevron-size:      14px;
+    --sidebar-chevron-rotation:  90deg;
+
+    /* ---------- Footer slot ---------- */
+    --sidebar-footer-bg:        transparent;
+    --sidebar-footer-border:    var(--border-default-subtle);
+    --sidebar-footer-pad:       var(--spacing-3x);
+
+    /* ---------- Tooltip (rail mode) ---------- */
+    --sidebar-tip-bg:           var(--background-toast);
+    --sidebar-tip-fg:           var(--text-inverted);
+    --sidebar-tip-radius:       var(--radius-sm);
+    --sidebar-tip-pad-x:        var(--spacing-3x);
+    --sidebar-tip-pad-y:        var(--spacing-1x);
+    --sidebar-tip-offset:       var(--spacing-3x);
+
+    /* ---------- Overlay (mobile) ---------- */
+    --sidebar-overlay-scrim:    var(--background-overlay);
   }
-  .placeholder-card h3 {
-    font-family: var(--font-mono);
-    font-size: var(--text-eyebrow);
-    letter-spacing: var(--letter-spacing-eyebrow);
+
+  /* =========================================================
+     RAIL CONTAINER
+     ========================================================= */
+  .sidebar {
+    width: var(--sidebar-width-expanded);
+    background: var(--sidebar-bg);
+    border-right: var(--border-width-base) solid var(--sidebar-border);
+    display: flex;
+    flex-direction: column;
+    transition: var(--sidebar-transition);
+  }
+  .sidebar--collapsed { width: var(--sidebar-width-rail); }
+
+  /* ---------- Header slot ---------- */
+  .sidebar__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-2x);
+    padding: var(--sidebar-header-pad-y) var(--sidebar-padding-x);
+    border-bottom: var(--border-width-base) solid var(--sidebar-header-border);
+    min-height: 56px;
+  }
+  .sidebar__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2x);
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--text-body);
+    color: var(--text-default);
+    text-decoration: none;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .sidebar__brand-mark {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-sm);
+    background: var(--gradient-brand);
+    flex-shrink: 0;
+  }
+  .sidebar--collapsed .sidebar__brand-text { display: none; }
+  .sidebar__collapse {
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: var(--icon-default-subtle);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background-color .18s ease, color .18s ease;
+  }
+  .sidebar__collapse:hover { background: var(--background-default-hover); color: var(--icon-default); }
+  .sidebar__collapse svg { width: 16px; height: 16px; transition: transform .22s ease; }
+  .sidebar--collapsed .sidebar__collapse svg { transform: rotate(180deg); }
+
+  /* ---------- Nav region ---------- */
+  .sidebar__nav {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: var(--sidebar-padding-y) var(--sidebar-padding-x);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sidebar-group-gap);
+  }
+  .sidebar__group { display: flex; flex-direction: column; gap: var(--sidebar-gap); }
+  .sidebar__group-label {
+    font-family:    var(--sidebar-group-label-font);
+    font-size:      var(--sidebar-group-label-size);
+    letter-spacing: var(--sidebar-group-label-tracking);
     text-transform: uppercase;
-    color: var(--text-default-minimal);
-    margin: 0 0 var(--spacing-4x);
+    color:          var(--sidebar-group-label-color);
+    font-weight:    var(--font-weight-medium);
+    padding:        var(--sidebar-group-label-pad-y) var(--sidebar-group-label-pad-x);
+    margin: 0;
   }
-  .placeholder-list {
+  .sidebar--collapsed .sidebar__group-label {
+    height: 1px;
+    background: var(--border-default-subtle);
+    color: transparent;
+    padding: 0;
+    margin: var(--spacing-2x) var(--spacing-2x);
+    overflow: hidden;
+  }
+
+  .sidebar__list {
     list-style: none;
     margin: 0;
     padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sidebar-gap);
   }
-  .placeholder-list li {
+  .sidebar__item { position: relative; }
+
+  /* ---------- Item link ---------- */
+  .sidebar__link {
     display: grid;
-    grid-template-columns: 16ch 1fr;
-    column-gap: var(--spacing-6x);
-    padding: var(--spacing-3x) 0;
-    border-top: var(--border-width-base) solid var(--border-default);
+    grid-template-columns: var(--sidebar-item-icon-size) 1fr auto;
+    align-items: center;
+    gap: var(--sidebar-item-gap);
+    padding: var(--sidebar-item-padding-y-default) var(--sidebar-item-padding-x);
+    min-height: var(--sidebar-item-height-default);
+    border-radius: var(--sidebar-item-radius);
+    font-family: var(--font-sans);
     font-size: var(--text-body);
-    color: var(--text-default);
+    font-weight: var(--font-weight-medium);
+    color: var(--sidebar-item-fg);
+    text-decoration: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    transition: background-color .15s ease, color .15s ease;
   }
-  .placeholder-list li:first-child { border-top: none; }
-  .placeholder-list li strong {
+  .sidebar__link:hover {
+    background: var(--sidebar-item-bg-hover);
+    color: var(--sidebar-item-fg-hover);
+  }
+  .sidebar__link:hover .sidebar__icon { color: var(--sidebar-item-icon-hover); }
+  .sidebar__link.is-current {
+    background: var(--sidebar-item-bg-current);
+    color: var(--sidebar-item-fg-current);
+  }
+  .sidebar__link.is-current .sidebar__icon { color: var(--sidebar-item-icon-current); }
+  .sidebar__link[aria-disabled="true"],
+  .sidebar__link.is-disabled {
+    color: var(--sidebar-item-fg-disabled);
+    pointer-events: none;
+  }
+  .sidebar__icon {
+    width: var(--sidebar-item-icon-size);
+    height: var(--sidebar-item-icon-size);
+    color: var(--sidebar-item-icon);
+    flex-shrink: 0;
+    display: inline-flex;
+  }
+  .sidebar__icon svg { width: 100%; height: 100%; }
+  .sidebar__label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .sidebar__trailing {
+    color: var(--sidebar-trailing-color);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2x);
+  }
+
+  /* ---------- Density modifiers ---------- */
+  .sidebar--density-compact .sidebar__link {
+    padding-top: var(--sidebar-item-padding-y-compact);
+    padding-bottom: var(--sidebar-item-padding-y-compact);
+    min-height: var(--sidebar-item-height-compact);
+    font-size: var(--text-body-sm);
+  }
+  .sidebar--density-comfortable .sidebar__link {
+    padding-top: var(--sidebar-item-padding-y-comfortable);
+    padding-bottom: var(--sidebar-item-padding-y-comfortable);
+    min-height: var(--sidebar-item-height-comfortable);
+  }
+
+  /* ---------- Disclosure (sub-items) ---------- */
+  .sidebar__chev {
+    width: var(--sidebar-chevron-size);
+    height: var(--sidebar-chevron-size);
+    transition: transform .18s ease;
+    color: var(--icon-default-subtle);
+  }
+  .sidebar__item.is-open > .sidebar__link .sidebar__chev {
+    transform: rotate(var(--sidebar-chevron-rotation));
+  }
+  .sidebar__sublist {
+    list-style: none;
+    margin: var(--spacing-1x) 0 0 0;
+    padding: 0 0 0 var(--sidebar-sublist-indent);
+    border-left: var(--border-width-base) solid var(--sidebar-sublist-rail);
+    margin-left: calc(var(--sidebar-item-padding-x) + (var(--sidebar-item-icon-size) / 2));
+    display: flex;
+    flex-direction: column;
+    gap: var(--sidebar-gap);
+  }
+  .sidebar__sublist .sidebar__link {
+    grid-template-columns: 1fr auto;
+    font-size: var(--text-body-sm);
+  }
+  .sidebar__sublist .sidebar__icon { display: none; }
+  .sidebar__item:not(.is-open) > .sidebar__sublist { display: none; }
+
+  /* ---------- Trailing badge ---------- */
+  .sidebar__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 var(--spacing-2x);
+    border-radius: var(--radius-pill);
     font-family: var(--font-mono);
-    font-size: var(--text-eyebrow);
+    font-size: 11px;
+    font-weight: var(--font-weight-medium);
+    color: var(--text-primary-strong);
+    background: var(--background-primary-minimal);
+  }
+  .sidebar__badge--info     { color: var(--text-info-strong);     background: var(--background-info); }
+  .sidebar__badge--critical { color: var(--text-inverted);        background: var(--background-critical-strong); }
+  .sidebar__badge--dot {
+    min-width: 8px;
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    background: var(--background-critical-strong);
+  }
+
+  /* ---------- Footer slot ---------- */
+  .sidebar__footer {
+    padding: var(--sidebar-footer-pad);
+    border-top: var(--border-width-base) solid var(--sidebar-footer-border);
+    background: var(--sidebar-footer-bg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sidebar-gap);
+  }
+
+  /* ---------- Collapsed (rail) — visual rules ---------- */
+  .sidebar--collapsed .sidebar__link {
+    grid-template-columns: var(--sidebar-item-icon-size);
+    justify-content: center;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .sidebar--collapsed .sidebar__label,
+  .sidebar--collapsed .sidebar__trailing,
+  .sidebar--collapsed .sidebar__chev,
+  .sidebar--collapsed .sidebar__sublist { display: none; }
+
+  /* Tooltip (rail mode only) — appears on hover, name remains
+     accessible via the link's text content (kept in DOM,
+     visually clipped). Pure-CSS for the documentation preview. */
+  .sidebar--collapsed .sidebar__item:hover .sidebar__label {
+    position: absolute;
+    left: calc(100% + var(--sidebar-tip-offset));
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--sidebar-tip-bg);
+    color: var(--sidebar-tip-fg);
+    padding: var(--sidebar-tip-pad-y) var(--sidebar-tip-pad-x);
+    border-radius: var(--sidebar-tip-radius);
+    white-space: nowrap;
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-medium);
+    pointer-events: none;
+    z-index: var(--sidebar-z-overlay);
+    display: inline-flex;
+  }
+
+  /* =========================================================
+     PAGE — DEMONSTRATION SCAFFOLDING
+     One stage frame that hosts a sidebar + a stand-in for the
+     page body, plus the small grids used in the modes / density
+     sections. Reuses .form-variant-card chrome for showcase
+     cards (already imported via page-section-04.css).
+     ========================================================= */
+  .sidebar-stage {
+    border-radius: var(--radius-lg);
+    border: var(--border-width-base) solid var(--border-default);
+    background: var(--background-default);
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    min-height: 460px;
+    box-shadow: var(--shadow-sm);
+  }
+  .sidebar-stage__body {
+    padding: var(--spacing-8x);
+    background: var(--background-ambient);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4x);
+  }
+  .sidebar-stage__heading {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--text-h5);
+    color: var(--text-default);
+    margin: 0;
+  }
+  .sidebar-stage__lede {
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    color: var(--text-default-subtle);
+    line-height: var(--line-height-body);
+    max-width: 60ch;
+    margin: 0;
+  }
+  .sidebar-stage__placeholder {
+    flex: 1 1 auto;
+    border-radius: var(--radius-md);
+    border: var(--border-width-base) dashed var(--border-default);
+    background: var(--background-default-subtle);
+  }
+
+  /* Mode showcase — three reduced-fidelity rails side by side. */
+  .mode-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-5x);
+  }
+  .mode-tile {
+    border-radius: var(--radius-lg);
+    border: var(--border-width-base) solid var(--border-glass-light);
+    background: var(--background-glass-light);
+    backdrop-filter: var(--blur-lg) saturate(140%);
+    -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
+    padding: var(--spacing-5x);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4x);
+  }
+  .mode-tile .label {
+    font-family:    var(--font-mono);
+    font-size:      var(--text-eyebrow);
     letter-spacing: var(--letter-spacing-eyebrow);
     text-transform: uppercase;
-    color: var(--text-primary-strong);
+    color:          var(--text-default-minimal);
+  }
+  .mode-tile .demo {
+    border-radius: var(--radius-md);
+    border: var(--border-width-base) solid var(--border-default);
+    background: var(--background-default);
+    padding: var(--spacing-3x);
+    min-height: 280px;
+    display: flex;
+    align-items: stretch;
+    overflow: hidden;
+  }
+  .mode-tile .demo .sidebar { width: 100%; border-right: none; background: transparent; }
+  .mode-tile .demo .sidebar__nav { padding: var(--spacing-2x) 0; gap: var(--spacing-3x); }
+  .mode-tile .demo .sidebar__header { padding: var(--spacing-2x) var(--spacing-2x); min-height: 0; border-bottom: none; }
+  .mode-tile .demo.is-overlay { position: relative; }
+  .mode-tile .demo.is-overlay::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: var(--sidebar-overlay-scrim);
+    backdrop-filter: var(--blur-sm);
+  }
+  .mode-tile .demo.is-overlay .sidebar {
+    position: relative;
+    z-index: 1;
+    background: var(--background-default);
+    box-shadow: var(--sidebar-shadow-overlay);
+    border-radius: var(--radius-sm);
+  }
+  .mode-tile .meta {
+    font-family:    var(--font-mono);
+    font-size:      var(--text-eyebrow);
+    color:          var(--text-default-minimal);
+    letter-spacing: var(--letter-spacing-mono);
+    display: flex;
+    justify-content: space-between;
+    border-top: var(--border-width-base) solid var(--border-default-subtle);
+    padding-top: var(--spacing-3x);
+  }
+  .mode-tile .meta strong {
+    color: var(--text-default);
     font-weight: var(--font-weight-medium);
-    padding-top: var(--spacing-half);
+  }
+
+  /* Density showcase — three rows, one per density. */
+  .density-stage {
+    padding: var(--spacing-6x) var(--spacing-8x);
+    border-radius: var(--radius-lg);
+    border: var(--border-width-base) solid var(--border-default);
+    background: var(--background-default-subtle);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-5x);
+  }
+  .density-row {
+    display: grid;
+    grid-template-columns: 180px 1fr 200px;
+    align-items: center;
+    gap: var(--spacing-6x);
+    padding-bottom: var(--spacing-5x);
+    border-bottom: var(--border-width-base) dashed var(--border-default);
+  }
+  .density-row:last-child { padding-bottom: 0; border-bottom: none; }
+  .density-row .tag {
+    font-family:    var(--font-mono);
+    font-size:      var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color:          var(--text-default-minimal);
+  }
+  .density-row.is-default .tag {
+    color: var(--text-primary-strong);
+    background: var(--background-primary-subtle);
+    padding: var(--spacing-half) var(--spacing-2x);
+    border-radius: var(--radius-pill);
+    border: var(--border-width-base) solid var(--border-primary-subtle);
+    justify-self: start;
+  }
+  .density-row .demo {
+    background: var(--background-default);
+    border-radius: var(--radius-md);
+    border: var(--border-width-base) solid var(--border-default);
+    padding: var(--spacing-2x);
+    width: 100%;
+    max-width: 320px;
+  }
+  .density-row .meta {
+    font-family:    var(--font-mono);
+    font-size:      var(--text-micro);
+    color:          var(--text-default-minimal);
+    letter-spacing: var(--letter-spacing-mono);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1x);
+  }
+  .density-row .meta strong {
+    color: var(--text-default);
+    font-weight: var(--font-weight-medium);
+  }
+
+  /* State demo — reuses .state-grid / .state-card from page-section-10.
+     Override only the inner demo spacing to fit a sidebar row. */
+  .state-card .demo--row {
+    width: 100%;
+    padding: var(--spacing-2x);
+    background: var(--background-default);
+    border-radius: var(--radius-md);
+    border: var(--border-width-base) solid var(--border-default);
+    align-items: stretch;
+    justify-content: stretch;
+    min-height: 0;
+  }
+  .state-card .demo--row .sidebar__link {
+    pointer-events: none;
+  }
+
+  /* =========================================================
+     RESPONSIVE
+     ========================================================= */
+  @media (max-width: 960px) {
+    .sidebar-stage { grid-template-columns: 1fr; }
+    .sidebar-stage .sidebar { width: 100%; border-right: none; border-bottom: var(--border-width-base) solid var(--sidebar-border); }
+    .mode-grid { grid-template-columns: 1fr; }
+    .density-row { grid-template-columns: 1fr; gap: var(--spacing-3x); }
+    .density-row .demo { max-width: none; }
   }
 </style>
 
@@ -105,8 +624,8 @@
                 <li><a href="III-08-toast.html"><span class="global-nav__index">08</span><span>Toast</span></a></li>
                 <li><a href="III-09-alert-badges.html"><span class="global-nav__index">09</span><span>Alert &amp; Badge</span></a></li>
                 <li><a href="III-10-header-navigation.html"><span class="global-nav__index">10</span><span>Header &amp; Nav Bar</span></a></li>
-                <li><a href="III-12-sidebar.html" class="is-placeholder"><span class="global-nav__index">12</span><span>Sidebar</span></a></li>
-                <li><a href="III-14-tabs.html" class="is-placeholder"><span class="global-nav__index">14</span><span>Tabs</span></a></li>
+                <li><a href="III-12-sidebar.html"><span class="global-nav__index">12</span><span>Sidebar</span></a></li>
+                <li><a href="III-14-tabs.html"><span class="global-nav__index">14</span><span>Tabs</span></a></li>
               </ul>
             </div>
           </div>
@@ -159,42 +678,1286 @@
 
 <main class="shell" id="top">
 
+  <!-- ========================== HERO ========================== -->
   <section class="hero">
     <div>
-      <h1 class="text-display">
+      <h1 class="text-display reveal">
         <span class="num">Section 12 / Components</span>
         Sidebar.
       </h1>
     </div>
     <div>
-      <p class="lede">Reserved page. The persistent sidebar — used for primary in-app navigation, not for the system-level header documented in Section 10 — will define its rail anatomy, expanded and collapsed modes, item density, and section-grouping conventions once authored.</p>
+      <p class="lede reveal">
+        The persistent in-app navigation surface. A vertical
+        rail anchored to the viewport's leading edge that
+        exposes the destinations of a single product — not the
+        structure of the design system itself, which is owned
+        by the Header &amp; Navigation Bar (Section 10).
+        Resolves through a component-scoped
+        <code>--sidebar-*</code> token namespace into the
+        system's neutral surface, primary-tinted active state,
+        and mono-eyebrow group labels.
+      </p>
     </div>
 
-    <dl class="meta-strip">
-      <div><dt>Status</dt><dd>Placeholder</dd></div>
-      <div><dt>Authored</dt><dd>—</dd></div>
-      <div><dt>Tokens</dt><dd>—</dd></div>
-      <div><dt>Variants</dt><dd>—</dd></div>
+    <dl class="meta-strip reveal">
+      <div><dt>Modes</dt><dd>3</dd></div>
+      <div><dt>Densities</dt><dd>3</dd></div>
+      <div><dt>Slots</dt><dd>4</dd></div>
+      <div><dt>Position</dt><dd>fixed · leading edge</dd></div>
     </dl>
   </section>
 
-  <div class="placeholder-card">
-    <h3>Reserved scope · expected sub-areas</h3>
-    <ul class="placeholder-list">
-      <li><strong>Anatomy</strong><span>Rail, item, group label, footer slot.</span></li>
-      <li><strong>Modes</strong><span>Expanded · collapsed · responsive overlay.</span></li>
-      <li><strong>Density</strong><span>Compact, default, comfortable.</span></li>
-      <li><strong>Selection</strong><span>Single-active item, sub-item disclosure.</span></li>
-    </ul>
-  </div>
+  <!-- ========================== ARCHITECTURAL CALLOUTS ========================== -->
+  <section class="chunk" style="padding-top: var(--spacing-8x); padding-bottom: 0;">
+    <div class="card-callout reveal" role="note">
+      <span class="label">Architectural note · scope boundaries</span>
+      <p>
+        <strong>The sidebar is the product-level navigation surface.</strong>
+        It exposes the destinations of an application
+        consuming this design system — the Wiki, the Chatbot,
+        the Hero mockups, or any future product. The Header
+        &amp; Navigation Bar (Section 10) exposes the
+        documentation system itself and is rendered above
+        every page in this repository; it is not a sidebar
+        and does not collapse to a rail. The Side Panel
+        (Section 07) is a transient drawer raised from a
+        trigger to hold a focused sub-task; it is not a
+        navigation surface and does not persist between
+        routes.
+      </p>
+    </div>
 
+    <div class="card-callout reveal" role="note" style="margin-top: var(--spacing-4x);">
+      <span class="label">Architectural note · single active item</span>
+      <p>
+        <strong>One item, and only one, carries
+        <code>.is-current</code> at any time.</strong>
+        The active state reflects the application's current
+        route. Highlighting two items at once — typically
+        because a parent group and a child sub-item are both
+        marked active — produces an ambiguous reading of
+        location and erodes the rail's usefulness as a
+        wayfinding device. When a sub-item is active, mark
+        only the sub-item; the parent group's
+        <code>.is-open</code> state already communicates that
+        the active route belongs to that group.
+      </p>
+    </div>
+  </section>
+
+  <!-- ========================== 01 / ANATOMY ========================== -->
+  <section class="chunk" id="anatomy">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">01 / Anatomy</span>
+        <h2 class="text-display-sm">A vertical <em>shell</em>.</h2>
+      </div>
+      <p>
+        The rail (<code>.sidebar</code>) is a flex column with
+        three vertical regions: a header slot
+        (<code>.sidebar__header</code>) carrying the brand and
+        the collapse trigger, a scrollable nav region
+        (<code>.sidebar__nav</code>) holding mono-labelled
+        groups of items, and a pinned footer slot
+        (<code>.sidebar__footer</code>) for account or utility
+        links. Items render as a three-column row — leading
+        icon, label, trailing slot — and reuse the system's
+        primary-tinted convention for the active state.
+      </p>
+    </header>
+
+    <p class="usage-note reveal">
+      <strong>Header and footer slots are optional;
+      the nav region is required.</strong> A sidebar without
+      a header may be appropriate when the product's brand is
+      already rendered in a top bar above the rail. A footer
+      may be omitted when no utility row is needed. The nav
+      region is the rail's reason for existing — a sidebar
+      with no items is a layout primitive, not this component.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>Items are real anchors or buttons.</strong>
+      A destination is an <code>&lt;a&gt;</code>; a disclosure
+      is a <code>&lt;button&gt;</code>. Both share the
+      <code>.sidebar__link</code> visual contract so the rail
+      reads as a single uniform list. Wrapping the row in a
+      <code>&lt;div&gt;</code> with a click handler removes
+      the row from the tab order and breaks keyboard
+      navigation.
+    </p>
+
+    <div class="sidebar-stage reveal" aria-label="Sidebar anatomy stage">
+      <aside class="sidebar" aria-label="Primary">
+        <header class="sidebar__header">
+          <a href="#" class="sidebar__brand">
+            <span class="sidebar__brand-mark" aria-hidden="true"></span>
+            <span class="sidebar__brand-text">Farm2Vet</span>
+          </a>
+          <button type="button" class="sidebar__collapse" aria-label="Collapse sidebar" aria-pressed="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6"/></svg>
+          </button>
+        </header>
+
+        <nav class="sidebar__nav" aria-label="Primary destinations">
+          <div class="sidebar__group">
+            <p class="sidebar__group-label">Workspace</p>
+            <ul class="sidebar__list">
+              <li class="sidebar__item">
+                <a class="sidebar__link is-current" href="#" aria-current="page">
+                  <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+                  <span class="sidebar__label">Overview</span>
+                </a>
+              </li>
+              <li class="sidebar__item">
+                <a class="sidebar__link" href="#">
+                  <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
+                  <span class="sidebar__label">Search</span>
+                </a>
+              </li>
+              <li class="sidebar__item">
+                <a class="sidebar__link" href="#">
+                  <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg></span>
+                  <span class="sidebar__label">Inbox</span>
+                  <span class="sidebar__trailing"><span class="sidebar__badge">12</span></span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="sidebar__group">
+            <p class="sidebar__group-label">Records</p>
+            <ul class="sidebar__list">
+              <li class="sidebar__item">
+                <a class="sidebar__link" href="#">
+                  <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+                  <span class="sidebar__label">Patients</span>
+                </a>
+              </li>
+              <li class="sidebar__item">
+                <a class="sidebar__link" href="#">
+                  <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
+                  <span class="sidebar__label">Appointments</span>
+                </a>
+              </li>
+              <li class="sidebar__item">
+                <a class="sidebar__link" href="#" aria-disabled="true">
+                  <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="14 2 14 8 20 8"/><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg></span>
+                  <span class="sidebar__label">Reports</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <div class="sidebar__footer">
+          <a class="sidebar__link" href="#">
+            <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+            <span class="sidebar__label">Help &amp; support</span>
+          </a>
+          <a class="sidebar__link" href="#">
+            <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+            <span class="sidebar__label">Account</span>
+          </a>
+        </div>
+      </aside>
+
+      <div class="sidebar-stage__body">
+        <p class="sidebar-stage__heading">Page content</p>
+        <p class="sidebar-stage__lede">
+          The application's route renders here. The rail is
+          rendered once, at the application shell level; the
+          page below changes as the user navigates. Anything
+          that scrolls with the page belongs to the page;
+          anything that persists across routes belongs to the
+          rail.
+        </p>
+        <div class="sidebar-stage__placeholder" aria-hidden="true"></div>
+      </div>
+    </div>
+
+    <ul class="spec-list reveal" aria-label="Slot specification">
+      <li>
+        <span class="spec-key">.sidebar</span>
+        <span class="spec-val">
+          The rail container. Owns the column width
+          (<code>--sidebar-width-expanded</code> /
+          <code>--sidebar-width-rail</code>), the leading
+          border, and the collapse transition. Mounts once at
+          the application shell level; rendering it inside a
+          page route detaches it from the focus order on
+          navigation.
+        </span>
+      </li>
+      <li>
+        <span class="spec-key">.sidebar__header</span>
+        <span class="spec-val">
+          Brand slot plus the collapse trigger. Optional —
+          may be omitted when a separate top bar already
+          carries the brand. The collapse trigger is a
+          <code>&lt;button&gt;</code>; its
+          <code>aria-pressed</code> attribute is kept in sync
+          with <code>.sidebar--collapsed</code>.
+        </span>
+      </li>
+      <li>
+        <span class="spec-key">.sidebar__nav</span>
+        <span class="spec-val">
+          The required scrollable region. A
+          <code>&lt;nav&gt;</code> with a meaningful
+          <code>aria-label</code> (typically <em>Primary</em>).
+          Holds one or more groups; long lists scroll inside
+          this region while header and footer remain pinned.
+        </span>
+      </li>
+      <li>
+        <span class="spec-key">.sidebar__group</span>
+        <span class="spec-val">
+          A label plus a list. Groups are visually divided by
+          spacing (<code>--sidebar-group-gap</code>), not by
+          horizontal rules — keeps the rail visually quiet at
+          the destination scale typical of a single product.
+          Use a group only when two or more items share a
+          taxonomy; a single-item group is noise.
+        </span>
+      </li>
+      <li>
+        <span class="spec-key">.sidebar__group-label</span>
+        <span class="spec-val">
+          Mono-eyebrow caption. Names the group's domain
+          (<em>Workspace</em>, <em>Records</em>,
+          <em>Settings</em>). Never carries colour tone — the
+          label is a wayfinding heading, not a status. In
+          collapsed mode the label is replaced by a thin
+          divider.
+        </span>
+      </li>
+      <li>
+        <span class="spec-key">.sidebar__item</span>
+        <span class="spec-val">
+          One row in the rail. Always a
+          <code>&lt;li&gt;</code>; its
+          <code>.sidebar__link</code> child is either an
+          <code>&lt;a&gt;</code> for a destination or a
+          <code>&lt;button&gt;</code> for a disclosure
+          trigger. The visual contract is identical for both.
+        </span>
+      </li>
+      <li>
+        <span class="spec-key">.sidebar__icon</span>
+        <span class="spec-val">
+          Leading 20-px glyph. Required on top-level items
+          for parity in collapsed mode (where the icon
+          becomes the entire row). May be omitted on
+          sub-items, which are anchored by indent rather
+          than icon.
+        </span>
+      </li>
+      <li>
+        <span class="spec-key">.sidebar__trailing</span>
+        <span class="spec-val">
+          Optional trailing slot. Holds a count badge, a
+          status dot, or a disclosure chevron. Only one
+          trailing element per row — stacking a badge and a
+          chevron on the same item produces a noisy edge.
+        </span>
+      </li>
+      <li>
+        <span class="spec-key">.sidebar__footer</span>
+        <span class="spec-val">
+          Pinned bottom slot. Reserved for account, support,
+          and other utility rows that exist outside the
+          primary information architecture. Items inside the
+          footer share the same
+          <code>.sidebar__link</code> contract as the nav
+          region above.
+        </span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ========================== 02 / MODES ========================== -->
+  <section class="chunk" id="modes">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">02 / Modes</span>
+        <h2 class="text-display-sm">Three <em>widths</em>, one shell.</h2>
+      </div>
+      <p>
+        The rail resolves into one of three modes. Expanded
+        is the default and renders the icon plus the label.
+        The rail mode (<code>.sidebar--collapsed</code>)
+        narrows the column to icon-only and exposes the
+        label as a hover tooltip. The overlay mode
+        (<code>.sidebar--overlay</code>) detaches the rail
+        from the page grid and slides it over content, used
+        below the responsive breakpoint when horizontal room
+        is scarce.
+      </p>
+    </header>
+
+    <p class="usage-note reveal">
+      <strong>Pick a mode by viewport, not by aesthetic
+      preference.</strong> Expanded is the default at desktop
+      widths. The rail mode is selected by the user via the
+      collapse trigger and persists as a preference. Overlay
+      is selected by the application below the responsive
+      breakpoint; it is not a desktop affordance.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>The label is never removed from the DOM in rail
+      mode.</strong> The collapsed rail visually clips the
+      label, but the link's accessible name still resolves to
+      its text content. Replacing labels with
+      <code>aria-label</code> on the icon — a common
+      shortcut — duplicates the label in screen-reader output
+      when the rail expands and is incorrect.
+    </p>
+
+    <div class="mode-grid reveal" aria-label="Sidebar modes">
+
+      <!-- EXPANDED -->
+      <article class="mode-tile">
+        <span class="label">Expanded · default</span>
+        <div class="demo">
+          <aside class="sidebar" aria-label="Sample expanded">
+            <nav class="sidebar__nav" aria-label="Sample">
+              <ul class="sidebar__list">
+                <li class="sidebar__item"><a class="sidebar__link is-current" href="#" aria-current="page"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span><span class="sidebar__label">Overview</span></a></li>
+                <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span><span class="sidebar__label">Search</span></a></li>
+                <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg></span><span class="sidebar__label">Inbox</span><span class="sidebar__trailing"><span class="sidebar__badge">12</span></span></a></li>
+                <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9 1.65 1.65 0 0 0 4.27 7.18l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span><span class="sidebar__label">Settings</span></a></li>
+              </ul>
+            </nav>
+          </aside>
+        </div>
+        <div class="meta"><span>--sidebar-width-expanded</span><strong>264 px</strong></div>
+      </article>
+
+      <!-- RAIL -->
+      <article class="mode-tile">
+        <span class="label">Rail · collapsed</span>
+        <div class="demo">
+          <aside class="sidebar sidebar--collapsed" aria-label="Sample rail">
+            <nav class="sidebar__nav" aria-label="Sample">
+              <ul class="sidebar__list">
+                <li class="sidebar__item"><a class="sidebar__link is-current" href="#" aria-current="page" title="Overview"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span><span class="sidebar__label">Overview</span></a></li>
+                <li class="sidebar__item"><a class="sidebar__link" href="#" title="Search"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span><span class="sidebar__label">Search</span></a></li>
+                <li class="sidebar__item"><a class="sidebar__link" href="#" title="Inbox"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg></span><span class="sidebar__label">Inbox</span></a></li>
+                <li class="sidebar__item"><a class="sidebar__link" href="#" title="Settings"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9 1.65 1.65 0 0 0 4.27 7.18l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span><span class="sidebar__label">Settings</span></a></li>
+              </ul>
+            </nav>
+          </aside>
+        </div>
+        <div class="meta"><span>--sidebar-width-rail</span><strong>64 px</strong></div>
+      </article>
+
+      <!-- OVERLAY -->
+      <article class="mode-tile">
+        <span class="label">Overlay · drawer</span>
+        <div class="demo is-overlay">
+          <aside class="sidebar" aria-label="Sample overlay" style="width: 70%;">
+            <header class="sidebar__header">
+              <a href="#" class="sidebar__brand">
+                <span class="sidebar__brand-mark" aria-hidden="true"></span>
+                <span class="sidebar__brand-text">Farm2Vet</span>
+              </a>
+            </header>
+            <nav class="sidebar__nav" aria-label="Sample">
+              <ul class="sidebar__list">
+                <li class="sidebar__item"><a class="sidebar__link is-current" href="#" aria-current="page"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span><span class="sidebar__label">Overview</span></a></li>
+                <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span><span class="sidebar__label">Search</span></a></li>
+                <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg></span><span class="sidebar__label">Inbox</span></a></li>
+              </ul>
+            </nav>
+          </aside>
+        </div>
+        <div class="meta"><span>--sidebar-z-overlay</span><strong>scrim · slide-in</strong></div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ========================== 03 / DENSITY ========================== -->
+  <section class="chunk" id="density">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">03 / Density</span>
+        <h2 class="text-display-sm">Three <em>row heights</em>.</h2>
+      </div>
+      <p>
+        Density modifies the row's vertical padding and
+        minimum height while preserving the icon size and
+        label type scale. Compact suits power-user surfaces
+        with a long destination list. Default is the
+        canonical density. Comfortable suits surfaces seen
+        from a distance or on touch-first devices.
+      </p>
+    </header>
+
+    <p class="usage-note reveal">
+      <strong>Density is selected per application, not per
+      group.</strong> Mixing densities inside one rail produces
+      a ragged left edge and erodes the rail's read as a
+      single list. The modifier sits on the rail
+      (<code>.sidebar</code>), not on individual groups or
+      items.
+    </p>
+
+    <div class="density-stage reveal" aria-label="Density showcase">
+      <div class="density-row">
+        <span class="tag">Compact</span>
+        <div class="demo">
+          <aside class="sidebar sidebar--density-compact" aria-label="Compact sample">
+            <nav class="sidebar__nav" aria-label="Sample" style="padding: var(--spacing-2x); gap: 0;">
+              <ul class="sidebar__list">
+                <li class="sidebar__item"><a class="sidebar__link is-current" href="#" aria-current="page"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span><span class="sidebar__label">Overview</span></a></li>
+                <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span><span class="sidebar__label">Search</span></a></li>
+                <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span><span class="sidebar__label">Calendar</span></a></li>
+              </ul>
+            </nav>
+          </aside>
+        </div>
+        <div class="meta">
+          <span>min-height</span><strong>32 px</strong>
+          <span>padding-y</span><strong>--spacing-1x</strong>
+        </div>
+      </div>
+
+      <div class="density-row is-default">
+        <span class="tag">Default</span>
+        <div class="demo">
+          <aside class="sidebar" aria-label="Default sample">
+            <nav class="sidebar__nav" aria-label="Sample" style="padding: var(--spacing-2x); gap: 0;">
+              <ul class="sidebar__list">
+                <li class="sidebar__item"><a class="sidebar__link is-current" href="#" aria-current="page"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span><span class="sidebar__label">Overview</span></a></li>
+                <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span><span class="sidebar__label">Search</span></a></li>
+                <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span><span class="sidebar__label">Calendar</span></a></li>
+              </ul>
+            </nav>
+          </aside>
+        </div>
+        <div class="meta">
+          <span>min-height</span><strong>40 px</strong>
+          <span>padding-y</span><strong>--spacing-2x</strong>
+        </div>
+      </div>
+
+      <div class="density-row">
+        <span class="tag">Comfortable</span>
+        <div class="demo">
+          <aside class="sidebar sidebar--density-comfortable" aria-label="Comfortable sample">
+            <nav class="sidebar__nav" aria-label="Sample" style="padding: var(--spacing-2x); gap: 0;">
+              <ul class="sidebar__list">
+                <li class="sidebar__item"><a class="sidebar__link is-current" href="#" aria-current="page"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span><span class="sidebar__label">Overview</span></a></li>
+                <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span><span class="sidebar__label">Search</span></a></li>
+                <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span><span class="sidebar__label">Calendar</span></a></li>
+              </ul>
+            </nav>
+          </aside>
+        </div>
+        <div class="meta">
+          <span>min-height</span><strong>48 px</strong>
+          <span>padding-y</span><strong>--spacing-3x</strong>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================== 04 / STATES ========================== -->
+  <section class="chunk" id="states">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">04 / States</span>
+        <h2 class="text-display-sm">Rest, hover, current, disabled.</h2>
+      </div>
+      <p>
+        Item rows resolve into four interactive states. The
+        active state — applied to exactly one row at a time —
+        reuses the system's primary-tinted convention so the
+        rail's selection language matches the header bar's
+        and the dropdown menu's. Hover is the neutral
+        background-default-hover; rest is transparent.
+      </p>
+    </header>
+
+    <div class="state-grid reveal" aria-label="Sidebar item states">
+
+      <article class="state-card">
+        <span class="label">Rest</span>
+        <div class="demo demo--row">
+          <a class="sidebar__link" href="#" tabindex="-1">
+            <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>
+            <span class="sidebar__label">Overview</span>
+          </a>
+        </div>
+        <div class="meta"><span>color</span><strong>--text-default-subtle</strong></div>
+      </article>
+
+      <article class="state-card">
+        <span class="label">Hover / focus</span>
+        <div class="demo demo--row">
+          <a class="sidebar__link" href="#" tabindex="-1" style="background: var(--sidebar-item-bg-hover); color: var(--sidebar-item-fg-hover);">
+            <span class="sidebar__icon" aria-hidden="true" style="color: var(--sidebar-item-icon-hover);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>
+            <span class="sidebar__label">Overview</span>
+          </a>
+        </div>
+        <div class="meta"><span>background</span><strong>--background-default-hover</strong></div>
+      </article>
+
+      <article class="state-card">
+        <span class="label">Current</span>
+        <div class="demo demo--row">
+          <a class="sidebar__link is-current" href="#" tabindex="-1" aria-current="page">
+            <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>
+            <span class="sidebar__label">Overview</span>
+          </a>
+        </div>
+        <div class="meta"><span>token</span><strong>--background-primary-subtle</strong></div>
+      </article>
+
+      <article class="state-card">
+        <span class="label">Disabled</span>
+        <div class="demo demo--row">
+          <a class="sidebar__link is-disabled" href="#" tabindex="-1" aria-disabled="true">
+            <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="14 2 14 8 20 8"/><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg></span>
+            <span class="sidebar__label">Reports</span>
+          </a>
+        </div>
+        <div class="meta"><span>color</span><strong>--text-default-disabled</strong></div>
+      </article>
+
+      <article class="state-card">
+        <span class="label">With count badge</span>
+        <div class="demo demo--row">
+          <a class="sidebar__link" href="#" tabindex="-1">
+            <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg></span>
+            <span class="sidebar__label">Inbox</span>
+            <span class="sidebar__trailing"><span class="sidebar__badge">12</span></span>
+          </a>
+        </div>
+        <div class="meta"><span>slot</span><strong>.sidebar__badge</strong></div>
+      </article>
+
+      <article class="state-card">
+        <span class="label">With status dot</span>
+        <div class="demo demo--row">
+          <a class="sidebar__link" href="#" tabindex="-1">
+            <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>
+            <span class="sidebar__label">Alerts</span>
+            <span class="sidebar__trailing"><span class="sidebar__badge sidebar__badge--dot" aria-label="New"></span></span>
+          </a>
+        </div>
+        <div class="meta"><span>slot</span><strong>.sidebar__badge--dot</strong></div>
+      </article>
+
+    </div>
+
+    <p class="usage-note reveal" style="margin-top: var(--spacing-8x);">
+      <strong>Disabled is for routes the user cannot reach
+      from the current context.</strong> A route is not
+      disabled because it has no data — it is disabled
+      because the user lacks permission, the feature is
+      gated, or a prerequisite step has not been completed.
+      For an empty state, route to the destination and let
+      the page render its empty view.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>Badge tone follows the system's status
+      semantics.</strong> Neutral counts use the default
+      <code>.sidebar__badge</code>. <code>--info</code> for
+      advisory counts (drafts, pending). <code>--critical</code>
+      for unresolved alerts that need action. The dot variant
+      replaces a badge when the precise count is not
+      meaningful — only that something new has arrived.
+    </p>
+  </section>
+
+  <!-- ========================== 05 / DISCLOSURE ========================== -->
+  <section class="chunk" id="disclosure">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">05 / Disclosure</span>
+        <h2 class="text-display-sm">Sub-items, <em>indented</em>.</h2>
+      </div>
+      <p>
+        An item with children renders a trailing chevron and
+        toggles its <code>.sidebar__sublist</code> on click.
+        Sub-items inherit the row contract but drop the
+        leading icon and shift their text to
+        <code>--text-body-sm</code>; an indent rail
+        anchors the visual hierarchy. Disclosure is
+        independent per group — opening one parent does not
+        close another. Nesting is capped at one level.
+      </p>
+    </header>
+
+    <p class="usage-note reveal">
+      <strong>Use disclosure only when sub-items belong to a
+      single named domain.</strong> If a parent's children
+      are heterogeneous, promote them to siblings of the
+      parent under a new group label. Disclosure is a
+      grouping device for the rail; it is not a substitute
+      for a third level of information architecture, which
+      belongs to the page.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>Two levels, never three.</strong> A sub-item's
+      children belong to the page below the rail, typically
+      as Tabs (Section 14) or a Side Panel (Section 07).
+      Nesting a third level inside the sidebar produces a
+      column wider than the page benefits from and an
+      orientation problem (which level am I on?) the rail
+      cannot resolve.
+    </p>
+
+    <div class="sidebar-stage reveal" aria-label="Disclosure example" style="min-height: 380px;">
+      <aside class="sidebar" aria-label="Primary">
+        <nav class="sidebar__nav" aria-label="Primary destinations">
+          <div class="sidebar__group">
+            <p class="sidebar__group-label">Records</p>
+            <ul class="sidebar__list">
+              <li class="sidebar__item is-open">
+                <button type="button" class="sidebar__link" aria-expanded="true">
+                  <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+                  <span class="sidebar__label">Patients</span>
+                  <span class="sidebar__trailing"><svg class="sidebar__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></span>
+                </button>
+                <ul class="sidebar__sublist">
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Active</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link is-current" href="#" aria-current="page"><span class="sidebar__label">Discharged</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Archived</span></a></li>
+                </ul>
+              </li>
+              <li class="sidebar__item">
+                <button type="button" class="sidebar__link" aria-expanded="false">
+                  <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="14 2 14 8 20 8"/><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg></span>
+                  <span class="sidebar__label">Reports</span>
+                  <span class="sidebar__trailing"><svg class="sidebar__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></span>
+                </button>
+              </li>
+              <li class="sidebar__item">
+                <a class="sidebar__link" href="#">
+                  <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
+                  <span class="sidebar__label">Appointments</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </aside>
+
+      <div class="sidebar-stage__body">
+        <p class="sidebar-stage__heading">Discharged patients</p>
+        <p class="sidebar-stage__lede">
+          The active sub-item carries the only
+          <code>.is-current</code> highlight in the rail; the
+          parent group is marked <code>.is-open</code> but
+          left visually neutral. The disclosure chevron
+          rotates 90&deg; when open and animates back on
+          close.
+        </p>
+        <div class="sidebar-stage__placeholder" aria-hidden="true"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================== 06 / BEHAVIOUR ========================== -->
+  <section class="chunk" id="behaviour">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">06 / Behaviour</span>
+        <h2 class="text-display-sm">Open, dismiss, follow.</h2>
+      </div>
+      <p>
+        Pointer behaviour is owned by the application's
+        sidebar runtime; this page documents the contract.
+        The rail's CSS resolves visual state from class hooks
+        (<code>.sidebar--collapsed</code>,
+        <code>.sidebar--overlay</code>,
+        <code>.sidebar__item.is-open</code>,
+        <code>.sidebar__link.is-current</code>); the runtime
+        is responsible for setting and clearing them in step
+        with the application's route and the user's
+        preferences.
+      </p>
+    </header>
+
+    <table class="behaviour-table reveal" aria-label="Behaviour matrix">
+      <thead>
+        <tr>
+          <th>Input</th>
+          <th>Outcome</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Item link clicked</td>
+          <td>The runtime navigates to the link's
+          <code>href</code>. On the destination route, the
+          runtime resolves the matching item and adds
+          <code>.is-current</code> plus
+          <code>aria-current="page"</code>. Any prior current
+          item is cleared. If the matched item is a
+          sub-item, the runtime opens its parent group (sets
+          <code>.is-open</code> and
+          <code>aria-expanded="true"</code>).</td>
+        </tr>
+        <tr>
+          <td>Disclosure trigger clicked</td>
+          <td>The runtime toggles <code>.is-open</code> on
+          the parent <code>.sidebar__item</code> and updates
+          <code>aria-expanded</code>. The sub-list
+          appears/disappears via CSS transition; multiple
+          groups may be open at once.</td>
+        </tr>
+        <tr>
+          <td>Collapse trigger clicked</td>
+          <td>The runtime toggles
+          <code>.sidebar--collapsed</code> on the rail and
+          updates <code>aria-pressed</code> on the trigger.
+          The choice persists in <code>localStorage</code>
+          under a single application-scoped key; pages do
+          not author per-page collapse state.</td>
+        </tr>
+        <tr>
+          <td>Hover on item (rail mode)</td>
+          <td>The runtime exposes the item's label as a
+          tooltip pinned to the right edge of the row,
+          referenced by <code>aria-describedby</code> on the
+          link. The tooltip dismisses on
+          <code>mouseleave</code> or <code>blur</code>.</td>
+        </tr>
+        <tr>
+          <td>Viewport drops below the responsive breakpoint</td>
+          <td>The runtime swaps the rail into overlay mode
+          (<code>.sidebar--overlay</code>) and hides it
+          behind a trigger in the page's top bar. Opening
+          the rail adds <code>.is-open</code>; the runtime
+          renders a scrim and traps focus inside the rail
+          until dismissed.</td>
+        </tr>
+        <tr>
+          <td>Outside click (overlay mode)</td>
+          <td>The runtime closes the rail and returns focus
+          to the trigger that opened it. Clicks on items
+          inside the rail navigate normally; the rail
+          dismisses itself after the navigation commits.</td>
+        </tr>
+        <tr>
+          <td><code>Esc</code> pressed (overlay mode)</td>
+          <td>The runtime closes the rail and returns focus
+          to the trigger. <code>Esc</code> is a no-op in
+          expanded and rail modes — those are persistent
+          surfaces, not dismissable ones.</td>
+        </tr>
+        <tr>
+          <td>Page scrolls</td>
+          <td>The rail does not scroll with the page.
+          Internal overflow is owned by the
+          <code>.sidebar__nav</code> region, which scrolls
+          independently while header and footer remain
+          pinned.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ========================== 07 / ACCESSIBILITY ========================== -->
+  <section class="chunk" id="accessibility">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">07 / Accessibility</span>
+        <h2 class="text-display-sm">Roles, labels, focus.</h2>
+      </div>
+      <p>
+        The rail uses native semantics where possible: a
+        <code>&lt;nav&gt;</code> with a meaningful label,
+        real <code>&lt;ul&gt;</code> / <code>&lt;li&gt;</code>
+        markup for the list, and <code>&lt;a&gt;</code> for
+        destinations alongside <code>&lt;button&gt;</code>
+        for disclosures. ARIA fills the gaps the markup
+        cannot — current page, expansion state,
+        disabled-but-focusable items.
+      </p>
+    </header>
+
+    <ul class="spec-list reveal" aria-label="Accessibility specification">
+      <li>
+        <span class="spec-key">Container</span>
+        <span class="spec-val">
+          The outer element is an <code>&lt;aside&gt;</code>
+          carrying a contextual label
+          (<code>aria-label="Primary"</code> for the
+          application's top-level rail). The internal nav
+          region is a <code>&lt;nav&gt;</code> with its own
+          label naming the contained list (<em>Primary
+          destinations</em>, <em>Records</em>).
+        </span>
+      </li>
+      <li>
+        <span class="spec-key">Active item</span>
+        <span class="spec-val">
+          The active row carries <code>aria-current="page"</code>
+          on the anchor. The class hook
+          <code>.is-current</code> drives the visual state;
+          the ARIA attribute is the source of truth for
+          assistive tech. Both must be set together.
+        </span>
+      </li>
+      <li>
+        <span class="spec-key">Disclosure</span>
+        <span class="spec-val">
+          A parent with children is rendered as a
+          <code>&lt;button type="button"&gt;</code>, not an
+          anchor. <code>aria-expanded</code> is kept in sync
+          with the parent <code>.sidebar__item.is-open</code>
+          state by the runtime. The sub-list does not need
+          <code>role</code> — it is a real
+          <code>&lt;ul&gt;</code>.
+        </span>
+      </li>
+      <li>
+        <span class="spec-key">Disabled items</span>
+        <span class="spec-val">
+          Carry <code>aria-disabled="true"</code> rather than
+          the <code>disabled</code> attribute, which is not
+          valid on anchors. The CSS suppresses pointer
+          events; the row remains in the tab order so the
+          user can still hear the destination's name and
+          understand why it is unreachable.
+        </span>
+      </li>
+      <li>
+        <span class="spec-key">Collapse trigger</span>
+        <span class="spec-val">
+          A toggle button. <code>aria-pressed</code> reflects
+          the rail's collapsed state;
+          <code>aria-label</code> reads <em>Collapse
+          sidebar</em> when expanded and <em>Expand sidebar</em>
+          when collapsed.
+        </span>
+      </li>
+      <li>
+        <span class="spec-key">Rail-mode tooltips</span>
+        <span class="spec-val">
+          Each tooltip carries <code>role="tooltip"</code>
+          and is referenced by
+          <code>aria-describedby</code> on its parent link.
+          The label remains in the link's accessible name —
+          it is visually clipped, not removed —so the link
+          continues to announce its destination correctly
+          when the rail expands.
+        </span>
+      </li>
+      <li>
+        <span class="spec-key">Keyboard</span>
+        <span class="spec-val">
+          Tab moves through items in DOM order. Enter
+          activates a link; Space activates a button.
+          <code>Esc</code> dismisses the rail in overlay
+          mode and is a no-op in the persistent modes. No
+          custom arrow-key behaviour is added — the rail
+          is a list of links, not a roving menu.
+        </span>
+      </li>
+      <li>
+        <span class="spec-key">Visible focus</span>
+        <span class="spec-val">
+          Focus rings inherit the system's
+          <code>:focus-visible</code> ring from
+          <code>base.css</code>. The rail does not suppress
+          focus styles in any mode.
+        </span>
+      </li>
+      <li>
+        <span class="spec-key">Reduced motion</span>
+        <span class="spec-val">
+          The rail's collapse, the overlay slide, and the
+          chevron rotation respect the system's
+          <code>prefers-reduced-motion</code> rule from
+          <code>base.css</code>. Transitions are shortened
+          to instant; no rail-specific animation is added
+          beyond the shared transition.
+        </span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ========================== 08 / RESPONSIVE ========================== -->
+  <section class="chunk" id="responsive">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">08 / Responsive</span>
+        <h2 class="text-display-sm">Three breakpoints.</h2>
+      </div>
+      <p>
+        The rail collapses in two stages. Above 1024 px the
+        rail renders expanded by default; the user may
+        collapse it to the rail mode via the trigger and the
+        choice persists. Between 720 px and 1023 px the
+        application defaults to rail mode and the trigger is
+        hidden — horizontal room is too tight for the
+        expanded width to coexist with primary content.
+        Below 720 px the rail switches to overlay and is
+        hidden behind a trigger in the page's top bar.
+      </p>
+    </header>
+
+    <ul class="spec-list reveal" aria-label="Responsive specification">
+      <li>
+        <span class="spec-key">≥ 1024 px</span>
+        <span class="spec-val">
+          Expanded rail (264 px) by default. User may
+          collapse to the 64 px rail mode; choice persists
+          per application via <code>localStorage</code>.
+        </span>
+      </li>
+      <li>
+        <span class="spec-key">720–1023 px</span>
+        <span class="spec-val">
+          Forced rail mode. Collapse trigger hidden because
+          there is no other state to switch to. Tooltips
+          on hover expose item names.
+        </span>
+      </li>
+      <li>
+        <span class="spec-key">≤ 719 px</span>
+        <span class="spec-val">
+          Overlay mode. Rail is hidden by default; opened
+          from a trigger in the page's top bar. Outside
+          click and <code>Esc</code> dismiss.
+        </span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ========================== 09 / USAGE ========================== -->
+  <section class="chunk" id="usage">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">09 / Usage</span>
+        <h2 class="text-display-sm">Mount once, route freely.</h2>
+      </div>
+      <p>
+        The rail is rendered once at the application shell
+        level, outside the page route. Pages do not author
+        per-link active classes; the runtime resolves the
+        active route on each navigation and sets
+        <code>.is-current</code> plus
+        <code>aria-current</code> on the matching item.
+      </p>
+    </header>
+
+<pre class="code reveal"><span class="com">&lt;!-- 1. Container — anchor at the application shell, not in a page route --&gt;</span>
+<span class="tag">&lt;aside</span> <span class="attr">class</span>=<span class="str">"sidebar"</span> <span class="attr">aria-label</span>=<span class="str">"Primary"</span><span class="tag">&gt;</span>
+
+  <span class="com">&lt;!-- 2. Header slot — optional --&gt;</span>
+  <span class="tag">&lt;header</span> <span class="attr">class</span>=<span class="str">"sidebar__header"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="str">"/"</span> <span class="attr">class</span>=<span class="str">"sidebar__brand"</span><span class="tag">&gt;</span>…<span class="tag">&lt;/a&gt;</span>
+    <span class="tag">&lt;button</span> <span class="attr">type</span>=<span class="str">"button"</span> <span class="attr">class</span>=<span class="str">"sidebar__collapse"</span>
+            <span class="attr">aria-label</span>=<span class="str">"Collapse sidebar"</span> <span class="attr">aria-pressed</span>=<span class="str">"false"</span><span class="tag">&gt;</span>…<span class="tag">&lt;/button&gt;</span>
+  <span class="tag">&lt;/header&gt;</span>
+
+  <span class="com">&lt;!-- 3. Nav region — required --&gt;</span>
+  <span class="tag">&lt;nav</span> <span class="attr">class</span>=<span class="str">"sidebar__nav"</span> <span class="attr">aria-label</span>=<span class="str">"Primary destinations"</span><span class="tag">&gt;</span>
+
+    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"sidebar__group"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;p</span> <span class="attr">class</span>=<span class="str">"sidebar__group-label"</span><span class="tag">&gt;</span>Workspace<span class="tag">&lt;/p&gt;</span>
+      <span class="tag">&lt;ul</span> <span class="attr">class</span>=<span class="str">"sidebar__list"</span><span class="tag">&gt;</span>
+        <span class="tag">&lt;li</span> <span class="attr">class</span>=<span class="str">"sidebar__item"</span><span class="tag">&gt;</span>
+          <span class="tag">&lt;a</span> <span class="attr">class</span>=<span class="str">"sidebar__link"</span> <span class="attr">href</span>=<span class="str">"/overview"</span><span class="tag">&gt;</span>
+            <span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="str">"sidebar__icon"</span> <span class="attr">aria-hidden</span>=<span class="str">"true"</span><span class="tag">&gt;</span>…<span class="tag">&lt;/span&gt;</span>
+            <span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="str">"sidebar__label"</span><span class="tag">&gt;</span>Overview<span class="tag">&lt;/span&gt;</span>
+          <span class="tag">&lt;/a&gt;</span>
+        <span class="tag">&lt;/li&gt;</span>
+      <span class="tag">&lt;/ul&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+
+  <span class="tag">&lt;/nav&gt;</span>
+
+  <span class="com">&lt;!-- 4. Footer slot — optional --&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"sidebar__footer"</span><span class="tag">&gt;</span>…<span class="tag">&lt;/div&gt;</span>
+
+<span class="tag">&lt;/aside&gt;</span></pre>
+
+    <p class="usage-note reveal">
+      <strong>Do not author per-link <code>.is-current</code>
+      classes inside page templates.</strong> The runtime is
+      the single source of truth for the active route.
+      Hard-coded active classes drift out of sync with the
+      router and produce two conflicting highlights.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>Do not nest a second navigation surface inside
+      the rail.</strong> Tabs (Section 14) and breadcrumbs
+      belong to the page below the rail. Putting a horizontal
+      tab strip inside <code>.sidebar__nav</code> produces a
+      cross-axis hierarchy the user cannot reason about.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>Do not raise modal content inside the rail.</strong>
+      A persistent navigation surface is the wrong host for
+      transient or blocking content. Use the Modal Dialog
+      (Section 06) for blocking interruptions, the Side
+      Panel (Section 07) for focused sub-tasks, and the
+      Toast (Section 08) for transient confirmations.
+    </p>
+  </section>
+
+  <!-- ========================== 10 / TOKENS ========================== -->
+  <section class="chunk" id="tokens">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">10 / Component tokens</span>
+        <h2 class="text-display-sm">Token <em>map</em>.</h2>
+      </div>
+      <p>
+        The rail introduces its own
+        <code>--sidebar-*</code> token namespace, scoped to
+        this component. Every value resolves to a semantic
+        token; no primitive
+        (<code>--neutral-*</code>, <code>--primary-*</code>)
+        is referenced directly. Renaming any consumed
+        semantic token propagates through the rail in step
+        with the rest of the system.
+      </p>
+    </header>
+
+    <table class="token-table reveal" aria-label="Sidebar component tokens">
+      <thead>
+        <tr>
+          <th>Slot</th>
+          <th>References</th>
+          <th>Resolves to</th>
+          <th>Preview</th>
+        </tr>
+      </thead>
+      <tbody id="sidebarTokenTable"></tbody>
+    </table>
+  </section>
+
+  <!-- ========================== FOOTER ========================== -->
   <footer>
     <span class="sigil">Farm2Vet — cultivated intelligence, since 2024.</span>
-    <a href="design-system-v1.html">← Design system home</a>
-    <span>Section 12 / Components</span>
+    <a href="III-10-header-navigation.html">← Section 10 / Header &amp; Nav Bar</a>
+    <a href="III-14-tabs.html">Section 14 / Tabs →</a>
+    <span>End of Section 12 · Sidebar</span>
   </footer>
 
 </main>
+
+<script>
+/* =========================================================
+   COMPONENT TOKEN DATA — Sidebar
+   The rail introduces a dedicated --sidebar-* namespace;
+   each entry below records the slot, the component-scoped
+   token name, and the semantic token it dereferences. The
+   resolved column reads the live computed value so the
+   table stays accurate against whatever token set is
+   active on the page.
+   ========================================================= */
+const SIDEBAR_TOKENS = [
+  { group: 'Container', tokens: [
+    ['--sidebar-width-expanded',   '264px'],
+    ['--sidebar-width-rail',       '64px'],
+    ['--sidebar-bg',               'var(--background-default-subtle)'],
+    ['--sidebar-border',           'var(--border-default)'],
+    ['--sidebar-padding-x',        'var(--spacing-3x)'],
+    ['--sidebar-padding-y',        'var(--spacing-4x)'],
+    ['--sidebar-gap',              'var(--spacing-1x)'],
+    ['--sidebar-group-gap',        'var(--spacing-6x)'],
+    ['--sidebar-shadow-overlay',   'var(--shadow-lg)'],
+    ['--sidebar-z-rail',           '40'],
+    ['--sidebar-z-overlay',        '70'],
+  ]},
+  { group: 'Header slot', tokens: [
+    ['--sidebar-header-pad-y',     'var(--spacing-3x)'],
+    ['--sidebar-header-border',    'var(--border-default-subtle)'],
+  ]},
+  { group: 'Item · shape', tokens: [
+    ['--sidebar-item-radius',                'var(--radius-md)'],
+    ['--sidebar-item-gap',                   'var(--spacing-3x)'],
+    ['--sidebar-item-padding-x',             'var(--spacing-3x)'],
+    ['--sidebar-item-icon-size',             '20px'],
+    ['--sidebar-item-padding-y-compact',     'var(--spacing-1x)'],
+    ['--sidebar-item-height-compact',        '32px'],
+    ['--sidebar-item-padding-y-default',     'var(--spacing-2x)'],
+    ['--sidebar-item-height-default',        '40px'],
+    ['--sidebar-item-padding-y-comfortable', 'var(--spacing-3x)'],
+    ['--sidebar-item-height-comfortable',    '48px'],
+  ]},
+  { group: 'Item · colour', tokens: [
+    ['--sidebar-item-fg',           'var(--text-default-subtle)'],
+    ['--sidebar-item-fg-hover',     'var(--text-default)'],
+    ['--sidebar-item-bg-hover',     'var(--background-default-hover)'],
+    ['--sidebar-item-fg-current',   'var(--text-primary-strong)'],
+    ['--sidebar-item-bg-current',   'var(--background-primary-subtle)'],
+    ['--sidebar-item-fg-disabled',  'var(--text-default-disabled)'],
+    ['--sidebar-item-icon',         'var(--icon-default-subtle)'],
+    ['--sidebar-item-icon-hover',   'var(--icon-default)'],
+    ['--sidebar-item-icon-current', 'var(--icon-primary-strong)'],
+  ]},
+  { group: 'Group label', tokens: [
+    ['--sidebar-group-label-font',     'var(--font-mono)'],
+    ['--sidebar-group-label-size',     'var(--text-eyebrow)'],
+    ['--sidebar-group-label-tracking', 'var(--letter-spacing-eyebrow)'],
+    ['--sidebar-group-label-color',    'var(--text-default-minimal)'],
+    ['--sidebar-group-label-pad-x',    'var(--spacing-3x)'],
+    ['--sidebar-group-label-pad-y',    'var(--spacing-2x)'],
+  ]},
+  { group: 'Sub-list (disclosure)', tokens: [
+    ['--sidebar-sublist-indent', 'calc(var(--sidebar-item-icon-size) + var(--sidebar-item-gap))'],
+    ['--sidebar-sublist-rail',   'var(--border-default-subtle)'],
+  ]},
+  { group: 'Trailing slot', tokens: [
+    ['--sidebar-trailing-color',   'var(--text-default-minimal)'],
+    ['--sidebar-chevron-size',     '14px'],
+    ['--sidebar-chevron-rotation', '90deg'],
+  ]},
+  { group: 'Footer slot', tokens: [
+    ['--sidebar-footer-bg',     'transparent'],
+    ['--sidebar-footer-border', 'var(--border-default-subtle)'],
+    ['--sidebar-footer-pad',    'var(--spacing-3x)'],
+  ]},
+  { group: 'Tooltip (rail mode)', tokens: [
+    ['--sidebar-tip-bg',     'var(--background-toast)'],
+    ['--sidebar-tip-fg',     'var(--text-inverted)'],
+    ['--sidebar-tip-radius', 'var(--radius-sm)'],
+    ['--sidebar-tip-pad-x',  'var(--spacing-3x)'],
+    ['--sidebar-tip-pad-y',  'var(--spacing-1x)'],
+    ['--sidebar-tip-offset', 'var(--spacing-3x)'],
+  ]},
+  { group: 'Overlay', tokens: [
+    ['--sidebar-overlay-scrim', 'var(--background-overlay)'],
+  ]},
+  { group: 'Motion', tokens: [
+    ['width transition',    '.22s cubic-bezier(.2,.8,.2,1)'],
+    ['transform transition','.22s cubic-bezier(.2,.8,.2,1)'],
+    ['link transition',     'background-color .15s ease, color .15s ease'],
+    ['chevron transition',  'transform .18s ease'],
+    ['collapse rotation',   'rotate(180deg)'],
+  ]},
+];
+
+/* =========================================================
+   RESOLVED VALUES — read each var(--…) reference off the
+   document root so the resolved column reflects whatever
+   the running token set evaluates to.
+   ========================================================= */
+function resolveCss(value) {
+    if (!value) return '';
+    const match = String(value).match(/^var\((--[^)]+)\)$/);
+    if (!match) return String(value).trim();
+    const v = getComputedStyle(document.documentElement)
+        .getPropertyValue(match[1]).trim();
+    return v || String(value).trim();
+}
+function isColorish(v) {
+    if (!v) return false;
+    return v.startsWith('#')
+        || v.startsWith('rgb')
+        || v.startsWith('hsl')
+        || v.startsWith('color-mix')
+        || v === 'transparent'
+        || /^[a-z]+$/.test(v);
+}
+
+function renderTokenTable() {
+    const tbody = document.getElementById('sidebarTokenTable');
+    if (!tbody) return;
+    let html = '';
+    SIDEBAR_TOKENS.forEach(group => {
+        html += `<tr class="group-row"><td colspan="4">${group.group}</td></tr>`;
+        group.tokens.forEach(([name, ref]) => {
+            const resolved = resolveCss(ref) || '—';
+            const isColor = isColorish(resolved);
+            const chip = isColor
+                ? `<span class="chip" style="background:${resolved}"></span>`
+                : `<span class="chip" style="background: repeating-linear-gradient(45deg, var(--neutral-100) 0 6px, var(--neutral-50) 6px 12px); opacity:.6"></span>`;
+            html += `
+                <tr>
+                  <td class="tk-name">${name}</td>
+                  <td class="tk-ref">${ref.replace(/</g,'&lt;')}</td>
+                  <td class="tk-resolved">${resolved.length > 60 ? resolved.slice(0,57)+'…' : resolved}</td>
+                  <td class="tk-swatch">${chip}</td>
+                </tr>`;
+        });
+    });
+    tbody.innerHTML = html;
+}
+
+/* =========================================================
+   COLLAPSE DEMO — the anatomy stage hosts a real
+   .sidebar__collapse trigger. Wire it on this page so the
+   rail next to the live preview can be toggled, exercising
+   the same class hooks an application runtime would set.
+   ========================================================= */
+function initCollapseDemo() {
+    document.querySelectorAll('.sidebar__collapse').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const rail = btn.closest('.sidebar');
+            if (!rail) return;
+            const next = !rail.classList.contains('sidebar--collapsed');
+            rail.classList.toggle('sidebar--collapsed', next);
+            btn.setAttribute('aria-pressed', String(next));
+            btn.setAttribute('aria-label', next ? 'Expand sidebar' : 'Collapse sidebar');
+        });
+    });
+}
+
+/* =========================================================
+   DISCLOSURE DEMO — toggle the parent .sidebar__item.is-open
+   class on click of any disclosure trigger button. Mirrors
+   the application runtime's contract for sub-list expansion.
+   ========================================================= */
+function initDisclosureDemo() {
+    document.querySelectorAll('.sidebar__link[aria-expanded]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const item = btn.closest('.sidebar__item');
+            if (!item) return;
+            const next = !item.classList.contains('is-open');
+            item.classList.toggle('is-open', next);
+            btn.setAttribute('aria-expanded', String(next));
+        });
+    });
+}
+
+/* =========================================================
+   REVEAL — fade-up content as it scrolls into view.
+   Mirrors the behaviour used on every other section page.
+   ========================================================= */
+function initReveal() {
+    const targets = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) {
+        targets.forEach(el => el.classList.add('in'));
+        return;
+    }
+    const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('in');
+                io.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.12 });
+    targets.forEach(el => io.observe(el));
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    renderTokenTable();
+    initCollapseDemo();
+    initDisclosureDemo();
+    initReveal();
+});
+</script>
 
 </body>
 </html>

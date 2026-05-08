@@ -70,15 +70,14 @@ Each component may has Variants, Versions, and Sizes. Size is the optimized vers
 - Cards (done)
   - Variants: Default, Question Card, List Card, Glass-default
   - Version: Default, Inverted Surface, Selected
-- Modal Dialog
-- Side Panel
+- Modal Dialog (done)
+- Side Panel (done)
 - Toast (done)
 - Inline Alert (done)
 - badge (done)
-- Header
+- Header and Nav Bar (done)
 - Sidebar
-- Text/Typography
-- Navbar
+- Text/Typography (done)
 - Tabs
 
 IV. Assets

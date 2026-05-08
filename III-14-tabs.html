@@ -15,53 +15,17 @@
 <link rel="stylesheet" href="styles/typography.css" />
 <link rel="stylesheet" href="styles/shell.css" />
 <link rel="stylesheet" href="styles/global-nav.css" />
-<!-- Reuse: usage-note pattern + .card-callout -->
+<!-- Component -->
+<link rel="stylesheet" href="styles/tabs.css" />
+<!-- Reuse: variant / version / size grids + usage-note pattern -->
 <link rel="stylesheet" href="styles/page-section-04.css" />
-<link rel="stylesheet" href="styles/page-section-05.css" />
+<!-- Reuse: token-table styling and per-card .meta strip -->
+<link rel="stylesheet" href="styles/page-section-03.css" />
+<!-- Page-specific: anatomy, keyboard matrix, rule matrix -->
+<link rel="stylesheet" href="styles/page-section-14.css" />
 
+<script src="scripts/scroll-spy.js" defer></script>
 <script src="scripts/global-nav.js" defer></script>
-
-<style>
-  .placeholder-card {
-    margin-top: var(--spacing-12x);
-    padding: var(--spacing-8x);
-    background: var(--background-default-subtle);
-    border: var(--border-width-base) solid var(--border-default);
-    border-radius: var(--radius-lg);
-  }
-  .placeholder-card h3 {
-    font-family: var(--font-mono);
-    font-size: var(--text-eyebrow);
-    letter-spacing: var(--letter-spacing-eyebrow);
-    text-transform: uppercase;
-    color: var(--text-default-minimal);
-    margin: 0 0 var(--spacing-4x);
-  }
-  .placeholder-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  .placeholder-list li {
-    display: grid;
-    grid-template-columns: 16ch 1fr;
-    column-gap: var(--spacing-6x);
-    padding: var(--spacing-3x) 0;
-    border-top: var(--border-width-base) solid var(--border-default);
-    font-size: var(--text-body);
-    color: var(--text-default);
-  }
-  .placeholder-list li:first-child { border-top: none; }
-  .placeholder-list li strong {
-    font-family: var(--font-mono);
-    font-size: var(--text-eyebrow);
-    letter-spacing: var(--letter-spacing-eyebrow);
-    text-transform: uppercase;
-    color: var(--text-primary-strong);
-    font-weight: var(--font-weight-medium);
-    padding-top: var(--spacing-half);
-  }
-</style>
 
 </head>
 <body data-page="III-14-tabs">
@@ -106,7 +70,7 @@
                 <li><a href="III-09-alert-badges.html"><span class="global-nav__index">09</span><span>Alert &amp; Badge</span></a></li>
                 <li><a href="III-10-header-navigation.html"><span class="global-nav__index">10</span><span>Header &amp; Nav Bar</span></a></li>
                 <li><a href="III-12-sidebar.html" class="is-placeholder"><span class="global-nav__index">12</span><span>Sidebar</span></a></li>
-                <li><a href="III-14-tabs.html" class="is-placeholder"><span class="global-nav__index">14</span><span>Tabs</span></a></li>
+                <li><a href="III-14-tabs.html"><span class="global-nav__index">14</span><span>Tabs</span></a></li>
               </ul>
             </div>
           </div>
@@ -159,42 +123,1089 @@
 
 <main class="shell" id="top">
 
+  <!-- ========================== HERO ========================== -->
   <section class="hero">
     <div>
-      <h1 class="text-display">
+      <h1 class="text-display reveal">
         <span class="num">Section 14 / Components</span>
         Tabs.
       </h1>
     </div>
     <div>
-      <p class="lede">Reserved page. The Tabs component will document its anatomy, orientations, sizes, selection model, and accessibility requirements once authored. Tabs are reserved for switching between peer views of the same content; for navigating between pages, use the global header (Section 10).</p>
+      <p class="lede reveal">
+        Tabs select <strong>one-of-N peer views</strong> of the same content
+        area. The selected tab maps to a panel rendered directly below the
+        list; if there is no panel, the contract is no longer Tabs. Five
+        visual variants — Line, Enclosed, Pill, Segmented, Vertical — share
+        a single token chain and a single keyboard model. The page also
+        documents two sibling navigation primitives that share Tabs' layout
+        zone: <a href="#breadcrumb"><code>.breadcrumb</code></a> for path
+        display and <a href="#pagination"><code>.pagination</code></a> for
+        numeric step navigation.
+      </p>
     </div>
 
-    <dl class="meta-strip">
-      <div><dt>Status</dt><dd>Placeholder</dd></div>
-      <div><dt>Authored</dt><dd>—</dd></div>
-      <div><dt>Tokens</dt><dd>—</dd></div>
-      <div><dt>Variants</dt><dd>—</dd></div>
+    <dl class="meta-strip reveal">
+      <div><dt>Component</dt><dd>Tabs</dd></div>
+      <div><dt>Variants</dt><dd>5 · LG focus</dd></div>
+      <div><dt>Pattern</dt><dd>ARIA tablist</dd></div>
+      <div><dt>Siblings</dt><dd>Breadcrumb · Pagination</dd></div>
     </dl>
   </section>
 
-  <div class="placeholder-card">
-    <h3>Reserved scope · expected sub-areas</h3>
-    <ul class="placeholder-list">
-      <li><strong>Anatomy</strong><span>Tablist, tab, panel, optional badge slot.</span></li>
-      <li><strong>Orientations</strong><span>Horizontal · vertical.</span></li>
-      <li><strong>Sizes</strong><span>Compact, default, large.</span></li>
-      <li><strong>Behaviour</strong><span>Keyboard model, manual vs. automatic activation.</span></li>
-    </ul>
-  </div>
+  <!-- ========================== 01 / SCOPE ========================== -->
+  <section class="chunk" id="scope">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">01 / Tabs — Scope</span>
+        <h2 class="text-display-sm">One job, <em>one component</em>.</h2>
+      </div>
+      <p>
+        Before reaching for Tabs, confirm the contract. Tabs are for
+        switching between peer views <em>inside</em> a single page. They
+        are not for navigating between pages, not for filtering a list,
+        and not for showing where the user is in a hierarchy. Each of
+        those tasks has its own component in this system.
+      </p>
+    </header>
 
+    <p class="usage-note reveal">
+      <strong>If there is no panel, it is not a tab.</strong> The defining
+      contract of Tabs is that selecting a tab mounts a panel of content
+      directly below the list. A control that filters the same content in
+      place is a segmented switch — see
+      <a href="III-02-buttons.html"><code>.btn-switch--segmented</code></a>
+      in Buttons. A row of links to other pages is the global header — see
+      <a href="III-10-header-navigation.html">Header &amp; Nav Bar</a>.
+    </p>
+
+    <table class="rule-matrix reveal" aria-label="Tabs vs sibling navigation primitives">
+      <thead>
+        <tr>
+          <th>Component</th>
+          <th>Purpose</th>
+          <th>Reach for it when</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="rm-name">.tabs</td>
+          <td class="rm-purpose">Switch between peer views of the same content area.</td>
+          <td class="rm-when">A single page exposes several views of one record (Overview, Activity, Files), or one tool exposes several modes that share the same canvas (Code, Preview, Issues). Selection mounts a panel.</td>
+        </tr>
+        <tr>
+          <td class="rm-name">.breadcrumb</td>
+          <td class="rm-purpose">Show the user's location in a hierarchy.</td>
+          <td class="rm-when">The user has navigated several levels deep and needs a path back. Breadcrumb is read-only context, not a control surface; the only interactive nodes are the trail links, not the current item.</td>
+        </tr>
+        <tr>
+          <td class="rm-name">.pagination</td>
+          <td class="rm-purpose">Step through a paged result set.</td>
+          <td class="rm-when">A list, table, or feed is sliced into numbered pages. The viewport stays constant; only the data changes. Use compact pagination in dense table footers.</td>
+        </tr>
+        <tr>
+          <td class="rm-name">.btn-switch--segmented</td>
+          <td class="rm-purpose">Pick one-of-N values without mounting a panel.</td>
+          <td class="rm-when">A unit toggle (kg / lb), a sort key (Newest / Oldest), or a one-of-N filter that re-orders the same list in place. The selection is a value, not a view.</td>
+        </tr>
+        <tr>
+          <td class="rm-name">.global-nav</td>
+          <td class="rm-purpose">Navigate between pages of the product or system.</td>
+          <td class="rm-when">The destination is a different URL. The header is the system's only cross-page surface; tabs must never cross page boundaries.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ========================== 02 / ANATOMY ========================== -->
+  <section class="chunk" id="anatomy">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">02 / Tabs — Anatomy</span>
+        <h2 class="text-display-sm">Five slots, <em>one contract</em>.</h2>
+      </div>
+      <p>
+        The component is a wrapper, a list, one or more tabs, an
+        indicator, and one panel per tab. Slots are addressable by
+        BEM-style class hooks; ARIA roles are required and enforce the
+        keyboard model.
+      </p>
+    </header>
+
+    <div class="glass tabs-anatomy reveal" aria-label="Tabs anatomy diagram">
+      <div class="tabs-anatomy__diagram">
+        <div class="tabs tabs--line tabs--md" data-tabs>
+          <div class="tabs__list" role="tablist" aria-label="Anatomy demo">
+            <button type="button" class="tabs__tab is-selected" role="tab" aria-selected="true" tabindex="0">
+              <span class="tabs__label">Overview</span>
+              <span class="tabs__badge">12</span>
+            </button>
+            <button type="button" class="tabs__tab" role="tab" aria-selected="false" tabindex="-1">
+              <span class="tabs__label">Activity</span>
+            </button>
+            <button type="button" class="tabs__tab" role="tab" aria-selected="false" tabindex="-1">
+              <span class="tabs__label">Files</span>
+              <span class="tabs__badge">3</span>
+            </button>
+            <span class="tabs__indicator" aria-hidden="true"></span>
+          </div>
+          <div class="tabs__panel" role="tabpanel">
+            <em>Panel</em> — content for the selected tab is rendered here.
+          </div>
+        </div>
+      </div>
+
+      <dl class="tabs-anatomy__legend">
+        <dt>A · root</dt>
+        <dd>The wrapper (<code>.tabs</code>) carries the variant and size modifiers. It owns the local CSS variables that drive the size scale, so child rules never need to know which size is active. Required <code>data-tabs</code> attribute marks the element for the controller to bind.</dd>
+
+        <dt>B · list</dt>
+        <dd><code>.tabs__list</code> with <code>role="tablist"</code>. Hosts the tabs and the absolutely-positioned indicator. <code>aria-label</code> describes the group; if the list is preceded by a heading, use <code>aria-labelledby</code> instead.</dd>
+
+        <dt>C · tab</dt>
+        <dd><code>.tabs__tab</code> with <code>role="tab"</code>, <code>aria-selected</code>, and <code>aria-controls</code> pointing to its panel. Optional <code>.tabs__icon</code>, <code>.tabs__label</code>, and <code>.tabs__badge</code> sit inside in fixed order so screen readers always announce the same sequence.</dd>
+
+        <dt>D · indicator</dt>
+        <dd><code>.tabs__indicator</code> is the moving primary marker. The controller writes <code>--_x</code> / <code>--_w</code> (horizontal) or <code>--_y</code> / <code>--_h-active</code> (vertical) onto the host so the indicator transitions between tabs without re-rendering the DOM. Hidden in Pill and Enclosed variants.</dd>
+
+        <dt>E · panel</dt>
+        <dd><code>.tabs__panel</code> with <code>role="tabpanel"</code>, an <code>id</code> matching the controlling tab's <code>aria-controls</code>, and <code>tabindex="0"</code> so the panel itself is focusable for screen readers. Exactly one panel per tab; orphan tabs are an authoring error.</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ========================== 03 / VARIANTS ========================== -->
+  <section class="chunk" id="variants">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">03 / Tabs — Variants</span>
+        <h2 class="text-display-sm">Five treatments, <em>one contract</em>.</h2>
+      </div>
+      <p>
+        Five visual variants. Every variant honours the same ARIA roles,
+        the same keyboard model, and the same token chain — only the
+        surface treatment and the indicator strategy change. Picking a
+        variant is a layout decision, not a behavioural one.
+      </p>
+    </header>
+
+    <p class="usage-note reveal">
+      <strong>Match the variant to the surface, not to the importance of
+      the choice.</strong> Line is the product default — quiet underline,
+      reads on any background. Enclosed is reserved for tabs that must
+      visually attach to a bordered card. Pill belongs on inverted or
+      glass surfaces where an underline gets lost. Segmented is the
+      treatment of choice for tab strips of three to five short labels in
+      a toolbar. Vertical is for settings panels and doc layouts where
+      labels are long enough to justify the column.
+    </p>
+
+    <div class="form-variant-grid reveal">
+
+      <!-- Variant: Line (default) -->
+      <article class="form-variant-card tabs-variant-card tall">
+        <span class="label">Line · product default</span>
+        <div class="demo">
+          <div class="tabs tabs--line tabs--md" data-tabs>
+            <div class="tabs__list" role="tablist" aria-label="Line variant demo">
+              <button type="button" class="tabs__tab is-selected" role="tab" aria-selected="true" tabindex="0" data-target="line-overview">
+                <span class="tabs__label">Overview</span>
+              </button>
+              <button type="button" class="tabs__tab" role="tab" aria-selected="false" tabindex="-1" data-target="line-activity">
+                <span class="tabs__label">Activity</span>
+                <span class="tabs__badge">8</span>
+              </button>
+              <button type="button" class="tabs__tab" role="tab" aria-selected="false" tabindex="-1" data-target="line-files">
+                <span class="tabs__label">Files</span>
+              </button>
+              <button type="button" class="tabs__tab" role="tab" aria-selected="false" tabindex="-1" data-target="line-team">
+                <span class="tabs__label">Team</span>
+              </button>
+              <span class="tabs__indicator" aria-hidden="true"></span>
+            </div>
+            <div class="tabs__panel" role="tabpanel" id="line-overview">Overview panel — case summary, vital signs, last visit.</div>
+            <div class="tabs__panel" role="tabpanel" id="line-activity" hidden>Activity panel — chronological case events.</div>
+            <div class="tabs__panel" role="tabpanel" id="line-files" hidden>Files panel — uploaded documents and lab reports.</div>
+            <div class="tabs__panel" role="tabpanel" id="line-team" hidden>Team panel — owners and watchers.</div>
+          </div>
+        </div>
+        <div class="meta"><span>.tabs--line</span><strong>system default</strong></div>
+      </article>
+
+      <!-- Variant: Enclosed -->
+      <article class="form-variant-card tabs-variant-card tall">
+        <span class="label">Enclosed · joined to a bordered panel</span>
+        <div class="demo">
+          <div class="tabs tabs--enclosed tabs--md" data-tabs>
+            <div class="tabs__list" role="tablist" aria-label="Enclosed variant demo">
+              <button type="button" class="tabs__tab is-selected" role="tab" aria-selected="true" tabindex="0" data-target="enc-summary">
+                <span class="tabs__label">Summary</span>
+              </button>
+              <button type="button" class="tabs__tab" role="tab" aria-selected="false" tabindex="-1" data-target="enc-history">
+                <span class="tabs__label">History</span>
+              </button>
+              <button type="button" class="tabs__tab" role="tab" aria-selected="false" tabindex="-1" data-target="enc-billing">
+                <span class="tabs__label">Billing</span>
+              </button>
+            </div>
+            <div class="tabs__panel tabs__panel--rule" role="tabpanel" id="enc-summary">
+              The selected tab erases the bottom border so the tab and the
+              panel read as a single bounded card.
+            </div>
+            <div class="tabs__panel tabs__panel--rule" role="tabpanel" id="enc-history" hidden>History panel.</div>
+            <div class="tabs__panel tabs__panel--rule" role="tabpanel" id="enc-billing" hidden>Billing panel.</div>
+          </div>
+        </div>
+        <div class="meta"><span>.tabs--enclosed</span><strong>card-bound</strong></div>
+      </article>
+
+      <!-- Variant: Pill -->
+      <article class="form-variant-card tabs-variant-card tall">
+        <span class="label">Pill · floating, no rule</span>
+        <div class="demo">
+          <div class="tabs tabs--pill tabs--md" data-tabs>
+            <div class="tabs__list" role="tablist" aria-label="Pill variant demo">
+              <button type="button" class="tabs__tab is-selected" role="tab" aria-selected="true" tabindex="0" data-target="pill-day">
+                <span class="tabs__label">Day</span>
+              </button>
+              <button type="button" class="tabs__tab" role="tab" aria-selected="false" tabindex="-1" data-target="pill-week">
+                <span class="tabs__label">Week</span>
+              </button>
+              <button type="button" class="tabs__tab" role="tab" aria-selected="false" tabindex="-1" data-target="pill-month">
+                <span class="tabs__label">Month</span>
+              </button>
+              <button type="button" class="tabs__tab" role="tab" aria-selected="false" tabindex="-1" data-target="pill-quarter">
+                <span class="tabs__label">Quarter</span>
+              </button>
+            </div>
+            <div class="tabs__panel" role="tabpanel" id="pill-day">Day panel — appointments scheduled for today.</div>
+            <div class="tabs__panel" role="tabpanel" id="pill-week" hidden>Week panel.</div>
+            <div class="tabs__panel" role="tabpanel" id="pill-month" hidden>Month panel.</div>
+            <div class="tabs__panel" role="tabpanel" id="pill-quarter" hidden>Quarter panel.</div>
+          </div>
+        </div>
+        <div class="meta"><span>.tabs--pill</span><strong>glass / inverted</strong></div>
+      </article>
+
+      <!-- Variant: Segmented -->
+      <article class="form-variant-card tabs-variant-card tall">
+        <span class="label">Segmented · tracked group with sliding bubble</span>
+        <div class="demo">
+          <div class="tabs tabs--segmented tabs--md" data-tabs>
+            <div class="tabs__list" role="tablist" aria-label="Segmented variant demo">
+              <button type="button" class="tabs__tab is-selected" role="tab" aria-selected="true" tabindex="0" data-target="seg-list">
+                <span class="tabs__label">List</span>
+              </button>
+              <button type="button" class="tabs__tab" role="tab" aria-selected="false" tabindex="-1" data-target="seg-board">
+                <span class="tabs__label">Board</span>
+              </button>
+              <button type="button" class="tabs__tab" role="tab" aria-selected="false" tabindex="-1" data-target="seg-calendar">
+                <span class="tabs__label">Calendar</span>
+              </button>
+              <span class="tabs__indicator" aria-hidden="true"></span>
+            </div>
+            <div class="tabs__panel" role="tabpanel" id="seg-list">List view — flat sortable rows.</div>
+            <div class="tabs__panel" role="tabpanel" id="seg-board" hidden>Board view — kanban columns.</div>
+            <div class="tabs__panel" role="tabpanel" id="seg-calendar" hidden>Calendar view — month grid.</div>
+          </div>
+        </div>
+        <div class="meta"><span>.tabs--segmented</span><strong>view picker</strong></div>
+      </article>
+
+      <!-- Variant: Vertical -->
+      <article class="form-variant-card tabs-variant-card tall">
+        <span class="label">Vertical · column orientation</span>
+        <div class="demo">
+          <div class="tabs tabs--vertical tabs--md" data-tabs>
+            <div class="tabs__list" role="tablist" aria-label="Vertical variant demo" aria-orientation="vertical">
+              <button type="button" class="tabs__tab is-selected" role="tab" aria-selected="true" tabindex="0" data-target="vert-account">
+                <span class="tabs__label">Account</span>
+              </button>
+              <button type="button" class="tabs__tab" role="tab" aria-selected="false" tabindex="-1" data-target="vert-billing">
+                <span class="tabs__label">Billing &amp; plans</span>
+              </button>
+              <button type="button" class="tabs__tab" role="tab" aria-selected="false" tabindex="-1" data-target="vert-team">
+                <span class="tabs__label">Team members</span>
+              </button>
+              <button type="button" class="tabs__tab" role="tab" aria-selected="false" tabindex="-1" data-target="vert-integrations">
+                <span class="tabs__label">Integrations</span>
+              </button>
+              <button type="button" class="tabs__tab" role="tab" aria-selected="false" tabindex="-1" data-target="vert-notifications">
+                <span class="tabs__label">Notifications</span>
+              </button>
+              <span class="tabs__indicator" aria-hidden="true"></span>
+            </div>
+            <div class="tabs__panel" role="tabpanel" id="vert-account">Account — name, contact, default practice.</div>
+            <div class="tabs__panel" role="tabpanel" id="vert-billing" hidden>Billing &amp; plans — invoices, plan, payment method.</div>
+            <div class="tabs__panel" role="tabpanel" id="vert-team" hidden>Team members.</div>
+            <div class="tabs__panel" role="tabpanel" id="vert-integrations" hidden>Integrations.</div>
+            <div class="tabs__panel" role="tabpanel" id="vert-notifications" hidden>Notifications.</div>
+          </div>
+        </div>
+        <div class="meta"><span>.tabs--vertical</span><strong>settings / docs</strong></div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ========================== 04 / STATES ========================== -->
+  <section class="chunk" id="states">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">04 / Tabs — States</span>
+        <h2 class="text-display-sm">Five states, <em>one vocabulary</em>.</h2>
+      </div>
+      <p>
+        Rest, hover, focus-visible, selected, disabled. Identical state
+        names, semantics, and tokens across every variant — so a tab in
+        Pill mode and a tab in Line mode read as the same component to
+        the user.
+      </p>
+    </header>
+
+    <p class="usage-note reveal">
+      <strong>Disable the tab, not the panel.</strong> A tab whose panel
+      cannot yet be opened (loading, permission-gated, empty) takes the
+      <code>disabled</code> attribute on the tab itself. Do not render
+      the tab and silently no-op the click; the disabled visual is the
+      contract that explains why the panel is not available. If the
+      reason is permission-driven, pair the disabled tab with a tooltip
+      from the toast layer.
+    </p>
+
+    <div class="form-version-stage reveal">
+      <article class="form-version-card">
+        <span class="label">Rest, hover, selected, focus, disabled</span>
+        <div class="demo">
+          <div class="tabs tabs--line tabs--md">
+            <div class="tabs__list" role="tablist" aria-label="State demo · line">
+              <button type="button" class="tabs__tab" role="tab" aria-selected="false" tabindex="-1">
+                <span class="tabs__label">Rest</span>
+              </button>
+              <button type="button" class="tabs__tab is-selected" role="tab" aria-selected="true" tabindex="0">
+                <span class="tabs__label">Selected</span>
+                <span class="tabs__badge">3</span>
+              </button>
+              <button type="button" class="tabs__tab" role="tab" aria-selected="false" tabindex="-1">
+                <span class="tabs__label">With icon</span>
+                <svg class="tabs__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+              </button>
+              <button type="button" class="tabs__tab is-disabled" role="tab" aria-selected="false" aria-disabled="true" tabindex="-1" disabled>
+                <span class="tabs__label">Disabled</span>
+              </button>
+              <span class="tabs__indicator" aria-hidden="true"></span>
+            </div>
+          </div>
+        </div>
+        <div class="meta"><span>.is-selected · [disabled]</span><strong>line variant · MD size</strong></div>
+      </article>
+
+      <article class="form-version-card">
+        <span class="label">Same vocabulary on segmented track</span>
+        <div class="demo">
+          <div class="tabs tabs--segmented tabs--md">
+            <div class="tabs__list" role="tablist" aria-label="State demo · segmented">
+              <button type="button" class="tabs__tab" role="tab" aria-selected="false" tabindex="-1">
+                <span class="tabs__label">Rest</span>
+              </button>
+              <button type="button" class="tabs__tab is-selected" role="tab" aria-selected="true" tabindex="0">
+                <span class="tabs__label">Selected</span>
+              </button>
+              <button type="button" class="tabs__tab" role="tab" aria-selected="false" tabindex="-1">
+                <span class="tabs__label">Hoverable</span>
+              </button>
+              <button type="button" class="tabs__tab is-disabled" role="tab" aria-selected="false" aria-disabled="true" tabindex="-1" disabled>
+                <span class="tabs__label">Disabled</span>
+              </button>
+              <span class="tabs__indicator" aria-hidden="true"></span>
+            </div>
+          </div>
+        </div>
+        <div class="meta"><span>.is-selected · [disabled]</span><strong>segmented variant · MD size</strong></div>
+      </article>
+
+      <article class="form-version-card">
+        <span class="label">Badge slot — count and status</span>
+        <div class="demo">
+          <div class="tabs tabs--line tabs--md">
+            <div class="tabs__list" role="tablist" aria-label="Badge demo">
+              <button type="button" class="tabs__tab is-selected" role="tab" aria-selected="true" tabindex="0">
+                <span class="tabs__label">Inbox</span>
+                <span class="tabs__badge">12</span>
+              </button>
+              <button type="button" class="tabs__tab" role="tab" aria-selected="false" tabindex="-1">
+                <span class="tabs__label">Sent</span>
+                <span class="tabs__badge">240</span>
+              </button>
+              <button type="button" class="tabs__tab" role="tab" aria-selected="false" tabindex="-1">
+                <span class="tabs__label">Archive</span>
+                <span class="tabs__badge">0</span>
+              </button>
+              <span class="tabs__indicator" aria-hidden="true"></span>
+            </div>
+          </div>
+        </div>
+        <div class="meta"><span>.tabs__badge</span><strong>count slot · primary on selected</strong></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ========================== 05 / SIZES ========================== -->
+  <section class="chunk" id="sizes">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">05 / Tabs — Sizes</span>
+        <h2 class="text-display-sm">Match the <em>surface</em>, not the depth of the page.</h2>
+      </div>
+      <p>
+        Five steps along the same scale that drives Type, Button, Form,
+        and Dropdown. Canonical: <strong>Large · 22.5px</strong>.
+      </p>
+    </header>
+
+    <p class="usage-note reveal">
+      <strong>Pick by surface, not by importance.</strong> SM lives in
+      table headers, panel chrome, and dense admin toolbars; MD is the
+      product default in cards and side panels; LG (canonical) anchors
+      the primary content tabs on a record page or a settings layout;
+      XL and 2XL are reserved for marketing-page view pickers and
+      showcase demos. When in doubt on a product surface, default to MD.
+    </p>
+
+    <div class="glass form-size-stage reveal">
+      <div class="form-size-row">
+        <span class="tag">SM · 13.33px</span>
+        <div class="demo">
+          <div class="tabs tabs--line tabs--sm">
+            <div class="tabs__list" role="tablist" aria-label="SM size demo">
+              <button type="button" class="tabs__tab is-selected" role="tab" aria-selected="true" tabindex="0"><span class="tabs__label">Overview</span></button>
+              <button type="button" class="tabs__tab" role="tab" aria-selected="false" tabindex="-1"><span class="tabs__label">Activity</span></button>
+              <button type="button" class="tabs__tab" role="tab" aria-selected="false" tabindex="-1"><span class="tabs__label">Files</span></button>
+              <span class="tabs__indicator" aria-hidden="true"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-size-row">
+        <span class="tag">MD · 16px</span>
+        <div class="demo">
+          <div class="tabs tabs--line tabs--md">
+            <div class="tabs__list" role="tablist" aria-label="MD size demo">
+              <button type="button" class="tabs__tab is-selected" role="tab" aria-selected="true" tabindex="0"><span class="tabs__label">Overview</span></button>
+              <button type="button" class="tabs__tab" role="tab" aria-selected="false" tabindex="-1"><span class="tabs__label">Activity</span></button>
+              <button type="button" class="tabs__tab" role="tab" aria-selected="false" tabindex="-1"><span class="tabs__label">Files</span></button>
+              <span class="tabs__indicator" aria-hidden="true"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-size-row is-focus">
+        <span class="tag">LG · 22.5px · focus</span>
+        <div class="demo">
+          <div class="tabs tabs--line tabs--lg">
+            <div class="tabs__list" role="tablist" aria-label="LG size demo">
+              <button type="button" class="tabs__tab is-selected" role="tab" aria-selected="true" tabindex="0"><span class="tabs__label">Overview</span></button>
+              <button type="button" class="tabs__tab" role="tab" aria-selected="false" tabindex="-1"><span class="tabs__label">Activity</span></button>
+              <button type="button" class="tabs__tab" role="tab" aria-selected="false" tabindex="-1"><span class="tabs__label">Files</span></button>
+              <span class="tabs__indicator" aria-hidden="true"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-size-row">
+        <span class="tag">XL · 27.65px</span>
+        <div class="demo">
+          <div class="tabs tabs--line tabs--xl">
+            <div class="tabs__list" role="tablist" aria-label="XL size demo">
+              <button type="button" class="tabs__tab is-selected" role="tab" aria-selected="true" tabindex="0"><span class="tabs__label">Overview</span></button>
+              <button type="button" class="tabs__tab" role="tab" aria-selected="false" tabindex="-1"><span class="tabs__label">Activity</span></button>
+              <span class="tabs__indicator" aria-hidden="true"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-size-row">
+        <span class="tag">2XL · 33.18px</span>
+        <div class="demo">
+          <div class="tabs tabs--line tabs--2xl">
+            <div class="tabs__list" role="tablist" aria-label="2XL size demo">
+              <button type="button" class="tabs__tab is-selected" role="tab" aria-selected="true" tabindex="0"><span class="tabs__label">Overview</span></button>
+              <button type="button" class="tabs__tab" role="tab" aria-selected="false" tabindex="-1"><span class="tabs__label">Activity</span></button>
+              <span class="tabs__indicator" aria-hidden="true"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================== 06 / BEHAVIOUR ========================== -->
+  <section class="chunk" id="behaviour">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">06 / Tabs — Behaviour</span>
+        <h2 class="text-display-sm">Manual activation by default, <em>automatic when the panel is cheap</em>.</h2>
+      </div>
+      <p>
+        Two activation modes, one keyboard model. Pick the activation
+        mode that matches the cost of mounting a panel; the keyboard
+        contract does not change.
+      </p>
+    </header>
+
+    <p class="usage-note reveal">
+      <strong>Default to manual activation.</strong> Arrow keys move
+      focus between tabs without selecting; the user activates the
+      focused tab with <code>Enter</code> or <code>Space</code>. Switch
+      to automatic activation only when each panel is trivially cheap to
+      render (no network, no heavy computation, no scroll-position
+      reset). Automatic activation on a panel that takes 200ms to mount
+      makes the keyboard model feel laggy and surprising.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>Never URL-bind tab selection by default.</strong> Tab state
+      is page-level state, not navigation. If the selected tab MUST
+      survive a refresh (deep-linkable record views), encode it as a
+      hash (<code>#activity</code>) — never a path segment. A hash keeps
+      the tab change inside the page-level concept of state and avoids
+      colliding with the global header's contract.
+    </p>
+
+    <table class="kbd-table reveal" aria-label="Tabs keyboard model">
+      <thead>
+        <tr>
+          <th>Action</th>
+          <th>Keys</th>
+          <th>Behaviour</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="kbd-action">Enter the tablist</td>
+          <td class="kbd-keys"><span class="kbd">Tab</span></td>
+          <td class="kbd-note">Focus lands on the currently selected tab. Only the selected tab is in the page tab order; the others have <code>tabindex="-1"</code>.</td>
+        </tr>
+        <tr>
+          <td class="kbd-action">Move focus next / previous</td>
+          <td class="kbd-keys"><span class="kbd">→</span> <span class="kbd">←</span></td>
+          <td class="kbd-note">Horizontal lists. Vertical lists use <span class="kbd">↑</span> / <span class="kbd">↓</span>. Wraps from last to first.</td>
+        </tr>
+        <tr>
+          <td class="kbd-action">Jump to first / last</td>
+          <td class="kbd-keys"><span class="kbd">Home</span> <span class="kbd">End</span></td>
+          <td class="kbd-note">Skips disabled tabs.</td>
+        </tr>
+        <tr>
+          <td class="kbd-action">Activate the focused tab (manual)</td>
+          <td class="kbd-keys"><span class="kbd">Enter</span> <span class="kbd">Space</span></td>
+          <td class="kbd-note">Required when activation is manual. Mounts the panel; moves focus to the tab if not already there.</td>
+        </tr>
+        <tr>
+          <td class="kbd-action">Activate on focus (automatic)</td>
+          <td class="kbd-keys"><span class="kbd">→</span> <span class="kbd">←</span></td>
+          <td class="kbd-note">Opt-in via <code>data-activation="automatic"</code>. Selection follows arrow-key focus; only safe when panel mount is free.</td>
+        </tr>
+        <tr>
+          <td class="kbd-action">Leave the tablist</td>
+          <td class="kbd-keys"><span class="kbd">Tab</span></td>
+          <td class="kbd-note">Focus moves to the next focusable element after the tablist — usually the panel itself, since the panel carries <code>tabindex="0"</code>.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ========================== 07 / BREADCRUMB ========================== -->
+  <section class="chunk" id="breadcrumb">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">07 / Sibling — Breadcrumb</span>
+        <h2 class="text-display-sm">Path display, <em>not view switching</em>.</h2>
+      </div>
+      <p>
+        A breadcrumb shows the user's current location in a hierarchy as
+        an ordered trail of links plus a final non-linking current item.
+        Documented on this page because consumers reach for breadcrumb
+        and tabs in the same layout zone — but the contracts do not
+        overlap.
+      </p>
+    </header>
+
+    <p class="usage-note reveal">
+      <strong>Breadcrumb is read-only context.</strong> The trail items
+      are links; the current item is not. Do not render the current
+      item as a link to itself, and do not give it a hover state — both
+      patterns mislead the user into thinking the current item is a
+      navigable target. If the trail has more than five segments,
+      collapse the middle with a single <code>.breadcrumb__item--ellipsis</code>
+      that opens a menu of the elided segments.
+    </p>
+
+    <div class="form-version-stage reveal">
+      <article class="form-version-card">
+        <span class="label">Default · slash separator</span>
+        <div class="demo">
+          <nav class="breadcrumb" aria-label="Breadcrumb">
+            <ol class="breadcrumb__list">
+              <li class="breadcrumb__item"><a href="#" class="breadcrumb__link">Patients</a></li>
+              <li class="breadcrumb__item"><a href="#" class="breadcrumb__link">Bovine</a></li>
+              <li class="breadcrumb__item"><a href="#" class="breadcrumb__link">Herd 04</a></li>
+              <li class="breadcrumb__item" aria-current="page"><span class="breadcrumb__current">#1284 · Bessie</span></li>
+            </ol>
+          </nav>
+        </div>
+        <div class="meta"><span>.breadcrumb</span><strong>system default</strong></div>
+      </article>
+
+      <article class="form-version-card">
+        <span class="label">Chevron separator · marketing-tier surface</span>
+        <div class="demo">
+          <nav class="breadcrumb breadcrumb--chevron" aria-label="Breadcrumb">
+            <ol class="breadcrumb__list">
+              <li class="breadcrumb__item"><a href="#" class="breadcrumb__link">Knowledge base</a></li>
+              <li class="breadcrumb__item"><a href="#" class="breadcrumb__link">Husbandry</a></li>
+              <li class="breadcrumb__item" aria-current="page"><span class="breadcrumb__current">Vaccination cadence</span></li>
+            </ol>
+          </nav>
+        </div>
+        <div class="meta"><span>.breadcrumb--chevron</span><strong>opt-in glyph</strong></div>
+      </article>
+
+      <article class="form-version-card">
+        <span class="label">Truncated middle · long trail</span>
+        <div class="demo">
+          <nav class="breadcrumb" aria-label="Breadcrumb">
+            <ol class="breadcrumb__list">
+              <li class="breadcrumb__item"><a href="#" class="breadcrumb__link">Practices</a></li>
+              <li class="breadcrumb__item breadcrumb__item--ellipsis" aria-label="Hidden segments">…</li>
+              <li class="breadcrumb__item"><a href="#" class="breadcrumb__link">Visits</a></li>
+              <li class="breadcrumb__item" aria-current="page"><span class="breadcrumb__current">2026-05-08</span></li>
+            </ol>
+          </nav>
+        </div>
+        <div class="meta"><span>.breadcrumb__item--ellipsis</span><strong>collapsed segments</strong></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ========================== 08 / PAGINATION ========================== -->
+  <section class="chunk" id="pagination">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">08 / Sibling — Pagination</span>
+        <h2 class="text-display-sm">Page-N-of-M, <em>nothing more</em>.</h2>
+      </div>
+      <p>
+        Pagination is a numeric step navigator for paged result sets.
+        It shares Tabs' toolbar zone and its segmented-list visual
+        contract, but it does not mount panels — it shifts the data
+        underneath an unchanged viewport.
+      </p>
+    </header>
+
+    <p class="usage-note reveal">
+      <strong>Always show the current page, the first, and the last.</strong>
+      The middle elides with a single ellipsis row. Hide the
+      <em>previous</em> button on page 1 and the <em>next</em> button on
+      the last page rather than rendering them disabled — disabled
+      controls in a recurring footer chrome read as a defect, not a
+      contract. For dense table footers, reach for the compact variant.
+    </p>
+
+    <div class="form-version-stage reveal">
+      <article class="form-version-card">
+        <span class="label">Default · bordered</span>
+        <div class="demo">
+          <nav class="pagination" aria-label="Pagination">
+            <button type="button" class="pagination__step" data-direction="prev" aria-label="Previous page">‹</button>
+            <ol class="pagination__list">
+              <li><a class="pagination__page" href="#">1</a></li>
+              <li><a class="pagination__page is-current" href="#" aria-current="page">2</a></li>
+              <li><a class="pagination__page" href="#">3</a></li>
+              <li><a class="pagination__page" href="#">4</a></li>
+              <li><span class="pagination__ellipsis" aria-hidden="true">…</span></li>
+              <li><a class="pagination__page" href="#">12</a></li>
+            </ol>
+            <button type="button" class="pagination__step" data-direction="next" aria-label="Next page">›</button>
+          </nav>
+        </div>
+        <div class="meta"><span>.pagination</span><strong>system default</strong></div>
+      </article>
+
+      <article class="form-version-card">
+        <span class="label">Compact · table-footer treatment</span>
+        <div class="demo">
+          <nav class="pagination pagination--compact" aria-label="Pagination">
+            <button type="button" class="pagination__step" data-direction="prev" aria-label="Previous page">‹</button>
+            <ol class="pagination__list">
+              <li><a class="pagination__page" href="#">1</a></li>
+              <li><a class="pagination__page" href="#">2</a></li>
+              <li><a class="pagination__page is-current" href="#" aria-current="page">3</a></li>
+              <li><a class="pagination__page" href="#">4</a></li>
+              <li><a class="pagination__page" href="#">5</a></li>
+            </ol>
+            <button type="button" class="pagination__step" data-direction="next" aria-label="Next page">›</button>
+          </nav>
+        </div>
+        <div class="meta"><span>.pagination--compact</span><strong>dense footer</strong></div>
+      </article>
+
+      <article class="form-version-card">
+        <span class="label">Boundary state · first page</span>
+        <div class="demo">
+          <nav class="pagination" aria-label="Pagination">
+            <button type="button" class="pagination__step is-disabled" data-direction="prev" aria-label="Previous page" disabled>‹</button>
+            <ol class="pagination__list">
+              <li><a class="pagination__page is-current" href="#" aria-current="page">1</a></li>
+              <li><a class="pagination__page" href="#">2</a></li>
+              <li><a class="pagination__page" href="#">3</a></li>
+              <li><span class="pagination__ellipsis" aria-hidden="true">…</span></li>
+              <li><a class="pagination__page" href="#">12</a></li>
+            </ol>
+            <button type="button" class="pagination__step" data-direction="next" aria-label="Next page">›</button>
+          </nav>
+        </div>
+        <div class="meta"><span>.pagination__step.is-disabled</span><strong>first / last edge</strong></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ========================== 09 / TOKENS ========================== -->
+  <section class="chunk" id="tokens">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">09 / Tabs — Component tokens</span>
+        <h2 class="text-display-sm">One layer to <em>tune the family</em>.</h2>
+      </div>
+      <p>
+        The full <code>--tabs-*</code>, <code>--breadcrumb-*</code>, and
+        <code>--pagination-*</code> token maps, grouped by surface
+        layer.
+      </p>
+    </header>
+
+    <p class="usage-note reveal">
+      <strong>Override at the component-token layer, never at the call
+      site.</strong> Tab tokens reference Form, Button, and Dropdown
+      semantics so the four input families read as one. Breadcrumb and
+      Pagination tokens are intentionally narrow — both are quiet
+      surfaces that should never feel louder than the page they live
+      on. Tune <code>--tabs-indicator-easing</code> once and every
+      sliding indicator across the product re-times together.
+    </p>
+
+    <table class="token-table reveal" aria-label="Tabs component tokens">
+      <thead>
+        <tr>
+          <th>Component token</th>
+          <th>References</th>
+          <th>Resolves to</th>
+          <th>Preview</th>
+        </tr>
+      </thead>
+      <tbody id="tabsTokenTable"></tbody>
+    </table>
+  </section>
+
+  <!-- ========================== FOOTER ========================== -->
   <footer>
     <span class="sigil">Farm2Vet — cultivated intelligence, since 2024.</span>
-    <a href="design-system-v1.html">← Design system home</a>
-    <span>Section 14 / Components</span>
+    <a href="III-12-sidebar.html">← Section 12 / Sidebar</a>
+    <span>End of Section 14 · Tabs</span>
   </footer>
 
 </main>
+
+<script>
+/* =========================================================
+   COMPONENT TOKEN DATA — Tabs (and siblings)
+   ========================================================= */
+const TABS_TOKENS = [
+  { group: 'Shared shape', tokens: [
+    ['--tabs-font-family',    'var(--font-sans)'],
+    ['--tabs-font-weight',    'var(--font-weight-medium)'],
+    ['--tabs-letter-spacing', '0'],
+    ['--tabs-gap',            'var(--spacing-1x)'],
+    ['--tabs-transition',     'background, color, border, shadow · 180ms ease'],
+  ]},
+  { group: 'Sizes (LG focus)', tokens: [
+    ['--tabs-sm-font-size',  'var(--text-sm)'],
+    ['--tabs-md-font-size',  'var(--text-base)'],
+    ['--tabs-lg-font-size',  '22.5px'],
+    ['--tabs-xl-font-size',  'var(--text-h4)'],
+    ['--tabs-2xl-font-size', 'var(--text-h3)'],
+    ['--tabs-lg-padding-x',  'var(--spacing-6x)'],
+    ['--tabs-lg-padding-y',  'var(--spacing-3x)'],
+    ['--tabs-lg-height',     '48px'],
+  ]},
+  { group: 'Tab — base text/colour', tokens: [
+    ['--tabs-tab-fg',            'var(--text-default-subtle)'],
+    ['--tabs-tab-fg-hover',      'var(--text-default)'],
+    ['--tabs-tab-fg-selected',   'var(--text-primary-strong)'],
+    ['--tabs-tab-fg-disabled',   'var(--text-default-disabled)'],
+    ['--tabs-tab-bg-hover',      'var(--background-default-subtle)'],
+    ['--tabs-tab-icon-selected', 'var(--icon-primary-strong)'],
+    ['--tabs-tab-radius',        'var(--radius-sm)'],
+  ]},
+  { group: 'Variant — Line', tokens: [
+    ['--tabs-line-list-border',         'var(--border-default)'],
+    ['--tabs-line-indicator-bg',        'var(--background-primary)'],
+    ['--tabs-line-indicator-thickness', '2px'],
+  ]},
+  { group: 'Variant — Enclosed', tokens: [
+    ['--tabs-enclosed-list-border',         'var(--border-default)'],
+    ['--tabs-enclosed-tab-bg-hover',        'var(--background-default-subtle)'],
+    ['--tabs-enclosed-tab-bg-selected',     'var(--background-default)'],
+    ['--tabs-enclosed-tab-border-selected', 'var(--border-default)'],
+    ['--tabs-enclosed-radius',              'var(--radius-md)'],
+  ]},
+  { group: 'Variant — Pill', tokens: [
+    ['--tabs-pill-bg-hover',     'var(--background-default-subtle)'],
+    ['--tabs-pill-bg-selected',  'var(--background-primary-minimal)'],
+    ['--tabs-pill-fg-selected',  'var(--text-primary-strong)'],
+    ['--tabs-pill-radius',       'var(--radius-pill)'],
+  ]},
+  { group: 'Variant — Segmented', tokens: [
+    ['--tabs-segmented-track-bg',      'var(--background-default-subtle)'],
+    ['--tabs-segmented-track-border',  'var(--border-default)'],
+    ['--tabs-segmented-track-pad',     '3px'],
+    ['--tabs-segmented-active-bg',     'var(--background-default)'],
+    ['--tabs-segmented-active-fg',     'var(--text-primary-strong)'],
+    ['--tabs-segmented-active-shadow', 'var(--shadow-sm)'],
+    ['--tabs-segmented-radius',        'var(--radius-md)'],
+  ]},
+  { group: 'Variant — Vertical', tokens: [
+    ['--tabs-vertical-list-border',  'var(--border-default)'],
+    ['--tabs-vertical-indicator-bg', 'var(--background-primary)'],
+    ['--tabs-vertical-indicator-w',  '2px'],
+  ]},
+  { group: 'Indicator motion', tokens: [
+    ['--tabs-indicator-duration', '220ms'],
+    ['--tabs-indicator-easing',   'cubic-bezier(.2, .8, .2, 1)'],
+  ]},
+  { group: 'Badge slot', tokens: [
+    ['--tabs-badge-bg',       'var(--background-primary-minimal)'],
+    ['--tabs-badge-fg',       'var(--text-primary-strong)'],
+    ['--tabs-badge-bg-muted', 'var(--background-default-minimal)'],
+    ['--tabs-badge-fg-muted', 'var(--text-default-subtle)'],
+    ['--tabs-badge-radius',   'var(--radius-pill)'],
+  ]},
+  { group: 'Sibling — Breadcrumb', tokens: [
+    ['--breadcrumb-font-family',  'var(--font-sans)'],
+    ['--breadcrumb-font-size',    'var(--text-sm)'],
+    ['--breadcrumb-fg',           'var(--text-default-subtle)'],
+    ['--breadcrumb-fg-current',   'var(--text-default)'],
+    ['--breadcrumb-fg-hover',     'var(--text-primary-strong)'],
+    ['--breadcrumb-separator-fg', 'var(--text-default-minimal)'],
+    ['--breadcrumb-gap',          'var(--spacing-2x)'],
+    ['--breadcrumb-icon-size',    '14px'],
+  ]},
+  { group: 'Sibling — Pagination', tokens: [
+    ['--pagination-font-family', 'var(--font-mono)'],
+    ['--pagination-font-size',   'var(--text-sm)'],
+    ['--pagination-fg',          'var(--text-default-subtle)'],
+    ['--pagination-fg-hover',    'var(--text-default)'],
+    ['--pagination-fg-current',  'var(--text-inverted)'],
+    ['--pagination-bg-hover',    'var(--background-default-subtle)'],
+    ['--pagination-bg-current',  'var(--background-primary)'],
+    ['--pagination-border',      'var(--border-default)'],
+    ['--pagination-radius',      'var(--radius-sm)'],
+    ['--pagination-size',        'var(--btn-md-height)'],
+    ['--pagination-gap',         'var(--spacing-1x)'],
+  ]},
+];
+
+function resolveCss(varName) {
+  const styles = getComputedStyle(document.documentElement);
+  return styles.getPropertyValue(varName).trim();
+}
+function isColorish(value) {
+  if (!value) return false;
+  const v = value.toLowerCase();
+  return v.startsWith('#') || v.startsWith('rgb') || v.startsWith('hsl') ||
+         v.startsWith('color-mix') || v.startsWith('linear-gradient') ||
+         v.startsWith('radial-gradient') || v === 'transparent' ||
+         /^[a-z]+$/.test(v);
+}
+function renderTokenTable() {
+  const tbody = document.getElementById('tabsTokenTable');
+  if (!tbody) return;
+  let html = '';
+  TABS_TOKENS.forEach(group => {
+    html += `<tr class="group-row"><td colspan="4">${group.group}</td></tr>`;
+    group.tokens.forEach(([name, ref]) => {
+      const resolved = resolveCss(name) || '—';
+      const isColor = isColorish(resolved);
+      const chip = isColor
+        ? `<span class="chip" style="background:${resolved}"></span>`
+        : `<span class="chip" style="background: repeating-linear-gradient(45deg, var(--neutral-100) 0 6px, var(--neutral-50) 6px 12px); opacity:.6"></span>`;
+      html += `<tr>
+        <td class="tk-name">${name}</td>
+        <td class="tk-ref">${ref.replace(/</g,'&lt;')}</td>
+        <td class="tk-resolved">${resolved.length > 60 ? resolved.slice(0,57)+'…' : resolved}</td>
+        <td class="tk-swatch">${chip}</td>
+      </tr>`;
+    });
+  });
+  tbody.innerHTML = html;
+}
+
+/* =========================================================
+   REVEAL ON SCROLL
+   ========================================================= */
+function initReveal() {
+  const items = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    items.forEach(el => el.classList.add('in'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        en.target.classList.add('in');
+        io.unobserve(en.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(el => io.observe(el));
+}
+
+/* =========================================================
+   TABS CONTROLLER
+   Implements the ARIA tablist pattern:
+     · Roving tabindex (only the selected tab is in the page
+       tab order; others are -1).
+     · ArrowLeft/Right (or ArrowUp/Down for vertical) move
+       focus through the tabs, wrapping at the ends.
+     · Home / End jump to first / last enabled tab.
+     · Enter / Space activate the focused tab (manual).
+     · data-activation="automatic" follows focus into
+       selection — opt-in only, for cheap panels.
+     · The indicator's --_x / --_w (or --_y / --_h-active)
+       are written to the host element so transitions stay
+       declarative.
+   ========================================================= */
+function initTabs() {
+  document.querySelectorAll('[data-tabs]').forEach(root => {
+    const list      = root.querySelector('.tabs__list');
+    if (!list) return;
+    const tabs      = Array.from(list.querySelectorAll('.tabs__tab'));
+    const indicator = list.querySelector('.tabs__indicator');
+    const isVert    = root.classList.contains('tabs--vertical');
+    const auto      = root.dataset.activation === 'automatic';
+    const enabled   = (t) => !t.hasAttribute('disabled') && !t.classList.contains('is-disabled');
+
+    function panelFor(tab) {
+      const id = tab.getAttribute('data-target') || tab.getAttribute('aria-controls');
+      return id ? root.querySelector(`#${CSS.escape(id)}`) : null;
+    }
+    function moveIndicator(tab) {
+      if (!indicator) return;
+      if (isVert) {
+        list.style.setProperty('--_y', tab.offsetTop + 'px');
+        list.style.setProperty('--_h-active', tab.offsetHeight + 'px');
+      } else {
+        list.style.setProperty('--_x', tab.offsetLeft + 'px');
+        list.style.setProperty('--_w', tab.offsetWidth + 'px');
+      }
+    }
+    function select(tab, focus = true) {
+      if (!tab || !enabled(tab)) return;
+      tabs.forEach(t => {
+        const on = t === tab;
+        t.classList.toggle('is-selected', on);
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.setAttribute('tabindex', on ? '0' : '-1');
+        const panel = panelFor(t);
+        if (panel) {
+          if (on) panel.removeAttribute('hidden');
+          else    panel.setAttribute('hidden', '');
+        }
+      });
+      moveIndicator(tab);
+      if (focus) tab.focus();
+      root.dispatchEvent(new CustomEvent('tabs:change', {
+        detail: { value: tab.getAttribute('data-target') || tab.id || null }
+      }));
+    }
+    function focusOnly(tab) {
+      if (!tab || !enabled(tab)) return;
+      tabs.forEach(t => t.setAttribute('tabindex', t === tab ? '0' : '-1'));
+      tab.focus();
+    }
+
+    // Initial paint — find the currently selected tab and seed the indicator.
+    const initial = tabs.find(t => t.classList.contains('is-selected') ||
+                                   t.getAttribute('aria-selected') === 'true') || tabs[0];
+    if (initial) {
+      // Defer one frame so layout is final (web fonts, parent transitions).
+      requestAnimationFrame(() => moveIndicator(initial));
+    }
+
+    list.addEventListener('click', (e) => {
+      const tab = e.target.closest('.tabs__tab');
+      if (!tab || !list.contains(tab)) return;
+      select(tab);
+    });
+
+    list.addEventListener('keydown', (e) => {
+      const current = document.activeElement.closest('.tabs__tab');
+      if (!current || !list.contains(current)) return;
+      const idx = tabs.indexOf(current);
+      const nextKey  = isVert ? 'ArrowDown' : 'ArrowRight';
+      const prevKey  = isVert ? 'ArrowUp'   : 'ArrowLeft';
+      const enabledIdx = (start, step) => {
+        let i = start;
+        for (let n = 0; n < tabs.length; n++) {
+          i = (i + step + tabs.length) % tabs.length;
+          if (enabled(tabs[i])) return i;
+        }
+        return start;
+      };
+
+      if (e.key === nextKey) {
+        e.preventDefault();
+        const t = tabs[enabledIdx(idx, +1)];
+        auto ? select(t) : focusOnly(t);
+      } else if (e.key === prevKey) {
+        e.preventDefault();
+        const t = tabs[enabledIdx(idx, -1)];
+        auto ? select(t) : focusOnly(t);
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        const first = tabs.find(enabled);
+        auto ? select(first) : focusOnly(first);
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        const last = [...tabs].reverse().find(enabled);
+        auto ? select(last) : focusOnly(last);
+      } else if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        select(current);
+      }
+    });
+
+    // Keep the indicator aligned across viewport changes.
+    let raf;
+    window.addEventListener('resize', () => {
+      if (raf) cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const sel = tabs.find(t => t.classList.contains('is-selected'));
+        if (sel) moveIndicator(sel);
+      });
+    });
+  });
+}
+
+/* =========================================================
+   BOOT
+   ========================================================= */
+document.addEventListener('DOMContentLoaded', () => {
+  renderTokenTable();
+  initReveal();
+  initTabs();
+});
+</script>
 
 </body>
 </html>
