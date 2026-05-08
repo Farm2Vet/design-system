@@ -871,13 +871,13 @@ document.addEventListener('click', (e) => {
 function initReveal() {
     const targets = document.querySelectorAll('.reveal');
     if (!('IntersectionObserver' in window)) {
-        targets.forEach(el => el.classList.add('is-visible'));
+        targets.forEach(el => el.classList.add('in'));
         return;
     }
     const io = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('is-visible');
+                entry.target.classList.add('in');
                 io.unobserve(entry.target);
             }
         });
