@@ -206,13 +206,14 @@
 }
 
 .btn-switch__thumb {
+    --_thumb-scale: 1;
     display: block;
     width:  var(--_thumb);
     height: var(--_thumb);
     background:    var(--btn-switch-thumb-bg);
     border-radius: 50%;
     box-shadow:    var(--btn-switch-thumb-shadow);
-    transform: translateX(0);
+    transform: translateX(0) scale(var(--_thumb-scale));
     transition: transform var(--btn-switch-thumb-duration) var(--btn-switch-thumb-easing),
                 background-color .18s ease;
 }
@@ -225,7 +226,13 @@
 }
 .btn-switch.is-on .btn-switch__thumb,
 .btn-switch[aria-checked="true"] .btn-switch__thumb {
-    transform: translateX(calc(var(--_track-w) - var(--_thumb) - var(--_pad) * 2 - var(--btn-border-width) * 2));
+    transform: translateX(calc(var(--_track-w) - var(--_thumb) - var(--_pad) * 2 - var(--btn-border-width) * 2))
+               scale(var(--_thumb-scale));
+}
+
+/* Press feedback — subtle thumb shrink, applies in both off and on states */
+.btn-switch:active:not([disabled]):not(.is-disabled) .btn-switch__thumb {
+    --_thumb-scale: .88;
 }
 
 /* ---- Sizes — same height scale as .btn ---- */
