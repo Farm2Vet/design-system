@@ -145,6 +145,16 @@
                 } else {
                     openPanel(item);
                 }
+                /* Drop the click-induced focus. Mouse-clicks leave
+                   the button focused, and the CSS `:focus-within`
+                   rule would then keep this panel visible even
+                   after hover on a different trigger has removed
+                   its `.is-open` — so both panels would render
+                   at once. `event.detail === 0` means the click
+                   came from keyboard activation (Enter / Space)
+                   on a focused button; we leave focus alone in
+                   that case so keyboard navigation isn't disrupted. */
+                if (event.detail > 0) trigger.blur();
             });
         });
 

@@ -57,7 +57,6 @@
           </button>
           <div id="global-nav-panel-components" class="global-nav__panel" role="region" aria-label="Components">
             <div class="global-nav__panel-inner">
-              <p class="global-nav__panel-eyebrow">Component pages</p>
               <ul class="global-nav__panel-list">
                 <li><a href="III-01-typography.html"><span class="global-nav__index">01</span><span>Typography</span></a></li>
                 <li><a href="III-02-buttons.html"><span class="global-nav__index">02</span><span>Buttons</span></a></li>
@@ -86,7 +85,6 @@
           </button>
           <div id="global-nav-panel-assets" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Assets">
             <div class="global-nav__panel-inner">
-              <p class="global-nav__panel-eyebrow">Asset libraries</p>
               <ul class="global-nav__panel-list">
                 <li><a href="IV-01-logo.html"   class="is-placeholder"><span class="global-nav__index">01</span><span>Logo</span></a></li>
                 <li><a href="IV-02-icons.html"  class="is-placeholder"><span class="global-nav__index">02</span><span>Icons</span></a></li>
@@ -106,7 +104,6 @@
           </button>
           <div id="global-nav-panel-mockups" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Mockups">
             <div class="global-nav__panel-inner">
-              <p class="global-nav__panel-eyebrow">Reference mockups</p>
               <ul class="global-nav__panel-list">
                 <li><a href="V-01-wiki.html"    class="is-placeholder"><span class="global-nav__index">01</span><span>Wiki</span></a></li>
                 <li><a href="V-02-chatbot.html" class="is-placeholder"><span class="global-nav__index">02</span><span>Chatbot</span></a></li>
@@ -254,10 +251,11 @@
         <span class="spec-val">
           A full-bar-width panel (<code>.global-nav__panel</code>) that
           opens below the bar on hover, focus, or click of a Section
-          trigger. Contains a single eyebrow label and a multi-column
-          grid of Subsection links. Subsections that have not yet been
-          authored are marked <code>.is-placeholder</code> and rendered
-          in muted type with an inline <em>placeholder</em> tag.
+          trigger. Holds a multi-column grid of Subsection links, with
+          no eyebrow or category label — the parent Section name in
+          the bar above does that work. Subsections whose pages have
+          not yet been authored carry <code>.is-placeholder</code>
+          and render in muted type so they read as drafts.
         </span>
       </li>
     </ul>
@@ -380,20 +378,22 @@
     </div>
 
     <p class="usage-note reveal" style="margin-top: var(--spacing-8x);">
-      <strong>Inside the panel, the current page wears a leading
-      dot.</strong> The current Subsection link receives
-      <code>.is-current</code>, applied by the runtime. The dot is a
-      <code>::before</code> pseudo-element rendered in
-      <code>--background-primary</code>; no extra markup is required.
+      <strong>Inside the panel, the current page is not
+      highlighted.</strong> Tier-1 already shows location — the
+      parent Section trigger carries the primary-tinted
+      <code>.is-current</code> state — so reusing the affordance
+      one tier deeper would be redundant. The runtime still applies
+      <code>.is-current</code> to the matched link for downstream
+      tooling, but the panel's CSS does not style it.
     </p>
 
     <p class="usage-note reveal">
-      <strong>Placeholders are dimmed and tagged.</strong>
+      <strong>Placeholders are dimmed.</strong>
       Subsection links pointing to pages that have not yet been
       authored carry <code>.is-placeholder</code>. The class lowers
-      the link's contrast and appends a mono <em>placeholder</em> tag
-      via <code>::after</code>, signalling that the destination
-      exists in the structure but is not yet documented.
+      the link's contrast so the entry reads as a draft, while still
+      remaining clickable so the structure of the system stays
+      navigable as it's being built out.
     </p>
   </section>
 
@@ -766,10 +766,6 @@ const NAV_TOKENS = [
     ['panel · shadow',             'var(--shadow-md)'],
     ['panel · inner max-width',    '1040px'],
     ['panel · inner padding',      'var(--spacing-12x) var(--spacing-8x)'],
-    ['eyebrow · font',             'var(--font-mono)'],
-    ['eyebrow · size',             'var(--text-eyebrow)'],
-    ['eyebrow · tracking',         'var(--letter-spacing-eyebrow)'],
-    ['eyebrow · color',            'var(--text-default-minimal)'],
     ['link · font',                'var(--font-sans)'],
     ['link · size',                'var(--text-h6)'],
     ['link · weight',              'var(--font-weight-medium)'],
@@ -780,8 +776,6 @@ const NAV_TOKENS = [
     ['index · tracking',           'var(--letter-spacing-wide)'],
     ['index · color',              'var(--text-default-minimal)'],
     ['placeholder · color',        'var(--text-default-minimal)'],
-    ['placeholder · tag border',   'var(--border-default)'],
-    ['current · dot color',        'var(--background-primary)'],
   ]},
   { group: 'Version pill', tokens: [
     ['pill · font',     'var(--font-mono)'],
