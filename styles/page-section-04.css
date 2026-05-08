@@ -61,14 +61,19 @@
 
 /* =========================================================
    VARIANT GRID — one card per form variant
-   Fixed at 2 columns on desktop. LG inputs (22.5px font,
-   ~480px content width) need real horizontal room — a
-   3-column layout shrinks them below their natural size
-   and the placeholder text starts to truncate.
+   Single column on desktop. Each card spans the full
+   content width with a horizontal inner layout: a narrow
+   left rail carries the label + token meta (the spec) and
+   the wider right rail hosts the live demo. This mirrors
+   modern design-system documentation conventions
+   (Tailwind UI, Linear, Stripe) — wide enough for the
+   input to breathe at LG (22.5px) without distortion,
+   yet still anchored by the spec column so the reader
+   can always tie the visual back to its class hooks.
    ========================================================= */
 .form-variant-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
     gap: var(--spacing-5x);
 }
 .form-variant-card {
@@ -77,14 +82,16 @@
     background: var(--background-glass-light);
     backdrop-filter: var(--blur-lg) saturate(140%);
     -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
-    padding: var(--spacing-6x);
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-4x);
-    min-height: 240px;
-    justify-content: space-between;
+    padding: var(--spacing-6x) var(--spacing-8x);
+    display: grid;
+    grid-template-columns: minmax(220px, 280px) 1fr;
+    grid-template-rows: auto 1fr;
+    column-gap: var(--spacing-8x);
+    row-gap: var(--spacing-3x);
+    align-items: stretch;
+    min-height: 200px;
 }
-.form-variant-card.tall { min-height: 320px; }
+.form-variant-card.tall { min-height: 260px; }
 
 .form-variant-card .label {
     font-family: var(--font-mono);
@@ -92,12 +99,17 @@
     letter-spacing: var(--letter-spacing-eyebrow);
     text-transform: uppercase;
     color: var(--text-default-minimal);
+    grid-column: 1;
+    grid-row: 1;
 }
 .form-variant-card .demo {
-    flex: 1;
+    grid-column: 2;
+    grid-row: 1 / span 2;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    width: 100%;
+    max-width: 720px;
 }
 .form-variant-card .meta {
     font-family: var(--font-mono);
@@ -107,8 +119,11 @@
     border-top: var(--border-width-base) solid var(--border-default-subtle);
     padding-top: var(--spacing-3x);
     display: flex;
-    justify-content: space-between;
-    gap: var(--spacing-3x);
+    flex-direction: column;
+    gap: var(--spacing-1x);
+    grid-column: 1;
+    grid-row: 2;
+    align-self: end;
 }
 .form-variant-card .meta strong {
     color: var(--text-default);
@@ -117,13 +132,17 @@
 
 /* =========================================================
    VERSION STAGE — Default / With-value / Error
-   Side-by-side comparison reads best at 3 columns, but
-   we cap each card at a comfortable max-width so the
-   input doesn't stretch to feel stubby.
+   Stacked vertically as a single column so each state
+   card spans the full row. The horizontal inner layout
+   keeps the spec on the left and the live demo on the
+   right, giving the input a generous, modern aspect
+   ratio while preserving direct comparability between
+   the three states (read top-to-bottom instead of
+   left-to-right).
    ========================================================= */
 .form-version-stage {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: 1fr;
     gap: var(--spacing-4x);
 }
 .form-version-card {
@@ -132,12 +151,14 @@
     background: var(--background-glass-light);
     backdrop-filter: var(--blur-lg) saturate(140%);
     -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
-    padding: var(--spacing-6x);
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-4x);
-    min-height: 220px;
-    justify-content: space-between;
+    padding: var(--spacing-6x) var(--spacing-8x);
+    display: grid;
+    grid-template-columns: minmax(200px, 240px) 1fr;
+    grid-template-rows: auto 1fr;
+    column-gap: var(--spacing-8x);
+    row-gap: var(--spacing-3x);
+    align-items: stretch;
+    min-height: 180px;
 }
 .form-version-card .label {
     font-family: var(--font-mono);
@@ -145,12 +166,17 @@
     letter-spacing: var(--letter-spacing-eyebrow);
     text-transform: uppercase;
     color: var(--text-default-minimal);
+    grid-column: 1;
+    grid-row: 1;
 }
 .form-version-card .demo {
-    flex: 1;
+    grid-column: 2;
+    grid-row: 1 / span 2;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    width: 100%;
+    max-width: 720px;
 }
 .form-version-card .meta {
     font-family: var(--font-mono);
@@ -160,7 +186,11 @@
     border-top: var(--border-width-base) solid var(--border-default-subtle);
     padding-top: var(--spacing-3x);
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: var(--spacing-1x);
+    grid-column: 1;
+    grid-row: 2;
+    align-self: end;
 }
 .form-version-card .meta strong {
     color: var(--text-default);
@@ -211,10 +241,28 @@
 
 /* =========================================================
    RESPONSIVE
+   The outer grids are already single-column, so at narrow
+   widths we just collapse the inner two-column card layout
+   (spec rail + demo) into a stacked layout — label on top,
+   demo in the middle, meta on the bottom — so the demo
+   never gets squeezed below its natural width.
    ========================================================= */
 @media (max-width: 960px) {
-    .form-variant-grid  { grid-template-columns: 1fr; }
-    .form-version-stage { grid-template-columns: 1fr; }
-    .form-size-row      { grid-template-columns: 1fr; gap: var(--spacing-3x); }
-    .form-size-row .tag { justify-self: start; }
+    .form-variant-card,
+    .form-version-card {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+        padding: var(--spacing-6x);
+        column-gap: 0;
+        row-gap: var(--spacing-4x);
+    }
+    .form-variant-card .label,
+    .form-version-card .label   { grid-column: 1; grid-row: 1; }
+    .form-variant-card .demo,
+    .form-version-card .demo    { grid-column: 1; grid-row: 2; max-width: none; }
+    .form-variant-card .meta,
+    .form-version-card .meta    { grid-column: 1; grid-row: 3; flex-direction: row; justify-content: space-between; }
+
+    .form-size-row              { grid-template-columns: 1fr; gap: var(--spacing-3x); }
+    .form-size-row .tag         { justify-self: start; }
 }
