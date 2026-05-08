@@ -26,6 +26,20 @@
     backdrop-filter: var(--blur-lg) saturate(140%);
     -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
     border-bottom: var(--border-width-base) solid var(--border-glass-light);
+    transition:
+        background 0.2s ease,
+        border-bottom-color 0.2s ease;
+}
+
+/* When any panel is open, the bar adopts the panel's solid
+   background so bar + panel read as one continuous elevated
+   surface. The bottom border is hidden so no seam shows
+   between the two. :focus-within keeps the no-JS keyboard
+   fallback consistent. */
+.global-nav:has(.global-nav__item--has-panel.is-open),
+.global-nav:has(.global-nav__item--has-panel:focus-within) {
+    background: var(--background-default);
+    border-bottom-color: transparent;
 }
 
 .global-nav__inner {
