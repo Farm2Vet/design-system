@@ -96,7 +96,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">01 / Card — Anatomy</span>
-        <h2 class="text-display-md">A shared <em>structure</em>.</h2>
+        <h2 class="text-display-sm">A shared <em>structure</em>.</h2>
       </div>
       <p>
         Slot-based composition. Every variant exposes a subset of the
@@ -156,7 +156,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">02 / Card — Style variants</span>
-        <h2 class="text-display-md">Style <em>by elevation</em>.</h2>
+        <h2 class="text-display-sm">Style <em>by elevation</em>.</h2>
       </div>
       <p>
         Modifiers that control the card's surface treatment.
@@ -401,7 +401,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">03 / Card — Layout &amp; orientation</span>
-        <h2 class="text-display-md">Four <em>orientations</em>.</h2>
+        <h2 class="text-display-sm">Four <em>orientations</em>.</h2>
       </div>
       <p>
         Modifiers that control how content arranges within the card.
@@ -654,7 +654,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">04 / Card — Functional variants</span>
-        <h2 class="text-display-md">Behaviour <em>modifiers</em>.</h2>
+        <h2 class="text-display-sm">Behaviour <em>modifiers</em>.</h2>
       </div>
       <p>
         Modifiers that add behaviour to a card. Compose with style and
@@ -923,7 +923,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">05 / Card — Content patterns</span>
-        <h2 class="text-display-md">Composed <em>shapes</em>.</h2>
+        <h2 class="text-display-sm">Composed <em>shapes</em>.</h2>
       </div>
       <p>
         Recipes — compositions of existing slots and sub-components.
@@ -1073,7 +1073,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">06 / Card — Glass scale</span>
-        <h2 class="text-display-md">Blur and <em>transparency</em>.</h2>
+        <h2 class="text-display-sm">Blur and <em>transparency</em>.</h2>
       </div>
       <p>
         Translucent surface modifiers with backdrop blur. Five tiers
@@ -1202,7 +1202,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">07 / Card — States</span>
-        <h2 class="text-display-md">Five interaction <em>states</em>.</h2>
+        <h2 class="text-display-sm">Five interaction <em>states</em>.</h2>
       </div>
       <p>
         Five interaction states applied automatically when the card is
@@ -1283,7 +1283,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">08 / Card — Versions</span>
-        <h2 class="text-display-md">Surface <em>adaptations</em>.</h2>
+        <h2 class="text-display-sm">Surface <em>adaptations</em>.</h2>
       </div>
       <p>
         Surface adaptations beyond the state matrix.
@@ -1349,7 +1349,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">09 / Card — Component tokens</span>
-        <h2 class="text-display-md">Token <em>map</em>.</h2>
+        <h2 class="text-display-sm">Token <em>map</em>.</h2>
       </div>
       <p>
         Component-scoped tokens that resolve to semantic tokens. Card
@@ -1703,63 +1703,4 @@ function initKanban() {
       }
     });
     list.addEventListener('dragleave', (e) => {
-      // Only clear when leaving the list entirely
-      if (!list.contains(e.relatedTarget)) {
-        list.classList.remove('is-drop-target');
-      }
-    });
-    list.addEventListener('drop', (e) => {
-      e.preventDefault();
-      list.classList.remove('is-drop-target');
-    });
-  });
-
-  // Find the card whose vertical centre is closest below the
-  // cursor; the dragged card should be inserted before it.
-  function getAfterCard(list, y) {
-    const cards = Array.from(list.querySelectorAll('.card--draggable:not(.is-dragging)'));
-    return cards.reduce((closest, card) => {
-      const rect = card.getBoundingClientRect();
-      const offset = y - rect.top - rect.height / 2;
-      if (offset < 0 && offset > closest.offset) {
-        return { offset: offset, element: card };
-      }
-      return closest;
-    }, { offset: Number.NEGATIVE_INFINITY, element: null }).element;
-  }
-}
-
-/* =========================================================
-   REVEAL ON SCROLL
-   ========================================================= */
-function initReveal() {
-  const items = document.querySelectorAll('.reveal');
-  if (!('IntersectionObserver' in window)) {
-    items.forEach(el => el.classList.add('in'));
-    return;
-  }
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(en => {
-      if (en.isIntersecting) {
-        en.target.classList.add('in');
-        io.unobserve(en.target);
-      }
-    });
-  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-  items.forEach(el => io.observe(el));
-}
-
-/* =========================================================
-   BOOT
-   ========================================================= */
-document.addEventListener('DOMContentLoaded', () => {
-  renderTokenTable();
-  initSelectableCards();
-  initCardPress();
-  initKanban();
-  initReveal();
-});
-</script>
-
-</body>
-</html>
+      // Only

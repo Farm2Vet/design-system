@@ -77,7 +77,7 @@ Each component may has Variants, Versions, and Sizes. Size is the optimized vers
 - badge (done)
 - Header
 - Sidebar
-- Text
+- Text/Typography
 - Navbar
 - Tabs
 

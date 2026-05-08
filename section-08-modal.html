@@ -120,7 +120,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">01 / Modal — Anatomy</span>
-        <h2 class="text-display-md">A shared <em>shell</em>.</h2>
+        <h2 class="text-display-sm">A shared <em>shell</em>.</h2>
       </div>
       <p>
         Every modal resolves into the same vertical shell:
@@ -212,7 +212,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">Live demos</span>
-        <h2 class="text-display-md">Open the <em>real thing</em>.</h2>
+        <h2 class="text-display-sm">Open the <em>real thing</em>.</h2>
       </div>
       <p>
         Trigger the modals below to see the live
@@ -240,7 +240,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">02 / Modal — Sizes</span>
-        <h2 class="text-display-md">Five <em>widths</em>.</h2>
+        <h2 class="text-display-sm">Five <em>widths</em>.</h2>
       </div>
       <p>
         Five size caps scale the surface's max-width while
@@ -307,7 +307,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">03 / Modal — Alert dialog</span>
-        <h2 class="text-display-md">Confirm before <em>committing</em>.</h2>
+        <h2 class="text-display-sm">Confirm before <em>committing</em>.</h2>
       </div>
       <p>
         The alert dialog is a confirmation modal that carries
@@ -465,7 +465,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">04 / Modal — Confirm</span>
-        <h2 class="text-display-md">A short <em>question</em>.</h2>
+        <h2 class="text-display-sm">A short <em>question</em>.</h2>
       </div>
       <p>
         The confirm dialog is the everyday yes/no surface.
@@ -580,7 +580,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">05 / Modal — Form dialog</span>
-        <h2 class="text-display-md">A short <em>task</em>.</h2>
+        <h2 class="text-display-sm">A short <em>task</em>.</h2>
       </div>
       <p>
         The form dialog hosts a small, self-contained data
@@ -655,7 +655,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">06 / Modal — Scrollable</span>
-        <h2 class="text-display-md">Sticky <em>frame</em>.</h2>
+        <h2 class="text-display-sm">Sticky <em>frame</em>.</h2>
       </div>
       <p>
         <code>.modal--scrollable</code> pins the header and
@@ -714,7 +714,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">07 / Modal — Drawer &amp; sheet</span>
-        <h2 class="text-display-md">Edge <em>anchors</em>.</h2>
+        <h2 class="text-display-sm">Edge <em>anchors</em>.</h2>
       </div>
       <p>
         Edge-anchored variants keep the surface attached to
@@ -887,7 +887,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">08 / Modal — Fullscreen</span>
-        <h2 class="text-display-md">Cover the <em>viewport</em>.</h2>
+        <h2 class="text-display-sm">Cover the <em>viewport</em>.</h2>
       </div>
       <p>
         <code>.modal--fullscreen</code> covers the entire
@@ -950,7 +950,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">09 / Modal — Behaviour &amp; a11y</span>
-        <h2 class="text-display-md">A focus <em>boundary</em>.</h2>
+        <h2 class="text-display-sm">A focus <em>boundary</em>.</h2>
       </div>
       <p>
         A modal is defined as much by its behaviour as by
@@ -1047,7 +1047,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">10 / Modal — Component tokens</span>
-        <h2 class="text-display-md">Token <em>map</em>.</h2>
+        <h2 class="text-display-sm">Token <em>map</em>.</h2>
       </div>
       <p>
         The component token layer for Modal. Each
@@ -1486,57 +1486,4 @@ function initModalController() {
     btn.addEventListener('click', () => openModal(btn.dataset.modalOpen));
   });
   // Close affordances.
-  document.querySelectorAll('[data-modal-close]').forEach(btn => {
-    btn.addEventListener('click', () => closeModal(btn.closest('.modal')));
-  });
-  // Backdrop dismiss — only when the click lands on the
-  // backdrop itself, not bubbled from a child surface.
-  document.querySelectorAll('.modal').forEach(modal => {
-    modal.addEventListener('click', e => {
-      if (e.target !== modal) return;
-      if (modal.hasAttribute('data-modal-static')) return;
-      closeModal(modal);
-    });
-  });
-  // Escape dismiss + focus trap.
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') {
-      const open = document.querySelector('.modal.is-open');
-      if (open && !open.hasAttribute('data-modal-static')) closeModal(open);
-    }
-    trapFocus(e);
-  });
-}
-
-/* =========================================================
-   REVEAL ON SCROLL
-   ========================================================= */
-function initReveal() {
-  const items = document.querySelectorAll('.reveal');
-  if (!('IntersectionObserver' in window)) {
-    items.forEach(el => el.classList.add('in'));
-    return;
-  }
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(en => {
-      if (en.isIntersecting) {
-        en.target.classList.add('in');
-        io.unobserve(en.target);
-      }
-    });
-  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-  items.forEach(el => io.observe(el));
-}
-
-/* =========================================================
-   BOOT
-   ========================================================= */
-document.addEventListener('DOMContentLoaded', () => {
-  renderTokenTable();
-  initModalController();
-  initReveal();
-});
-</script>
-
-</body>
-</html>
+  document.querySelectorAll('[data-modal-close]').forEac

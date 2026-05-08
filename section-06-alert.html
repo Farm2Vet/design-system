@@ -116,7 +116,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">01 / Alert — Anatomy</span>
-        <h2 class="text-display-md">A shared <em>strip</em>.</h2>
+        <h2 class="text-display-sm">A shared <em>strip</em>.</h2>
       </div>
       <p>
         An Alert is a horizontal strip composed of three regions: a
@@ -180,7 +180,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">02 / Alert — Tone matrix</span>
-        <h2 class="text-display-md">Five <em>tones</em>.</h2>
+        <h2 class="text-display-sm">Five <em>tones</em>.</h2>
       </div>
       <p>
         Five canonical tones — Info, Safe, Warning, Critical, Neutral —
@@ -275,7 +275,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">03 / Alert — Style variants</span>
-        <h2 class="text-display-md">Style by <em>emphasis</em>.</h2>
+        <h2 class="text-display-sm">Style by <em>emphasis</em>.</h2>
       </div>
       <p>
         Four style treatments along an emphasis axis. <em>Soft</em>
@@ -388,7 +388,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">04 / Alert — Layouts</span>
-        <h2 class="text-display-md">Four <em>shapes</em>.</h2>
+        <h2 class="text-display-sm">Four <em>shapes</em>.</h2>
       </div>
       <p>
         Four layout modes resolve from the same DOM by exposing or
@@ -534,7 +534,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">05 / Alert — Sizes</span>
-        <h2 class="text-display-md">Three <em>scales</em>.</h2>
+        <h2 class="text-display-sm">Three <em>scales</em>.</h2>
       </div>
       <p>
         Three sizes scale padding, icon glyph, and title font-size in
@@ -597,7 +597,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">06 / Badge — Anatomy</span>
-        <h2 class="text-display-md">A shared <em>pill</em>.</h2>
+        <h2 class="text-display-sm">A shared <em>pill</em>.</h2>
       </div>
       <p>
         A Status Badge is an inline pill composed of up to four slots:
@@ -672,7 +672,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">07 / Badge — Tone × Style</span>
-        <h2 class="text-display-md">Tone <em>by emphasis</em>.</h2>
+        <h2 class="text-display-sm">Tone <em>by emphasis</em>.</h2>
       </div>
       <p>
         Seven tones — Neutral, Primary, Info, Safe, Warning, Critical,
@@ -753,7 +753,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">08 / Badge — Sizes</span>
-        <h2 class="text-display-md">Four <em>sizes</em>.</h2>
+        <h2 class="text-display-sm">Four <em>sizes</em>.</h2>
       </div>
       <p>
         Four sizes scale font-size, padding, and pill height in
@@ -811,7 +811,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">09 / Badge — Variants &amp; recipes</span>
-        <h2 class="text-display-md">Common <em>shapes</em>.</h2>
+        <h2 class="text-display-sm">Common <em>shapes</em>.</h2>
       </div>
       <p>
         Eight conventional badge shapes composed from the slot
@@ -1040,7 +1040,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">10 / Alert &amp; Badge — Component tokens</span>
-        <h2 class="text-display-md">Token <em>map</em>.</h2>
+        <h2 class="text-display-sm">Token <em>map</em>.</h2>
       </div>
       <p>
         The component token layer for both Alert and Badge. Each
@@ -1318,56 +1318,4 @@ function initDismiss() {
       const alertEl = btn.closest('.alert');
       if (!alertEl) return;
       alertEl.classList.add('is-dismissed');
-      setTimeout(() => {
-        alertEl.style.display = 'none';
-      }, 220);
-    });
-  });
-
-  document.querySelectorAll('.badge .badge__close').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const badgeEl = btn.closest('.badge');
-      if (!badgeEl) return;
-      badgeEl.style.transition = 'opacity .15s ease, transform .15s ease';
-      badgeEl.style.opacity = '0';
-      badgeEl.style.transform = 'scale(.92)';
-      setTimeout(() => {
-        badgeEl.style.display = 'none';
-      }, 160);
-    });
-  });
-}
-
-/* =========================================================
-   REVEAL ON SCROLL
-   ========================================================= */
-function initReveal() {
-  const items = document.querySelectorAll('.reveal');
-  if (!('IntersectionObserver' in window)) {
-    items.forEach(el => el.classList.add('in'));
-    return;
-  }
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(en => {
-      if (en.isIntersecting) {
-        en.target.classList.add('in');
-        io.unobserve(en.target);
-      }
-    });
-  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-  items.forEach(el => io.observe(el));
-}
-
-/* =========================================================
-   BOOT
-   ========================================================= */
-document.addEventListener('DOMContentLoaded', () => {
-  renderTokenTable();
-  initDismiss();
-  initReveal();
-});
-</script>
-
-</body>
-</html>
+      se

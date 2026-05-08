@@ -126,7 +126,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">01 / Toast — Anatomy</span>
-        <h2 class="text-display-md">A floating <em>strip</em>.</h2>
+        <h2 class="text-display-sm">A floating <em>strip</em>.</h2>
       </div>
       <p>
         A Toast is a floating horizontal strip composed of three
@@ -203,7 +203,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">02 / Toast — Tone matrix</span>
-        <h2 class="text-display-md">Five <em>tones</em>.</h2>
+        <h2 class="text-display-sm">Five <em>tones</em>.</h2>
       </div>
       <p>
         Five canonical tones — Info, Safe, Warning, Critical, Neutral —
@@ -339,7 +339,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">03 / Toast — Style variants</span>
-        <h2 class="text-display-md">Style by <em>emphasis</em>.</h2>
+        <h2 class="text-display-sm">Style by <em>emphasis</em>.</h2>
       </div>
       <p>
         Three style treatments along an emphasis axis. <em>Soft</em>
@@ -460,7 +460,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">04 / Toast — Layouts</span>
-        <h2 class="text-display-md">Seven <em>shapes</em>.</h2>
+        <h2 class="text-display-sm">Seven <em>shapes</em>.</h2>
       </div>
       <p>
         Seven layout modes resolve from the same DOM by exposing or
@@ -652,7 +652,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">05 / Toast — Sizes</span>
-        <h2 class="text-display-md">Three <em>scales</em>.</h2>
+        <h2 class="text-display-sm">Three <em>scales</em>.</h2>
       </div>
       <p>
         Three sizes scale padding, icon glyph, title font-size, and
@@ -737,7 +737,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">06 / Toast — Region position</span>
-        <h2 class="text-display-md">Six <em>anchors</em>.</h2>
+        <h2 class="text-display-sm">Six <em>anchors</em>.</h2>
       </div>
       <p>
         Toasts live inside a <code>.toast-region</code>, a fixed-position
@@ -913,7 +913,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">07 / Toast — Stacking</span>
-        <h2 class="text-display-md">Same-tone <em>grouping</em>.</h2>
+        <h2 class="text-display-sm">Same-tone <em>grouping</em>.</h2>
       </div>
       <p>
         Toasts of the same tone collect inside a
@@ -1100,7 +1100,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">08 / Toast — Snackbar variant</span>
-        <h2 class="text-display-md">A bare <em>pill</em>.</h2>
+        <h2 class="text-display-sm">A bare <em>pill</em>.</h2>
       </div>
       <p>
         The Snackbar (<code>.toast.toast--snackbar</code>) is a
@@ -1163,7 +1163,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">09 / Toast — Component tokens</span>
-        <h2 class="text-display-md">Token <em>map</em>.</h2>
+        <h2 class="text-display-sm">Token <em>map</em>.</h2>
       </div>
       <p>
         The component token layer for Toast. Each component token
@@ -1651,68 +1651,3 @@ function clearLiveToasts() {
     document.querySelectorAll('.toast-region.is-live').forEach(r => {
       if (!r.querySelector('.toast')) r.remove();
     });
-  }, 320);
-}
-
-function initSpawners() {
-  document.addEventListener('click', (e) => {
-    const single = e.target.closest('[data-spawn-toast]');
-    const burst  = e.target.closest('[data-spawn-toast-burst]');
-    const clear  = e.target.closest('[data-clear-toasts]');
-
-    if (clear) {
-      clearLiveToasts();
-      return;
-    }
-    if (burst) {
-      const n = Math.max(1, parseInt(burst.dataset.spawnToastBurst, 10) || 1);
-      const opts = readSpawnOpts(burst);
-      for (let i = 0; i < n; i++) {
-        const stagger = i * 220;
-        const variantOpts = Object.assign({}, opts, {
-          title: `${opts.title || 'Event'} · #${i + 1}`,
-        });
-        setTimeout(() => spawnLiveToast(variantOpts), stagger);
-      }
-      return;
-    }
-    if (single) {
-      spawnLiveToast(readSpawnOpts(single));
-    }
-  });
-}
-
-/* =========================================================
-   REVEAL ON SCROLL
-   ========================================================= */
-function initReveal() {
-  const items = document.querySelectorAll('.reveal');
-  if (!('IntersectionObserver' in window)) {
-    items.forEach(el => el.classList.add('in'));
-    return;
-  }
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(en => {
-      if (en.isIntersecting) {
-        en.target.classList.add('in');
-        io.unobserve(en.target);
-      }
-    });
-  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-  items.forEach(el => io.observe(el));
-}
-
-/* =========================================================
-   BOOT
-   ========================================================= */
-document.addEventListener('DOMContentLoaded', () => {
-  renderTokenTable();
-  initDismiss();
-  initTokenCopy();
-  initSpawners();
-  initReveal();
-});
-</script>
-</body>
-</html>
-

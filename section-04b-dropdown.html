@@ -80,7 +80,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">01 / Dropdown — Usage</span>
-        <h2 class="text-display-md">Default <em>everywhere</em>, fallback rarely.</h2>
+        <h2 class="text-display-sm">Default <em>everywhere</em>, fallback rarely.</h2>
       </div>
       <p>
         Two cards defining the boundary between the system default
@@ -135,7 +135,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">02 / Dropdown — Variants</span>
-        <h2 class="text-display-md">Three patterns, <em>three contexts</em>.</h2>
+        <h2 class="text-display-sm">Three patterns, <em>three contexts</em>.</h2>
       </div>
       <p>
         Three variants, each tuned to a distinct user task: making a
@@ -308,7 +308,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">03 / Dropdown — States</span>
-        <h2 class="text-display-md">Three states, <em>one vocabulary</em>.</h2>
+        <h2 class="text-display-sm">Three states, <em>one vocabulary</em>.</h2>
       </div>
       <p>
         Three states shared with every other form control in the system:
@@ -406,7 +406,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">04 / Dropdown — Sizes</span>
-        <h2 class="text-display-md">Match the <em>surface</em>, not the field's importance.</h2>
+        <h2 class="text-display-sm">Match the <em>surface</em>, not the field's importance.</h2>
       </div>
       <p>
         Five steps along the same scale that drives Type, Button, and Form.
@@ -493,7 +493,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">05 / Dropdown — Component tokens</span>
-        <h2 class="text-display-md">One layer to <em>tune the feel</em>.</h2>
+        <h2 class="text-display-sm">One layer to <em>tune the feel</em>.</h2>
       </div>
       <p>
         The full <code>--dropdown-*</code> token map, grouped by surface
@@ -737,35 +737,4 @@ function initDropdowns() {
       } else if (e.key === 'ArrowDown') {
         e.preventDefault();
         focusIdx = (focusIdx + 1) % options.length;
-        updateFocus();
-      } else if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        focusIdx = focusIdx <= 0 ? options.length - 1 : focusIdx - 1;
-        updateFocus();
-      } else if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        if (focusIdx >= 0) select(options[focusIdx]);
-      } else if (e.key === 'Tab') {
-        close();
-      }
-    });
-
-    // --- Click outside to dismiss ---
-    document.addEventListener('click', (e) => {
-      if (!dropdown.contains(e.target)) close();
-    });
-  });
-}
-
-/* =========================================================
-   BOOT
-   ========================================================= */
-document.addEventListener('DOMContentLoaded', () => {
-  renderTokenTable();
-  initReveal();
-  initDropdowns();
-});
-</script>
-
-</body>
-</html>
+      

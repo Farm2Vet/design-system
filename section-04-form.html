@@ -71,7 +71,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">01 / Form — Variants</span>
-        <h2 class="text-display-md">Variants <em>by control</em>.</h2>
+        <h2 class="text-display-sm">Variants <em>by control</em>.</h2>
       </div>
       <p>
         Ten controls covering the full range of structured input:
@@ -300,7 +300,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">02 / Form — Versions</span>
-        <h2 class="text-display-md">State <em>versions</em>.</h2>
+        <h2 class="text-display-sm">State <em>versions</em>.</h2>
       </div>
       <p>
         Every variant moves through three states. <em>Default</em> shows the
@@ -442,7 +442,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">03 / Form — Sizes</span>
-        <h2 class="text-display-md">Sized for <em>density</em>.</h2>
+        <h2 class="text-display-sm">Sized for <em>density</em>.</h2>
       </div>
       <p>
         Five steps along the same scale that drives type and Button — applied
@@ -825,7 +825,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">04 / Form — Component tokens</span>
-        <h2 class="text-display-md">Token <em>map</em>.</h2>
+        <h2 class="text-display-sm">Token <em>map</em>.</h2>
       </div>
       <p>
         Every form declaration resolves through this layer. Component tokens
@@ -1046,42 +1046,4 @@ function initMultiSelect() {
       e.preventDefault();
       const chip = document.createElement('span');
       chip.className = 'chip';
-      chip.innerHTML = `${value}<button type="button" aria-label="Remove">×</button>`;
-      wrap.insertBefore(chip, input);
-      input.value = '';
-    });
-  });
-}
-
-/* =========================================================
-   FILE UPLOAD — reflect "with value" state when a file picks
-   ========================================================= */
-function initFileUploads() {
-  document.querySelectorAll('.file-upload input[type="file"]').forEach(input => {
-    input.addEventListener('change', () => {
-      const wrap = input.closest('.file-upload');
-      if (!wrap) return;
-      if (input.files && input.files.length) {
-        wrap.classList.add('has-file');
-        const cta = wrap.querySelector('.file-cta');
-        if (cta) cta.textContent = input.files[0].name;
-      } else {
-        wrap.classList.remove('has-file');
-      }
-    });
-  });
-}
-
-/* =========================================================
-   BOOT
-   ========================================================= */
-document.addEventListener('DOMContentLoaded', () => {
-  renderTokenTable();
-  initReveal();
-  initMultiSelect();
-  initFileUploads();
-});
-</script>
-
-</body>
-</html>
+      chip.innerHTML = `${value}<button type="button" 

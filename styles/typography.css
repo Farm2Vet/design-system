@@ -6,9 +6,9 @@
    ARCHITECTURE
      Primitive (--text-xs..--text-9xl)
         ↑ referenced only by
-     Semantic (--text-body, --text-h1, --text-display, …)
+     Semantic (--text-body, --text-h1, --text-display, --text-display-sm, …)
         ↑ referenced only by
-     Component (.h1, .text-display, .body, .eyebrow, …)
+     Component (.h1, .text-display, .text-display-sm, .body, .eyebrow, …)
 
    CONTRACT
      Every numeric typography value declared in this file MUST
@@ -80,28 +80,26 @@
 }
 
 /* =========================================================
-   DISPLAY TIERS — outsized treatments reserved for hero,
-   section, and chunk-head contexts. The visual hierarchy
-   above .h1 is a deliberate marketing tier; semantic
-   heading rank (h1/h2/…) remains an independent decision.
+   DISPLAY TIERS — outsized treatments reserved for hero and
+   section / chunk-head contexts. The visual hierarchy above
+   .h1 is a deliberate marketing tier; semantic heading rank
+   (h1/h2/…) remains an independent decision.
+
+     .text-display      hero / page title (first fold)
+     .text-display-sm   section heading, chunk-head
    ========================================================= */
 .text-display,
-.text-display-lg,
-.text-display-md,
 .text-display-sm {
     font-family:    var(--font-sans);
     font-weight:    var(--font-weight-regular);
     line-height:    var(--line-height-display);
+    letter-spacing: var(--letter-spacing-tight);
     color:          var(--text-default);
     margin-bottom:  var(--margin-bottom-heading);
 }
 
-/* Tracking tightens as size grows: large display text reads better
-   with negative tracking, smaller display reads better with neutral. */
-.text-display    { font-size: var(--text-display);    letter-spacing: var(--letter-spacing-tighter); }
-.text-display-lg { font-size: var(--text-display-lg); letter-spacing: var(--letter-spacing-tighter); }
-.text-display-md { font-size: var(--text-display-md); letter-spacing: var(--letter-spacing-tight);   }
-.text-display-sm { font-size: var(--text-display-sm); letter-spacing: var(--letter-spacing-tight);   }
+.text-display    { font-size: var(--text-display);    }
+.text-display-sm { font-size: var(--text-display-sm); }
 
 /* Accent words inside a display heading: wrap in <em> to
    receive the brand italic + voice colour. Italic carries no
@@ -109,21 +107,18 @@
    decorative treatment of the display tier. The two display
    ranks use different voice colours by design:
 
-     .text-display     (hero, page title)     → --text-accent
-     .text-display-lg  (oversized hero)        → --text-accent
-     .text-display-md  (chunk-head, section)   → --text-emphasis
-     .text-display-sm  (sub-section display)   → --text-emphasis
+     .text-display     (hero, page title)        → --text-accent
+     .text-display-sm  (section heading,
+                        chunk-head)               → --text-emphasis
 
    To override the default voice colour, apply a colour
    utility (.text-accent / .text-emphasis / .text-secondary)
    directly on the <em>. See section-01b-typography for the
    usage specification. */
-.text-display em,
-.text-display-lg em {
+.text-display em {
     font-style: italic;
     color:      var(--text-accent);
 }
-.text-display-md em,
 .text-display-sm em {
     font-style: italic;
     color:      var(--text-emphasis);
