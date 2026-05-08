@@ -1,0 +1,213 @@
+/* =========================================================
+   FARM2VET DESIGN SYSTEM — TYPOGRAPHY COMPONENTS
+   Component-layer classes that compose semantic typography
+   tokens into ready-to-use treatments.
+
+   ARCHITECTURE
+     Primitive (--text-xs..--text-9xl)
+        ↑ referenced only by
+     Semantic (--text-body, --text-h1, --text-display, …)
+        ↑ referenced only by
+     Component (.h1, .text-display, .body, .eyebrow, …)
+
+   CONTRACT
+     Every numeric typography value declared in this file MUST
+     be a var(--…) reference. No raw rem / px / unitless number
+     is permitted outside of tokens.css. New sizes are added by
+     extending the primitive scale, never inlined here.
+
+   Depends on: tokens.css
+   ========================================================= */
+
+/* =========================================================
+   HEADINGS — semantic tags rendered at their token size.
+   Apply when a heading is used inline in body content
+   (cards, panels, forms). For hero / section headings see
+   the .text-display family below.
+   ========================================================= */
+.h1 {
+    font-family:    var(--font-sans);
+    font-size:      var(--text-h1);
+    font-weight:    var(--font-weight-regular);
+    line-height:    var(--line-height-heading);
+    color:          var(--text-default);
+    margin-bottom:  var(--margin-bottom-heading);
+}
+
+.h2 {
+    font-family:    var(--font-sans);
+    font-size:      var(--text-h2);
+    font-weight:    var(--font-weight-regular);
+    line-height:    var(--line-height-heading);
+    color:          var(--text-default);
+    margin-bottom:  var(--margin-bottom-subheading);
+}
+
+.h3 {
+    font-family:    var(--font-sans);
+    font-size:      var(--text-h3);
+    font-weight:    var(--font-weight-semibold);
+    line-height:    var(--line-height-h3);
+    color:          var(--text-default);
+    margin-bottom:  var(--margin-bottom-subheading);
+}
+
+.h4 {
+    font-family:    var(--font-sans);
+    font-size:      var(--text-h4);
+    font-weight:    var(--font-weight-semibold);
+    line-height:    var(--line-height-h4);
+    color:          var(--text-default);
+    margin-bottom:  var(--margin-bottom-element);
+}
+
+.h5 {
+    font-family:    var(--font-sans);
+    font-size:      var(--text-h5);
+    font-weight:    var(--font-weight-semibold);
+    line-height:    var(--line-height-h5);
+    color:          var(--text-default);
+    margin-bottom:  var(--margin-bottom-element);
+}
+
+.h6 {
+    font-family:    var(--font-sans);
+    font-size:      var(--text-h6);
+    font-weight:    var(--font-weight-semibold);
+    line-height:    var(--line-height-h6);
+    color:          var(--text-default);
+    margin-bottom:  var(--margin-bottom-element);
+}
+
+/* =========================================================
+   DISPLAY TIERS — outsized treatments reserved for hero,
+   section, and chunk-head contexts. The visual hierarchy
+   above .h1 is a deliberate marketing tier; semantic
+   heading rank (h1/h2/…) remains an independent decision.
+   ========================================================= */
+.text-display,
+.text-display-lg,
+.text-display-md,
+.text-display-sm {
+    font-family:    var(--font-sans);
+    font-weight:    var(--font-weight-regular);
+    line-height:    var(--line-height-display);
+    color:          var(--text-default);
+    margin-bottom:  var(--margin-bottom-heading);
+}
+
+/* Tracking tightens as size grows: large display text reads better
+   with negative tracking, smaller display reads better with neutral. */
+.text-display    { font-size: var(--text-display);    letter-spacing: var(--letter-spacing-tighter); }
+.text-display-lg { font-size: var(--text-display-lg); letter-spacing: var(--letter-spacing-tighter); }
+.text-display-md { font-size: var(--text-display-md); letter-spacing: var(--letter-spacing-tight);   }
+.text-display-sm { font-size: var(--text-display-sm); letter-spacing: var(--letter-spacing-tight);   }
+
+/* Accent words inside a display heading: wrap in <em> to
+   receive the brand italic + voice colour. Italic carries no
+   semantic stress in this context; it is a documented
+   decorative treatment of the display tier. The two display
+   ranks use different voice colours by design:
+
+     .text-display     (hero, page title)     → --text-accent
+     .text-display-lg  (oversized hero)        → --text-accent
+     .text-display-md  (chunk-head, section)   → --text-emphasis
+     .text-display-sm  (sub-section display)   → --text-emphasis
+
+   To override the default voice colour, apply a colour
+   utility (.text-accent / .text-emphasis / .text-secondary)
+   directly on the <em>. See section-01b-typography for the
+   usage specification. */
+.text-display em,
+.text-display-lg em {
+    font-style: italic;
+    color:      var(--text-accent);
+}
+.text-display-md em,
+.text-display-sm em {
+    font-style: italic;
+    color:      var(--text-emphasis);
+}
+
+/* =========================================================
+   BODY & SECONDARY TEXT
+   ========================================================= */
+.body {
+    font-family:   var(--font-sans);
+    font-size:     var(--text-body);
+    font-weight:   var(--font-weight-regular);
+    line-height:   var(--line-height-body);
+    color:         var(--text-default);
+    margin-bottom: var(--margin-bottom-paragraph);
+}
+
+.body-sm {
+    font-family:   var(--font-sans);
+    font-size:     var(--text-body-sm);
+    font-weight:   var(--font-weight-regular);
+    line-height:   var(--line-height-body);
+    color:         var(--text-default-subtle);
+    margin-bottom: var(--margin-bottom-element);
+}
+
+.caption {
+    font-family:   var(--font-sans);
+    font-size:     var(--text-caption);
+    font-weight:   var(--font-weight-regular);
+    line-height:   var(--line-height-h5);
+    color:         var(--text-default-subtle);
+}
+
+/* =========================================================
+   EYEBROW — uppercase mono label that prefixes a heading
+   or section. The leading rule is part of the treatment;
+   suppress with .eyebrow--bare if not desired.
+   ========================================================= */
+.eyebrow {
+    font-family:     var(--font-mono);
+    font-size:       var(--text-eyebrow);
+    font-weight:     var(--font-weight-medium);
+    letter-spacing:  var(--letter-spacing-eyebrow);
+    text-transform:  uppercase;
+    color:           var(--text-default-subtle);
+    display:         inline-flex;
+    align-items:     center;
+    gap:             var(--spacing-3x);
+}
+.eyebrow::before {
+    content:    '';
+    width:      var(--spacing-5x);
+    height:     var(--border-width-base);
+    background: var(--border-decorator);
+    display:    inline-block;
+}
+.eyebrow--bare::before { display: none; }
+
+/* =========================================================
+   FAMILY UTILITY
+   ========================================================= */
+.mono {
+    font-family: var(--font-mono);
+}
+
+/* =========================================================
+   COLOUR / EMPHASIS UTILITIES
+   Apply to an inline span (or any element) inside a heading
+   or paragraph to shift its colour without changing weight
+   or style. Colour and italic are independent axes; combine
+   utilities only when both treatments are intended.
+   ========================================================= */
+.text-accent     { color: var(--text-accent);          }
+.text-emphasis   { color: var(--text-emphasis);        }
+.text-secondary  { color: var(--text-secondary-strong); }
+.text-subtle     { color: var(--text-default-subtle);  }
+.text-minimal    { color: var(--text-default-minimal); }
+
+/* =========================================================
+   STYLE UTILITIES
+   .italic — decorative italic with no semantic weight.
+              Use when a word's meaning does not change if
+              the italic is removed. For stress emphasis,
+              wrap in <em> instead and rely on the cascade.
+   ========================================================= */
+.italic { font-style: italic; }

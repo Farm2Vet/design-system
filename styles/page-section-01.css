@@ -28,12 +28,12 @@
     font-family: var(--font-sans);
     font-size: var(--text-h6);
     font-weight: var(--font-weight-semibold);
-    letter-spacing: -0.01em;
+    letter-spacing: var(--letter-spacing-snug);
 }
 .ramp-card .ramp-meta {
     font-family: var(--font-mono);
     font-size: var(--text-micro);
-    letter-spacing: 0.12em;
+    letter-spacing: var(--letter-spacing-wide);
     text-transform: uppercase;
     color: var(--text-default-minimal);
 }
@@ -73,12 +73,12 @@
 .swatch .step {
     font-size: var(--text-micro);
     font-weight: var(--font-weight-medium);
-    letter-spacing: 0.05em;
+    letter-spacing: var(--letter-spacing-mono);
     opacity: 0.85;
 }
 .swatch .hex {
     font-size: var(--text-micro);
-    letter-spacing: 0.04em;
+    letter-spacing: var(--letter-spacing-mono);
     opacity: 0.75;
     text-transform: uppercase;
 }
@@ -149,7 +149,7 @@
     font-family: var(--font-mono);
     font-size: var(--text-micro);
     color: var(--text-default-minimal);
-    letter-spacing: 0.08em;
+    letter-spacing: var(--letter-spacing-wide);
     text-align: right;
 }
 
@@ -182,7 +182,7 @@
 .shadow-card .shadow-desc {
     font-family: var(--font-mono);
     font-size: var(--text-micro);
-    letter-spacing: 0.12em;
+    letter-spacing: var(--letter-spacing-wide);
     text-transform: uppercase;
     color: var(--text-default-minimal);
 }
@@ -207,9 +207,9 @@
     min-height: 165px;
 }
 .font-card .glyph {
-    font-size: 5.5rem;
+    font-size: var(--text-8xl);
     line-height: 1;
-    letter-spacing: -0.04em;
+    letter-spacing: var(--letter-spacing-tighter);
     margin-bottom: var(--spacing-3x);
     color: var(--text-default);
 }
@@ -225,7 +225,7 @@
     padding-top: var(--spacing-3x);
     font-family: var(--font-mono);
     font-size: var(--text-micro);
-    letter-spacing: 0.1em;
+    letter-spacing: var(--letter-spacing-wide);
     text-transform: uppercase;
     color: var(--text-default-minimal);
 }
@@ -246,72 +246,79 @@ table.type-table {
     overflow: hidden;
 }
 table.type-table thead th {
-    text-align: left;
-    font-family: var(--font-mono);
-    font-size: var(--text-micro);
+    text-align:     left;
+    font-family:    var(--font-mono);
+    font-size:      var(--text-eyebrow);
     letter-spacing: var(--letter-spacing-eyebrow);
     text-transform: uppercase;
-    color: var(--text-default-minimal);
-    font-weight: var(--font-weight-medium);
-    padding: var(--spacing-3x) var(--spacing-4x);
-    background: var(--background-glass-light);
-    border-bottom: var(--border-width-base) solid var(--border-default);
+    color:          var(--text-default-minimal);
+    font-weight:    var(--font-weight-medium);
+    padding:        var(--spacing-3x) var(--spacing-4x);
+    background:     var(--background-glass-light);
+    border-bottom:  var(--border-width-base) solid var(--border-default);
 }
 table.type-table tbody td {
-    padding: var(--spacing-3x) var(--spacing-4x);
+    padding:       var(--spacing-3x) var(--spacing-4x);
     border-bottom: var(--border-width-base) solid var(--border-default);
     vertical-align: middle;
 }
 table.type-table tbody tr:last-child td { border-bottom: none; }
-table.type-table tbody tr:hover td { background: var(--background-row-hover); }
+table.type-table tbody tr:hover td      { background: var(--background-row-hover); }
 
-td.var-name  { font-family: var(--font-mono); font-size: var(--text-sm); color: var(--text-default);         width: 180px; white-space: nowrap; }
-td.var-value { font-family: var(--font-mono); font-size: var(--text-sm); color: var(--text-default-minimal); width: 120px; }
-td.var-px    { font-family: var(--font-mono); font-size: var(--text-sm); color: var(--text-default-minimal); width: 80px; }
-td.preview                  { color: var(--text-default); }
-td.preview .preview-text    { line-height: 1.1; letter-spacing: -0.01em; }
+td.var-name  { font-family: var(--font-mono); font-size: var(--text-body-sm); color: var(--text-default);         width: 180px; white-space: nowrap; }
+td.var-value { font-family: var(--font-mono); font-size: var(--text-body-sm); color: var(--text-default-minimal); width: 120px; }
+td.var-px    { font-family: var(--font-mono); font-size: var(--text-body-sm); color: var(--text-default-minimal); width: 80px; }
+td.preview               { color: var(--text-default); }
+td.preview .preview-text { line-height: var(--line-height-display); }
+
+/* Step tag — small mono label that annotates a primitive
+   preview row with its scale-step position relative to the
+   --text-base anchor (e.g. "step +6", "anchor", "step −2"). */
+.step-tag {
+    display:        inline-block;
+    margin-left:    var(--spacing-3x);
+    padding:        var(--spacing-half) var(--spacing-2x);
+    font-size:      var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    color:          var(--text-default-minimal);
+    border:         var(--border-width-base) solid var(--border-default);
+    border-radius:  var(--radius-pill);
+    vertical-align: middle;
+    white-space:    nowrap;
+}
 
 /* Family rows */
 .family-cell {
-    display: flex;
+    display:     flex;
     align-items: center;
-    gap: var(--spacing-3x);
+    gap:         var(--spacing-3x);
 }
 .family-pill {
-    font-family: var(--font-mono);
-    font-size: var(--text-micro);
-    letter-spacing: 0.14em;
+    font-family:    var(--font-mono);
+    font-size:      var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-wide);
     text-transform: uppercase;
-    padding: var(--spacing-1x) var(--spacing-3x);
-    border-radius: var(--radius-pill);
-    background: var(--background-primary-minimal);
-    color: var(--text-primary-strong);
+    padding:        var(--spacing-1x) var(--spacing-3x);
+    border-radius:  var(--radius-pill);
+    background:     var(--background-primary-minimal);
+    color:          var(--text-primary-strong);
 }
 .family-pill[data-fam="mono"] {
     background: var(--background-default-minimal);
-    color: var(--text-default);
+    color:      var(--text-default);
 }
+
+/* Primitive-section explanatory note (Typography intro). */
+.primitive-note {
+    font-size:     var(--text-body);
+    line-height:   var(--line-height-body);
+    color:         var(--text-default-subtle);
+    margin-bottom: var(--spacing-8x);
+    max-width:     72ch;
+}
+.primitive-note code { font-size: var(--text-body-sm); }
+.primitive-note a    { text-decoration: underline; }
 
 /* =========================================================
-   RESPONSIVE
-   ========================================================= */
-@media (max-width: 960px) {
-    .type-grid { grid-template-columns: 1fr; }
-    .swatches  { grid-template-columns: repeat(6, 1fr) !important; }
-}
-@media (max-width: 600px) {
-    .shadow-row              { grid-template-columns: 1fr; gap: var(--spacing-5x); }
-    .swatches                { grid-template-columns: repeat(4, 1fr) !important; }
-    .swatches.status-row     { grid-template-columns: repeat(4, 1fr) !important; }
-    .swatches.base-row       { grid-template-columns: repeat(2, 1fr) !important; }
-    .space-row               { grid-template-columns: 150px 50px 1fr; }
-    .space-row .multiplier   { display: none; }
-    table.type-table thead   { display: none; }
-    table.type-table tbody td { display: block; padding: var(--spacing-2x) var(--spacing-4x); border-bottom: none; }
-    table.type-table tbody tr { display: block; padding: var(--spacing-4x) 0; border-bottom: var(--border-width-base) solid var(--border-default); }
-    td.var-name, td.var-value, td.var-px { width: auto; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .swatch { transition: none; }
-}
+   

@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Farm2Vet · Typography components — Design System</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<!-- Design system: shared, reusable foundation -->
+<link rel="stylesheet" href="styles/tokens.css" />
+<link rel="stylesheet" href="styles/base.css" />
+<link rel="stylesheet" href="styles/typography.css" />
+<link rel="stylesheet" href="styles/shell.css" />
+<link rel="stylesheet" href="styles/toast.css" />
+<!-- Page-specific: only what is unique to section-01b-typography.html -->
+<link rel="stylesheet" href="styles/page-section-01b.css" />
+
+<script src="scripts/scroll-spy.js" defer></script>
+
+</head>
+<body>
+
+<!-- ========================== TOP BAR ========================== -->
+<header class="topbar">
+  <a href="#top" class="brand" aria-label="Farm2Vet design system">
+    <img src="logo/logo-wordmark-color.svg" alt="Farm2Vet" class="brand-logo" />
+    <small>Design System</small>
+  </a>
+  <nav class="toc" aria-label="Section navigation">
+    <a href="#architecture">01 Architecture</a>
+    <a href="#semantic-tokens">02 Semantic tokens</a>
+    <a href="#components">03 Components</a>
+    <a href="#headings">04 Heading levels</a>
+    <a href="#emphasis">05 Italic &amp; emphasis</a>
+    <a href="#colour">06 Colour utilities</a>
+  </nav>
+  <span class="version mono">v 0.5 · 2026</span>
+</header>
+
+<main class="shell" id="top">
+
+  <!-- ========================== HERO ========================== -->
+  <section class="hero">
+    <div>
+      <h1 class="text-display reveal">
+        <span class="num">Section 01b / Foundations</span>
+        Typography <em>components</em>.
+      </h1>
+    </div>
+  </section>
+
+  <!-- ========================== CONTRACT ========================== -->
+  <section class="contract reveal" aria-label="Design system contract">
+    <p class="eyebrow eyebrow--bare">Contract</p>
+    <p class="contract-body">
+      Every numeric value in any stylesheet — font-size, line-height,
+      letter-spacing, color, spacing, radius, shadow — must be a
+      <code>var(--…)</code> reference to a token defined in
+      <code>tokens.css</code>. Raw <code>rem</code>, <code>px</code>,
+      <code>em</code>, <code>%</code>, and hex values are not permitted
+      outside the primitive layer. New sizes are introduced by extending
+      the primitive scale; consumers continue to reference tokens only.
+    </p>
+  </section>
+
+  <!-- ========================== 01 — ARCHITECTURE ========================== -->
+  <section class="chunk" id="architecture">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">01 / Architecture</span>
+        <h2 class="text-display-md">Three-layer model.</h2>
+      </div>
+    </header>
+
+    <div class="spec reveal">
+      <p>
+        The typography system is structured in three strict layers.
+        Each layer references the layer immediately below it; no layer
+        skips down or sideways.
+      </p>
+
+      <ol class="spec-list">
+        <li>
+          <span class="spec-term">Primitive scale</span> —
+          <code>--text-xs</code> through <code>--text-9xl</code>, defined
+          in <code>tokens.css</code>. Thirteen steps on a strict
+          <code>1.2</code> ratio anchored at <code>--text-base = 1rem</code>.
+          The primitive layer carries no semantic role. See
+          <a href="section-01-primitives.html#type">Section 01 —
+          Primitives</a> for the enumeration.
+        </li>
+        <li>
+          <span class="spec-term">Semantic tokens</span> —
+          <code>--text-body</code>, <code>--text-eyebrow</code>,
+          <code>--text-h1</code> through <code>--text-h6</code>,
+          <code>--text-display-sm</code> through <code>--text-display</code>.
+          Defined in <code>tokens.css</code> under SEMANTIC TOKENS. Each
+          semantic token is a <code>var()</code> alias of a primitive.
+          Renaming the role here updates every consumer.
+        </li>
+        <li>
+          <span class="spec-term">Component classes</span> —
+          <code>.h1</code>–<code>.h6</code>, <code>.text-display</code>
+          family, <code>.body</code>, <code>.body-sm</code>,
+          <code>.caption</code>, <code>.eyebrow</code>,
+          <code>.text-accent</code>, <code>.italic</code>. Defined in
+          <code>typography.css</code>. Components reference semantic
+          tokens only. Pages apply component classes to markup.
+        </li>
+      </ol>
+
+      <p>
+        Element-level CSS rules (<code>h1 {}</code>, <code>h2 {}</code>,
+        <code>p {}</code>) declare only <em>family</em>, <em>colour</em>,
+        and <em>margin defaults</em>. They do not declare font-size,
+        weight, italic, or letter-spacing. A bare <code>&lt;h1&gt;</code>
+        with no class therefore inherits no visible size; visual
+        treatment is opt-in via component class.
+      </p>
+    </div>
+  </section>
+
+  <!-- ========================== 02 — SEMANTIC TOKENS ========================== -->
+  <section class="chunk" id="semantic-tokens">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">02 / Semantic tokens</span>
+        <h2 class="text-display-md">Roles and aliases.</h2>
+      </div>
+    </header>
+
+    <p class="spec-intro reveal">
+      Each semantic token below names a typographic role. Components
+      consume these tokens; they do not consume primitives directly.
+      The <em>Aliases</em> column shows the primitive each role resolves
+      to today; reassigning a role to a different primitive updates
+      every component without markup changes.
+    </p>
+
+    <table class="spec-table reveal" aria-label="Semantic typography tokens">
+      <thead>
+        <tr>
+          <th scope="col">Token</th>
+          <th scope="col">Aliases</th>
+          <th scope="col">Px</th>
+          <th scope="col">Use for</th>
+        </tr>
+      </thead>
+      <tbody id="semanticTable"></tbody>
+    </table>
+  </section>
+
+  <!-- ========================== 03 — COMPONENT CLASSES ========================== -->
+  <section class="chunk" id="components">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">03 / Components</span>
+        <h2 class="text-display-md">Class previews.</h2>
+      </div>
+    </header>
+
+    <p class="spec-intro reveal">
+      Each component class below renders the role at its specified
+      size, weight, line-height, and tracking. Apply the class directly
+      to the appropriate semantic tag (e.g. <code>&lt;h2 class="h2"&gt;</code>,
+      <code>&lt;p class="body"&gt;</code>). Display-tier classes
+      (<code>.text-display</code> family) are used for hero and
+      chunk-head contexts; the heading classes (<code>.h1</code>–<code>.h6</code>)
+      are used for inline content.
+    </p>
+
+    <div class="component-stack" id="componentStack"></div>
+  </section>
+
+  <!-- ========================== 04 — HEADING LEVELS ========================== -->
+  <section class="chunk" id="headings">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">04 / Heading levels</span>
+        <h2 class="text-display-md">Semantic specification.</h2>
+      </div>
+    </header>
+
+    <div class="spec reveal">
+      <p>
+        Heading rank is a semantic decision, independent of visual
+        size. Choose the heading tag that correctly nests the page's
+        document outline; choose the visual treatment separately by
+        applying the appropriate component class.
+      </p>
+
+      <dl class="spec-defs">
+        <dt><code>&lt;h1&gt;</code> — Page title</dt>
+        <dd>
+          Exactly one per page. The page's primary heading; almost
+          always the hero. Apply <code>class="text-display"</code> for
+          the page hero treatment, or <code>class="h1"</code> when the
+          page title appears inline within content.
+        </dd>
+
+        <dt><code>&lt;h2&gt;</code> — Top-level section</dt>
+        <dd>
+          A major section within the page. In the section template,
+          this is the chunk-head heading (Color, Spacing, Typography,
+          Shadow). Apply <code>class="text-display-md"</code> for the
+          chunk-head treatment, or <code>class="h2"</code> for inline
+          section headings.
+        </dd>
+
+        <dt><code>&lt;h3&gt;</code> — Subsection</dt>
+        <dd>
+          A subdivision within a section: a card title, a named group
+          (Primary, Secondary, Status), an inline content block. Apply
+          <code>class="h3"</code>.
+        </dd>
+
+        <dt><code>&lt;h4&gt;</code> — Labelled grouping</dt>
+        <dd>
+          A grouping within a subsection: <em>Weights</em>,
+          <em>Line heights</em>, <em>Letter spacing</em>. Apply
+          <code>class="h4"</code> or <code>class="subheading"</code>
+          when paired with the <code>.tag</code> pill.
+        </dd>
+
+        <dt><code>&lt;h5&gt;</code>, <code>&lt;h6&gt;</code> — Deep nesting</dt>
+        <dd>
+          Reserved for content with nested structural depth (technical
+          documentation, long-form articles). Rare in component-driven
+          interfaces. Apply <code>class="h5"</code> or
+          <code>class="h6"</code>.
+        </dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ========================== 05 — ITALIC & EMPHASIS ========================== -->
+  <section class="chunk" id="emphasis">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">05 / Italic &amp; emphasis</span>
+        <h2 class="text-display-md">When to <em>em</em>, when to italic.</h2>
+      </div>
+    </header>
+
+    <div class="spec reveal">
+      <p>
+        Italic in this system is governed by three distinct mechanisms.
+        Each has a defined purpose; do not interchange them.
+      </p>
+
+      <dl class="spec-defs">
+        <dt><code>&lt;em&gt;</code> — Stress emphasis</dt>
+        <dd>
+          The semantic element for emphasis. Use when removing the
+          italic would change the sentence's meaning (e.g.
+          <em>this</em> is the one that matters). Renders italic by
+          default. Inside a <code>.text-display</code> family heading,
+          <code>&lt;em&gt;</code> additionally receives the brand voice
+          colour (forest green for hero tier, earthy brown for
+          chunk-head tier) by typographic component rule. The italic
+          on display headings is documented as a decorative voice
+          treatment and is not interpreted as stress emphasis by
+          assistive technology in that context.
+        </dd>
+
+        <dt><code>&lt;i&gt;</code> — Alternate voice</dt>
+        <dd>
+          Use for foreign-language phrases, technical or scientific
+          names, ship names, internal monologue, and similar
+          conventional italic uses where there is no stress meaning.
+          Renders italic by default. Receives no automatic colour
+          treatment. Reserved for editorial or content-rich pages.
+        </dd>
+
+        <dt><code>.italic</code> — Decorative italic</dt>
+        <dd>
+          A utility class for italic with no semantic weight. Use when
+          the visual italic is wanted but the content carries neither
+          stress nor an alternate-voice convention. Apply to a
+          <code>&lt;span&gt;</code>; do not apply to a heading or
+          paragraph as a whole.
+        </dd>
+      </dl>
+
+      <p class="spec-note">
+        Element rules in <code>base.css</code> never apply italic.
+        A bare <code>&lt;h2&gt;</code> renders upright. Italic appears
+        only when one of the three mechanisms above is invoked.
+      </p>
+    </div>
+  </section>
+
+  <!-- ========================== 06 — COLOUR UTILITIES ========================== -->
+  <section class="chunk" id="colour">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">06 / Colour utilities</span>
+        <h2 class="text-display-md">Voice and emphasis colour.</h2>
+      </div>
+    </header>
+
+    <div class="spec reveal">
+      <p>
+        Voice colour is an axis independent of italic. The utilities
+        below shift colour without altering style or weight; combine
+        with <code>&lt;em&gt;</code> or <code>.italic</code> when both
+        treatments are intended.
+      </p>
+
+      <table class="spec-table" aria-label="Colour utilities">
+        <thead>
+          <tr>
+            <th scope="col">Utility</th>
+            <th scope="col">Token</th>
+            <th scope="col">Use for</th>
+            <th scope="col">Preview</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="var-name">.text-accent</td>
+            <td class="var-value">--text-accent</td>
+            <td>Hero / primary brand voice. Default colour for <code>&lt;em&gt;</code> inside <code>.text-display</code>.</td>
+            <td class="preview"><span class="h3"><span class="text-accent">Cultivated</span> intelligence</span></td>
+          </tr>
+          <tr>
+            <td class="var-name">.text-emphasis</td>
+            <td class="var-value">--text-emphasis</td>
+            <td>Section / chunk-head voice. Default colour for <code>&lt;em&gt;</code> inside <code>.text-display-md</code>.</td>
+            <td class="preview"><span class="h3"><span class="text-emphasis">Cultivated</span> intelligence</span></td>
+          </tr>
+          <tr>
+            <td class="var-name">.text-secondary</td>
+            <td class="var-value">--text-secondary-strong</td>
+            <td>Secondary voice. Earth-tone callouts within body content.</td>
+            <td class="preview"><span class="h3"><span class="text-secondary">Cultivated</span> intelligence</span></td>
+          </tr>
+          <tr>
+            <td class="var-name">.text-subtle</td>
+            <td class="var-value">--text-default-subtle</td>
+            <td>De-emphasised supporting text within a heading or paragraph.</td>
+            <td class="preview"><span class="h3"><span class="text-subtle">Cultivated</span> intelligence</span></td>
+          </tr>
+          <tr>
+            <td class="var-name">.text-minimal</td>
+            <td class="var-value">--text-default-minimal</td>
+            <td>Lowest-priority text: row metadata, value annotations, secondary timestamps.</td>
+            <td class="preview"><span class="h3"><span class="text-minimal">Cultivated</span> intelligence</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="spec-note">
+        To apply colour without italic, wrap the word in a
+        <code>&lt;span&gt;</code> and apply the colour utility:
+        <code>&lt;span class="text-accent"&gt;word&lt;/span&gt;</code>.
+        To apply italic without colour, use the
+        <code>.italic</code> utility on the same span:
+        <code>&lt;span class="italic"&gt;word&lt;/span&gt;</code>.
+        To apply both, apply both classes.
+      </p>
+    </div>
+  </section>
+
+  <!-- ========================== FOOTER ========================== -->
+  <footer>
+    <span class="sigil">Farm2Vet — cultivated intelligence, since 2024.</span>
+    <span>End of Section 01b</span>
+  </footer>
+
+</main>
+
+<script>
+/* =========================================================
+   DATA
+   ========================================================= */
+const SEMANTIC_TOKENS = [
+  ['--text-display',    '--text-9xl', '99.08', 'Page hero / first-fold display heading.'],
+  ['--text-display-lg', '--text-8xl', '82.57', 'Intermediate hero display tier.'],
+  ['--text-display-md', '--text-7xl', '68.80', 'Chunk-head / section display heading.'],
+  ['--text-display-sm', '--text-6xl', '57.34', 'Sub-section display heading.'],
+  ['--text-h1',         '--text-5xl', '47.78', 'Inline page-title heading (when not using display).'],
+  ['--text-h2',         '--text-4xl', '39.81', 'Inline section heading.'],
+  ['--text-h3',         '--text-3xl', '33.18', 'Subsection heading; card titles; named groups.'],
+  ['--text-h4',         '--text-2xl', '27.65', 'Labelled grouping within a subsection.'],
+  ['--text-h5',         '--text-xl',  '23.04', 'Deep-nesting heading; rare.'],
+  ['--text-h6',         '--text-lg',  '19.20', 'Deepest heading rank; rare.'],
+  ['--text-body',       '--text-base','16.00', 'Default paragraph text.'],
+  ['--text-body-sm',    '--text-sm',  '13.33', 'Secondary body; helper text under inputs.'],
+  ['--text-caption',    '--text-sm',  '13.33', 'Captions under figures, cards, tables.'],
+  ['--text-eyebrow',    '--text-xs',  '11.10', 'Uppercase mono labels; section eyebrows.'],
+];
+
+const COMPONENTS = [
+  { cls: 'text-display',    role: 'hero',         note: 'Page hero. One per page. <code>&lt;em&gt;</code> wraps accent words to apply italic + accent colour.', sample: 'The <em>cultivated</em> intelligence platform.' },
+  { cls: 'text-display-lg', role: 'hero (large)', note: 'Oversized hero variant for marketing pages.', sample: 'Cultivated <em>intelligence</em>.' },
+  { cls: 'text-display-md', role: 'chunk-head',   note: 'Section heading. <code>&lt;em&gt;</code> wraps accent words to apply italic + emphasis colour.', sample: 'Layered <em>depth</em>.' },
+  { cls: 'text-display-sm', role: 'sub-section',  note: 'Sub-section display heading. Use sparingly.', sample: 'Voice and <em>emphasis</em>.' },
+  { cls: 'h1',  role: 'page title (inline)', note: 'Inline rendering of the page title within content.', sample: 'Page title.' },
+  { cls: 'h2',  role: 'section (inline)',    note: 'Inline section heading; rendered upright by default.', sample: 'Section heading.' },
+  { cls: 'h3',  role: 'subsection',          note: 'Card titles, named groups within a section.',       sample: 'Subsection heading.' },
+  { cls: 'h4',  role: 'labelled grouping',   note: 'Labelled grouping within a subsection.',            sample: 'Labelled grouping.' },
+  { cls: 'h5',  role: 'deep nesting',        note: 'Reserved for documentation depth.',                 sample: 'Deep-nesting heading.' },
+  { cls: 'h6',  role: 'deep nesting',        note: 'Deepest rank; technical documentation only.',       sample: 'Deepest heading rank.' },
+  { cls: 'body',    role: 'paragraph',  note: 'Default body copy, sans, regular weight.',  sample: 'The body class is the default treatment for paragraph copy. It uses the body line-height and the default text colour.' },
+  { cls: 'body-sm', role: 'secondary',  note: 'Helper text, secondary copy, footnotes.',   sample: 'Secondary body copy. Slightly smaller, slightly lower-contrast colour.' },
+  { cls: 'caption', role: 'caption',    note: 'Caption beneath a figure, card, or table.', sample: 'Caption text. Used beneath figures and cards.' },
+  { cls: 'eyebrow', role: 'eyebrow',    note: 'Uppercase mono label that prefixes a heading or section.', sample: 'Eyebrow label' },
+];
+
+/* =========================================================
+   RENDER — semantic token table
+   ========================================================= */
+function renderSemanticTable() {
+  const tbody = document.getElementById('semanticTable');
+  tbody.innerHTML = SEMANTIC_TOKENS.map(([token, alias, px, use]) => `
+    <tr>
+      <td class="var-name">${token}</td>
+      <td class="var-value">${alias}</td>
+      <td class="var-px">${px}px</td>
+      <td class="spec-use">${use}</td>
+    </tr>
+  `).join('');
+}
+
+/* =========================================================
+   RENDER — component class previews
+   ========================================================= */
+function renderComponents() {
+  const stack = document.getElementById('componentStack');
+  stack.innerHTML = COMPONENTS.map(({cls, role, note, sample}) => `
+    <article class="component-row">
+      <div class="component-meta">
+        <code class="component-class">.${cls}</code>
+        <span class="component-role">${role}</span>
+        <p class="component-note">${note}</p>
+      </div>
+      <div class="component-preview">
+        <span class="${cls}">${sample}</span>
+      </div>
+    </article>
+  `).join('');
+}
+
+/* =========================================================
+   REVEAL ON SCROLL
+   ========================================================= */
+function initReveal() {
+  const items = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    items.forEach(el => el.classList.add('in'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        en.target.classList.add('in');
+        io.unobserve(en.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(el => io.observe(el));
+}
+
+/* =========================================================
+   BOOT
+   ========================================================= */
+document.addEventListener('DOMContentLoaded', () => {
+  renderSemanticTable();
+  renderComponents();
+  initReveal();
+});
+</script>
+
+</body>
+</html>

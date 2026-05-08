@@ -391,7 +391,7 @@ button.card:focus-visible,
     font-weight: var(--font-weight-medium);
     letter-spacing: var(--letter-spacing-eyebrow);
     text-transform: uppercase;
-    line-height: 1.4;
+    line-height: var(--line-height-h4);
 }
 .card__badge--info     { background: var(--card-badge-info-bg);     color: var(--card-badge-info-fg); }
 .card__badge--warning  { background: var(--card-badge-warning-bg);  color: var(--card-badge-warning-fg); }
@@ -429,9 +429,9 @@ button.card:focus-visible,
     color: var(--card-fg-subtle);
 }
 .card__rating-stars {
-    display: inline-flex;
-    color: var(--card-rating-fg);
-    letter-spacing: 1px;
+    display:     inline-flex;
+    gap:         var(--spacing-quarter);
+    color:       var(--card-rating-fg);
 }
 .card__rating-stars .empty {
     color: var(--card-rating-empty-fg);
@@ -448,7 +448,7 @@ button.card:focus-visible,
     font-weight: var(--font-weight-semibold);
     color: var(--card-metric-fg);
     line-height: 1;
-    letter-spacing: -0.02em;
+    letter-spacing: var(--letter-spacing-snug);
 }
 .card__metric-label {
     font-family: var(--font-mono);
@@ -688,7 +688,7 @@ button.card.card--outlined:active {
 .card--list .card__list-trail {
     font-family: var(--font-mono);
     font-size: var(--text-micro);
-    letter-spacing: 0.04em;
+    letter-spacing: var(--letter-spacing-mono);
     color: var(--card-fg-minimal);
     text-align: right;
 }
@@ -1036,6 +1036,4 @@ button.card.card--inverted:hover {
     .card--list .card__list-item,
     .card--draggable.is-dragging {
         transition: none;
-        transform: none;
-    }
-}
+       

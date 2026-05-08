@@ -110,16 +110,24 @@
     --font-sans: 'Poppins', 'Helvetica', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
 
-    /* ---------- Type scale (ratio = 1.2) ---------- */
-    --text-h1:    2.986rem;
-    --text-h2:    2.488rem;
-    --text-h3:    2.074rem;
-    --text-h4:    1.728rem;
-    --text-h5:    1.44rem;
-    --text-h6:    1.2rem;
-    --text-base:  1rem;
-    --text-sm:    0.833rem;
-    --text-micro: 0.694rem;
+    /* ---------- Type scale (primitive)
+       13 steps on a strict 1.2 ratio, anchored at --text-base = 1rem.
+       Pure scale positions; no semantic role is implied by these names.
+       Components must NOT reference these primitives directly — they
+       reference the semantic typography tokens (see Section 2). ---------- */
+    --text-xs:   0.694rem;     /* 11.10px — base ÷ 1.2² */
+    --text-sm:   0.833rem;     /* 13.33px — base ÷ 1.2¹ */
+    --text-base: 1rem;         /* 16.00px — anchor       */
+    --text-lg:   1.2rem;       /* 19.20px — base × 1.2¹ */
+    --text-xl:   1.44rem;      /* 23.04px — base × 1.2² */
+    --text-2xl:  1.728rem;     /* 27.65px — base × 1.2³ */
+    --text-3xl:  2.074rem;     /* 33.18px — base × 1.2⁴ */
+    --text-4xl:  2.488rem;     /* 39.81px — base × 1.2⁵ */
+    --text-5xl:  2.986rem;     /* 47.78px — base × 1.2⁶ */
+    --text-6xl:  3.583rem;     /* 57.34px — base × 1.2⁷ */
+    --text-7xl:  4.300rem;     /* 68.80px — base × 1.2⁸ */
+    --text-8xl:  5.160rem;     /* 82.57px — base × 1.2⁹ */
+    --text-9xl:  6.192rem;     /* 99.08px — base × 1.2¹⁰ */
 
     /* ---------- Font weights ---------- */
     --font-weight-regular:  400;
@@ -135,9 +143,19 @@
     --line-height-h6:      1.6;
     --line-height-body:    1.65;
 
-    /* ---------- Letter spacing ---------- */
-    --letter-spacing-display: 0.02em;
-    --letter-spacing-eyebrow: 0.18em;
+    /* ---------- Letter spacing ----------
+       Negative values tighten tracking (typical for large display
+       text); positive values loosen it (typical for uppercase mono
+       labels). Component CSS must reference these tokens; no inline
+       em values are permitted. */
+    --letter-spacing-tighter: -0.035em;   /* hero / very large display     */
+    --letter-spacing-tight:   -0.025em;   /* chunk-head / mid display      */
+    --letter-spacing-snug:    -0.01em;    /* numbers, condensed labels     */
+    --letter-spacing-display:  0.02em;    /* subtle loose, .display tier   */
+    --letter-spacing-mono:     0.04em;    /* inline mono labels, code-tags */
+    --letter-spacing-wide:     0.12em;    /* mono nav links, footer labels */
+    --letter-spacing-eyebrow:  0.18em;    /* primary eyebrow tracking      */
+    --letter-spacing-widest:   0.2em;     /* hero supercaps, num-tags      */
 }
 
 /* =========================================================
@@ -145,6 +163,33 @@
    All values: var() or color-mix() — no raw hex.
    ========================================================= */
 :root {
+    /* ---------- Typography (semantic) ----------
+       Role-based aliases for the primitive type scale. Component
+       CSS must reference THESE tokens, never the primitive scale
+       (--text-xs..--text-9xl) directly. Renaming a role here
+       updates every component that consumes it. */
+    --text-body:        var(--text-base);   /* paragraphs, default body copy */
+    --text-body-sm:     var(--text-sm);     /* secondary body, helper text   */
+    --text-caption:     var(--text-sm);     /* captions under figures/cards  */
+    --text-eyebrow:     var(--text-xs);     /* uppercase labels, micro-caps  */
+
+    --text-h6:          var(--text-lg);     /* 19.20px */
+    --text-h5:          var(--text-xl);     /* 23.04px */
+    --text-h4:          var(--text-2xl);    /* 27.65px */
+    --text-h3:          var(--text-3xl);    /* 33.18px */
+    --text-h2:          var(--text-4xl);    /* 39.81px */
+    --text-h1:          var(--text-5xl);    /* 47.78px */
+
+    --text-display-sm:  var(--text-6xl);    /* 57.34px — section heading display tier  */
+    --text-display-md:  var(--text-7xl);    /* 68.80px — chunk-head display tier        */
+    --text-display-lg:  var(--text-8xl);    /* 82.57px — intermediate hero display tier */
+    --text-display:     var(--text-9xl);    /* 99.08px — page hero / first-fold display */
+
+    /* DEPRECATED — alias retained for backward compatibility while
+       legacy CSS is migrated to --text-eyebrow. Do not introduce new
+       usages of --text-micro; reference --text-eyebrow instead. */
+    --text-micro:       var(--text-eyebrow);
+
     /* ---------- Background ---------- */
     --background-default:          var(--white-base);
     --background-default-subtle:   var(--neutral-50);

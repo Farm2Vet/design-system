@@ -1,0 +1,278 @@
+/* =========================================================
+   PAGE — TYPOGRAPHY COMPONENTS
+   Styles unique to section-01b-typography.html: spec prose,
+   spec table, definition lists, component-preview rows.
+   Depends on: tokens.css, base.css, typography.css, shell.css
+   ========================================================= */
+
+/* =========================================================
+   SPECIFICATION PROSE — multi-paragraph spec blocks within
+   a chunk. Used for the architecture, heading-levels,
+   italic, and colour sections.
+   ========================================================= */
+.spec {
+    background:      var(--background-glass-light);
+    border:          var(--border-width-base) solid var(--border-glass-light);
+    border-radius:   var(--radius-lg);
+    padding:         var(--spacing-8x);
+    backdrop-filter: var(--blur-md);
+}
+.spec p {
+    font-size:     var(--text-body);
+    line-height:   var(--line-height-body);
+    color:         var(--text-default);
+    margin-bottom: var(--spacing-4x);
+    max-width:     72ch;
+}
+.spec p:last-child { margin-bottom: 0; }
+.spec code {
+    font-size:  var(--text-body-sm);
+    background: var(--background-default-minimal);
+    padding:    var(--spacing-half) var(--spacing-1x);
+}
+
+.spec-intro {
+    font-size:     var(--text-body);
+    line-height:   var(--line-height-body);
+    color:         var(--text-default-subtle);
+    margin-bottom: var(--spacing-6x);
+    max-width:     72ch;
+}
+.spec-intro code {
+    font-size:  var(--text-body-sm);
+    background: var(--background-default-minimal);
+    padding:    var(--spacing-half) var(--spacing-1x);
+}
+
+.spec-note {
+    font-size:     var(--text-body-sm);
+    line-height:   var(--line-height-body);
+    color:         var(--text-default-subtle);
+    margin-top:    var(--spacing-6x);
+    padding-left:  var(--spacing-4x);
+    border-left:   var(--border-width-base) solid var(--border-default-strong);
+    max-width:     72ch;
+}
+.spec-note code {
+    font-size:  var(--text-body-sm);
+    background: var(--background-default-minimal);
+    padding:    var(--spacing-half) var(--spacing-1x);
+}
+
+/* =========================================================
+   ORDERED LIST — numbered architecture / spec list
+   ========================================================= */
+.spec-list {
+    list-style:    none;
+    counter-reset: spec;
+    padding:       0;
+    margin:        var(--spacing-6x) 0;
+}
+.spec-list li {
+    counter-increment: spec;
+    position:          relative;
+    padding-left:      var(--spacing-12x);
+    margin-bottom:     var(--spacing-5x);
+    font-size:         var(--text-body);
+    line-height:       var(--line-height-body);
+    color:             var(--text-default);
+    max-width:         72ch;
+}
+.spec-list li::before {
+    content:        counter(spec, decimal-leading-zero);
+    position:       absolute;
+    left:           0;
+    top:            0;
+    font-family:    var(--font-mono);
+    font-size:      var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    color:          var(--text-default-minimal);
+    background:     var(--background-default-minimal);
+    padding:        var(--spacing-half) var(--spacing-2x);
+    border-radius:  var(--radius-pill);
+}
+.spec-term {
+    font-weight: var(--font-weight-semibold);
+    color:       var(--text-default);
+}
+
+/* =========================================================
+   DEFINITION LIST — heading specs, italic specs
+   ========================================================= */
+.spec-defs {
+    margin: var(--spacing-6x) 0 0;
+}
+.spec-defs dt {
+    font-family:   var(--font-sans);
+    font-size:     var(--text-h5);
+    font-weight:   var(--font-weight-semibold);
+    color:         var(--text-default);
+    margin-top:    var(--spacing-6x);
+    margin-bottom: var(--spacing-2x);
+}
+.spec-defs dt:first-child { margin-top: 0; }
+.spec-defs dt code {
+    font-size:  var(--text-h6);
+    background: transparent;
+    color:      var(--text-primary-strong);
+    padding:    0;
+}
+.spec-defs dd {
+    font-size:     var(--text-body);
+    line-height:   var(--line-height-body);
+    color:         var(--text-default-subtle);
+    margin-bottom: var(--spacing-4x);
+    margin-left:   0;
+    max-width:     72ch;
+}
+.spec-defs dd code {
+    font-size:  var(--text-body-sm);
+    background: var(--background-default-minimal);
+    padding:    var(--spacing-half) var(--spacing-1x);
+}
+.spec-defs dd em { color: var(--text-default); }
+
+/* =========================================================
+   SPEC TABLE — semantic token table, colour utility table
+   ========================================================= */
+table.spec-table {
+    width:           100%;
+    border-collapse: separate;
+    border-spacing:  0;
+    background:      var(--background-glass-light);
+    backdrop-filter: var(--blur-lg) saturate(140%);
+    -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
+    border:          var(--border-width-base) solid var(--border-glass-light);
+    border-radius:   var(--radius-lg);
+    overflow:        hidden;
+    margin-bottom:   var(--spacing-6x);
+}
+table.spec-table thead th {
+    text-align:     left;
+    font-family:    var(--font-mono);
+    font-size:      var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color:          var(--text-default-minimal);
+    font-weight:    var(--font-weight-medium);
+    padding:        var(--spacing-3x) var(--spacing-4x);
+    background:     var(--background-glass-light);
+    border-bottom:  var(--border-width-base) solid var(--border-default);
+}
+table.spec-table tbody td {
+    padding:       var(--spacing-3x) var(--spacing-4x);
+    border-bottom: var(--border-width-base) solid var(--border-default);
+    vertical-align: middle;
+    font-size:     var(--text-body-sm);
+    color:         var(--text-default);
+    line-height:   var(--line-height-body);
+}
+table.spec-table tbody tr:last-child td { border-bottom: none; }
+table.spec-table tbody tr:hover td      { background: var(--background-row-hover); }
+
+table.spec-table .var-name {
+    font-family: var(--font-mono);
+    font-size:   var(--text-body-sm);
+    color:       var(--text-default);
+    width:       180px;
+    white-space: nowrap;
+}
+table.spec-table .var-value {
+    font-family: var(--font-mono);
+    font-size:   var(--text-body-sm);
+    color:       var(--text-default-minimal);
+    width:       140px;
+    white-space: nowrap;
+}
+table.spec-table .var-px {
+    font-family: var(--font-mono);
+    font-size:   var(--text-body-sm);
+    color:       var(--text-default-minimal);
+    width:       72px;
+    white-space: nowrap;
+}
+table.spec-table .spec-use {
+    color: var(--text-default-subtle);
+}
+table.spec-table code {
+    font-size:  var(--text-body-sm);
+    background: var(--background-default-minimal);
+    padding:    var(--spacing-half) var(--spacing-1x);
+}
+
+/* =========================================================
+   COMPONENT STACK — each row pairs metadata with a live
+   preview rendered via the actual component class.
+   ========================================================= */
+.component-stack {
+    display:        flex;
+    flex-direction: column;
+    gap:            var(--spacing-4x);
+}
+.component-row {
+    display:        grid;
+    grid-template-columns: 320px 1fr;
+    gap:            var(--spacing-8x);
+    align-items:    start;
+    padding:        var(--spacing-6x);
+    background:     var(--background-glass-light);
+    border:         var(--border-width-base) solid var(--border-glass-light);
+    border-radius:  var(--radius-lg);
+    backdrop-filter: var(--blur-md);
+}
+.component-meta {
+    display:        flex;
+    flex-direction: column;
+    gap:            var(--spacing-2x);
+}
+.component-class {
+    font-family: var(--font-mono);
+    font-size:   var(--text-body-sm);
+    color:       var(--text-primary-strong);
+    background:  var(--background-primary-minimal);
+    padding:     var(--spacing-1x) var(--spacing-3x);
+    border-radius: var(--radius-pill);
+    align-self:  start;
+}
+.component-role {
+    font-family:    var(--font-mono);
+    font-size:      var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color:          var(--text-default-minimal);
+}
+.component-note {
+    font-size:   var(--text-body-sm);
+    line-height: var(--line-height-body);
+    color:       var(--text-default-subtle);
+    margin:      0;
+    max-width:   42ch;
+}
+.component-note code {
+    font-size:  var(--text-body-sm);
+    background: var(--background-default-minimal);
+    padding:    var(--spacing-half) var(--spacing-1x);
+}
+.component-preview {
+    min-width: 0;
+    overflow:  hidden;
+}
+.component-preview > * {
+    margin-bottom: 0;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 960px) {
+    .component-row { grid-template-columns: 1fr; gap: var(--spacing-4x); }
+}
+@media (max-width: 600px) {
+    .spec                              { padding: var(--spacing-5x); }
+    table.spec-table thead             { display: none; }
+    table.spec-table tbody td          { display: block; padding: var(--spacing-2x) var(--spacing-4x); border-bottom: none; }
+    table.spec-table tbody tr          { display: block; padding: var(--spacing-4x) 0; border-bottom: var(--border-width-base) solid var(--border-default); }
+    table.spec-table .var-name,
+    table.spec-table .var-value,
+    table.spec-table .var-px           { width: auto; }
+}

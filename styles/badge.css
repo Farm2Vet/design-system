@@ -25,7 +25,7 @@
     /* ---------- Shared shape ---------- */
     --badge-font-family:    var(--font-sans);
     --badge-font-weight:    var(--font-weight-medium);
-    --badge-letter-spacing: 0.01em;
+    --badge-letter-spacing: var(--letter-spacing-display);
     --badge-radius:         var(--radius-pill);
     --badge-radius-square:  var(--radius-sm);
     --badge-border-width:   var(--border-width-base);
@@ -35,7 +35,7 @@
                             opacity .15s ease;
 
     /* ---------- Sizes (MD is default) ---------- */
-    --badge-xs-font-size: 10px;
+    --badge-xs-font-size: var(--text-xs);
     --badge-xs-padding-x: var(--spacing-1x);
     --badge-xs-padding-y: 1px;
     --badge-xs-height:    16px;
@@ -144,7 +144,7 @@
     --badge-count-fg:        var(--text-inverted);
     --badge-count-min-w:     18px;
     --badge-count-height:    18px;
-    --badge-count-font-size: 11px;
+    --badge-count-font-size: var(--text-xs);
     --badge-count-padding-x: var(--spacing-1x);
 
     /* ---------- Dot indicator ---------- */
@@ -178,7 +178,7 @@
     font-size: var(--badge-md-font-size);
     font-weight: var(--badge-font-weight);
     letter-spacing: var(--badge-letter-spacing);
-    line-height: 1.2;
+    line-height: var(--line-height-heading);
     white-space: nowrap;
     transition: var(--badge-transition);
     user-select: none;
@@ -471,5 +471,4 @@
     .badge,
     .badge__close { transition: none; }
     .badge__dot.is-pulse,
-    .badge--dot-only.is-pulse { animation: none; }
-}
+    .badge--dot-only.is-pulse 

@@ -37,7 +37,7 @@
 }
 .brand small {
     font-family: var(--font-mono);
-    font-size: var(--text-micro);
+    font-size: var(--text-eyebrow);
     letter-spacing: var(--letter-spacing-eyebrow);
     text-transform: uppercase;
     color: var(--text-default-minimal);
@@ -57,8 +57,8 @@
 .toc a {
     padding: var(--spacing-2x) var(--spacing-4x);
     font-family: var(--font-mono);
-    font-size: var(--text-micro);
-    letter-spacing: 0.12em;
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-wide);
     text-transform: uppercase;
     color: var(--text-default-subtle);
     text-decoration: none;
@@ -86,8 +86,8 @@
 
 .version {
     font-family: var(--font-mono);
-    font-size: var(--text-micro);
-    letter-spacing: 0.12em;
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-wide);
     color: var(--text-default-minimal);
     padding: var(--spacing-half) var(--spacing-3x);
     border-radius: var(--radius-pill);
@@ -104,7 +104,12 @@
 }
 
 /* =========================================================
-   HERO
+   HERO — layout only.
+   The hero heading must carry class="text-display"; sizing,
+   weight, line-height, and tracking are owned by that
+   component class in styles/typography.css. shell.css owns
+   only the grid layout and the in-hero supercaps (.num) and
+   lede (.lede) sub-elements.
    ========================================================= */
 .hero {
     padding: var(--spacing-16x) 0 var(--spacing-12x);
@@ -113,28 +118,21 @@
     gap: var(--spacing-12x);
     align-items: end;
 }
-.hero h1 {
-    font-size: clamp(3.5rem, 7vw, 6.5rem);
-    font-family: var(--font-sans);
-    font-weight: var(--font-weight-regular);
-    line-height: var(--line-height-display);
-    letter-spacing: -0.035em;
-    color: var(--text-default);
-}
-.hero h1 .num {
-    display: block;
-    font-family: var(--font-mono);
-    font-size: 0.18em;
-    letter-spacing: 0.2em;
-    color: var(--text-default-minimal);
-    margin-bottom: var(--spacing-6x);
-    font-weight: var(--font-weight-medium);
+.hero .num {
+    display:        block;
+    font-family:    var(--font-mono);
+    font-size:      var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-widest);
+    color:          var(--text-default-minimal);
+    margin-bottom:  var(--spacing-6x);
+    font-weight:    var(--font-weight-medium);
+    text-transform: uppercase;
 }
 .hero .lede {
-    font-size: var(--text-base);
+    font-size:   var(--text-body);
     line-height: var(--line-height-h5);
-    color: var(--text-default-subtle);
-    max-width: 38ch;
+    color:       var(--text-default-subtle);
+    max-width:   38ch;
 }
 
 /* =========================================================
@@ -156,18 +154,18 @@
     backdrop-filter: var(--blur-md);
 }
 .meta-strip dt {
-    font-family: var(--font-mono);
-    font-size: var(--text-micro);
+    font-family:    var(--font-mono);
+    font-size:      var(--text-eyebrow);
     letter-spacing: var(--letter-spacing-eyebrow);
     text-transform: uppercase;
-    color: var(--text-default-minimal);
-    margin-bottom: var(--spacing-half);
+    color:          var(--text-default-minimal);
+    margin-bottom:  var(--spacing-half);
 }
 .meta-strip dd {
-    font-family: var(--font-sans);
-    font-size: var(--text-h5);
-    font-weight: var(--font-weight-medium);
-    letter-spacing: -0.01em;
+    font-family:    var(--font-sans);
+    font-size:      var(--text-h5);
+    font-weight:    var(--font-weight-medium);
+    letter-spacing: var(--letter-spacing-snug);
 }
 
 /* =========================================================
@@ -186,28 +184,22 @@ section.chunk {
     padding-bottom: var(--spacing-4x);
     border-bottom: var(--border-width-base) solid var(--border-default);
 }
-.chunk-head h2 {
-    font-family: var(--font-sans);
-    font-size: clamp(2.4rem, 4vw, 3.4rem);
-    font-weight: var(--font-weight-regular);
-    line-height: 1;
-    letter-spacing: -0.025em;
-}
-.chunk-head h2 em {
-    font-style: italic;
-    color: var(--text-emphasis);
-}
+/* Chunk-head heading: must carry class="text-display-md".
+   Sizing, weight, line-height, tracking, and the <em> accent
+   treatment are all owned by the component class in
+   styles/typography.css. */
 .chunk-head .num-tag {
-    font-family: var(--font-mono);
-    font-size: var(--text-micro);
-    letter-spacing: 0.2em;
-    color: var(--text-default-minimal);
-    margin-bottom: var(--spacing-4x);
-    display: block;
+    font-family:    var(--font-mono);
+    font-size:      var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-widest);
+    color:          var(--text-default-minimal);
+    margin-bottom:  var(--spacing-4x);
+    display:        block;
+    text-transform: uppercase;
 }
 .chunk-head p {
-    font-size: var(--text-base);
-    color: var(--text-default-subtle);
+    font-size:   var(--text-body);
+    color:       var(--text-default-subtle);
     line-height: var(--line-height-body);
 }
 
@@ -228,15 +220,15 @@ section.chunk {
 .subheading:first-of-type { margin-top: 0; }
 
 .subheading .tag {
-    font-family: var(--font-mono);
-    font-size: var(--text-micro);
-    font-weight: var(--font-weight-medium);
+    font-family:    var(--font-mono);
+    font-size:      var(--text-eyebrow);
+    font-weight:    var(--font-weight-medium);
     letter-spacing: var(--letter-spacing-eyebrow);
     text-transform: uppercase;
-    color: var(--text-default-minimal);
-    padding: var(--spacing-half) var(--spacing-2x);
-    border: var(--border-width-base) solid var(--border-default);
-    border-radius: var(--radius-pill);
+    color:          var(--text-default-minimal);
+    padding:        var(--spacing-half) var(--spacing-2x);
+    border:         var(--border-width-base) solid var(--border-default);
+    border-radius:  var(--radius-pill);
 }
 
 /* =========================================================
@@ -252,28 +244,59 @@ section.chunk {
 }
 
 /* =========================================================
+   CONTRACT — global rule statement block, used at the top of
+   primitive and component pages to restate the system rules.
+   ========================================================= */
+.contract {
+    margin:          0 0 var(--spacing-12x);
+    padding:         var(--spacing-8x);
+    background:      var(--background-glass-light);
+    border:          var(--border-width-base) solid var(--border-glass-light);
+    border-left:     var(--spacing-1x) solid var(--border-primary);
+    border-radius:   var(--radius-lg);
+    backdrop-filter: var(--blur-md);
+}
+.contract .eyebrow {
+    margin-bottom: var(--spacing-3x);
+    color:         var(--text-primary-strong);
+}
+.contract-body {
+    font-size:     var(--text-body);
+    line-height:   var(--line-height-body);
+    color:         var(--text-default);
+    margin-bottom: var(--spacing-4x);
+    max-width:     72ch;
+}
+.contract-body:last-child { margin-bottom: 0; }
+.contract-body code {
+    background: var(--background-default-minimal);
+    color:      var(--text-default);
+    padding:    var(--spacing-half) var(--spacing-1x);
+}
+
+/* =========================================================
    FOOTER
    ========================================================= */
 footer {
-    padding: var(--spacing-16x) 0 var(--spacing-12x);
-    margin-top: var(--spacing-10x);
-    border-top: var(--border-width-base) solid var(--border-default);
-    display: flex;
+    padding:        var(--spacing-16x) 0 var(--spacing-12x);
+    margin-top:     var(--spacing-10x);
+    border-top:     var(--border-width-base) solid var(--border-default);
+    display:        flex;
     justify-content: space-between;
-    align-items: center;
-    font-family: var(--font-mono);
-    font-size: var(--text-micro);
-    letter-spacing: 0.14em;
+    align-items:    center;
+    font-family:    var(--font-mono);
+    font-size:      var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-wide);
     text-transform: uppercase;
-    color: var(--text-default-minimal);
+    color:          var(--text-default-minimal);
 }
 footer .sigil {
-    font-family: var(--font-sans);
-    font-weight: var(--font-weight-medium);
-    font-size: var(--text-sm);
+    font-family:    var(--font-sans);
+    font-weight:    var(--font-weight-medium);
+    font-size:      var(--text-body-sm);
     letter-spacing: 0;
     text-transform: none;
-    color: var(--text-default);
+    color:          var(--text-default);
 }
 footer a {
     color: var(--text-default-minimal);
@@ -295,43 +318,4 @@ footer a:hover { color: var(--text-primary); }
    See section-07-toast.html for full documentation.
    ========================================================= */
 
-/* =========================================================
-   REVEAL ON SCROLL
-   ========================================================= */
-.reveal {
-    opacity: 0;
-    transform: translateY(14px);
-    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(.2,.8,.2,1);
-}
-.reveal.in {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* =========================================================
-   SHARED PULSE — fired on .copied for any copy-to-clipboard
-   surface (.swatch, .token-card, etc.). Replaces the
-   page-local `pulse` and `tokenPulse` keyframes.
-   ========================================================= */
-@keyframes ds-pulse {
-    0%   { box-shadow: 0 0 0 0  color-mix(in srgb, var(--background-primary-hover) 60%, transparent); }
-    100% { box-shadow: 0 0 0 18px color-mix(in srgb, var(--background-primary-hover)  0%, transparent); }
-}
-
-/* =========================================================
-   RESPONSIVE — base shell
-   ========================================================= */
-@media (max-width: 960px) {
-    .hero        { grid-template-columns: 1fr; gap: var(--spacing-8x); padding-top: var(--spacing-16x); }
-    .chunk-head  { grid-template-columns: 1fr; gap: var(--spacing-6x); }
-    .meta-strip  { grid-template-columns: repeat(2, 1fr); }
-    .toc         { display: none; }
-}
-@media (max-width: 600px) {
-    .shell       { padding: 0 var(--spacing-5x); }
-    .topbar      { padding: var(--spacing-3x) var(--spacing-5x); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .reveal { opacity: 1; transform: none; transition: none; }
-}
+/* ============================================

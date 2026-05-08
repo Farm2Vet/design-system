@@ -12,6 +12,7 @@
 <!-- Design system: shared, reusable foundation -->
 <link rel="stylesheet" href="styles/tokens.css" />
 <link rel="stylesheet" href="styles/base.css" />
+<link rel="stylesheet" href="styles/typography.css" />
 <link rel="stylesheet" href="styles/shell.css" />
 <!-- Toast component (provides the .toast--snackbar copy-confirmation pill) -->
 <link rel="stylesheet" href="styles/toast.css" />
@@ -44,11 +45,37 @@
   <!-- ========================== HERO ========================== -->
   <section class="hero">
     <div>
-      <h1 class="display reveal">
+      <h1 class="text-display reveal">
         <span class="num">Section 01 / Foundations</span>
         Primitives.
       </h1>
     </div>
+  </section>
+
+  <!-- ========================== CONTRACT ========================== -->
+  <!-- The design system contract — applies to every CSS file in the
+       repository, not just primitives. Stated here because primitives
+       are the source of truth that the contract protects. -->
+  <section class="contract reveal" aria-label="Design system contract">
+    <p class="eyebrow eyebrow--bare">Contract</p>
+    <p class="contract-body">
+      Every numeric value in any stylesheet — font-size, line-height,
+      letter-spacing, color, spacing, radius, shadow — must be a
+      <code>var(--…)</code> reference to a token defined in
+      <code>tokens.css</code>. Raw <code>rem</code>, <code>px</code>,
+      <code>em</code>, <code>%</code>, and hex values are not permitted
+      outside the primitive layer. When a value is needed that does not
+      exist, the primitive scale is extended; the system grows to absorb
+      the requirement, and consumers continue to reference tokens only.
+    </p>
+    <p class="contract-body">
+      The token system is layered. Primitives (this page) define raw
+      scale positions with no semantic role. Semantic tokens
+      (Section 02) alias primitives and encode role. Component classes
+      (e.g. <code>.text-display</code>, <code>.h1</code>; see
+      Section 01b) reference semantic tokens only. Each layer references
+      strictly the layer below it.
+    </p>
   </section>
 
   <!-- ========================== COLOR ========================== -->
@@ -56,7 +83,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">01</span>
-        <h2 class="display">Color <em>Palletes</em>.</h2>
+        <h2 class="text-display-md">Color <em>Palletes</em>.</h2>
       </div>
     </header>
 
@@ -138,7 +165,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">02</span>
-        <h2 class="display">Spacing.</h2>
+        <h2 class="text-display-md">Spacing.</h2>
       </div>
     </header>
 
@@ -150,9 +177,20 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">03</span>
-        <h2 class="display">Typography</h2>
+        <h2 class="text-display-md">Typography</h2>
       </div>
     </header>
+
+    <p class="primitive-note reveal">
+      This section enumerates the typography primitives only: the font
+      families, the font-size scale, the weight scale, the line-height
+      scale, and the letter-spacing scale. Semantic role assignment
+      (which step is body, which is h1, which is display) and component
+      classes (<code>.h1</code>, <code>.text-display</code>, …) are
+      defined in <a href="section-01b-typography.html">Section 01b —
+      Typography components</a>. Components must reference semantic
+      tokens; semantic tokens reference these primitives.
+    </p>
 
     <!-- Font family cards -->
     <div class="type-grid reveal">
@@ -163,7 +201,7 @@
         </div>
         <div class="meta">
           <span><strong>Poppins</strong> · Sans</span>
-          <span >--font-sans</code>
+          <code>--font-sans</code>
         </div>
       </article>
 
@@ -238,7 +276,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">04 / Shadow</span>
-        <h2 class="display">Layered <em>depth</em>.</h2>
+        <h2 class="text-display-md">Layered <em>depth</em>.</h2>
       </div>
     </header>
 
@@ -327,16 +365,25 @@ const SPACING = [
   ['--spacing-25x',     100, '25×'],
 ];
 
+// Primitive type scale — 13 steps on strict 1.2 ratio anchored
+// at --text-base = 1rem. These are the only font-size primitives.
+// Names carry no semantic role; semantic tokens (--text-body,
+// --text-h1, --text-display, …) alias them in Section 02.
+// Ordered largest → smallest so the scale reads as a hierarchy.
 const TYPE_SIZES = [
-  ['--text-h1',    '2.986rem', '47.78', 'h1'],
-  ['--text-h2',    '2.488rem', '39.81', 'h2'],
-  ['--text-h3',    '2.074rem', '33.18', 'h3'],
-  ['--text-h4',    '1.728rem', '27.65', 'h4'],
-  ['--text-h5',    '1.44rem',  '23.04', 'h5'],
-  ['--text-h6',    '1.2rem',   '19.20', 'h6'],
-  ['--text-base',  '1rem',     '16.00', 'base'],
-  ['--text-sm',    '0.833rem', '13.33', 'sm'],
-  ['--text-micro', '0.694rem', '11.10', 'micro'],
+  ['--text-9xl',  '6.192rem', '99.08', 'step +10'],
+  ['--text-8xl',  '5.160rem', '82.57', 'step  +9'],
+  ['--text-7xl',  '4.300rem', '68.80', 'step  +8'],
+  ['--text-6xl',  '3.583rem', '57.34', 'step  +7'],
+  ['--text-5xl',  '2.986rem', '47.78', 'step  +6'],
+  ['--text-4xl',  '2.488rem', '39.81', 'step  +5'],
+  ['--text-3xl',  '2.074rem', '33.18', 'step  +4'],
+  ['--text-2xl',  '1.728rem', '27.65', 'step  +3'],
+  ['--text-xl',   '1.44rem',  '23.04', 'step  +2'],
+  ['--text-lg',   '1.2rem',   '19.20', 'step  +1'],
+  ['--text-base', '1rem',     '16.00', 'anchor'],
+  ['--text-sm',   '0.833rem', '13.33', 'step  −1'],
+  ['--text-xs',   '0.694rem', '11.10', 'step  −2'],
 ];
 
 const FONT_WEIGHTS = [
@@ -356,8 +403,13 @@ const LINE_HEIGHTS = [
 ];
 
 const LETTER_SPACINGS = [
-  ['--letter-spacing-display', '0.02em'],
-  ['--letter-spacing-eyebrow', '0.18em'],
+  ['--letter-spacing-tighter', '-0.035em'],
+  ['--letter-spacing-tight',   '-0.025em'],
+  ['--letter-spacing-snug',    '-0.01em' ],
+  ['--letter-spacing-display', '0.02em'  ],
+  ['--letter-spacing-wide',    '0.12em'  ],
+  ['--letter-spacing-eyebrow', '0.18em'  ],
+  ['--letter-spacing-widest',  '0.2em'   ],
 ];
 
 /* =========================================================
@@ -424,25 +476,23 @@ function renderSpacing() {
    RENDER — typography table
    ========================================================= */
 function renderType() {
+  // Primitive previews carry no semantic role: every step renders at
+  // regular weight, normal style, and the same neutral preview string.
+  // Semantic differentiation (italic, semibold heading conventions, etc.)
+  // belongs to component classes — see section-01b-typography.
   const tbody = document.getElementById('typeTable');
-  tbody.innerHTML = TYPE_SIZES.map(([name, value, px, key]) => {
-    // h1/h2 are display weight (regular); h3-h6 are semibold; body sizes regular.
-    // h2 is italic per the system convention.
-    const isDisplayHead = key === 'h1' || key === 'h2';
-    const weight = isDisplayHead ? 400 : (key.startsWith('h') ? 600 : 400);
-    const style = key === 'h2' ? 'italic' : 'normal';
-    return `
+  tbody.innerHTML = TYPE_SIZES.map(([name, value, px, step]) => `
       <tr>
         <td class="var-name">${name}</td>
         <td class="var-value">${value}</td>
         <td class="var-px">${px}px</td>
         <td class="preview">
-          <span class="preview-text" style="font-size:var(${name});font-family:var(--font-sans);font-style:${style};font-weight:${weight}">
-            Cultivated intelligence.
+          <span class="preview-text" style="font-size:var(${name});font-family:var(--font-sans);font-weight:var(--font-weight-regular)">
+            Aa Bb Cc 0123
           </span>
+          <span class="step-tag mono">${step}</span>
         </td>
-      </tr>`;
-  }).join('');
+      </tr>`).join('');
 }
 
 /* =========================================================
