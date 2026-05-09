@@ -228,10 +228,206 @@ table.token-table .group-row td {
 }
 
 /* =========================================================
+   ANATOMY STAGE — labelled diagram + slot table
+   The diagram sits left, the slot table sits right; on
+   narrow viewports they stack. The SVG itself draws all
+   callouts — page CSS only paints the surrounding chrome.
+   ========================================================= */
+.anatomy-stage {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: var(--spacing-6x);
+    align-items: stretch;
+    border-radius: var(--radius-lg);
+    border: var(--border-width-base) solid var(--border-glass-light);
+    background: var(--background-glass-light);
+    backdrop-filter: var(--blur-lg) saturate(140%);
+    -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
+    padding: var(--spacing-6x);
+}
+.anatomy-stage__diagram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--background-default-subtle);
+    border: var(--border-width-base) solid var(--border-default-subtle);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-5x);
+}
+.anatomy-stage__diagram svg {
+    width: 100%;
+    max-width: 480px;
+    height: auto;
+    display: block;
+}
+.anatomy-stage__legend {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3x);
+}
+.anatomy-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: var(--text-sm);
+}
+.anatomy-table th,
+.anatomy-table td {
+    text-align: left;
+    padding: var(--spacing-2x) var(--spacing-3x);
+    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
+    vertical-align: top;
+}
+.anatomy-table th {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+    font-weight: var(--font-weight-medium);
+}
+.anatomy-table tbody tr:last-child th,
+.anatomy-table tbody tr:last-child td { border-bottom: none; }
+.anatomy-table .num-cell {
+    font-family: var(--font-mono);
+    color: var(--text-primary-strong);
+    font-weight: var(--font-weight-semibold);
+    width: 2em;
+}
+.anatomy-table code {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--text-default);
+    background: var(--background-default-subtle);
+    padding: 2px var(--spacing-1x);
+    border-radius: var(--radius-mc);
+}
+
+/* =========================================================
+   NAMING-CONVENTION LEGEND — separator key
+   ========================================================= */
+.naming-legend {
+    margin-top: var(--spacing-6x);
+    border-radius: var(--radius-md);
+    border: var(--border-width-base) solid var(--border-default-subtle);
+    background: var(--background-default-subtle);
+    padding: var(--spacing-5x);
+}
+.naming-legend__intro {
+    margin: 0 0 var(--spacing-3x);
+    font-size: var(--text-sm);
+    color: var(--text-default-minimal);
+}
+.naming-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: var(--text-sm);
+}
+.naming-table th,
+.naming-table td {
+    text-align: left;
+    padding: var(--spacing-2x) var(--spacing-3x);
+    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
+    vertical-align: top;
+}
+.naming-table tbody tr:last-child td { border-bottom: none; }
+.naming-table th {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+    font-weight: var(--font-weight-medium);
+}
+.naming-table code {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--text-primary-strong);
+    background: var(--background-default);
+    padding: 2px var(--spacing-1x);
+    border-radius: var(--radius-mc);
+    border: var(--border-width-base) solid var(--border-default-subtle);
+}
+
+/* =========================================================
+   GLASS DEMO STAGE — colourful backdrop so backdrop-filter
+   actually has something to refract. Used in the Glass
+   variant card and any other demo that needs material
+   behind the button.
+   ========================================================= */
+.variant-card--glass-stage .demo {
+    background: var(--gradient-brand);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-6x) var(--spacing-4x);
+    margin: 0;
+}
+
+/* =========================================================
+   STATE PROXIES — paint the live :hover / :active /
+   :focus-visible looks statically so the docs page can
+   show all states side-by-side. These never affect live
+   behaviour; they only match the visual a real interaction
+   would produce.
+   ========================================================= */
+.btn[data-state="hover"].btn--cta {
+    background: var(--btn-cta-bg-hover);
+    box-shadow: var(--btn-shadow-hover);
+    transform: translateY(-1px);
+}
+.btn[data-state="active"].btn--cta {
+    background: var(--btn-cta-bg-active);
+    transform: translateY(0);
+}
+.btn[data-state="focus"].btn--cta {
+    outline: var(--btn-focus-outline-width) solid var(--btn-focus-outline);
+    outline-offset: var(--btn-focus-outline-offset);
+}
+
+/* =========================================================
+   USAGE GRID — six guideline cards in 2 / 3 columns
+   ========================================================= */
+.usage-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--spacing-5x);
+}
+.usage-card {
+    border-radius: var(--radius-lg);
+    border: var(--border-width-base) solid var(--border-default-subtle);
+    background: var(--background-default);
+    padding: var(--spacing-5x);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2x);
+}
+.usage-card__title {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--text-base);
+    color: var(--text-default);
+    margin: 0;
+}
+.usage-card__body {
+    font-size: var(--text-sm);
+    line-height: var(--line-height-body);
+    color: var(--text-default-subtle);
+    margin: 0;
+}
+.usage-card__num {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-primary-strong);
+}
+
+/* =========================================================
    RESPONSIVE
    ========================================================= */
 @media (max-width: 960px) {
     .variant-grid { grid-template-columns: 1fr 1fr; }
+    .anatomy-stage { grid-template-columns: 1fr; }
 }
 @media (max-width: 600px) {
     .variant-grid                  { grid-template-columns: 1fr; }

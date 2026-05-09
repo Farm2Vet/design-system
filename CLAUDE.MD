@@ -180,3 +180,17 @@ These are dev-time tools, not runtime code.
   the file.
 - Don't introduce a build step, framework, or bundler. The site is
   intentionally static.
+
+## Naming convention
+
+Class names use BEM with a small extension for state flags. Read them
+out loud — `.btn__label` = "the label part of btn"; `.btn--cta` =
+"the cta variant of btn".
+
+| Separator | Means | Example |
+|---|---|---|
+| `-` (single hyphen) | Word break inside a name | `btn-switch`, `form-version-card` |
+| `--` (double hyphen) | BEM modifier — variant of the block | `.btn--cta`, `.btn--glass` |
+| `__` (double underscore) | BEM element — part of the block | `.btn__label`, `.btn-switch__thumb` |
+| `is-` / `has-` prefix | State flag, used alongside the block | `.is-on`, `.is-disabled` |
+| `_` (single underscore) | Not used in this codebase | — |

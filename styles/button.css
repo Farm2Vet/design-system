@@ -43,6 +43,30 @@
 }
 
 /* =========================================================
+   SLOTS — uniform anatomy used by every variant
+   Slots are additive: direct text/icon children of .btn
+   continue to work. Markup opts into the named slots when
+   it wants explicit anatomy (leading icon, label,
+   trailing chevron, badge, spinner, etc.). The block
+   already lays out children with flex + gap, so slots only
+   need to align their own contents.
+   ========================================================= */
+.btn__leading,
+.btn__trailing {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    line-height: 0;
+}
+.btn__label {
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+    min-width: 0;
+}
+
+/* =========================================================
    SIZES
    ========================================================= */
 .btn--sm {
@@ -150,6 +174,30 @@
 }
 .btn--caution:hover  { background: var(--btn-caution-bg-hover);  box-shadow: var(--btn-shadow-hover); transform: translateY(-1px); }
 .btn--caution:active { background: var(--btn-caution-bg-active); transform: translateY(0); }
+
+/* Tinted — Apple HIG bordered-tinted analogue.
+   Sits between Ghost and CTA on the emphasis ladder. */
+.btn--tinted {
+    background:   var(--btn-tinted-bg);
+    color:        var(--btn-tinted-fg);
+    border-color: var(--btn-tinted-border);
+    box-shadow:   none;
+}
+.btn--tinted:hover  { background: var(--btn-tinted-bg-hover); }
+.btn--tinted:active { background: var(--btn-tinted-bg-active); }
+
+/* Glass — Apple HIG liquid-glass analogue.
+   Translucent surface with backdrop blur for floating contexts. */
+.btn--glass {
+    background:   var(--btn-glass-bg);
+    color:        var(--btn-glass-fg);
+    border-color: var(--btn-glass-border);
+    box-shadow:   var(--shadow-sm);
+    -webkit-backdrop-filter: var(--btn-glass-blur) saturate(var(--btn-glass-saturate));
+            backdrop-filter: var(--btn-glass-blur) saturate(var(--btn-glass-saturate));
+}
+.btn--glass:hover  { background: var(--btn-glass-bg-hover);  box-shadow: var(--btn-shadow-hover); transform: translateY(-1px); }
+.btn--glass:active { background: var(--btn-glass-bg-active); transform: translateY(0); }
 
 .btn--toggle {
     background:   var(--btn-toggle-bg);
@@ -347,6 +395,14 @@
 /* =========================================================
    VERSIONS — modifiers stacked on top of variants
    ========================================================= */
+
+/* Block — full-width version. For form footers, drawers,
+   mobile-first surfaces where the action should claim the
+   surface horizontally. */
+.btn--block {
+    display: flex;
+    width: 100%;
+}
 
 /* Icon-only — square aspect, padded for the icon only */
 .btn--icon-only {

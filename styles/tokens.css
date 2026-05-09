@@ -456,6 +456,31 @@
     --btn-caution-border:    transparent;
     --btn-caution-shadow:    var(--shadow-sm);
 
+    /* ---------- Variant: Tinted (Apple HIG · Bordered Tinted) ----------
+       Subtle accent-flavoured fill. Sits between Ghost and CTA on the
+       emphasis ladder — louder than Ghost, quieter than CTA. Uses the
+       accent ramp (forest) so it reads as the same family as the CTA
+       without competing for primacy. */
+    --btn-tinted-bg:        var(--background-accent-minimal);
+    --btn-tinted-bg-hover:  var(--background-accent-subtle);
+    --btn-tinted-bg-active: color-mix(in srgb, var(--accent-200) 70%, var(--background-default));
+    --btn-tinted-fg:        var(--text-accent-strong);
+    --btn-tinted-border:    transparent;
+
+    /* ---------- Variant: Glass (Apple HIG · Liquid Glass) ----------
+       Translucent surface with backdrop blur. For floating contexts
+       — over imagery, gradients, or busy panels — where a flat fill
+       would feel heavy. Reuses the same glass primitives as `.glass`
+       (shell.css) and `.card--glass` (card.css) so the family reads
+       as one material across the system. */
+    --btn-glass-bg:         var(--background-glass-light);
+    --btn-glass-bg-hover:   color-mix(in srgb, var(--white-base) 80%, transparent);
+    --btn-glass-bg-active:  color-mix(in srgb, var(--white-base) 92%, transparent);
+    --btn-glass-fg:         var(--text-default);
+    --btn-glass-border:     var(--border-glass-light);
+    --btn-glass-blur:       var(--blur-lg);
+    --btn-glass-saturate:   140%;
+
     /* ---------- Variant: Toggle ---------- */
     --btn-toggle-bg:        var(--background-default);
     --btn-toggle-bg-hover:  var(--background-default-hover);

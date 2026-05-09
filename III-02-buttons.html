@@ -137,10 +137,139 @@
 
     <dl class="meta-strip reveal">
       <div><dt>Component</dt><dd>Button</dd></div>
-      <div><dt>Variants</dt><dd>7 + switch</dd></div>
-      <div><dt>Versions</dt><dd>4</dd></div>
+      <div><dt>Variants</dt><dd>8 + switch</dd></div>
+      <div><dt>States</dt><dd>7</dd></div>
+      <div><dt>Versions</dt><dd>6</dd></div>
       <div><dt>Sizes</dt><dd>5 · LG focus</dd></div>
     </dl>
+  </section>
+
+  <!-- ========================== BUTTON · ANATOMY ========================== -->
+  <section class="chunk" id="button-anatomy">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">00 / Button — Anatomy &amp; naming</span>
+        <h2 class="text-display-sm">Anatomy <em>by slot</em>.</h2>
+      </div>
+      <p>
+        Every variant — solid, glass, icon-only, borderless, dual-icon —
+        is composed from the same seven uniform slots. Slot classes are
+        additive: direct text or icon children of <code>.btn</code> still
+        work. Reach for explicit slots when you want named anchors for
+        leading icons, labels, or trailing affordances.
+      </p>
+    </header>
+
+    <div class="anatomy-stage reveal">
+
+      <div class="anatomy-stage__diagram">
+        <svg viewBox="0 0 480 280" role="img" aria-label="Button anatomy with seven labelled slots">
+          <!-- 7. Focus ring (dashed, drawn first so the surface paints over it) -->
+          <rect x="100" y="86" width="280" height="76" rx="14"
+                fill="none"
+                stroke="var(--outline-focus)"
+                stroke-opacity="0.45"
+                stroke-width="2"
+                stroke-dasharray="4 4" />
+
+          <!-- 2 + 3. Surface + border (the button itself) -->
+          <rect x="110" y="96" width="260" height="56" rx="12"
+                fill="var(--background-accent)"
+                stroke="transparent"
+                stroke-width="1" />
+
+          <!-- 4. Leading icon (small play wedge) -->
+          <path d="M 145 116 L 145 132 L 159 124 Z"
+                fill="var(--text-inverted)" />
+
+          <!-- 5. Label -->
+          <text x="240" y="129"
+                font-family="var(--font-sans)"
+                font-size="18"
+                font-weight="500"
+                fill="var(--text-inverted)"
+                text-anchor="middle"
+                dominant-baseline="middle">Run diagnosis</text>
+
+          <!-- 6. Trailing chevron -->
+          <path d="M 327 120 L 333 124 L 327 128"
+                fill="none"
+                stroke="var(--text-inverted)"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round" />
+
+          <!-- Leader lines -->
+          <g stroke="var(--border-default-strong)" stroke-width="0.8" fill="none">
+            <line x1="60"  y1="42"  x2="100" y2="86"  />
+            <line x1="240" y1="40"  x2="240" y2="96"  />
+            <line x1="420" y1="42"  x2="380" y2="86"  />
+            <line x1="60"  y1="240" x2="148" y2="138" />
+            <line x1="240" y1="240" x2="240" y2="148" />
+            <line x1="420" y1="240" x2="332" y2="138" />
+            <line x1="450" y1="124" x2="392" y2="124" />
+          </g>
+
+          <!-- Callouts -->
+          <g font-family="var(--font-sans)" font-size="13" font-weight="500"
+             fill="var(--text-default)" text-anchor="middle" dominant-baseline="middle">
+            <g><circle cx="60"  cy="32"  r="14" fill="var(--background-default)" stroke="var(--border-default-strong)" stroke-width="1"/><text x="60"  y="33" >1</text></g>
+            <g><circle cx="240" cy="30"  r="14" fill="var(--background-default)" stroke="var(--border-default-strong)" stroke-width="1"/><text x="240" y="31" >2</text></g>
+            <g><circle cx="420" cy="32"  r="14" fill="var(--background-default)" stroke="var(--border-default-strong)" stroke-width="1"/><text x="420" y="33" >3</text></g>
+            <g><circle cx="60"  cy="250" r="14" fill="var(--background-default)" stroke="var(--border-default-strong)" stroke-width="1"/><text x="60"  y="251">4</text></g>
+            <g><circle cx="240" cy="250" r="14" fill="var(--background-default)" stroke="var(--border-default-strong)" stroke-width="1"/><text x="240" y="251">5</text></g>
+            <g><circle cx="420" cy="250" r="14" fill="var(--background-default)" stroke="var(--border-default-strong)" stroke-width="1"/><text x="420" y="251">6</text></g>
+            <g><circle cx="462" cy="124" r="14" fill="var(--background-default)" stroke="var(--border-default-strong)" stroke-width="1"/><text x="462" y="125">7</text></g>
+          </g>
+        </svg>
+      </div>
+
+      <div class="anatomy-stage__legend">
+        <table class="anatomy-table" aria-label="Button anatomy slots">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Slot</th>
+              <th>Class / token</th>
+              <th>Carries</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="num-cell">1</td><td>Container</td><td><code>.btn</code></td>                <td>Outer button element</td></tr>
+            <tr><td class="num-cell">2</td><td>Surface</td>  <td><code>--btn-*-bg</code></td>          <td>Variant-controlled fill</td></tr>
+            <tr><td class="num-cell">3</td><td>Border</td>   <td><code>--btn-*-border</code></td>      <td>Variant-controlled outline</td></tr>
+            <tr><td class="num-cell">4</td><td>Leading</td>  <td><code>.btn__leading</code></td>       <td>Icon, spinner, avatar</td></tr>
+            <tr><td class="num-cell">5</td><td>Label</td>    <td><code>.btn__label</code></td>         <td>Primary text</td></tr>
+            <tr><td class="num-cell">6</td><td>Trailing</td> <td><code>.btn__trailing</code></td>      <td>Chevron, badge, secondary icon</td></tr>
+            <tr><td class="num-cell">7</td><td>Focus ring</td><td><code>:focus-visible</code></td>     <td>Keyboard focus outline</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <div class="naming-legend reveal">
+      <p class="naming-legend__intro">
+        Read class names out loud — <code>.btn__label</code> = "the label
+        part of btn"; <code>.btn--cta</code> = "the cta variant of btn".
+      </p>
+      <table class="naming-table" aria-label="Naming-convention separators">
+        <thead>
+          <tr>
+            <th>Separator</th>
+            <th>Means</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>-</code> (single hyphen)</td>  <td>Word break inside a name</td>            <td><code>btn-switch</code>, <code>form-version-card</code></td></tr>
+          <tr><td><code>--</code> (double hyphen)</td> <td>BEM modifier — variant of the block</td> <td><code>.btn--cta</code>, <code>.btn--glass</code></td></tr>
+          <tr><td><code>__</code> (double underscore)</td><td>BEM element — part of the block</td> <td><code>.btn__label</code>, <code>.btn-switch__thumb</code></td></tr>
+          <tr><td><code>is-</code> / <code>has-</code> prefix</td><td>State flag, used alongside the block</td><td><code>.is-on</code>, <code>.is-disabled</code></td></tr>
+          <tr><td><code>_</code> (single underscore)</td><td>Not used in this codebase</td>        <td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
   </section>
 
   <!-- ========================== BUTTON · VARIANTS ========================== -->
@@ -151,9 +280,11 @@
         <h2 class="text-display-sm">Variants <em>by intent</em>.</h2>
       </div>
       <p>
-        Each variant maps to a single intent in the application's vocabulary —
-        primary action, supporting action, low-emphasis, destructive, system
-        state. All previews shown at the focus size: <strong>LG · 22.5px</strong>.
+        Eight variants, ordered down the emphasis ladder: CTA, Secondary,
+        Tinted, Glass, Ghost, Borderless, Caution, Toggle. Each maps to a
+        single intent — primary action, supporting action, low-emphasis,
+        destructive, switchable. All previews shown at the focus size:
+        <strong>LG · 22.5px</strong>.
       </p>
     </header>
 
@@ -162,31 +293,150 @@
       <article class="variant-card">
         <span class="label">CTA · Primary</span>
         <div class="demo">
-          <button class="btn btn--cta btn--lg">Run diagnosis</button>
+          <button class="btn btn--cta btn--lg">
+            <span class="btn__label">Run diagnosis</span>
+          </button>
         </div>
-        <div class="meta"><span>--btn--cta</span><strong>primary action</strong></div>
+        <div class="meta"><span>.btn--cta</span><strong>primary action</strong></div>
       </article>
 
       <article class="variant-card">
         <span class="label">Secondary</span>
         <div class="demo">
-          <button class="btn btn--secondary btn--lg">View case file</button>
+          <button class="btn btn--secondary btn--lg">
+            <span class="btn__label">View case file</span>
+          </button>
         </div>
-        <div class="meta"><span>--btn--secondary</span><strong>supporting</strong></div>
+        <div class="meta"><span>.btn--secondary</span><strong>supporting</strong></div>
+      </article>
+
+      <article class="variant-card">
+        <span class="label">Tinted</span>
+        <div class="demo">
+          <button class="btn btn--tinted btn--lg">
+            <span class="btn__label">Schedule recheck</span>
+          </button>
+        </div>
+        <div class="meta"><span>.btn--tinted</span><strong>accented · quiet</strong></div>
+      </article>
+
+      <article class="variant-card variant-card--glass-stage">
+        <span class="label">Glass</span>
+        <div class="demo">
+          <button class="btn btn--glass btn--lg">
+            <span class="btn__label">Float over</span>
+          </button>
+        </div>
+        <div class="meta"><span>.btn--glass</span><strong>floating · blurred</strong></div>
       </article>
 
       <article class="variant-card">
         <span class="label">Ghost</span>
         <div class="demo">
-          <button class="btn btn--ghost btn--lg">Skip triage</button>
+          <button class="btn btn--ghost btn--lg">
+            <span class="btn__label">Skip triage</span>
+          </button>
         </div>
-        <div class="meta"><span>--btn--ghost</span><strong>low emphasis</strong></div>
+        <div class="meta"><span>.btn--ghost</span><strong>low emphasis</strong></div>
+      </article>
+
+      <article class="variant-card">
+        <span class="label">Borderless</span>
+        <div class="demo">
+          <button class="btn btn--borderless btn--cta btn--lg">
+            <span class="btn__label">Open chart</span>
+          </button>
+        </div>
+        <div class="meta"><span>.btn--borderless.btn--cta</span><strong>typographic</strong></div>
+      </article>
+
+      <article class="variant-card">
+        <span class="label">Caution · Destructive</span>
+        <div class="demo">
+          <button class="btn btn--caution btn--lg">
+            <span class="btn__label">Order euthanasia</span>
+          </button>
+        </div>
+        <div class="meta"><span>.btn--caution</span><strong>irreversible</strong></div>
+      </article>
+
+      <article class="variant-card">
+        <span class="label">Toggle (on)</span>
+        <div class="demo">
+          <button class="btn btn--toggle btn--lg is-on" aria-pressed="true">
+            <span class="btn__label">Vitals monitor</span>
+          </button>
+        </div>
+        <div class="meta"><span>.btn--toggle.is-on</span><strong>switchable</strong></div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ========================== BUTTON · STATES ========================== -->
+  <section class="chunk" id="button-states">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">02 / Button — States</span>
+        <h2 class="text-display-sm">Seven <em>states</em>, one variant.</h2>
+      </div>
+      <p>
+        Every variant supports the same state set. Shown here on
+        <strong>CTA · LG</strong> so the cycle is legible end-to-end.
+        Hover, pressed, and focused cells use static
+        <code>data-state</code> proxies — they paint the visual the live
+        pseudo-class would produce, without altering behaviour.
+      </p>
+    </header>
+
+    <div class="variant-grid reveal">
+
+      <article class="variant-card">
+        <span class="label">Rest</span>
+        <div class="demo">
+          <button class="btn btn--cta btn--lg">
+            <span class="btn__label">Run diagnosis</span>
+          </button>
+        </div>
+        <div class="meta"><span>:default</span><strong>idle</strong></div>
+      </article>
+
+      <article class="variant-card">
+        <span class="label">Hover</span>
+        <div class="demo">
+          <button class="btn btn--cta btn--lg" data-state="hover">
+            <span class="btn__label">Run diagnosis</span>
+          </button>
+        </div>
+        <div class="meta"><span>:hover</span><strong>cursor over</strong></div>
+      </article>
+
+      <article class="variant-card">
+        <span class="label">Pressed</span>
+        <div class="demo">
+          <button class="btn btn--cta btn--lg" data-state="active">
+            <span class="btn__label">Run diagnosis</span>
+          </button>
+        </div>
+        <div class="meta"><span>:active</span><strong>mid-click</strong></div>
+      </article>
+
+      <article class="variant-card">
+        <span class="label">Focused</span>
+        <div class="demo">
+          <button class="btn btn--cta btn--lg" data-state="focus">
+            <span class="btn__label">Run diagnosis</span>
+          </button>
+        </div>
+        <div class="meta"><span>:focus-visible</span><strong>keyboard</strong></div>
       </article>
 
       <article class="variant-card">
         <span class="label">Disabled</span>
         <div class="demo">
-          <button class="btn btn--cta btn--lg" disabled>Awaiting samples</button>
+          <button class="btn btn--cta btn--lg" disabled>
+            <span class="btn__label">Awaiting samples</span>
+          </button>
         </div>
         <div class="meta"><span>[disabled]</span><strong>blocked</strong></div>
       </article>
@@ -195,35 +445,21 @@
         <span class="label">Loading</span>
         <div class="demo">
           <button class="btn btn--loading btn--lg">
-            <span class="spinner" aria-hidden="true"></span>
-            Analyzing bloodwork
+            <span class="btn__leading"><span class="spinner" aria-hidden="true"></span></span>
+            <span class="btn__label">Analyzing bloodwork</span>
           </button>
         </div>
-        <div class="meta"><span>--btn--loading</span><strong>in progress</strong></div>
+        <div class="meta"><span>.btn--loading</span><strong>in progress</strong></div>
       </article>
 
       <article class="variant-card">
-        <span class="label">Caution · Destructive</span>
+        <span class="label">Selected · On</span>
         <div class="demo">
-          <button class="btn btn--caution btn--lg">Order euthanasia</button>
+          <button class="btn btn--toggle btn--lg is-on" aria-pressed="true">
+            <span class="btn__label">Vitals monitor</span>
+          </button>
         </div>
-        <div class="meta"><span>--btn--caution</span><strong>irreversible</strong></div>
-      </article>
-
-      <article class="variant-card">
-        <span class="label">Toggle (off)</span>
-        <div class="demo">
-          <button class="btn btn--toggle btn--lg" aria-pressed="false">Vitals monitor</button>
-        </div>
-        <div class="meta"><span>--btn--toggle</span><strong>switchable</strong></div>
-      </article>
-
-      <article class="variant-card">
-        <span class="label">Toggle (on)</span>
-        <div class="demo">
-          <button class="btn btn--toggle btn--lg is-on" aria-pressed="true">Vitals monitor</button>
-        </div>
-        <div class="meta"><span>--btn--toggle.is-on</span><strong>active state</strong></div>
+        <div class="meta"><span>.is-on</span><strong>persistent</strong></div>
       </article>
 
     </div>
@@ -233,13 +469,14 @@
   <section class="chunk" id="button-versions">
     <header class="chunk-head reveal">
       <div>
-        <span class="num-tag">02 / Button — Versions</span>
+        <span class="num-tag">03 / Button — Versions</span>
         <h2 class="text-display-sm">Surface <em>versions</em>.</h2>
       </div>
       <p>
-        The same variant adapts to its container. Inverted surfaces invert the
-        contrast scheme; icon-only and borderless re-shape the affordance for
-        compact rails and inline contexts.
+        The same variant adapts to its container. Inverted surfaces invert
+        the contrast scheme; icon-only and borderless re-shape the affordance
+        for compact rails and inline contexts; block claims the surface
+        horizontally; dual-icon shows the slot anatomy at full strength.
       </p>
     </header>
 
@@ -302,6 +539,36 @@
         </div>
       </article>
 
+      <article class="version-card">
+        <div class="demo">
+          <button class="btn btn--cta btn--lg btn--block">
+            <span class="btn__label">Submit case file</span>
+          </button>
+        </div>
+        <div class="body">
+          <span class="name">Block</span>
+          <span class="desc">full-width · drawer / form footer</span>
+        </div>
+      </article>
+
+      <article class="version-card">
+        <div class="demo">
+          <button class="btn btn--secondary btn--lg" type="button" aria-haspopup="menu" aria-expanded="false">
+            <span class="btn__leading">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+            </span>
+            <span class="btn__label">Filters</span>
+            <span class="btn__trailing">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            </span>
+          </button>
+        </div>
+        <div class="body">
+          <span class="name">Dual-icon</span>
+          <span class="desc">leading + label + trailing</span>
+        </div>
+      </article>
+
     </div>
   </section>
 
@@ -309,7 +576,7 @@
   <section class="chunk" id="button-sizes">
     <header class="chunk-head reveal">
       <div>
-        <span class="num-tag">03 / Button — Sizes</span>
+        <span class="num-tag">04 / Button — Sizes</span>
         <h2 class="text-display-sm">Sized for <em>density</em>.</h2>
       </div>
       <p>
@@ -406,7 +673,7 @@
   <section class="chunk" id="button-switch">
     <header class="chunk-head reveal">
       <div>
-        <span class="num-tag">04 / Button — Switch</span>
+        <span class="num-tag">05 / Button — Switch</span>
         <h2 class="text-display-sm">Switch <em>and segmented</em>.</h2>
       </div>
       <p>
@@ -550,11 +817,93 @@
     </div>
   </section>
 
+  <!-- ========================== BUTTON · USAGE ========================== -->
+  <section class="chunk" id="button-usage">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">06 / Button — Usage</span>
+        <h2 class="text-display-sm">Usage <em>guidelines</em>.</h2>
+      </div>
+      <p>
+        Six rules that keep buttons predictable across surfaces. Each
+        captures the one decision that's easy to get wrong — label tone,
+        emphasis, availability, hit target, destructive confirmation,
+        glass context.
+      </p>
+    </header>
+
+    <div class="usage-grid reveal">
+
+      <article class="usage-card">
+        <span class="usage-card__num">01</span>
+        <h3 class="usage-card__title">Labels are descriptive verbs.</h3>
+        <p class="usage-card__body">
+          Say what the action does. "Save draft", not "OK"; "Delete sample",
+          not "Yes". No terminal punctuation — buttons aren't sentences.
+        </p>
+      </article>
+
+      <article class="usage-card">
+        <span class="usage-card__num">02</span>
+        <h3 class="usage-card__title">One primary per surface.</h3>
+        <p class="usage-card__body">
+          At most one <code>.btn--cta</code> per visible region; the rest
+          are <code>.btn--secondary</code>, <code>.btn--tinted</code>, or
+          <code>.btn--ghost</code>. Two CTAs side-by-side leaves the user
+          nowhere to look first.
+        </p>
+      </article>
+
+      <article class="usage-card">
+        <span class="usage-card__num">03</span>
+        <h3 class="usage-card__title">Disable, don't hide.</h3>
+        <p class="usage-card__body">
+          When an action isn't currently available, render it disabled
+          with <code>[disabled]</code>. Hiding the button removes the
+          affordance the user already expected.
+        </p>
+      </article>
+
+      <article class="usage-card">
+        <span class="usage-card__num">04</span>
+        <h3 class="usage-card__title">Hit target ≥ 44px.</h3>
+        <p class="usage-card__body">
+          <code>.btn--lg</code> is 48px tall — clears Apple's 44pt
+          minimum. <code>.btn--md</code> (36px) and <code>.btn--sm</code>
+          (28px) are for desktop-only or dense table contexts; pair with
+          adequate spacing.
+        </p>
+      </article>
+
+      <article class="usage-card">
+        <span class="usage-card__num">05</span>
+        <h3 class="usage-card__title">Caution requires confirmation.</h3>
+        <p class="usage-card__body">
+          <code>.btn--caution</code> initiates a destructive action.
+          Pair with a confirm dialog or undo affordance — never let a
+          single click cause irreversible loss.
+        </p>
+      </article>
+
+      <article class="usage-card">
+        <span class="usage-card__num">06</span>
+        <h3 class="usage-card__title">Glass needs content behind it.</h3>
+        <p class="usage-card__body">
+          <code>.btn--glass</code> exists for floating contexts —
+          cards, hero overlays, side panels with imagery. On a flat
+          surface it reads as dead-translucent; reach for
+          <code>.btn--secondary</code> instead.
+        </p>
+      </article>
+
+    </div>
+  </section>
+
   <!-- ========================== BUTTON · TOKENS ========================== -->
   <section class="chunk" id="button-tokens">
     <header class="chunk-head reveal">
       <div>
-        <span class="num-tag">05 / Button — Component tokens</span>
+        <span class="num-tag">07 / Button — Component tokens</span>
         <h2 class="text-display-sm">Token <em>map</em>.</h2>
       </div>
       <p>
@@ -580,7 +929,7 @@
   <!-- ========================== FOOTER ========================== -->
   <footer>
     <span class="sigil">Farm2Vet — cultivated intelligence, since 2024.</span>
-    <span>End of Section 03 · Buttons &amp; Switches</span>
+    <span>End of Section III-02 · Buttons</span>
   </footer>
 
 </main>
@@ -662,6 +1011,22 @@ const BTN_TOKENS = [
     ['--btn-caution-fg',        'var(--text-inverted)'],
     ['--btn-caution-border',    'transparent'],
     ['--btn-caution-shadow',    'var(--shadow-sm)'],
+  ]},
+  { group: 'Variant · Tinted (Apple HIG · Bordered Tinted)', tokens: [
+    ['--btn-tinted-bg',        'var(--background-accent-minimal)'],
+    ['--btn-tinted-bg-hover',  'var(--background-accent-subtle)'],
+    ['--btn-tinted-bg-active', 'color-mix(in srgb, var(--accent-200) 70%, var(--background-default))'],
+    ['--btn-tinted-fg',        'var(--text-accent-strong)'],
+    ['--btn-tinted-border',    'transparent'],
+  ]},
+  { group: 'Variant · Glass (Apple HIG · Liquid Glass)', tokens: [
+    ['--btn-glass-bg',        'var(--background-glass-light)'],
+    ['--btn-glass-bg-hover',  'color-mix(in srgb, var(--white-base) 80%, transparent)'],
+    ['--btn-glass-bg-active', 'color-mix(in srgb, var(--white-base) 92%, transparent)'],
+    ['--btn-glass-fg',        'var(--text-default)'],
+    ['--btn-glass-border',    'var(--border-glass-light)'],
+    ['--btn-glass-blur',      'var(--blur-lg)'],
+    ['--btn-glass-saturate',  '140%'],
   ]},
   { group: 'Variant · Toggle', tokens: [
     ['--btn-toggle-bg',         'var(--background-default)'],
