@@ -254,11 +254,26 @@ table.token-table .group-row td {
     border-radius: var(--radius-md);
     padding: var(--spacing-5x);
 }
-.anatomy-stage__diagram svg {
+/* The figure wraps a real .btn (in flow, centred) and a decorative
+   callout overlay (absolute, on top). The button paints itself with
+   its own component CSS — the SVG only carries annotations. */
+.anatomy-figure {
+    position: relative;
     width: 100%;
     max-width: 480px;
-    height: auto;
-    display: block;
+    aspect-ratio: 480 / 220;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.anatomy-callouts {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: visible;
 }
 .anatomy-stage__legend {
     display: flex;
@@ -301,53 +316,6 @@ table.token-table .group-row td {
     background: var(--background-default-subtle);
     padding: 2px var(--spacing-1x);
     border-radius: var(--radius-mc);
-}
-
-/* =========================================================
-   NAMING-CONVENTION LEGEND — separator key
-   ========================================================= */
-.naming-legend {
-    margin-top: var(--spacing-6x);
-    border-radius: var(--radius-md);
-    border: var(--border-width-base) solid var(--border-default-subtle);
-    background: var(--background-default-subtle);
-    padding: var(--spacing-5x);
-}
-.naming-legend__intro {
-    margin: 0 0 var(--spacing-3x);
-    font-size: var(--text-sm);
-    color: var(--text-default-minimal);
-}
-.naming-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    font-size: var(--text-sm);
-}
-.naming-table th,
-.naming-table td {
-    text-align: left;
-    padding: var(--spacing-2x) var(--spacing-3x);
-    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
-    vertical-align: top;
-}
-.naming-table tbody tr:last-child td { border-bottom: none; }
-.naming-table th {
-    font-family: var(--font-mono);
-    font-size: var(--text-micro);
-    letter-spacing: var(--letter-spacing-eyebrow);
-    text-transform: uppercase;
-    color: var(--text-default-minimal);
-    font-weight: var(--font-weight-medium);
-}
-.naming-table code {
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    color: var(--text-primary-strong);
-    background: var(--background-default);
-    padding: 2px var(--spacing-1x);
-    border-radius: var(--radius-mc);
-    border: var(--border-width-base) solid var(--border-default-subtle);
 }
 
 /* =========================================================

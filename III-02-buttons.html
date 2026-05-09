@@ -139,7 +139,7 @@
       <div><dt>Component</dt><dd>Button</dd></div>
       <div><dt>Variants</dt><dd>8 + switch</dd></div>
       <div><dt>States</dt><dd>7</dd></div>
-      <div><dt>Versions</dt><dd>6</dd></div>
+      <div><dt>Versions</dt><dd>5</dd></div>
       <div><dt>Sizes</dt><dd>5 · LG focus</dd></div>
     </dl>
   </section>
@@ -148,80 +148,66 @@
   <section class="chunk" id="button-anatomy">
     <header class="chunk-head reveal">
       <div>
-        <span class="num-tag">00 / Button — Anatomy &amp; naming</span>
-        <h2 class="text-display-sm">Anatomy <em>by slot</em>.</h2>
+        <span class="num-tag">00 / Button — Anatomy</span>
+        <h2 class="text-display-sm">Anatomy.</h2>
       </div>
       <p>
-        Every variant — solid, glass, icon-only, borderless, dual-icon —
-        is composed from the same seven uniform slots. Slot classes are
-        additive: direct text or icon children of <code>.btn</code> still
-        work. Reach for explicit slots when you want named anchors for
-        leading icons, labels, or trailing affordances.
+        Six conceptual slots make up a button: the container, its surface
+        and border, an optional icon, the label, and the keyboard focus
+        ring. Slot names are descriptive — they're how we talk about the
+        parts, not classes you compose. The Switch component has its own
+        anatomy, documented in its own section.
       </p>
     </header>
 
     <div class="anatomy-stage reveal">
 
       <div class="anatomy-stage__diagram">
-        <svg viewBox="0 0 480 280" role="img" aria-label="Button anatomy with seven labelled slots">
-          <!-- 7. Focus ring (dashed, drawn first so the surface paints over it) -->
-          <rect x="100" y="86" width="280" height="76" rx="14"
-                fill="none"
-                stroke="var(--outline-focus)"
-                stroke-opacity="0.45"
-                stroke-width="2"
-                stroke-dasharray="4 4" />
+        <div class="anatomy-figure">
+          <svg class="anatomy-callouts" viewBox="0 0 480 220" aria-hidden="true">
+            <!-- Focus ring (callout 6) -->
+            <rect x="84" y="70" width="312" height="80" rx="18"
+                  fill="none"
+                  stroke="var(--outline-focus)"
+                  stroke-opacity="0.55"
+                  stroke-width="2"
+                  stroke-dasharray="5 4" />
 
-          <!-- 2 + 3. Surface + border (the button itself) -->
-          <rect x="110" y="96" width="260" height="56" rx="12"
-                fill="var(--background-accent)"
-                stroke="transparent"
-                stroke-width="1" />
+            <!-- Button surface (callouts 1, 2, 3) -->
+            <rect x="92" y="78" width="296" height="64" rx="14"
+                  fill="var(--background-accent)" />
 
-          <!-- 4. Leading icon (small play wedge) -->
-          <path d="M 145 116 L 145 132 L 159 124 Z"
-                fill="var(--text-inverted)" />
+            <!-- Leading icon glyph (callout 4) — small play wedge -->
+            <path d="M132 102 L148 110 L132 118 Z"
+                  fill="var(--text-inverted)" />
 
-          <!-- 5. Label -->
-          <text x="240" y="129"
-                font-family="var(--font-sans)"
-                font-size="18"
-                font-weight="500"
-                fill="var(--text-inverted)"
-                text-anchor="middle"
-                dominant-baseline="middle">Run diagnosis</text>
+            <!-- Label (callout 5) -->
+            <text x="262" y="116" text-anchor="middle"
+                  font-family="var(--font-sans)" font-size="18" font-weight="500"
+                  fill="var(--text-inverted)">Run diagnosis</text>
 
-          <!-- 6. Trailing chevron -->
-          <path d="M 327 120 L 333 124 L 327 128"
-                fill="none"
-                stroke="var(--text-inverted)"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round" />
+            <!-- Leader lines -->
+            <g stroke="var(--border-default-strong)" stroke-width="0.8" fill="none" stroke-opacity="0.55">
+              <line x1="58"  y1="42"  x2="100" y2="84"  />
+              <line x1="240" y1="34"  x2="240" y2="90"  />
+              <line x1="422" y1="42"  x2="380" y2="84"  />
+              <line x1="138" y1="180" x2="140" y2="124" />
+              <line x1="290" y1="180" x2="262" y2="126" />
+              <line x1="448" y1="110" x2="398" y2="110" />
+            </g>
 
-          <!-- Leader lines -->
-          <g stroke="var(--border-default-strong)" stroke-width="0.8" fill="none">
-            <line x1="60"  y1="42"  x2="100" y2="86"  />
-            <line x1="240" y1="40"  x2="240" y2="96"  />
-            <line x1="420" y1="42"  x2="380" y2="86"  />
-            <line x1="60"  y1="240" x2="148" y2="138" />
-            <line x1="240" y1="240" x2="240" y2="148" />
-            <line x1="420" y1="240" x2="332" y2="138" />
-            <line x1="450" y1="124" x2="392" y2="124" />
-          </g>
-
-          <!-- Callouts -->
-          <g font-family="var(--font-sans)" font-size="13" font-weight="500"
-             fill="var(--text-default)" text-anchor="middle" dominant-baseline="middle">
-            <g><circle cx="60"  cy="32"  r="14" fill="var(--background-default)" stroke="var(--border-default-strong)" stroke-width="1"/><text x="60"  y="33" >1</text></g>
-            <g><circle cx="240" cy="30"  r="14" fill="var(--background-default)" stroke="var(--border-default-strong)" stroke-width="1"/><text x="240" y="31" >2</text></g>
-            <g><circle cx="420" cy="32"  r="14" fill="var(--background-default)" stroke="var(--border-default-strong)" stroke-width="1"/><text x="420" y="33" >3</text></g>
-            <g><circle cx="60"  cy="250" r="14" fill="var(--background-default)" stroke="var(--border-default-strong)" stroke-width="1"/><text x="60"  y="251">4</text></g>
-            <g><circle cx="240" cy="250" r="14" fill="var(--background-default)" stroke="var(--border-default-strong)" stroke-width="1"/><text x="240" y="251">5</text></g>
-            <g><circle cx="420" cy="250" r="14" fill="var(--background-default)" stroke="var(--border-default-strong)" stroke-width="1"/><text x="420" y="251">6</text></g>
-            <g><circle cx="462" cy="124" r="14" fill="var(--background-default)" stroke="var(--border-default-strong)" stroke-width="1"/><text x="462" y="125">7</text></g>
-          </g>
-        </svg>
+            <!-- Numbered callouts -->
+            <g font-family="var(--font-sans)" font-size="13" font-weight="500"
+               fill="var(--text-default)" text-anchor="middle" dominant-baseline="middle">
+              <g><circle cx="50"  cy="32"  r="14" fill="var(--background-default)" stroke="var(--border-default-strong)" stroke-width="1"/><text x="50"  y="33" >1</text></g>
+              <g><circle cx="240" cy="22"  r="14" fill="var(--background-default)" stroke="var(--border-default-strong)" stroke-width="1"/><text x="240" y="23" >2</text></g>
+              <g><circle cx="430" cy="32"  r="14" fill="var(--background-default)" stroke="var(--border-default-strong)" stroke-width="1"/><text x="430" y="33" >3</text></g>
+              <g><circle cx="124" cy="194" r="14" fill="var(--background-default)" stroke="var(--border-default-strong)" stroke-width="1"/><text x="124" y="195">4</text></g>
+              <g><circle cx="304" cy="194" r="14" fill="var(--background-default)" stroke="var(--border-default-strong)" stroke-width="1"/><text x="304" y="195">5</text></g>
+              <g><circle cx="462" cy="110" r="14" fill="var(--background-default)" stroke="var(--border-default-strong)" stroke-width="1"/><text x="462" y="111">6</text></g>
+            </g>
+          </svg>
+        </div>
       </div>
 
       <div class="anatomy-stage__legend">
@@ -230,45 +216,20 @@
             <tr>
               <th>#</th>
               <th>Slot</th>
-              <th>Class / token</th>
-              <th>Carries</th>
+              <th>What it is</th>
             </tr>
           </thead>
           <tbody>
-            <tr><td class="num-cell">1</td><td>Container</td><td><code>.btn</code></td>                <td>Outer button element</td></tr>
-            <tr><td class="num-cell">2</td><td>Surface</td>  <td><code>--btn-*-bg</code></td>          <td>Variant-controlled fill</td></tr>
-            <tr><td class="num-cell">3</td><td>Border</td>   <td><code>--btn-*-border</code></td>      <td>Variant-controlled outline</td></tr>
-            <tr><td class="num-cell">4</td><td>Leading</td>  <td><code>.btn__leading</code></td>       <td>Icon, spinner, avatar</td></tr>
-            <tr><td class="num-cell">5</td><td>Label</td>    <td><code>.btn__label</code></td>         <td>Primary text</td></tr>
-            <tr><td class="num-cell">6</td><td>Trailing</td> <td><code>.btn__trailing</code></td>      <td>Chevron, badge, secondary icon</td></tr>
-            <tr><td class="num-cell">7</td><td>Focus ring</td><td><code>:focus-visible</code></td>     <td>Keyboard focus outline</td></tr>
+            <tr><td class="num-cell">1</td><td>Container</td>  <td>The outer button shape — sets size, padding, and radius.</td></tr>
+            <tr><td class="num-cell">2</td><td>Surface</td>    <td>The background fill, controlled by the variant.</td></tr>
+            <tr><td class="num-cell">3</td><td>Border</td>     <td>The outline, also variant-controlled (transparent on filled variants).</td></tr>
+            <tr><td class="num-cell">4</td><td>Icon</td>       <td>An optional leading glyph that supports the label.</td></tr>
+            <tr><td class="num-cell">5</td><td>Label</td>      <td>The action's verb — short, descriptive text.</td></tr>
+            <tr><td class="num-cell">6</td><td>Focus ring</td> <td>The keyboard-focus outline drawn outside the button.</td></tr>
           </tbody>
         </table>
       </div>
 
-    </div>
-
-    <div class="naming-legend reveal">
-      <p class="naming-legend__intro">
-        Read class names out loud — <code>.btn__label</code> = "the label
-        part of btn"; <code>.btn--cta</code> = "the cta variant of btn".
-      </p>
-      <table class="naming-table" aria-label="Naming-convention separators">
-        <thead>
-          <tr>
-            <th>Separator</th>
-            <th>Means</th>
-            <th>Example</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td><code>-</code> (single hyphen)</td>  <td>Word break inside a name</td>            <td><code>btn-switch</code>, <code>form-version-card</code></td></tr>
-          <tr><td><code>--</code> (double hyphen)</td> <td>BEM modifier — variant of the block</td> <td><code>.btn--cta</code>, <code>.btn--glass</code></td></tr>
-          <tr><td><code>__</code> (double underscore)</td><td>BEM element — part of the block</td> <td><code>.btn__label</code>, <code>.btn-switch__thumb</code></td></tr>
-          <tr><td><code>is-</code> / <code>has-</code> prefix</td><td>State flag, used alongside the block</td><td><code>.is-on</code>, <code>.is-disabled</code></td></tr>
-          <tr><td><code>_</code> (single underscore)</td><td>Not used in this codebase</td>        <td>—</td></tr>
-        </tbody>
-      </table>
     </div>
   </section>
 
@@ -277,7 +238,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">01 / Button — Variants</span>
-        <h2 class="text-display-sm">Variants <em>by intent</em>.</h2>
+        <h2 class="text-display-sm">Variants.</h2>
       </div>
       <p>
         Eight variants, ordered down the emphasis ladder: CTA, Secondary,
@@ -378,7 +339,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">02 / Button — States</span>
-        <h2 class="text-display-sm">Seven <em>states</em>, one variant.</h2>
+        <h2 class="text-display-sm">States.</h2>
       </div>
       <p>
         Every variant supports the same state set. Shown here on
@@ -470,7 +431,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">03 / Button — Versions</span>
-        <h2 class="text-display-sm">Surface <em>versions</em>.</h2>
+        <h2 class="text-display-sm">Versions.</h2>
       </div>
       <p>
         The same variant adapts to its container. Inverted surfaces invert
@@ -551,24 +512,6 @@
         </div>
       </article>
 
-      <article class="version-card">
-        <div class="demo">
-          <button class="btn btn--secondary btn--lg" type="button" aria-haspopup="menu" aria-expanded="false">
-            <span class="btn__leading">
-              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
-            </span>
-            <span class="btn__label">Filters</span>
-            <span class="btn__trailing">
-              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
-            </span>
-          </button>
-        </div>
-        <div class="body">
-          <span class="name">Dual-icon</span>
-          <span class="desc">leading + label + trailing</span>
-        </div>
-      </article>
-
     </div>
   </section>
 
@@ -577,7 +520,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">04 / Button — Sizes</span>
-        <h2 class="text-display-sm">Sized for <em>density</em>.</h2>
+        <h2 class="text-display-sm">Sizes.</h2>
       </div>
       <p>
         Five steps along the same scale that drives type. The middle is
@@ -674,7 +617,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">05 / Button — Switch</span>
-        <h2 class="text-display-sm">Switch <em>and segmented</em>.</h2>
+        <h2 class="text-display-sm">Switch.</h2>
       </div>
       <p>
         A binary on/off control with a sliding thumb, plus a segmented
@@ -822,7 +765,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">06 / Button — Usage</span>
-        <h2 class="text-display-sm">Usage <em>guidelines</em>.</h2>
+        <h2 class="text-display-sm">Usage.</h2>
       </div>
       <p>
         Six rules that keep buttons predictable across surfaces. Each
@@ -904,7 +847,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">07 / Button — Component tokens</span>
-        <h2 class="text-display-sm">Token <em>map</em>.</h2>
+        <h2 class="text-display-sm">Tokens.</h2>
       </div>
       <p>
         Every Button declaration resolves through this layer. Component tokens
