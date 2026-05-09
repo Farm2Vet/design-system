@@ -1,0 +1,115 @@
+/* =========================================================
+   PAGE — III-04 / Components / Dropdown
+   Page-specific layout patterns first introduced on the
+   dropdown page.
+
+   Patterns defined here:
+   - .usage-pair       Two-column wrapper for default-vs-edge
+                       guideline cards. Collapses at ≤960px.
+   - .usage-card       Documentation-style guideline card.
+                       Header on top (eyebrow label + intro
+                       paragraph), body in the middle (cases
+                       list, full card width), meta footer at
+                       the bottom (token reference + tag).
+                       Designed for prose, not form-widget
+                       demos — unlike .form-version-card from
+                       page-III-03.css.
+
+   Depends on: tokens.css, base.css, typography.css.
+   Other component pages that need the same default-vs-edge
+   guideline pair should import this file rather than
+   re-declaring the rules.
+   ========================================================= */
+
+/* =========================================================
+   USAGE PAIR — outer 2-column grid for guideline cards
+   ========================================================= */
+.usage-pair {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--spacing-4x);
+}
+
+/* =========================================================
+   USAGE CARD — header / body / footer, full inner width
+   Glass treatment matches .form-version-card so the two
+   sit comfortably together on the same page.
+   ========================================================= */
+.usage-card {
+    border-radius: var(--radius-lg);
+    border: var(--border-width-base) solid var(--border-glass-light);
+    background: var(--background-glass-light);
+    backdrop-filter: var(--blur-lg) saturate(140%);
+    -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
+    padding: var(--spacing-6x) var(--spacing-8x);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4x);
+    min-height: 180px;
+}
+
+/* Header: eyebrow label + intro paragraph */
+.usage-card__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3x);
+}
+.usage-card__label {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+}
+.usage-card__intro {
+    font-size: var(--text-base);
+    line-height: var(--line-height-body);
+    color: var(--text-default);
+    margin: 0;
+    max-width: 60ch;
+}
+
+/* Body: list of cases — full card width, no narrow column */
+.usage-card__body {
+    flex: 1;
+}
+.usage-card__list {
+    margin: 0;
+    padding-left: var(--spacing-5x);
+    font-size: var(--text-sm);
+    line-height: var(--line-height-body);
+    color: var(--text-default);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2x);
+}
+
+/* Footer: token reference + tag, divider on top */
+.usage-card__meta {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    color: var(--text-default-minimal);
+    letter-spacing: var(--letter-spacing-mono);
+    border-top: var(--border-width-base) solid var(--border-default-subtle);
+    padding-top: var(--spacing-3x);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--spacing-3x);
+}
+.usage-card__meta strong {
+    color: var(--text-default);
+    font-weight: var(--font-weight-medium);
+}
+
+/* =========================================================
+   RESPONSIVE
+   Collapse the pair to a single column at narrow widths.
+   The card itself is already a flex column, no inner change
+   needed.
+   ========================================================= */
+@media (max-width: 960px) {
+    .usage-pair {
+        grid-template-columns: 1fr;
+    }
+}

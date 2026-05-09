@@ -22,6 +22,8 @@
 <link rel="stylesheet" href="styles/page-III-03.css" />
 <!-- Token table styling lives on the button page; reuse it. -->
 <link rel="stylesheet" href="styles/page-III-02.css" />
+<!-- Usage-card pair (default vs edge case) lives on this page. -->
+<link rel="stylesheet" href="styles/page-III-04.css" />
 
 <!-- Shared behaviour: scroll-spy highlights the in-view TOC link -->
 <script src="scripts/scroll-spy.js" defer></script>
@@ -166,16 +168,18 @@
       </p>
     </header>
 
-    <div class="form-version-stage reveal" style="grid-template-columns: repeat(2, minmax(0, 1fr));">
-      <article class="form-version-card">
-        <span class="label">Default — use .dropdown</span>
-        <div class="demo">
-          <p style="font-size: var(--text-base); line-height: 1.55; color: var(--text-default); margin: 0 0 var(--spacing-3x);">
-            Every product surface a user will actually see. The premium dropdown
-            is the brand's most repeated micro-interaction — opening it should
-            feel like F2V, not like the OS.
+    <div class="usage-pair reveal">
+      <article class="usage-card">
+        <header class="usage-card__header">
+          <span class="usage-card__label">Default — use .dropdown</span>
+          <p class="usage-card__intro">
+            Every product surface a user will actually see. The premium
+            dropdown is the brand's most repeated micro-interaction —
+            opening it should feel like F2V, not like the OS.
           </p>
-          <ul style="font-size: var(--text-sm); line-height: 1.65; color: var(--text-default); padding-left: var(--spacing-5x); margin: 0;">
+        </header>
+        <div class="usage-card__body">
+          <ul class="usage-card__list">
             <li>Intake forms (new patient, new visit, new case)</li>
             <li>Filters on dashboards, tables, search results</li>
             <li>Settings, profile, and account preferences</li>
@@ -184,25 +188,31 @@
             <li>Anywhere options carry descriptions, icons, or rich content</li>
           </ul>
         </div>
-        <div class="meta"><span>.dropdown</span><strong>system default</strong></div>
+        <div class="usage-card__meta">
+          <span>.dropdown</span><strong>system default</strong>
+        </div>
       </article>
 
-      <article class="form-version-card">
-        <span class="label">Edge case — fall back to .select</span>
-        <div class="demo">
-          <p style="font-size: var(--text-base); line-height: 1.55; color: var(--text-default); margin: 0 0 var(--spacing-3x);">
-            A short list of contexts where the native control's constraints
-            actually serve the user better. If the case isn't on this list,
-            it isn't an edge case.
+      <article class="usage-card">
+        <header class="usage-card__header">
+          <span class="usage-card__label">Edge case — fall back to .select</span>
+          <p class="usage-card__intro">
+            A short list of contexts where the native control's
+            constraints actually serve the user better. If the case
+            isn't on this list, it isn't an edge case.
           </p>
-          <ul style="font-size: var(--text-sm); line-height: 1.65; color: var(--text-default); padding-left: var(--spacing-5x); margin: 0;">
+        </header>
+        <div class="usage-card__body">
+          <ul class="usage-card__list">
             <li>Bulk-edit grids with hundreds of selectors per screen — the JS cost of a custom dropdown per row is real</li>
             <li>Internal admin tooling not exposed to customers</li>
             <li>Mobile-first flows where OS keyboard / spinner integration is the whole point (date / time / native pickers)</li>
             <li>Quick prototypes before the design is locked</li>
           </ul>
         </div>
-        <div class="meta"><span>.select</span><strong>edge case only</strong></div>
+        <div class="usage-card__meta">
+          <span>.select</span><strong>edge case only</strong>
+        </div>
       </article>
     </div>
   </section>
