@@ -271,8 +271,8 @@ PAGE_TEMPLATE = dedent('''\
 <link rel="stylesheet" href="styles/shell.css" />
 <link rel="stylesheet" href="styles/global-nav.css" />
 <!-- Reuse: usage-note pattern + .card-callout -->
-<link rel="stylesheet" href="styles/page-section-04.css" />
-<link rel="stylesheet" href="styles/page-section-05.css" />
+<link rel="stylesheet" href="styles/page-III-03.css" />
+<link rel="stylesheet" href="styles/page-III-05.css" />
 
 <script src="scripts/global-nav.js" defer></script>
 
