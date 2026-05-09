@@ -135,7 +135,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">01 / Background</span>
-        <h2 class="text-display-sm">Background <em>color</em>.</h2>
+        <h2 class="text-display-sm">Background color.</h2>
       </div>
     </header>
 
@@ -163,7 +163,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">02 / Text</span>
-        <h2 class="text-display-sm">Text <em>color</em>.</h2>
+        <h2 class="text-display-sm">Text color.</h2>
       </div>
     </header>
 
@@ -188,7 +188,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">03 / Border</span>
-        <h2 class="text-display-sm">Border <em>color</em>.</h2>
+        <h2 class="text-display-sm">Border color.</h2>
       </div>
     </header>
 
@@ -213,7 +213,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">04 / Icon</span>
-        <h2 class="text-display-sm">Icon <em>color</em>.</h2>
+        <h2 class="text-display-sm">Icon color.</h2>
       </div>
     </header>
 
@@ -235,7 +235,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">05 / Spacing</span>
-        <h2 class="text-display-sm">Element <em>spacing</em>.</h2>
+        <h2 class="text-display-sm">Element spacing.</h2>
       </div>
     </header>
 
@@ -247,7 +247,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">06 / Radius</span>
-        <h2 class="text-display-sm">Corner <em>radius</em>.</h2>
+        <h2 class="text-display-sm">Corner radius.</h2>
       </div>
     </header>
 
@@ -259,7 +259,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">07 / Gradient</span>
-        <h2 class="text-display-sm">Brand <em>gradients</em>.</h2>
+        <h2 class="text-display-sm">Brand gradients.</h2>
       </div>
       <p>
         Multi-stop brand washes blending primary lime, secondary earth, and supporting tones across linear, vertical, and conic configurations.
@@ -278,7 +278,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">08 / Glass</span>
-        <h2 class="text-display-sm">Glass <em>surfaces</em>.</h2>
+        <h2 class="text-display-sm">Glass surfaces.</h2>
       </div>
     </header>
 
@@ -294,7 +294,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">09 / Effects</span>
-        <h2 class="text-display-sm">Visual <em>effects</em>.</h2>
+        <h2 class="text-display-sm">Visual effects.</h2>
       </div>
     </header>
 
@@ -501,6 +501,136 @@ const FOCUS_OVERLAY = [
 ];
 
 /* =========================================================
+   PRIMITIVE-REFERENCE MAP
+   For each semantic token shown on this page, the primitive
+   (or color-mix expression) it aliases in tokens.css. Source
+   of truth is tokens.css §2 — keep this in sync when a
+   semantic's definition changes.
+   ========================================================= */
+const SOURCES = {
+  /* ---------- Background ---------- */
+  '--background-default':          '--white-base',
+  '--background-default-subtle':   '--neutral-50',
+  '--background-default-minimal':  '--neutral-100',
+  '--background-default-hover':    '--neutral-200',
+  '--background-default-active':   '--neutral-300',
+  '--background-default-selected': '--primary-50',
+  '--background-default-disabled': 'mix(--neutral-900 5%, transparent)',
+
+  '--background-primary':          '--primary-400',
+  '--background-primary-hover':    '--primary-500',
+  '--background-primary-active':   '--primary-600',
+  '--background-primary-subtle':   '--primary-50',
+  '--background-primary-minimal':  '--primary-100',
+  '--background-primary-disabled': 'mix(--neutral-900 5%, transparent)',
+  '--background-secondary-minimal':'--secondary-100',
+
+  '--background-inverted':         '--primary-500',
+  '--background-inverted-subtle':  '--primary-600',
+  '--background-inverted-minimal': 'mix(--white-base 10%, transparent)',
+  '--background-inverted-hover':   '--primary-400',
+
+  '--background-safe':             '--accent-50',
+  '--background-info':             '--info-50',
+  '--background-warning':          '--secondary-50',
+  '--background-critical':         '--critical-50',
+
+  '--background-overlay':          'mix(--primary-900 48%, transparent)',
+  '--background-row-hover':        'mix(--primary-50 60%, transparent)',
+  '--background-toast':            'mix(--neutral-950 92%, transparent)',
+
+  /* ---------- Text ---------- */
+  '--text-default':          '--neutral-950',
+  '--text-default-subtle':   'mix(--neutral-700 60%, --neutral-600 40%)',
+  '--text-default-minimal':  '--neutral-600',
+  '--text-default-disabled': 'mix(--neutral-900 30%, transparent)',
+
+  '--text-inverted':         '--white-base',
+  '--text-inverted-subtle':  'mix(--white-base 70%, transparent)',
+  '--text-inverted-minimal': 'mix(--white-base 45%, transparent)',
+
+  '--text-primary':          '--primary-500',
+  '--text-primary-subtle':   '--primary-400',
+  '--text-primary-strong':   '--primary-900',
+  '--text-secondary-strong': '--secondary-700',
+  '--text-accent':           '--accent-500',
+  '--text-accent-subtle':    '--accent-400',
+  '--text-emphasis':         '--secondary-500',
+  '--text-link':             '--primary-600',
+
+  '--text-safe':             '--accent-700',
+  '--text-safe-subtle':      '--accent-500',
+  '--text-info':             '--info-500',
+  '--text-info-subtle':      '--info-300',
+  '--text-info-strong':      '--info-700',
+  '--text-warning':          '--secondary-700',
+  '--text-warning-subtle':   '--secondary-500',
+  '--text-critical':         '--critical-700',
+  '--text-critical-subtle':  '--critical-500',
+
+  /* ---------- Border ---------- */
+  '--border-default':          'mix(--neutral-900 9%, transparent)',
+  '--border-default-subtle':   'mix(--neutral-900 5%, transparent)',
+  '--border-default-strong':   'mix(--neutral-900 22%, transparent)',
+  '--border-default-input':    '--neutral-300',
+  '--border-default-disabled': 'mix(--neutral-900 12%, transparent)',
+
+  '--border-primary':        '--primary-400',
+  '--border-primary-subtle': '--primary-200',
+  '--border-primary-focus':  '--secondary-500',
+  '--outline-focus':         '--primary-700',
+
+  '--border-inverted':       'mix(--white-base 18%, transparent)',
+
+  '--border-safe':           '--accent-300',
+  '--border-info':           '--info-300',
+  '--border-warning':        '--secondary-300',
+  '--border-critical':       '--critical-300',
+  '--border-critical-strong':'--critical-500',
+
+  '--border-decorator':      '→ --text-default-subtle (semantic alias)',
+  '--border-swatch':         'mix(--black-base 6%, transparent)',
+  '--border-toast':          'mix(--white-base 12%, transparent)',
+  '--border-glass-light':    'mix(--white-base 85%, transparent)',
+  '--border-glass-dark':     'mix(--white-base 15%, transparent)',
+
+  /* ---------- Icon ---------- */
+  '--icon-default':          '--neutral-700',
+  '--icon-default-subtle':   '--neutral-500',
+  '--icon-default-minimal':  '--neutral-400',
+  '--icon-default-disabled': 'mix(--neutral-900 30%, transparent)',
+
+  '--icon-primary':          '--primary-400',
+  '--icon-primary-strong':   '--primary-500',
+
+  '--icon-inverted':         '--white-base',
+  '--icon-inverted-subtle':  'mix(--white-base 70%, transparent)',
+
+  '--icon-safe':             '--accent-500',
+  '--icon-info':             '--secondary-500',
+  '--icon-warning':          '--secondary-500',
+  '--icon-critical':         '--critical-500',
+
+  /* ---------- Semantic spacing ---------- */
+  '--margin-bottom-heading':    '--spacing-4x',
+  '--margin-bottom-subheading': '--spacing-3x',
+  '--margin-bottom-element':    '--spacing-2x',
+  '--margin-bottom-paragraph':  '--spacing-4x',
+
+  /* ---------- Radius ---------- */
+  '--radius-mc':   '--spacing-1x',
+  '--radius-sm':   '--spacing-2x',
+  '--radius-md':   '--spacing-3x',
+  '--radius-lg':   '--spacing-4x',
+  '--radius-xl':   '--spacing-6x',
+  '--radius-pill': '--spacing-25x',
+
+  /* ---------- Glass surfaces ---------- */
+  '--background-glass-light': 'mix(--white-base 65%, transparent)',
+  '--background-glass-dark':  'mix(--primary-200 35%, transparent)',
+};
+
+/* =========================================================
    HELPERS
    ========================================================= */
 const cs = getComputedStyle(document.documentElement);
@@ -521,7 +651,7 @@ function renderBackgroundGroups() {
         <div class="preview"></div>
         <div class="body">
           <span class="name">${name}</span>
-          <span class="resolved">${escapeHtml(resolve(name)) || '—'}</span>
+          <span class="resolved">${escapeHtml(SOURCES[name] || resolve(name)) || '—'}</span>
         </div>
       </button>
     `).join('');
@@ -555,7 +685,7 @@ function renderBorderGroups() {
     const isInverted = group === 'border-inverted';
     wrap.innerHTML = list.map(name => {
       const cardClass = isInverted ? 'border-card inverted-card' : 'border-card';
-      const value = resolve(name) || '—';
+      const value = SOURCES[name] || resolve(name) || '—';
       return `
         <button type="button" class="${cardClass}" data-var="${name}" aria-label="Copy ${name}"
                 style="border: var(--border-width-base) solid var(${name})">
@@ -582,7 +712,7 @@ function renderIconGroup(group, list, opts = {}) {
   if (!wrap) return;
   wrap.innerHTML = list.map(name => {
     const cardClass = opts.inverted ? 'icon-card inverted-card' : 'icon-card';
-    const value = resolve(name) || '—';
+    const value = SOURCES[name] || resolve(name) || '—';
     return `
       <button type="button" class="${cardClass}" data-var="${name}" aria-label="Copy ${name}">
         <span class="icon-bubble" style="color: var(${name})">${ICON_SVG}</span>
@@ -602,7 +732,7 @@ function renderSemSpacing() {
   const wrap = document.getElementById('semSpacing');
   if (!wrap) return;
   wrap.innerHTML = SEM_SPACING.map(name => {
-    const value = resolve(name) || '—';
+    const value = SOURCES[name] || resolve(name) || '—';
     return `
       <div class="sem-space-row" data-var="${name}" tabindex="0" role="button" aria-label="Copy ${name}">
         <span class="label">${name}</span>
@@ -622,7 +752,7 @@ function renderRadius() {
   const wrap = document.getElementById('radiusRow');
   if (!wrap) return;
   wrap.innerHTML = RADIUS_TOKENS.map(([name, modifier, label]) => {
-    const value = resolve(name) || '—';
+    const value = SOURCES[name] || resolve(name) || '—';
     return `
       <button type="button" class="radius-card ${modifier}" data-var="${name}" aria-label="Copy ${name}">
         <div class="demo"></div>
@@ -659,9 +789,9 @@ function renderGlassStage() {
   wrap.innerHTML = GLASS_SURFACES.map(([bgName, borderName, isDark]) => `
     <div class="glass-tile ${isDark ? 'dark' : ''}" data-var="${bgName}" tabindex="0" role="button" aria-label="Copy ${bgName}">
       <span class="name">${bgName}</span>
-      <span class="resolved">${escapeHtml(resolve(bgName) || '—')}</span>
+      <span class="resolved">${escapeHtml(SOURCES[bgName] || resolve(bgName) || '—')}</span>
       <span class="name" style="margin-top: var(--spacing-2x)">${borderName}</span>
-      <span class="resolved">${escapeHtml(resolve(borderName) || '—')}</span>
+      <span class="resolved">${escapeHtml(SOURCES[borderName] || resolve(borderName) || '—')}</span>
     </div>
   `).join('');
 }
