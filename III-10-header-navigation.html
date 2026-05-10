@@ -182,19 +182,18 @@
   <!-- ========================== 01 / ANATOMY ========================== -->
   <section class="chunk" id="anatomy">
     <header class="chunk-head reveal">
-      <div>
-        <span class="num-tag">01 / Anatomy</span>
-        <h2 class="text-display-sm">Three slots, one row.</h2>
-      </div>
-      <p>
-        The bar (<code>.global-nav__inner</code>) is a three-column
+      <span class="num-tag">01 / Anatomy</span>
+      <h2 class="text-display-sm">Three slots, one row.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      The bar (<code>.global-nav__inner</code>) is a three-column
         grid: brand left, section list centred, version pill right.
         The expanding panel is positioned against the bar itself —
         not against any individual section item — so its left and
         right edges align with the page, regardless of which Section
         triggered it.
-      </p>
-    </header>
+    </p>
 
     <div class="nav-anatomy reveal" aria-label="Header anatomy diagram">
       <div class="nav-anatomy__bar">
@@ -264,12 +263,12 @@
   <!-- ========================== 02 / TIER 1 — SECTION LIST ========================== -->
   <section class="chunk" id="tier-1">
     <header class="chunk-head reveal">
-      <div>
-        <span class="num-tag">02 / Tier 1 — Section list</span>
-        <h2 class="text-display-sm">Direct links and triggers.</h2>
-      </div>
-      <p>
-        Each tier-1 entry is one of two element types. A direct link
+      <span class="num-tag">02 / Tier 1 — Section list</span>
+      <h2 class="text-display-sm">Direct links and triggers.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      Each tier-1 entry is one of two element types. A direct link
         (<code>.global-nav__link</code>) points to a single page;
         a trigger (<code>.global-nav__trigger</code>) is a
         <code>&lt;button&gt;</code> that toggles its associated
@@ -277,8 +276,7 @@
         hover background, mono-eyebrow type, and the primary-tinted
         active state — so that tier-1 reads as a single uniform list
         even though it mixes the two element types.
-      </p>
-    </header>
+    </p>
 
     <p class="usage-note reveal">
       <strong>Use a direct link when the Section maps to one page.</strong>
@@ -301,12 +299,12 @@
   <!-- ========================== 03 / TIER 2 — PANEL ========================== -->
   <section class="chunk" id="tier-2">
     <header class="chunk-head reveal">
-      <div>
-        <span class="num-tag">03 / Tier 2 — Panel</span>
-        <h2 class="text-display-sm">A single-purpose surface.</h2>
-      </div>
-      <p>
-        A panel lists every page that belongs to its parent Section.
+      <span class="num-tag">03 / Tier 2 — Panel</span>
+      <h2 class="text-display-sm">A single-purpose surface.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      A panel lists every page that belongs to its parent Section.
         The list is a CSS grid with up to three columns
         (<code>.global-nav__panel-list</code>) collapsed to one column
         on narrow viewports. Each entry is a two-part link: a mono
@@ -314,8 +312,7 @@
         Subsection's title. Subsection numbers match the system's
         canonical ordering and do not renumber when items are
         inserted; the index is the page's identity, not its position.
-      </p>
-    </header>
+    </p>
 
     <p class="usage-note reveal">
       <strong>One panel per multi-page Section, never more.</strong>
@@ -337,17 +334,16 @@
   <!-- ========================== 04 / STATES ========================== -->
   <section class="chunk" id="states">
     <header class="chunk-head reveal">
-      <div>
-        <span class="num-tag">04 / States</span>
-        <h2 class="text-display-sm">Rest, hover, current.</h2>
-      </div>
-      <p>
-        Three resolved states for tier-1 entries. The active state is
+      <span class="num-tag">04 / States</span>
+      <h2 class="text-display-sm">Rest, hover, current.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      Three resolved states for tier-1 entries. The active state is
         applied by the runtime to the Section that contains the
         current page, so the bar reflects location even when the
         panel is collapsed.
-      </p>
-    </header>
+    </p>
 
     <div class="state-grid reveal" aria-label="Tier-1 link states">
 
@@ -400,20 +396,19 @@
   <!-- ========================== 05 / BEHAVIOUR ========================== -->
   <section class="chunk" id="behaviour">
     <header class="chunk-head reveal">
-      <div>
-        <span class="num-tag">05 / Behaviour</span>
-        <h2 class="text-display-sm">Open, dismiss, follow.</h2>
-      </div>
-      <p>
-        Behaviour is split between CSS and the bar's runtime.
+      <span class="num-tag">05 / Behaviour</span>
+      <h2 class="text-display-sm">Open, dismiss, follow.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      Behaviour is split between CSS and the bar's runtime.
         <code>:focus-within</code> reveal — the keyboard fallback
         when JavaScript is unavailable — is owned by CSS. Pointer
         open / close, panel swapping, click-to-toggle, the dim
         backdrop, and dismiss all live in
         <code>scripts/global-nav.js</code>; running the runtime is
         what gives the bar its single-panel-at-a-time guarantee.
-      </p>
-    </header>
+    </p>
 
     <table class="behaviour-table reveal" aria-label="Behaviour matrix">
       <thead>
@@ -491,12 +486,12 @@
   <!-- ========================== 06 / ACTIVE PAGE RESOLUTION ========================== -->
   <section class="chunk" id="active-page">
     <header class="chunk-head reveal">
-      <div>
-        <span class="num-tag">06 / Active page resolution</span>
-        <h2 class="text-display-sm">One attribute, two highlights.</h2>
-      </div>
-      <p>
-        Each page declares its own filename via
+      <span class="num-tag">06 / Active page resolution</span>
+      <h2 class="text-display-sm">One attribute, two highlights.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      Each page declares its own filename via
         <code>&lt;body data-page=&quot;…&quot;&gt;</code>. On
         <code>DOMContentLoaded</code> the runtime reads that value,
         finds the matching link inside the panel, and applies
@@ -504,8 +499,7 @@
         the parent Section trigger is also marked <code>.is-current</code>
         so the bar reflects the active Section even when the panel
         is collapsed.
-      </p>
-    </header>
+    </p>
 
     <p class="usage-note reveal">
       <strong>The attribute value is the filename without the
@@ -528,20 +522,19 @@
   <!-- ========================== 07 / ACCESSIBILITY ========================== -->
   <section class="chunk" id="accessibility">
     <header class="chunk-head reveal">
-      <div>
-        <span class="num-tag">07 / Accessibility</span>
-        <h2 class="text-display-sm">Roles, labels, focus.</h2>
-      </div>
-      <p>
-        The bar uses native semantics where possible. The outer
+      <span class="num-tag">07 / Accessibility</span>
+      <h2 class="text-display-sm">Roles, labels, focus.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      The bar uses native semantics where possible. The outer
         <code>&lt;header&gt;</code> declares <code>aria-label="Design
         system navigation"</code>; the section list is a
         <code>&lt;nav&gt;</code> with its own
         <code>aria-label</code>; each Section's panel is a
         <code>role=&quot;region&quot;</code> with the Section's name
         as label.
-      </p>
-    </header>
+    </p>
 
     <ul class="spec-list reveal" aria-label="Accessibility specification">
       <li>
@@ -596,18 +589,17 @@
   <!-- ========================== 08 / RESPONSIVE ========================== -->
   <section class="chunk" id="responsive">
     <header class="chunk-head reveal">
-      <div>
-        <span class="num-tag">08 / Responsive</span>
-        <h2 class="text-display-sm">Three breakpoints.</h2>
-      </div>
-      <p>
-        The bar collapses in two stages. Below
+      <span class="num-tag">08 / Responsive</span>
+      <h2 class="text-display-sm">Three breakpoints.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      The bar collapses in two stages. Below
         <code>960px</code> the version pill is dropped and the
         section list scrolls horizontally; the panel grid drops to
         two columns. Below <code>600px</code> the brand label is
         hidden and the panel grid collapses to a single column.
-      </p>
-    </header>
+    </p>
 
     <ul class="spec-list reveal" aria-label="Responsive specification">
       <li>
@@ -637,18 +629,17 @@
   <!-- ========================== 09 / USAGE ========================== -->
   <section class="chunk" id="usage">
     <header class="chunk-head reveal">
-      <div>
-        <span class="num-tag">09 / Usage</span>
-        <h2 class="text-display-sm">Drop in, declare the page.</h2>
-      </div>
-      <p>
-        Every page renders the same nav markup. Three lines of
+      <span class="num-tag">09 / Usage</span>
+      <h2 class="text-display-sm">Drop in, declare the page.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      Every page renders the same nav markup. Three lines of
         per-page configuration are required: the
         <code>data-page</code> attribute, the
         <code>global-nav.css</code> link, and the
         <code>global-nav.js</code> script.
-      </p>
-    </header>
+    </p>
 
 <pre class="code reveal"><span class="com">&lt;!-- 1. Stylesheet, after shell.css --&gt;</span>
 <span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="str">"stylesheet"</span> <span class="attr">href</span>=<span class="str">"styles/global-nav.css"</span> <span class="tag">/&gt;</span>
@@ -685,19 +676,18 @@
   <!-- ========================== 10 / TOKENS ========================== -->
   <section class="chunk" id="tokens">
     <header class="chunk-head reveal">
-      <div>
-        <span class="num-tag">10 / Component tokens</span>
-        <h2 class="text-display-sm">Token <em>map</em>.</h2>
-      </div>
-      <p>
-        The component does not introduce its own
+      <span class="num-tag">10 / Component tokens</span>
+      <h2 class="text-display-sm">Tokens.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      The component does not introduce its own
         <code>--global-nav-*</code> token namespace; every value
         resolves directly to a semantic token. The map below
         enumerates the semantic tokens consumed by the bar so that
         a change to any of them propagates through the navigation
         surface in step with the rest of the system.
-      </p>
-    </header>
+    </p>
 
     <table class="token-table reveal" aria-label="Header & navigation bar tokens">
       <thead>
