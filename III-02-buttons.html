@@ -18,6 +18,8 @@
 <link rel="stylesheet" href="styles/button.css" />
 <!-- Page-specific: only what is unique to III-02-buttons.html -->
 <link rel="stylesheet" href="styles/page-III-02.css" />
+<!-- Reused: usage-note pattern lives in page-III-03.css -->
+<link rel="stylesheet" href="styles/page-III-03.css" />
 
 <!-- Shared behaviour: scroll-spy highlights the in-view TOC link -->
 <script src="scripts/scroll-spy.js" defer></script>
@@ -147,18 +149,17 @@
   <!-- ========================== BUTTON · ANATOMY ========================== -->
   <section class="chunk" id="button-anatomy">
     <header class="chunk-head reveal">
-      <div>
-        <span class="num-tag">00 / Button — Anatomy</span>
-        <h2 class="text-display-sm">Anatomy.</h2>
-      </div>
-      <p>
-        Six conceptual slots make up a button: the container, its surface
-        and border, an optional icon, the label, and the keyboard focus
-        ring. Slot names are descriptive — they're how we talk about the
-        parts, not classes you compose. The Switch component has its own
-        anatomy, documented in its own section.
-      </p>
+      <span class="num-tag">00 / Button — Anatomy</span>
+      <h2 class="text-display-sm">Anatomy.</h2>
     </header>
+
+    <p class="section-lede reveal">
+      Six conceptual slots make up a button: the container, its surface
+      and border, an optional icon, the label, and the keyboard focus
+      ring. Slot names are descriptive — they're how we talk about the
+      parts, not classes you compose. The Switch component has its own
+      anatomy, documented in its own section.
+    </p>
 
     <div class="anatomy-stage reveal">
 
@@ -236,18 +237,16 @@
   <!-- ========================== BUTTON · VARIANTS ========================== -->
   <section class="chunk" id="button-variants">
     <header class="chunk-head reveal">
-      <div>
-        <span class="num-tag">01 / Button — Variants</span>
-        <h2 class="text-display-sm">Variants.</h2>
-      </div>
-      <p>
-        Eight variants, ordered down the emphasis ladder: CTA, Secondary,
-        Tinted, Glass, Ghost, Borderless, Caution, Toggle. Each maps to a
-        single intent — primary action, supporting action, low-emphasis,
-        destructive, switchable. All previews shown at the focus size:
-        <strong>LG · 22.5px</strong>.
-      </p>
+      <span class="num-tag">01 / Button — Variants</span>
+      <h2 class="text-display-sm">Variants.</h2>
     </header>
+
+    <p class="section-lede reveal">
+      Eight variants, ordered down the emphasis ladder: CTA, Secondary,
+      Tinted, Glass, Ghost, Borderless, Caution, Toggle. Each maps to a
+      single intent — primary action, supporting action, low-emphasis,
+      destructive, switchable.
+    </p>
 
     <div class="variant-grid reveal">
 
@@ -337,18 +336,17 @@
   <!-- ========================== BUTTON · STATES ========================== -->
   <section class="chunk" id="button-states">
     <header class="chunk-head reveal">
-      <div>
-        <span class="num-tag">02 / Button — States</span>
-        <h2 class="text-display-sm">States.</h2>
-      </div>
-      <p>
-        Every variant supports the same state set. Shown here on
-        <strong>CTA · LG</strong> so the cycle is legible end-to-end.
-        Hover, pressed, and focused cells use static
-        <code>data-state</code> proxies — they paint the visual the live
-        pseudo-class would produce, without altering behaviour.
-      </p>
+      <span class="num-tag">02 / Button — States</span>
+      <h2 class="text-display-sm">States.</h2>
     </header>
+
+    <p class="section-lede reveal">
+      Every variant supports the same state set: rest, hover, pressed,
+      focused, disabled, loading, and selected. Hover, pressed, and
+      focused cells use static <code>data-state</code> proxies — they
+      paint the visual the live pseudo-class would produce, without
+      altering behaviour.
+    </p>
 
     <div class="variant-grid reveal">
 
@@ -429,17 +427,16 @@
   <!-- ========================== BUTTON · VERSIONS ========================== -->
   <section class="chunk" id="button-versions">
     <header class="chunk-head reveal">
-      <div>
-        <span class="num-tag">03 / Button — Versions</span>
-        <h2 class="text-display-sm">Versions.</h2>
-      </div>
-      <p>
-        The same variant adapts to its container. Default, inverted, and
-        secondary-subtle surfaces shift the contrast scheme; icon-only and
-        borderless re-shape the affordance for compact rails and inline
-        contexts; block claims the surface horizontally.
-      </p>
+      <span class="num-tag">03 / Button — Versions</span>
+      <h2 class="text-display-sm">Versions.</h2>
     </header>
+
+    <p class="section-lede reveal">
+      The same variant adapts to its container. Default, inverted, and
+      secondary-subtle surfaces shift the contrast scheme; icon-only and
+      borderless re-shape the affordance for compact rails and inline
+      contexts; block claims the surface horizontally.
+    </p>
 
     <div class="version-stage reveal">
 
@@ -530,16 +527,15 @@
   <!-- ========================== BUTTON · SIZES ========================== -->
   <section class="chunk" id="button-sizes">
     <header class="chunk-head reveal">
-      <div>
-        <span class="num-tag">04 / Button — Sizes</span>
-        <h2 class="text-display-sm">Sizes.</h2>
-      </div>
-      <p>
-        Five steps along the same scale that drives type. The middle is
-        canonical: <strong>Large · 22.5px</strong> for primary actions in
-        marketing surfaces and form footers.
-      </p>
+      <span class="num-tag">04 / Button — Sizes</span>
+      <h2 class="text-display-sm">Sizes.</h2>
     </header>
+
+    <p class="section-lede reveal">
+      Five steps along the same scale that drives type. The middle is
+      canonical: <strong>Large · 22.5px</strong> for primary actions in
+      marketing surfaces and form footers.
+    </p>
 
     <h4 class="subheading reveal">CTA — across all sizes <span class="tag">primary intent</span></h4>
     <div class="glass size-stage reveal">
@@ -627,17 +623,16 @@
   <!-- ========================== BUTTON · SWITCH ========================== -->
   <section class="chunk" id="button-switch">
     <header class="chunk-head reveal">
-      <div>
-        <span class="num-tag">05 / Button — Switch</span>
-        <h2 class="text-display-sm">Switch.</h2>
-      </div>
-      <p>
-        A binary on/off control with a sliding thumb, plus a segmented
-        variant for one-of-N choices — the canonical shape for a
-        language switch. Both share the toggle variant's colour scheme
-        and align with the button height scale (LG · 48px focus).
-      </p>
+      <span class="num-tag">05 / Button — Switch</span>
+      <h2 class="text-display-sm">Switch.</h2>
     </header>
+
+    <p class="section-lede reveal">
+      A binary on/off control with a sliding thumb, plus a segmented
+      variant for one-of-N choices — the canonical shape for a language
+      switch. Both share the toggle variant's colour scheme and align
+      with the button height scale (LG · 48px focus).
+    </p>
 
     <div class="variant-grid reveal">
 
@@ -770,22 +765,32 @@
         <span class="tag">2XL</span>
       </div>
     </div>
+
+    <p class="usage-note usage-note--below reveal">
+      <strong>Use a switch for a binary on/off setting whose change takes effect immediately.</strong>
+      No Save button, no confirmation step — flipping the thumb <em>is</em> the
+      action. A switch is wrong for anything destructive or anything that
+      needs explicit confirmation; reach for a button paired with a dialog
+      there. Pair every switch with a label describing what it controls
+      in the affirmative — "Notifications", not "Disable notifications" — so
+      the on-position reads true. The visible label sits next to the switch;
+      never let the slider stand alone.
+    </p>
   </section>
 
   <!-- ========================== BUTTON · USAGE ========================== -->
   <section class="chunk" id="button-usage">
     <header class="chunk-head reveal">
-      <div>
-        <span class="num-tag">06 / Button — Usage</span>
-        <h2 class="text-display-sm">Usage.</h2>
-      </div>
-      <p>
-        Six rules that keep buttons predictable across surfaces. Each
-        captures the one decision that's easy to get wrong — label tone,
-        emphasis, availability, hit target, destructive confirmation,
-        glass context.
-      </p>
+      <span class="num-tag">06 / Button — Usage</span>
+      <h2 class="text-display-sm">Usage.</h2>
     </header>
+
+    <p class="section-lede reveal">
+      Six rules that keep buttons predictable across surfaces. Each
+      captures the one decision that's easy to get wrong — label tone,
+      emphasis, availability, hit target, destructive confirmation,
+      glass context.
+    </p>
 
     <div class="usage-grid reveal">
 
@@ -823,10 +828,10 @@
         <span class="usage-card__num">04</span>
         <h3 class="usage-card__title">Hit target ≥ 44px.</h3>
         <p class="usage-card__body">
-          <code>.btn--lg</code> is 48px tall — clears Apple's 44pt
-          minimum. <code>.btn--md</code> (36px) and <code>.btn--sm</code>
-          (28px) are for desktop-only or dense table contexts; pair with
-          adequate spacing.
+          <code>.btn--lg</code> is 48px tall — comfortably above the 44px
+          minimum for reliable touch. <code>.btn--md</code> (36px) and
+          <code>.btn--sm</code> (28px) are desktop-only or dense-table
+          contexts; pair with adequate spacing.
         </p>
       </article>
 
@@ -857,16 +862,15 @@
   <!-- ========================== BUTTON · TOKENS ========================== -->
   <section class="chunk" id="button-tokens">
     <header class="chunk-head reveal">
-      <div>
-        <span class="num-tag">07 / Button — Component tokens</span>
-        <h2 class="text-display-sm">Tokens.</h2>
-      </div>
-      <p>
-        Every Button declaration resolves through this layer. Component tokens
-        only ever reference semantic tokens — never primitives — so any change
-        in intent is inherited automatically.
-      </p>
+      <span class="num-tag">07 / Button — Component tokens</span>
+      <h2 class="text-display-sm">Tokens.</h2>
     </header>
+
+    <p class="section-lede reveal">
+      Every Button declaration resolves through this layer. Component tokens
+      only ever reference semantic tokens — never primitives — so any change
+      in intent is inherited automatically.
+    </p>
 
     <table class="token-table reveal" aria-label="Button component tokens">
       <thead>
@@ -967,14 +971,14 @@ const BTN_TOKENS = [
     ['--btn-caution-border',    'transparent'],
     ['--btn-caution-shadow',    'var(--shadow-sm)'],
   ]},
-  { group: 'Variant · Tinted (Apple HIG · Bordered Tinted)', tokens: [
+  { group: 'Variant · Tinted', tokens: [
     ['--btn-tinted-bg',        'var(--background-accent-minimal)'],
     ['--btn-tinted-bg-hover',  'var(--background-accent-subtle)'],
     ['--btn-tinted-bg-active', 'color-mix(in srgb, var(--accent-200) 70%, var(--background-default))'],
     ['--btn-tinted-fg',        'var(--text-accent-strong)'],
     ['--btn-tinted-border',    'transparent'],
   ]},
-  { group: 'Variant · Glass (Apple HIG · Liquid Glass)', tokens: [
+  { group: 'Variant · Glass', tokens: [
     ['--btn-glass-bg',        'var(--background-glass-light)'],
     ['--btn-glass-bg-hover',  'color-mix(in srgb, var(--white-base) 80%, transparent)'],
     ['--btn-glass-bg-active', 'color-mix(in srgb, var(--white-base) 92%, transparent)'],

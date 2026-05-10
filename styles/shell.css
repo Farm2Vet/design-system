@@ -176,18 +176,14 @@ section.chunk {
     scroll-margin-top: var(--spacing-25x);
 }
 .chunk-head {
-    display: grid;
-    grid-template-columns: 1.5fr 1fr;
-    gap: var(--spacing-12x);
-    align-items: end;
-    margin-bottom: var(--spacing-8x);
+    margin-bottom: var(--spacing-6x);
     padding-bottom: var(--spacing-4x);
     border-bottom: var(--border-width-base) solid var(--border-default);
 }
 /* Chunk-head heading: must carry class="text-display-sm".
-   Sizing, weight, line-height, tracking, and the <em> accent
-   treatment are all owned by the component class in
-   styles/typography.css. */
+   Sizing, weight, line-height, and tracking are owned by the
+   component class in styles/typography.css. The summary lives
+   below the header as <p class="section-lede">, not inside it. */
 .chunk-head .num-tag {
     font-family:    var(--font-mono);
     font-size:      var(--text-eyebrow);
@@ -197,10 +193,16 @@ section.chunk {
     display:        block;
     text-transform: uppercase;
 }
-.chunk-head p {
-    font-size:   var(--text-body);
-    color:       var(--text-default-subtle);
-    line-height: var(--line-height-body);
+
+/* Section-level summary paragraph. Sits between .chunk-head and
+   the section's demo content. Replaces the old two-column
+   chunk-head where the summary lived in the right column. */
+.section-lede {
+    font-size:    var(--text-body);
+    color:        var(--text-default-subtle);
+    line-height:  var(--line-height-body);
+    max-width:    72ch;
+    margin:       0 0 var(--spacing-8x) 0;
 }
 
 /* =========================================================
@@ -371,7 +373,6 @@ footer a:hover { color: var(--text-primary); }
    ========================================================= */
 @media (max-width: 960px) {
     .hero        { grid-template-columns: 1fr; gap: var(--spacing-8x); padding-top: var(--spacing-16x); }
-    .chunk-head  { grid-template-columns: 1fr; gap: var(--spacing-6x); }
     .meta-strip  { grid-template-columns: repeat(2, 1fr); }
     .toc         { display: none; }
 }

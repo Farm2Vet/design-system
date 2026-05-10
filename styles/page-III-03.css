@@ -59,6 +59,19 @@
     white-space: nowrap;
 }
 
+/* "Below" placement (new canonical pattern): the usage-note
+   sits *after* the content it governs (variant grid, demo
+   stage, etc.). Positive top margin restores normal flow.
+   Spec C will migrate existing above-the-demo usages to this
+   modifier and the unmodified default rule can then be retired. */
+.usage-note--below {
+    margin-top:    var(--spacing-6x);
+    margin-bottom: var(--spacing-8x);
+}
+.usage-note--below + .usage-note--below {
+    margin-top: var(--spacing-3x);
+}
+
 /* =========================================================
    VARIANT GRID — one card per form variant
    Single column on desktop. Each card spans the full

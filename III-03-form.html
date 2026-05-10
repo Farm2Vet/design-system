@@ -147,19 +147,15 @@
   <!-- ========================== FORM · VARIANTS ========================== -->
   <section class="chunk" id="form-variants">
     <header class="chunk-head reveal">
-      <div>
-        <span class="num-tag">01 / Form — Variants</span>
-        <h2 class="text-display-sm">Variants <em>by control</em>.</h2>
-      </div>
-      <p>
-        Ten controls covering the full range of structured input:
-        free text, constrained choice, date, multi-pick, binary toggle,
-        and bordered checkbox / radio lists for longer option sets.
-        Previews are shown at <strong>MD · 16px</strong> so the label and helper
-        scale read evenly inside the card. The canonical focus size — <strong>LG · 22.5px</strong> —
-        is showcased in the Sizes section below.
-      </p>
+      <span class="num-tag">01 / Form — Variants</span>
+      <h2 class="text-display-sm">Variants.</h2>
     </header>
+
+    <p class="section-lede reveal">
+      Ten controls covering the full range of structured input:
+      free text, constrained choice, date, multi-pick, binary toggle,
+      and bordered checkbox / radio lists for longer option sets.
+    </p>
 
     <div class="form-variant-grid reveal">
 
@@ -202,14 +198,7 @@
               <option>Equine</option>
               <option>Porcine</option>
             </select>
-            <span class="field__helper">
-              <strong>Default to <a href="III-04-dropdowns.html"><code>.dropdown</code></a></strong>
-              on every selector across the product. <code>.select</code> is
-              kept only for edge cases (bulk-edit grids, internal admin
-              tooling, mobile-native picker flows). See
-              <a href="III-04-dropdowns.html#dropdown-intro">Dropdown · Usage</a>
-              for the exact boundary.
-            </span>
+            <span class="field__helper">Native rendering · edge cases only.</span>
           </div>
         </div>
         <div class="meta"><span>.select</span><strong>edge case only</strong></div>
@@ -371,22 +360,54 @@
       </article>
 
     </div>
+
+    <p class="usage-note usage-note--below reveal">
+      <strong>Pair every input with a visible label.</strong>
+      Placeholder text disappears the moment the user types and is invisible
+      to most assistive technology — it can carry an example
+      (<code>e.g. Bessie</code>) but never an instruction. Format constraints,
+      ranges, and unit hints belong in helper text below the field. Match the
+      input <code>type</code> to the data — <code>date</code>,
+      <code>email</code>, <code>tel</code>, <code>number</code> — so platforms
+      surface the right keyboard, picker, and validation. Required fields
+      communicate twice: the visible <code>*</code> for sighted readers and
+      <code>aria-required="true"</code> (or the <code>required</code>
+      attribute) for screen readers. Errors live below the field with a
+      specific, actionable message — never a silent red border.
+    </p>
+
+    <p class="usage-note usage-note--below reveal">
+      <strong>Default to <a href="III-04-dropdowns.html"><code>.dropdown</code></a> on every selector across the product.</strong>
+      <code>.select</code> is kept only for edge cases — bulk-edit grids,
+      internal admin tooling, and mobile-native picker flows. See
+      <a href="III-04-dropdowns.html#dropdown-intro">Dropdown · Usage</a>
+      for the exact boundary.
+    </p>
+
+    <p class="usage-note usage-note--below reveal">
+      <strong>Use a radio group when exactly one option from a small fixed set must be chosen.</strong>
+      Pre-select the safest default — leaving the group empty forces a
+      decision before the user knows the cost of each choice. Group every
+      option under a single legend or visible label, and keep the option
+      labels mutually exclusive. Reach for the bordered list variant once
+      labels carry explanation or the set grows past four options; the inline
+      group is for short, single-word choices.
+    </p>
   </section>
 
   <!-- ========================== FORM · VERSIONS ========================== -->
   <section class="chunk" id="form-versions">
     <header class="chunk-head reveal">
-      <div>
-        <span class="num-tag">02 / Form — Versions</span>
-        <h2 class="text-display-sm">State <em>versions</em>.</h2>
-      </div>
-      <p>
-        Every variant moves through three states. <em>Default</em> shows the
-        empty rest state, <em>With value</em> the user-completed state, and
-        <em>Error</em> the validation-failed state with helper text replaced
-        by an error message.
-      </p>
+      <span class="num-tag">02 / Form — Versions</span>
+      <h2 class="text-display-sm">Versions.</h2>
     </header>
+
+    <p class="section-lede reveal">
+      Every variant moves through three states. <em>Default</em> shows the
+      empty rest state, <em>With value</em> the user-completed state, and
+      <em>Error</em> the validation-failed state with helper text replaced
+      by an error message.
+    </p>
 
     <h4 class="subheading reveal">Text input <span class="tag">representative</span></h4>
     <div class="form-version-stage reveal">
@@ -419,7 +440,7 @@
         <div class="demo">
           <div class="field">
             <label class="field__label" for="vv-error">Patient name <span class="req" aria-hidden="true">*</span></label>
-            <input id="vv-error" class="input input--md is-error" type="text" value="" placeholder="e.g. Bessie" aria-invalid="true" aria-describedby="vv-error-msg" />
+            <input id="vv-error" class="input input--md is-error" type="text" value="" placeholder="e.g. Bessie" aria-required="true" aria-invalid="true" aria-describedby="vv-error-msg" />
             <span class="field__error" id="vv-error-msg">Patient name is required</span>
           </div>
         </div>
@@ -463,7 +484,7 @@
         <div class="demo">
           <div class="field">
             <label class="field__label" for="vv-sel-e">Species <span class="req" aria-hidden="true">*</span></label>
-            <select id="vv-sel-e" class="input input--md select is-error" aria-invalid="true" aria-describedby="vv-sel-e-msg">
+            <select id="vv-sel-e" class="input input--md select is-error" aria-required="true" aria-invalid="true" aria-describedby="vv-sel-e-msg">
               <option value="" disabled selected>Choose species…</option>
               <option>Bovine</option>
             </select>
@@ -501,7 +522,7 @@
       <article class="form-version-card">
         <span class="label">Error</span>
         <div class="demo">
-          <fieldset class="field" style="border:none">
+          <fieldset class="field" style="border:none" aria-required="true">
             <legend class="field__label">Required <span class="req" aria-hidden="true">*</span></legend>
             <div class="checkbox-group">
               <label class="checkbox checkbox--md is-error"><input type="checkbox" aria-invalid="true" /> Owner consent recorded</label>
@@ -518,17 +539,16 @@
   <!-- ========================== FORM · SIZES ========================== -->
   <section class="chunk" id="form-sizes">
     <header class="chunk-head reveal">
-      <div>
-        <span class="num-tag">03 / Form — Sizes</span>
-        <h2 class="text-display-sm">Sized for <em>density</em>.</h2>
-      </div>
-      <p>
-        Five steps along the same scale that drives type and Button — applied
-        across every variant so the family stays in lockstep. The middle is
-        canonical: <strong>Large · 22.5px</strong> for primary forms in
-        marketing surfaces and full-page intake flows.
-      </p>
+      <span class="num-tag">03 / Form — Sizes</span>
+      <h2 class="text-display-sm">Sizes.</h2>
     </header>
+
+    <p class="section-lede reveal">
+      Five steps along the same scale that drives type and Button — applied
+      across every variant so the family stays in lockstep. The middle is
+      canonical: <strong>Large · 22.5px</strong> for primary forms in
+      marketing surfaces and full-page intake flows.
+    </p>
 
     <h4 class="subheading reveal">Text input — across all sizes <span class="tag">primary control</span></h4>
     <div class="glass form-size-stage reveal">
@@ -901,17 +921,16 @@
   <!-- ========================== FORM · TOKENS ========================== -->
   <section class="chunk" id="form-tokens">
     <header class="chunk-head reveal">
-      <div>
-        <span class="num-tag">04 / Form — Component tokens</span>
-        <h2 class="text-display-sm">Token <em>map</em>.</h2>
-      </div>
-      <p>
-        Every form declaration resolves through this layer. Component tokens
-        only ever reference semantic tokens — never primitives — so a focus
-        colour change cascades to inputs, radios, checkboxes and the
-        file-upload dropzone in lockstep.
-      </p>
+      <span class="num-tag">04 / Form — Component tokens</span>
+      <h2 class="text-display-sm">Tokens.</h2>
     </header>
+
+    <p class="section-lede reveal">
+      Every form declaration resolves through this layer. Component tokens
+      only ever reference semantic tokens — never primitives — so a focus
+      colour change cascades to inputs, radios, checkboxes and the
+      file-upload dropzone in lockstep.
+    </p>
 
     <table class="token-table reveal" aria-label="Form component tokens">
       <thead>
