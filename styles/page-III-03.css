@@ -23,6 +23,18 @@
     position: relative;
     z-index: 50;
 }
+/* Also lift the showcase container itself. Each grid carries .reveal,
+   whose transform establishes a stacking context — without this, the
+   card's z-index is scoped inside the grid and any sibling that follows
+   the grid (notably the trailing .usage-note--below, which is also
+   .reveal and so its own stacking context) paints over the dropdown
+   menu when it overflows below the last card. */
+.form-variant-grid:has(.dropdown.is-open),
+.form-version-stage:has(.dropdown.is-open),
+.form-size-stage:has(.dropdown.is-open) {
+    position: relative;
+    z-index: 50;
+}
 
 /* =========================================================
    USAGE NOTE — instructional paragraph
