@@ -1,137 +1,85 @@
 /* =========================================================
    PAGE — COMPONENT · CARD
-   Styles unique to section-05-card.html: showcase tile
-   layout, the per-card use-case note panel, and the
-   anatomy diagram. Token-table styling is reused from
-   page-III-02.css; usage-note styling is reused
-   from page-III-03.css.
+   Styles unique to III-05-cards.html: the prose-doc layout
+   wrappers, the architectural callout, the anatomy diagram,
+   and the kanban mock-up. Token-table styling is reused from
+   page-III-02.css; usage-note + .subheading styling is
+   reused from page-III-03.css.
    The actual Card component lives in card.css.
    Depends on: tokens.css, base.css, shell.css, card.css
    ========================================================= */
 
 /* =========================================================
-   SHOWCASE — natural card sizes, content-driven width
-   Cards are NOT forced into a fixed-column grid. Each tile
-   sizes to its inner card's natural width via --tile-w
-   (per-tile width hint), and the row wraps. This keeps a
-   Horizontal card wider than a Vertical card without
-   reaching for a separate layout primitive.
+   PROSE DOCUMENTATION LAYOUT — replaces the tile grid.
+   Cards are not catalogued in a grid; they are documented
+   inline alongside the prose that describes them. Each
+   variant gets a subheading, an intro paragraph, the live
+   demo, and one or more usage-note paragraphs. Nothing
+   carries tile chrome.
    ========================================================= */
-.card-showcase {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--spacing-5x);
-    align-items: flex-start;
-}
 
-/* Tile — wraps the demo card with a label + meta strip and
-   an optional note panel describing use case, states,
-   interactions, and responsiveness. */
-.card-showcase__tile {
-    --tile-w: 380px;
-    flex: 0 0 auto;
-    width: var(--tile-w);
-    max-width: 100%;
-    border-radius: var(--radius-lg);
-    border: var(--border-width-base) solid var(--border-glass-light);
-    background: var(--background-glass-light);
-    backdrop-filter: var(--blur-lg) saturate(140%);
-    -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
-    padding: var(--spacing-5x);
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-4x);
-}
-
-.card-showcase__tile.size-sm   { --tile-w: 320px; }
-.card-showcase__tile.size-md   { --tile-w: 380px; }
-.card-showcase__tile.size-lg   { --tile-w: 460px; }
-.card-showcase__tile.size-xl   { --tile-w: 540px; }
-.card-showcase__tile.size-2xl  { --tile-w: 640px; }
-.card-showcase__tile.size-full { --tile-w: 100%; }
-
-/* Stack mode — single column, full-width tiles. Use for
-   showcasing horizontally-oriented cards (Horizontal
-   layout, horizontal Article / Product recipes) where
-   length > width is the point and a side-by-side grid
-   would visually flatten the proportions back to square. */
-.card-showcase--stack {
-    flex-direction: column;
-    flex-wrap: nowrap;
-    gap: var(--spacing-4x);
-}
-.card-showcase--stack .card-showcase__tile {
-    width: 100%;
-}
-
-.card-showcase__tile .label {
-    font-family: var(--font-mono);
-    font-size: var(--text-micro);
-    letter-spacing: var(--letter-spacing-eyebrow);
-    text-transform: uppercase;
-    color: var(--text-default-minimal);
-}
-
-.card-showcase__tile .demo {
-    display: flex;
-    align-items: stretch;
-}
-.card-showcase__tile .demo > .card { width: 100%; }
-
-.card-showcase__tile .meta {
-    font-family: var(--font-mono);
-    font-size: var(--text-micro);
-    color: var(--text-default-minimal);
-    letter-spacing: var(--letter-spacing-mono);
-    border-top: var(--border-width-base) solid var(--border-default-subtle);
-    padding-top: var(--spacing-3x);
-    display: flex;
-    justify-content: space-between;
-    gap: var(--spacing-3x);
-}
-.card-showcase__tile .meta strong {
-    color: var(--text-default);
-    font-weight: var(--font-weight-medium);
-}
-
-/* =========================================================
-   PER-CARD NOTE PANEL
-   Use case · States · Interactions · Responsiveness.
-   Displayed inside the showcase tile, beneath the demo.
-   Each row is its own dt/dd pair so screen readers parse
-   it as a definition list.
-   ========================================================= */
-.card-showcase__note {
-    display: grid;
-    grid-template-columns: max-content 1fr;
-    gap: var(--spacing-1x) var(--spacing-3x);
-    padding: var(--spacing-3x);
-    border: var(--border-width-base) dashed var(--border-default);
-    border-radius: var(--radius-md);
-    background: color-mix(in srgb, var(--background-default-subtle) 60%, transparent);
-}
-.card-showcase__note dt {
+/* The variant heading sitting above each demo. Quieter than
+   .subheading — this is a third-level cue inside a section,
+   not a section title. */
+.card-doc__variant {
     font-family: var(--font-mono);
     font-size: var(--text-micro);
     letter-spacing: var(--letter-spacing-eyebrow);
     text-transform: uppercase;
     color: var(--text-primary-strong);
     font-weight: var(--font-weight-medium);
-    align-self: start;
-    padding-top: 2px;
+    margin: var(--spacing-7x) 0 var(--spacing-2x);
 }
-.card-showcase__note dd {
+.card-doc__variant:first-child {
+    margin-top: 0;
+}
+
+/* The lead paragraph that defines the variant — sits between
+   the variant heading and the live demo. */
+.card-doc__lede {
     font-family: var(--font-sans);
-    font-size: var(--text-sm);
+    font-size: var(--text-body);
+    line-height: var(--line-height-body);
+    color: var(--text-default);
+    margin: 0 0 var(--spacing-4x);
+    max-width: 72ch;
+}
+
+/* Inline demo wrapper. The card sits directly on the page;
+   this wrapper exists only to constrain the demo's width on
+   wide viewports (so a horizontal card doesn't sprawl edge
+   to edge) and to provide the small bottom-margin that the
+   following paragraphs read against. */
+.card-doc__demo {
+    margin: 0 0 var(--spacing-4x);
+    max-width: 640px;
+}
+.card-doc__demo--wide {
+    max-width: 100%;
+}
+.card-doc__demo > .card,
+.card-doc__demo > a.card {
+    width: 100%;
+}
+
+/* Prose continuation after the demo — the use case, states,
+   interactions, and responsive behaviour all flow as
+   sentences. Reuses .usage-note from page-III-03.css when
+   the prose is rule-shaped; this class is for plain
+   descriptive prose. */
+.card-doc__prose {
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
     line-height: var(--line-height-body);
     color: var(--text-default-subtle);
-    margin: 0;
+    margin: 0 0 var(--spacing-5x);
+    max-width: 72ch;
 }
-.card-showcase__note dd strong {
+.card-doc__prose strong {
     color: var(--text-default);
     font-weight: var(--font-weight-medium);
 }
-.card-showcase__note code {
+.card-doc__prose code {
     font-family: var(--font-mono);
     font-size: var(--text-body-sm);
     color: var(--text-primary-strong);
@@ -140,81 +88,109 @@
     border-radius: var(--radius-sm);
     white-space: nowrap;
 }
+.card-doc__prose + .card-doc__prose {
+    margin-top: calc(var(--spacing-5x) * -1 + var(--spacing-3x));
+}
 
-/* =========================================================
-   ON-VIVID — subtle atmosphere for GLASS demos
-   Replaces the previous loud brand-wash. The new wash is
-   built from primary-200 / accent-200 / secondary-100 at
-   low opacity over the default surface — enough texture
-   for backdrop-filter to read, far calmer than the old
-   gradient-brand. The surface stays light enough that
-   default text colours still pass contrast, so no
-   inverted-text override is needed here.
-   ========================================================= */
-.card-showcase__tile.on-vivid {
+/* On-vivid backdrop for the Glass-scale demos. The glass
+   tiers need a non-flat surface behind them to read. This
+   was previously .card-showcase__tile.on-vivid; now it's a
+   demo-only wrapper that sits inline with the prose. */
+.card-doc__demo--on-vivid {
     position: relative;
     overflow: hidden;
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-6x);
     background:
         radial-gradient(ellipse 80% 60% at 20% 15%, color-mix(in srgb, var(--primary-200) 45%, transparent), transparent 65%),
         radial-gradient(ellipse 70% 55% at 85% 90%, color-mix(in srgb, var(--accent-200)  35%, transparent), transparent 60%),
         radial-gradient(ellipse 60% 40% at 70% 30%, color-mix(in srgb, var(--secondary-100) 30%, transparent), transparent 70%),
         var(--background-default);
-    border-color: var(--border-default);
-    padding: var(--spacing-6x);
+    border: var(--border-width-base) solid var(--border-default);
 }
 
-/* =========================================================
-   ON-DARK — quiet dark backdrop for INVERTED-CARD demos
-   The inverted card's surface is near-transparent white
-   that needs darkness to read against. A pure brand-wash
-   is too vivid; a flat black is too cold. This is a deep
-   neutral with a single accent radial hint — restrained,
-   brand-aware, and dark enough that --card-inverted-bg
-   shows up as a coherent surface.
-   ========================================================= */
-.card-showcase__tile.on-dark {
+/* On-dark backdrop for the Inverted version demo, replacing
+   .card-showcase__tile.on-dark. Same restraint, same brand
+   hint, no tile chrome. */
+.card-doc__demo--on-dark {
     position: relative;
     overflow: hidden;
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-6x);
     background:
         radial-gradient(ellipse 90% 70% at 25% 20%, color-mix(in srgb, var(--accent-500) 22%, transparent), transparent 65%),
         linear-gradient(160deg, var(--neutral-800) 0%, var(--neutral-950) 100%);
-    border-color: var(--border-glass-dark);
-    padding: var(--spacing-6x);
-    color: var(--text-inverted);
+    border: var(--border-width-base) solid var(--border-glass-dark);
 }
-.card-showcase__tile.on-dark .label,
-.card-showcase__tile.on-dark .meta {
-    color: var(--text-inverted-subtle);
-}
-.card-showcase__tile.on-dark .meta { border-top-color: var(--border-inverted); }
-.card-showcase__tile.on-dark .meta strong { color: var(--text-inverted); }
-.card-showcase__tile.on-dark .body { border-top-color: var(--border-inverted); }
-.card-showcase__tile.on-dark .body .name { color: var(--text-inverted); }
-.card-showcase__tile.on-dark .body .desc { color: var(--text-inverted-subtle); }
 
 /* =========================================================
-   VERSION META STRIP — small caption beneath demos in the
-   Versions / States sections.
+   STATES ROW — five-cell strip that sits between a style
+   variant's hero preview and its documentation prose. Each
+   cell pairs a numbered badge with a card sample frozen in
+   one interaction state. Concept borrowed from M3's state
+   matrix; every value resolves to our own card tokens.
    ========================================================= */
-.card-showcase__tile .body {
-    padding-top: var(--spacing-3x);
-    border-top: var(--border-width-base) solid var(--border-default-subtle);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.card-doc__states-row {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: var(--spacing-3x);
+    margin: 0 0 var(--spacing-5x);
+    max-width: 100%;
 }
-.card-showcase__tile .body .name {
+.card-doc__states-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-2x);
+    min-width: 0;
+}
+.card-doc__states-num {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--neutral-900);
+    color: var(--white-base);
     font-family: var(--font-sans);
-    font-weight: var(--font-weight-semibold);
-    font-size: var(--text-base);
-    color: var(--text-default);
-}
-.card-showcase__tile .body .desc {
-    font-family: var(--font-mono);
     font-size: var(--text-micro);
-    letter-spacing: var(--letter-spacing-mono);
-    color: var(--text-default-minimal);
+    font-weight: var(--font-weight-medium);
+    line-height: 1;
+}
+.card-doc__states-sample {
+    /* The sample is a real .card with the variant modifiers, so
+       background / border / radius / shadow come from card.css.
+       This rule only constrains the sample's footprint and pins
+       the label to the bottom-left so the row reads as a strip
+       of equal-height tiles. Transitions are disabled because
+       these samples are static demonstrations, not affordances. */
+    width: 100%;
+    min-height: 96px;
+    padding: var(--spacing-3x);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    transition: none;
+}
+.card-doc__states-label {
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    color: var(--text-default);
+    font-weight: var(--font-weight-medium);
+    line-height: 1;
+}
+
+@media (max-width: 720px) {
+    .card-doc__states-row {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .card-doc__states-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 }
 
 /* =========================================================
@@ -361,9 +337,6 @@
 /* =========================================================
    RESPONSIVE
    ========================================================= */
-@media (max-width: 720px) {
-    .card-showcase__tile { width: 100%; }
-}
 @media (max-width: 960px) {
     .card-anatomy { grid-template-columns: 1fr; gap: var(--spacing-5x); }
 }
