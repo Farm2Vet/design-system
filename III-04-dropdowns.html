@@ -160,49 +160,38 @@
     </header>
 
     <p class="section-lede reveal">
-      Two cards defining the boundary between the system default
-        (<code>.dropdown</code>, used everywhere) and the narrow set of edge
-        cases where the native <code>.select</code> still earns its place.
+      Defines the boundary between the system default —
+      <code>.dropdown</code>, used everywhere — and the narrow set of edge
+      cases where the native <code>.select</code> still earns its place.
     </p>
 
-    <div class="form-version-stage reveal" style="grid-template-columns: repeat(2, minmax(0, 1fr));">
-      <article class="form-version-card">
-        <span class="label">Default — use .dropdown</span>
-        <div class="demo">
-          <p style="font-size: var(--text-base); line-height: 1.55; color: var(--text-default); margin: 0 0 var(--spacing-3x);">
-            Every product surface a user will actually see. The premium dropdown
-            is the brand's most repeated micro-interaction — opening it should
-            feel like F2V, not like the OS.
-          </p>
-          <ul style="font-size: var(--text-sm); line-height: 1.65; color: var(--text-default); padding-left: var(--spacing-5x); margin: 0;">
-            <li>Intake forms (new patient, new visit, new case)</li>
-            <li>Filters on dashboards, tables, search results</li>
-            <li>Settings, profile, and account preferences</li>
-            <li>Onboarding flows where polish builds trust</li>
-            <li>Marketing-page forms (contact, demo, sign-up)</li>
-            <li>Anywhere options carry descriptions, icons, or rich content</li>
-          </ul>
-        </div>
-        <div class="meta"><span>.dropdown</span><strong>system default</strong></div>
-      </article>
+    <div class="usage-note usage-note--below reveal">
+      <p>
+        <strong>Default to <code>.dropdown</code> on every product surface a user will actually see.</strong>
+        The premium dropdown is the brand's most repeated micro-interaction —
+        opening it should feel like F2V, not like the OS.
+      </p>
+      <ul>
+        <li>Intake forms — new patient, new visit, new case.</li>
+        <li>Filters on dashboards, tables, and search results.</li>
+        <li>Settings, profile, and account preferences.</li>
+        <li>Onboarding flows where polish builds trust.</li>
+        <li>Marketing-page forms — contact, demo, sign-up.</li>
+        <li>Anywhere options carry descriptions, icons, or rich content.</li>
+      </ul>
+    </div>
 
-      <article class="form-version-card">
-        <span class="label">Edge case — fall back to .select</span>
-        <div class="demo">
-          <p style="font-size: var(--text-base); line-height: 1.55; color: var(--text-default); margin: 0 0 var(--spacing-3x);">
-            A short list of contexts where the native control's constraints
-            actually serve the user better. If the case isn't on this list,
-            it isn't an edge case.
-          </p>
-          <ul style="font-size: var(--text-sm); line-height: 1.65; color: var(--text-default); padding-left: var(--spacing-5x); margin: 0;">
-            <li>Bulk-edit grids with hundreds of selectors per screen — the JS cost of a custom dropdown per row is real</li>
-            <li>Internal admin tooling not exposed to customers</li>
-            <li>Mobile-first flows where OS keyboard / spinner integration is the whole point (date / time / native pickers)</li>
-            <li>Quick prototypes before the design is locked</li>
-          </ul>
-        </div>
-        <div class="meta"><span>.select</span><strong>edge case only</strong></div>
-      </article>
+    <div class="usage-note usage-note--below reveal">
+      <p>
+        <strong>Reach for <code>.select</code> only when the native control's constraints actually serve the user better.</strong>
+        If the case isn't on the list below, it isn't an edge case.
+      </p>
+      <ul>
+        <li>Bulk-edit grids with hundreds of selectors per screen — the JS cost of a custom dropdown per row is real.</li>
+        <li>Internal admin tooling not exposed to customers.</li>
+        <li>Mobile-first flows where OS keyboard or spinner integration is the whole point — date, time, and native pickers.</li>
+        <li>Quick prototypes before the design is locked.</li>
+      </ul>
     </div>
   </section>
 
@@ -217,15 +206,6 @@
       Three variants, each tuned to a distinct user task: making a
         first-time choice, revising a saved value, or weighing options with
         explanatory copy.
-    </p>
-
-    <p class="usage-note reveal">
-      <strong>Match the variant to the user's task, not to the field.</strong>
-      A first-time choice reads differently than revising a saved value, and
-      weighing options with descriptions is a different mental task than
-      picking from a flat list. Don't default to the placeholder variant out
-      of habit — when re-opening a record with an existing value, render
-      with-value; when the user must compare options, use descriptions.
     </p>
 
     <div class="form-variant-grid reveal">
@@ -270,13 +250,6 @@
                 </button>
               </div>
             </div>
-            <span class="field__helper">
-              <strong>Use for:</strong> new-record forms (new patient, new
-              visit, new case), onboarding intake, filters before the user
-              has narrowed their view. Placeholder copy should mirror the
-              field label as a quiet call to action — "Choose species…" not
-              "Select an option".
-            </span>
           </div>
         </div>
         <div class="meta"><span>.is-empty</span><strong>no prior value</strong></div>
@@ -313,13 +286,6 @@
                 </button>
               </div>
             </div>
-            <span class="field__helper">
-              <strong>Use for:</strong> edit-record forms (patient details,
-              account settings), persisted filters after a page reload, any
-              form a user has opened to revise — not create. The current
-              value replaces the placeholder; the open menu marks it with a
-              checkmark so the user can re-confirm without scanning.
-            </span>
           </div>
         </div>
         <div class="meta"><span>.is-selected</span><strong>committed value</strong></div>
@@ -361,20 +327,47 @@
                 </button>
               </div>
             </div>
-            <span class="field__helper">
-              <strong>Use for:</strong> plan / pricing pickers, persona or
-              role selection during onboarding, configuration choices with
-              real consequences (storage tier, region, model size).
-              Reach for this whenever the option's <em>label alone</em> isn't
-              enough for the user to decide. Wrap the secondary line in
-              <code>.dropdown__option-meta</code>; the trigger always shows
-              the label, never the description.
-            </span>
           </div>
         </div>
         <div class="meta"><span>.dropdown__option-meta</span><strong>label + description</strong></div>
       </article>
 
+    </div>
+
+    <div class="usage-note usage-note--below reveal">
+      <p>
+        <strong>Match the variant to the user's task, not to the field.</strong>
+        A first-time choice reads differently than revising a saved value, and
+        weighing options with descriptions is a different mental task than
+        picking from a flat list. Don't default to the placeholder variant out
+        of habit — when re-opening a record with an existing value, render
+        with-value; when the user must compare options, use descriptions.
+      </p>
+      <ul>
+        <li>
+          <strong>Placeholder · first-time selection.</strong> New-record forms
+          (new patient, new visit, new case), onboarding intake, filters before
+          the user has narrowed their view. Placeholder copy should mirror the
+          field label as a quiet call to action — "Choose species…" not
+          "Select an option".
+        </li>
+        <li>
+          <strong>With value · editing existing data.</strong> Edit-record
+          forms (patient details, account settings), persisted filters after a
+          page reload, any form a user has opened to revise — not create. The
+          current value replaces the placeholder; the open menu marks it with
+          a checkmark so the user can re-confirm without scanning.
+        </li>
+        <li>
+          <strong>With descriptions · comparing options.</strong> Plan /
+          pricing pickers, persona or role selection during onboarding,
+          configuration choices with real consequences (storage tier, region,
+          model size). Reach for this whenever the option's <em>label alone</em>
+          isn't enough for the user to decide. Wrap the secondary line in
+          <code>.dropdown__option-meta</code>; the trigger always shows the
+          label, never the description.
+        </li>
+      </ul>
     </div>
   </section>
 
@@ -389,14 +382,6 @@
       Three states shared with every other form control in the system:
         default (no value yet), with value (the user has committed a choice),
         and error (validation failed).
-    </p>
-
-    <p class="usage-note reveal">
-      <strong>Three states, never a fourth.</strong> Default → with-value →
-      error is the vocabulary every form control in the system uses.
-      Inventing a "warning" or "loading" state for one dropdown breaks the
-      visual language users have learned across the rest of the product —
-      use the existing helper text and disabled patterns instead.
     </p>
 
     <div class="form-version-stage reveal">
@@ -416,9 +401,7 @@
               </div>
             </div>
             <span class="field__helper">
-              The starting state for any new form. Apply <code>.is-empty</code>
-              on the trigger to render the placeholder colour. Placeholder copy
-              should phrase the field as a quiet ask, not a generic "Select…".
+              This is <code>.field__helper</code>. Used to guide user.
             </span>
           </div>
         </div>
@@ -440,13 +423,6 @@
                 <button type="button" class="dropdown__option" role="option" data-value="c">Caprine<svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></button>
               </div>
             </div>
-            <span class="field__helper">
-              Rendered after the user picks an option, or when re-opening a
-              saved record. Drop the <code>.is-empty</code> class so text
-              colour shifts to <code>--text-default</code>; the matching
-              option in the menu carries <code>.is-selected</code> and shows
-              the checkmark for fast re-confirmation.
-            </span>
           </div>
         </div>
         <div class="meta"><span>.is-selected</span><strong>committed value</strong></div>
@@ -473,6 +449,17 @@
         <div class="meta"><span>.is-error</span><strong>blocks submission</strong></div>
       </article>
     </div>
+
+    <p class="usage-note usage-note--below reveal">
+      Apply <code>.is-empty</code> on the trigger to render the placeholder colour. Placeholder copy
+      should phrase the field as a quiet ask, not a generic "Select…".
+
+      Rendered after the user picks an option, or when re-opening a
+      saved record. Drop the <code>.is-empty</code> class so text
+      colour shifts to <code>--text-default</code>; the matching
+      option in the menu carries <code>.is-selected</code> and shows
+      the checkmark for fast re-confirmation.
+    </p>
   </section>
 
   <!-- ========================== SIZES ========================== -->
@@ -485,15 +472,6 @@
     <p class="section-lede reveal">
       Five steps along the same scale that drives Type, Button, and Form.
         Canonical: <strong>Large · 22.5px</strong>.
-    </p>
-
-    <p class="usage-note reveal">
-      <strong>Pick by surface, not importance.</strong> SM lives in dense
-      table headers and admin toolbars; MD is the product default for forms
-      in dialogs and edit panels; LG (canonical) anchors marketing pages,
-      hero intake, and onboarding flows; XL and 2XL are reserved for
-      showcase pickers and display demos. When in doubt on a product
-      surface, default to MD.
     </p>
 
     <div class="glass form-size-stage reveal">
@@ -559,6 +537,15 @@
       </div>
     </div>
 
+    <p class="usage-note usage-note--below reveal">
+      <strong>Pick by surface, not importance.</strong> SM lives in dense
+      table headers and admin toolbars; MD is the product default for forms
+      in dialogs and edit panels; LG (canonical) anchors marketing pages,
+      hero intake, and onboarding flows; XL and 2XL are reserved for
+      showcase pickers and display demos. When in doubt on a product
+      surface, default to MD.
+    </p>
+
   </section>
 
   <!-- ========================== TOKENS ========================== -->
@@ -573,16 +560,6 @@
         layer (trigger, menu, option, motion).
     </p>
 
-    <p class="usage-note reveal">
-      <strong>Override at the component-token layer, never at the call site.</strong>
-      Trigger tokens re-export the <code>--form-*</code> chain so the closed
-      dropdown matches a native <code>.select</code> — change those on
-      <code>:root</code> in the form layer and both follow. Menu, option,
-      and motion tokens are dedicated to this component and own the premium
-      feel; tune <code>--dropdown-anim-easing</code> once and every dropdown
-      across the product opens with a different cadence.
-    </p>
-
     <table class="token-table reveal" aria-label="Dropdown component tokens">
       <thead>
         <tr>
@@ -594,6 +571,16 @@
       </thead>
       <tbody id="dropdownTokenTable"></tbody>
     </table>
+
+    <p class="usage-note usage-note--below reveal">
+      <strong>Override at the component-token layer, never at the call site.</strong>
+      Trigger tokens re-export the <code>--form-*</code> chain so the closed
+      dropdown matches a native <code>.select</code> — change those on
+      <code>:root</code> in the form layer and both follow. Menu, option,
+      and motion tokens are dedicated to this component and own the premium
+      feel; tune <code>--dropdown-anim-easing</code> once and every dropdown
+      across the product opens with a different cadence.
+    </p>
   </section>
 
   <!-- ========================== FOOTER ========================== -->

@@ -72,6 +72,38 @@
     margin-top: var(--spacing-3x);
 }
 
+/* Block children inside .usage-note. Used when the rule carries a lead
+   sentence plus a list of contexts — the wrapper switches from <p> to
+   <div>, and the inner <p>/<ul> reset their default margins so the
+   border-accent + indent stays visually crisp. */
+.usage-note > p {
+    margin: 0;
+}
+.usage-note > p + ul,
+.usage-note > p + ol {
+    margin-top: var(--spacing-3x);
+}
+.usage-note > ul,
+.usage-note > ol {
+    font-size: var(--text-body-sm);
+    line-height: 1.65;
+    margin: 0;
+    padding-left: var(--spacing-5x);
+    color: var(--text-default-subtle);
+}
+.usage-note li + li {
+    margin-top: var(--spacing-1x);
+}
+.usage-note li code {
+    font-family: var(--font-mono);
+    font-size: 0.92em;
+    color: var(--text-primary-strong);
+    background: var(--background-primary-minimal);
+    padding: 0.1em 0.4em;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+}
+
 /* =========================================================
    VARIANT GRID — one card per form variant
    Single column on desktop. Each card spans the full
