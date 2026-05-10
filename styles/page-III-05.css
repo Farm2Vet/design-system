@@ -194,34 +194,47 @@
 }
 
 /* =========================================================
-   ANATOMY DIAGRAM — labelled card showing slot vocabulary
+   VARIANT SUBSECTIONS — spacing-only wrappers.
+   Each variant in section 01 (Elevated, Filled, Outlined,
+   Left-bar) sits inside a .card-doc__variant-section. The
+   wrapper is intentionally chromeless: it only owns the
+   gap between its inner rows and the margin to the next
+   subsection. The eyebrow above each block reads "Variant"
+   and the actual variant name sits in the
+   .card-doc__variant-name heading inside.
    ========================================================= */
-.card-anatomy {
-    padding: var(--spacing-8x);
-    display: grid;
-    grid-template-columns: minmax(260px, 360px) 1fr;
-    gap: var(--spacing-8x);
-    align-items: center;
+.card-doc__variant-section {
+    margin: 0 0 var(--spacing-8x);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4x);
 }
-.card-anatomy .legend {
+.card-doc__variant-section:last-of-type {
+    margin-bottom: 0;
+}
+.card-doc__variant-section > .card-doc__variant       { margin: 0; }
+.card-doc__variant-section > .card-doc__variant-name  { margin: 0; }
+.card-doc__variant-section > .card-doc__lede          { margin: 0; }
+.card-doc__variant-section > .card-doc__demo          { margin: 0; }
+.card-doc__variant-section > .card-doc__states-row    { margin: 0; }
+.card-doc__variant-section > .card-doc__prose         { margin: 0; }
+
+.card-doc__variant-name {
+    font-family: var(--font-sans);
+    font-size: var(--text-h4);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-default);
+    line-height: var(--line-height-heading);
+}
+
+/* Left-bar previews — each tone on its own full-width row,
+   carrying realistic mock content. The stack reads like a
+   short notification feed so the tones can be compared at
+   the size and density they ship at in product. */
+.card-doc__left-bar-row {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-3x);
-}
-.card-anatomy .legend dt {
-    font-family: var(--font-mono);
-    font-size: var(--text-micro);
-    letter-spacing: var(--letter-spacing-eyebrow);
-    text-transform: uppercase;
-    color: var(--text-primary-strong);
-    margin-bottom: var(--spacing-half);
-}
-.card-anatomy .legend dd {
-    font-family: var(--font-sans);
-    font-size: var(--text-sm);
-    color: var(--text-default-subtle);
-    line-height: var(--line-height-body);
-    margin: 0 0 var(--spacing-3x);
 }
 
 /* =========================================================
@@ -267,76 +280,3 @@
     border-radius: var(--radius-sm);
 }
 
-/* =========================================================
-   KANBAN MOCK-UP — draggable card use case
-   Three-column board demonstrating drag between columns and
-   reorder within a column. Lives in the page CSS (not the
-   component) because it composes Card with a layout
-   primitive that's specific to this documentation page.
-   ========================================================= */
-.card-kanban {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--spacing-4x);
-    padding: var(--spacing-5x);
-    background: var(--background-default-subtle);
-    border-radius: var(--radius-lg);
-    border: var(--border-width-base) solid var(--border-default);
-}
-.card-kanban__column {
-    background: var(--background-default);
-    border-radius: var(--radius-md);
-    padding: var(--spacing-4x);
-    border: var(--border-width-base) solid var(--border-default-subtle);
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-3x);
-    min-width: 0;
-}
-.card-kanban__column-head {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-1x);
-}
-.card-kanban__column-head h4 {
-    font-size: var(--text-h6);
-    font-weight: var(--font-weight-semibold);
-    margin: 0;
-}
-.card-kanban__list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-2x);
-    min-height: 80px;
-    padding: var(--spacing-2x);
-    border-radius: var(--radius-sm);
-    border: var(--border-width-base) dashed transparent;
-    transition: background-color .15s ease, border-color .15s ease;
-}
-.card-kanban__list.is-drop-target {
-    background: var(--background-primary-subtle);
-    border-color: var(--border-primary);
-}
-.card-kanban .card--draggable {
-    /* Compact draggable cards for the kanban density */
-    --card-padding-x: var(--spacing-4x);
-    --card-padding-y: var(--spacing-4x);
-    cursor: grab;
-}
-.card-kanban .card--draggable.is-dragging {
-    opacity: 0.6;
-}
-.card-kanban .card--draggable:active {
-    cursor: grabbing;
-}
-
-@media (max-width: 880px) {
-    .card-kanban { grid-template-columns: 1fr; }
-}
-
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
-@media (max-width: 960px) {
-    .card-anatomy { grid-template-columns: 1fr; gap: var(--spacing-5x); }
-}

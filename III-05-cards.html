@@ -171,78 +171,10 @@
     </p>
   </section>
 
-  <!-- ========================== ANATOMY ========================== -->
-  <section class="chunk" id="card-anatomy">
-    <header class="chunk-head reveal">
-      <span class="num-tag">01 / Card — Anatomy</span>
-      <h2 class="text-display-sm">Anatomy.</h2>
-    </header>
-
-    <p class="section-lede reveal">
-      Slot-based composition. Every variant exposes a subset of the
-        slots below; sub-components (badges, prices, ratings, metrics,
-        avatars) attach into any slot that accepts content.
-    </p>
-
-    <p class="usage-note reveal">
-      <strong>Slot order is hierarchy.</strong> The stack reads
-      eyebrow → title → subtitle → body → footer in that order
-      because each slot ranks lower than the one above it. The title
-      is the only required slot — it carries the card's primary
-      signal. Optional slots earn their place by adding signal, not
-      decoration.
-    </p>
-
-    <div class="glass card-anatomy reveal">
-      <article class="card">
-        <span class="card__eyebrow">Eyebrow · category</span>
-        <header class="card__header">
-          <h3 class="card__title">Card title</h3>
-          <p class="card__subtitle">Optional supporting subtitle</p>
-        </header>
-        <div class="card__badge-row">
-          <span class="card__badge">New</span>
-          <span class="card__badge card__badge--info">Verified</span>
-        </div>
-        <p class="card__body">
-          Body copy explains the card's purpose with one or two short sentences.
-          Keep it scannable; long-form belongs in a detail page.
-        </p>
-        <footer class="card__footer">
-          <span class="card__eyebrow">Footer · meta</span>
-          <div class="card__actions">
-            <button class="btn btn--ghost btn--sm">Skip</button>
-            <button class="btn btn--cta btn--sm">Open</button>
-          </div>
-        </footer>
-      </article>
-
-      <dl class="legend">
-        <dt>.card__media</dt>
-        <dd>Image, video, or graphic — top in vertical, leading edge in horizontal.</dd>
-
-        <dt>.card__eyebrow</dt>
-        <dd>Mono micro-label for category, status, or section. Optional.</dd>
-
-        <dt>.card__title · .card__subtitle</dt>
-        <dd>Semibold H5 headline + subtle small-text descriptor. Title is the only required slot.</dd>
-
-        <dt>.card__badge-row</dt>
-        <dd>Status pills (default · info · safe · warning · critical).</dd>
-
-        <dt>.card__body</dt>
-        <dd>Body prose, lists, or any free content.</dd>
-
-        <dt>.card__footer · .card__actions</dt>
-        <dd>Divider-separated row holding meta on the left and ≤ 2–3 actions on the right.</dd>
-      </dl>
-    </div>
-  </section>
-
   <!-- ========================== STYLE VARIANTS ========================== -->
   <section class="chunk" id="card-style">
     <header class="chunk-head reveal">
-      <span class="num-tag">02 / Card — Style variants</span>
+      <span class="num-tag">01 / Card — Variants</span>
       <h2 class="text-display-sm">Elevation.</h2>
     </header>
 
@@ -263,1253 +195,377 @@
       Filled.
     </p>
 
-    <h4 class="card-doc__variant reveal">Elevated · default.</h4>
-    <p class="card-doc__lede reveal">
-      The default style. A subtle shadow plus a 1px border separates
-      the card from the canvas. Reach for Elevated on content blocks,
-      intake forms, and feed items where lift is the cue that the
-      card belongs above the page.
-    </p>
-    <div class="card-doc__demo reveal">
-      <article class="card">
-        <span class="card__eyebrow">Caseload · 2026-05-07</span>
-        <header class="card__header">
-          <h3 class="card__title">Bessie · Holstein, 4y</h3>
-          <p class="card__subtitle">Owner: Nguyen Minh · Farm 12B</p>
-        </header>
-        <p class="card__body">
-          Recurrent left-fore lameness, grade 2/5. Vitals stable.
-        </p>
-        <footer class="card__footer">
-          <span class="card__eyebrow">Updated 14 m</span>
-          <div class="card__actions">
-            <button class="btn btn--cta btn--sm">Open chart</button>
-          </div>
-        </footer>
-      </article>
-    </div>
-    <div class="card-doc__states-row reveal" role="list" aria-label="Elevated card — interaction states">
-      <div class="card-doc__states-cell" role="listitem">
-        <span class="card-doc__states-num" aria-hidden="true">1</span>
-        <article class="card card-doc__states-sample">
-          <span class="card-doc__states-label">Default</span>
-        </article>
-      </div>
-      <div class="card-doc__states-cell" role="listitem">
-        <span class="card-doc__states-num" aria-hidden="true">2</span>
-        <article class="card card-doc__states-sample"
-                 style="background: var(--card-bg-hover); border-color: var(--card-border-hover); box-shadow: var(--card-shadow-hover); transform: translateY(-1px);">
-          <span class="card-doc__states-label">Hover</span>
-        </article>
-      </div>
-      <div class="card-doc__states-cell" role="listitem">
-        <span class="card-doc__states-num" aria-hidden="true">3</span>
-        <article class="card card-doc__states-sample"
-                 style="outline: 2px solid var(--outline-focus); outline-offset: 2px;">
-          <span class="card-doc__states-label">Focus</span>
-        </article>
-      </div>
-      <div class="card-doc__states-cell" role="listitem">
-        <span class="card-doc__states-num" aria-hidden="true">4</span>
-        <article class="card card-doc__states-sample"
-                 style="animation: ds-pulse 1.6s ease infinite; background: var(--card-bg-pressed);">
-          <span class="card-doc__states-label">Pressed</span>
-        </article>
-      </div>
-      <div class="card-doc__states-cell" role="listitem">
-        <span class="card-doc__states-num" aria-hidden="true">5</span>
-        <article class="card card-doc__states-sample is-disabled" aria-disabled="true">
-          <span class="card-doc__states-label">Disabled</span>
-        </article>
-      </div>
-    </div>
-    <p class="card-doc__prose reveal">
-      Interactive states only apply when the card itself is the
-      affordance — see the interactivity rule in section 04.
-      <strong>Responsive.</strong> One up on mobile, two to three per
-      row on tablet, three to four in dashboard grids.
-    </p>
+    <section class="card-doc__variant-section reveal">
+      <span class="card-doc__variant">Variant</span>
+      <h3 class="card-doc__variant-name">Elevated · default</h3>
 
-    <h4 class="card-doc__variant reveal">Filled · muted.</h4>
-    <p class="card-doc__lede reveal">
-      A tinted background with no shadow and a transparent border.
-      Use Filled for secondary blocks that live inside a parent
-      surface — settings groups, inline panels, list items nested in
-      a parent card — where the canvas already carries elevation.
-    </p>
-    <div class="card-doc__demo reveal">
-      <article class="card card--filled is-interactive" tabindex="0">
-        <span class="card__eyebrow">Settings · group</span>
-        <header class="card__header">
-          <h3 class="card__title">Notification preferences</h3>
-          <p class="card__subtitle">3 settings · last edited yesterday</p>
-        </header>
-        <p class="card__body">
-          No drop shadow. A subtle background tint separates the
-          card from the canvas.
-        </p>
-      </article>
-    </div>
-    <div class="card-doc__states-row reveal" role="list" aria-label="Filled card — interaction states">
-      <div class="card-doc__states-cell" role="listitem">
-        <span class="card-doc__states-num" aria-hidden="true">1</span>
-        <article class="card card--filled card-doc__states-sample">
-          <span class="card-doc__states-label">Default</span>
-        </article>
-      </div>
-      <div class="card-doc__states-cell" role="listitem">
-        <span class="card-doc__states-num" aria-hidden="true">2</span>
-        <article class="card card--filled card-doc__states-sample"
-                 style="background: var(--card-filled-bg-hover); box-shadow: none;">
-          <span class="card-doc__states-label">Hover</span>
-        </article>
-      </div>
-      <div class="card-doc__states-cell" role="listitem">
-        <span class="card-doc__states-num" aria-hidden="true">3</span>
-        <article class="card card--filled card-doc__states-sample"
-                 style="outline: 2px solid var(--outline-focus); outline-offset: 2px;">
-          <span class="card-doc__states-label">Focus</span>
-        </article>
-      </div>
-      <div class="card-doc__states-cell" role="listitem">
-        <span class="card-doc__states-num" aria-hidden="true">4</span>
-        <article class="card card--filled card-doc__states-sample"
-                 style="background: var(--card-filled-bg-hover); box-shadow: none; transform: translateY(0);">
-          <span class="card-doc__states-label">Pressed</span>
-        </article>
-      </div>
-      <div class="card-doc__states-cell" role="listitem">
-        <span class="card-doc__states-num" aria-hidden="true">5</span>
-        <article class="card card--filled card-doc__states-sample is-disabled" aria-disabled="true">
-          <span class="card-doc__states-label">Disabled</span>
-        </article>
-      </div>
-    </div>
-    <p class="card-doc__prose reveal">
-      The typical Filled pattern is a whole-card affordance with no
-      inner buttons — add inner buttons only when the surface itself
-      is non-interactive. <strong>Responsive.</strong> Stretches
-      full-width inside its parent column and stacks vertically on
-      every breakpoint.
-    </p>
-
-    <h4 class="card-doc__variant reveal">Outlined · border-led.</h4>
-    <p class="card-doc__lede reveal">
-      A 1.5px border on the default background, no shadow. Outlined
-      holds separation in dense layouts — pickers, comparison grids,
-      dashboard tiles — where shadows would compound and muddy the
-      surface.
-    </p>
-    <div class="card-doc__demo reveal">
-      <article class="card card--outlined is-interactive" tabindex="0">
-        <span class="card__eyebrow">Picker · option</span>
-        <header class="card__header">
-          <h3 class="card__title">Bovine</h3>
-          <p class="card__subtitle">Cattle · dairy &amp; beef</p>
-        </header>
-        <p class="card__body">
-          Thicker border, no shadow. Holds separation in dense
-          layouts where shadows would compound.
-        </p>
-      </article>
-    </div>
-    <div class="card-doc__states-row reveal" role="list" aria-label="Outlined card — interaction states">
-      <div class="card-doc__states-cell" role="listitem">
-        <span class="card-doc__states-num" aria-hidden="true">1</span>
-        <article class="card card--outlined card-doc__states-sample">
-          <span class="card-doc__states-label">Default</span>
-        </article>
-      </div>
-      <div class="card-doc__states-cell" role="listitem">
-        <span class="card-doc__states-num" aria-hidden="true">2</span>
-        <article class="card card--outlined card-doc__states-sample"
-                 style="background: var(--card-outlined-bg-hover); border-color: var(--border-primary); box-shadow: none;">
-          <span class="card-doc__states-label">Hover</span>
-        </article>
-      </div>
-      <div class="card-doc__states-cell" role="listitem">
-        <span class="card-doc__states-num" aria-hidden="true">3</span>
-        <article class="card card--outlined card-doc__states-sample"
-                 style="outline: 2px solid var(--outline-focus); outline-offset: 2px;">
-          <span class="card-doc__states-label">Focus</span>
-        </article>
-      </div>
-      <div class="card-doc__states-cell" role="listitem">
-        <span class="card-doc__states-num" aria-hidden="true">4</span>
-        <article class="card card--outlined card-doc__states-sample"
-                 style="background: var(--card-outlined-bg-hover); border-color: var(--border-primary); box-shadow: none; transform: translateY(0);">
-          <span class="card-doc__states-label">Pressed</span>
-        </article>
-      </div>
-      <div class="card-doc__states-cell" role="listitem">
-        <span class="card-doc__states-num" aria-hidden="true">5</span>
-        <article class="card card--outlined card-doc__states-sample is-disabled" aria-disabled="true">
-          <span class="card-doc__states-label">Disabled</span>
-        </article>
-      </div>
-    </div>
-    <p class="card-doc__prose reveal">
-      Outlined is often paired with <code>.is-selected</code> and is
-      the common surface for the Selectable functional variant.
-      <strong>Responsive.</strong> Wraps in a grid; the border keeps
-      separation on mobile without shadow bloom.
-    </p>
-
-    <h4 class="subheading reveal">Left-bar <span class="tag">callout / alert / highlight</span></h4>
-    <p class="usage-note reveal">
-      <strong>Definition.</strong> A thicker leading-edge border in
-      primary or status colour. Composes with any other style.
-      <strong>Use case.</strong> Inline notifications, doc callouts,
-      highlighted feed items, sidebar nav active state.
-      <strong>Status modifiers.</strong>
-      <code>.is-info</code> · <code>.is-warning</code> ·
-      <code>.is-critical</code> · <code>.is-safe</code> ·
-      <code>.is-primary</code>. Match the modifier to the message's
-      semantic intent — colour alone is not the affordance.
-    </p>
-
-    <h4 class="card-doc__variant reveal">Left-bar · primary (default).</h4>
-    <p class="card-doc__lede reveal">
-      The neutral default for the left-bar treatment. Use for pinned
-      items, sidebar nav active state, and general highlights without
-      an explicit status meaning.
-    </p>
-    <div class="card-doc__demo card-doc__demo--wide reveal">
-      <article class="card card--left-bar is-primary">
-        <span class="card__eyebrow">Reminder · 2026-05-07</span>
-        <header class="card__header">
-          <h3 class="card__title">Bessie's bloodwork is back.</h3>
-          <p class="card__subtitle">Awaiting your sign-off before dispatch</p>
-        </header>
-        <p class="card__body">
-          Default tone. Use for general highlights and pinned items
-          without an explicit status meaning.
-        </p>
-      </article>
-    </div>
-    <p class="card-doc__prose reveal">
-      <strong>States.</strong> Inherits the underlying style's state
-      matrix — default, hover, focus, pressed, disabled. Often static
-      and informational, but the callout can be made interactive when
-      the surface itself is a link. <strong>Responsive.</strong>
-      Full-width inside its column at every breakpoint; the leading
-      bar reads at any width.
-    </p>
-
-    <h4 class="card-doc__variant reveal">Left-bar · info.</h4>
-    <p class="card-doc__lede reveal">
-      The info tone for system messages, scheduled events, and
-      non-blocking advisories — anything the user should be aware of
-      but does not need to act on.
-    </p>
-    <div class="card-doc__demo card-doc__demo--wide reveal">
-      <article class="card card--left-bar is-info">
-        <div class="card__badge-row">
-          <span class="card__badge card__badge--info">Info</span>
-        </div>
-        <header class="card__header">
-          <h3 class="card__title">Scheduled maintenance · Sunday 03:00 UTC</h3>
-          <p class="card__subtitle">~15 minutes of downtime expected</p>
-        </header>
-        <p class="card__body">
-          Use info tone for system messages, scheduled events, and
-          non-blocking advisories.
-        </p>
-      </article>
-    </div>
-    <p class="card-doc__prose reveal">
-      Pair with a <code>.card__badge--info</code> when the message
-      benefits from an explicit label. The bar carries the status hue
-      and persists across every state.
-    </p>
-
-    <h4 class="card-doc__variant reveal">Left-bar · warning.</h4>
-    <p class="card-doc__lede reveal">
-      Warning tone surfaces caution-worthy state — the user can
-      proceed but should know. Use it for incomplete protocols,
-      approaching deadlines, and conditions that warrant a check
-      before continuing.
-    </p>
-    <div class="card-doc__demo card-doc__demo--wide reveal">
-      <article class="card card--left-bar is-warning">
-        <div class="card__badge-row">
-          <span class="card__badge card__badge--warning">Warning</span>
-        </div>
-        <header class="card__header">
-          <h3 class="card__title">NSAID withdrawal incomplete</h3>
-          <p class="card__subtitle">42 hours remaining before milk dispatch</p>
-        </header>
-        <p class="card__body">
-          Warning tone surfaces caution-worthy state — the user can
-          proceed but should know.
-        </p>
-      </article>
-    </div>
-    <p class="card-doc__prose reveal">
-      Reserve warning for state the user can still act around;
-      escalate to critical when the situation blocks progress.
-    </p>
-
-    <h4 class="card-doc__variant reveal">Left-bar · critical.</h4>
-    <p class="card-doc__lede reveal">
-      Critical tone is reserved for failures and blocking errors that
-      need attention now. Pair with a clear remediation CTA so the
-      user can act without leaving the card.
-    </p>
-    <div class="card-doc__demo card-doc__demo--wide reveal">
-      <article class="card card--left-bar is-critical">
-        <div class="card__badge-row">
-          <span class="card__badge card__badge--critical">Critical</span>
-        </div>
-        <header class="card__header">
-          <h3 class="card__title">Lab connection failed · cannot sync results</h3>
-          <p class="card__subtitle">Last successful sync: 3 hours ago</p>
-        </header>
-        <p class="card__body">
-          Critical tone is reserved for failures and blocking errors
-          that need attention now. Pair with a clear remediation CTA.
-        </p>
-        <footer class="card__footer">
-          <span class="card__eyebrow">External lab API</span>
-          <div class="card__actions">
-            <button class="btn btn--secondary btn--sm">Retry sync</button>
-          </div>
-        </footer>
-      </article>
-    </div>
-    <p class="card-doc__prose reveal">
-      The card surface stays non-interactive when the footer carries
-      the action — the CTA is the affordance, not the whole card.
-      Critical is one of the few left-bar variants that routinely
-      ships with an inner footer.
-    </p>
-
-    <h4 class="card-doc__variant reveal">Left-bar · safe (success).</h4>
-    <p class="card-doc__lede reveal">
-      Safe tone confirms a successful state without claiming the
-      attention a Critical tone does. Use it for confirmations,
-      completed schedules, and "everything is fine" cues that still
-      benefit from a glanceable left-bar marker.
-    </p>
-    <div class="card-doc__demo card-doc__demo--wide reveal">
-      <article class="card card--left-bar is-safe">
-        <div class="card__badge-row">
-          <span class="card__badge card__badge--safe">Confirmed</span>
-        </div>
-        <header class="card__header">
-          <h3 class="card__title">Vaccination schedule updated</h3>
-          <p class="card__subtitle">Atlas · Quarter horse · next due 2026-08-12</p>
-        </header>
-        <p class="card__body">
-          Safe tone confirms a successful state without claiming
-          attention the way a Critical tone does.
-        </p>
-      </article>
-    </div>
-    <p class="card-doc__prose reveal">
-      Match the modifier to the message's semantic intent — colour
-      alone is not the affordance, and a Safe-toned card cannot
-      stand in for a missing success message.
-    </p>
-  </section>
-
-  <!-- ========================== LAYOUT & ORIENTATION ========================== -->
-  <section class="chunk" id="card-layout">
-    <header class="chunk-head reveal">
-      <span class="num-tag">03 / Card — Layout &amp; orientation</span>
-      <h2 class="text-display-sm">Orientation.</h2>
-    </header>
-
-    <p class="section-lede reveal">
-      Modifiers that control how content arranges within the card.
-        <em>Vertical</em>: media on top, content below (default).
-        <em>Horizontal</em>: media on the leading edge.
-        <em>Content-only</em>: no media slot.
-        <em>List</em>: rows bleeding to the card's edges.
-    </p>
-
-    <h4 class="subheading reveal">Vertical · Content-only · List <span class="tag">grid layouts</span></h4>
-
-    <h4 class="card-doc__variant reveal">Vertical · standard.</h4>
-    <p class="card-doc__lede reveal">
-      Media on top, content beneath. The canonical browse-feed and
-      gallery shape — use it for blog/article cards, product cards,
-      marketing grids, anywhere the image leads the scan.
-    </p>
-    <div class="card-doc__demo reveal">
-      <article class="card">
-        <div class="card__media" aria-hidden="true"></div>
-        <span class="card__eyebrow">Field guide · article</span>
-        <header class="card__header">
-          <h3 class="card__title">Recognising early-stage mastitis</h3>
-          <p class="card__subtitle">5 min read · clinical</p>
-        </header>
-        <p class="card__body">
-          Media on top, content beneath. The canonical browse-feed and
-          gallery shape.
-        </p>
-      </article>
-    </div>
-    <p class="card-doc__prose reveal">
-      <strong>States.</strong> Inherits all base states; the media
-      area can carry its own hover effect (zoom, overlay).
-      <strong>Interactions.</strong> Whole-card link is typical, with
-      an optional footer CTA capped at two secondary actions.
-      <strong>Responsive.</strong> Best in 2–4 column grids on
-      desktop, single column on mobile.
-    </p>
-
-    <h4 class="card-doc__variant reveal">Content-only · text + meta.</h4>
-    <p class="card-doc__lede reveal">
-      A text-first card with no media slot. Use it for quotes,
-      internal notes, definitions, and informational callouts. For
-      collapsible Q&amp;A, reach for Accordion instead — Card does
-      not own that affordance.
-    </p>
-    <div class="card-doc__demo reveal">
-      <article class="card card--content-only">
-        <span class="card__eyebrow">Note · clinical</span>
-        <header class="card__header">
-          <h3 class="card__title">No media required.</h3>
-          <p class="card__subtitle">Text-first cards for notes, quotes, callouts.</p>
-        </header>
-        <p class="card__body">
-          The default <code>.card</code> already supports this — the
-          <code>.card--content-only</code> marker is an opt-in label
-          for tooling, not a behavioural override.
-        </p>
-        <footer class="card__footer">
-          <span class="card__eyebrow">Author · Dr. Pham</span>
-        </footer>
-      </article>
-    </div>
-    <p class="card-doc__prose reveal">
-      <strong>States.</strong> Default, hover, focus — disabled is
-      rare since content-only is usually static.
-      <strong>Interactions.</strong> Often non-interactive
-      (information display); otherwise inherits base behaviour.
-      <strong>Responsive.</strong> Reflows fluidly; body copy
-      max-width caps at ~64ch for legibility on wide screens.
-    </p>
-
-    <h4 class="card-doc__variant reveal">List · stacked rows.</h4>
-    <p class="card-doc__lede reveal">
-      A card whose body is a list of rows that share a schema. Reach
-      for List for settings groups, member lists, recent activity,
-      and conversation lists — any place where each row is its own
-      interactive surface but they belong inside one bounded
-      container.
-    </p>
-    <div class="card-doc__demo reveal">
-      <article class="card card--list">
-        <header class="card__list-header">
-          <span class="card__eyebrow">Recent activity</span>
-          <h3 class="card__title">This week's caseload</h3>
-        </header>
-        <ul class="card__list">
-          <li class="card__list-item is-interactive">
-            <span class="card__list-avatar" aria-hidden="true">BH</span>
-            <span class="card__list-text">
-              <span class="card__list-title">Bessie · Holstein</span>
-              <span class="card__list-meta">Lameness · grade 2/5</span>
-            </span>
-            <span class="card__list-trail">14 m</span>
-          </li>
-          <li class="card__list-item is-interactive">
-            <span class="card__list-avatar" aria-hidden="true">PB</span>
-            <span class="card__list-text">
-              <span class="card__list-title">Penny · Boer goat</span>
-              <span class="card__list-meta">Post-kid recovery</span>
-            </span>
-            <span class="card__list-trail">2 h</span>
-          </li>
-          <li class="card__list-item is-interactive">
-            <span class="card__list-avatar" aria-hidden="true">AT</span>
-            <span class="card__list-text">
-              <span class="card__list-title">Atlas · Quarter horse</span>
-              <span class="card__list-meta">Annual vaccination</span>
-            </span>
-            <span class="card__list-trail">1 d</span>
-          </li>
-        </ul>
-        <footer class="card__list-footer">
-          <span>3 of 28</span>
-          <span>View all →</span>
-        </footer>
-      </article>
-    </div>
-    <p class="card-doc__prose reveal">
-      <strong>States.</strong> Default plus hover applies
-      <em>per row</em>, not per card. The card itself can also be
-      <code>.is-selected</code>. <strong>Interactions.</strong> Each
-      row is independently interactive; the header and footer are
-      static. <strong>Responsive.</strong> Stacks full-width; the
-      avatar and trail columns auto-shrink before the title clips.
-    </p>
-
-    <h4 class="subheading reveal">Horizontal <span class="tag">media · leading edge</span></h4>
-    <p class="usage-note reveal">
-      <strong>Definition.</strong> Horizontal layout places media on the
-      leading edge and content beside it. The card's intrinsic ratio is
-      length &gt; width. <strong>Use case.</strong> Vertical scroll
-      lists: search results, news feeds, recent activity, conversation
-      lists. <strong>Layout note.</strong> Avoid placing horizontal
-      cards in side-by-side grids — that contradicts the intended scan
-      direction.
-    </p>
-
-    <h4 class="card-doc__variant reveal">Horizontal · article row.</h4>
-    <p class="card-doc__lede reveal">
-      A horizontal card whose entire surface is the affordance. Reach
-      for it in mobile list rows, search results, recent activity,
-      and news feeds — anywhere the user is scanning for a single
-      destination per row.
-    </p>
-    <div class="card-doc__demo card-doc__demo--wide reveal">
-      <a class="card card--horizontal" href="#" onclick="event.preventDefault()">
-        <div class="card__media" aria-hidden="true"></div>
-        <div class="card__content">
-          <span class="card__eyebrow">News · 2026-05-07</span>
-          <h3 class="card__title">New dairy welfare guidelines published</h3>
-          <p class="card__body">
-            Updated welfare framework covering housing, milk-yield
-            monitoring, and emergency-response protocols.
-          </p>
-          <footer class="card__footer">
-            <span class="card__eyebrow">2 min read · Dr. Pham Hong</span>
-          </footer>
-        </div>
-      </a>
-    </div>
-    <p class="card-doc__prose reveal">
-      <strong>States.</strong> Inherits the full state matrix; hover
-      tints the entire row. <strong>Interactions.</strong> One
-      destination — no inner actions, in line with the interactivity
-      rule. <strong>Responsive.</strong> Full-width across viewports;
-      below ~480px the media collapses to a smaller leading thumbnail.
-    </p>
-
-    <h4 class="card-doc__variant reveal">Horizontal · product row.</h4>
-    <p class="card-doc__lede reveal">
-      A horizontal card whose inner controls own the affordances —
-      the surface itself is not clickable. Use it for catalog
-      list-view, cart line items, and "people also bought" rails
-      where each row needs explicit Add and Save targets.
-    </p>
-    <div class="card-doc__demo card-doc__demo--wide reveal">
-      <article class="card card--horizontal">
-        <div class="card__media" aria-hidden="true"></div>
-        <div class="card__content">
-          <div class="card__badge-row">
-            <span class="card__badge card__badge--safe">In stock</span>
-            <span class="card__badge">Bestseller</span>
-          </div>
-          <header class="card__header">
-            <h3 class="card__title"><a href="#" onclick="event.preventDefault()">Vinallergy · oral suspension</a></h3>
-            <p class="card__subtitle">Anti-inflammatory · 250 ml · ref VL-250</p>
-          </header>
-          <p class="card__body">
-            Broad-spectrum NSAID for cattle and small ruminants.
-            Withdrawal: 96 h milk · 14 d meat.
-          </p>
-          <footer class="card__footer">
-            <div class="card__price">
-              <span>185,000 ₫</span>
-              <span class="card__price-strike">220,000 ₫</span>
-            </div>
-            <div class="card__actions">
-              <button class="btn btn--secondary btn--sm">Save</button>
-              <button class="btn btn--cta btn--sm">Add to cart</button>
-            </div>
-          </footer>
-        </div>
-      </article>
-    </div>
-    <p class="card-doc__prose reveal">
-      <strong>States.</strong> The card has no hover or pressed
-      state; the inner buttons and title link own their own. Disabled
-      (out-of-stock) greys the primary CTA.
-      <strong>Interactions.</strong> Three explicit targets — title
-      link to the detail page, primary "Add to cart", secondary
-      "Save". <strong>Responsive.</strong> Below ~600px the footer
-      wraps so price and CTAs stack vertically.
-    </p>
-
-    <h4 class="card-doc__variant reveal">Horizontal · left-bar alert.</h4>
-    <p class="card-doc__lede reveal">
-      Composes left-bar with horizontal layout for inline
-      notifications inside a list, prioritised attention items, and
-      dashboard alert rows. The leading bar carries the status hue
-      while the media slot stays free for an icon or illustration.
-    </p>
-    <div class="card-doc__demo card-doc__demo--wide reveal">
-      <article class="card card--horizontal card--left-bar is-warning">
-        <div class="card__media" aria-hidden="true"
-             style="background:
-                radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--warning-300) 60%, transparent), transparent 65%),
-                var(--background-warning);"></div>
-        <div class="card__content">
-          <div class="card__badge-row">
-            <span class="card__badge card__badge--warning">Attention</span>
-          </div>
-          <header class="card__header">
-            <h3 class="card__title">Three patients overdue for follow-up</h3>
-            <p class="card__subtitle">Last visit &gt; 30 days ago · please review</p>
-          </header>
-          <p class="card__body">
-            Composes left-bar with horizontal layout. The leading
-            bar carries the status hue while the media slot stays
-            free for an icon or illustration.
-          </p>
-          <footer class="card__footer">
-            <span class="card__eyebrow">Caseload · alert</span>
-            <div class="card__actions">
-              <button class="btn btn--secondary btn--sm">Review now</button>
-            </div>
-          </footer>
-        </div>
-      </article>
-    </div>
-    <p class="card-doc__prose reveal">
-      <strong>States.</strong> Inherits horizontal plus left-bar; the
-      bar colour persists across all states.
-      <strong>Interactions.</strong> One CTA inside the row drives
-      remediation; the body itself is not the affordance.
-      <strong>Responsive.</strong> The bar reads at every width; on
-      mobile the layout collapses to vertical with the bar still on
-      the leading edge.
-    </p>
-  </section>
-
-  <!-- ========================== FUNCTIONAL VARIANTS ========================== -->
-  <section class="chunk" id="card-functional">
-    <header class="chunk-head reveal">
-      <span class="num-tag">04 / Card — Functional variants</span>
-      <h2 class="text-display-sm">Modifiers.</h2>
-    </header>
-
-    <p class="section-lede reveal">
-      Modifiers that add behaviour to a card. Compose with style and
-        layout variants.
-    </p>
-
-    <div class="card-callout reveal" role="note">
-      <span class="label">Guideline · one level of interactivity</span>
-      <p>
-        <strong>A card has at most one interactive surface.</strong>
-        If the card contains its own buttons or links
-        (<code>.card__actions</code>, links inside the body, etc.), the
-        card itself must NOT also be made interactive — no
-        <code>.is-interactive</code>, no <code>&lt;a class="card"&gt;</code>
-        wrapper, no hover/pressed state on the surface. Nested click
-        targets create ambiguous affordances and break keyboard order.
-        Choose: either the surface is the affordance, or the inner
-        controls are.
+      <p class="card-doc__lede">
+        The default style. A subtle shadow plus a 1px border separates
+        the card from the canvas. Reach for Elevated on content blocks,
+        intake forms, and feed items where lift is the cue that the
+        card belongs above the page.
       </p>
-    </div>
 
-    <p class="usage-note reveal">
-      <strong>One tap, one outcome.</strong> When a card carries a
-      CTA, that CTA should complete the user's intent or hand off
-      cleanly to a destination. A card is a glanceable surface, not
-      the first step of a multi-modal flow — if a single tap on the
-      card opens a modal that opens another modal, the work belongs
-      on a detail page instead.
-    </p>
+      <div class="card-doc__demo">
+        <article class="card">
+          <span class="card__eyebrow">Caseload · 2026-05-07</span>
+          <header class="card__header">
+            <h3 class="card__title">Bessie · Holstein, 4y</h3>
+            <p class="card__subtitle">Owner: Nguyen Minh · Farm 12B</p>
+          </header>
+          <p class="card__body">
+            Recurrent left-fore lameness, grade 2/5. Vitals stable.
+          </p>
+          <footer class="card__footer">
+            <span class="card__eyebrow">Updated 14 m</span>
+            <div class="card__actions">
+              <button class="btn btn--cta btn--sm">Open chart</button>
+            </div>
+          </footer>
+        </article>
+      </div>
 
-    <h4 class="card-doc__variant reveal">Interactive · whole-card link.</h4>
-    <p class="card-doc__lede reveal">
-      A card whose entire surface is the affordance. Wrap with an
-      <code>&lt;a&gt;</code> or <code>&lt;button&gt;</code>, or apply
-      <code>.is-interactive</code>, to enable hover, focus, and
-      pressed states. Use it for feed cards, navigation tiles, and
-      dashboard shortcuts — anywhere a single primary action is the
-      whole point.
-    </p>
-    <div class="card-doc__demo reveal">
-      <a class="card" href="#" onclick="event.preventDefault()">
-        <span class="card__eyebrow">Caseload</span>
-        <header class="card__header">
-          <h3 class="card__title">Bessie · Holstein</h3>
-          <p class="card__subtitle">Click anywhere on the card.</p>
-        </header>
-        <p class="card__body">
-          Wrap any card with an <code>&lt;a&gt;</code> or
-          <code>&lt;button&gt;</code> — or apply
-          <code>.is-interactive</code> — to enable hover/focus/pressed states.
-        </p>
-      </a>
-    </div>
-    <p class="card-doc__prose reveal">
-      <strong>States.</strong> Default → hover (lift + shadow) →
-      pressed (settle) → focus (ring); disabled supported.
-      <strong>Interactions.</strong> Single primary action only;
-      avoid nested clickable elements that aren't buttons.
-      <strong>Responsive.</strong> Hover is a desktop affordance — on
-      touch, the pressed state should still register tactile
-      feedback.
-    </p>
-
-    <h4 class="card-doc__variant reveal">Selectable · checkbox affordance.</h4>
-    <p class="card-doc__lede reveal">
-      A card that toggles between selected and unselected. Use it for
-      multi-select grids (species, symptoms, treatments), content
-      pickers, and bulk-operation surfaces. Multi-select is the
-      default; single-select wires up via JS by clearing other
-      <code>.is-selected</code> on click.
-    </p>
-    <div class="card-doc__demo reveal">
-      <article class="card card--outlined card--selectable is-selected" data-card-selectable tabindex="0" aria-pressed="true">
-        <span class="card__check" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>
-        </span>
-        <span class="card__eyebrow">Picker · species</span>
-        <header class="card__header">
-          <h3 class="card__title">Bovine</h3>
-          <p class="card__subtitle">Cattle · dairy &amp; beef</p>
-        </header>
-        <p class="card__body">
-          Tap to toggle. Multi-select is the default; single-select wires
-          up via JS (clear other <code>.is-selected</code> on click).
-        </p>
-      </article>
-    </div>
-    <p class="card-doc__prose reveal">
-      <strong>States.</strong> Default · hover · focus ·
-      <code>.is-selected</code> (check fills, border tints) ·
-      disabled. <strong>Interactions.</strong> Click toggles;
-      keyboard Space / Enter toggles when the card is focused.
-      <strong>Responsive.</strong> Wraps in 2–4 column grids on
-      desktop; single column on mobile with the check anchored
-      top-right.
-    </p>
-
-    <h4 class="card-doc__variant reveal">Draggable · sortable handle.</h4>
-    <p class="card-doc__lede reveal">
-      A card with a drag handle for sortable lists. Use it on kanban
-      boards, prioritised queues, and dashboard tile reordering. The
-      CSS provides the affordance; movement is wired via the host
-      page's dnd implementation.
-    </p>
-    <div class="card-doc__demo reveal">
-      <article class="card card--filled card--draggable">
-        <span class="card__drag-handle" aria-label="Drag to reorder" role="button">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <circle cx="9" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/>
-            <circle cx="15" cy="6" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="15" cy="18" r="1.6"/>
-          </svg>
-        </span>
-        <span class="card__eyebrow">Kanban · in progress</span>
-        <header class="card__header">
-          <h3 class="card__title">Lab results · Bessie</h3>
-          <p class="card__subtitle">Awaiting return from external lab</p>
-        </header>
-        <p class="card__body">
-          Grab the handle to reorder. The CSS provides the affordance;
-          wire up movement via your dnd library of choice.
-        </p>
-      </article>
-    </div>
-    <p class="card-doc__prose reveal">
-      <strong>States.</strong> Default · hover (handle darkens) ·
-      <code>.is-dragging</code> (rotates, lifts) · disabled.
-      <strong>Interactions.</strong> Mouse drag from the handle;
-      keyboard reorder requires JS (Space to grab, arrows to move,
-      Space to drop). <strong>Responsive.</strong> On touch, the
-      entire card surface accepts a long-press to begin drag; the
-      handle remains visible as an affordance hint.
-    </p>
-
-    <h4 class="card-doc__variant reveal">Featured · highlighted.</h4>
-    <p class="card-doc__lede reveal">
-      A highlight modifier — accent border, accent-tinted background,
-      corner ribbon. Use it for the recommended plan in pricing,
-      editor's pick, featured product, or top-of-list suggestion.
-    </p>
-    <div class="card-doc__demo reveal">
-      <article class="card card--featured">
-        <span class="card__featured-mark">Recommended</span>
-        <span class="card__eyebrow">Plan · clinic</span>
-        <header class="card__header">
-          <h3 class="card__title">Pro · 12 vets</h3>
-          <p class="card__subtitle">Most popular for mid-size clinics</p>
-        </header>
-        <div class="card__price">
-          <span>2,400,000 ₫</span>
-          <span class="card__price-strike">3,200,000 ₫</span>
+      <div class="card-doc__states-row" role="list" aria-label="Elevated card — interaction states">
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">1</span>
+          <article class="card card-doc__states-sample">
+            <span class="card-doc__states-label">Default</span>
+          </article>
         </div>
-        <p class="card__body">
-          Accent border, soft accent-tinted background, and a corner
-          ribbon. Use one per region.
-        </p>
-        <footer class="card__footer">
-          <div class="card__actions" style="margin-left:auto">
-            <button class="btn btn--cta btn--sm">Choose plan</button>
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">2</span>
+          <article class="card card-doc__states-sample"
+                   style="background: var(--card-bg-hover); border-color: var(--card-border-hover); box-shadow: var(--card-shadow-hover); transform: translateY(-1px);">
+            <span class="card-doc__states-label">Hover</span>
+          </article>
+        </div>
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">3</span>
+          <article class="card card-doc__states-sample"
+                   style="outline: 2px solid var(--outline-focus); outline-offset: 2px;">
+            <span class="card-doc__states-label">Focus</span>
+          </article>
+        </div>
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">4</span>
+          <article class="card card-doc__states-sample"
+                   style="animation: ds-pulse 1.6s ease infinite; background: var(--card-bg-pressed);">
+            <span class="card-doc__states-label">Pressed</span>
+          </article>
+        </div>
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">5</span>
+          <article class="card card-doc__states-sample is-disabled" aria-disabled="true">
+            <span class="card-doc__states-label">Disabled</span>
+          </article>
+        </div>
+      </div>
+
+      <p class="card-doc__prose">
+        Interactive states only apply when the card itself is the
+        affordance. <strong>Responsive.</strong> One up on mobile, two
+        to three per row on tablet, three to four in dashboard grids.
+      </p>
+    </section>
+
+    <section class="card-doc__variant-section reveal">
+      <span class="card-doc__variant">Variant</span>
+      <h3 class="card-doc__variant-name">Filled · muted</h3>
+
+      <p class="card-doc__lede">
+        A tinted background with no shadow and a transparent border.
+        Use Filled for secondary blocks that live inside a parent
+        surface — settings groups, inline panels, list items nested in
+        a parent card — where the canvas already carries elevation.
+      </p>
+
+      <div class="card-doc__demo">
+        <article class="card card--filled is-interactive" tabindex="0">
+          <span class="card__eyebrow">Settings · group</span>
+          <header class="card__header">
+            <h3 class="card__title">Notification preferences</h3>
+            <p class="card__subtitle">3 settings · last edited yesterday</p>
+          </header>
+          <p class="card__body">
+            No drop shadow. A subtle background tint separates the
+            card from the canvas.
+          </p>
+        </article>
+      </div>
+
+      <div class="card-doc__states-row" role="list" aria-label="Filled card — interaction states">
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">1</span>
+          <article class="card card--filled card-doc__states-sample">
+            <span class="card-doc__states-label">Default</span>
+          </article>
+        </div>
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">2</span>
+          <article class="card card--filled card-doc__states-sample"
+                   style="background: var(--card-filled-bg-hover); box-shadow: none;">
+            <span class="card-doc__states-label">Hover</span>
+          </article>
+        </div>
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">3</span>
+          <article class="card card--filled card-doc__states-sample"
+                   style="outline: 2px solid var(--outline-focus); outline-offset: 2px;">
+            <span class="card-doc__states-label">Focus</span>
+          </article>
+        </div>
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">4</span>
+          <article class="card card--filled card-doc__states-sample"
+                   style="background: var(--card-filled-bg-hover); box-shadow: none; transform: translateY(0);">
+            <span class="card-doc__states-label">Pressed</span>
+          </article>
+        </div>
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">5</span>
+          <article class="card card--filled card-doc__states-sample is-disabled" aria-disabled="true">
+            <span class="card-doc__states-label">Disabled</span>
+          </article>
+        </div>
+      </div>
+
+      <p class="card-doc__prose">
+        The typical Filled pattern is a whole-card affordance with no
+        inner buttons — add inner buttons only when the surface itself
+        is non-interactive. <strong>Responsive.</strong> Stretches
+        full-width inside its parent column and stacks vertically on
+        every breakpoint.
+      </p>
+    </section>
+
+    <section class="card-doc__variant-section reveal">
+      <span class="card-doc__variant">Variant</span>
+      <h3 class="card-doc__variant-name">Outlined · border-led</h3>
+
+      <p class="card-doc__lede">
+        A 1.5px border on the default background, no shadow. Outlined
+        holds separation in dense layouts — pickers, comparison grids,
+        dashboard tiles — where shadows would compound and muddy the
+        surface.
+      </p>
+
+      <div class="card-doc__demo">
+        <article class="card card--outlined is-interactive" tabindex="0">
+          <span class="card__eyebrow">Picker · option</span>
+          <header class="card__header">
+            <h3 class="card__title">Bovine</h3>
+            <p class="card__subtitle">Cattle · dairy &amp; beef</p>
+          </header>
+          <p class="card__body">
+            Thicker border, no shadow. Holds separation in dense
+            layouts where shadows would compound.
+          </p>
+        </article>
+      </div>
+
+      <div class="card-doc__states-row" role="list" aria-label="Outlined card — interaction states">
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">1</span>
+          <article class="card card--outlined card-doc__states-sample">
+            <span class="card-doc__states-label">Default</span>
+          </article>
+        </div>
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">2</span>
+          <article class="card card--outlined card-doc__states-sample"
+                   style="background: var(--card-outlined-bg-hover); border-color: var(--border-primary); box-shadow: none;">
+            <span class="card-doc__states-label">Hover</span>
+          </article>
+        </div>
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">3</span>
+          <article class="card card--outlined card-doc__states-sample"
+                   style="outline: 2px solid var(--outline-focus); outline-offset: 2px;">
+            <span class="card-doc__states-label">Focus</span>
+          </article>
+        </div>
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">4</span>
+          <article class="card card--outlined card-doc__states-sample"
+                   style="background: var(--card-outlined-bg-hover); border-color: var(--border-primary); box-shadow: none; transform: translateY(0);">
+            <span class="card-doc__states-label">Pressed</span>
+          </article>
+        </div>
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">5</span>
+          <article class="card card--outlined card-doc__states-sample is-disabled" aria-disabled="true">
+            <span class="card-doc__states-label">Disabled</span>
+          </article>
+        </div>
+      </div>
+
+      <p class="card-doc__prose">
+        Outlined is often paired with <code>.is-selected</code>.
+        <strong>Responsive.</strong> Wraps in a grid; the border keeps
+        separation on mobile without shadow bloom.
+      </p>
+    </section>
+
+    <section class="card-doc__variant-section reveal">
+      <span class="card-doc__variant">Variant</span>
+      <h3 class="card-doc__variant-name">Left-bar · callout / alert / highlight</h3>
+
+      <div class="card-doc__left-bar-row" role="list" aria-label="Left-bar tones">
+        <article class="card card--left-bar is-primary" role="listitem">
+          <span class="card__eyebrow">Reminder · 2026-05-07</span>
+          <header class="card__header">
+            <h3 class="card__title">Bessie's bloodwork is back.</h3>
+            <p class="card__subtitle">Awaiting your sign-off before dispatch</p>
+          </header>
+          <p class="card__body">
+            Default tone. Use for general highlights and pinned items
+            without an explicit status meaning.
+          </p>
+        </article>
+
+        <article class="card card--left-bar is-info" role="listitem">
+          <div class="card__badge-row">
+            <span class="card__badge card__badge--info">Info</span>
           </div>
-        </footer>
-      </article>
-    </div>
-    <p class="card-doc__prose reveal">
-      <strong>States.</strong> Inherits the underlying card's state
-      matrix; the accent ring persists across hover, focus, and
-      pressed. <strong>Interactions.</strong> One primary CTA inside
-      the card; the Featured treatment is the secondary signal — do
-      not stack with <code>.is-interactive</code> on the surface.
-      <strong>Responsive.</strong> One per region. Position as the
-      first card on mobile, mid-row on desktop.
-    </p>
+          <header class="card__header">
+            <h3 class="card__title">Scheduled maintenance · Sunday 03:00 UTC</h3>
+            <p class="card__subtitle">~15 minutes of downtime expected</p>
+          </header>
+          <p class="card__body">
+            Use info tone for system messages, scheduled events, and
+            non-blocking advisories.
+          </p>
+        </article>
 
-    <h4 class="subheading reveal">Draggable in context <span class="tag">kanban mock-up</span></h4>
-    <p class="usage-note reveal">
-      <strong>Reorder within a column · move across columns.</strong>
-      Each column is a drop target; each card is a drag source via its
-      handle. The CSS provides the affordance; movement is wired via
-      the host page's dnd implementation. The example below uses the
-      native HTML5 drag API for demonstration.
-    </p>
+        <article class="card card--left-bar is-warning" role="listitem">
+          <div class="card__badge-row">
+            <span class="card__badge card__badge--warning">Warning</span>
+          </div>
+          <header class="card__header">
+            <h3 class="card__title">NSAID withdrawal incomplete</h3>
+            <p class="card__subtitle">42 hours remaining before milk dispatch</p>
+          </header>
+          <p class="card__body">
+            Warning tone surfaces caution-worthy state — the user can
+            proceed but should know.
+          </p>
+        </article>
 
-    <div class="card-kanban reveal" data-kanban>
-      <section class="card-kanban__column">
-        <header class="card-kanban__column-head">
-          <span class="card__eyebrow">Backlog · 3</span>
-          <h4>To do</h4>
-        </header>
-        <div class="card-kanban__list" data-kanban-list>
-          <article class="card card--filled card--draggable" draggable="true">
-            <span class="card__drag-handle" aria-label="Drag to reorder">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <circle cx="9" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/>
-                <circle cx="15" cy="6" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="15" cy="18" r="1.6"/>
-              </svg>
-            </span>
-            <span class="card__eyebrow">Caseload</span>
-            <h5 class="card__title" style="font-size: var(--text-base)">Mastitis screen — Bessie</h5>
-            <p class="card__body">SCC trending up over 2 weeks.</p>
-          </article>
-          <article class="card card--filled card--draggable" draggable="true">
-            <span class="card__drag-handle" aria-label="Drag to reorder">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <circle cx="9" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/>
-                <circle cx="15" cy="6" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="15" cy="18" r="1.6"/>
-              </svg>
-            </span>
-            <span class="card__eyebrow">Vaccination</span>
-            <h5 class="card__title" style="font-size: var(--text-base)">Annual schedule — Atlas</h5>
-            <p class="card__body">Quarter horse, 8y. Consent on file.</p>
-          </article>
-          <article class="card card--filled card--draggable" draggable="true">
-            <span class="card__drag-handle" aria-label="Drag to reorder">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <circle cx="9" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/>
-                <circle cx="15" cy="6" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="15" cy="18" r="1.6"/>
-              </svg>
-            </span>
-            <span class="card__eyebrow">Lab</span>
-            <h5 class="card__title" style="font-size: var(--text-base)">Bloodwork — Penny</h5>
-            <p class="card__body">Awaiting external lab return.</p>
-          </article>
-        </div>
-      </section>
+        <article class="card card--left-bar is-critical" role="listitem">
+          <div class="card__badge-row">
+            <span class="card__badge card__badge--critical">Critical</span>
+          </div>
+          <header class="card__header">
+            <h3 class="card__title">Lab connection failed · cannot sync results</h3>
+            <p class="card__subtitle">Last successful sync: 3 hours ago</p>
+          </header>
+          <p class="card__body">
+            Critical tone is reserved for failures and blocking errors
+            that need attention now. Pair with a clear remediation CTA.
+          </p>
+          <footer class="card__footer">
+            <span class="card__eyebrow">External lab API</span>
+            <div class="card__actions">
+              <button class="btn btn--secondary btn--sm">Retry sync</button>
+            </div>
+          </footer>
+        </article>
 
-      <section class="card-kanban__column">
-        <header class="card-kanban__column-head">
-          <span class="card__eyebrow">Active · 2</span>
-          <h4>In progress</h4>
-        </header>
-        <div class="card-kanban__list" data-kanban-list>
-          <article class="card card--filled card--draggable" draggable="true">
-            <span class="card__drag-handle" aria-label="Drag to reorder">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <circle cx="9" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/>
-                <circle cx="15" cy="6" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="15" cy="18" r="1.6"/>
-              </svg>
-            </span>
-            <span class="card__eyebrow">Treatment</span>
-            <h5 class="card__title" style="font-size: var(--text-base)">NSAID protocol — Bessie</h5>
-            <p class="card__body">Day 2 of 5. Withdrawal countdown active.</p>
-          </article>
-          <article class="card card--filled card--draggable" draggable="true">
-            <span class="card__drag-handle" aria-label="Drag to reorder">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <circle cx="9" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/>
-                <circle cx="15" cy="6" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="15" cy="18" r="1.6"/>
-              </svg>
-            </span>
-            <span class="card__eyebrow">Recovery</span>
-            <h5 class="card__title" style="font-size: var(--text-base)">Post-kid — Penny</h5>
-            <p class="card__body">Day 4 monitoring. Vitals stable.</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="card-kanban__column">
-        <header class="card-kanban__column-head">
-          <span class="card__eyebrow">Closed · 2</span>
-          <h4>Done</h4>
-        </header>
-        <div class="card-kanban__list" data-kanban-list>
-          <article class="card card--filled card--draggable" draggable="true">
-            <span class="card__drag-handle" aria-label="Drag to reorder">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <circle cx="9" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/>
-                <circle cx="15" cy="6" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="15" cy="18" r="1.6"/>
-              </svg>
-            </span>
-            <span class="card__eyebrow">Visit · 2026-05-04</span>
-            <h5 class="card__title" style="font-size: var(--text-base)">Hoof trim — Atlas</h5>
-            <p class="card__body">No further action required.</p>
-          </article>
-          <article class="card card--filled card--draggable" draggable="true">
-            <span class="card__drag-handle" aria-label="Drag to reorder">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <circle cx="9" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/>
-                <circle cx="15" cy="6" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="15" cy="18" r="1.6"/>
-              </svg>
-            </span>
-            <span class="card__eyebrow">Visit · 2026-05-02</span>
-            <h5 class="card__title" style="font-size: var(--text-base)">Annual exam — Daisy</h5>
-            <p class="card__body">Owner notified. Records updated.</p>
-          </article>
-        </div>
-      </section>
-    </div>
+        <article class="card card--left-bar is-safe" role="listitem">
+          <div class="card__badge-row">
+            <span class="card__badge card__badge--safe">Confirmed</span>
+          </div>
+          <header class="card__header">
+            <h3 class="card__title">Vaccination schedule updated</h3>
+            <p class="card__subtitle">Atlas · Quarter horse · next due 2026-08-12</p>
+          </header>
+          <p class="card__body">
+            Safe tone confirms a successful state without claiming
+            attention the way a Critical tone does.
+          </p>
+        </article>
+      </div>
+    </section>
   </section>
 
-  <!-- ========================== CONTENT PATTERNS ========================== -->
-  <section class="chunk" id="card-content">
+  <!-- ========================== GLASS ========================== -->
+  <section class="chunk" id="card-glass">
     <header class="chunk-head reveal">
-      <span class="num-tag">05 / Card — Content patterns</span>
-      <h2 class="text-display-sm">Patterns.</h2>
-    </header>
-
-    <p class="section-lede reveal">
-      Recipes — compositions of existing slots and sub-components.
-        Not new variants. Four canonical shapes: Product, Profile, KPI,
-        Article.
-    </p>
-
-    <p class="usage-note reveal">
-      <strong>One card, one job.</strong> A recipe is the shape a card
-      takes when it carries a single kind of payload — a product, a
-      person, a metric, an article. If a card seems to need two of
-      these at once, split it into two cards or move secondary content
-      into a detail view.
-    </p>
-
-    <h4 class="card-doc__variant reveal">Product · commerce.</h4>
-    <p class="card-doc__lede reveal">
-      A recipe composing media, badges, title, rating, price, and
-      footer actions. The surface is non-interactive because the
-      footer carries explicit CTAs. Use it in catalog grids, search
-      results, and recommendation rails.
-    </p>
-    <div class="card-doc__demo reveal">
-      <article class="card">
-        <div class="card__media" aria-hidden="true"></div>
-        <div class="card__badge-row">
-          <span class="card__badge">New</span>
-          <span class="card__badge card__badge--safe">In stock</span>
-        </div>
-        <header class="card__header">
-          <h3 class="card__title"><a href="#" onclick="event.preventDefault()">Vinallergy · oral suspension</a></h3>
-          <p class="card__subtitle">Anti-inflammatory · 250 ml</p>
-        </header>
-        <div class="card__rating">
-          <span class="card__rating-stars" aria-label="4.5 of 5">★★★★<span class="empty">★</span></span>
-          <span>4.5 · 128 reviews</span>
-        </div>
-        <div class="card__price">
-          <span>185,000 ₫</span>
-          <span class="card__price-strike">220,000 ₫</span>
-        </div>
-        <footer class="card__footer">
-          <div class="card__actions" style="margin-left:auto">
-            <button class="btn btn--secondary btn--sm">Save</button>
-            <button class="btn btn--cta btn--sm">Add to cart</button>
-          </div>
-        </footer>
-      </article>
-    </div>
-    <p class="card-doc__prose reveal">
-      <strong>States.</strong> Inner controls own their states;
-      out-of-stock disables "Add to cart" via <code>[disabled]</code>.
-      <strong>Interactions.</strong> Three explicit targets — title
-      link to detail, primary "Add to cart", secondary "Save".
-      <strong>Responsive.</strong> 2-up on mobile, 3–4 up on desktop;
-      media aspect held constant by <code>.card__media</code>. See
-      Recipes (future) for personalised and contextual variants.
-    </p>
-
-    <h4 class="card-doc__variant reveal">Profile · person.</h4>
-    <p class="card-doc__lede reveal">
-      A recipe for a person — avatar, name, badges, body, two
-      footer CTAs. Use it for team rosters, contributor lists, the
-      vet directory, and follow / message panels.
-    </p>
-    <div class="card-doc__demo reveal">
-      <article class="card">
-        <header class="card__header" style="flex-direction:row; align-items:center; gap: var(--spacing-4x)">
-          <span class="card__avatar" aria-hidden="true">DP</span>
-          <div>
-            <h3 class="card__title">Dr. Pham Hong</h3>
-            <p class="card__subtitle">Senior vet · large animals</p>
-          </div>
-        </header>
-        <div class="card__badge-row">
-          <span class="card__badge">12 yrs</span>
-          <span class="card__badge card__badge--info">Verified</span>
-        </div>
-        <p class="card__body">
-          Reproductive medicine, dairy welfare, post-partum care.
-        </p>
-        <footer class="card__footer">
-          <span class="card__eyebrow">Hà Nội · Farm 12B</span>
-          <div class="card__actions">
-            <button class="btn btn--ghost btn--sm">Message</button>
-            <button class="btn btn--cta btn--sm">Follow</button>
-          </div>
-        </footer>
-      </article>
-    </div>
-    <p class="card-doc__prose reveal">
-      <strong>States.</strong> Inherits base states; the Follow
-      button toggles between primary and secondary on engagement.
-      <strong>Interactions.</strong> Two CTAs is the cap (Follow +
-      Message); avatar / name link to a profile detail page.
-      <strong>Responsive.</strong> Avatar shrinks to 48px on mobile;
-      CTAs stack full-width below the body. See Recipes (future) for
-      personalised and contextual variants.
-    </p>
-
-    <h4 class="card-doc__variant reveal">KPI · dashboard metric.</h4>
-    <p class="card-doc__lede reveal">
-      A recipe for a single metric plus trend, optionally with a
-      sparkline or chart. Use it as a dashboard widget paired with a
-      date-range filter; the metric stays at H2 weight so the
-      headline number is the first read.
-    </p>
-    <div class="card-doc__demo reveal">
-      <article class="card card--outlined">
-        <div class="card__metric">
-          <span class="card__metric-label">Active cases · this week</span>
-          <span class="card__metric-value">28</span>
-          <span class="card__metric-delta is-up" aria-label="up 12 percent">▲ 12% · vs last week</span>
-        </div>
-        <div style="height: 56px; border-radius: var(--radius-sm); background:
-            linear-gradient(180deg, color-mix(in srgb, var(--primary-300) 35%, transparent), transparent),
-            repeating-linear-gradient(90deg, var(--primary-100) 0 22px, transparent 22px 26px);"
-             aria-hidden="true"></div>
-      </article>
-    </div>
-    <p class="card-doc__prose reveal">
-      <strong>States.</strong> Default; the metric delta colour
-      signals direction (safe up, critical down); loading uses a
-      skeleton shimmer. <strong>Interactions.</strong> Often
-      non-interactive at the card level — the chart inside drives
-      drill-down. <strong>Responsive.</strong> 2-up on tablet, 3–4 up
-      on desktop; the sparkline scales to card width. Dashboard cards
-      rely on the freshness of their data; a stale metric is worse
-      than a missing one. Loading and freshness behaviours will be
-      standardised in a future Loading section.
-    </p>
-
-    <h4 class="card-doc__variant reveal">Article · blog.</h4>
-    <p class="card-doc__lede reveal">
-      A recipe for editorial and content feeds — featured image,
-      headline, dek, byline, date. The whole card is the affordance,
-      so there are no nested CTAs.
-    </p>
-    <div class="card-doc__demo reveal">
-      <a class="card" href="#" onclick="event.preventDefault()">
-        <div class="card__media" aria-hidden="true"></div>
-        <span class="card__eyebrow">Field guide · 5 min</span>
-        <header class="card__header">
-          <h3 class="card__title">Recognising early-stage mastitis</h3>
-        </header>
-        <p class="card__body">
-          Subclinical mastitis often presents without obvious udder signs.
-          Watch SCC trends and be alert to small dips in yield.
-        </p>
-        <footer class="card__footer">
-          <span class="card__eyebrow">Dr. Pham Hong</span>
-          <span class="card__eyebrow">2026-04-22</span>
-        </footer>
-      </a>
-    </div>
-    <p class="card-doc__prose reveal">
-      <strong>States.</strong> Inherits Interactive states (whole
-      card → article). <strong>Interactions.</strong> Single
-      affordance: open the article. <strong>Responsive.</strong>
-      Vertical at all sizes — preserves the headline-led scan path.
-      Switch to <code>.card--horizontal</code> for compact lists.
-    </p>
-  </section>
-
-  <!-- ========================== GLASS SCALE ========================== -->
-  <section class="chunk" id="card-glass-scale">
-    <header class="chunk-head reveal">
-      <span class="num-tag">06 / Card — Glass scale</span>
+      <span class="num-tag">02 / Card — Glass</span>
       <h2 class="text-display-sm">Glass.</h2>
     </header>
 
     <p class="section-lede reveal">
-      Translucent surface modifiers with backdrop blur. Five tiers
-        ordered by frost density: Clear, Light (default), Frost, Heavy,
-        Tinted. Each tier pairs a blur value with a tint opacity —
-        higher blur correlates with higher opacity to keep content
-        legible.
+      Glass is the only surface treatment the Card component ships.
+        Every style variant in section 02 is glass at a different
+        density; this section demonstrates the treatment over visual
+        content, where the blur becomes the dominant cue. On the
+        flat page canvas glass reads as a near-solid panel — that's
+        the intended low-noise behaviour, not a missing effect.
+    </p>
+
+    <div class="card-doc__demo card-doc__demo--wide card-doc__demo--on-vivid reveal">
+      <div class="card-doc__states-row" role="list" aria-label="Glass card — interaction states on a vivid backdrop">
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">1</span>
+          <article class="card card--glass card-doc__states-sample">
+            <span class="card-doc__states-label">Default</span>
+          </article>
+        </div>
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">2</span>
+          <article class="card card--glass card-doc__states-sample"
+                   style="background: var(--card-glass-bg-hover); border-color: var(--card-glass-border-hover); box-shadow: none; transform: translateY(-1px);">
+            <span class="card-doc__states-label">Hover</span>
+          </article>
+        </div>
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">3</span>
+          <article class="card card--glass card-doc__states-sample"
+                   style="outline: 2px solid var(--outline-focus); outline-offset: 2px;">
+            <span class="card-doc__states-label">Focus</span>
+          </article>
+        </div>
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">4</span>
+          <article class="card card--glass card-doc__states-sample"
+                   style="animation: ds-pulse 1.6s ease infinite; background: var(--card-glass-bg-pressed); box-shadow: none;">
+            <span class="card-doc__states-label">Pressed</span>
+          </article>
+        </div>
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">5</span>
+          <article class="card card--glass card-doc__states-sample is-disabled" aria-disabled="true">
+            <span class="card-doc__states-label">Disabled</span>
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <p class="usage-note reveal">
+      <strong>Compositional overrides.</strong> Two modifiers exist
+      for cases the variant identity doesn't cover.
+      <code>.card--glass-heavy</code> swaps the default light frost
+      for a near-opaque slab — modal sheets and drawer chrome where
+      the surface needs to dominate the backdrop.
+      <code>.card--glass-tinted</code> wires the glass through the
+      primary ramp instead of white — brand-skinned overlays and
+      promotional surfaces. Both compose with any style variant.
     </p>
 
     <p class="usage-note reveal">
-      <strong>Tier selection.</strong> Pick by the visual density of
-      what sits behind the card.
-      <code>.card--glass-clear</code>: floating overlays.
-      <code>.card--glass</code>: callouts on subtle backdrops.
-      <code>.card--glass-frost</code>: content surfaces over busy imagery.
-      <code>.card--glass-heavy</code>: modal-grade sheets.
-      <code>.card--glass-tinted</code>: when the brand should colour the
-      glass itself.
-    </p>
-
-    <p class="usage-note reveal">
-      <strong>Interactive states are preserved.</strong> Every tier's
-      hover/pressed states tint up rather than flipping to an opaque
-      surface. Blur and translucency persist across all states.
-    </p>
-
-    <h4 class="card-doc__variant reveal">Clear · barely there.</h4>
-    <p class="card-doc__lede reveal">
-      The lightest tier — a whisper of blur, around 25% white tint.
-      Use it for floating chips and toolbars over imagery that should
-      remain the dominant visual element.
-    </p>
-    <div class="card-doc__demo card-doc__demo--on-vivid reveal">
-      <article class="card card--glass-clear is-interactive" tabindex="0">
-        <span class="card__eyebrow">Tier 01 · clear</span>
-        <header class="card__header">
-          <h3 class="card__title">Whisper of blur.</h3>
-          <p class="card__subtitle">--blur-sm · ~25% white tint</p>
-        </header>
-        <p class="card__body">
-          Lightest tier — floating chips and toolbars over imagery
-          that should remain dominant.
-        </p>
-      </article>
-    </div>
-    <p class="card-doc__prose reveal">
-      Pairs <code>--blur-sm</code> with the lowest tint in the scale.
-      Hover and pressed tint up rather than flipping to opaque, so
-      the glass effect persists across every state.
-    </p>
-
-    <h4 class="card-doc__variant reveal">Light · default tier.</h4>
-    <p class="card-doc__lede reveal">
-      The system default — visible blur without dominating, so the
-      canvas still informs the surface. Reach for <code>.card--glass</code>
-      when you need glass on a subtle backdrop and don't have a
-      reason to step up or down the scale.
-    </p>
-    <div class="card-doc__demo card-doc__demo--on-vivid reveal">
-      <article class="card card--glass is-interactive" tabindex="0">
-        <span class="card__eyebrow">Tier 02 · light</span>
-        <header class="card__header">
-          <h3 class="card__title">Balanced frost.</h3>
-          <p class="card__subtitle">--blur-lg · light tint</p>
-        </header>
-        <p class="card__body">
-          The system default. Visible blur without dominating; the
-          canvas still informs the surface.
-        </p>
-      </article>
-    </div>
-    <p class="card-doc__prose reveal">
-      Uses <code>--blur-lg</code> at a balanced tint. This is the
-      baseline — every other tier is a deliberate move away from
-      this default.
-    </p>
-
-    <h4 class="card-doc__variant reveal">Frost · content-grade.</h4>
-    <p class="card-doc__lede reveal">
-      A content-grade tier for surfaces that need to dampen a complex
-      backdrop while still feeling translucent. Around 75% white tint
-      paired with <code>--blur-xl</code>.
-    </p>
-    <div class="card-doc__demo card-doc__demo--on-vivid reveal">
-      <article class="card card--glass-frost is-interactive" tabindex="0">
-        <span class="card__eyebrow">Tier 03 · frost</span>
-        <header class="card__header">
-          <h3 class="card__title">Reads on busy imagery.</h3>
-          <p class="card__subtitle">--blur-xl · ~75% white tint</p>
-        </header>
-        <p class="card__body">
-          Content surfaces that need to dampen a complex backdrop while
-          still feeling translucent.
-        </p>
-      </article>
-    </div>
-    <p class="card-doc__prose reveal">
-      Use Frost when the backdrop is photographic or pattern-heavy
-      and Light tier doesn't carry enough opacity to keep body copy
-      legible.
-    </p>
-
-    <h4 class="card-doc__variant reveal">Heavy · modal-grade.</h4>
-    <p class="card-doc__lede reveal">
-      The frostiest tier — sheets and modals where legibility trumps
-      visual continuity. Around 92% white tint at
-      <code>--blur-2xl</code>; nearly an opaque slab.
-    </p>
-    <div class="card-doc__demo card-doc__demo--on-vivid reveal">
-      <article class="card card--glass-heavy is-interactive" tabindex="0">
-        <span class="card__eyebrow">Tier 04 · heavy</span>
-        <header class="card__header">
-          <h3 class="card__title">Near-opaque slab.</h3>
-          <p class="card__subtitle">--blur-2xl · ~92% white tint</p>
-        </header>
-        <p class="card__body">
-          Frostiest tier. Sheets and modals where legibility trumps
-          visual continuity.
-        </p>
-      </article>
-    </div>
-    <p class="card-doc__prose reveal">
-      Reach for Heavy when the surface is doing modal-grade work and
-      the backdrop should be visible only as atmosphere, not as
-      content.
-    </p>
-
-    <h4 class="card-doc__variant reveal">Tinted · brand-aware.</h4>
-    <p class="card-doc__lede reveal">
-      Glass with a quiet brand wash. Uses <code>--background-glass-dark</code>
-      so the surface itself carries a primary tint. Best on
-      photographic backdrops where a neutral glass would look
-      anonymous.
-    </p>
-    <div class="card-doc__demo card-doc__demo--on-vivid reveal">
-      <article class="card card--glass-tinted is-interactive" tabindex="0">
-        <span class="card__eyebrow">Tier 05 · tinted</span>
-        <header class="card__header">
-          <h3 class="card__title">Glass with a brand pulse.</h3>
-          <p class="card__subtitle">--blur-lg · primary-tinted base</p>
-        </header>
-        <p class="card__body">
-          Uses <code>--background-glass-dark</code> so the surface
-          itself carries a quiet brand wash. Best on photographic
-          backdrops.
-        </p>
-      </article>
-    </div>
-    <p class="card-doc__prose reveal">
-      Tinted is the only glass tier that imports brand colour into
-      the surface; every other tier is neutral. Use sparingly so the
-      brand wash doesn't compete with content.
+      <strong>Interactive states tint up, never flip opaque.</strong>
+      Hover and pressed shift the glass to a higher tint; focus draws
+      the system ring; disabled drops opacity. Blur and translucency
+      persist across every state — the glass identity is preserved
+      end to end.
     </p>
   </section>
 
   <!-- ========================== VERSIONS ========================== -->
   <section class="chunk" id="card-versions">
     <header class="chunk-head reveal">
-      <span class="num-tag">07 / Card — Versions</span>
+      <span class="num-tag">03 / Card — Versions</span>
       <h2 class="text-display-sm">Versions.</h2>
     </header>
 
@@ -1599,7 +655,7 @@
   <!-- ========================== TOKENS ========================== -->
   <section class="chunk" id="card-tokens">
     <header class="chunk-head reveal">
-      <span class="num-tag">08 / Card — Component tokens</span>
+      <span class="num-tag">04 / Card — Component tokens</span>
       <h2 class="text-display-sm">Tokens.</h2>
     </header>
 
@@ -1697,25 +753,7 @@ const CARD_TOKENS = [
     ['--card-list-row-pad-x',    'var(--spacing-5x)'],
     ['--card-list-row-pad-y',    'var(--spacing-3x)'],
   ]},
-  { group: 'Functional · Selectable', tokens: [
-    ['--card-check-size',           '24px'],
-    ['--card-check-bg',             'var(--background-default)'],
-    ['--card-check-border',         'var(--border-default-strong)'],
-    ['--card-check-checked-bg',     'var(--background-primary)'],
-    ['--card-check-checked-fg',     'var(--text-inverted)'],
-    ['--card-check-checked-border', 'var(--border-primary)'],
-  ]},
-  { group: 'Functional · Draggable', tokens: [
-    ['--card-drag-handle-fg',       'var(--icon-default-minimal)'],
-    ['--card-drag-handle-fg-hover', 'var(--icon-default)'],
-  ]},
-  { group: 'Functional · Featured', tokens: [
-    ['--card-featured-border',       'var(--border-accent)'],
-    ['--card-featured-border-width', '2px'],
-    ['--card-featured-bg-tint',      'color-mix(in srgb, var(--accent-50) 70%, transparent)'],
-    ['--card-featured-ring',         '0 0 0 4px color-mix(in srgb, var(--accent-300) 25%, transparent)'],
-  ]},
-  { group: 'Glass scale · shared', tokens: [
+  { group: 'Glass · shared', tokens: [
     ['--card-glass-saturate',   '140%'],
     ['--card-glass-border',     'var(--border-glass-light)'],
   ]},
@@ -1865,26 +903,6 @@ function renderTokenTable() {
 }
 
 /* =========================================================
-   SELECTABLE CARDS — toggle is-selected on click / Space
-   ========================================================= */
-function initSelectableCards() {
-  document.querySelectorAll('[data-card-selectable]').forEach(card => {
-    const toggle = () => {
-      const next = !card.classList.contains('is-selected');
-      card.classList.toggle('is-selected', next);
-      card.setAttribute('aria-pressed', String(next));
-    };
-    card.addEventListener('click', toggle);
-    card.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        toggle();
-      }
-    });
-  });
-}
-
-/* =========================================================
    PRESS PULSE — fire ds-pulse on click
    Mirrors the swatch / token-card copy-pulse pattern from
    I-primitives.html and II-semantics.html. Add .is-pulsing,
@@ -1904,80 +922,6 @@ function initCardPress() {
       card.classList.add('is-pulsing');
     });
   });
-}
-
-/* =========================================================
-   KANBAN — drag-and-drop demo
-   Uses the native HTML5 drag API. The CSS variant
-   .card--draggable provides the affordance (handle, cursor,
-   .is-dragging style); this wires the actual movement.
-   Production usage would typically wrap a library
-   (react-dnd, dnd-kit, SortableJS) for accessibility +
-   keyboard reorder support.
-   ========================================================= */
-function initKanban() {
-  const board = document.querySelector('[data-kanban]');
-  if (!board) return;
-  const lists = Array.from(board.querySelectorAll('[data-kanban-list]'));
-  if (!lists.length) return;
-
-  let dragged = null;
-
-  // Cards: dragstart / dragend
-  board.querySelectorAll('.card--draggable').forEach(card => {
-    card.addEventListener('dragstart', (e) => {
-      dragged = card;
-      card.classList.add('is-dragging');
-      e.dataTransfer.effectAllowed = 'move';
-      // Required for Firefox to register the drag
-      try { e.dataTransfer.setData('text/plain', ''); } catch (_) {}
-    });
-    card.addEventListener('dragend', () => {
-      card.classList.remove('is-dragging');
-      lists.forEach(l => l.classList.remove('is-drop-target'));
-      dragged = null;
-    });
-  });
-
-  // Lists: dragover / dragleave / drop
-  lists.forEach(list => {
-    list.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      e.dataTransfer.dropEffect = 'move';
-      list.classList.add('is-drop-target');
-      if (!dragged) return;
-      const after = getAfterCard(list, e.clientY);
-      if (!after) {
-        list.appendChild(dragged);
-      } else if (after !== dragged) {
-        list.insertBefore(dragged, after);
-      }
-    });
-    list.addEventListener('dragleave', (e) => {
-      // Only clear when leaving the list entirely
-      if (!list.contains(e.relatedTarget)) {
-        list.classList.remove('is-drop-target');
-      }
-    });
-    list.addEventListener('drop', (e) => {
-      e.preventDefault();
-      list.classList.remove('is-drop-target');
-    });
-  });
-
-  // Find the card whose vertical centre is closest below the
-  // cursor; the dragged card should be inserted before it.
-  function getAfterCard(list, y) {
-    const cards = Array.from(list.querySelectorAll('.card--draggable:not(.is-dragging)'));
-    return cards.reduce((closest, card) => {
-      const rect = card.getBoundingClientRect();
-      const offset = y - rect.top - rect.height / 2;
-      if (offset < 0 && offset > closest.offset) {
-        return { offset: offset, element: card };
-      }
-      return closest;
-    }, { offset: Number.NEGATIVE_INFINITY, element: null }).element;
-  }
 }
 
 /* =========================================================
@@ -2005,9 +949,7 @@ function initReveal() {
    ========================================================= */
 document.addEventListener('DOMContentLoaded', () => {
   renderTokenTable();
-  initSelectableCards();
   initCardPress();
-  initKanban();
   initReveal();
 });
 </script>

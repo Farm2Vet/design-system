@@ -84,14 +84,14 @@
     --card-glass-saturate:  140%;
     --card-glass-border:    var(--border-glass-light);
 
-    /* Default tier — light frost (the baseline `.card--glass`) */
+    /* Light (default tier) — light frost over canvas */
     --card-glass-bg:           var(--background-glass-light);
     --card-glass-bg-hover:     color-mix(in srgb, var(--white-base) 80%, transparent);
     --card-glass-bg-pressed:   color-mix(in srgb, var(--white-base) 88%, transparent);
     --card-glass-border-hover: color-mix(in srgb, var(--white-base) 95%, transparent);
     --card-glass-blur:         var(--blur-lg);
 
-    /* Clear — barely-there, only a whisper of blur */
+    /* Clear (tier 01) — barely-there glass, lightest density */
     --card-glass-clear-bg:           color-mix(in srgb, var(--white-base) 25%, transparent);
     --card-glass-clear-bg-hover:     color-mix(in srgb, var(--white-base) 42%, transparent);
     --card-glass-clear-bg-pressed:   color-mix(in srgb, var(--white-base) 50%, transparent);
@@ -99,7 +99,7 @@
     --card-glass-clear-border:       color-mix(in srgb, var(--white-base) 40%, transparent);
     --card-glass-clear-border-hover: color-mix(in srgb, var(--white-base) 60%, transparent);
 
-    /* Frost — medium tier, primary content surface on vivid bg */
+    /* Frost (tier 03) — content-grade glass, denser frost */
     --card-glass-frost-bg:           color-mix(in srgb, var(--white-base) 75%, transparent);
     --card-glass-frost-bg-hover:     color-mix(in srgb, var(--white-base) 85%, transparent);
     --card-glass-frost-bg-pressed:   color-mix(in srgb, var(--white-base) 92%, transparent);
@@ -852,9 +852,9 @@ button.card.card--outlined:active {
    GLASS — interactive states
    The base `.card.is-interactive:hover` rule would replace
    the glass tint with an opaque white, killing the blur.
-   These per-tier overrides preserve the glass treatment on
-   hover/pressed by tinting up (more "lit") instead of going
-   solid. Box-shadow stays suppressed; the tier's blur and
+   These per-modifier overrides preserve the glass treatment
+   on hover/pressed by tinting up (more "lit") instead of
+   going solid. Box-shadow stays suppressed; blur and
    border-color shift instead.
    ========================================================= */
 .card--glass.is-interactive,

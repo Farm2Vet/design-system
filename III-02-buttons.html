@@ -140,98 +140,10 @@
     <dl class="meta-strip reveal">
       <div><dt>Component</dt><dd>Button</dd></div>
       <div><dt>Variants</dt><dd>8 + switch</dd></div>
-      <div><dt>States</dt><dd>7</dd></div>
+      <div><dt>States</dt><dd>6</dd></div>
       <div><dt>Versions</dt><dd>5</dd></div>
       <div><dt>Sizes</dt><dd>5 · LG focus</dd></div>
     </dl>
-  </section>
-
-  <!-- ========================== BUTTON · ANATOMY ========================== -->
-  <section class="chunk" id="button-anatomy">
-    <header class="chunk-head reveal">
-      <span class="num-tag">00 / Button — Anatomy</span>
-      <h2 class="text-display-sm">Anatomy.</h2>
-    </header>
-
-    <p class="section-lede reveal">
-      Six conceptual slots make up a button: the container, its surface
-      and border, an optional icon, the label, and the keyboard focus
-      ring. Slot names are descriptive — they're how we talk about the
-      parts, not classes you compose. The Switch component has its own
-      anatomy, documented in its own section.
-    </p>
-
-    <div class="anatomy-stage reveal">
-
-      <div class="anatomy-stage__diagram">
-        <div class="anatomy-figure">
-          <svg class="anatomy-callouts" viewBox="0 0 480 220" aria-hidden="true">
-            <!-- Focus ring (callout 6) -->
-            <rect x="84" y="70" width="312" height="80" rx="18"
-                  fill="none"
-                  stroke="var(--outline-focus)"
-                  stroke-opacity="0.55"
-                  stroke-width="2"
-                  stroke-dasharray="5 4" />
-
-            <!-- Button surface (callouts 1, 2, 3) -->
-            <rect x="92" y="78" width="296" height="64" rx="14"
-                  fill="var(--background-accent)" />
-
-            <!-- Leading icon glyph (callout 4) — small play wedge -->
-            <path d="M132 102 L148 110 L132 118 Z"
-                  fill="var(--text-inverted)" />
-
-            <!-- Label (callout 5) -->
-            <text x="262" y="116" text-anchor="middle"
-                  font-family="var(--font-sans)" font-size="18" font-weight="500"
-                  fill="var(--text-inverted)">Run diagnosis</text>
-
-            <!-- Leader lines -->
-            <g stroke="var(--border-default-strong)" stroke-width="0.8" fill="none" stroke-opacity="0.55">
-              <line x1="58"  y1="42"  x2="100" y2="84"  />
-              <line x1="240" y1="34"  x2="240" y2="90"  />
-              <line x1="422" y1="42"  x2="380" y2="84"  />
-              <line x1="138" y1="180" x2="140" y2="124" />
-              <line x1="290" y1="180" x2="262" y2="126" />
-              <line x1="448" y1="110" x2="398" y2="110" />
-            </g>
-
-            <!-- Numbered callouts -->
-            <g font-family="var(--font-sans)" font-size="13" font-weight="500"
-               fill="var(--text-default)" text-anchor="middle" dominant-baseline="middle">
-              <g><circle cx="50"  cy="32"  r="14" fill="var(--background-default)" stroke="var(--border-default-strong)" stroke-width="1"/><text x="50"  y="33" >1</text></g>
-              <g><circle cx="240" cy="22"  r="14" fill="var(--background-default)" stroke="var(--border-default-strong)" stroke-width="1"/><text x="240" y="23" >2</text></g>
-              <g><circle cx="430" cy="32"  r="14" fill="var(--background-default)" stroke="var(--border-default-strong)" stroke-width="1"/><text x="430" y="33" >3</text></g>
-              <g><circle cx="124" cy="194" r="14" fill="var(--background-default)" stroke="var(--border-default-strong)" stroke-width="1"/><text x="124" y="195">4</text></g>
-              <g><circle cx="304" cy="194" r="14" fill="var(--background-default)" stroke="var(--border-default-strong)" stroke-width="1"/><text x="304" y="195">5</text></g>
-              <g><circle cx="462" cy="110" r="14" fill="var(--background-default)" stroke="var(--border-default-strong)" stroke-width="1"/><text x="462" y="111">6</text></g>
-            </g>
-          </svg>
-        </div>
-      </div>
-
-      <div class="anatomy-stage__legend">
-        <table class="anatomy-table" aria-label="Button anatomy slots">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Slot</th>
-              <th>What it is</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td class="num-cell">1</td><td>Container</td>  <td>The outer button shape — sets size, padding, and radius.</td></tr>
-            <tr><td class="num-cell">2</td><td>Surface</td>    <td>The background fill, controlled by the variant.</td></tr>
-            <tr><td class="num-cell">3</td><td>Border</td>     <td>The outline, also variant-controlled (transparent on filled variants).</td></tr>
-            <tr><td class="num-cell">4</td><td>Icon</td>       <td>An optional leading glyph that supports the label.</td></tr>
-            <tr><td class="num-cell">5</td><td>Label</td>      <td>The action's verb — short, descriptive text.</td></tr>
-            <tr><td class="num-cell">6</td><td>Focus ring</td> <td>The keyboard-focus outline drawn outside the button.</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-    </div>
   </section>
 
   <!-- ========================== BUTTON · VARIANTS ========================== -->
@@ -342,10 +254,9 @@
 
     <p class="section-lede reveal">
       Every variant supports the same state set: rest, hover, pressed,
-      focused, disabled, loading, and selected. Hover, pressed, and
-      focused cells use static <code>data-state</code> proxies — they
-      paint the visual the live pseudo-class would produce, without
-      altering behaviour.
+      focused, disabled, and loading. Hover, pressed, and focused cells
+      use static <code>data-state</code> proxies — they paint the visual
+      the live pseudo-class would produce, without altering behaviour.
     </p>
 
     <div class="variant-grid reveal">
@@ -409,16 +320,6 @@
           </button>
         </div>
         <div class="meta"><span>.btn--loading</span><strong>in progress</strong></div>
-      </article>
-
-      <article class="variant-card">
-        <span class="label">Selected · On</span>
-        <div class="demo">
-          <button class="btn btn--toggle btn--lg is-on" aria-pressed="true">
-            <span class="btn__label">Vitals monitor</span>
-          </button>
-        </div>
-        <div class="meta"><span>.is-on</span><strong>persistent</strong></div>
       </article>
 
     </div>
@@ -558,30 +459,6 @@
       <div class="size-cell">
         <button class="btn btn--cta btn--2xl">Diagnose</button>
         <span class="tag">2XL · 33.18px</span>
-      </div>
-    </div>
-
-    <h4 class="subheading reveal">Secondary — across all sizes <span class="tag">supporting</span></h4>
-    <div class="glass size-stage reveal">
-      <div class="size-cell">
-        <button class="btn btn--secondary btn--sm">Chart</button>
-        <span class="tag">SM</span>
-      </div>
-      <div class="size-cell">
-        <button class="btn btn--secondary btn--md">Chart</button>
-        <span class="tag">MD</span>
-      </div>
-      <div class="size-cell is-focus">
-        <button class="btn btn--secondary btn--lg">Chart</button>
-        <span class="tag">LG · focus</span>
-      </div>
-      <div class="size-cell">
-        <button class="btn btn--secondary btn--xl">Chart</button>
-        <span class="tag">XL</span>
-      </div>
-      <div class="size-cell">
-        <button class="btn btn--secondary btn--2xl">Chart</button>
-        <span class="tag">2XL</span>
       </div>
     </div>
 
@@ -776,87 +653,6 @@
       the on-position reads true. The visible label sits next to the switch;
       never let the slider stand alone.
     </p>
-  </section>
-
-  <!-- ========================== BUTTON · USAGE ========================== -->
-  <section class="chunk" id="button-usage">
-    <header class="chunk-head reveal">
-      <span class="num-tag">06 / Button — Usage</span>
-      <h2 class="text-display-sm">Usage.</h2>
-    </header>
-
-    <p class="section-lede reveal">
-      Six rules that keep buttons predictable across surfaces. Each
-      captures the one decision that's easy to get wrong — label tone,
-      emphasis, availability, hit target, destructive confirmation,
-      glass context.
-    </p>
-
-    <div class="usage-grid reveal">
-
-      <article class="usage-card">
-        <span class="usage-card__num">01</span>
-        <h3 class="usage-card__title">Labels are descriptive verbs.</h3>
-        <p class="usage-card__body">
-          Say what the action does. "Save draft", not "OK"; "Delete sample",
-          not "Yes". No terminal punctuation — buttons aren't sentences.
-        </p>
-      </article>
-
-      <article class="usage-card">
-        <span class="usage-card__num">02</span>
-        <h3 class="usage-card__title">One primary per surface.</h3>
-        <p class="usage-card__body">
-          At most one <code>.btn--cta</code> per visible region; the rest
-          are <code>.btn--secondary</code>, <code>.btn--tinted</code>, or
-          <code>.btn--ghost</code>. Two CTAs side-by-side leaves the user
-          nowhere to look first.
-        </p>
-      </article>
-
-      <article class="usage-card">
-        <span class="usage-card__num">03</span>
-        <h3 class="usage-card__title">Disable, don't hide.</h3>
-        <p class="usage-card__body">
-          When an action isn't currently available, render it disabled
-          with <code>[disabled]</code>. Hiding the button removes the
-          affordance the user already expected.
-        </p>
-      </article>
-
-      <article class="usage-card">
-        <span class="usage-card__num">04</span>
-        <h3 class="usage-card__title">Hit target ≥ 44px.</h3>
-        <p class="usage-card__body">
-          <code>.btn--lg</code> is 48px tall — comfortably above the 44px
-          minimum for reliable touch. <code>.btn--md</code> (36px) and
-          <code>.btn--sm</code> (28px) are desktop-only or dense-table
-          contexts; pair with adequate spacing.
-        </p>
-      </article>
-
-      <article class="usage-card">
-        <span class="usage-card__num">05</span>
-        <h3 class="usage-card__title">Caution requires confirmation.</h3>
-        <p class="usage-card__body">
-          <code>.btn--caution</code> initiates a destructive action.
-          Pair with a confirm dialog or undo affordance — never let a
-          single click cause irreversible loss.
-        </p>
-      </article>
-
-      <article class="usage-card">
-        <span class="usage-card__num">06</span>
-        <h3 class="usage-card__title">Glass needs content behind it.</h3>
-        <p class="usage-card__body">
-          <code>.btn--glass</code> exists for floating contexts —
-          cards, hero overlays, side panels with imagery. On a flat
-          surface it reads as dead-translucent; reach for
-          <code>.btn--secondary</code> instead.
-        </p>
-      </article>
-
-    </div>
   </section>
 
   <!-- ========================== BUTTON · TOKENS ========================== -->
