@@ -145,10 +145,9 @@
 
     <dl class="meta-strip reveal">
       <div><dt>Tones</dt><dd>5</dd></div>
-      <div><dt>Styles</dt><dd>3</dd></div>
-      <div><dt>Layouts</dt><dd>7</dd></div>
+      <div><dt>Layouts</dt><dd>6</dd></div>
       <div><dt>Sizes</dt><dd>3</dd></div>
-      <div><dt>Positions</dt><dd>6</dd></div>
+      <div><dt>Positions</dt><dd>2</dd></div>
     </dl>
   </section>
 
@@ -168,28 +167,15 @@
     </div>
 
     <div class="card-callout reveal" role="note" style="margin-top: var(--spacing-4x);">
-      <span class="label">Architectural note · toast vs. snackbar</span>
-      <p>
-        <strong>Snackbar is a sub-variant of Toast, not a separate component.</strong>
-        The bottom-centre copy-confirmation pill used across the
-        token-copy pages (<em>primitives</em>, <em>semantics</em>) is
-        the <code>.toast.toast--snackbar</code> variant. It bypasses
-        the slot vocabulary so legacy copy-to-clipboard flows can
-        inject raw text. For anything the user might need to act on,
-        use a notification toast with the full slot DOM.
-      </p>
-    </div>
-
-    <div class="card-callout reveal" role="note" style="margin-top: var(--spacing-4x);">
-      <span class="label">Architectural note · region and stack</span>
+      <span class="label">Architectural note · region</span>
       <p>
         <strong>Toasts never live in document flow.</strong> They are
         appended to a <code>.toast-region</code>, a fixed-position
-        container anchored to one of six viewport edges. Inside the
-        region, toasts of the same tone collect in a
-        <code>.toast-stack</code> that collapses to a peek-behind
-        pile so a flood of one tone (a burst of validation errors,
-        a chain of sync failures) cannot grow off-screen.
+        container anchored to one of two viewport edges
+        (<em>top-right</em> default, <em>bottom-right</em>). New
+        toasts are appended to the region's flex column in DOM order;
+        bottom-anchored regions reverse the visual flow so the
+        newest toast still sits closest to the viewport edge.
       </p>
     </div>
   </section>
@@ -214,9 +200,9 @@
       <strong>Title is the only required slot.</strong> A toast
       without a title resolves as a Compact one-liner (see Layouts).
       Toasts without an icon are valid for purely textual
-      confirmations but lose the tonal glance-cue, so reserve
-      icon-less toasts for the Snackbar variant where the absence is
-      part of the language.
+      confirmations but lose the tonal glance-cue — reach for the
+      Compact layout instead, which keeps the icon while trimming
+      everything else.
     </p>
 
     <p class="usage-note reveal">
@@ -405,143 +391,22 @@
     </div>
   </section>
 
-  <!-- ========================== TOAST · STYLE VARIANTS ========================== -->
-  <section class="chunk" id="toast-styles">
-    <header class="chunk-head reveal">
-      <span class="num-tag">03 / Toast — Style variants</span>
-      <h2 class="text-display-sm">Style.</h2>
-    </header>
-
-    <p class="section-lede reveal">
-      Three style treatments along an emphasis axis. <em>Soft</em>
-        (default): tinted surface with a thin coloured border, tone
-        carried by the surface itself. <em>Solid</em>: white-on-tone
-        fill, no border, reserved for the most urgent recoveries.
-        <em>Inverted</em>: dark glass surface where tone is carried
-        by the leading icon glyph only — the most "OS-level"
-        notification look.
-    </p>
-
-    <p class="usage-note reveal">
-      <strong>Style is selected once per surface.</strong> A product
-      should commit to one style as the house default and use the
-      others only for deliberate exceptions. Mixing Soft, Solid,
-      and Inverted toasts in the same region creates competing
-      emphasis cues and erodes the system's tone semantics.
-    </p>
-
-    <p class="usage-note reveal">
-      <strong>Inverted is preferred when toasts overlap dense or
-      colourful content.</strong> A tinted Soft toast can lose
-      contrast against a chart, a photo, or a coloured banner. The
-      dark glass of <code>.toast--inverted</code> reads cleanly over
-      any background and is the safest default for surfaces that
-      mix text, imagery, and data viz.
-    </p>
-
-    <div class="toast-showcase reveal">
-
-      <!-- SOFT -->
-      <article class="toast-showcase__tile">
-        <span class="label">Soft · default</span>
-        <div class="demo">
-          <div class="toast is-info">
-            <span class="toast__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-            </span>
-            <div class="toast__content">
-              <p class="toast__title">Caseload assignment routed</p>
-              <p class="toast__body">Three new cases were added to your queue.</p>
-            </div>
-          </div>
-        </div>
-        <div class="meta"><span>.toast</span><strong>tinted bg + thin border</strong></div>
-      </article>
-
-      <!-- SOLID -->
-      <article class="toast-showcase__tile">
-        <span class="label">Solid · high emphasis</span>
-        <div class="demo">
-          <div class="toast toast--solid is-critical" role="alert">
-            <span class="toast__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
-            </span>
-            <div class="toast__content">
-              <p class="toast__title">Sync to lab portal failed</p>
-              <p class="toast__body">Connection refused · last successful sync 3 minutes ago.</p>
-            </div>
-            <div class="toast__actions">
-              <button type="button" class="toast__action toast__action--strong">Retry</button>
-            </div>
-            <button type="button" class="toast__close" aria-label="Dismiss toast">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-            </button>
-          </div>
-        </div>
-        <div class="meta"><span>.toast--solid</span><strong>white-on-tone</strong></div>
-      </article>
-
-      <!-- INVERTED -->
-      <article class="toast-showcase__tile">
-        <span class="label">Inverted · dark glass</span>
-        <div class="demo">
-          <div class="toast toast--inverted is-safe">
-            <span class="toast__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-            </span>
-            <div class="toast__content">
-              <p class="toast__title">Draft saved</p>
-              <p class="toast__body">Last saved a moment ago.</p>
-            </div>
-            <button type="button" class="toast__close" aria-label="Dismiss toast">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-            </button>
-          </div>
-        </div>
-        <div class="meta"><span>.toast--inverted</span><strong>dark surface, icon carries tone</strong></div>
-      </article>
-
-    </div>
-
-    <div class="style-triggers reveal" style="margin-top: var(--spacing-4x);">
-      <button type="button" class="toast-trigger is-tone-info"
-              data-spawn-toast data-tone="info"
-              data-title="Caseload assignment routed"
-              data-body="Three new cases were added to your queue.">
-        Spawn soft
-      </button>
-      <button type="button" class="toast-trigger is-tone-critical"
-              data-spawn-toast data-tone="critical" data-style="solid" data-action="Retry"
-              data-title="Sync to lab portal failed"
-              data-body="Connection refused · last successful sync 3 minutes ago.">
-        Spawn solid
-      </button>
-      <button type="button" class="toast-trigger is-tone-safe"
-              data-spawn-toast data-tone="safe" data-style="inverted"
-              data-title="Draft saved"
-              data-body="Last saved a moment ago.">
-        Spawn inverted
-      </button>
-    </div>
-  </section>
-
   <!-- ========================== TOAST · LAYOUTS ========================== -->
   <section class="chunk" id="toast-layouts">
     <header class="chunk-head reveal">
-      <span class="num-tag">04 / Toast — Layouts</span>
+      <span class="num-tag">03 / Toast — Layouts</span>
       <h2 class="text-display-sm">Layouts.</h2>
     </header>
 
     <p class="section-lede reveal">
-      Seven layout modes resolve from the same DOM by exposing or
+      Six layout modes resolve from the same DOM by exposing or
         hiding slots. <em>Default</em>: title and body. <em>Compact</em>
         (<code>.toast--compact</code>): title-only, single-line.
         <em>With action</em>: trailing CTA. <em>With dismiss</em>:
         explicit close × that cancels the auto-dismiss timer. <em>With
         progress</em>: auto-dismiss progress bar pinned to the
         bottom edge. <em>Promise / loading</em>: spinner replaces
-        the leading icon. <em>Snackbar</em>: documented separately
-        in section 08.
+        the leading icon.
     </p>
 
     <p class="usage-note reveal">
@@ -657,22 +522,6 @@
         <div class="meta"><span>.toast__spinner</span><strong>upgrades in place on settle</strong></div>
       </article>
 
-      <!-- COMPACT INVERTED -->
-      <article class="toast-showcase__tile">
-        <span class="label">Compact · inverted (one-line confirmation)</span>
-        <div class="demo">
-          <div class="toast toast--compact toast--inverted is-safe">
-            <span class="toast__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-            </span>
-            <div class="toast__content">
-              <p class="toast__title">Link copied to clipboard</p>
-            </div>
-          </div>
-        </div>
-        <div class="meta"><span>.toast--compact.toast--inverted</span><strong>OS-style one-liner</strong></div>
-      </article>
-
     </div>
 
     <div class="layout-triggers reveal" style="margin-top: var(--spacing-4x);">
@@ -708,28 +557,24 @@
               data-promise-resolve='{"tone":"safe","title":"Bloodwork uploaded","body":"Lab portal acknowledged the file."}'>
         Spawn promise (resolves)
       </button>
-      <button type="button" class="toast-trigger"
-              data-spawn-toast data-tone="safe" data-layout="compact" data-style="inverted"
-              data-title="Link copied to clipboard">
-        Spawn inverted compact
-      </button>
     </div>
   </section>
 
   <!-- ========================== TOAST · SIZES ========================== -->
   <section class="chunk" id="toast-sizes">
     <header class="chunk-head reveal">
-      <span class="num-tag">05 / Toast — Sizes</span>
+      <span class="num-tag">04 / Toast — Sizes</span>
       <h2 class="text-display-sm">Sizes.</h2>
     </header>
 
     <p class="section-lede reveal">
       Three sizes scale padding, icon glyph, title font-size, and
         minimum width in lockstep. <em>SM</em>: <code>--text-sm</code>
-        font, 16 px icon, compact padding. <em>MD</em> (default):
-        <code>--text-base</code> font, 20 px icon. <em>LG</em>:
-        <code>--text-h6</code> title, 24 px icon, generous padding.
-        Body line-height is shared
+        (13.33 px) font, 16 px icon, compact padding. <em>MD</em>
+        (default): <code>--text-base</code> (16 px / 1 rem) font,
+        20 px icon. <em>LG</em>: <code>--text-base</code> (16 px) body
+        with a <code>--text-h6</code> (19.2 px) title, 24 px icon,
+        generous padding. Body line-height is shared
         (<code>--toast-body-line</code>) across all sizes.
     </p>
 
@@ -803,18 +648,17 @@
   <!-- ========================== TOAST · POSITION ========================== -->
   <section class="chunk" id="toast-positions">
     <header class="chunk-head reveal">
-      <span class="num-tag">06 / Toast — Region position</span>
+      <span class="num-tag">05 / Toast — Region position</span>
       <h2 class="text-display-sm">Position.</h2>
     </header>
 
     <p class="section-lede reveal">
       Toasts live inside a <code>.toast-region</code>, a fixed-position
-        container anchored to one of six viewport edges:
-        <em>top-left</em>, <em>top-centre</em>, <em>top-right</em>,
-        <em>bottom-left</em>, <em>bottom-centre</em>,
-        <em>bottom-right</em>. The anchor is set on the region via
-        <code>data-position</code>; toasts inside the region inherit
-        the entry direction and stack flow from it.
+        container anchored to one of two viewport edges:
+        <em>top-right</em> (default) and <em>bottom-right</em>. The
+        anchor is set on the region via <code>data-position</code>;
+        toasts inside the region inherit the entry direction and stack
+        flow from it.
     </p>
 
     <p class="usage-note reveal">
@@ -829,8 +673,9 @@
       desktop.</strong> They sit furthest from primary navigation,
       do not occlude the document outline on the left, and align
       with the conventional placement of OS-level notifications.
-      Reach for <em>bottom-centre</em> only for one-line snackbars
-      that confirm a click the user just made.
+      Pair the default top-right with a bottom-right alt only when
+      the product surface has a persistent header that would occlude
+      the top row.
     </p>
 
     <p class="usage-note reveal">
@@ -843,50 +688,6 @@
     </p>
 
     <div class="position-grid reveal">
-
-      <article class="position-grid__tile">
-        <div class="stage">
-          <div class="toast-region" data-position="top-left">
-            <div class="toast is-info toast--compact">
-              <span class="toast__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-              </span>
-              <div class="toast__content"><p class="toast__title">top-left</p></div>
-            </div>
-          </div>
-        </div>
-        <div class="label">
-          <strong>top-left</strong>
-          <button type="button" class="toast-trigger is-tone-info"
-                  data-spawn-toast data-tone="info" data-position="top-left"
-                  data-title="Spawned at top-left"
-                  data-body="Region anchored to the viewport's top-left corner.">
-            Trigger here
-          </button>
-        </div>
-      </article>
-
-      <article class="position-grid__tile">
-        <div class="stage">
-          <div class="toast-region" data-position="top-center">
-            <div class="toast is-info toast--compact">
-              <span class="toast__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-              </span>
-              <div class="toast__content"><p class="toast__title">top-centre</p></div>
-            </div>
-          </div>
-        </div>
-        <div class="label">
-          <strong>top-centre</strong>
-          <button type="button" class="toast-trigger is-tone-info"
-                  data-spawn-toast data-tone="info" data-position="top-center"
-                  data-title="Spawned at top-centre"
-                  data-body="Region anchored to the viewport's top-centre.">
-            Trigger here
-          </button>
-        </div>
-      </article>
 
       <article class="position-grid__tile">
         <div class="stage">
@@ -912,48 +713,8 @@
 
       <article class="position-grid__tile">
         <div class="stage">
-          <div class="toast-region" data-position="bottom-left">
-            <div class="toast is-warning toast--compact">
-              <span class="toast__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
-              </span>
-              <div class="toast__content"><p class="toast__title">bottom-left</p></div>
-            </div>
-          </div>
-        </div>
-        <div class="label">
-          <strong>bottom-left</strong>
-          <button type="button" class="toast-trigger is-tone-warning"
-                  data-spawn-toast data-tone="warning" data-position="bottom-left"
-                  data-title="Spawned at bottom-left"
-                  data-body="Region anchored to the viewport's bottom-left corner.">
-            Trigger here
-          </button>
-        </div>
-      </article>
-
-      <article class="position-grid__tile">
-        <div class="stage">
-          <div class="toast-region" data-position="bottom-center">
-            <div class="toast toast--snackbar show" style="position: absolute; bottom: 12px;">
-              <span class="toast-name">snackbar</span>
-            </div>
-          </div>
-        </div>
-        <div class="label">
-          <strong>bottom-centre · snackbar</strong>
-          <button type="button" class="toast-trigger"
-                  data-spawn-toast data-layout="snackbar"
-                  data-title="--background-primary">
-            Trigger snackbar
-          </button>
-        </div>
-      </article>
-
-      <article class="position-grid__tile">
-        <div class="stage">
           <div class="toast-region" data-position="bottom-right">
-            <div class="toast toast--inverted is-safe toast--compact">
+            <div class="toast is-safe toast--compact">
               <span class="toast__icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
               </span>
@@ -964,7 +725,7 @@
         <div class="label">
           <strong>bottom-right</strong>
           <button type="button" class="toast-trigger is-tone-safe"
-                  data-spawn-toast data-tone="safe" data-style="inverted" data-position="bottom-right"
+                  data-spawn-toast data-tone="safe" data-position="bottom-right"
                   data-title="Spawned at bottom-right"
                   data-body="Region anchored to the viewport's bottom-right corner.">
             Trigger here
@@ -975,258 +736,10 @@
     </div>
   </section>
 
-  <!-- ========================== TOAST · STACKING ========================== -->
-  <section class="chunk" id="toast-stacking">
-    <header class="chunk-head reveal">
-      <span class="num-tag">07 / Toast — Stacking</span>
-      <h2 class="text-display-sm">Stacking.</h2>
-    </header>
-
-    <p class="section-lede reveal">
-      Toasts of the same tone collect inside a
-        <code>.toast-stack</code>. The stack is a simple vertical
-        column — toasts share a common gap and follow the region's
-        enter and exit motion. Grouping by tone keeps the
-        glance-cue of each channel intact: a Critical pile and a
-        Safe pile read as separate streams of feedback rather than
-        one mixed column.
-    </p>
-
-    <p class="usage-note reveal">
-      <strong>One stack per tone, per region.</strong> Mixing tones
-      inside a single stack defeats the glance-cue of the front
-      toast. A burst of mixed tones surfaces as multiple stacks
-      one above the other inside the same region — never as a
-      heterogeneous pile.
-    </p>
-
-    <p class="usage-note reveal">
-      <strong>Coalesce repeats before queuing them.</strong>
-      Five identical "Sync failed" toasts should resolve as one
-      "Sync failed · 5 attempts" toast with a single recovery
-      action. Stacks are for distinct events, not for retries of
-      the same event.
-    </p>
-
-    <p class="usage-note reveal">
-      <strong>Cap concurrent toasts per region.</strong> A region
-      with more than four or five visible toasts has stopped
-      communicating priority — every message flattens into noise.
-      When the live count would exceed the budget, dismiss the
-      oldest toast (FIFO) before mounting the next one.
-    </p>
-
-    <div class="stack-demo reveal">
-
-      <!-- SAME-TONE GROUPING -->
-      <div class="viewport-stage">
-        <div class="viewport-stage__chrome">
-          <span class="dots"><span></span><span></span><span></span></span>
-          <span class="url">caseload.farm2vet.local</span>
-        </div>
-        <div class="viewport-stage__body">
-          <p class="viewport-stage__placeholder">Single tone · grouped column</p>
-          <div class="toast-region" data-position="top-right">
-            <ol class="toast-stack" role="list" aria-label="Critical sync errors">
-              <li>
-                <div class="toast is-critical" role="alert">
-                  <span class="toast__icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
-                  </span>
-                  <div class="toast__content">
-                    <p class="toast__title">Lab portal sync failed</p>
-                  </div>
-                  <div class="toast__actions">
-                    <button type="button" class="toast__action toast__action--strong">Retry</button>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div class="toast is-critical" role="alert">
-                  <span class="toast__icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
-                  </span>
-                  <div class="toast__content">
-                    <p class="toast__title">Imaging upload failed</p>
-                  </div>
-                  <div class="toast__actions">
-                    <button type="button" class="toast__action toast__action--strong">Retry</button>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div class="toast is-critical" role="alert">
-                  <span class="toast__icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
-                  </span>
-                  <div class="toast__content">
-                    <p class="toast__title">Dispatch sign-off failed</p>
-                    <p class="toast__body">Network timeout · the form is still drafted on this device.</p>
-                  </div>
-                  <div class="toast__actions">
-                    <button type="button" class="toast__action toast__action--strong">Retry</button>
-                  </div>
-                </div>
-              </li>
-            </ol>
-          </div>
-          <span class="stage-tag">.toast-stack · one tone</span>
-        </div>
-      </div>
-
-      <!-- TWO-TONE PARALLEL STACKS -->
-      <div class="viewport-stage">
-        <div class="viewport-stage__chrome">
-          <span class="dots"><span></span><span></span><span></span></span>
-          <span class="url">caseload.farm2vet.local</span>
-        </div>
-        <div class="viewport-stage__body">
-          <p class="viewport-stage__placeholder">Multi-tone · two parallel stacks</p>
-          <div class="toast-region" data-position="top-right">
-
-            <ol class="toast-stack" role="list" aria-label="Successful operations">
-              <li>
-                <div class="toast is-safe" role="status">
-                  <span class="toast__icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-                  </span>
-                  <div class="toast__content"><p class="toast__title">Atlas · vaccination saved</p></div>
-                </div>
-              </li>
-              <li>
-                <div class="toast is-safe" role="status">
-                  <span class="toast__icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-                  </span>
-                  <div class="toast__content"><p class="toast__title">Bessie · weight logged</p></div>
-                </div>
-              </li>
-            </ol>
-
-            <ol class="toast-stack" role="list" aria-label="Sync errors">
-              <li>
-                <div class="toast is-critical" role="alert">
-                  <span class="toast__icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
-                  </span>
-                  <div class="toast__content"><p class="toast__title">Lab portal sync failed</p></div>
-                  <div class="toast__actions">
-                    <button type="button" class="toast__action toast__action--strong">Retry</button>
-                  </div>
-                </div>
-              </li>
-            </ol>
-
-          </div>
-          <span class="stage-tag">two stacks · safe + critical</span>
-        </div>
-      </div>
-
-    </div>
-
-    <p class="usage-note reveal" style="margin-top: var(--spacing-5x);">
-      <strong>Trigger a live preview.</strong> The buttons below
-      spawn real toasts in the page's top-right region so you can
-      observe enter motion, dwell, and dismiss in context. Each
-      tone routes to its own stack; the Reset action clears every
-      live toast on the page.
-    </p>
-
-    <div class="tone-triggers reveal">
-      <button type="button" class="toast-trigger is-tone-safe"
-              data-spawn-toast data-tone="safe"
-              data-title="Vaccination saved"
-              data-body="Atlas · synced to the lab portal."
-              data-position="top-right">
-        Spawn safe
-      </button>
-      <button type="button" class="toast-trigger is-tone-critical"
-              data-spawn-toast data-tone="critical" data-action="Retry"
-              data-title="Sync failed"
-              data-body="Connection refused · last successful sync 6 minutes ago."
-              data-position="top-right">
-        Spawn critical
-      </button>
-      <button type="button" class="toast-trigger is-tone-critical"
-              data-spawn-toast-burst="4" data-tone="critical" data-action="Retry"
-              data-title="Sync failed"
-              data-body="Connection refused."
-              data-position="top-right">
-        Spawn ×4 critical (group test)
-      </button>
-      <button type="button" class="toast-trigger is-reset"
-              data-clear-toasts>
-        Reset region
-      </button>
-    </div>
-  </section>
-
-  <!-- ========================== TOAST · SNACKBAR ========================== -->
-  <section class="chunk" id="toast-snackbar">
-    <header class="chunk-head reveal">
-      <span class="num-tag">08 / Toast — Snackbar variant</span>
-      <h2 class="text-display-sm">Snackbar.</h2>
-    </header>
-
-    <p class="section-lede reveal">
-      The Snackbar (<code>.toast.toast--snackbar</code>) is a
-        single-line, bottom-centre pill reserved for ephemeral
-        confirmations that have no actionable consequence — a
-        clipboard copy, a draft save, an undo expiry. It bypasses
-        the slot vocabulary so legacy copy-to-clipboard flows
-        (token-copy pages, share-link buttons) can inject raw text
-        without rewriting the host markup.
-    </p>
-
-    <p class="usage-note reveal">
-      <strong>Snackbar is for confirmations the user already
-      knows about.</strong> The user just clicked Copy; the snackbar
-      acknowledges it. The user just pressed Cmd-S; the snackbar
-      acknowledges it. Use a notification toast (with icon, body,
-      and optional action) for messages the user did not directly
-      trigger — system events, background syncs, out-of-band
-      updates.
-    </p>
-
-    <p class="usage-note reveal">
-      <strong>One snackbar at a time.</strong> A second snackbar
-      replaces the first in place — they never stack. The pill is
-      a single-instance element bound to one DOM node and animated
-      via the <code>.show</code> class.
-    </p>
-
-    <div class="toast-showcase reveal">
-      <article class="toast-showcase__tile is-snackbar">
-        <span class="label">Snackbar · bottom-centre · copy confirmation</span>
-        <div class="demo">
-          <div class="toast toast--snackbar show">
-            Copied
-            <span class="toast-name">--background-primary</span>
-            <span style="opacity:.5">/</span>
-            <span class="toast-hex">#6ec13e</span>
-          </div>
-        </div>
-        <div class="meta"><span>.toast--snackbar</span><strong>raw-text host · single instance</strong></div>
-        <div class="triggers">
-          <button type="button" class="toast-trigger"
-                  data-spawn-toast data-layout="snackbar"
-                  data-title="--background-primary">
-            Trigger snackbar
-          </button>
-          <button type="button" class="toast-trigger"
-                  data-spawn-toast data-layout="snackbar"
-                  data-title="--text-default">
-            Trigger another
-          </button>
-        </div>
-      </article>
-    </div>
-  </section>
-
   <!-- ========================== TOKENS ========================== -->
   <section class="chunk" id="toast-tokens">
     <header class="chunk-head reveal">
-      <span class="num-tag">09 / Toast — Component tokens</span>
+      <span class="num-tag">06 / Toast — Component tokens</span>
       <h2 class="text-display-sm">Tokens.</h2>
     </header>
 
@@ -1261,9 +774,6 @@
   </footer>
 
 </main>
-
-<!-- ========================== TOAST · COPY-CONFIRMATION SNACKBAR ========================== -->
-<div class="toast toast--snackbar" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
 <script>
 /* =========================================================
@@ -1346,13 +856,6 @@ const TOAST_TOKENS = [
     ['--toast-neutral-solid-bg',  'var(--neutral-700)'],
     ['--toast-neutral-solid-fg',  'var(--text-inverted)'],
   ]},
-  { group: 'Toast · Style — Inverted (dark glass)', tokens: [
-    ['--toast-inverted-bg',       'color-mix(neutral-950 92%)'],
-    ['--toast-inverted-border',   'color-mix(white 12%)'],
-    ['--toast-inverted-fg',       'var(--text-inverted)'],
-    ['--toast-inverted-fg-body',  'var(--text-inverted-subtle)'],
-    ['--toast-inverted-icon',     'var(--text-inverted)'],
-  ]},
   { group: 'Toast · Slots & dismiss', tokens: [
     ['--toast-title-weight',  'var(--font-weight-semibold)'],
     ['--toast-body-fg',       'var(--text-default-subtle)'],
@@ -1377,19 +880,6 @@ const TOAST_TOKENS = [
     ['--toast-region-padding', 'var(--spacing-6x)'],
     ['--toast-region-gap',     'var(--spacing-3x)'],
     ['--toast-region-width',   'min(560px, calc(100vw - var(--spacing-8x)))'],
-  ]},
-  { group: 'Toast · Stack', tokens: [
-    ['--toast-stack-gap',      'var(--spacing-3x)'],
-    ['--toast-stack-tone-gap', 'var(--spacing-5x)'],
-  ]},
-  { group: 'Toast · Snackbar variant', tokens: [
-    ['--toast-snackbar-bg',         'var(--background-toast)'],
-    ['--toast-snackbar-border',     'var(--border-toast)'],
-    ['--toast-snackbar-fg',         'var(--text-inverted)'],
-    ['--toast-snackbar-radius',     'var(--radius-pill)'],
-    ['--toast-snackbar-padding-x',  'var(--spacing-5x)'],
-    ['--toast-snackbar-padding-y',  'var(--spacing-3x)'],
-    ['--toast-snackbar-z',          '100'],
   ]},
   { group: 'Toast · Focus ring', tokens: [
     ['--toast-focus-outline',         'var(--outline-focus)'],
@@ -1453,9 +943,7 @@ function dismissToast(toastEl, removeAfter = true) {
   toastEl.classList.add('is-dismissed');
   setTimeout(() => {
     if (!removeAfter) { toastEl.style.display = 'none'; return; }
-    const li = toastEl.closest('li');
-    if (li) li.remove();
-    else toastEl.remove();
+    toastEl.remove();
   }, 260);
 }
 function initDismiss() {
@@ -1472,21 +960,20 @@ function initDismiss() {
 }
 
 /* =========================================================
-   COPY + SNACKBAR — token-table click handlers
-   The snackbar at the bottom of the page is the
-   .toast--snackbar variant. The JS still uses the legacy
-   `toast.innerHTML = "Copied <span class='toast-name'>…</span>"`
-   pattern so it drops in next to the existing token-copy
-   pages without modification.
+   TOKEN COPY — clicking a token name copies var(--name) to
+   the clipboard and confirms with a compact live toast
+   (bottom-right, 2s, no dismiss/progress chrome).
    ========================================================= */
-const snackbarEl = document.getElementById('toast');
-let snackbarTimer;
-function showSnackbar(label) {
-  if (!snackbarEl) return;
-  snackbarEl.innerHTML = `Copied <span class="toast-name">${label}</span>`;
-  snackbarEl.classList.add('show');
-  clearTimeout(snackbarTimer);
-  snackbarTimer = setTimeout(() => snackbarEl.classList.remove('show'), 2000);
+function showCopyToast(title, tone = 'safe') {
+  spawnLiveToast({
+    tone,
+    layout: 'compact',
+    position: 'bottom-right',
+    title,
+    lifetime: 2000,
+    dismiss: false,
+    progress: false,
+  });
 }
 async function copyTokenName(name) {
   const text = `var(${name})`;
@@ -1503,9 +990,9 @@ async function copyTokenName(name) {
       document.execCommand('copy');
       document.body.removeChild(ta);
     }
-    showSnackbar(name);
+    showCopyToast(`Copied ${name}`);
   } catch (err) {
-    showSnackbar('Copy failed');
+    showCopyToast('Copy failed', 'critical');
   }
 }
 function initTokenCopy() {
@@ -1521,8 +1008,6 @@ function initTokenCopy() {
    LIVE TOAST SPAWNER
    Buttons with [data-spawn-toast] mount a real toast into
    a viewport-anchored .toast-region.is-live container.
-   Buttons with [data-spawn-toast-burst] spawn N toasts in
-   sequence to demonstrate same-tone grouping.
    Buttons with [data-clear-toasts] dismiss every live toast
    on the page (the static demo toasts are untouched).
    ========================================================= */
@@ -1549,24 +1034,10 @@ function getOrCreateLiveRegion(position) {
   return region;
 }
 
-function getOrCreateLiveStack(region, tone) {
-  let stack = region.querySelector(`.toast-stack[data-tone="${tone}"]`);
-  if (!stack) {
-    stack = document.createElement('ol');
-    stack.className = 'toast-stack';
-    stack.setAttribute('role', 'list');
-    stack.setAttribute('data-tone', tone);
-    stack.setAttribute('aria-label', `Live ${tone} toasts`);
-    region.appendChild(stack);
-  }
-  return stack;
-}
-
 /* Build the toast DOM from an options object. The shape
    mirrors the static markup elsewhere on this page. */
 function buildLiveToast(opts) {
-  const li = document.createElement('li');
-  const t  = document.createElement('div');
+  const t = document.createElement('div');
   t.className = 'toast';
   if (opts.tone)  t.classList.add(`is-${opts.tone}`);
   if (opts.style) t.classList.add(`toast--${opts.style}`);
@@ -1636,28 +1107,19 @@ function buildLiveToast(opts) {
     t.appendChild(prog);
   }
 
-  li.appendChild(t);
-  return { li, toast: t };
+  return t;
 }
 
 /* Spawn a toast from an options bag. */
 function spawnLiveToast(opts) {
-  // Snackbar shortcut — single instance, raw text injection.
-  if (opts.layout === 'snackbar') {
-    const label = opts.title || 'Saved';
-    showSnackbar(label);
-    return;
-  }
   const position = opts.position || 'top-right';
-  const tone     = opts.tone || 'info';
   const region   = getOrCreateLiveRegion(position);
-  const stack    = getOrCreateLiveStack(region, tone);
-  const { li, toast } = buildLiveToast(opts);
+  const toast    = buildLiveToast(opts);
 
   // Entry animation — class added before mount, removed
   // on the next frame so the transition runs.
   toast.classList.add('is-entering');
-  stack.appendChild(li);
+  region.appendChild(toast);
   requestAnimationFrame(() => {
     requestAnimationFrame(() => toast.classList.remove('is-entering'));
   });
@@ -1673,13 +1135,13 @@ function spawnLiveToast(opts) {
   if (opts.layout === 'promise' && opts.promiseResolve) {
     setTimeout(() => {
       const settled = buildLiveToast(Object.assign({}, opts.promiseResolve, { position }));
-      stack.replaceChild(settled.li, li);
-      settled.toast.classList.add('is-entering');
+      region.replaceChild(settled, toast);
+      settled.classList.add('is-entering');
       requestAnimationFrame(() => {
-        requestAnimationFrame(() => settled.toast.classList.remove('is-entering'));
+        requestAnimationFrame(() => settled.classList.remove('is-entering'));
       });
       const settledLife = (opts.promiseResolve.lifetime != null) ? opts.promiseResolve.lifetime : 5000;
-      if (settledLife > 0) setTimeout(() => dismissToast(settled.toast), settledLife);
+      if (settledLife > 0) setTimeout(() => dismissToast(settled), settledLife);
     }, opts.promiseResolveAt || 2200);
   }
 }
@@ -1721,23 +1183,10 @@ function clearLiveToasts() {
 function initSpawners() {
   document.addEventListener('click', (e) => {
     const single = e.target.closest('[data-spawn-toast]');
-    const burst  = e.target.closest('[data-spawn-toast-burst]');
     const clear  = e.target.closest('[data-clear-toasts]');
 
     if (clear) {
       clearLiveToasts();
-      return;
-    }
-    if (burst) {
-      const n = Math.max(1, parseInt(burst.dataset.spawnToastBurst, 10) || 1);
-      const opts = readSpawnOpts(burst);
-      for (let i = 0; i < n; i++) {
-        const stagger = i * 220;
-        const variantOpts = Object.assign({}, opts, {
-          title: `${opts.title || 'Event'} · #${i + 1}`,
-        });
-        setTimeout(() => spawnLiveToast(variantOpts), stagger);
-      }
       return;
     }
     if (single) {

@@ -12,17 +12,17 @@
    One shared shape adapts across:
      • Status tones — Info, Safe (success), Warning,
                       Critical, Neutral
-     • Style        — Soft (default), Solid, Inverted
+     • Style        — Soft (default), Solid
      • Layout       — Default, Compact, With body,
                       With actions, With auto-dismiss
-                      progress, Promise / loading,
-                      Snackbar (one-line copy pill)
+                      progress, Promise / loading
      • Sizes        — SM · MD (default) · LG
-     • Region       — Fixed-position container, six
-                      anchors (top/bottom × left/centre/right)
-     • Stack        — Same-tone toasts collapse into a
-                      peek-behind pile so a flood of one
-                      tone never escapes the viewport.
+     • Region       — Fixed-position container, two
+                      anchors (top-right, bottom-right)
+   The legacy `.toast--snackbar` bottom-centre copy pill also
+   lives in this file — it remains in use across the token-copy
+   pages (primitives, semantics, cards, etc.) even though the
+   Toast docs page no longer documents it as a variant.
    Depends on: tokens.css
    ========================================================= */
 
@@ -74,8 +74,18 @@
        because the larger title and additional slots need room. */
     --toast-max-width:        420px;
 
-    /* ---------- Tone: Info (default) ---------- */
-    --toast-info-bg:          var(--background-info);
+    /* ---------- Tone: Info (default) ----------
+       Soft toasts are glassmorphic: the base `.toast` rule stacks
+       this tonal wash over `--background-glass-light`. The wash is
+       a 135deg gradient from the *-300 primitive (top-left, brighter
+       sheen) to the *-500 primitive (bottom-right, deeper tone) —
+       both at low alpha so the blur still lenses the backdrop, but
+       the saturation step reads as elevation rather than a flat
+       chip. Status families don't define *-100 / *-200, so the
+       300→500 ramp is the right working range. */
+    --toast-info-bg:          linear-gradient(135deg,
+                                  color-mix(in srgb, var(--info-50)     38%, transparent) 0%,
+                                  color-mix(in srgb, var(--info-300)     18%, transparent) 100%);
     --toast-info-border:      var(--border-info);
     --toast-info-fg:          var(--text-info-strong);
     --toast-info-fg-body:     var(--text-default);
@@ -85,7 +95,9 @@
     --toast-info-solid-fg:    var(--text-inverted);
 
     /* ---------- Tone: Safe (success) ---------- */
-    --toast-safe-bg:          var(--background-safe);
+    --toast-safe-bg:          linear-gradient(135deg,
+                                  color-mix(in srgb, var(--safe-50)     38%, transparent) 0%,
+                                  color-mix(in srgb, var(--safe-300)     18%, transparent) 100%);
     --toast-safe-border:      var(--border-safe);
     --toast-safe-fg:          var(--text-safe-strong, var(--text-safe));
     --toast-safe-fg-body:     var(--text-default);
@@ -95,7 +107,9 @@
     --toast-safe-solid-fg:    var(--text-inverted);
 
     /* ---------- Tone: Warning ---------- */
-    --toast-warning-bg:       var(--background-warning);
+    --toast-warning-bg:       linear-gradient(135deg,
+                                  color-mix(in srgb, var(--warning-50)  38%, transparent) 0%,
+                                  color-mix(in srgb, var(--warning-300)  18%, transparent) 100%);
     --toast-warning-border:   var(--border-warning);
     --toast-warning-fg:       var(--text-warning);
     --toast-warning-fg-body:  var(--text-default);
@@ -105,7 +119,9 @@
     --toast-warning-solid-fg: var(--text-inverted);
 
     /* ---------- Tone: Critical (error) ---------- */
-    --toast-critical-bg:      var(--background-critical);
+    --toast-critical-bg:      linear-gradient(135deg,
+                                  color-mix(in srgb, var(--critical-50) 38%, transparent) 0%,
+                                  color-mix(in srgb, var(--critical-300) 18%, transparent) 100%);
     --toast-critical-border:  var(--border-critical);
     --toast-critical-fg:      var(--text-critical);
     --toast-critical-fg-body: var(--text-default);
@@ -114,8 +130,13 @@
     --toast-critical-solid-bg:var(--critical-500);
     --toast-critical-solid-fg:var(--text-inverted);
 
-    /* ---------- Tone: Neutral ---------- */
-    --toast-neutral-bg:       var(--background-default);
+    /* ---------- Tone: Neutral ----------
+       Neutral gets the same gradient treatment as the status tones
+       so all five toasts share a consistent depth cue — just stepped
+       through the sage neutral ramp instead of a status hue. */
+    --toast-neutral-bg:       linear-gradient(135deg,
+                                  color-mix(in srgb, var(--neutral-100)  38%, transparent) 0%,
+                                  color-mix(in srgb, var(--neutral-300)  18%, transparent) 100%);
     --toast-neutral-border:   var(--border-default);
     --toast-neutral-fg:       var(--text-default);
     --toast-neutral-fg-body:  var(--text-default-subtle);
@@ -123,13 +144,6 @@
     --toast-neutral-bar:      var(--neutral-400);
     --toast-neutral-solid-bg: var(--neutral-700);
     --toast-neutral-solid-fg: var(--text-inverted);
-
-    /* ---------- Inverted style — dark glass for light pages ---------- */
-    --toast-inverted-bg:      color-mix(in srgb, var(--neutral-950) 92%, transparent);
-    --toast-inverted-border:  color-mix(in srgb, var(--white-base) 12%, transparent);
-    --toast-inverted-fg:      var(--text-inverted);
-    --toast-inverted-fg-body: var(--text-inverted-subtle);
-    --toast-inverted-icon:    var(--text-inverted);
 
     /* ---------- Slot typography ---------- */
     --toast-title-weight:     var(--font-weight-semibold);
@@ -163,10 +177,6 @@
     --toast-region-gap:       var(--spacing-3x);
     --toast-region-width:     min(560px, calc(100vw - var(--spacing-8x)));
 
-    /* ---------- Stack (same-tone grouping) ---------- */
-    --toast-stack-gap:        var(--spacing-3x);
-    --toast-stack-tone-gap:   var(--spacing-5x);   /* gap between two stacks of different tones */
-
     /* ---------- Snackbar variant (legacy copy-confirmation pill) ---------- */
     --toast-snackbar-bg:      var(--background-toast);
     --toast-snackbar-border:  var(--border-toast);
@@ -197,11 +207,15 @@
     padding: var(--toast-md-padding-y) var(--toast-md-padding-x);
     min-width: var(--toast-md-min-width);
     max-width: var(--toast-max-width);
-    background: var(--toast-bg, var(--toast-info-bg));
+    background:
+        var(--toast-bg, var(--toast-info-bg)),
+        var(--background-glass-light);
     color: var(--toast-fg-body, var(--toast-info-fg-body));
     border: var(--toast-border-width) solid var(--toast-border, var(--toast-info-border));
     border-radius: var(--toast-radius);
     box-shadow: var(--toast-shadow);
+    backdrop-filter: var(--blur-lg) saturate(140%);
+    -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
     font-family: var(--toast-font-family);
     font-size: var(--toast-md-font-size);
     line-height: var(--toast-body-line);
@@ -449,6 +463,8 @@
     background: var(--toast-solid-bg);
     color: var(--toast-solid-fg);
     border-color: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
 }
 .toast--solid .toast__title,
 .toast--solid .toast__icon,
@@ -466,37 +482,6 @@
 .toast--solid .toast__close:hover {
     background: color-mix(in srgb, var(--white-base) 18%, transparent);
     color: var(--toast-solid-fg);
-}
-
-/* Inverted — dark glass surface. The most "marketed"
-   notification look (think OS-level toasts). Tone is
-   carried by the leading icon glyph only; surface stays
-   constant so a stack of mixed tones reads as one
-   uniform ribbon. */
-.toast--inverted {
-    background: var(--toast-inverted-bg);
-    color: var(--toast-inverted-fg-body);
-    border-color: var(--toast-inverted-border);
-    backdrop-filter: var(--blur-lg);
-    -webkit-backdrop-filter: var(--blur-lg);
-}
-.toast--inverted .toast__title,
-.toast--inverted .toast__action {
-    color: var(--toast-inverted-fg);
-}
-.toast--inverted .toast__close {
-    color: var(--text-inverted-subtle);
-}
-.toast--inverted .toast__close:hover {
-    background: color-mix(in srgb, var(--white-base) 12%, transparent);
-    color: var(--text-inverted);
-}
-.toast--inverted .toast__action--strong {
-    background: var(--text-inverted);
-    color: var(--neutral-950);
-}
-.toast--inverted .toast__progress {
-    background: color-mix(in srgb, var(--white-base) 14%, transparent);
 }
 
 /* Compact — single-line, tight padding, no body slot. */
@@ -537,13 +522,13 @@
 
 .toast--lg {
     padding: var(--toast-lg-padding-y) var(--toast-lg-padding-x);
+    /* Reserve right-edge room so the absolutely-positioned close
+       button never overlaps content. */
+    padding-right: calc(var(--toast-lg-padding-x) + var(--toast-close-size) + var(--spacing-2x));
     font-size: var(--toast-lg-font-size);
     gap: var(--spacing-4x);
     min-width: var(--toast-lg-min-width);
     max-width: var(--toast-lg-max-width);
-    /* Let actions/close wrap below content when the host
-       region constrains LG below its preferred width — this
-       prevents the title from wrapping one word per line. */
     flex-wrap: wrap;
     row-gap: var(--spacing-3x);
 }
@@ -552,12 +537,15 @@
     height: var(--toast-lg-icon);
 }
 .toast--lg .toast__title { font-size: var(--toast-lg-title); }
-/* Reserve a sensible content basis so the title prefers to
-   stay on a single line; if there isn't room for actions
-   alongside, they wrap to the next row instead of squeezing
-   the title into a one-word column. */
 .toast--lg .toast__content { flex: 1 1 260px; }
 .toast--lg .toast__actions { margin-left: auto; }
+.toast--lg .toast__close {
+    position: absolute;
+    top: var(--spacing-3x);
+    right: var(--spacing-3x);
+    margin: 0;
+    align-self: auto;
+}
 
 /* =========================================================
    ENTER / EXIT MOTION
@@ -597,44 +585,12 @@
 .toast-region > * { pointer-events: auto; }
 
 /* Top-positioned regions stack newest at top of the column. */
-.toast-region[data-position="top-left"]      { top: 0; left: 0; align-items: flex-start; }
 .toast-region[data-position="top-right"]     { top: 0; right: 0; align-items: flex-end; }
-.toast-region[data-position="top-center"]    { top: 0; left: 50%; transform: translateX(-50%); align-items: center; }
 
 /* Bottom-positioned regions stack newest at bottom and
    reverse the visual order so the most recent toast sits
    closest to the viewport edge. */
-.toast-region[data-position="bottom-left"]   { bottom: 0; left: 0; align-items: flex-start; flex-direction: column-reverse; }
 .toast-region[data-position="bottom-right"]  { bottom: 0; right: 0; align-items: flex-end; flex-direction: column-reverse; }
-.toast-region[data-position="bottom-center"] { bottom: 0; left: 50%; transform: translateX(-50%); align-items: center; flex-direction: column-reverse; }
-
-/* =========================================================
-   STACK — same-tone grouping
-   A .toast-stack groups toasts of one tone inside a
-   region so a Critical pile and a Safe pile read as
-   separate channels rather than one mixed column. The
-   stack is a simple vertical flow with shared gap; toasts
-   inside it follow the region's enter/exit motion.
-   The DOM order is "oldest first → newest last".
-   Bottom-anchored regions invert the column flow (via
-   .toast-region[data-position^="bottom"]) so the newest
-   toast still sits closest to the viewport edge.
-   ========================================================= */
-.toast-stack {
-    display: flex;
-    flex-direction: column;
-    gap: var(--toast-stack-gap);
-    width: 100%;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-/* Adjacent stacks of different tones inside one region
-   get extra breathing space so the two channels read as
-   distinct piles rather than a single mixed column. */
-.toast-stack + .toast-stack {
-    margin-top: calc(var(--toast-stack-tone-gap) - var(--toast-stack-gap));
-}
 
 /* =========================================================
    SNACKBAR VARIANT — legacy bottom-centre copy pill
@@ -739,14 +695,6 @@
     .toast-region {
         padding: var(--spacing-3x);
         --toast-region-width: calc(100vw - var(--spacing-6x));
-    }
-    .toast-region[data-position="top-center"],
-    .toast-region[data-position="bottom-center"] {
-        left: var(--spacing-3x);
-        right: var(--spacing-3x);
-        width: auto;
-        transform: none;
-        align-items: stretch;
     }
     .toast { min-width: 0; max-width: 100%; }
 }

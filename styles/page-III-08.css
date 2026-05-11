@@ -47,9 +47,6 @@
     align-items: stretch;
 }
 .toast-showcase__tile .demo > .toast { width: 100%; }
-/* Snackbar is intrinsic-width by design — pill should size to
-   its text, never stretch to fill the demo tile. */
-.toast-showcase__tile .demo > .toast.toast--snackbar { width: max-content; }
 .toast-showcase__tile .meta {
     font-family: var(--font-mono);
     font-size: var(--text-micro);
@@ -197,7 +194,7 @@
    ========================================================= */
 .position-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--spacing-4x);
 }
 .position-grid__tile {
@@ -258,22 +255,6 @@
 }
 
 /* =========================================================
-   STACK DEMO — shows three toasts of one tone collapsing
-   into a peek-behind pile. A separate "expanded" tile
-   illustrates the hover/focus fan-out.
-   ========================================================= */
-.stack-demo {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: var(--spacing-5x);
-}
-.stack-demo .viewport-stage { min-height: 320px; }
-.stack-demo .viewport-stage__body { padding: 0; }
-.stack-demo .viewport-stage .toast-region {
-    --toast-region-padding: var(--spacing-5x);
-}
-
-/* =========================================================
    STAGE CAPTION — small mono label inside a viewport-stage
    chrome, used to identify each stage's purpose.
    ========================================================= */
@@ -298,8 +279,7 @@
 .toast-list-triggers,
 .tone-triggers,
 .size-triggers,
-.layout-triggers,
-.style-triggers {
+.layout-triggers {
     display: flex;
     flex-wrap: wrap;
     gap: var(--spacing-2x);
@@ -362,8 +342,7 @@
 
 .tone-triggers,
 .size-triggers,
-.layout-triggers,
-.style-triggers {
+.layout-triggers {
     margin-bottom: var(--spacing-4x);
 }
 
@@ -375,29 +354,6 @@
 }
 .position-grid__tile .label .toast-trigger {
     align-self: flex-start;
-}
-
-/* =========================================================
-   PROGRESS / PROMISE / SNACKBAR — special-tile variations
-   ========================================================= */
-.toast-showcase__tile.is-snackbar .demo {
-    position: relative;
-    min-height: 96px;
-    border-radius: var(--radius-md);
-    background: var(--background-inverted);
-    overflow: hidden;
-    align-items: center;
-    justify-content: center;
-}
-.toast-showcase__tile.is-snackbar .demo .toast--snackbar {
-    position: relative;
-    bottom: auto;
-    left: auto;
-    transform: none;
-    opacity: 1;
-    pointer-events: auto;
-    width: max-content;
-    max-width: calc(100% - var(--spacing-6x));
 }
 
 /* =========================================================
