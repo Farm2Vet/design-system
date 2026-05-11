@@ -154,6 +154,15 @@
     --letter-spacing-wide:     0.12em;    /* mono nav links, footer labels */
     --letter-spacing-eyebrow:  0.18em;    /* primary eyebrow tracking      */
     --letter-spacing-widest:   0.2em;     /* hero supercaps, num-tags      */
+
+    /* ---------- Backdrop saturation ----------
+       Backdrop-filter pairs blur with a saturation boost to keep
+       colour from washing out behind the glass. Four steps so
+       surfaces can dial vividness independently of frost density. */
+    --saturate-flat:  saturate(100%);   /* no boost — true colour */
+    --saturate-soft:  saturate(120%);   /* gentle lift            */
+    --saturate-vivid: saturate(140%);   /* current system default */
+    --saturate-pop:   saturate(180%);   /* hero / mockup chrome   */
 }
 
 /* =========================================================
@@ -465,18 +474,194 @@
     --shadow-md: 0 4px 12px color-mix(in srgb, var(--black-base) 8%,  transparent), 0 2px 4px color-mix(in srgb, var(--black-base) 4%, transparent);
     --shadow-lg: 0 12px 32px color-mix(in srgb, var(--black-base) 10%, transparent), 0 4px 8px color-mix(in srgb, var(--black-base) 4%, transparent);
 
-    /* ---------- Glassmorphism / blur ---------- */
-    --blur-none: blur(0px);
-    --blur-sm:   blur(var(--spacing-1x));
-    --blur-md:   blur(var(--spacing-2x));
-    --blur-lg:   blur(var(--spacing-4x));
-    --blur-xl:   blur(var(--spacing-6x));
-    --blur-2xl:  blur(var(--spacing-10x));
+    /* =========================================================
+       GLASS / BLUR — full surface rail
+       Glassmorphism is the main material of this system. A glass
+       element is defined by six layered properties, plus two
+       optional decorative layers:
 
-    --background-glass-light: color-mix(in srgb, var(--white-base) 65%, transparent);
-    --background-glass-dark:  color-mix(in srgb, var(--primary-200) 35%, transparent);
-    --border-glass-light:     color-mix(in srgb, var(--white-base) 85%, transparent);
-    --border-glass-dark:      color-mix(in srgb, var(--white-base) 15%, transparent);
+         1. background tint  (--glass-{tone}-{frost}-bg)
+         2. backdrop blur    (--glass-{frost}-blur)
+         3. saturation boost (--glass-saturate)
+         4. border           (--glass-{tone}-{frost}-border)
+         5. radius           (--glass-radius)
+         6. outer shadow     (--glass-shadow-{elevation})
+         7. inner shadow     (--glass-inset-{tone}) — rim highlight
+         +  sheen            (--glass-sheen-{tone})  — optional gradient
+         +  bevel            (--glass-bevel-{tone})  — optional inside gradient
+
+       Frost controls tint alpha + blur + border alpha as a matched
+       set. Tone picks the base hue (light over canvas vs. dark/inverted).
+       Elevation picks the shadow.
+       ========================================================= */
+
+    /* ---------- Blur primitives (the six steps) ---------- */
+    --blur-none: blur(0px);
+    --blur-sm:   blur(var(--spacing-1x));   /*  4 — clear glass        */
+    --blur-md:   blur(var(--spacing-2x));   /*  8 — light glass        */
+    --blur-lg:   blur(var(--spacing-4x));   /* 16 — regular content    */
+    --blur-xl:   blur(var(--spacing-6x));   /* 24 — thick / modal      */
+    --blur-2xl:  blur(var(--spacing-10x));  /* 40 — overlay / hero     */
+
+    /* ---------- Saturation (shared across all glass) ---------- */
+    --glass-saturate: var(--saturate-vivid);
+
+    /* ---------- Radius (matches our standard surface radius) ---------- */
+    --glass-radius:    var(--radius-lg);
+    --glass-radius-sm: var(--radius-md);   /* compact chrome — pills, nav */
+    --glass-radius-lg: var(--radius-xl);   /* sheets, drawers, modals     */
+
+    /* ---------- Tone: LIGHT (over canvas / vivid imagery) ----------
+       Four frost levels — clear, light (default), regular, thick.
+       Each level tunes background alpha, border alpha, and blur as
+       a matched set so the surface stays coherent across densities. */
+
+    /* Clear — barely-there pane (filter chips, hover hints, soft tags) */
+    --glass-light-clear-bg:           color-mix(in srgb, var(--white-base) 25%, transparent);
+    --glass-light-clear-bg-hover:     color-mix(in srgb, var(--white-base) 42%, transparent);
+    --glass-light-clear-bg-pressed:   color-mix(in srgb, var(--white-base) 50%, transparent);
+    --glass-light-clear-border:       color-mix(in srgb, var(--white-base) 40%, transparent);
+    --glass-light-clear-border-hover: color-mix(in srgb, var(--white-base) 60%, transparent);
+    --glass-light-clear-blur:         var(--blur-sm);
+
+    /* Light — the system default (cards, header, pills, contract) */
+    --glass-light-light-bg:           color-mix(in srgb, var(--white-base) 65%, transparent);
+    --glass-light-light-bg-hover:     color-mix(in srgb, var(--white-base) 80%, transparent);
+    --glass-light-light-bg-pressed:   color-mix(in srgb, var(--white-base) 88%, transparent);
+    --glass-light-light-border:       color-mix(in srgb, var(--white-base) 85%, transparent);
+    --glass-light-light-border-hover: color-mix(in srgb, var(--white-base) 95%, transparent);
+    --glass-light-light-blur:         var(--blur-lg);
+
+    /* Regular — content-grade density (dropdowns, popovers, side panels) */
+    --glass-light-regular-bg:           color-mix(in srgb, var(--white-base) 75%, transparent);
+    --glass-light-regular-bg-hover:     color-mix(in srgb, var(--white-base) 85%, transparent);
+    --glass-light-regular-bg-pressed:   color-mix(in srgb, var(--white-base) 92%, transparent);
+    --glass-light-regular-border:       color-mix(in srgb, var(--white-base) 70%, transparent);
+    --glass-light-regular-border-hover: color-mix(in srgb, var(--white-base) 88%, transparent);
+    --glass-light-regular-blur:         var(--blur-xl);
+
+    /* Thick — near-opaque slab (modal sheets, drawer chrome, hero panels) */
+    --glass-light-thick-bg:           color-mix(in srgb, var(--white-base) 92%, transparent);
+    --glass-light-thick-bg-hover:     color-mix(in srgb, var(--white-base) 96%, transparent);
+    --glass-light-thick-bg-pressed:   color-mix(in srgb, var(--white-base) 98%, transparent);
+    --glass-light-thick-border:       color-mix(in srgb, var(--white-base) 90%, transparent);
+    --glass-light-thick-border-hover: color-mix(in srgb, var(--white-base) 98%, transparent);
+    --glass-light-thick-blur:         var(--blur-2xl);
+
+    /* ---------- Tone: DARK (inverted — over dark or brand backdrops) ----------
+       Primary-tinted glass for hero sections, brand chrome, and any
+       surface that has to read over imagery without going white. */
+
+    --glass-dark-clear-bg:           color-mix(in srgb, var(--primary-900) 18%, transparent);
+    --glass-dark-clear-bg-hover:     color-mix(in srgb, var(--primary-900) 28%, transparent);
+    --glass-dark-clear-bg-pressed:   color-mix(in srgb, var(--primary-900) 36%, transparent);
+    --glass-dark-clear-border:       color-mix(in srgb, var(--white-base) 12%, transparent);
+    --glass-dark-clear-border-hover: color-mix(in srgb, var(--white-base) 22%, transparent);
+    --glass-dark-clear-blur:         var(--blur-sm);
+
+    --glass-dark-light-bg:           color-mix(in srgb, var(--primary-200) 35%, transparent);
+    --glass-dark-light-bg-hover:     color-mix(in srgb, var(--primary-200) 50%, transparent);
+    --glass-dark-light-bg-pressed:   color-mix(in srgb, var(--primary-200) 60%, transparent);
+    --glass-dark-light-border:       color-mix(in srgb, var(--white-base) 15%, transparent);
+    --glass-dark-light-border-hover: color-mix(in srgb, var(--white-base) 35%, transparent);
+    --glass-dark-light-blur:         var(--blur-lg);
+
+    --glass-dark-regular-bg:           color-mix(in srgb, var(--primary-700) 55%, transparent);
+    --glass-dark-regular-bg-hover:     color-mix(in srgb, var(--primary-700) 65%, transparent);
+    --glass-dark-regular-bg-pressed:   color-mix(in srgb, var(--primary-700) 72%, transparent);
+    --glass-dark-regular-border:       color-mix(in srgb, var(--white-base) 18%, transparent);
+    --glass-dark-regular-border-hover: color-mix(in srgb, var(--white-base) 32%, transparent);
+    --glass-dark-regular-blur:         var(--blur-xl);
+
+    --glass-dark-thick-bg:           color-mix(in srgb, var(--primary-900) 82%, transparent);
+    --glass-dark-thick-bg-hover:     color-mix(in srgb, var(--primary-900) 88%, transparent);
+    --glass-dark-thick-bg-pressed:   color-mix(in srgb, var(--primary-900) 92%, transparent);
+    --glass-dark-thick-border:       color-mix(in srgb, var(--white-base) 22%, transparent);
+    --glass-dark-thick-border-hover: color-mix(in srgb, var(--white-base) 40%, transparent);
+    --glass-dark-thick-blur:         var(--blur-2xl);
+
+    /* ---------- Elevation — outer shadow tiers ----------
+       Glass elevation is shadow-only; the surface itself never gains
+       weight. Four resting tiers from flush to overlay, plus
+       matching *-hover tiers (one step up) and *-pressed tiers (one
+       step down). Glass surfaces ALWAYS carry visible shadow — a
+       low-contrast tint without elevation reads as broken, not
+       present. Hover elevates; pressed deepens but never goes flat. */
+    --glass-shadow-flat:             none;
+    --glass-shadow-flat-hover:       0 2px 12px color-mix(in srgb, var(--black-base) 8%,  transparent);
+    --glass-shadow-flat-pressed:     none;
+
+    --glass-shadow-raised:           0 4px 30px color-mix(in srgb, var(--black-base) 10%, transparent),
+                                     0 1px 2px  color-mix(in srgb, var(--black-base) 4%,  transparent);
+    --glass-shadow-raised-hover:     0 12px 40px color-mix(in srgb, var(--black-base) 14%, transparent),
+                                     0 4px 12px  color-mix(in srgb, var(--black-base) 6%,  transparent);
+    --glass-shadow-raised-pressed:   0 2px 12px color-mix(in srgb, var(--black-base) 8%,  transparent);
+
+    --glass-shadow-floating:         0 12px 40px color-mix(in srgb, var(--black-base) 14%, transparent),
+                                     0 4px 12px  color-mix(in srgb, var(--black-base) 6%,  transparent);
+    --glass-shadow-floating-hover:   0 20px 56px color-mix(in srgb, var(--black-base) 18%, transparent),
+                                     0 6px 18px  color-mix(in srgb, var(--black-base) 8%,  transparent);
+    --glass-shadow-floating-pressed: 0 6px 22px color-mix(in srgb, var(--black-base) 10%, transparent),
+                                     0 2px 6px  color-mix(in srgb, var(--black-base) 4%,  transparent);
+
+    --glass-shadow-overlay:          0 24px 60px color-mix(in srgb, var(--black-base) 18%, transparent),
+                                     0 8px 20px  color-mix(in srgb, var(--black-base) 8%,  transparent);
+    --glass-shadow-overlay-hover:    0 32px 80px color-mix(in srgb, var(--black-base) 22%, transparent),
+                                     0 12px 28px color-mix(in srgb, var(--black-base) 10%, transparent);
+    --glass-shadow-overlay-pressed:  0 14px 40px color-mix(in srgb, var(--black-base) 14%, transparent),
+                                     0 4px 12px  color-mix(in srgb, var(--black-base) 6%,  transparent);
+
+    /* ---------- Inner shadow — rim light / pane thickness ----------
+       Inset shadows simulate light hitting the top edge of the glass
+       pane and the small dim where it sits on the surface beneath.
+       This is what makes glass read as a real material rather than a
+       tinted overlay. Applied on every glass surface by default; pair
+       with the elevation tier (rim light strengthens as glass lifts).
+
+       Soft  — quiet rim, for chrome and dense content.
+       Strong— pronounced rim, for hero glass and overlay tiers. */
+    --glass-inset-light-soft:   inset 0 1px 0 color-mix(in srgb, var(--white-base) 55%, transparent),
+                                inset 0 -1px 0 color-mix(in srgb, var(--black-base) 4%,  transparent);
+    --glass-inset-light-strong: inset 0 1px 0 color-mix(in srgb, var(--white-base) 75%, transparent),
+                                inset 1px 1px 0 color-mix(in srgb, var(--white-base) 30%, transparent),
+                                inset 0 -1px 2px color-mix(in srgb, var(--black-base) 6%, transparent);
+    --glass-inset-dark-soft:    inset 0 1px 0 color-mix(in srgb, var(--white-base) 18%, transparent),
+                                inset 0 -1px 0 color-mix(in srgb, var(--black-base) 10%, transparent);
+    --glass-inset-dark-strong:  inset 0 1px 0 color-mix(in srgb, var(--white-base) 28%, transparent),
+                                inset 1px 1px 0 color-mix(in srgb, var(--white-base) 12%, transparent),
+                                inset 0 -1px 2px color-mix(in srgb, var(--black-base) 14%, transparent);
+
+    /* ---------- Decorative — sheen and bevel (optional layers) ----------
+       sheen: a subtle white gradient painted over the surface (step 6
+              of the Hire Digital recipe). Use on hero glass where extra
+              dimensionality helps; off by default.
+       bevel: a 1px inside-border gradient (step 5 of the recipe, white
+              60% → 20%). Use on floating / overlay tiers; off by default. */
+    --glass-sheen-light: linear-gradient(135deg,
+                           color-mix(in srgb, var(--white-base) 30%, transparent) 0%,
+                           transparent 55%);
+    --glass-sheen-dark:  linear-gradient(135deg,
+                           color-mix(in srgb, var(--white-base) 14%, transparent) 0%,
+                           transparent 60%);
+    --glass-bevel-light: linear-gradient(135deg,
+                           color-mix(in srgb, var(--white-base) 60%, transparent),
+                           color-mix(in srgb, var(--white-base) 20%, transparent));
+    --glass-bevel-dark:  linear-gradient(135deg,
+                           color-mix(in srgb, var(--white-base) 28%, transparent),
+                           color-mix(in srgb, var(--white-base) 8%,  transparent));
+
+    /* ---------- Scrim — full-bleed backdrop blur behind a modal ---------- */
+    --glass-scrim:      var(--background-overlay);
+    --glass-scrim-blur: var(--blur-sm);
+
+    /* ---------- Legacy aliases (kept; rewired to the new rail) ----------
+       Pages and component CSS reference these names directly. Don't
+       remove them — re-alias to the new rail so the old names resolve
+       to the new defaults. */
+    --background-glass-light: var(--glass-light-light-bg);
+    --background-glass-dark:  var(--glass-dark-light-bg);
+    --border-glass-light:     var(--glass-light-light-border);
+    --border-glass-dark:      var(--glass-dark-light-border);
 
     /* ---------- Gradients ---------- */
     --gradient-primary-secondary-horizontal: linear-gradient(to right,  var(--primary-500),   var(--secondary-500));
@@ -597,19 +782,21 @@
     --btn-tinted-fg:        var(--text-accent-strong);
     --btn-tinted-border:    transparent;
 
-    /* ---------- Variant: Glass (Apple HIG · Liquid Glass) ----------
+    /* ---------- Variant: Glass ----------
        Translucent surface with backdrop blur. For floating contexts
        — over imagery, gradients, or busy panels — where a flat fill
-       would feel heavy. Reuses the same glass primitives as `.glass`
-       (shell.css) and `.card--glass` (card.css) so the family reads
-       as one material across the system. */
-    --btn-glass-bg:         var(--background-glass-light);
-    --btn-glass-bg-hover:   color-mix(in srgb, var(--white-base) 80%, transparent);
-    --btn-glass-bg-active:  color-mix(in srgb, var(--white-base) 92%, transparent);
-    --btn-glass-fg:         var(--text-default);
-    --btn-glass-border:     var(--border-glass-light);
-    --btn-glass-blur:       var(--blur-lg);
-    --btn-glass-saturate:   140%;
+       would feel heavy. Resolves to the system glass rail in tokens.css. */
+    --btn-glass-bg:           var(--glass-light-light-bg);
+    --btn-glass-bg-hover:     var(--glass-light-light-bg-hover);
+    --btn-glass-bg-active:    var(--glass-light-light-bg-pressed);
+    --btn-glass-fg:           var(--text-default);
+    --btn-glass-border:       var(--glass-light-light-border);
+    --btn-glass-blur:         var(--glass-light-light-blur);
+    --btn-glass-saturate:     var(--glass-saturate);
+    --btn-glass-shadow:       var(--glass-shadow-raised);
+    --btn-glass-shadow-hover: var(--glass-shadow-raised-hover);
+    --btn-glass-shadow-press: var(--glass-shadow-raised-pressed);
+    --btn-glass-inset:        var(--glass-inset-light-soft);
 
     /* ---------- Variant: Toggle ---------- */
     --btn-toggle-bg:        var(--background-default);
@@ -821,10 +1008,12 @@
     --dropdown-chevron-color:        var(--icon-default);
     --dropdown-chevron-size:         16px;
 
-    --dropdown-menu-bg:              var(--background-default);
-    --dropdown-menu-border:          var(--border-default);
+    --dropdown-menu-bg:              var(--glass-light-regular-bg);
+    --dropdown-menu-border:          var(--glass-light-regular-border);
+    --dropdown-menu-blur:            var(--glass-light-regular-blur);
     --dropdown-menu-radius:          var(--radius-md);
-    --dropdown-menu-shadow:          var(--shadow-lg);
+    --dropdown-menu-shadow:          var(--glass-shadow-floating);
+    --dropdown-menu-inset:           var(--glass-inset-light-soft);
     --dropdown-menu-offset:          var(--space-tier-7);
     --dropdown-menu-padding:         var(--space-tier-7);
     --dropdown-menu-max-height:      280px;
@@ -1006,10 +1195,12 @@
     --dropdown-chevron-color:        var(--icon-default);
     --dropdown-chevron-size:         16px;
 
-    --dropdown-menu-bg:              var(--background-default);
-    --dropdown-menu-border:          var(--border-default);
+    --dropdown-menu-bg:              var(--glass-light-regular-bg);
+    --dropdown-menu-border:          var(--glass-light-regular-border);
+    --dropdown-menu-blur:            var(--glass-light-regular-blur);
     --dropdown-menu-radius:          var(--radius-md);
-    --dropdown-menu-shadow:          var(--shadow-lg);
+    --dropdown-menu-shadow:          var(--glass-shadow-floating);
+    --dropdown-menu-inset:           var(--glass-inset-light-soft);
     --dropdown-menu-offset:          var(--space-tier-7);
     --dropdown-menu-padding:         var(--space-tier-7);
     --dropdown-menu-max-height:      280px;

@@ -186,18 +186,20 @@
 .btn--tinted:hover  { background: var(--btn-tinted-bg-hover); }
 .btn--tinted:active { background: var(--btn-tinted-bg-active); }
 
-/* Glass — Apple HIG liquid-glass analogue.
-   Translucent surface with backdrop blur for floating contexts. */
+/* ---------- Variant: Glass ----------
+   Translucent surface with backdrop blur. For floating contexts
+   — over imagery, gradients, or busy panels — where a flat fill
+   would feel heavy. Resolves to the system glass rail in tokens.css. */
 .btn--glass {
     background:   var(--btn-glass-bg);
     color:        var(--btn-glass-fg);
     border-color: var(--btn-glass-border);
-    box-shadow:   var(--shadow-sm);
-    -webkit-backdrop-filter: var(--btn-glass-blur) saturate(var(--btn-glass-saturate));
-            backdrop-filter: var(--btn-glass-blur) saturate(var(--btn-glass-saturate));
+    box-shadow:   var(--btn-glass-shadow), var(--btn-glass-inset);
+    -webkit-backdrop-filter: var(--btn-glass-blur) var(--btn-glass-saturate);
+            backdrop-filter: var(--btn-glass-blur) var(--btn-glass-saturate);
 }
-.btn--glass:hover  { background: var(--btn-glass-bg-hover);  box-shadow: var(--btn-shadow-hover); transform: translateY(-1px); }
-.btn--glass:active { background: var(--btn-glass-bg-active); transform: translateY(0); }
+.btn--glass:hover  { background: var(--btn-glass-bg-hover);  box-shadow: var(--btn-glass-shadow-hover), var(--btn-glass-inset); transform: translateY(-1px); }
+.btn--glass:active { background: var(--btn-glass-bg-active); box-shadow: var(--btn-glass-shadow-press), var(--btn-glass-inset); transform: translateY(0); }
 
 .btn--toggle {
     background:   var(--btn-toggle-bg);

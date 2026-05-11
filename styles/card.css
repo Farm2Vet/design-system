@@ -80,48 +80,55 @@
     --card-list-row-pad-y:    var(--space-tier-4);
     --card-list-radius:       var(--card-radius);
 
-    /* ---------- Variant: Glass — shared ---------- */
-    --card-glass-saturate:  140%;
-    --card-glass-border:    var(--border-glass-light);
+    /* ---------- Variant: Glass — shared (re-based on the glass rail) ----------
+       Card's glass scale resolves to the system glass tokens defined
+       in tokens.css. Tier names stay for API stability:
+         .card--glass       → light tone, light frost   (default)
+         .card--glass-clear → light tone, clear frost
+         .card--glass-frost → light tone, regular frost
+         .card--glass-heavy → light tone, thick frost
+         .card--glass-tinted→ dark tone, light frost   (brand-tinted) */
+    --card-glass-saturate:  var(--glass-saturate);
+    --card-glass-border:    var(--glass-light-light-border);
 
-    /* Light (default tier) — light frost over canvas */
-    --card-glass-bg:           var(--background-glass-light);
-    --card-glass-bg-hover:     color-mix(in srgb, var(--white-base) 80%, transparent);
-    --card-glass-bg-pressed:   color-mix(in srgb, var(--white-base) 88%, transparent);
-    --card-glass-border-hover: color-mix(in srgb, var(--white-base) 95%, transparent);
-    --card-glass-blur:         var(--blur-lg);
+    /* Light (default tier) */
+    --card-glass-bg:           var(--glass-light-light-bg);
+    --card-glass-bg-hover:     var(--glass-light-light-bg-hover);
+    --card-glass-bg-pressed:   var(--glass-light-light-bg-pressed);
+    --card-glass-border-hover: var(--glass-light-light-border-hover);
+    --card-glass-blur:         var(--glass-light-light-blur);
 
-    /* Clear (tier 01) — barely-there glass, lightest density */
-    --card-glass-clear-bg:           color-mix(in srgb, var(--white-base) 25%, transparent);
-    --card-glass-clear-bg-hover:     color-mix(in srgb, var(--white-base) 42%, transparent);
-    --card-glass-clear-bg-pressed:   color-mix(in srgb, var(--white-base) 50%, transparent);
-    --card-glass-clear-blur:         var(--blur-sm);
-    --card-glass-clear-border:       color-mix(in srgb, var(--white-base) 40%, transparent);
-    --card-glass-clear-border-hover: color-mix(in srgb, var(--white-base) 60%, transparent);
+    /* Clear (tier 01) */
+    --card-glass-clear-bg:           var(--glass-light-clear-bg);
+    --card-glass-clear-bg-hover:     var(--glass-light-clear-bg-hover);
+    --card-glass-clear-bg-pressed:   var(--glass-light-clear-bg-pressed);
+    --card-glass-clear-blur:         var(--glass-light-clear-blur);
+    --card-glass-clear-border:       var(--glass-light-clear-border);
+    --card-glass-clear-border-hover: var(--glass-light-clear-border-hover);
 
-    /* Frost (tier 03) — content-grade glass, denser frost */
-    --card-glass-frost-bg:           color-mix(in srgb, var(--white-base) 75%, transparent);
-    --card-glass-frost-bg-hover:     color-mix(in srgb, var(--white-base) 85%, transparent);
-    --card-glass-frost-bg-pressed:   color-mix(in srgb, var(--white-base) 92%, transparent);
-    --card-glass-frost-blur:         var(--blur-xl);
-    --card-glass-frost-border:       color-mix(in srgb, var(--white-base) 70%, transparent);
-    --card-glass-frost-border-hover: color-mix(in srgb, var(--white-base) 88%, transparent);
+    /* Frost (tier 03 — "regular" in the system rail) */
+    --card-glass-frost-bg:           var(--glass-light-regular-bg);
+    --card-glass-frost-bg-hover:     var(--glass-light-regular-bg-hover);
+    --card-glass-frost-bg-pressed:   var(--glass-light-regular-bg-pressed);
+    --card-glass-frost-blur:         var(--glass-light-regular-blur);
+    --card-glass-frost-border:       var(--glass-light-regular-border);
+    --card-glass-frost-border-hover: var(--glass-light-regular-border-hover);
 
-    /* Heavy — near-opaque slab, modal-grade frosted glass */
-    --card-glass-heavy-bg:           color-mix(in srgb, var(--white-base) 92%, transparent);
-    --card-glass-heavy-bg-hover:     color-mix(in srgb, var(--white-base) 96%, transparent);
-    --card-glass-heavy-bg-pressed:   color-mix(in srgb, var(--white-base) 98%, transparent);
-    --card-glass-heavy-blur:         var(--blur-2xl);
-    --card-glass-heavy-border:       color-mix(in srgb, var(--white-base) 90%, transparent);
-    --card-glass-heavy-border-hover: color-mix(in srgb, var(--white-base) 98%, transparent);
+    /* Heavy (tier 04 — "thick" in the system rail) */
+    --card-glass-heavy-bg:           var(--glass-light-thick-bg);
+    --card-glass-heavy-bg-hover:     var(--glass-light-thick-bg-hover);
+    --card-glass-heavy-bg-pressed:   var(--glass-light-thick-bg-pressed);
+    --card-glass-heavy-blur:         var(--glass-light-thick-blur);
+    --card-glass-heavy-border:       var(--glass-light-thick-border);
+    --card-glass-heavy-border-hover: var(--glass-light-thick-border-hover);
 
-    /* Tinted — primary-tinted frost (brand-aware glass) */
-    --card-glass-tinted-bg:           var(--background-glass-dark);
-    --card-glass-tinted-bg-hover:     color-mix(in srgb, var(--primary-200) 50%, transparent);
-    --card-glass-tinted-bg-pressed:   color-mix(in srgb, var(--primary-200) 60%, transparent);
-    --card-glass-tinted-blur:         var(--blur-lg);
-    --card-glass-tinted-border:       var(--border-glass-dark);
-    --card-glass-tinted-border-hover: color-mix(in srgb, var(--white-base) 35%, transparent);
+    /* Tinted (tier 05 — dark tone, light frost) */
+    --card-glass-tinted-bg:           var(--glass-dark-light-bg);
+    --card-glass-tinted-bg-hover:     var(--glass-dark-light-bg-hover);
+    --card-glass-tinted-bg-pressed:   var(--glass-dark-light-bg-pressed);
+    --card-glass-tinted-blur:         var(--glass-dark-light-blur);
+    --card-glass-tinted-border:       var(--glass-dark-light-border);
+    --card-glass-tinted-border-hover: var(--glass-dark-light-border-hover);
 
     /* ---------- Functional: Selectable ---------- */
     --card-check-size:           24px;
@@ -809,43 +816,50 @@ button.card.card--outlined:active {
    .card--glass-frost  · content-grade
    .card--glass-heavy  · modal-grade slab
    .card--glass-tinted · brand-aware
-   All tiers suppress shadow and rely on backdrop blur.
+   Each tier carries an outer elevation shadow plus the inner
+   rim light (the layer that makes glass read as a real pane).
    ========================================================= */
-.card--glass,
-.card--glass-clear,
-.card--glass-frost,
-.card--glass-heavy,
-.card--glass-tinted { box-shadow: none; }
+/* Resting elevation + rim light per tier. */
+.card--glass        { box-shadow: var(--glass-shadow-raised),
+                                  var(--glass-inset-light-soft); }
+.card--glass-clear  { box-shadow: var(--glass-shadow-flat),
+                                  var(--glass-inset-light-soft); }
+.card--glass-frost  { box-shadow: var(--glass-shadow-raised),
+                                  var(--glass-inset-light-soft); }
+.card--glass-heavy  { box-shadow: var(--glass-shadow-floating),
+                                  var(--glass-inset-light-strong); }
+.card--glass-tinted { box-shadow: var(--glass-shadow-raised),
+                                  var(--glass-inset-dark-soft); }
 
 .card--glass {
     background: var(--card-glass-bg);
     border-color: var(--card-glass-border);
-    backdrop-filter: var(--card-glass-blur) saturate(var(--card-glass-saturate));
-    -webkit-backdrop-filter: var(--card-glass-blur) saturate(var(--card-glass-saturate));
+    backdrop-filter: var(--card-glass-blur) var(--card-glass-saturate);
+    -webkit-backdrop-filter: var(--card-glass-blur) var(--card-glass-saturate);
 }
 .card--glass-clear {
     background: var(--card-glass-clear-bg);
     border-color: var(--card-glass-clear-border);
-    backdrop-filter: var(--card-glass-clear-blur) saturate(var(--card-glass-saturate));
-    -webkit-backdrop-filter: var(--card-glass-clear-blur) saturate(var(--card-glass-saturate));
+    backdrop-filter: var(--card-glass-clear-blur) var(--card-glass-saturate);
+    -webkit-backdrop-filter: var(--card-glass-clear-blur) var(--card-glass-saturate);
 }
 .card--glass-frost {
     background: var(--card-glass-frost-bg);
     border-color: var(--card-glass-frost-border);
-    backdrop-filter: var(--card-glass-frost-blur) saturate(var(--card-glass-saturate));
-    -webkit-backdrop-filter: var(--card-glass-frost-blur) saturate(var(--card-glass-saturate));
+    backdrop-filter: var(--card-glass-frost-blur) var(--card-glass-saturate);
+    -webkit-backdrop-filter: var(--card-glass-frost-blur) var(--card-glass-saturate);
 }
 .card--glass-heavy {
     background: var(--card-glass-heavy-bg);
     border-color: var(--card-glass-heavy-border);
-    backdrop-filter: var(--card-glass-heavy-blur) saturate(var(--card-glass-saturate));
-    -webkit-backdrop-filter: var(--card-glass-heavy-blur) saturate(var(--card-glass-saturate));
+    backdrop-filter: var(--card-glass-heavy-blur) var(--card-glass-saturate);
+    -webkit-backdrop-filter: var(--card-glass-heavy-blur) var(--card-glass-saturate);
 }
 .card--glass-tinted {
     background: var(--card-glass-tinted-bg);
     border-color: var(--card-glass-tinted-border);
-    backdrop-filter: var(--card-glass-tinted-blur) saturate(var(--card-glass-saturate));
-    -webkit-backdrop-filter: var(--card-glass-tinted-blur) saturate(var(--card-glass-saturate));
+    backdrop-filter: var(--card-glass-tinted-blur) var(--card-glass-saturate);
+    -webkit-backdrop-filter: var(--card-glass-tinted-blur) var(--card-glass-saturate);
 }
 
 /* =========================================================
@@ -869,19 +883,22 @@ button.card.card--glass-heavy, button.card.card--glass-tinted {
     cursor: pointer;
 }
 
+/* Hover — every glass tier elevates one step up. */
 .card--glass.is-interactive:hover,
 a.card.card--glass:hover,
 button.card.card--glass:hover {
     background: var(--card-glass-bg-hover);
     border-color: var(--card-glass-border-hover);
-    box-shadow: none;
+    box-shadow: var(--glass-shadow-raised-hover),
+                var(--glass-inset-light-soft);
     transform: translateY(-1px);
 }
 .card--glass.is-interactive:active,
 a.card.card--glass:active,
 button.card.card--glass:active {
     background: var(--card-glass-bg-pressed);
-    box-shadow: none;
+    box-shadow: var(--glass-shadow-raised-pressed),
+                var(--glass-inset-light-soft);
     transform: translateY(0);
 }
 
@@ -890,14 +907,16 @@ a.card.card--glass-clear:hover,
 button.card.card--glass-clear:hover {
     background: var(--card-glass-clear-bg-hover);
     border-color: var(--card-glass-clear-border-hover);
-    box-shadow: none;
+    box-shadow: var(--glass-shadow-flat-hover),
+                var(--glass-inset-light-soft);
     transform: translateY(-1px);
 }
 .card--glass-clear.is-interactive:active,
 a.card.card--glass-clear:active,
 button.card.card--glass-clear:active {
     background: var(--card-glass-clear-bg-pressed);
-    box-shadow: none;
+    box-shadow: var(--glass-shadow-flat-pressed),
+                var(--glass-inset-light-soft);
     transform: translateY(0);
 }
 
@@ -906,14 +925,16 @@ a.card.card--glass-frost:hover,
 button.card.card--glass-frost:hover {
     background: var(--card-glass-frost-bg-hover);
     border-color: var(--card-glass-frost-border-hover);
-    box-shadow: none;
+    box-shadow: var(--glass-shadow-raised-hover),
+                var(--glass-inset-light-soft);
     transform: translateY(-1px);
 }
 .card--glass-frost.is-interactive:active,
 a.card.card--glass-frost:active,
 button.card.card--glass-frost:active {
     background: var(--card-glass-frost-bg-pressed);
-    box-shadow: none;
+    box-shadow: var(--glass-shadow-raised-pressed),
+                var(--glass-inset-light-soft);
     transform: translateY(0);
 }
 
@@ -922,14 +943,16 @@ a.card.card--glass-heavy:hover,
 button.card.card--glass-heavy:hover {
     background: var(--card-glass-heavy-bg-hover);
     border-color: var(--card-glass-heavy-border-hover);
-    box-shadow: none;
+    box-shadow: var(--glass-shadow-floating-hover),
+                var(--glass-inset-light-strong);
     transform: translateY(-1px);
 }
 .card--glass-heavy.is-interactive:active,
 a.card.card--glass-heavy:active,
 button.card.card--glass-heavy:active {
     background: var(--card-glass-heavy-bg-pressed);
-    box-shadow: none;
+    box-shadow: var(--glass-shadow-floating-pressed),
+                var(--glass-inset-light-strong);
     transform: translateY(0);
 }
 
@@ -938,14 +961,16 @@ a.card.card--glass-tinted:hover,
 button.card.card--glass-tinted:hover {
     background: var(--card-glass-tinted-bg-hover);
     border-color: var(--card-glass-tinted-border-hover);
-    box-shadow: none;
+    box-shadow: var(--glass-shadow-raised-hover),
+                var(--glass-inset-dark-soft);
     transform: translateY(-1px);
 }
 .card--glass-tinted.is-interactive:active,
 a.card.card--glass-tinted:active,
 button.card.card--glass-tinted:active {
     background: var(--card-glass-tinted-bg-pressed);
-    box-shadow: none;
+    box-shadow: var(--glass-shadow-raised-pressed),
+                var(--glass-inset-dark-soft);
     transform: translateY(0);
 }
 

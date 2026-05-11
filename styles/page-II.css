@@ -420,11 +420,47 @@
 }
 
 /* =========================================================
-   GLASS / BLUR DEMO
+   GLASS / BLUR DEMO — anatomy + matrices
+   The Glass section on II-semantics.html demos every axis of
+   the glass rail. Tiles paint a vivid brand backdrop so blur
+   and tint actually read.
    ========================================================= */
-.glass-stage {
+.glass-anatomy {
+    display: grid;
+    grid-template-columns: 220px 1fr 280px;
+    gap: var(--space-tier-5) var(--space-tier-4);
+    padding: var(--space-tier-3);
+    border-radius: var(--glass-radius);
+    background: var(--background-default-subtle);
+    border: var(--border-width-base) solid var(--border-default-subtle);
+}
+.glass-layer-row {
+    display: contents;
+    cursor: pointer;
+}
+.glass-layer-row__label {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-default);
+}
+.glass-layer-row__value {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    color: var(--text-default-subtle);
+}
+.glass-layer-row__name {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    color: var(--text-primary-strong);
+}
+
+.glass-frost-grid,
+.glass-tone-grid,
+.glass-elevation-grid,
+.glass-inset-grid,
+.glass-states-grid {
     position: relative;
-    border-radius: var(--radius-lg);
+    border-radius: var(--glass-radius);
     overflow: hidden;
     padding: var(--space-tier-1) var(--space-tier-2);
     background: var(--gradient-brand);
@@ -433,38 +469,73 @@
     gap: var(--space-tier-4);
     align-items: stretch;
 }
-.glass-tile {
+.glass-elevation-grid,
+.glass-states-grid {
+    background:
+        radial-gradient(ellipse at 30% 20%, var(--primary-300), transparent 60%),
+        radial-gradient(ellipse at 70% 80%, var(--secondary-300), transparent 60%),
+        var(--background-default-subtle);
+}
+
+.glass-frost-tile,
+.glass-tone-tile,
+.glass-elev-tile,
+.glass-inset-tile,
+.glass-state-tile {
     position: relative;
-    z-index: 1;
     padding: var(--spacing-5x);
     border-radius: var(--radius-md);
-    background: var(--background-glass-light);
-    border: var(--border-width-base) solid var(--border-glass-light);
-    backdrop-filter: var(--blur-lg) saturate(140%);
-    -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
+    border: var(--border-width-base) solid transparent;
     display: flex;
     flex-direction: column;
     gap: var(--space-tier-6);
+    min-height: 140px;
     cursor: pointer;
     transition: transform 0.25s ease;
 }
-.glass-tile.dark {
-    background:    var(--background-glass-dark);
-    border-color:  var(--border-glass-dark);
+.glass-elev-tile,
+.glass-state-tile {
+    background: var(--glass-light-light-bg);
+    border-color: var(--glass-light-light-border);
+    -webkit-backdrop-filter: var(--glass-light-light-blur) var(--glass-saturate);
+            backdrop-filter: var(--glass-light-light-blur) var(--glass-saturate);
 }
-.glass-tile:hover { transform: translateY(-3px); }
-.glass-tile .name {
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
+
+.glass-frost-tile:hover,
+.glass-tone-tile:hover,
+.glass-elev-tile:hover,
+.glass-inset-tile:hover,
+.glass-state-tile:hover { transform: translateY(-3px); }
+
+.glass-frost-tile__label,
+.glass-tone-tile__label,
+.glass-elev-tile__label,
+.glass-inset-tile__label,
+.glass-state-tile__label {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--text-h6);
     color: var(--text-default);
 }
-.glass-tile.dark .name { color: var(--text-inverted); }
-.glass-tile .resolved {
+.glass-tone-tile.is-dark .glass-tone-tile__label,
+.glass-tone-tile.is-dark .glass-tone-tile__token,
+.glass-inset-tile.is-dark .glass-inset-tile__label,
+.glass-inset-tile.is-dark .glass-inset-tile__token { color: var(--text-inverted); }
+
+.glass-frost-tile__token,
+.glass-tone-tile__token,
+.glass-elev-tile__token,
+.glass-inset-tile__token,
+.glass-state-tile__token {
     font-family: var(--font-mono);
     font-size: var(--text-micro);
-    color: var(--text-default-minimal);
+    color: var(--text-default-subtle);
 }
-.glass-tile.dark .resolved { color: var(--text-inverted-subtle); }
+
+@media (prefers-reduced-motion: reduce) {
+    .glass-frost-tile, .glass-tone-tile, .glass-elev-tile,
+    .glass-inset-tile, .glass-state-tile { transition: none; }
+}
 
 .blur-row {
     margin-top: var(--space-tier-3);
@@ -473,6 +544,9 @@
     gap: var(--space-tier-5);
 }
 .blur-tile {
+    /* The tile sets `--blur-amount` inline (see renderBlurRow in
+       II-semantics.html) so the ::after layer can resolve it through
+       backdrop-filter; the variable is not declared as a token. */
     border-radius: var(--radius-md);
     height: 110px;
     position: relative;
@@ -495,8 +569,8 @@
     position: absolute;
     inset: auto 0 0 0;
     padding: var(--space-tier-6) var(--space-tier-5);
-    background: var(--background-glass-light);
-    border-top: var(--border-width-base) solid var(--border-glass-light);
+    background: var(--glass-light-light-bg);
+    border-top: var(--border-width-base) solid var(--glass-light-light-border);
     font-family: var(--font-mono);
     font-size: var(--text-micro);
     color: var(--text-default);
@@ -543,6 +617,8 @@
     .radius-row     { grid-template-columns: repeat(3, 1fr); }
     .sem-space-row  { grid-template-columns: 1fr 100px; }
     .sem-space-row .bar-wrap { display: none; }
+    .glass-anatomy  { grid-template-columns: 1fr; gap: var(--space-tier-6); }
+    .glass-anatomy .glass-layer-row { display: flex; flex-direction: column; gap: var(--space-tier-7); }
 }
 @media (max-width: 600px) {
     .radius-row { grid-template-columns: repeat(2, 1fr); }
@@ -550,5 +626,5 @@
 
 @media (prefers-reduced-motion: reduce) {
     .token-card, .border-card, .icon-card, .radius-card,
-    .gradient-card, .glass-tile, .misc-card { transition: none; }
+    .gradient-card, .misc-card { transition: none; }
 }

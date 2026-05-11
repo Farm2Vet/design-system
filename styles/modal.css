@@ -78,9 +78,17 @@
     --modal-border:           var(--border-default);
     --modal-divider:          var(--border-default-subtle);
 
+    /* Optional glass-sheet treatment. Apply .modal--glass on the .modal
+       host to swap the opaque sheet for the thick-frost rail. */
+    --modal-glass-bg:     var(--glass-light-thick-bg);
+    --modal-glass-border: var(--glass-light-thick-border);
+    --modal-glass-blur:   var(--glass-light-thick-blur);
+    --modal-glass-shadow: var(--glass-shadow-overlay);
+    --modal-glass-inset:  var(--glass-inset-light-strong);
+
     /* ---------- Backdrop / scrim ---------- */
-    --modal-backdrop:         var(--background-overlay);
-    --modal-backdrop-blur:    var(--blur-sm);
+    --modal-backdrop:         var(--glass-scrim);
+    --modal-backdrop-blur:    var(--glass-scrim-blur);
 
     /* ---------- Header ---------- */
     --modal-header-padding-y: var(--space-container-y);
@@ -180,6 +188,17 @@ body.has-modal-open {
 .modal.is-open {
     opacity: 1;
     pointer-events: auto;
+}
+
+/* When .modal--glass is on the modal host, swap the dialog
+   surface from the opaque sheet to the thick-frost glass rail.
+   The backdrop itself keeps its scrim treatment. */
+.modal.modal--glass .modal__surface {
+    background:   var(--modal-glass-bg);
+    border-color: var(--modal-glass-border);
+    box-shadow:   var(--modal-glass-shadow), var(--modal-glass-inset);
+    -webkit-backdrop-filter: var(--modal-glass-blur) var(--glass-saturate);
+            backdrop-filter: var(--modal-glass-blur) var(--glass-saturate);
 }
 
 /* Permit edge-anchored variants to override the centre-flex

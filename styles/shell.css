@@ -234,15 +234,169 @@ section.chunk {
 }
 
 /* =========================================================
-   GLASS SURFACE — translucent card
+   GLASS SURFACE — translucent material
+   The .glass utility is a token-driven surface. Default = LIGHT
+   tone, LIGHT frost, RAISED elevation. Switch axes with the
+   .glass--{frost}, .glass--inverted, .glass--{elevation}, and
+   the optional .glass--sheen / .glass--bevel modifiers. The rule
+   reads from per-instance custom properties so the modifiers are
+   pure variable assignments — no duplicated declarations.
    ========================================================= */
 .glass {
-    background: var(--background-glass-light);
-    backdrop-filter: var(--blur-lg) saturate(140%);
-    -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
-    border: var(--border-width-base) solid var(--border-glass-light);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-sm);
+    --glass-bg:             var(--glass-light-light-bg);
+    --glass-bg-hover:       var(--glass-light-light-bg-hover);
+    --glass-bg-pressed:     var(--glass-light-light-bg-pressed);
+    --glass-border:         var(--glass-light-light-border);
+    --glass-border-hover:   var(--glass-light-light-border-hover);
+    --glass-blur:           var(--glass-light-light-blur);
+    --glass-shadow:         var(--glass-shadow-raised);
+    --glass-shadow-hover:   var(--glass-shadow-raised-hover);
+    --glass-shadow-pressed: var(--glass-shadow-raised-pressed);
+    --glass-inset:          var(--glass-inset-light-soft);
+    --glass-radius-local:   var(--glass-radius);
+
+    position: relative;
+    background: var(--glass-bg);
+    border: var(--border-width-base) solid var(--glass-border);
+    border-radius: var(--glass-radius-local);
+    /* Outer shadow first (elevation), inner shadow second (rim light). */
+    box-shadow: var(--glass-shadow), var(--glass-inset);
+    -webkit-backdrop-filter: var(--glass-blur) var(--glass-saturate);
+            backdrop-filter: var(--glass-blur) var(--glass-saturate);
+    transition: background-color .2s ease, border-color .2s ease,
+                box-shadow .2s ease, transform .2s cubic-bezier(.2,.8,.2,1);
+}
+
+/* ---------- Frost modifiers (light tone) ---------- */
+.glass.glass--clear   { --glass-bg: var(--glass-light-clear-bg);
+                        --glass-bg-hover: var(--glass-light-clear-bg-hover);
+                        --glass-bg-pressed: var(--glass-light-clear-bg-pressed);
+                        --glass-border: var(--glass-light-clear-border);
+                        --glass-border-hover: var(--glass-light-clear-border-hover);
+                        --glass-blur: var(--glass-light-clear-blur); }
+.glass.glass--regular { --glass-bg: var(--glass-light-regular-bg);
+                        --glass-bg-hover: var(--glass-light-regular-bg-hover);
+                        --glass-bg-pressed: var(--glass-light-regular-bg-pressed);
+                        --glass-border: var(--glass-light-regular-border);
+                        --glass-border-hover: var(--glass-light-regular-border-hover);
+                        --glass-blur: var(--glass-light-regular-blur); }
+.glass.glass--thick   { --glass-bg: var(--glass-light-thick-bg);
+                        --glass-bg-hover: var(--glass-light-thick-bg-hover);
+                        --glass-bg-pressed: var(--glass-light-thick-bg-pressed);
+                        --glass-border: var(--glass-light-thick-border);
+                        --glass-border-hover: var(--glass-light-thick-border-hover);
+                        --glass-blur: var(--glass-light-thick-blur); }
+
+/* ---------- Tone modifier (inverted = dark) ---------- */
+.glass.glass--inverted          { --glass-bg: var(--glass-dark-light-bg);
+                                  --glass-bg-hover: var(--glass-dark-light-bg-hover);
+                                  --glass-bg-pressed: var(--glass-dark-light-bg-pressed);
+                                  --glass-border: var(--glass-dark-light-border);
+                                  --glass-border-hover: var(--glass-dark-light-border-hover);
+                                  --glass-blur: var(--glass-dark-light-blur);
+                                  --glass-inset: var(--glass-inset-dark-soft);
+                                  color: var(--text-inverted); }
+.glass.glass--inverted.glass--clear   { --glass-bg: var(--glass-dark-clear-bg);
+                                        --glass-bg-hover: var(--glass-dark-clear-bg-hover);
+                                        --glass-bg-pressed: var(--glass-dark-clear-bg-pressed);
+                                        --glass-border: var(--glass-dark-clear-border);
+                                        --glass-border-hover: var(--glass-dark-clear-border-hover);
+                                        --glass-blur: var(--glass-dark-clear-blur); }
+.glass.glass--inverted.glass--regular { --glass-bg: var(--glass-dark-regular-bg);
+                                        --glass-bg-hover: var(--glass-dark-regular-bg-hover);
+                                        --glass-bg-pressed: var(--glass-dark-regular-bg-pressed);
+                                        --glass-border: var(--glass-dark-regular-border);
+                                        --glass-border-hover: var(--glass-dark-regular-border-hover);
+                                        --glass-blur: var(--glass-dark-regular-blur); }
+.glass.glass--inverted.glass--thick   { --glass-bg: var(--glass-dark-thick-bg);
+                                        --glass-bg-hover: var(--glass-dark-thick-bg-hover);
+                                        --glass-bg-pressed: var(--glass-dark-thick-bg-pressed);
+                                        --glass-border: var(--glass-dark-thick-border);
+                                        --glass-border-hover: var(--glass-dark-thick-border-hover);
+                                        --glass-blur: var(--glass-dark-thick-blur); }
+
+/* ---------- Elevation modifiers ----------
+   Each elevation modifier moves the resting, hover, and pressed
+   shadows together. The trio is the contract — pick a tier and
+   you get all three states scaled consistently. */
+.glass.glass--flat     { --glass-shadow: var(--glass-shadow-flat);
+                         --glass-shadow-hover: var(--glass-shadow-flat-hover);
+                         --glass-shadow-pressed: var(--glass-shadow-flat-pressed); }
+.glass.glass--floating { --glass-shadow: var(--glass-shadow-floating);
+                         --glass-shadow-hover: var(--glass-shadow-floating-hover);
+                         --glass-shadow-pressed: var(--glass-shadow-floating-pressed); }
+.glass.glass--overlay  { --glass-shadow: var(--glass-shadow-overlay);
+                         --glass-shadow-hover: var(--glass-shadow-overlay-hover);
+                         --glass-shadow-pressed: var(--glass-shadow-overlay-pressed);
+                         --glass-inset: var(--glass-inset-light-strong); }
+.glass.glass--inverted.glass--overlay { --glass-inset: var(--glass-inset-dark-strong); }
+
+/* Stronger rim on thick frost — denser glass earns a more
+   pronounced top-edge highlight. */
+.glass.glass--thick                 { --glass-inset: var(--glass-inset-light-strong); }
+.glass.glass--inverted.glass--thick { --glass-inset: var(--glass-inset-dark-strong); }
+
+/* ---------- Radius modifiers ---------- */
+.glass.glass--radius-sm { --glass-radius-local: var(--glass-radius-sm); }
+.glass.glass--radius-lg { --glass-radius-local: var(--glass-radius-lg); }
+
+/* ---------- Decorative — sheen (subtle white gradient over surface) ---------- */
+.glass.glass--sheen::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--glass-sheen-light);
+    pointer-events: none;
+    z-index: 0;
+}
+.glass.glass--inverted.glass--sheen::before { background: var(--glass-sheen-dark); }
+.glass.glass--sheen > * { position: relative; z-index: 1; }
+
+/* ---------- Decorative — bevel (1px inside-border gradient) ---------- */
+.glass.glass--bevel {
+    border-color: transparent;
+    background-clip: padding-box;
+}
+.glass.glass--bevel::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: var(--border-width-base);
+    background: var(--glass-bevel-light);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    pointer-events: none;
+    z-index: 2;
+}
+.glass.glass--inverted.glass--bevel::after { background: var(--glass-bevel-dark); }
+
+/* ---------- Interactive states (only when the host opts in) ----------
+   Glass surfaces ALWAYS show shadow movement on hover and press —
+   the tint shift alone is too low-contrast to register as
+   feedback. Hover elevates one tier up, pressed deepens one tier
+   down (but never flat). transform: translateY pairs with the
+   shadow change so the surface visibly lifts and settles. */
+.glass.is-interactive,
+a.glass,
+button.glass { cursor: pointer; }
+.glass.is-interactive:hover,
+a.glass:hover,
+button.glass:hover {
+    background: var(--glass-bg-hover);
+    border-color: var(--glass-border-hover);
+    box-shadow: var(--glass-shadow-hover), var(--glass-inset);
+    transform: translateY(-1px);
+}
+.glass.is-interactive:active,
+a.glass:active,
+button.glass:active {
+    background: var(--glass-bg-pressed);
+    box-shadow: var(--glass-shadow-pressed), var(--glass-inset);
+    transform: translateY(0);
 }
 
 /* =========================================================
@@ -252,11 +406,13 @@ section.chunk {
 .contract {
     margin:          0 0 var(--space-region-y);
     padding:         var(--space-container-y-lg) var(--space-container-x-lg);
-    background:      var(--background-glass-light);
-    border:          var(--border-width-base) solid var(--border-glass-light);
+    background:      var(--glass-light-light-bg);
+    border:          var(--border-width-base) solid var(--glass-light-light-border);
     border-left:     var(--spacing-1x) solid var(--border-primary);
-    border-radius:   var(--radius-lg);
-    backdrop-filter: var(--blur-md);
+    border-radius:   var(--glass-radius);
+    box-shadow:      var(--glass-shadow-raised), var(--glass-inset-light-soft);
+    -webkit-backdrop-filter: var(--glass-light-regular-blur) var(--glass-saturate);
+            backdrop-filter: var(--glass-light-regular-blur) var(--glass-saturate);
 }
 .contract .eyebrow {
     margin-bottom: var(--space-flow-element);

@@ -281,11 +281,69 @@
       </div>
     </header>
 
-    <h4 class="subheading reveal">Surfaces</h4>
-    <div class="glass-stage reveal" id="glassStage"></div>
+    <p class="section-lede reveal">
+      Glassmorphism is the main material of this system. Every glass
+      surface — header, card, dropdown, toast, modal sheet — composes
+      from the same seven properties: a translucent background tint,
+      a backdrop blur, a saturation boost, a translucent border, a
+      radius, an outer shadow for elevation, and an inner shadow that
+      simulates the rim of the pane. Three axes pick the values:
+      <strong>frost</strong> (tint + blur + border density),
+      <strong>tone</strong> (light over canvas, dark over imagery),
+      and <strong>elevation</strong> (shadow tier).
+    </p>
+
+    <h4 class="subheading reveal">Anatomy</h4>
+    <div class="glass-anatomy reveal" id="glassAnatomy"></div>
+
+    <h4 class="subheading reveal">Frost — clear · light · regular · thick</h4>
+    <div class="glass-frost-grid reveal" id="glassFrostGrid"></div>
+
+    <h4 class="subheading reveal">Tone — light over canvas, dark over imagery</h4>
+    <div class="glass-tone-grid reveal" id="glassToneGrid"></div>
+
+    <h4 class="subheading reveal">Elevation — flat · raised · floating · overlay</h4>
+    <div class="glass-elevation-grid reveal" id="glassElevationGrid"></div>
+
+    <h4 class="subheading reveal">Inner shadow — rim light at every elevation</h4>
+    <div class="glass-inset-grid reveal" id="glassInsetGrid"></div>
+
+    <h4 class="subheading reveal">States — resting · hover · pressed</h4>
+    <div class="glass-states-grid reveal" id="glassStatesGrid"></div>
 
     <h4 class="subheading reveal">Blur scale</h4>
     <div class="blur-row reveal" id="blurRow"></div>
+
+    <p class="usage-note reveal">
+      <strong>Pick one axis at a time.</strong> Frost handles content
+      density (clear for chips and hints, light for cards and chrome,
+      regular for popovers and side panels, thick for modal sheets).
+      Elevation handles vertical position above the page. Tone handles
+      the underlying canvas. Mixing axes is fine — a dark-tone, thick,
+      overlay glass is the standard modal treatment over imagery — but
+      every axis should pull its weight; don't pick a value that just
+      matches the default.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>Glass always carries shadow — including on press.</strong>
+      Resting glass uses its elevation tier; hover steps up one tier;
+      pressed steps down but never lands at zero. Without the shadow
+      movement, the tint shift alone is too low-contrast to register
+      as feedback — the surface reads as static even when it isn't.
+      Inner shadow stays constant across states; outer shadow does
+      the work.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>Sheen and bevel are decoration, not structure.</strong>
+      <code>.glass--sheen</code> paints a soft white gradient over the
+      surface; <code>.glass--bevel</code> draws an inside-border
+      gradient. Reach for them on hero glass and overlay surfaces
+      where extra dimensionality earns its keep. Skip them on dense
+      chrome (cards in a grid, list rows) where they read as visual
+      noise.
+    </p>
   </section>
 
   <!-- ========================== SHADOW & OUTLINE & OVERLAY ========================== -->
@@ -513,9 +571,49 @@ const GRADIENTS = [
   ['--gradient-secondary-subtle',             'Subtle earthy wash'],
 ];
 
-const GLASS_SURFACES = [
-  ['--background-glass-light', '--border-glass-light', false],
-  ['--background-glass-dark',  '--border-glass-dark',  true],
+const GLASS_ANATOMY = [
+  ['1. Background tint',    'color-mix(white-base 65%, transparent)',    '--glass-light-light-bg'],
+  ['2. Backdrop blur',      'blur(16px)',                                '--glass-light-light-blur'],
+  ['3. Saturation',         'saturate(140%)',                            '--glass-saturate'],
+  ['4. Border',             '1px solid mix(white 85%, transparent)',     '--glass-light-light-border'],
+  ['5. Radius',             'radius-lg (16)',                            '--glass-radius'],
+  ['6. Outer shadow',       '0 4px 30px mix(black 10%, transparent)',    '--glass-shadow-raised'],
+  ['7. Inner shadow (rim)', 'inset 0 1px 0 mix(white 55%, transparent)', '--glass-inset-light-soft'],
+  ['+ Sheen (optional)',    'linear-gradient 135deg, white 30% → 0',     '--glass-sheen-light'],
+];
+
+const GLASS_FROST = [
+  ['Clear',   '--glass-light-clear-bg',   '--glass-light-clear-border',   '--glass-light-clear-blur'],
+  ['Light',   '--glass-light-light-bg',   '--glass-light-light-border',   '--glass-light-light-blur'],
+  ['Regular', '--glass-light-regular-bg', '--glass-light-regular-border', '--glass-light-regular-blur'],
+  ['Thick',   '--glass-light-thick-bg',   '--glass-light-thick-border',   '--glass-light-thick-blur'],
+];
+
+const GLASS_TONES = [
+  ['Light · Light',   '--glass-light-light-bg',   '--glass-light-light-border',   false],
+  ['Light · Thick',   '--glass-light-thick-bg',   '--glass-light-thick-border',   false],
+  ['Dark · Light',    '--glass-dark-light-bg',    '--glass-dark-light-border',    true],
+  ['Dark · Thick',    '--glass-dark-thick-bg',    '--glass-dark-thick-border',    true],
+];
+
+const GLASS_ELEVATIONS = [
+  ['Flat',     '--glass-shadow-flat'],
+  ['Raised',   '--glass-shadow-raised'],
+  ['Floating', '--glass-shadow-floating'],
+  ['Overlay',  '--glass-shadow-overlay'],
+];
+
+const GLASS_INSETS = [
+  ['Light · Soft',   '--glass-inset-light-soft',   false],
+  ['Light · Strong', '--glass-inset-light-strong', false],
+  ['Dark · Soft',    '--glass-inset-dark-soft',    true],
+  ['Dark · Strong',  '--glass-inset-dark-strong',  true],
+];
+
+const GLASS_STATES = [
+  ['Resting', '--glass-shadow-raised'],
+  ['Hover',   '--glass-shadow-raised-hover'],
+  ['Pressed', '--glass-shadow-raised-pressed'],
 ];
 
 const BLURS = [
@@ -727,6 +825,30 @@ const SOURCES = {
   /* ---------- Glass surfaces ---------- */
   '--background-glass-light': 'mix(--white-base 65%, transparent)',
   '--background-glass-dark':  'mix(--primary-200 35%, transparent)',
+
+  '--glass-saturate':              'saturate(140%)',
+  '--glass-radius':                '--radius-lg',
+  '--glass-light-clear-bg':        'mix(--white-base 25%, transparent)',
+  '--glass-light-light-bg':        'mix(--white-base 65%, transparent)',
+  '--glass-light-regular-bg':      'mix(--white-base 75%, transparent)',
+  '--glass-light-thick-bg':        'mix(--white-base 92%, transparent)',
+  '--glass-light-clear-border':    'mix(--white-base 40%, transparent)',
+  '--glass-light-light-border':    'mix(--white-base 85%, transparent)',
+  '--glass-light-regular-border':  'mix(--white-base 70%, transparent)',
+  '--glass-light-thick-border':    'mix(--white-base 90%, transparent)',
+  '--glass-dark-light-bg':         'mix(--primary-200 35%, transparent)',
+  '--glass-dark-thick-bg':         'mix(--primary-900 82%, transparent)',
+  '--glass-dark-light-border':     'mix(--white-base 15%, transparent)',
+  '--glass-dark-thick-border':     'mix(--white-base 22%, transparent)',
+  '--glass-shadow-raised':         '0 4px 30px mix(--black-base 10%, transparent), 0 1px 2px mix(--black-base 4%, transparent)',
+  '--glass-shadow-floating':       '0 12px 40px mix(--black-base 14%, transparent), 0 4px 12px mix(--black-base 6%, transparent)',
+  '--glass-shadow-overlay':        '0 24px 60px mix(--black-base 18%, transparent), 0 8px 20px mix(--black-base 8%, transparent)',
+  '--glass-shadow-raised-hover':   '0 12px 40px mix(--black-base 14%, transparent), 0 4px 12px mix(--black-base 6%, transparent)',
+  '--glass-shadow-raised-pressed': '0 2px 12px mix(--black-base 8%, transparent)',
+  '--glass-inset-light-soft':      'inset 0 1px 0 mix(--white-base 55%, transparent), inset 0 -1px 0 mix(--black-base 4%, transparent)',
+  '--glass-inset-light-strong':    'inset 0 1px 0 mix(--white-base 75%, transparent), inset 1px 1px 0 mix(--white-base 30%, transparent), inset 0 -1px 2px mix(--black-base 6%, transparent)',
+  '--glass-inset-dark-soft':       'inset 0 1px 0 mix(--white-base 18%, transparent), inset 0 -1px 0 mix(--black-base 10%, transparent)',
+  '--glass-inset-dark-strong':     'inset 0 1px 0 mix(--white-base 28%, transparent), inset 1px 1px 0 mix(--white-base 12%, transparent), inset 0 -1px 2px mix(--black-base 14%, transparent)',
 };
 
 /* =========================================================
@@ -944,15 +1066,91 @@ function renderGradients() {
 /* =========================================================
    RENDER — glass surfaces & blur
    ========================================================= */
-function renderGlassStage() {
-  const wrap = document.getElementById('glassStage');
+function renderGlassAnatomy() {
+  const wrap = document.getElementById('glassAnatomy');
   if (!wrap) return;
-  wrap.innerHTML = GLASS_SURFACES.map(([bgName, borderName, isDark]) => `
-    <div class="glass-tile ${isDark ? 'dark' : ''}" data-var="${bgName}" tabindex="0" role="button" aria-label="Copy ${bgName}">
-      <span class="name">${bgName}</span>
-      <span class="resolved">${escapeHtml(SOURCES[bgName] || resolve(bgName) || '—')}</span>
-      <span class="name" style="margin-top: var(--spacing-2x)">${borderName}</span>
-      <span class="resolved">${escapeHtml(SOURCES[borderName] || resolve(borderName) || '—')}</span>
+  wrap.innerHTML = GLASS_ANATOMY.map(([label, value, varName]) => `
+    <div class="glass-layer-row" data-var="${varName}" tabindex="0" role="button" aria-label="Copy ${varName}">
+      <span class="glass-layer-row__label">${label}</span>
+      <span class="glass-layer-row__value">${escapeHtml(value)}</span>
+      <span class="glass-layer-row__name">${varName}</span>
+    </div>
+  `).join('');
+}
+
+function renderGlassFrostGrid() {
+  const wrap = document.getElementById('glassFrostGrid');
+  if (!wrap) return;
+  wrap.innerHTML = GLASS_FROST.map(([label, bgVar, borderVar, blurVar]) => `
+    <div class="glass-frost-tile" style="background: var(${bgVar}); border-color: var(${borderVar});
+                                         -webkit-backdrop-filter: var(${blurVar}) var(--glass-saturate);
+                                                 backdrop-filter: var(${blurVar}) var(--glass-saturate);"
+         data-var="${bgVar}" tabindex="0" role="button" aria-label="Copy ${bgVar}">
+      <span class="glass-frost-tile__label">${label}</span>
+      <span class="glass-frost-tile__token">${bgVar}</span>
+      <span class="glass-frost-tile__token">${blurVar}</span>
+    </div>
+  `).join('');
+}
+
+function renderGlassToneGrid() {
+  const wrap = document.getElementById('glassToneGrid');
+  if (!wrap) return;
+  wrap.innerHTML = GLASS_TONES.map(([label, bgVar, borderVar, isDark]) => `
+    <div class="glass-tone-tile ${isDark ? 'is-dark' : ''}"
+         style="background: var(${bgVar}); border-color: var(${borderVar});
+                -webkit-backdrop-filter: var(--blur-lg) var(--glass-saturate);
+                        backdrop-filter: var(--blur-lg) var(--glass-saturate);"
+         data-var="${bgVar}" tabindex="0" role="button" aria-label="Copy ${bgVar}">
+      <span class="glass-tone-tile__label">${label}</span>
+      <span class="glass-tone-tile__token">${bgVar}</span>
+    </div>
+  `).join('');
+}
+
+function renderGlassElevationGrid() {
+  const wrap = document.getElementById('glassElevationGrid');
+  if (!wrap) return;
+  wrap.innerHTML = GLASS_ELEVATIONS.map(([label, shadowVar]) => `
+    <div class="glass-elev-tile" style="box-shadow: var(${shadowVar}), var(--glass-inset-light-soft);"
+         data-var="${shadowVar}" tabindex="0" role="button" aria-label="Copy ${shadowVar}">
+      <span class="glass-elev-tile__label">${label}</span>
+      <span class="glass-elev-tile__token">${shadowVar}</span>
+    </div>
+  `).join('');
+}
+
+function renderGlassInsetGrid() {
+  const wrap = document.getElementById('glassInsetGrid');
+  if (!wrap) return;
+  wrap.innerHTML = GLASS_INSETS.map(([label, insetVar, isDark]) => `
+    <div class="glass-inset-tile ${isDark ? 'is-dark' : ''}"
+         style="background: var(${isDark ? '--glass-dark-light-bg' : '--glass-light-light-bg'});
+                border-color: var(${isDark ? '--glass-dark-light-border' : '--glass-light-light-border'});
+                box-shadow: var(${insetVar});
+                -webkit-backdrop-filter: var(--blur-lg) var(--glass-saturate);
+                        backdrop-filter: var(--blur-lg) var(--glass-saturate);"
+         data-var="${insetVar}" tabindex="0" role="button" aria-label="Copy ${insetVar}">
+      <span class="glass-inset-tile__label">${label}</span>
+      <span class="glass-inset-tile__token">${insetVar}</span>
+    </div>
+  `).join('');
+}
+
+function renderGlassStatesGrid() {
+  const wrap = document.getElementById('glassStatesGrid');
+  if (!wrap) return;
+  wrap.innerHTML = GLASS_STATES.map(([label, shadowVar], i) => `
+    <div class="glass-state-tile"
+         style="background: var(${i === 2 ? '--glass-light-light-bg-pressed' : i === 1 ? '--glass-light-light-bg-hover' : '--glass-light-light-bg'});
+                border-color: var(${i === 1 ? '--glass-light-light-border-hover' : '--glass-light-light-border'});
+                box-shadow: var(${shadowVar}), var(--glass-inset-light-soft);
+                transform: translateY(${i === 1 ? '-1px' : '0'});
+                -webkit-backdrop-filter: var(--blur-lg) var(--glass-saturate);
+                        backdrop-filter: var(--blur-lg) var(--glass-saturate);"
+         data-var="${shadowVar}" tabindex="0" role="button" aria-label="Copy ${shadowVar}">
+      <span class="glass-state-tile__label">${label}</span>
+      <span class="glass-state-tile__token">${shadowVar}</span>
     </div>
   `).join('');
 }
@@ -1099,7 +1297,12 @@ document.addEventListener('DOMContentLoaded', () => {
   renderSemSpacing();
   renderRadius();
   renderGradients();
-  renderGlassStage();
+  renderGlassAnatomy();
+  renderGlassFrostGrid();
+  renderGlassToneGrid();
+  renderGlassElevationGrid();
+  renderGlassInsetGrid();
+  renderGlassStatesGrid();
   renderBlurRow();
   renderShadows();
   renderFocusOverlay();
