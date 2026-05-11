@@ -504,14 +504,16 @@
       <h2 class="text-display-sm">Padding ratio.</h2>
     </header>
     <p class="section-lede reveal">
-      Buttons read horizontally — they're words, and words are
-      wider than tall. The control-inset rail therefore targets
-      a 3:1 ratio of horizontal padding to vertical padding,
-      with 2:1 as the absolute floor. Every size on the rail
-      sits inside that band. Smaller sizes lean wider to keep
-      the smaller label optically balanced; larger sizes settle
-      closer to 2.5:1 because the longer surface no longer needs
-      the extra inset to read as a button.
+      Buttons obey the golden band on both axes across every
+      size: pad-y 0.5 – 0.75 of the label font, pad-x 1.0 – 1.5
+      of it. Unlike form inputs (which cap X at 32px above LG
+      because the value floats in an empty rail), buttons keep
+      scaling X with font — the label <em>is</em> the surface, so the
+      padding has to grow with the word. SM is the density
+      tier and sits below the Y floor by design, the same
+      convention every peer system follows for compact buttons.
+      See <a href="III-03-form.html">form fields</a> for the
+      capped sibling rule.
     </p>
 
     <div class="ratio-table reveal">
@@ -519,58 +521,92 @@
         <thead>
           <tr>
             <th>Size</th>
-            <th>padding-y</th>
-            <th>padding-x</th>
-            <th>H : V ratio</th>
+            <th>font</th>
+            <th>pad-y</th>
+            <th>pad-x</th>
+            <th>H : V</th>
+            <th>pad-x / font</th>
+            <th>pad-y / font</th>
             <th>Control rail token</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>SM</td>
+            <td>13.33px</td>
             <td>4 px</td>
             <td>16 px</td>
             <td>4.0 : 1</td>
-            <td><code>--space-control-x-xs</code></td>
+            <td>1.20</td>
+            <td>0.30</td>
+            <td><code>--space-control-x-sm</code></td>
           </tr>
           <tr>
             <td>MD</td>
+            <td>16px</td>
             <td>8 px</td>
             <td>20 px</td>
             <td>2.5 : 1</td>
-            <td><code>--space-control-x-sm</code></td>
+            <td>1.25</td>
+            <td>0.50</td>
+            <td><code>--space-control-x-md</code></td>
           </tr>
           <tr class="is-focus">
-            <td>LG <span class="ratio-table__tag">focus</span></td>
+            <td>LG</td>
+            <td>22.5px</td>
             <td>12 px</td>
             <td>32 px</td>
             <td>2.67 : 1</td>
-            <td><code>--space-control-x-md</code></td>
-          </tr>
-          <tr>
-            <td>XL</td>
-            <td>16 px</td>
-            <td>40 px</td>
-            <td>2.5 : 1</td>
+            <td>1.42</td>
+            <td>0.53</td>
             <td><code>--space-control-x-lg</code></td>
           </tr>
           <tr>
+            <td>XL</td>
+            <td>27.65px</td>
+            <td>16 px</td>
+            <td>40 px</td>
+            <td>2.5 : 1</td>
+            <td>1.45</td>
+            <td>0.58</td>
+            <td><code>--space-control-x-xl</code></td>
+          </tr>
+          <tr>
             <td>2XL</td>
+            <td>33.18px</td>
             <td>20 px</td>
             <td>48 px</td>
             <td>2.4 : 1</td>
-            <td><code>--space-control-x-xl</code></td>
+            <td>1.45</td>
+            <td>0.60</td>
+            <td><code>--space-control-x-2xl</code></td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <p class="usage-note reveal">
-      Content surfaces (alerts, toasts) run a separate, looser
-      rail — see <a href="III-09-alert-badges.html">alerts &amp;
-      badges</a>. The content rail targets ≈1.5:1 because the
-      surface holds multi-line prose, not a single inline label.
-    </p>
+    <aside class="ratio-table__band reveal">
+      <strong>Golden band — button rail:</strong>
+      <ul>
+        <li>pad-y / font ∈ [0.50, 0.75] at MD and above</li>
+        <li>pad-x / font ∈ [1.00, 1.50] at all sizes — no cap</li>
+        <li>SM is the density tier — intentionally below the
+            Y floor</li>
+      </ul>
+      <p>
+        Form inputs share these tokens but cap pad-x at 32px
+        above LG (the placeholder rail problem). See
+        <a href="III-03-form.html">form fields</a> for the
+        capped sibling rule.
+      </p>
+      <p>
+        Content surfaces (alerts, toasts) run a separate,
+        looser band — they hold multi-line prose, where
+        vertical headroom matters more than horizontal trim.
+        See <a href="III-09-alert-badges.html">alerts &amp;
+        badges</a>.
+      </p>
+    </aside>
   </section>
 
   <!-- ========================== BUTTON · SWITCH ========================== -->
@@ -784,20 +820,20 @@ const BTN_TOKENS = [
   ]},
   { group: 'Sizes — focus on LG (22.5px)', tokens: [
     ['--btn-sm-font-size',    'var(--text-sm)'],
-    ['--btn-sm-padding-x',    'var(--space-control-x-xs)'],
-    ['--btn-sm-padding-y',    'var(--space-control-y-xs)'],
+    ['--btn-sm-padding-x',    'var(--space-control-x-sm)'],
+    ['--btn-sm-padding-y',    'var(--space-control-y-sm)'],
     ['--btn-md-font-size',    'var(--text-base)'],
-    ['--btn-md-padding-x',    'var(--space-control-x-sm)'],
-    ['--btn-md-padding-y',    'var(--space-control-y-sm)'],
+    ['--btn-md-padding-x',    'var(--space-control-x-md)'],
+    ['--btn-md-padding-y',    'var(--space-control-y-md)'],
     ['--btn-lg-font-size',    '22.5px /* focus */'],
-    ['--btn-lg-padding-x',    'var(--space-control-x-md)'],
-    ['--btn-lg-padding-y',    'var(--space-control-y-md)'],
+    ['--btn-lg-padding-x',    'var(--space-control-x-lg)'],
+    ['--btn-lg-padding-y',    'var(--space-control-y-lg)'],
     ['--btn-xl-font-size',    'var(--text-h4)'],
-    ['--btn-xl-padding-x',    'var(--space-control-x-lg)'],
-    ['--btn-xl-padding-y',    'var(--space-control-y-lg)'],
+    ['--btn-xl-padding-x',    'var(--space-control-x-xl)'],
+    ['--btn-xl-padding-y',    'var(--space-control-y-xl)'],
     ['--btn-2xl-font-size',   'var(--text-h3)'],
-    ['--btn-2xl-padding-x',   'var(--space-control-x-xl)'],
-    ['--btn-2xl-padding-y',   'var(--space-control-y-xl)'],
+    ['--btn-2xl-padding-x',   'var(--space-control-x-2xl)'],
+    ['--btn-2xl-padding-y',   'var(--space-control-y-2xl)'],
   ]},
   { group: 'Variant · CTA (Accent · primary action)', tokens: [
     ['--btn-cta-bg',          'var(--background-accent)'],

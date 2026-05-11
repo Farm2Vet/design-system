@@ -284,13 +284,6 @@
     color: var(--text-default-minimal);
     justify-self: start;
 }
-.form-size-row.is-focus .tag {
-    color: var(--text-primary-strong);
-    background: var(--background-primary-subtle);
-    padding: var(--spacing-half) var(--space-tier-6);
-    border-radius: var(--radius-pill);
-    border: var(--border-width-base) solid var(--border-primary-subtle);
-}
 .form-size-row .demo {
     width: 100%;
     max-width: 480px;
@@ -322,4 +315,95 @@
 
     .form-size-row              { grid-template-columns: 1fr; gap: var(--space-tier-5); }
     .form-size-row .tag         { justify-self: start; }
+}
+
+/* =========================================================
+   PADDING RATIO TABLE — H:V + text/padding documentation
+   ========================================================= */
+.ratio-table {
+    border: var(--border-width-base) solid var(--border-default);
+    border-radius: var(--radius-md);
+    background: var(--background-default);
+    overflow: hidden;
+}
+.ratio-table table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+}
+.ratio-table th,
+.ratio-table td {
+    padding: var(--space-tier-5) var(--space-tier-4);
+    text-align: left;
+    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
+    line-height: var(--line-height-h4);
+    color: var(--text-default);
+}
+.ratio-table th {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+    font-weight: var(--font-weight-medium);
+    background: var(--background-default-subtle);
+}
+.ratio-table tbody tr:last-child td { border-bottom: none; }
+.ratio-table tbody tr.is-focus td {
+    background: var(--background-primary-subtle);
+    color: var(--text-primary-strong);
+    font-weight: var(--font-weight-medium);
+}
+.ratio-table code {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    background: transparent;
+    color: var(--text-default-subtle);
+    padding: 0;
+}
+.ratio-table__tag {
+    display: inline-block;
+    margin-left: var(--space-gap-micro);
+    padding: 2px var(--space-tier-6);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-primary-strong);
+    background: var(--background-primary-minimal);
+    border-radius: var(--radius-pill);
+    vertical-align: middle;
+}
+.ratio-table__tag--note {
+    background: var(--background-default-minimal);
+    color: var(--text-default-subtle);
+}
+.ratio-table__band {
+    margin-top: var(--space-flow-heading);
+    padding: var(--space-tier-4);
+    background: var(--background-default-subtle);
+    border-radius: var(--radius-md);
+    font-size: var(--text-sm);
+    color: var(--text-default-subtle);
+    line-height: var(--line-height-body);
+}
+.ratio-table__band strong {
+    color: var(--text-default);
+    font-weight: var(--font-weight-semibold);
+}
+.ratio-table__band ul {
+    margin: var(--space-tier-6) 0 var(--space-tier-5);
+    padding-left: var(--space-tier-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-gap-micro);
+}
+.ratio-table__band ul li {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--text-default);
+}
+.ratio-table__band p {
+    margin: 0;
 }

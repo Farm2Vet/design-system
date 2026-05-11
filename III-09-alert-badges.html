@@ -659,6 +659,87 @@
     </div>
   </section>
 
+  <!-- ========================== PADDING RATIO ========================== -->
+  <section class="chunk" id="padding-ratio">
+    <header class="chunk-head reveal">
+      <span class="num-tag">III-09 / NN</span>
+      <h2 class="text-display-sm">Padding ratio.</h2>
+    </header>
+    <p class="section-lede reveal">
+      Content surfaces obey a looser band than control surfaces.
+      Alerts and toasts hold multi-line prose, so vertical
+      headroom runs higher (0.6 – 1.25× font) and horizontal
+      trim runs slightly tighter (0.9 – 1.5× font). The
+      resulting shape is closer to square than the elongated
+      word-shape of a button — a paragraph, not a label.
+    </p>
+
+    <div class="ratio-table reveal">
+      <table>
+        <thead>
+          <tr>
+            <th>Size</th>
+            <th>font</th>
+            <th>pad-y</th>
+            <th>pad-x</th>
+            <th>H : V</th>
+            <th>pad-x / font</th>
+            <th>pad-y / font</th>
+            <th>Content rail token</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>SM</td>
+            <td>0.833rem</td>
+            <td>8 px</td>
+            <td>12 px</td>
+            <td>1.5 : 1</td>
+            <td>0.90</td>
+            <td>0.60</td>
+            <td><code>--space-content-x-sm</code></td>
+          </tr>
+          <tr class="is-focus">
+            <td>MD</td>
+            <td>1rem</td>
+            <td>16 px</td>
+            <td>20 px</td>
+            <td>1.25 : 1</td>
+            <td>1.25</td>
+            <td>1.00</td>
+            <td><code>--space-content-x-md</code></td>
+          </tr>
+          <tr>
+            <td>LG</td>
+            <td>1rem</td>
+            <td>20 px</td>
+            <td>24 px</td>
+            <td>1.2 : 1</td>
+            <td>1.50</td>
+            <td>1.25</td>
+            <td><code>--space-content-x-lg</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <aside class="ratio-table__band reveal">
+      <strong>Golden band (content rail):</strong>
+      <ul>
+        <li>pad-y / font ∈ [0.60, 1.25]</li>
+        <li>pad-x / font ∈ [0.90, 1.50]</li>
+        <li>H : V ∈ [1.00, 1.60]</li>
+      </ul>
+      <p>
+        Control surfaces (buttons, inputs, tabs, dropdown
+        triggers) run a tighter, more elongated band — they
+        hold single-line labels, where horizontal trim
+        matters more than vertical headroom. See
+        <a href="III-02-buttons.html">buttons</a>.
+      </p>
+    </aside>
+  </section>
+
   <!-- ========================== BADGE · ANATOMY ========================== -->
   <section class="chunk" id="badge-anatomy">
     <header class="chunk-head reveal">
@@ -1238,12 +1319,20 @@ const ALERT_TOKENS = [
   { group: 'Badge · Sizes', tokens: [
     ['--badge-xs-font-size', '10px'],
     ['--badge-xs-height',    '16px'],
+    ['--badge-xs-padding-x', 'var(--space-tier-7)'],
+    ['--badge-xs-padding-y', '1px'],
     ['--badge-sm-font-size', 'var(--text-micro)'],
     ['--badge-sm-height',    '20px'],
+    ['--badge-sm-padding-x', 'var(--space-tier-6)'],
+    ['--badge-sm-padding-y', 'var(--spacing-half)'],
     ['--badge-md-font-size', 'var(--text-sm)'],
     ['--badge-md-height',    '24px'],
+    ['--badge-md-padding-x', 'var(--space-tier-5)'],
+    ['--badge-md-padding-y', 'var(--space-tier-7)'],
     ['--badge-lg-font-size', 'var(--text-base)'],
     ['--badge-lg-height',    '32px'],
+    ['--badge-lg-padding-x', 'var(--space-tier-4)'],
+    ['--badge-lg-padding-y', 'var(--space-tier-6)'],
   ]},
   { group: 'Badge · Tone — Neutral (default)', tokens: [
     ['--badge-neutral-soft-bg',        'var(--background-default-minimal)'],

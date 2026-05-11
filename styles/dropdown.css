@@ -5,8 +5,6 @@
    plan pickers, primary filters) where consistent cross-OS
    appearance, primary-tinted option highlights, and a gentle
    open/close animation are worth the JS cost.
-   For utility forms or where mobile-native picker UX matters,
-   keep using .select (native) from form.css as the fallback.
 
    Required structure:
      <div class="dropdown" data-dropdown>
@@ -49,7 +47,7 @@
 }
 
 /* =========================================================
-   TRIGGER — looks/feels like .input.select but is a button
+   TRIGGER — looks/feels like .input but is a button
    ========================================================= */
 .dropdown__trigger {
     display: flex;
@@ -206,9 +204,8 @@
 
 /* =========================================================
    SIZES — applied to .dropdown wrapper, propagates to trigger
-   Mirrors the .input--sm/md/lg/xl/2xl scale exactly so a
-   premium dropdown can be swapped in for a native .select
-   without any sizing drift.
+   Mirrors the .input--sm/md/lg/xl/2xl scale exactly so dropdown
+   sizing stays in lockstep with the rest of the form family.
    ========================================================= */
 .dropdown--sm .dropdown__trigger  { font-size: var(--form-sm-font-size);  padding: var(--form-sm-padding-y)  var(--form-sm-padding-x);  min-height: var(--form-sm-height);  border-radius: var(--radius-sm); }
 .dropdown--md .dropdown__trigger  { font-size: var(--form-md-font-size);  padding: var(--form-md-padding-y)  var(--form-md-padding-x);  min-height: var(--form-md-height); }

@@ -464,11 +464,12 @@ const SEM_SPACING = [
     '--space-container-x-sm', '--space-container-x', '--space-container-x-lg',
   ]},
   { title: 'Control insets', tokens: [
-    '--space-control-y-xs', '--space-control-y-sm', '--space-control-y-md',
-    '--space-control-y-lg', '--space-control-y-xl',
-    '--space-control-x-xs', '--space-control-x-sm', '--space-control-x-md',
-    '--space-control-x-lg', '--space-control-x-xl',
+    '--space-control-y-sm', '--space-control-y-md', '--space-control-y-lg',
+    '--space-control-y-xl', '--space-control-y-2xl',
+    '--space-control-x-sm', '--space-control-x-md', '--space-control-x-lg',
+    '--space-control-x-xl', '--space-control-x-2xl',
   ]},
+  { title: 'Golden bands', kind: 'band' },
   { title: 'Content insets', tokens: [
     '--space-content-y-sm', '--space-content-y-md', '--space-content-y-lg',
     '--space-content-x-sm', '--space-content-x-md', '--space-content-x-lg',
@@ -675,16 +676,16 @@ const SOURCES = {
   '--space-container-x-lg': '--space-tier-2',
 
   /* ---------- Control insets ---------- */
-  '--space-control-y-xs':  '--space-tier-7',
-  '--space-control-y-sm':  '--space-tier-6',
-  '--space-control-y-md':  '--space-tier-5',
-  '--space-control-y-lg':  '--space-tier-4',
-  '--space-control-y-xl':  '--spacing-5x',
-  '--space-control-x-xs':  '--space-tier-4',
-  '--space-control-x-sm':  '--spacing-5x',
-  '--space-control-x-md':  '--space-tier-2',
-  '--space-control-x-lg':  '--spacing-10x',
-  '--space-control-x-xl':  '--space-tier-1',
+  '--space-control-y-sm':  '--space-tier-7',
+  '--space-control-y-md':  '--space-tier-6',
+  '--space-control-y-lg':  '--space-tier-5',
+  '--space-control-y-xl':  '--space-tier-4',
+  '--space-control-y-2xl':  '--spacing-5x',
+  '--space-control-x-sm':  '--space-tier-4',
+  '--space-control-x-md':  '--spacing-5x',
+  '--space-control-x-lg':  '--space-tier-2',
+  '--space-control-x-xl':  '--spacing-10x',
+  '--space-control-x-2xl':  '--space-tier-1',
 
   /* ---------- Content insets ---------- */
   '--space-content-y-sm': '--space-tier-6',
@@ -830,6 +831,56 @@ function renderSemSpacing() {
   const wrap = document.getElementById('semSpacing');
   if (!wrap) return;
   wrap.innerHTML = SEM_SPACING.map(group => {
+    if (group.kind === 'band') {
+      return `
+        <h4 class="sem-space-group-title">${escapeHtml(group.title)}</h4>
+        <p class="sem-space-group-note sem-space-band-note">
+          Three rails each obey their own band of padding-to-font
+          ratios. The bands differ because the surface types hold
+          different content — a single-line label on a button, a
+          floating value inside a long rail on an input, multi-line
+          prose on an alert. New surfaces declare which rail they
+          belong to and inherit the corresponding band. SM
+          consistently sits below the Y floor on the control rails
+          as a documented density tier, matching peer-system
+          convention for compact inputs and compact buttons.
+        </p>
+        <table class="sem-space-band">
+          <thead>
+            <tr>
+              <th>Rail</th>
+              <th>pad-y / font</th>
+              <th>pad-x / font</th>
+              <th>X cap?</th>
+              <th>Surfaces</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Form (input)</td>
+              <td>0.50 – 0.75 at MD+</td>
+              <td>1.00 – 1.50 at canonical</td>
+              <td>Yes — 32px above LG</td>
+              <td>Text input, textarea, select, dropdown trigger, multi-select</td>
+            </tr>
+            <tr>
+              <td>Button</td>
+              <td>0.50 – 0.75 at MD+</td>
+              <td>1.00 – 1.50 at all sizes</td>
+              <td>No</td>
+              <td>Button, tab, segmented switch</td>
+            </tr>
+            <tr>
+              <td>Content</td>
+              <td>0.60 – 1.25</td>
+              <td>0.90 – 1.50</td>
+              <td>n/a</td>
+              <td>Alert, toast</td>
+            </tr>
+          </tbody>
+        </table>
+      `;
+    }
     const heading = `
       <h4 class="sem-space-group-title${group.deprecated ? ' is-deprecated' : ''}">
         ${escapeHtml(group.title)}${group.note

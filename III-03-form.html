@@ -22,6 +22,7 @@
 <!-- Shared behaviour: scroll-spy highlights the in-view TOC link -->
 <script src="scripts/scroll-spy.js" defer></script>
 <script src="scripts/global-nav.js" defer></script>
+<script src="scripts/dropdown.js" defer></script>
 
 </head>
 <body data-page="III-03-form">
@@ -140,7 +141,7 @@
       <div><dt>Component</dt><dd>Form</dd></div>
       <div><dt>Variants</dt><dd>10</dd></div>
       <div><dt>Versions</dt><dd>3</dd></div>
-      <div><dt>Sizes</dt><dd>5 · LG focus</dd></div>
+      <div><dt>Sizes</dt><dd>5</dd></div>
     </dl>
   </section>
 
@@ -184,24 +185,35 @@
         <div class="meta"><span>.textarea</span><strong>multi-line</strong></div>
       </article>
 
-      <!-- Dropdown (native fallback) — premium version lives in III-04-dropdowns.html -->
+      <!-- Dropdown — full documentation lives on III-04-dropdowns.html -->
       <article class="form-variant-card">
-        <span class="label">Dropdown · native fallback</span>
+        <span class="label">Dropdown</span>
         <div class="demo">
           <div class="field">
-            <label class="field__label" for="vf-select">Species</label>
-            <select id="vf-select" class="input input--md select">
-              <option value="" disabled selected>Choose species…</option>
-              <option>Bovine</option>
-              <option>Caprine</option>
-              <option>Ovine</option>
-              <option>Equine</option>
-              <option>Porcine</option>
-            </select>
-            <span class="field__helper">Native rendering · edge cases only.</span>
+            <span class="field__label">Species</span>
+            <div class="dropdown dropdown--md" data-dropdown>
+              <button type="button" class="dropdown__trigger is-empty"
+                      aria-haspopup="listbox" aria-expanded="false"
+                      data-placeholder="Choose species…">
+                <span class="dropdown__value">Choose species…</span>
+                <svg class="dropdown__chevron" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </button>
+              <div class="dropdown__menu" role="listbox">
+                <button type="button" class="dropdown__option" role="option" data-value="bovine">Bovine<svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></button>
+                <button type="button" class="dropdown__option" role="option" data-value="caprine">Caprine<svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></button>
+                <button type="button" class="dropdown__option" role="option" data-value="ovine">Ovine<svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></button>
+                <button type="button" class="dropdown__option" role="option" data-value="equine">Equine<svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></button>
+                <button type="button" class="dropdown__option" role="option" data-value="porcine">Porcine<svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></button>
+              </div>
+            </div>
+            <span class="field__helper">Full anatomy, states, sizes: <a href="III-04-dropdowns.html">III-04</a>.</span>
           </div>
         </div>
-        <div class="meta"><span>.select</span><strong>edge case only</strong></div>
+        <div class="meta"><span>.dropdown</span><strong>single choice</strong></div>
       </article>
 
       <!-- Date picker -->
@@ -377,14 +389,6 @@
     </p>
 
     <p class="usage-note usage-note--below reveal">
-      <strong>Default to <a href="III-04-dropdowns.html"><code>.dropdown</code></a> on every selector across the product.</strong>
-      <code>.select</code> is kept only for edge cases — bulk-edit grids,
-      internal admin tooling, and mobile-native picker flows. See
-      <a href="III-04-dropdowns.html#dropdown-intro">Dropdown · Usage</a>
-      for the exact boundary.
-    </p>
-
-    <p class="usage-note usage-note--below reveal">
       <strong>Use a radio group when exactly one option from a small fixed set must be chosen.</strong>
       Pre-select the safest default — leaving the group empty forces a
       decision before the user knows the cost of each choice. Group every
@@ -448,53 +452,6 @@
       </article>
     </div>
 
-    <h4 class="subheading reveal">Dropdown</h4>
-    <div class="form-version-stage reveal">
-      <article class="form-version-card">
-        <span class="label">Default</span>
-        <div class="demo">
-          <div class="field">
-            <label class="field__label" for="vv-sel-d">Species</label>
-            <select id="vv-sel-d" class="input input--md select">
-              <option value="" disabled selected>Choose species…</option>
-              <option>Bovine</option><option>Caprine</option><option>Ovine</option>
-            </select>
-          </div>
-        </div>
-        <div class="meta"><span>.select</span><strong>nothing chosen</strong></div>
-      </article>
-
-      <article class="form-version-card">
-        <span class="label">With value</span>
-        <div class="demo">
-          <div class="field">
-            <label class="field__label" for="vv-sel-v">Species</label>
-            <select id="vv-sel-v" class="input input--md select">
-              <option>Bovine</option>
-              <option selected>Caprine</option>
-              <option>Ovine</option>
-            </select>
-          </div>
-        </div>
-        <div class="meta"><span>[selected]</span><strong>chosen</strong></div>
-      </article>
-
-      <article class="form-version-card">
-        <span class="label">Error</span>
-        <div class="demo">
-          <div class="field">
-            <label class="field__label" for="vv-sel-e">Species <span class="req" aria-hidden="true">*</span></label>
-            <select id="vv-sel-e" class="input input--md select is-error" aria-required="true" aria-invalid="true" aria-describedby="vv-sel-e-msg">
-              <option value="" disabled selected>Choose species…</option>
-              <option>Bovine</option>
-            </select>
-            <span class="field__error" id="vv-sel-e-msg">Select a species to continue</span>
-          </div>
-        </div>
-        <div class="meta"><span>.is-error</span><strong>invalid</strong></div>
-      </article>
-    </div>
-
     <h4 class="subheading reveal">Checkbox &amp; Radio</h4>
     <div class="form-version-stage reveal">
       <article class="form-version-card">
@@ -545,8 +502,8 @@
 
     <p class="section-lede reveal">
       Five steps along the same scale that drives type and Button — applied
-      across every variant so the family stays in lockstep. The middle is
-      canonical: <strong>Large · 22.5px</strong> for primary forms in
+      across every variant so the family stays in lockstep. SM and MD carry
+      dense data-entry surfaces; LG, XL and 2XL belong to hero forms,
       marketing surfaces and full-page intake flows.
     </p>
 
@@ -560,8 +517,8 @@
         <span class="tag">MD · 16px</span>
         <div class="demo"><input class="input input--md" type="text" placeholder="Patient name" /></div>
       </div>
-      <div class="form-size-row is-focus">
-        <span class="tag">LG · 22.5px · focus</span>
+      <div class="form-size-row">
+        <span class="tag">LG · 22.5px</span>
         <div class="demo"><input class="input input--lg" type="text" placeholder="Patient name" /></div>
       </div>
       <div class="form-size-row">
@@ -584,8 +541,8 @@
         <span class="tag">MD · 16px</span>
         <div class="demo"><textarea class="input textarea input--md" placeholder="Clinical notes…"></textarea></div>
       </div>
-      <div class="form-size-row is-focus">
-        <span class="tag">LG · 22.5px · focus</span>
+      <div class="form-size-row">
+        <span class="tag">LG · 22.5px</span>
         <div class="demo"><textarea class="input textarea input--lg" placeholder="Clinical notes…"></textarea></div>
       </div>
       <div class="form-size-row">
@@ -595,30 +552,6 @@
       <div class="form-size-row">
         <span class="tag">2XL · 33.18px</span>
         <div class="demo"><textarea class="input textarea input--2xl" placeholder="Clinical notes…"></textarea></div>
-      </div>
-    </div>
-
-    <h4 class="subheading reveal">Dropdown — across all sizes <span class="tag">single choice</span></h4>
-    <div class="glass form-size-stage reveal">
-      <div class="form-size-row">
-        <span class="tag">SM</span>
-        <div class="demo"><select class="input select input--sm"><option>Bovine</option><option>Caprine</option></select></div>
-      </div>
-      <div class="form-size-row">
-        <span class="tag">MD</span>
-        <div class="demo"><select class="input select input--md"><option>Bovine</option><option>Caprine</option></select></div>
-      </div>
-      <div class="form-size-row is-focus">
-        <span class="tag">LG · focus</span>
-        <div class="demo"><select class="input select input--lg"><option>Bovine</option><option>Caprine</option></select></div>
-      </div>
-      <div class="form-size-row">
-        <span class="tag">XL</span>
-        <div class="demo"><select class="input select input--xl"><option>Bovine</option><option>Caprine</option></select></div>
-      </div>
-      <div class="form-size-row">
-        <span class="tag">2XL</span>
-        <div class="demo"><select class="input select input--2xl"><option>Bovine</option><option>Caprine</option></select></div>
       </div>
     </div>
 
@@ -632,8 +565,8 @@
         <span class="tag">MD</span>
         <div class="demo"><input class="input input--date input--md" type="date" /></div>
       </div>
-      <div class="form-size-row is-focus">
-        <span class="tag">LG · focus</span>
+      <div class="form-size-row">
+        <span class="tag">LG</span>
         <div class="demo"><input class="input input--date input--lg" type="date" /></div>
       </div>
       <div class="form-size-row">
@@ -666,8 +599,8 @@
           </div>
         </div>
       </div>
-      <div class="form-size-row is-focus">
-        <span class="tag">LG · focus</span>
+      <div class="form-size-row">
+        <span class="tag">LG</span>
         <div class="demo">
           <div class="input multi-select input--lg">
             <span class="chip">Lethargy<button type="button" aria-label="Remove">×</button></span>
@@ -716,8 +649,8 @@
           </div>
         </div>
       </div>
-      <div class="form-size-row is-focus">
-        <span class="tag">LG · focus</span>
+      <div class="form-size-row">
+        <span class="tag">LG</span>
         <div class="demo">
           <div class="radio-group">
             <label class="radio radio--lg"><input type="radio" name="vs-radio-lg" checked /> Routine</label>
@@ -765,8 +698,8 @@
           </label>
         </div>
       </div>
-      <div class="form-size-row is-focus">
-        <span class="tag">LG · focus</span>
+      <div class="form-size-row">
+        <span class="tag">LG</span>
         <div class="demo">
           <label class="file-upload input--lg" tabindex="0">
             <input type="file" />
@@ -805,8 +738,8 @@
         <span class="tag">MD</span>
         <div class="demo"><label class="checkbox checkbox--md"><input type="checkbox" checked /> Fasting confirmed</label></div>
       </div>
-      <div class="form-size-row is-focus">
-        <span class="tag">LG · focus</span>
+      <div class="form-size-row">
+        <span class="tag">LG</span>
         <div class="demo"><label class="checkbox checkbox--lg"><input type="checkbox" checked /> Fasting confirmed</label></div>
       </div>
       <div class="form-size-row">
@@ -839,8 +772,8 @@
           </div>
         </div>
       </div>
-      <div class="form-size-row is-focus">
-        <span class="tag">LG · focus</span>
+      <div class="form-size-row">
+        <span class="tag">LG</span>
         <div class="demo">
           <div class="checkbox-list checkbox-list--lg">
             <label class="checkbox checkbox--lg checkbox-list__row"><input type="checkbox" checked /> Cattle</label>
@@ -888,8 +821,8 @@
           </div>
         </div>
       </div>
-      <div class="form-size-row is-focus">
-        <span class="tag">LG · focus</span>
+      <div class="form-size-row">
+        <span class="tag">LG</span>
         <div class="demo">
           <div class="radio-list radio-list--lg">
             <label class="radio radio--lg radio-list__row"><input type="radio" name="vs-rl-lg" checked /> Routine</label>
@@ -916,6 +849,123 @@
         </div>
       </div>
     </div>
+  </section>
+
+  <!-- ========================== PADDING RATIO ========================== -->
+  <section class="chunk" id="padding-ratio">
+    <header class="chunk-head reveal">
+      <span class="num-tag">III-03 / NN</span>
+      <h2 class="text-display-sm">Padding ratio.</h2>
+    </header>
+    <p class="section-lede reveal">
+      Text fields obey the golden band at the canonical 16px
+      size: vertical padding runs 0.5 – 0.75 of the input font,
+      and horizontal padding runs 1.0 – 1.5 of it — resolving
+      to 8–12px vertical and 16–24px horizontal. Above the
+      canonical size the rail diverges by convention: X-padding
+      caps at 32px for XL and 2XL because inputs don't hug
+      their value the way buttons hug their label, and scaling
+      X further only pushes the placeholder away from the left
+      edge into empty rail. Below the canonical, SM sits as a
+      density / utility tier below the Y floor by design — the
+      same pattern Bootstrap, Polaris, Mantine, Ant, and
+      shadcn all follow for their small inputs.
+    </p>
+
+    <div class="ratio-table reveal">
+      <table>
+        <thead>
+          <tr>
+            <th>Size</th>
+            <th>font</th>
+            <th>pad-y</th>
+            <th>pad-x</th>
+            <th>H : V</th>
+            <th>pad-x / font</th>
+            <th>pad-y / font</th>
+            <th>Form rail token</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>SM</td>
+            <td>0.833rem</td>
+            <td>4 px</td>
+            <td>16 px</td>
+            <td>4.0 : 1</td>
+            <td>1.20</td>
+            <td>0.30</td>
+            <td><code>--form-sm-padding-x</code></td>
+          </tr>
+          <tr>
+            <td>MD</td>
+            <td>1rem</td>
+            <td>8 px</td>
+            <td>20 px</td>
+            <td>2.5 : 1</td>
+            <td>1.25</td>
+            <td>0.50</td>
+            <td><code>--form-md-padding-x</code></td>
+          </tr>
+          <tr class="is-focus">
+            <td>LG</td>
+            <td>1.406rem</td>
+            <td>12 px</td>
+            <td>32 px</td>
+            <td>2.67 : 1</td>
+            <td>1.42</td>
+            <td>0.53</td>
+            <td><code>--form-lg-padding-x</code></td>
+          </tr>
+          <tr>
+            <td>XL</td>
+            <td>1.728rem</td>
+            <td>16 px</td>
+            <td>32 px</td>
+            <td>2.0 : 1</td>
+            <td>1.16</td>
+            <td>0.58</td>
+            <td><code>--form-xl-padding-x</code></td>
+          </tr>
+          <tr>
+            <td>2XL</td>
+            <td>2.074rem</td>
+            <td>20 px</td>
+            <td>32 px</td>
+            <td>1.6 : 1</td>
+            <td>0.96</td>
+            <td>0.60</td>
+            <td><code>--form-2xl-padding-x</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <aside class="ratio-table__band reveal">
+      <strong>Golden band — form rail:</strong>
+      <ul>
+        <li>pad-y / font ∈ [0.50, 0.75] at MD and above</li>
+        <li>pad-x / font ∈ [1.00, 1.50] at canonical (16px),
+            then <strong>capped at 32px</strong> for XL and 2XL</li>
+        <li>SM is the density / utility tier — intentionally
+            below the Y floor, matching Bootstrap, Polaris,
+            Mantine, Ant, and shadcn convention</li>
+      </ul>
+      <p>
+        Buttons, tabs, and dropdown triggers share the same
+        tokens but obey a slightly different rule above LG —
+        they don't cap X. See
+        <a href="III-02-buttons.html">buttons</a> for the
+        parallel ratio table.
+      </p>
+      <p>
+        Content surfaces (alerts, toasts) run a separate,
+        looser band because they hold multi-line prose where
+        vertical headroom matters more than horizontal trim.
+        See <a href="III-09-alert-badges.html">alerts &amp;
+        badges</a>.
+      </p>
+    </aside>
   </section>
 
   <!-- ========================== FORM · TOKENS ========================== -->
@@ -978,22 +1028,22 @@ const FORM_TOKENS = [
     ['--form-border-width',   'var(--border-width-base)'],
     ['--form-gap',            'var(--space-gap-snug)'],
   ]},
-  { group: 'Sizes — focus on LG (22.5px)', tokens: [
+  { group: 'Sizes', tokens: [
     ['--form-sm-font-size',   'var(--text-sm)'],
-    ['--form-sm-padding-x',   'var(--space-control-x-xs)'],
-    ['--form-sm-padding-y',   'var(--space-control-y-xs)'],
+    ['--form-sm-padding-x',   'var(--space-control-x-sm)'],
+    ['--form-sm-padding-y',   'var(--space-control-y-sm)'],
     ['--form-md-font-size',   'var(--text-base)'],
-    ['--form-md-padding-x',   'var(--space-control-x-sm)'],
-    ['--form-md-padding-y',   'var(--space-control-y-sm)'],
-    ['--form-lg-font-size',   '22.5px /* focus */'],
-    ['--form-lg-padding-x',   'var(--space-control-x-md)'],
-    ['--form-lg-padding-y',   'var(--space-control-y-md)'],
+    ['--form-md-padding-x',   'var(--space-control-x-md)'],
+    ['--form-md-padding-y',   'var(--space-control-y-md)'],
+    ['--form-lg-font-size',   '22.5px'],
+    ['--form-lg-padding-x',   'var(--space-control-x-lg)'],
+    ['--form-lg-padding-y',   'var(--space-control-y-lg)'],
     ['--form-xl-font-size',   'var(--text-h4)'],
-    ['--form-xl-padding-x',   'var(--space-control-x-lg)'],
-    ['--form-xl-padding-y',   'var(--space-control-y-lg)'],
+    ['--form-xl-padding-x',   'var(--space-control-x-xl)'],
+    ['--form-xl-padding-y',   'var(--space-control-y-xl)'],
     ['--form-2xl-font-size',  'var(--text-h3)'],
-    ['--form-2xl-padding-x',  'var(--space-control-x-xl)'],
-    ['--form-2xl-padding-y',  'var(--space-control-y-xl)'],
+    ['--form-2xl-padding-x',  'var(--space-control-x-2xl)'],
+    ['--form-2xl-padding-y',  'var(--space-control-y-2xl)'],
   ]},
   { group: 'Surface & text', tokens: [
     ['--form-bg',          'var(--background-default)'],
@@ -1031,6 +1081,28 @@ const FORM_TOKENS = [
     ['--form-chip-fg',     'var(--text-primary-strong)'],
     ['--form-chip-border', 'transparent'],
     ['--form-chip-radius', 'var(--radius-sm)'],
+  ]},
+  { group: 'Multi-select chip — per-size rail', tokens: [
+    ['--form-sm-chip-font',   'var(--text-xs)'],
+    ['--form-sm-chip-pad-y',  '1px'],
+    ['--form-sm-chip-pad-x',  'var(--space-tier-6)'],
+    ['--form-sm-chip-gap',    '2px'],
+    ['--form-md-chip-font',   'var(--text-sm)'],
+    ['--form-md-chip-pad-y',  'var(--spacing-half)'],
+    ['--form-md-chip-pad-x',  'var(--space-tier-6)'],
+    ['--form-md-chip-gap',    'var(--space-tier-7)'],
+    ['--form-lg-chip-font',   'var(--text-base)'],
+    ['--form-lg-chip-pad-y',  'var(--space-tier-7)'],
+    ['--form-lg-chip-pad-x',  'var(--space-tier-5)'],
+    ['--form-lg-chip-gap',    'var(--space-tier-7)'],
+    ['--form-xl-chip-font',   'var(--text-lg)'],
+    ['--form-xl-chip-pad-y',  'var(--space-tier-6)'],
+    ['--form-xl-chip-pad-x',  'var(--space-tier-5)'],
+    ['--form-xl-chip-gap',    'var(--space-tier-6)'],
+    ['--form-2xl-chip-font',  'var(--text-xl)'],
+    ['--form-2xl-chip-pad-y', 'var(--space-tier-6)'],
+    ['--form-2xl-chip-pad-x', 'var(--space-tier-4)'],
+    ['--form-2xl-chip-gap',   'var(--space-tier-6)'],
   ]},
   { group: 'File upload dropzone', tokens: [
     ['--form-file-bg',           'var(--background-default-subtle)'],

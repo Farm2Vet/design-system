@@ -372,24 +372,42 @@
     --space-container-x-lg: var(--space-tier-2);  /* 32 — modal XL        */
 
     /* ---------- Control insets (Y + X) ----------
-       For buttons, inputs, tabs, dropdown triggers, switches.
-       The H:V ratio target is 3:1 (the "buttons read
-       horizontally" rule); the minimum is 2:1. Y rides the
-       type scale; X is the rhythm decision. The values below
-       give per-size ratios of 4.0 / 2.5 / 2.67 / 2.5 / 2.4 —
-       all comfortably above the 2:1 floor, with the smallest
-       size leaning extra-wide to preserve optical balance at
-       reduced label sizes. */
-    --space-control-y-xs:  var(--space-tier-7);   /*  4 — SM control Y    */
-    --space-control-y-sm:  var(--space-tier-6);   /*  8 — MD control Y    */
-    --space-control-y-md:  var(--space-tier-5);   /* 12 — LG control Y    */
-    --space-control-y-lg:  var(--space-tier-4);   /* 16 — XL control Y    */
-    --space-control-y-xl:  var(--spacing-5x);     /* 20 — 2XL control Y   */
-    --space-control-x-xs:  var(--space-tier-4);   /* 16 — SM control X    */
-    --space-control-x-sm:  var(--spacing-5x);     /* 20 — MD control X    */
-    --space-control-x-md:  var(--space-tier-2);   /* 32 — LG control X    */
-    --space-control-x-lg:  var(--spacing-10x);    /* 40 — XL control X    */
-    --space-control-x-xl:  var(--space-tier-1);   /* 48 — 2XL control X   */
+       Two rails share these tokens — buttons / tabs / dropdown
+       triggers consume them at every size, form inputs cap X
+       above LG. Each rail obeys its own golden band:
+
+         · Form / input rule
+             pad-y / font  ∈ [0.50, 0.75]  at all sizes
+             pad-x / font  ∈ [1.00, 1.50]  at canonical (16px),
+                                            then capped at 32px
+                                            for XL and 2XL.
+             At canonical 16px font this resolves to 8–12px Y
+             and 16–24px X — the conventional input inset.
+             SM (font 13.33, pad-y 4 = 0.30) is the documented
+             density / utility tier and intentionally sits
+             below the band on Y.
+
+         · Button / tab / trigger rule
+             pad-y / font  ∈ [0.50, 0.75]  at all sizes
+             pad-x / font  ∈ [1.00, 1.50]  at all sizes — no cap
+                                            because the label is
+                                            the surface and X
+                                            scales with font.
+
+       The cap on form-X is enforced in the form component-token
+       block below: `--form-xl-padding-x` and `--form-2xl-padding-x`
+       both alias `--space-control-x-lg` (the LG X step, 32px), not
+       the XL or 2XL X steps. Do not "fix" the cap; it's policy. */
+    --space-control-y-sm:  var(--space-tier-7);   /*  4 — SM Y (density tier; below band)   */
+    --space-control-y-md:  var(--space-tier-6);   /*  8 — MD Y                              */
+    --space-control-y-lg:  var(--space-tier-5);   /* 12 — LG Y (canonical)                  */
+    --space-control-y-xl:  var(--space-tier-4);   /* 16 — XL Y                              */
+    --space-control-y-2xl:  var(--spacing-5x);     /* 20 — 2XL Y                             */
+    --space-control-x-sm:  var(--space-tier-4);   /* 16 — SM X                              */
+    --space-control-x-md:  var(--spacing-5x);     /* 20 — MD X                              */
+    --space-control-x-lg:  var(--space-tier-2);   /* 32 — LG X (form X caps here for XL+2XL)*/
+    --space-control-x-xl:  var(--spacing-10x);    /* 40 — XL X (button rail)                */
+    --space-control-x-2xl:  var(--space-tier-1);   /* 48 — 2XL X (button rail)               */
 
     /* ---------- Content insets (Y + X) ----------
        For alerts, toasts, and other content surfaces that hold
@@ -495,32 +513,32 @@
 
     /* ---------- Sizes (LG is the focus per spec) ---------- */
     --btn-sm-font-size:  var(--text-sm);     /* 13.33px */
-    --btn-sm-padding-x:  var(--space-control-x-xs);
-    --btn-sm-padding-y:  var(--space-control-y-xs);
+    --btn-sm-padding-x:  var(--space-control-x-sm);
+    --btn-sm-padding-y:  var(--space-control-y-sm);
     --btn-sm-height:     28px;
     --btn-sm-icon:       14px;
 
     --btn-md-font-size:  var(--text-base);   /* 16px */
-    --btn-md-padding-x:  var(--space-control-x-sm);
-    --btn-md-padding-y:  var(--space-control-y-sm);
+    --btn-md-padding-x:  var(--space-control-x-md);
+    --btn-md-padding-y:  var(--space-control-y-md);
     --btn-md-height:     36px;
     --btn-md-icon:       18px;
 
     --btn-lg-font-size:  22.5px;             /* FOCUS */
-    --btn-lg-padding-x:  var(--space-control-x-md);
-    --btn-lg-padding-y:  var(--space-control-y-md);
+    --btn-lg-padding-x:  var(--space-control-x-lg);
+    --btn-lg-padding-y:  var(--space-control-y-lg);
     --btn-lg-height:     48px;
     --btn-lg-icon:       22px;
 
     --btn-xl-font-size:  var(--text-h4);     /* 27.65px */
-    --btn-xl-padding-x:  var(--space-control-x-lg);
-    --btn-xl-padding-y:  var(--space-control-y-lg);
+    --btn-xl-padding-x:  var(--space-control-x-xl);
+    --btn-xl-padding-y:  var(--space-control-y-xl);
     --btn-xl-height:     60px;
     --btn-xl-icon:       28px;
 
     --btn-2xl-font-size: var(--text-h3);     /* 33.18px */
-    --btn-2xl-padding-x: var(--space-control-x-xl);
-    --btn-2xl-padding-y: var(--space-control-y-xl);
+    --btn-2xl-padding-x: var(--space-control-x-2xl);
+    --btn-2xl-padding-y: var(--space-control-y-2xl);
     --btn-2xl-height:    74px;
     --btn-2xl-icon:      32px;
 
@@ -667,32 +685,32 @@
 
     /* ---------- Sizes (LG is the focus per spec) ---------- */
     --form-sm-font-size:  var(--text-sm);     /* 13.33px */
-    --form-sm-padding-x:  var(--space-control-x-xs);
-    --form-sm-padding-y:  var(--space-control-y-xs);
+    --form-sm-padding-x:  var(--space-control-x-sm);
+    --form-sm-padding-y:  var(--space-control-y-sm);
     --form-sm-height:     28px;
     --form-sm-control:    14px;
 
     --form-md-font-size:  var(--text-base);   /* 16px */
-    --form-md-padding-x:  var(--space-control-x-sm);
-    --form-md-padding-y:  var(--space-control-y-sm);
+    --form-md-padding-x:  var(--space-control-x-md);
+    --form-md-padding-y:  var(--space-control-y-md);
     --form-md-height:     36px;
     --form-md-control:    16px;
 
     --form-lg-font-size:  22.5px;             /* FOCUS */
-    --form-lg-padding-x:  var(--space-control-x-md);
-    --form-lg-padding-y:  var(--space-control-y-md);
+    --form-lg-padding-x:  var(--space-control-x-lg);
+    --form-lg-padding-y:  var(--space-control-y-lg);
     --form-lg-height:     48px;
     --form-lg-control:    20px;
 
     --form-xl-font-size:  var(--text-h4);     /* 27.65px */
-    --form-xl-padding-x:  var(--space-control-x-lg);
-    --form-xl-padding-y:  var(--space-control-y-lg);
+    --form-xl-padding-x:  var(--space-control-x-lg);   /* cap at LG (32px) — see III-03 sizes spec */
+    --form-xl-padding-y:  var(--space-control-y-xl);
     --form-xl-height:     60px;
     --form-xl-control:    24px;
 
     --form-2xl-font-size: var(--text-h3);     /* 33.18px */
-    --form-2xl-padding-x: var(--space-control-x-xl);
-    --form-2xl-padding-y: var(--space-control-y-xl);
+    --form-2xl-padding-x: var(--space-control-x-lg);   /* cap at LG (32px) — see III-03 sizes spec */
+    --form-2xl-padding-y: var(--space-control-y-2xl);
     --form-2xl-height:    74px;
     --form-2xl-control:   28px;
 
@@ -733,6 +751,39 @@
     --form-chip-fg:       var(--text-primary-strong);
     --form-chip-border:   transparent;
     --form-chip-radius:   var(--radius-sm);
+
+    /* ---------- Multi-select chip rail (size-aware) ----------
+       Chips inside a .multi-select scale with the input size so
+       a chip in a 2XL field doesn't look like it dropped in from
+       the MD field. font-size scales from --text-xs at SM up to
+       --text-xl at 2XL; padding-y and padding-x scale on the
+       primitive ladder; gap (label-to-×) scales modestly. The
+       chip height target is ≈60–65% of the input min-height at
+       every size. */
+    --form-sm-chip-font:   var(--text-xs);       /* 11.10 — chip ≈17px in 28px input */
+    --form-sm-chip-pad-y:  1px;
+    --form-sm-chip-pad-x:  var(--space-tier-6);  /*  8 */
+    --form-sm-chip-gap:    2px;
+
+    --form-md-chip-font:   var(--text-sm);       /* 13.33 — chip ≈22px in 36px input */
+    --form-md-chip-pad-y:  var(--spacing-half);  /*  2 */
+    --form-md-chip-pad-x:  var(--space-tier-6);  /*  8 */
+    --form-md-chip-gap:    var(--space-tier-7);  /*  4 */
+
+    --form-lg-chip-font:   var(--text-base);     /* 16.00 — chip ≈29px in 48px input */
+    --form-lg-chip-pad-y:  var(--space-tier-7);  /*  4 */
+    --form-lg-chip-pad-x:  var(--space-tier-5);  /* 12 */
+    --form-lg-chip-gap:    var(--space-tier-7);  /*  4 */
+
+    --form-xl-chip-font:   var(--text-lg);       /* 19.20 — chip ≈37px in 60px input */
+    --form-xl-chip-pad-y:  var(--space-tier-6);  /*  6 — but 6 not on rail; use 8 */
+    --form-xl-chip-pad-x:  var(--space-tier-5);  /* 12 */
+    --form-xl-chip-gap:    var(--space-tier-6);  /*  8 */
+
+    --form-2xl-chip-font:  var(--text-xl);       /* 23.04 — chip ≈45px in 74px input */
+    --form-2xl-chip-pad-y: var(--space-tier-6);  /*  8 */
+    --form-2xl-chip-pad-x: var(--space-tier-4);  /* 16 */
+    --form-2xl-chip-gap:   var(--space-tier-6);  /*  8 */
 
     /* ---------- File upload dropzone ---------- */
     --form-file-bg:           var(--background-default-subtle);
@@ -819,32 +870,32 @@
 
     /* ---------- Sizes (LG is the focus per spec) ---------- */
     --form-sm-font-size:  var(--text-sm);     /* 13.33px */
-    --form-sm-padding-x:  var(--space-control-x-xs);
-    --form-sm-padding-y:  var(--space-control-y-xs);
+    --form-sm-padding-x:  var(--space-control-x-sm);
+    --form-sm-padding-y:  var(--space-control-y-sm);
     --form-sm-height:     28px;
     --form-sm-control:    14px;
 
     --form-md-font-size:  var(--text-base);   /* 16px */
-    --form-md-padding-x:  var(--space-control-x-sm);
-    --form-md-padding-y:  var(--space-control-y-sm);
+    --form-md-padding-x:  var(--space-control-x-md);
+    --form-md-padding-y:  var(--space-control-y-md);
     --form-md-height:     36px;
     --form-md-control:    16px;
 
     --form-lg-font-size:  22.5px;             /* FOCUS */
-    --form-lg-padding-x:  var(--space-control-x-md);
-    --form-lg-padding-y:  var(--space-control-y-md);
+    --form-lg-padding-x:  var(--space-control-x-lg);
+    --form-lg-padding-y:  var(--space-control-y-lg);
     --form-lg-height:     48px;
     --form-lg-control:    20px;
 
     --form-xl-font-size:  var(--text-h4);     /* 27.65px */
-    --form-xl-padding-x:  var(--space-control-x-lg);
-    --form-xl-padding-y:  var(--space-control-y-lg);
+    --form-xl-padding-x:  var(--space-control-x-lg);   /* cap at LG (32px) — see III-03 sizes spec */
+    --form-xl-padding-y:  var(--space-control-y-xl);
     --form-xl-height:     60px;
     --form-xl-control:    24px;
 
     --form-2xl-font-size: var(--text-h3);     /* 33.18px */
-    --form-2xl-padding-x: var(--space-control-x-xl);
-    --form-2xl-padding-y: var(--space-control-y-xl);
+    --form-2xl-padding-x: var(--space-control-x-lg);   /* cap at LG (32px) — see III-03 sizes spec */
+    --form-2xl-padding-y: var(--space-control-y-2xl);
     --form-2xl-height:    74px;
     --form-2xl-control:   28px;
 
@@ -885,6 +936,39 @@
     --form-chip-fg:       var(--text-primary-strong);
     --form-chip-border:   transparent;
     --form-chip-radius:   var(--radius-sm);
+
+    /* ---------- Multi-select chip rail (size-aware) ----------
+       Chips inside a .multi-select scale with the input size so
+       a chip in a 2XL field doesn't look like it dropped in from
+       the MD field. font-size scales from --text-xs at SM up to
+       --text-xl at 2XL; padding-y and padding-x scale on the
+       primitive ladder; gap (label-to-×) scales modestly. The
+       chip height target is ≈60–65% of the input min-height at
+       every size. */
+    --form-sm-chip-font:   var(--text-xs);       /* 11.10 — chip ≈17px in 28px input */
+    --form-sm-chip-pad-y:  1px;
+    --form-sm-chip-pad-x:  var(--space-tier-6);  /*  8 */
+    --form-sm-chip-gap:    2px;
+
+    --form-md-chip-font:   var(--text-sm);       /* 13.33 — chip ≈22px in 36px input */
+    --form-md-chip-pad-y:  var(--spacing-half);  /*  2 */
+    --form-md-chip-pad-x:  var(--space-tier-6);  /*  8 */
+    --form-md-chip-gap:    var(--space-tier-7);  /*  4 */
+
+    --form-lg-chip-font:   var(--text-base);     /* 16.00 — chip ≈29px in 48px input */
+    --form-lg-chip-pad-y:  var(--space-tier-7);  /*  4 */
+    --form-lg-chip-pad-x:  var(--space-tier-5);  /* 12 */
+    --form-lg-chip-gap:    var(--space-tier-7);  /*  4 */
+
+    --form-xl-chip-font:   var(--text-lg);       /* 19.20 — chip ≈37px in 60px input */
+    --form-xl-chip-pad-y:  var(--space-tier-6);  /*  6 — but 6 not on rail; use 8 */
+    --form-xl-chip-pad-x:  var(--space-tier-5);  /* 12 */
+    --form-xl-chip-gap:    var(--space-tier-6);  /*  8 */
+
+    --form-2xl-chip-font:  var(--text-xl);       /* 23.04 — chip ≈45px in 74px input */
+    --form-2xl-chip-pad-y: var(--space-tier-6);  /*  8 */
+    --form-2xl-chip-pad-x: var(--space-tier-4);  /* 16 */
+    --form-2xl-chip-gap:   var(--space-tier-6);  /*  8 */
 
     /* ---------- File upload dropzone ---------- */
     --form-file-bg:           var(--background-default-subtle);
@@ -983,32 +1067,32 @@
 
     /* ---------- Sizes (LG is the focus per spec) ---------- */
     --tabs-sm-font-size:  var(--text-sm);     /* 13.33px */
-    --tabs-sm-padding-x:  var(--space-control-x-xs);
-    --tabs-sm-padding-y:  var(--space-control-y-xs);
+    --tabs-sm-padding-x:  var(--space-control-x-sm);
+    --tabs-sm-padding-y:  var(--space-control-y-sm);
     --tabs-sm-height:     28px;
     --tabs-sm-icon:       14px;
 
     --tabs-md-font-size:  var(--text-base);   /* 16px */
-    --tabs-md-padding-x:  var(--space-control-x-sm);
-    --tabs-md-padding-y:  var(--space-control-y-sm);
+    --tabs-md-padding-x:  var(--space-control-x-md);
+    --tabs-md-padding-y:  var(--space-control-y-md);
     --tabs-md-height:     36px;
     --tabs-md-icon:       18px;
 
     --tabs-lg-font-size:  22.5px;             /* FOCUS */
-    --tabs-lg-padding-x:  var(--space-control-x-md);
-    --tabs-lg-padding-y:  var(--space-control-y-md);
+    --tabs-lg-padding-x:  var(--space-control-x-lg);
+    --tabs-lg-padding-y:  var(--space-control-y-lg);
     --tabs-lg-height:     48px;
     --tabs-lg-icon:       22px;
 
     --tabs-xl-font-size:  var(--text-h4);     /* 27.65px */
-    --tabs-xl-padding-x:  var(--space-control-x-lg);
-    --tabs-xl-padding-y:  var(--space-control-y-lg);
+    --tabs-xl-padding-x:  var(--space-control-x-xl);
+    --tabs-xl-padding-y:  var(--space-control-y-xl);
     --tabs-xl-height:     60px;
     --tabs-xl-icon:       28px;
 
     --tabs-2xl-font-size: var(--text-h3);     /* 33.18px */
-    --tabs-2xl-padding-x: var(--space-control-x-xl);
-    --tabs-2xl-padding-y: var(--space-control-y-xl);
+    --tabs-2xl-padding-x: var(--space-control-x-2xl);
+    --tabs-2xl-padding-y: var(--space-control-y-2xl);
     --tabs-2xl-height:    74px;
     --tabs-2xl-icon:      32px;
 

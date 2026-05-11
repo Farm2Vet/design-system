@@ -2,10 +2,9 @@
    FARM2VET DESIGN SYSTEM — FORM COMPONENTS
    Reusable form primitives:
      .field            — wrapper (label + control + helper / error)
-     .input            — text input, also base for textarea, select,
+     .input            — text input, also base for textarea,
                          date input, multi-select shell
      .textarea         — multi-line text
-     .select           — native select with custom chevron
      .input--date      — date input with calendar affordance
      .multi-select     — pillbox of chips + inline input
      .radio-group      — group of .radio rows
@@ -79,7 +78,7 @@
 }
 
 /* =========================================================
-   INPUT — base for text input, textarea, select, date input
+   INPUT — base for text input, textarea, date input
    Defaults to LG (the canonical focus size).
    ========================================================= */
 .input {
@@ -155,26 +154,6 @@
 .input--2xl.textarea { min-height: 160px; }
 
 /* =========================================================
-   SELECT — native select with custom chevron
-   Used as `<select class="input select">…</select>`
-   ========================================================= */
-.select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23223617' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
-    background-repeat: no-repeat;
-    background-position: right var(--spacing-4x) center;
-    background-size: 16px 16px;
-    padding-right: calc(var(--form-lg-padding-x) + var(--spacing-6x));
-    cursor: pointer;
-}
-.select.input--sm  { background-position: right var(--spacing-3x) center; padding-right: calc(var(--form-sm-padding-x) + var(--spacing-5x)); background-size: 12px 12px; }
-.select.input--md  { background-position: right var(--spacing-3x) center; padding-right: calc(var(--form-md-padding-x) + var(--spacing-5x)); }
-.select.input--xl  { background-position: right var(--spacing-5x) center; padding-right: calc(var(--form-xl-padding-x) + var(--spacing-8x)); background-size: 20px 20px; }
-.select.input--2xl { background-position: right var(--spacing-6x) center; padding-right: calc(var(--form-2xl-padding-x) + var(--spacing-10x)); background-size: 24px 24px; }
-
-/* =========================================================
    DATE INPUT — extends .input
    Used as `<input type="date" class="input input--date" />`
    The browser provides the calendar icon; we tint the
@@ -226,23 +205,24 @@
     cursor: text;
 }
 /* Size-aware vertical padding so multi-select keeps its single-line
-   sibling's height across all sizes. */
-.multi-select.input--sm  { padding-top: calc(var(--form-sm-padding-y)  - 2px); padding-bottom: calc(var(--form-sm-padding-y)  - 2px); }
-.multi-select.input--md  { padding-top: calc(var(--form-md-padding-y)  - 2px); padding-bottom: calc(var(--form-md-padding-y)  - 2px); }
-.multi-select.input--lg  { padding-top: calc(var(--form-lg-padding-y)  - 4px); padding-bottom: calc(var(--form-lg-padding-y)  - 4px); }
-.multi-select.input--xl  { padding-top: calc(var(--form-xl-padding-y)  - 6px); padding-bottom: calc(var(--form-xl-padding-y)  - 6px); }
-.multi-select.input--2xl { padding-top: calc(var(--form-2xl-padding-y) - 8px); padding-bottom: calc(var(--form-2xl-padding-y) - 8px); }
+   sibling's height across all sizes. Subtractions grow with size
+   because the chip itself grows with size (per the chip rail). */
+.multi-select.input--sm  { padding-top: calc(var(--form-sm-padding-y)  - 2px);  padding-bottom: calc(var(--form-sm-padding-y)  - 2px);  gap: var(--space-tier-7); }
+.multi-select.input--md  { padding-top: calc(var(--form-md-padding-y)  - 2px);  padding-bottom: calc(var(--form-md-padding-y)  - 2px);  gap: var(--space-tier-6); }
+.multi-select.input--lg  { padding-top: calc(var(--form-lg-padding-y)  - 8px);  padding-bottom: calc(var(--form-lg-padding-y)  - 8px);  gap: var(--space-tier-6); }
+.multi-select.input--xl  { padding-top: calc(var(--form-xl-padding-y)  - 12px); padding-bottom: calc(var(--form-xl-padding-y)  - 12px); gap: var(--space-tier-5); }
+.multi-select.input--2xl { padding-top: calc(var(--form-2xl-padding-y) - 16px); padding-bottom: calc(var(--form-2xl-padding-y) - 16px); gap: var(--space-tier-5); }
 .multi-select .chip {
     display: inline-flex;
     align-items: center;
-    gap: var(--spacing-1x);
-    padding: var(--spacing-half) var(--spacing-2x);
+    gap: var(--form-md-chip-gap);
+    padding: var(--form-md-chip-pad-y) var(--form-md-chip-pad-x);
     background: var(--form-chip-bg);
     color: var(--form-chip-fg);
     border: var(--form-border-width) solid var(--form-chip-border);
     border-radius: var(--form-chip-radius);
     font-family: var(--form-font-family);
-    font-size: var(--text-sm);
+    font-size: var(--form-md-chip-font);
     line-height: var(--line-height-heading);
     white-space: nowrap;
 }
@@ -252,14 +232,50 @@
     color: inherit;
     cursor: pointer;
     padding: 0;
-    margin-left: var(--spacing-1x);
+    margin-left: var(--form-md-chip-gap);
     font-family: inherit;
-    font-size: var(--text-h6);
+    font-size: 1.4em;
     line-height: 1;
     opacity: 0.7;
     transition: opacity 0.15s ease;
 }
 .multi-select .chip button:hover { opacity: 1; }
+
+/* Per-size chip cascade */
+.multi-select.input--sm .chip {
+    font-size: var(--form-sm-chip-font);
+    padding:   var(--form-sm-chip-pad-y) var(--form-sm-chip-pad-x);
+    gap:       var(--form-sm-chip-gap);
+}
+.multi-select.input--sm .chip button { margin-left: var(--form-sm-chip-gap); }
+
+.multi-select.input--md .chip {
+    font-size: var(--form-md-chip-font);
+    padding:   var(--form-md-chip-pad-y) var(--form-md-chip-pad-x);
+    gap:       var(--form-md-chip-gap);
+}
+.multi-select.input--md .chip button { margin-left: var(--form-md-chip-gap); }
+
+.multi-select.input--lg .chip {
+    font-size: var(--form-lg-chip-font);
+    padding:   var(--form-lg-chip-pad-y) var(--form-lg-chip-pad-x);
+    gap:       var(--form-lg-chip-gap);
+}
+.multi-select.input--lg .chip button { margin-left: var(--form-lg-chip-gap); }
+
+.multi-select.input--xl .chip {
+    font-size: var(--form-xl-chip-font);
+    padding:   var(--form-xl-chip-pad-y) var(--form-xl-chip-pad-x);
+    gap:       var(--form-xl-chip-gap);
+}
+.multi-select.input--xl .chip button { margin-left: var(--form-xl-chip-gap); }
+
+.multi-select.input--2xl .chip {
+    font-size: var(--form-2xl-chip-font);
+    padding:   var(--form-2xl-chip-pad-y) var(--form-2xl-chip-pad-x);
+    gap:       var(--form-2xl-chip-gap);
+}
+.multi-select.input--2xl .chip button { margin-left: var(--form-2xl-chip-gap); }
 .multi-select .ms-input {
     flex: 1;
     min-width: 80px;
