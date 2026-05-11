@@ -14,6 +14,19 @@
    ========================================================= */
 
 /* =========================================================
+   PAGE-SCOPED SCRIM OVERRIDE
+   The system default scrim resolves to a brand-green tint
+   (--background-overlay → --primary-900 48%). On this page
+   we replace it with a light, neutral wash backed by a
+   heavier backdrop blur — the page behind the modal stays
+   visible but defocused, instead of darkened.
+   ========================================================= */
+body[data-page="III-06-modal"] .modal {
+    --modal-backdrop:      color-mix(in srgb, var(--white-base) 32%, transparent);
+    --modal-backdrop-blur: var(--blur-xl);
+}
+
+/* =========================================================
    INLINE DIALOG PREVIEW — renders the .modal__surface
    stand-alone, without the fixed-position overlay. Lets the
    reader inspect the dialog's anatomy and slot composition
@@ -27,12 +40,14 @@
     justify-content: center;
     padding: var(--space-tier-2);
     border-radius: var(--radius-lg);
-    border: var(--border-width-base) solid var(--border-glass-light);
+    border: var(--border-width-base) solid var(--border-default-subtle);
+    /* Neutral wall behind the surface. Gives the glass tile real
+       tonal variation to refract without pulling in brand green. */
     background:
-        radial-gradient(ellipse 80% 60% at 50% 0%, color-mix(in srgb, var(--primary-50) 60%, transparent), transparent 70%),
-        var(--background-glass-light);
-    backdrop-filter: var(--blur-lg) saturate(140%);
-    -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
+        radial-gradient(ellipse 90% 70% at 50% 0%,
+            color-mix(in srgb, var(--neutral-200) 70%, transparent),
+            transparent 70%),
+        var(--background-default-subtle);
     overflow: hidden;
     min-height: 320px;
 }
@@ -58,16 +73,6 @@
 .dialog-preview--md .dialog-preview__surface { max-width: 560px; }
 .dialog-preview--lg .dialog-preview__surface { max-width: 720px; }
 .dialog-preview--xl .dialog-preview__surface { max-width: 100%; }
-
-/* Dim the host glass plate so the dialog reads as raised
-   above its surrounding context, like the live overlay. */
-.dialog-preview::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: color-mix(in srgb, var(--neutral-950) 4%, transparent);
-    pointer-events: none;
-}
 
 /* When a preview demonstrates an edge-anchored surface
    (drawer, sheet), the surface stretches across one axis
@@ -145,125 +150,6 @@
 }
 
 /* =========================================================
-   VARIANT SHOWCASE — labelled tile around an inline preview
-   ========================================================= */
-.dialog-showcase {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-    gap: var(--spacing-5x);
-}
-.dialog-showcase__tile {
-    border-radius: var(--radius-lg);
-    border: var(--border-width-base) solid var(--border-glass-light);
-    background: var(--background-glass-light);
-    backdrop-filter: var(--blur-lg) saturate(140%);
-    -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
-    padding: var(--spacing-5x);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-tier-4);
-}
-.dialog-showcase__tile .label {
-    font-family: var(--font-mono);
-    font-size: var(--text-micro);
-    letter-spacing: var(--letter-spacing-eyebrow);
-    text-transform: uppercase;
-    color: var(--text-default-minimal);
-}
-.dialog-showcase__tile .demo {
-    display: flex;
-    align-items: stretch;
-    flex: 1;
-}
-.dialog-showcase__tile .demo .dialog-preview {
-    flex: 1;
-    min-height: 280px;
-    padding: var(--space-tier-4);
-}
-.dialog-showcase__tile .meta {
-    font-family: var(--font-mono);
-    font-size: var(--text-micro);
-    color: var(--text-default-minimal);
-    letter-spacing: var(--letter-spacing-mono);
-    border-top: var(--border-width-base) solid var(--border-default-subtle);
-    padding-top: var(--space-tier-5);
-    display: flex;
-    justify-content: space-between;
-    gap: var(--space-tier-5);
-}
-.dialog-showcase__tile .meta strong {
-    color: var(--text-default);
-    font-weight: var(--font-weight-medium);
-}
-
-/* =========================================================
-   SIZE STAGE — every modal width side-by-side
-   Vertical stack so each surface keeps its full max-width
-   and the size cap reads honestly.
-   ========================================================= */
-.dialog-size-stage {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-5x);
-    padding: var(--space-tier-3);
-    border-radius: var(--radius-lg);
-    border: var(--border-width-base) solid var(--border-glass-light);
-    background: var(--background-glass-light);
-    backdrop-filter: var(--blur-lg) saturate(140%);
-    -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
-}
-.dialog-size-stage .size-row {
-    display: grid;
-    grid-template-columns: 80px 1fr auto;
-    align-items: center;
-    gap: var(--space-tier-4);
-    padding: var(--space-tier-4) 0;
-    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
-}
-.dialog-size-stage .size-row:last-child { border-bottom: none; }
-.dialog-size-stage .size-row .tag {
-    font-family: var(--font-mono);
-    font-size: var(--text-micro);
-    letter-spacing: var(--letter-spacing-eyebrow);
-    text-transform: uppercase;
-    color: var(--text-default-minimal);
-}
-.dialog-size-stage .size-row.is-default .tag {
-    color: var(--text-primary-strong);
-    background: var(--background-primary-subtle);
-    padding: var(--spacing-half) var(--space-tier-6);
-    border-radius: var(--radius-pill);
-    border: var(--border-width-base) solid var(--border-primary-subtle);
-    text-align: center;
-}
-.dialog-size-stage .size-row .stub {
-    height: 64px;
-    border-radius: var(--radius-md);
-    background: var(--background-default);
-    border: var(--border-width-base) solid var(--border-default);
-    box-shadow: var(--shadow-sm);
-    display: flex;
-    align-items: center;
-    padding: 0 var(--spacing-5x);
-    font-family: var(--font-sans);
-    font-size: var(--text-sm);
-    color: var(--text-default-subtle);
-}
-.dialog-size-stage .size-row .meta {
-    font-family: var(--font-mono);
-    font-size: var(--text-micro);
-    color: var(--text-default-minimal);
-}
-
-/* Width caps mirror the modal size tokens so the visual
-   row matches the documented width exactly. */
-.dialog-size-stage .stub.w-xs { width: 320px; }
-.dialog-size-stage .stub.w-sm { width: 440px; }
-.dialog-size-stage .stub.w-md { width: 560px; }
-.dialog-size-stage .stub.w-lg { width: 720px; }
-.dialog-size-stage .stub.w-xl { width: 100%; max-width: 960px; }
-
-/* =========================================================
    TRIGGER ROW — buttons that open live dialogs
    ========================================================= */
 .dialog-triggers {
@@ -276,53 +162,6 @@
     background: var(--background-glass-light);
     backdrop-filter: var(--blur-lg) saturate(140%);
     -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
-}
-
-/* =========================================================
-   BEHAVIOUR TABLE — keyboard / pointer / aria summary
-   Compact spec strip for the accessibility section.
-   ========================================================= */
-.dialog-behaviour-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    background: var(--background-glass-light);
-    backdrop-filter: var(--blur-lg) saturate(140%);
-    -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
-    border: var(--border-width-base) solid var(--border-glass-light);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    font-family: var(--font-sans);
-}
-.dialog-behaviour-table th,
-.dialog-behaviour-table td {
-    text-align: left;
-    padding: var(--space-tier-5) var(--spacing-5x);
-    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
-}
-.dialog-behaviour-table thead th {
-    font-family: var(--font-mono);
-    font-size: var(--text-micro);
-    letter-spacing: var(--letter-spacing-eyebrow);
-    text-transform: uppercase;
-    color: var(--text-default-minimal);
-    font-weight: var(--font-weight-medium);
-    background: var(--background-default-subtle);
-}
-.dialog-behaviour-table tbody td {
-    font-size: var(--text-sm);
-    color: var(--text-default);
-    line-height: var(--line-height-body);
-}
-.dialog-behaviour-table tbody tr:last-child td { border-bottom: 0; }
-.dialog-behaviour-table .key {
-    font-family: var(--font-mono);
-    font-size: var(--text-micro);
-    color: var(--text-primary-strong);
-    background: var(--background-primary-minimal);
-    padding: 0.05em 0.45em;
-    border-radius: var(--radius-sm);
-    margin-right: var(--space-tier-7);
 }
 
 /* =========================================================
@@ -387,20 +226,88 @@
 }
 
 /* =========================================================
+   GLASS SURFACE — every preview on this page renders the
+   modal on the system's glass rail. Pure blur: no white
+   wash over the underlying colour. The backdrop-filter
+   does the work alone; the rim light + outer shadow keep
+   the surface readable as a discrete pane.
+     1. background tint   transparent  (no overlay)
+     2. backdrop blur     --glass-light-thick-blur
+     3. saturation boost  --glass-saturate
+     4. border            --glass-light-thick-border
+     5. radius            inherited from .dialog-preview__surface
+     6. outer shadow      --glass-shadow-overlay
+     7. inner rim light   --glass-inset-light-strong  */
+.dialog-preview.is-glass .dialog-preview__surface {
+    background:   transparent;
+    border-color: var(--glass-light-thick-border);
+    -webkit-backdrop-filter: var(--glass-light-thick-blur) var(--glass-saturate);
+            backdrop-filter: var(--glass-light-thick-blur) var(--glass-saturate);
+    box-shadow: var(--glass-shadow-overlay), var(--glass-inset-light-strong);
+}
+
+/* Page-scoped override: the live modals on this page use the
+   same pure-blur glass as the static previews above. The
+   canonical .modal--glass rule in modal.css applies the
+   thick-frost white wash; on this documentation page we
+   demonstrate pure blur (no colour overlay), so we null the
+   background tint here. */
+body[data-page="III-06-modal"] .modal.modal--glass .modal__surface {
+    background: transparent;
+}
+
+/* =========================================================
+   DRAWER TOGGLE — in-section open/close preview
+   A controlled stage that demonstrates the right-anchored
+   drawer's slide-in / slide-out animation without taking
+   over the viewport. Surface starts off-stage to the right;
+   .is-open translates it back to flush.
+   ========================================================= */
+.drawer-toggle {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tier-5);
+}
+.drawer-toggle__controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-tier-5);
+    flex-wrap: wrap;
+}
+.drawer-toggle__label {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+}
+/* The base .dialog-preview__surface rule pins transform and
+   opacity with !important so the static previews always read.
+   The toggle stage needs to defeat that so the slide animates. */
+.drawer-toggle__stage .dialog-preview__surface {
+    transform: translateX(calc(100% + var(--space-tier-2))) !important;
+    opacity: 0 !important;
+    transition: transform var(--modal-anim-duration, 260ms) var(--modal-anim-easing, cubic-bezier(.2, .8, .2, 1)),
+                opacity var(--modal-anim-duration, 260ms) var(--modal-anim-easing, cubic-bezier(.2, .8, .2, 1));
+}
+.drawer-toggle__stage.is-open .dialog-preview__surface {
+    transform: translateX(0) !important;
+    opacity: 1 !important;
+}
+@media (prefers-reduced-motion: reduce) {
+    .drawer-toggle__stage .dialog-preview__surface {
+        transition: opacity var(--modal-anim-duration, 260ms) linear !important;
+        transform: none !important;
+    }
+}
+
+/* =========================================================
    RESPONSIVE
    ========================================================= */
 @media (max-width: 960px) {
     .dialog-anatomy { grid-template-columns: 1fr; gap: var(--spacing-5x); }
-    .dialog-size-stage .size-row { grid-template-columns: 80px 1fr; }
-    .dialog-size-stage .size-row .meta { grid-column: 2; }
 }
 @media (max-width: 600px) {
     .dialog-preview { padding: var(--space-tier-4); min-height: 240px; }
-    .dialog-showcase { grid-template-columns: 1fr; }
-    .dialog-size-stage .size-row { grid-template-columns: 1fr; }
-    .dialog-size-stage .stub.w-xs,
-    .dialog-size-stage .stub.w-sm,
-    .dialog-size-stage .stub.w-md,
-    .dialog-size-stage .stub.w-lg,
-    .dialog-size-stage .stub.w-xl { width: 100%; }
 }

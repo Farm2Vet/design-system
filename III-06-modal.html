@@ -135,21 +135,23 @@
     </div>
     <div>
       <p class="lede reveal">
-        A blocking surface that interrupts the task flow until
-        the user resolves it. One shared shell composes a
-        header, body, and footer, and resolves through
-        component-scoped token slots
-        (<code>--modal-*</code>) into seven conventional
-        shapes: confirmation, alert, form, scrollable, drawer,
-        bottom-sheet, and fullscreen.
+        A modal presents content in a dedicated mode that
+        prevents interaction with the parent view and resolves
+        through an explicit action. The component documented
+        here covers four shapes —
+        <strong>dialogue</strong>, <strong>form</strong>,
+        <strong>scrollable</strong>, and <strong>drawer</strong>
+        — all rendered on the system's glass surface. Every
+        other variant sketched in earlier drafts has been
+        folded into one of these four or promoted to a
+        dedicated route.
       </p>
     </div>
 
     <dl class="meta-strip reveal">
-      <div><dt>Component</dt><dd>1</dd></div>
-      <div><dt>Sizes</dt><dd>5</dd></div>
-      <div><dt>Surfaces</dt><dd>4</dd></div>
-      <div><dt>Tones</dt><dd>4</dd></div>
+      <div><dt>Variants</dt><dd>4</dd></div>
+      <div><dt>Surface</dt><dd>Glass</dd></div>
+      <div><dt>Anchors</dt><dd>Centered · Edge</dd></div>
     </dl>
   </section>
 
@@ -228,7 +230,7 @@
     </p>
 
     <div class="dialog-anatomy glass reveal">
-      <div class="dialog-preview">
+      <div class="dialog-preview is-glass">
         <div class="dialog-preview__ambient" aria-hidden="true"></div>
         <div class="dialog-preview__surface" role="dialog" aria-modal="true" aria-labelledby="anatomy-title">
           <header class="modal__header">
@@ -289,363 +291,73 @@
       Trigger the modals below to see the live
         focus-trap, scroll-lock, animation, and dismiss
         behaviour. Press <code>Escape</code> or click the
-        backdrop to close any non-static dialog. Static
-        dialogs (alert dialog) require an explicit
-        action.
+        backdrop to close any non-static dialog.
     </p>
 
     <div class="dialog-triggers reveal">
-      <button type="button" class="btn btn--secondary btn--md" data-modal-open="live-confirm">Open confirm</button>
-      <button type="button" class="btn btn--secondary btn--md" data-modal-open="live-alert">Open alert (destructive)</button>
+      <button type="button" class="btn btn--secondary btn--md" data-modal-open="live-dialogue">Open dialogue</button>
       <button type="button" class="btn btn--secondary btn--md" data-modal-open="live-form">Open form</button>
       <button type="button" class="btn btn--secondary btn--md" data-modal-open="live-scrollable">Open scrollable</button>
       <button type="button" class="btn btn--secondary btn--md" data-modal-open="live-drawer">Open drawer</button>
-      <button type="button" class="btn btn--secondary btn--md" data-modal-open="live-sheet">Open bottom-sheet</button>
-      <button type="button" class="btn btn--secondary btn--md" data-modal-open="live-fullscreen">Open fullscreen</button>
     </div>
   </section>
 
-  <!-- ========================== SIZES ========================== -->
-  <section class="chunk" id="modal-sizes">
+  <!-- ========================== DIALOGUE ========================== -->
+  <section class="chunk" id="modal-dialogue">
     <header class="chunk-head reveal">
-      <span class="num-tag">02 / Modal — Sizes</span>
-      <h2 class="text-display-sm">Sizes.</h2>
+      <span class="num-tag">02 / Modal — Dialogue</span>
+      <h2 class="text-display-sm">Dialogue.</h2>
     </header>
 
     <p class="section-lede reveal">
-      Five size caps scale the surface's max-width while
-        the height stays content-driven up to the
-        viewport-relative ceiling
-        (<code>--modal-max-height</code>). <em>XS</em>
-        320 px, <em>SM</em> 440 px, <em>MD</em> 560 px
-        (default), <em>LG</em> 720 px, <em>XL</em> 960 px.
+      The dialogue is the everyday yes/no surface. The title
+        carries the question, the optional description states
+        the consequence, and the footer carries the two
+        actions. Used when the user must answer before the
+        flow continues — a reassignment, a sign-off, a
+        destructive confirmation.
     </p>
 
     <p class="usage-note reveal">
-      <strong>Size is selected by content, not by emphasis.</strong>
-      XS for binary confirmations and short alerts. SM for
-      single-field prompts and one-paragraph notices. MD is
-      the default for confirmations, multi-field prompts, and
-      detail reveals. LG for short forms and dense content
-      that benefits from horizontal room. XL for richer
-      surfaces (preview-and-edit, side-by-side compare).
-      Sizes above XL are not part of this system — promote
-      the flow to a dedicated route instead.
-    </p>
-
-    <p class="usage-note reveal">
-      <strong>At narrow viewports, every centred modal
-      collapses to a bottom-sheet anchor.</strong> Below
-      ~600 px the surface stretches to the viewport width
-      and pins to the bottom edge so the action region
-      stays reachable one-handed. The size token still
-      controls inner padding; only the anchor changes.
-    </p>
-
-    <div class="dialog-size-stage reveal">
-      <div class="size-row">
-        <span class="tag">XS</span>
-        <div class="stub w-xs">320 px · single-question confirmation</div>
-        <span class="meta">--modal-xs-width</span>
-      </div>
-      <div class="size-row">
-        <span class="tag">SM</span>
-        <div class="stub w-sm">440 px · one-field prompt</div>
-        <span class="meta">--modal-sm-width</span>
-      </div>
-      <div class="size-row is-default">
-        <span class="tag">MD</span>
-        <div class="stub w-md">560 px · default confirmation / form</div>
-        <span class="meta">--modal-md-width</span>
-      </div>
-      <div class="size-row">
-        <span class="tag">LG</span>
-        <div class="stub w-lg">720 px · short form / dense reveal</div>
-        <span class="meta">--modal-lg-width</span>
-      </div>
-      <div class="size-row">
-        <span class="tag">XL</span>
-        <div class="stub w-xl">960 px · preview / side-by-side</div>
-        <span class="meta">--modal-xl-width</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========================== ALERT DIALOG ========================== -->
-  <section class="chunk" id="modal-alert">
-    <header class="chunk-head reveal">
-      <span class="num-tag">03 / Modal — Alert dialog</span>
-      <h2 class="text-display-sm">Alert.</h2>
-    </header>
-
-    <p class="section-lede reveal">
-      The alert dialog is a confirmation modal that carries
-        a tonal accent on a leading icon
-        (<code>.modal__icon</code>) and the
-        <code>role="alertdialog"</code> attribute. Reserved
-        for irreversible actions (delete, archive, send,
-        sign-off) where the user must read the consequence
-        before committing. The surface itself stays neutral
-        — only the icon carries the tone.
-    </p>
-
-    <p class="usage-note reveal">
-      <strong>Tone is selected by intent, not by aesthetics.</strong>
-      <code>.modal--tone-critical</code> for destructive or
-      irreversible actions. <code>.modal--tone-warning</code>
-      for caution that does not delete data (sign-off,
-      dispatch, lock). <code>.modal--tone-info</code> for
-      advisory confirmations. <code>.modal--tone-safe</code>
-      for confirmations of completion. A tone selected for
-      visual impact rather than meaning erodes the system's
-      status semantics.
-    </p>
-
-    <p class="usage-note reveal">
-      <strong>Critical alert dialogs are static.</strong> The
-      backdrop and <code>Escape</code> are suppressed
-      (<code>data-modal-static</code>) so the user cannot
-      dismiss a destructive prompt by accident. The visible
-      Cancel action is the only path back. Non-critical
-      alert dialogs follow the regular dismiss conventions.
-    </p>
-
-    <p class="usage-note reveal">
-      <strong>Action verbs name the destructive outcome.</strong>
-      The primary button reads <em>Delete record</em>, not
-      <em>OK</em> or <em>Confirm</em>. The user's last
-      glance before committing should restate exactly what
-      will happen. The Cancel action stays neutral and is
-      always the safer affordance.
-    </p>
-
-    <div class="dialog-showcase reveal">
-
-      <!-- CRITICAL -->
-      <article class="dialog-showcase__tile">
-        <span class="label">Critical · destructive</span>
-        <div class="demo">
-          <div class="dialog-preview">
-            <div class="dialog-preview__ambient" aria-hidden="true"></div>
-            <div class="dialog-preview__surface" role="alertdialog" aria-modal="true" aria-labelledby="alert-critical-title">
-              <header class="modal__header has-icon">
-                <span class="modal__icon" aria-hidden="true" style="background: var(--background-critical); color: var(--text-critical);">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
-                </span>
-                <div class="modal__heading">
-                  <h3 class="modal__title" id="alert-critical-title">Delete patient record?</h3>
-                  <p class="modal__description">Bessie · Holstein · ID 0188. This permanently removes the chart and every linked dispatch form. This action cannot be undone.</p>
-                </div>
-              </header>
-              <footer class="modal__footer">
-                <button type="button" class="btn btn--secondary btn--md">Cancel</button>
-                <button type="button" class="btn btn--caution btn--md">Delete record</button>
-              </footer>
-            </div>
-          </div>
-        </div>
-        <div class="meta"><span>.modal--tone-critical</span><strong>destructive · static</strong></div>
-      </article>
-
-      <!-- WARNING -->
-      <article class="dialog-showcase__tile">
-        <span class="label">Warning · caution</span>
-        <div class="demo">
-          <div class="dialog-preview">
-            <div class="dialog-preview__ambient" aria-hidden="true"></div>
-            <div class="dialog-preview__surface" role="alertdialog" aria-modal="true" aria-labelledby="alert-warning-title">
-              <header class="modal__header has-icon">
-                <span class="modal__icon" aria-hidden="true" style="background: var(--background-warning); color: var(--text-warning);">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
-                </span>
-                <div class="modal__heading">
-                  <h3 class="modal__title" id="alert-warning-title">Dispatch with incomplete withdrawal?</h3>
-                  <p class="modal__description">42 hours remain before the next milk dispatch can be cleared. Dispatching now will be flagged on the compliance log.</p>
-                </div>
-              </header>
-              <footer class="modal__footer">
-                <button type="button" class="btn btn--secondary btn--md">Wait until cleared</button>
-                <button type="button" class="btn btn--cta btn--md">Dispatch anyway</button>
-              </footer>
-            </div>
-          </div>
-        </div>
-        <div class="meta"><span>.modal--tone-warning</span><strong>caution · proceed with note</strong></div>
-      </article>
-
-      <!-- INFO -->
-      <article class="dialog-showcase__tile">
-        <span class="label">Info · advisory</span>
-        <div class="demo">
-          <div class="dialog-preview">
-            <div class="dialog-preview__ambient" aria-hidden="true"></div>
-            <div class="dialog-preview__surface" role="alertdialog" aria-modal="true" aria-labelledby="alert-info-title">
-              <header class="modal__header has-icon">
-                <span class="modal__icon" aria-hidden="true" style="background: var(--background-info); color: var(--text-info);">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-                </span>
-                <div class="modal__heading">
-                  <h3 class="modal__title" id="alert-info-title">Switch to read-only mode?</h3>
-                  <p class="modal__description">Scheduled maintenance starts in 8 minutes. Open drafts will be saved automatically before the window opens.</p>
-                </div>
-              </header>
-              <footer class="modal__footer">
-                <button type="button" class="btn btn--secondary btn--md">Cancel</button>
-                <button type="button" class="btn btn--cta btn--md">Switch now</button>
-              </footer>
-            </div>
-          </div>
-        </div>
-        <div class="meta"><span>.modal--tone-info</span><strong>advisory</strong></div>
-      </article>
-
-      <!-- SAFE -->
-      <article class="dialog-showcase__tile">
-        <span class="label">Safe · completion</span>
-        <div class="demo">
-          <div class="dialog-preview">
-            <div class="dialog-preview__ambient" aria-hidden="true"></div>
-            <div class="dialog-preview__surface" role="dialog" aria-modal="true" aria-labelledby="alert-safe-title">
-              <header class="modal__header has-icon">
-                <span class="modal__icon" aria-hidden="true" style="background: var(--background-safe); color: var(--text-safe);">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-                </span>
-                <div class="modal__heading">
-                  <h3 class="modal__title" id="alert-safe-title">Sign-off complete</h3>
-                  <p class="modal__description">7 dispatch forms were signed and synced to the lab portal. The reviewer will receive a summary in the next batch.</p>
-                </div>
-              </header>
-              <footer class="modal__footer">
-                <button type="button" class="btn btn--secondary btn--md">View log</button>
-                <button type="button" class="btn btn--cta btn--md">Done</button>
-              </footer>
-            </div>
-          </div>
-        </div>
-        <div class="meta"><span>.modal--tone-safe</span><strong>completion</strong></div>
-      </article>
-
-    </div>
-  </section>
-
-  <!-- ========================== CONFIRM DIALOG ========================== -->
-  <section class="chunk" id="modal-confirm">
-    <header class="chunk-head reveal">
-      <span class="num-tag">04 / Modal — Confirm</span>
-      <h2 class="text-display-sm">Confirm.</h2>
-    </header>
-
-    <p class="section-lede reveal">
-      The confirm dialog is the everyday yes/no surface.
-        Title carries the question, optional description
-        explains the consequence, footer carries the two
-        actions. <code>.modal--compact</code> condenses the
-        spacing for the shortest prompts; the standard
-        layout is used when a description is needed.
-    </p>
-
-    <p class="usage-note reveal">
-      <strong>The question is in the title, not in the
-      description.</strong> The user must be able to answer
-      from the title alone. The description provides
-      context that confirms <em>what</em> will be affected,
+      <strong>The question is in the title, not the description.</strong>
+      The user must be able to answer from the title alone.
+      The description confirms <em>what</em> will be affected,
       not <em>whether</em> to proceed.
     </p>
 
     <p class="usage-note reveal">
-      <strong>The primary action sits last (right) by
-      convention.</strong> Reading order ends on the
-      affirmative path so the user lands on the action that
-      progresses the flow. The Cancel action takes the
-      secondary slot. Inverting this order leads users to
-      tab into Cancel and dismiss when they meant to
-      proceed.
+      <strong>The primary action sits last.</strong> Reading
+      order ends on the affirmative path. Cancel takes the
+      secondary slot. Destructive primaries use
+      <code>.btn--caution</code>; the surface itself stays
+      neutral.
     </p>
 
-    <div class="dialog-showcase reveal">
-
-      <!-- COMPACT YES/NO -->
-      <article class="dialog-showcase__tile">
-        <span class="label">Compact · yes / no</span>
-        <div class="demo">
-          <div class="dialog-preview dialog-preview--xs">
-            <div class="dialog-preview__ambient" aria-hidden="true"></div>
-            <div class="dialog-preview__surface" role="dialog" aria-modal="true" aria-labelledby="confirm-compact-title">
-              <header class="modal__header">
-                <div class="modal__heading">
-                  <h3 class="modal__title" id="confirm-compact-title">Discard unsaved draft?</h3>
-                </div>
-              </header>
-              <footer class="modal__footer" style="background: transparent; border-top: 0; padding-top: var(--spacing-2x);">
-                <button type="button" class="btn btn--ghost btn--sm">Keep editing</button>
-                <button type="button" class="btn btn--cta btn--sm">Discard</button>
-              </footer>
-            </div>
+    <div class="dialog-preview is-glass reveal">
+      <div class="dialog-preview__ambient" aria-hidden="true"></div>
+      <div class="dialog-preview__surface" role="dialog" aria-modal="true" aria-labelledby="dialogue-title">
+        <header class="modal__header">
+          <div class="modal__heading">
+            <p class="modal__eyebrow">Reassignment</p>
+            <h3 class="modal__title" id="dialogue-title">Reassign 4 cases to Dr. Pham?</h3>
+            <p class="modal__description">The selected cases move to Dr. Pham's queue. You keep read access; edit access transfers.</p>
           </div>
-        </div>
-        <div class="meta"><span>.modal--compact</span><strong>title-only</strong></div>
-      </article>
-
-      <!-- TITLE + DESCRIPTION -->
-      <article class="dialog-showcase__tile">
-        <span class="label">Default · with description</span>
-        <div class="demo">
-          <div class="dialog-preview dialog-preview--sm">
-            <div class="dialog-preview__ambient" aria-hidden="true"></div>
-            <div class="dialog-preview__surface" role="dialog" aria-modal="true" aria-labelledby="confirm-default-title">
-              <header class="modal__header">
-                <div class="modal__heading">
-                  <h3 class="modal__title" id="confirm-default-title">Reassign 4 cases to Dr. Pham?</h3>
-                  <p class="modal__description">The selected cases will move to Dr. Pham's queue. You'll keep read access; edit access transfers.</p>
-                </div>
-                <button type="button" class="modal__close" aria-label="Close dialog">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                </button>
-              </header>
-              <footer class="modal__footer">
-                <button type="button" class="btn btn--secondary btn--md">Cancel</button>
-                <button type="button" class="btn btn--cta btn--md">Reassign</button>
-              </footer>
-            </div>
-          </div>
-        </div>
-        <div class="meta"><span>title + description</span><strong>most common shape</strong></div>
-      </article>
-
-      <!-- TERTIARY LINK IN FOOTER -->
-      <article class="dialog-showcase__tile">
-        <span class="label">With tertiary · footer aux</span>
-        <div class="demo">
-          <div class="dialog-preview">
-            <div class="dialog-preview__ambient" aria-hidden="true"></div>
-            <div class="dialog-preview__surface" role="dialog" aria-modal="true" aria-labelledby="confirm-aux-title">
-              <header class="modal__header">
-                <div class="modal__heading">
-                  <h3 class="modal__title" id="confirm-aux-title">Share Bessie's chart externally?</h3>
-                  <p class="modal__description">A read-only link will be generated and emailed to the lab. The link expires in 24 hours.</p>
-                </div>
-                <button type="button" class="modal__close" aria-label="Close dialog">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                </button>
-              </header>
-              <footer class="modal__footer">
-                <span class="modal__footer-aux"><a href="#">View sharing policy</a></span>
-                <button type="button" class="btn btn--secondary btn--md">Cancel</button>
-                <button type="button" class="btn btn--cta btn--md">Generate link</button>
-              </footer>
-            </div>
-          </div>
-        </div>
-        <div class="meta"><span>.modal__footer-aux</span><strong>tertiary link · left of actions</strong></div>
-      </article>
-
+          <button type="button" class="modal__close" aria-label="Close dialog">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          </button>
+        </header>
+        <footer class="modal__footer">
+          <button type="button" class="btn btn--secondary btn--md">Cancel</button>
+          <button type="button" class="btn btn--cta btn--md">Reassign</button>
+        </footer>
+      </div>
     </div>
   </section>
 
   <!-- ========================== FORM DIALOG ========================== -->
   <section class="chunk" id="modal-form">
     <header class="chunk-head reveal">
-      <span class="num-tag">05 / Modal — Form dialog</span>
+      <span class="num-tag">03 / Modal — Form</span>
       <h2 class="text-display-sm">Form.</h2>
     </header>
 
@@ -678,40 +390,38 @@
       cannot dismiss the dialog mid-write.
     </p>
 
-    <div class="dialog-anatomy glass reveal" style="grid-template-columns: 1fr;">
-      <div class="dialog-preview">
-        <div class="dialog-preview__ambient" aria-hidden="true"></div>
-        <div class="dialog-preview__surface" role="dialog" aria-modal="true" aria-labelledby="form-title" style="max-width: 560px;">
-          <header class="modal__header">
-            <div class="modal__heading">
-              <h3 class="modal__title" id="form-title">New case · quick capture</h3>
-              <p class="modal__description">Drop the essentials in now and complete the chart on the case page.</p>
+    <div class="dialog-preview is-glass reveal">
+      <div class="dialog-preview__ambient" aria-hidden="true"></div>
+      <div class="dialog-preview__surface" role="dialog" aria-modal="true" aria-labelledby="form-title">
+        <header class="modal__header">
+          <div class="modal__heading">
+            <h3 class="modal__title" id="form-title">New case · quick capture</h3>
+            <p class="modal__description">Drop the essentials in now and complete the chart on the case page.</p>
+          </div>
+          <button type="button" class="modal__close" aria-label="Close dialog">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          </button>
+        </header>
+        <div class="modal__body">
+          <div class="dialog-content-stub">
+            <div class="field-stub">
+              <span class="lbl">Patient</span>
+              <span class="ctrl">Bessie · Holstein · ID 0188</span>
             </div>
-            <button type="button" class="modal__close" aria-label="Close dialog">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-            </button>
-          </header>
-          <div class="modal__body">
-            <div class="dialog-content-stub">
-              <div class="field-stub">
-                <span class="lbl">Patient</span>
-                <span class="ctrl">Bessie · Holstein · ID 0188</span>
-              </div>
-              <div class="field-stub">
-                <span class="lbl">Presenting complaint</span>
-                <span class="ctrl is-placeholder">e.g. recurrent lameness on left forelimb</span>
-              </div>
-              <div class="field-stub">
-                <span class="lbl">Owner notes</span>
-                <span class="ctrl area is-placeholder">Anything the owner asked you to note…</span>
-              </div>
+            <div class="field-stub">
+              <span class="lbl">Presenting complaint</span>
+              <span class="ctrl is-placeholder">e.g. recurrent lameness on left forelimb</span>
+            </div>
+            <div class="field-stub">
+              <span class="lbl">Owner notes</span>
+              <span class="ctrl area is-placeholder">Anything the owner asked you to note…</span>
             </div>
           </div>
-          <footer class="modal__footer">
-            <button type="button" class="btn btn--secondary btn--md">Cancel</button>
-            <button type="button" class="btn btn--cta btn--md">Create case</button>
-          </footer>
         </div>
+        <footer class="modal__footer">
+          <button type="button" class="btn btn--secondary btn--md">Cancel</button>
+          <button type="button" class="btn btn--cta btn--md">Create case</button>
+        </footer>
       </div>
     </div>
   </section>
@@ -719,7 +429,7 @@
   <!-- ========================== SCROLLABLE ========================== -->
   <section class="chunk" id="modal-scrollable">
     <header class="chunk-head reveal">
-      <span class="num-tag">06 / Modal — Scrollable</span>
+      <span class="num-tag">04 / Modal — Scrollable</span>
       <h2 class="text-display-sm">Scrollable.</h2>
     </header>
 
@@ -744,370 +454,142 @@
       filtering or sorting.
     </p>
 
-    <div class="dialog-anatomy glass reveal" style="grid-template-columns: 1fr;">
-      <div class="dialog-preview">
-        <div class="dialog-preview__ambient" aria-hidden="true"></div>
-        <div class="dialog-preview__surface" role="dialog" aria-modal="true" aria-labelledby="scroll-title" style="max-width: 560px;">
-          <header class="modal__header" style="border-bottom: 1px solid var(--border-default-subtle);">
-            <div class="modal__heading">
-              <p class="modal__eyebrow">Records-retention policy</p>
-              <h3 class="modal__title" id="scroll-title">Terms of access · v3.2</h3>
-            </div>
-            <button type="button" class="modal__close" aria-label="Close dialog">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-            </button>
-          </header>
-          <div class="modal__body" style="max-height: 320px;">
-            <p>Records older than seven years are read-only by default. Edit access can be re-enabled by an administrator on a per-record basis, and every edit on a re-enabled record is permanently logged in the audit trail.</p>
-            <p>Records flagged as part of an active compliance review are locked for the duration of the review window. Lock status is visible at the top of every chart and on the records index.</p>
-            <p>Sharing a chart externally generates a read-only access link valid for 24 hours. The link is single-use; a new link must be generated for every additional reviewer. The recipient cannot extend or forward the link.</p>
-            <p>External reviewers see the bloodwork panel, the patient's weight history, and any flagged withdrawal periods. No owner-identifying fields are shared. Sharing events are logged on the chart's activity timeline.</p>
-            <p>This policy supersedes versions 3.0 and 3.1. The previous policy text remains accessible in the change-log and is referenced from any audit-trail entry that pre-dates this revision.</p>
+    <div class="dialog-preview is-glass reveal">
+      <div class="dialog-preview__ambient" aria-hidden="true"></div>
+      <div class="dialog-preview__surface" role="dialog" aria-modal="true" aria-labelledby="scroll-title">
+        <header class="modal__header" style="border-bottom: 1px solid var(--border-default-subtle);">
+          <div class="modal__heading">
+            <p class="modal__eyebrow">Records-retention policy</p>
+            <h3 class="modal__title" id="scroll-title">Terms of access · v3.2</h3>
           </div>
-          <footer class="modal__footer" style="border-top: 1px solid var(--border-default-subtle);">
-            <span class="modal__footer-aux"><a href="#">Download as PDF</a></span>
-            <button type="button" class="btn btn--secondary btn--md">Decline</button>
-            <button type="button" class="btn btn--cta btn--md">I agree</button>
-          </footer>
+          <button type="button" class="modal__close" aria-label="Close dialog">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          </button>
+        </header>
+        <div class="modal__body" style="max-height: 320px;">
+          <p>Records older than seven years are read-only by default. Edit access can be re-enabled by an administrator on a per-record basis, and every edit on a re-enabled record is permanently logged in the audit trail.</p>
+          <p>Records flagged as part of an active compliance review are locked for the duration of the review window. Lock status is visible at the top of every chart and on the records index.</p>
+          <p>Sharing a chart externally generates a read-only access link valid for 24 hours. The link is single-use; a new link must be generated for every additional reviewer. The recipient cannot extend or forward the link.</p>
+          <p>External reviewers see the bloodwork panel, the patient's weight history, and any flagged withdrawal periods. No owner-identifying fields are shared. Sharing events are logged on the chart's activity timeline.</p>
+          <p>This policy supersedes versions 3.0 and 3.1. The previous policy text remains accessible in the change-log and is referenced from any audit-trail entry that pre-dates this revision.</p>
         </div>
+        <footer class="modal__footer" style="border-top: 1px solid var(--border-default-subtle);">
+          <span class="modal__footer-aux"><a href="#">Download as PDF</a></span>
+          <button type="button" class="btn btn--secondary btn--md">Decline</button>
+          <button type="button" class="btn btn--cta btn--md">I agree</button>
+        </footer>
       </div>
     </div>
   </section>
 
-  <!-- ========================== DRAWER & SHEET ========================== -->
+  <!-- ========================== DRAWER ========================== -->
   <section class="chunk" id="modal-drawer">
     <header class="chunk-head reveal">
-      <span class="num-tag">07 / Modal — Drawer &amp; sheet</span>
+      <span class="num-tag">05 / Modal — Drawer</span>
       <h2 class="text-display-sm">Drawer.</h2>
     </header>
 
     <p class="section-lede reveal">
-      Edge-anchored variants keep the surface attached to
-        one edge of the viewport instead of centring it.
-        <em>Drawer</em> (<code>.modal--drawer-right</code>,
-        <code>.modal--drawer-left</code>): full-height side
-        sheet, animates in horizontally. <em>Bottom-sheet</em>
-        (<code>.modal--sheet</code>): full-width bottom
-        sheet, animates in vertically; rounds only the top
-        corners. <em>Top drawer</em>
-        (<code>.modal--drawer-top</code>): full-width top
-        sheet for system-level interrupts.
+      An edge-anchored modal pinned to one side of the
+        viewport instead of centered. Reserved for
+        supplementary context that benefits from staying
+        visible against the host page — filters, settings,
+        a detail panel — while still trapping focus inside
+        the panel until it is dismissed.
     </p>
 
     <p class="usage-note reveal">
-      <strong>Drawers carry context that supplements the
-      underlying view.</strong> Filters, settings, detail
-      panels, and helper content where the user needs to
-      see the host page while interacting with the panel.
-      The right drawer is the convention for the primary
-      content reveal; the left drawer is reserved for
-      navigation or secondary panels.
+      <strong>The right edge is the convention for content reveals.</strong>
+      Left-anchored drawers are reserved for navigation or
+      workspace switchers. Sheets anchored to the bottom or
+      top edge are not part of this page; promote those
+      flows to the relevant component (Sidebar for
+      navigation, Toast for system interrupts).
     </p>
 
     <p class="usage-note reveal">
-      <strong>Bottom-sheets are the mobile-first
-      anchor.</strong> On touch viewports the bottom-sheet
-      is reachable one-handed and matches the platform
-      convention. On desktop, bottom-sheets are reserved
-      for non-task affordances (cookie notice, recent
-      items) where the underlying page must remain visible.
+      <strong>A drawer is still a modal.</strong> It traps
+      focus, locks body scroll, and dismisses through the
+      close button, backdrop, or <code>Escape</code>. A
+      surface that does not do all three is a Side Panel
+      (III-07), not a drawer.
     </p>
 
-    <p class="usage-note reveal">
-      <strong>Drag-to-dismiss requires a handle.</strong> A
-      bottom-sheet that supports drag-to-dismiss exposes
-      <code>.modal__handle</code> at the top of the surface
-      so the affordance is visible. Sheets without the
-      handle dismiss only via the close button or backdrop.
-    </p>
-
-    <div class="dialog-showcase reveal">
-
-      <!-- DRAWER RIGHT -->
-      <article class="dialog-showcase__tile">
-        <span class="label">Drawer · right</span>
-        <div class="demo">
-          <div class="dialog-preview is-drawer-right">
-            <div class="dialog-preview__ambient" aria-hidden="true"></div>
-            <div class="dialog-preview__surface" role="dialog" aria-modal="true" aria-labelledby="drawer-right-title">
-              <header class="modal__header">
-                <div class="modal__heading">
-                  <p class="modal__eyebrow">Filters</p>
-                  <h3 class="modal__title" id="drawer-right-title">Caseload · 124 records</h3>
-                </div>
-                <button type="button" class="modal__close" aria-label="Close drawer">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                </button>
-              </header>
-              <div class="modal__body">
-                <div class="dialog-content-stub">
-                  <div class="field-stub"><span class="lbl">Species</span><span class="ctrl">All species</span></div>
-                  <div class="field-stub"><span class="lbl">Owner</span><span class="ctrl is-placeholder">Anyone</span></div>
-                  <div class="field-stub"><span class="lbl">Status</span><span class="ctrl">Open · awaiting review</span></div>
-                </div>
-              </div>
-              <footer class="modal__footer">
-                <span class="modal__footer-aux"><a href="#">Reset</a></span>
-                <button type="button" class="btn btn--cta btn--md">Apply</button>
-              </footer>
-            </div>
+    <div class="dialog-preview is-drawer-right is-glass reveal">
+      <div class="dialog-preview__ambient" aria-hidden="true"></div>
+      <div class="dialog-preview__surface" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+        <header class="modal__header">
+          <div class="modal__heading">
+            <p class="modal__eyebrow">Filters</p>
+            <h3 class="modal__title" id="drawer-title">Caseload · 124 records</h3>
+          </div>
+          <button type="button" class="modal__close" aria-label="Close drawer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          </button>
+        </header>
+        <div class="modal__body">
+          <div class="dialog-content-stub">
+            <div class="field-stub"><span class="lbl">Species</span><span class="ctrl">All species</span></div>
+            <div class="field-stub"><span class="lbl">Owner</span><span class="ctrl is-placeholder">Anyone</span></div>
+            <div class="field-stub"><span class="lbl">Status</span><span class="ctrl">Open · awaiting review</span></div>
+            <div class="field-stub"><span class="lbl">Updated</span><span class="ctrl">Last 7 days</span></div>
           </div>
         </div>
-        <div class="meta"><span>.modal--drawer-right</span><strong>side panel</strong></div>
-      </article>
-
-      <!-- DRAWER LEFT -->
-      <article class="dialog-showcase__tile">
-        <span class="label">Drawer · left</span>
-        <div class="demo">
-          <div class="dialog-preview is-drawer-left">
-            <div class="dialog-preview__ambient" aria-hidden="true"></div>
-            <div class="dialog-preview__surface" role="dialog" aria-modal="true" aria-labelledby="drawer-left-title">
-              <header class="modal__header">
-                <div class="modal__heading">
-                  <p class="modal__eyebrow">Navigation</p>
-                  <h3 class="modal__title" id="drawer-left-title">Workspaces</h3>
-                </div>
-                <button type="button" class="modal__close" aria-label="Close drawer">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                </button>
-              </header>
-              <div class="modal__body">
-                <div class="dialog-content-stub">
-                  <div class="row-list">
-                    <div class="li"><span>Caseload</span><span class="meta">124</span></div>
-                    <div class="li"><span>Dispatch queue</span><span class="meta">7</span></div>
-                    <div class="li"><span>Records</span><span class="meta">2 318</span></div>
-                    <div class="li"><span>Reports</span><span class="meta">—</span></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="meta"><span>.modal--drawer-left</span><strong>secondary nav</strong></div>
-      </article>
-
-      <!-- BOTTOM SHEET -->
-      <article class="dialog-showcase__tile">
-        <span class="label">Bottom-sheet · mobile</span>
-        <div class="demo">
-          <div class="dialog-preview is-sheet">
-            <div class="dialog-preview__ambient" aria-hidden="true"></div>
-            <div class="dialog-preview__surface" role="dialog" aria-modal="true" aria-labelledby="sheet-title" style="border-top-left-radius: var(--radius-lg); border-top-right-radius: var(--radius-lg);">
-              <span class="modal__handle" aria-hidden="true"></span>
-              <header class="modal__header">
-                <div class="modal__heading">
-                  <h3 class="modal__title" id="sheet-title">Add to caseload</h3>
-                </div>
-              </header>
-              <div class="modal__body">
-                <div class="dialog-content-stub">
-                  <div class="row-list">
-                    <div class="li"><span>From a chart</span><span class="meta">→</span></div>
-                    <div class="li"><span>Quick capture</span><span class="meta">→</span></div>
-                    <div class="li"><span>From the lab portal</span><span class="meta">→</span></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="meta"><span>.modal--sheet</span><strong>top-rounded · drag handle</strong></div>
-      </article>
-
-      <!-- TOP DRAWER -->
-      <article class="dialog-showcase__tile">
-        <span class="label">Top drawer · system interrupt</span>
-        <div class="demo">
-          <div class="dialog-preview" style="align-items: flex-start; padding: 0;">
-            <div class="dialog-preview__ambient" aria-hidden="true"></div>
-            <div class="dialog-preview__surface" role="dialog" aria-modal="true" aria-labelledby="drawer-top-title" style="max-width: 100%; width: 100%; border-radius: 0;">
-              <header class="modal__header">
-                <div class="modal__heading">
-                  <p class="modal__eyebrow">System interrupt</p>
-                  <h3 class="modal__title" id="drawer-top-title">A new release is available</h3>
-                  <p class="modal__description">v0.6.0 ships a redesigned caseload board and bulk-sign-off. Reload to switch over; your work is auto-saved.</p>
-                </div>
-                <button type="button" class="modal__close" aria-label="Dismiss">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                </button>
-              </header>
-              <footer class="modal__footer">
-                <button type="button" class="btn btn--secondary btn--md">Later</button>
-                <button type="button" class="btn btn--cta btn--md">Reload now</button>
-              </footer>
-            </div>
-          </div>
-        </div>
-        <div class="meta"><span>.modal--drawer-top</span><strong>full-width top sheet</strong></div>
-      </article>
-
+        <footer class="modal__footer">
+          <span class="modal__footer-aux"><a href="#">Reset</a></span>
+          <button type="button" class="btn btn--cta btn--md">Apply</button>
+        </footer>
+      </div>
     </div>
-  </section>
-
-  <!-- ========================== FULLSCREEN ========================== -->
-  <section class="chunk" id="modal-fullscreen">
-    <header class="chunk-head reveal">
-      <span class="num-tag">08 / Modal — Fullscreen</span>
-      <h2 class="text-display-sm">Fullscreen.</h2>
-    </header>
-
-    <p class="section-lede reveal">
-      <code>.modal--fullscreen</code> covers the entire
-        viewport and removes the surface's radius and
-        border. Reserved for immersive flows: image and
-        chart viewers, multi-step wizards, on-call dashboards
-        that must dominate the screen, and on-mobile
-        substitution for any modal that would otherwise
-        overflow the viewport.
-    </p>
 
     <p class="usage-note reveal">
-      <strong>Fullscreen modals are still dialogs.</strong>
-      They keep the focus trap, the dismiss button, and the
-      header. A fullscreen surface that hides the close
-      affordance becomes a full route — at which point the
-      flow belongs in the router, not in a dialog.
+      <strong>The slide is the drawer's primary affordance.</strong>
+      The surface enters from the right edge and returns the
+      same way on dismissal. The toggle preview below holds
+      the animation inside the section so the slide reads
+      end-to-end without the dialog taking over the viewport.
     </p>
 
-    <p class="usage-note reveal">
-      <strong>Fullscreen is the small-viewport
-      fallback.</strong> Below ~480 px any centred modal
-      that would otherwise need horizontal scroll
-      (preview, side-by-side compare, image viewer)
-      promotes to fullscreen automatically. The desktop
-      surface uses <code>.modal--lg</code> or larger; the
-      same dialog on mobile resolves through
-      <code>.modal--fullscreen</code>.
-    </p>
-
-    <div class="dialog-anatomy glass reveal" style="grid-template-columns: 1fr;">
-      <div class="dialog-preview is-fullscreen" style="min-height: 420px;">
+    <div class="drawer-toggle reveal">
+      <div class="drawer-toggle__controls">
+        <span class="drawer-toggle__label">In-section slide preview</span>
+        <button type="button" class="btn btn--secondary btn--sm" data-drawer-toggle aria-expanded="false" aria-controls="drawer-toggle-stage">
+          <span class="drawer-toggle__action">Slide drawer in</span>
+        </button>
+      </div>
+      <div class="dialog-preview is-drawer-right is-glass drawer-toggle__stage" id="drawer-toggle-stage">
         <div class="dialog-preview__ambient" aria-hidden="true"></div>
-        <div class="dialog-preview__surface" role="dialog" aria-modal="true" aria-labelledby="full-title" style="max-width: 100%; height: 100%; border-radius: 0;">
-          <header class="modal__header" style="border-bottom: 1px solid var(--border-default-subtle); padding-left: var(--spacing-8x); padding-right: var(--spacing-8x);">
+        <div class="dialog-preview__surface" role="dialog" aria-modal="false" aria-labelledby="drawer-toggle-title">
+          <header class="modal__header">
             <div class="modal__heading">
-              <p class="modal__eyebrow">Imaging viewer · DICOM</p>
-              <h3 class="modal__title" id="full-title">Bessie · 2026-05-04 · left forelimb</h3>
+              <p class="modal__eyebrow">Filters</p>
+              <h3 class="modal__title" id="drawer-toggle-title">Caseload · 124 records</h3>
             </div>
-            <button type="button" class="modal__close" aria-label="Close viewer">
+            <button type="button" class="modal__close" data-drawer-toggle-close aria-label="Close drawer">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
             </button>
           </header>
-          <div class="modal__body" style="padding-left: var(--spacing-8x); padding-right: var(--spacing-8x); align-items: center; justify-content: center; flex: 1;">
-            <div style="width: 100%; max-width: 640px; aspect-ratio: 16 / 9; border-radius: var(--radius-md); background: repeating-linear-gradient(135deg, var(--neutral-200) 0 12px, var(--neutral-300) 12px 24px); display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: var(--letter-spacing-eyebrow); text-transform: uppercase; color: var(--text-default-minimal);">DICOM render area</div>
+          <div class="modal__body">
+            <div class="dialog-content-stub">
+              <div class="field-stub"><span class="lbl">Species</span><span class="ctrl">All species</span></div>
+              <div class="field-stub"><span class="lbl">Owner</span><span class="ctrl is-placeholder">Anyone</span></div>
+              <div class="field-stub"><span class="lbl">Status</span><span class="ctrl">Open · awaiting review</span></div>
+              <div class="field-stub"><span class="lbl">Updated</span><span class="ctrl">Last 7 days</span></div>
+            </div>
           </div>
-          <footer class="modal__footer" style="padding-left: var(--spacing-8x); padding-right: var(--spacing-8x);">
-            <span class="modal__footer-aux">Slice 14 of 22</span>
-            <button type="button" class="btn btn--secondary btn--md">Annotate</button>
-            <button type="button" class="btn btn--cta btn--md">Save to chart</button>
+          <footer class="modal__footer">
+            <span class="modal__footer-aux"><a href="#" data-drawer-toggle-close>Reset</a></span>
+            <button type="button" class="btn btn--cta btn--md" data-drawer-toggle-close>Apply</button>
           </footer>
         </div>
       </div>
     </div>
-  </section>
-
-  <!-- ========================== BEHAVIOUR & ACCESSIBILITY ========================== -->
-  <section class="chunk" id="modal-behaviour">
-    <header class="chunk-head reveal">
-      <span class="num-tag">09 / Modal — Behaviour &amp; a11y</span>
-      <h2 class="text-display-sm">Behaviour.</h2>
-    </header>
-
-    <p class="section-lede reveal">
-      A modal is defined as much by its behaviour as by
-        its surface. Focus trap, scroll-lock, return-focus,
-        and the ARIA wiring are not optional — a surface
-        that lacks any of them is not a modal, even if it
-        renders one.
-    </p>
-
-    <p class="usage-note reveal">
-      <strong>Focus enters the dialog on open and is
-      trapped while it is mounted.</strong> The first
-      focusable element in the dialog receives focus
-      (typically the close button for read-only dialogs,
-      the first input for forms, the Cancel action for
-      destructive alert dialogs). <code>Tab</code> and
-      <code>Shift+Tab</code> cycle within the dialog only.
-      Focus returns to the trigger on close.
-    </p>
-
-    <p class="usage-note reveal">
-      <strong>Body scroll is locked while a modal is
-      open.</strong> The page script applies
-      <code>.has-modal-open</code> on <code>&lt;body&gt;</code>;
-      the rule in <code>modal.css</code> sets
-      <code>overflow: hidden</code>. Scrolling inside the
-      modal's body slot is unaffected. Locking the
-      background prevents the user from losing the dialog
-      offscreen and keeps the visual focus on the surface.
-    </p>
-
-    <p class="usage-note reveal">
-      <strong>ARIA wiring is mandatory.</strong> Every
-      dialog uses <code>role="dialog"</code> (or
-      <code>role="alertdialog"</code> for confirmations
-      that announce on open), carries
-      <code>aria-modal="true"</code>, and references the
-      title via <code>aria-labelledby</code>. The optional
-      description, when present, is referenced by
-      <code>aria-describedby</code>.
-    </p>
-
-    <table class="dialog-behaviour-table reveal" aria-label="Modal behaviour summary">
-      <thead>
-        <tr>
-          <th>Trigger</th>
-          <th>Default</th>
-          <th>Static (Critical alert)</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><span class="key">Esc</span></td>
-          <td>Closes the dialog and returns focus to the trigger.</td>
-          <td>Suppressed. The user must click Cancel or the destructive action.</td>
-        </tr>
-        <tr>
-          <td>Backdrop click</td>
-          <td>Closes the dialog (light-dismiss).</td>
-          <td>Suppressed.</td>
-        </tr>
-        <tr>
-          <td><span class="key">Tab</span> / <span class="key">Shift+Tab</span></td>
-          <td>Cycles focus inside the dialog only.</td>
-          <td>Identical.</td>
-        </tr>
-        <tr>
-          <td><span class="key">Enter</span></td>
-          <td>Activates the focused control. Inside a form dialog, submits the form when focus is on a field.</td>
-          <td>Activates the focused control. Default focus is the safer (Cancel) button.</td>
-        </tr>
-        <tr>
-          <td>On open</td>
-          <td>Focus moves to the first focusable element. Body scroll locks.</td>
-          <td>Focus moves to the Cancel action so an accidental <span class="key">Enter</span> does not commit.</td>
-        </tr>
-        <tr>
-          <td>On close</td>
-          <td>Focus returns to the trigger. Body scroll unlocks.</td>
-          <td>Identical.</td>
-        </tr>
-        <tr>
-          <td><code>prefers-reduced-motion</code></td>
-          <td>Translate / scale entry suppressed; only opacity remains.</td>
-          <td>Identical.</td>
-        </tr>
-      </tbody>
-    </table>
   </section>
 
   <!-- ========================== TOKENS ========================== -->
   <section class="chunk" id="modal-tokens">
     <header class="chunk-head reveal">
-      <span class="num-tag">10 / Modal — Component tokens</span>
+      <span class="num-tag">06 / Modal — Component tokens</span>
       <h2 class="text-display-sm">Tokens.</h2>
     </header>
 
@@ -1136,7 +618,7 @@
   <footer>
     <span class="sigil">Farm2Vet — cultivated intelligence, since 2024.</span>
     <a href="III-08-toast.html">← Section 07 / Toast</a>
-    <span>End of Section 08 · Modal Dialog</span>
+    <span>End of Section 06 · Modal Dialog</span>
   </footer>
 
 </main>
@@ -1147,12 +629,12 @@
      section. Default-hidden via opacity + pointer-events.
      ======================================================== -->
 
-<!-- Confirm -->
-<div class="modal modal--md" id="live-confirm" role="dialog" aria-modal="true" aria-labelledby="live-confirm-title" aria-hidden="true">
+<!-- Dialogue -->
+<div class="modal modal--md modal--glass" id="live-dialogue" role="dialog" aria-modal="true" aria-labelledby="live-dialogue-title" aria-hidden="true">
   <div class="modal__surface">
     <header class="modal__header">
       <div class="modal__heading">
-        <h3 class="modal__title" id="live-confirm-title">Reassign 4 cases to Dr. Pham?</h3>
+        <h3 class="modal__title" id="live-dialogue-title">Reassign 4 cases to Dr. Pham?</h3>
         <p class="modal__description">The selected cases will move to Dr. Pham's queue. You'll keep read access; edit access transfers.</p>
       </div>
       <button type="button" class="modal__close" data-modal-close aria-label="Close dialog">
@@ -1166,27 +648,8 @@
   </div>
 </div>
 
-<!-- Alert · destructive (static) -->
-<div class="modal modal--sm modal--tone-critical" id="live-alert" role="alertdialog" aria-modal="true" aria-labelledby="live-alert-title" aria-hidden="true" data-modal-static>
-  <div class="modal__surface">
-    <header class="modal__header has-icon">
-      <span class="modal__icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
-      </span>
-      <div class="modal__heading">
-        <h3 class="modal__title" id="live-alert-title">Delete patient record?</h3>
-        <p class="modal__description">Bessie · Holstein · ID 0188. This permanently removes the chart and every linked dispatch form. This action cannot be undone.</p>
-      </div>
-    </header>
-    <footer class="modal__footer">
-      <button type="button" class="btn btn--secondary btn--md" data-modal-close data-modal-default-focus>Cancel</button>
-      <button type="button" class="btn btn--caution btn--md" data-modal-close>Delete record</button>
-    </footer>
-  </div>
-</div>
-
 <!-- Form -->
-<div class="modal modal--md" id="live-form" role="dialog" aria-modal="true" aria-labelledby="live-form-title" aria-hidden="true">
+<div class="modal modal--md modal--glass" id="live-form" role="dialog" aria-modal="true" aria-labelledby="live-form-title" aria-hidden="true">
   <div class="modal__surface">
     <header class="modal__header">
       <div class="modal__heading">
@@ -1212,7 +675,7 @@
 </div>
 
 <!-- Scrollable -->
-<div class="modal modal--md modal--scrollable" id="live-scrollable" role="dialog" aria-modal="true" aria-labelledby="live-scroll-title" aria-hidden="true">
+<div class="modal modal--md modal--scrollable modal--glass" id="live-scrollable" role="dialog" aria-modal="true" aria-labelledby="live-scroll-title" aria-hidden="true">
   <div class="modal__surface">
     <header class="modal__header">
       <div class="modal__heading">
@@ -1240,7 +703,7 @@
 </div>
 
 <!-- Drawer (right) -->
-<div class="modal modal--drawer-right" id="live-drawer" role="dialog" aria-modal="true" aria-labelledby="live-drawer-title" aria-hidden="true">
+<div class="modal modal--drawer-right modal--glass" id="live-drawer" role="dialog" aria-modal="true" aria-labelledby="live-drawer-title" aria-hidden="true">
   <div class="modal__surface">
     <header class="modal__header">
       <div class="modal__heading">
@@ -1262,53 +725,6 @@
     <footer class="modal__footer">
       <span class="modal__footer-aux"><a href="#" data-modal-close>Reset</a></span>
       <button type="button" class="btn btn--cta btn--md" data-modal-close>Apply</button>
-    </footer>
-  </div>
-</div>
-
-<!-- Bottom-sheet -->
-<div class="modal modal--sheet" id="live-sheet" role="dialog" aria-modal="true" aria-labelledby="live-sheet-title" aria-hidden="true">
-  <div class="modal__surface">
-    <span class="modal__handle" aria-hidden="true"></span>
-    <header class="modal__header">
-      <div class="modal__heading">
-        <h3 class="modal__title" id="live-sheet-title">Add to caseload</h3>
-      </div>
-    </header>
-    <div class="modal__body">
-      <div class="dialog-content-stub">
-        <div class="row-list">
-          <div class="li"><span>From a chart</span><span class="meta">→</span></div>
-          <div class="li"><span>Quick capture</span><span class="meta">→</span></div>
-          <div class="li"><span>From the lab portal</span><span class="meta">→</span></div>
-        </div>
-      </div>
-    </div>
-    <footer class="modal__footer">
-      <button type="button" class="btn btn--secondary btn--md" data-modal-close style="width: 100%;">Cancel</button>
-    </footer>
-  </div>
-</div>
-
-<!-- Fullscreen -->
-<div class="modal modal--fullscreen" id="live-fullscreen" role="dialog" aria-modal="true" aria-labelledby="live-full-title" aria-hidden="true">
-  <div class="modal__surface">
-    <header class="modal__header">
-      <div class="modal__heading">
-        <p class="modal__eyebrow">Imaging viewer · DICOM</p>
-        <h3 class="modal__title" id="live-full-title">Bessie · 2026-05-04 · left forelimb</h3>
-      </div>
-      <button type="button" class="modal__close" data-modal-close aria-label="Close viewer">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-      </button>
-    </header>
-    <div class="modal__body" style="align-items: center; justify-content: center;">
-      <div style="width: 100%; max-width: 720px; aspect-ratio: 16 / 9; border-radius: var(--radius-md); background: repeating-linear-gradient(135deg, var(--neutral-200) 0 12px, var(--neutral-300) 12px 24px); display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: var(--letter-spacing-eyebrow); text-transform: uppercase; color: var(--text-default-minimal);">DICOM render area</div>
-    </div>
-    <footer class="modal__footer">
-      <span class="modal__footer-aux">Slice 14 of 22</span>
-      <button type="button" class="btn btn--secondary btn--md" data-modal-close>Annotate</button>
-      <button type="button" class="btn btn--cta btn--md" data-modal-close>Save to chart</button>
     </footer>
   </div>
 </div>
@@ -1573,6 +989,33 @@ function initModalController() {
 }
 
 /* =========================================================
+   DRAWER TOGGLE — in-section slide preview
+   Toggles .is-open on the contained drawer stage so the
+   slide-in animation reads inside the page (not behind the
+   global overlay).
+   ========================================================= */
+function initDrawerToggle() {
+  const trigger = document.querySelector('[data-drawer-toggle]');
+  const stage   = document.getElementById('drawer-toggle-stage');
+  if (!trigger || !stage) return;
+  const label = trigger.querySelector('.drawer-toggle__action');
+  const setOpen = (open) => {
+    stage.classList.toggle('is-open', open);
+    trigger.setAttribute('aria-expanded', String(open));
+    if (label) label.textContent = open ? 'Slide drawer out' : 'Slide drawer in';
+  };
+  trigger.addEventListener('click', () => {
+    setOpen(!stage.classList.contains('is-open'));
+  });
+  stage.querySelectorAll('[data-drawer-toggle-close]').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      setOpen(false);
+    });
+  });
+}
+
+/* =========================================================
    REVEAL ON SCROLL
    ========================================================= */
 function initReveal() {
@@ -1598,6 +1041,7 @@ function initReveal() {
 document.addEventListener('DOMContentLoaded', () => {
   renderTokenTable();
   initModalController();
+  initDrawerToggle();
   initReveal();
 });
 </script>
