@@ -497,6 +497,82 @@
     </div>
   </section>
 
+  <!-- ========================== PADDING RATIO ========================== -->
+  <section class="chunk" id="padding-ratio">
+    <header class="chunk-head reveal">
+      <span class="num-tag">III-02 / 07</span>
+      <h2 class="text-display-sm">Padding ratio.</h2>
+    </header>
+    <p class="section-lede reveal">
+      Buttons read horizontally — they're words, and words are
+      wider than tall. The control-inset rail therefore targets
+      a 3:1 ratio of horizontal padding to vertical padding,
+      with 2:1 as the absolute floor. Every size on the rail
+      sits inside that band. Smaller sizes lean wider to keep
+      the smaller label optically balanced; larger sizes settle
+      closer to 2.5:1 because the longer surface no longer needs
+      the extra inset to read as a button.
+    </p>
+
+    <div class="ratio-table reveal">
+      <table>
+        <thead>
+          <tr>
+            <th>Size</th>
+            <th>padding-y</th>
+            <th>padding-x</th>
+            <th>H : V ratio</th>
+            <th>Control rail token</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>SM</td>
+            <td>4 px</td>
+            <td>16 px</td>
+            <td>4.0 : 1</td>
+            <td><code>--space-control-x-xs</code></td>
+          </tr>
+          <tr>
+            <td>MD</td>
+            <td>8 px</td>
+            <td>20 px</td>
+            <td>2.5 : 1</td>
+            <td><code>--space-control-x-sm</code></td>
+          </tr>
+          <tr class="is-focus">
+            <td>LG <span class="ratio-table__tag">focus</span></td>
+            <td>12 px</td>
+            <td>32 px</td>
+            <td>2.67 : 1</td>
+            <td><code>--space-control-x-md</code></td>
+          </tr>
+          <tr>
+            <td>XL</td>
+            <td>16 px</td>
+            <td>40 px</td>
+            <td>2.5 : 1</td>
+            <td><code>--space-control-x-lg</code></td>
+          </tr>
+          <tr>
+            <td>2XL</td>
+            <td>20 px</td>
+            <td>48 px</td>
+            <td>2.4 : 1</td>
+            <td><code>--space-control-x-xl</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="usage-note reveal">
+      Content surfaces (alerts, toasts) run a separate, looser
+      rail — see <a href="III-09-alert-badges.html">alerts &amp;
+      badges</a>. The content rail targets ≈1.5:1 because the
+      surface holds multi-line prose, not a single inline label.
+    </p>
+  </section>
+
   <!-- ========================== BUTTON · SWITCH ========================== -->
   <section class="chunk" id="button-switch">
     <header class="chunk-head reveal">
@@ -702,26 +778,26 @@ const BTN_TOKENS = [
     ['--btn-radius',          'var(--radius-md)'],
     ['--btn-radius-pill',     'var(--radius-pill)'],
     ['--btn-border-width',    'var(--border-width-base)'],
-    ['--btn-gap',             'var(--spacing-2x)'],
+    ['--btn-gap',             'var(--space-gap-snug)'],
     ['--btn-shadow-rest',     'var(--shadow-sm)'],
     ['--btn-shadow-hover',    'var(--shadow-md)'],
   ]},
   { group: 'Sizes — focus on LG (22.5px)', tokens: [
     ['--btn-sm-font-size',    'var(--text-sm)'],
-    ['--btn-sm-padding-x',    'var(--spacing-3x)'],
-    ['--btn-sm-padding-y',    'var(--spacing-1x)'],
+    ['--btn-sm-padding-x',    'var(--space-control-x-xs)'],
+    ['--btn-sm-padding-y',    'var(--space-control-y-xs)'],
     ['--btn-md-font-size',    'var(--text-base)'],
-    ['--btn-md-padding-x',    'var(--spacing-4x)'],
-    ['--btn-md-padding-y',    'var(--spacing-2x)'],
+    ['--btn-md-padding-x',    'var(--space-control-x-sm)'],
+    ['--btn-md-padding-y',    'var(--space-control-y-sm)'],
     ['--btn-lg-font-size',    '22.5px /* focus */'],
-    ['--btn-lg-padding-x',    'var(--spacing-6x)'],
-    ['--btn-lg-padding-y',    'var(--spacing-3x)'],
+    ['--btn-lg-padding-x',    'var(--space-control-x-md)'],
+    ['--btn-lg-padding-y',    'var(--space-control-y-md)'],
     ['--btn-xl-font-size',    'var(--text-h4)'],
-    ['--btn-xl-padding-x',    'var(--spacing-8x)'],
-    ['--btn-xl-padding-y',    'var(--spacing-4x)'],
+    ['--btn-xl-padding-x',    'var(--space-control-x-lg)'],
+    ['--btn-xl-padding-y',    'var(--space-control-y-lg)'],
     ['--btn-2xl-font-size',   'var(--text-h3)'],
-    ['--btn-2xl-padding-x',   'var(--spacing-10x)'],
-    ['--btn-2xl-padding-y',   'var(--spacing-5x)'],
+    ['--btn-2xl-padding-x',   'var(--space-control-x-xl)'],
+    ['--btn-2xl-padding-y',   'var(--space-control-y-xl)'],
   ]},
   { group: 'Variant · CTA (Accent · primary action)', tokens: [
     ['--btn-cta-bg',          'var(--background-accent)'],

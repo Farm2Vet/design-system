@@ -445,11 +445,49 @@ const ICON_STATUS = [
   '--icon-critical',
 ];
 
+/* Semantic spacing — seven groups (tier ladder, region rhythm,
+   container insets, control insets, content insets, flow rhythm,
+   gap) plus a deprecated-aliases group at the bottom. Each group
+   renders as a sub-heading followed by its rows, all inside the
+   existing .semantic-space-stack treatment. */
 const SEM_SPACING = [
-  '--margin-bottom-heading',
-  '--margin-bottom-subheading',
-  '--margin-bottom-element',
-  '--margin-bottom-paragraph',
+  { title: 'Tier ladder', tokens: [
+    '--space-tier-1', '--space-tier-2', '--space-tier-3', '--space-tier-4',
+    '--space-tier-5', '--space-tier-6', '--space-tier-7',
+  ]},
+  { title: 'Region rhythm', tokens: [
+    '--space-region-y-lg', '--space-region-y', '--space-region-y-sm',
+    '--space-page-x', '--space-page-x-md',
+  ]},
+  { title: 'Container insets', tokens: [
+    '--space-container-y-sm', '--space-container-y', '--space-container-y-lg',
+    '--space-container-x-sm', '--space-container-x', '--space-container-x-lg',
+  ]},
+  { title: 'Control insets', tokens: [
+    '--space-control-y-xs', '--space-control-y-sm', '--space-control-y-md',
+    '--space-control-y-lg', '--space-control-y-xl',
+    '--space-control-x-xs', '--space-control-x-sm', '--space-control-x-md',
+    '--space-control-x-lg', '--space-control-x-xl',
+  ]},
+  { title: 'Content insets', tokens: [
+    '--space-content-y-sm', '--space-content-y-md', '--space-content-y-lg',
+    '--space-content-x-sm', '--space-content-x-md', '--space-content-x-lg',
+  ]},
+  { title: 'Flow rhythm', tokens: [
+    '--space-flow-section', '--space-flow-block', '--space-flow-heading',
+    '--space-flow-element', '--space-flow-tight', '--space-flow-micro',
+  ]},
+  { title: 'Gap', tokens: [
+    '--space-gap-loose', '--space-gap-default', '--space-gap-tight',
+    '--space-gap-snug', '--space-gap-micro',
+  ]},
+  { title: 'Backward-compat aliases (deprecated)',
+    deprecated: true,
+    note: 'alias retained while existing CSS migrates to --space-flow-*',
+    tokens: [
+      '--margin-bottom-heading', '--margin-bottom-subheading',
+      '--margin-bottom-element', '--margin-bottom-paragraph',
+    ]},
 ];
 
 const RADIUS_TOKENS = [
@@ -610,11 +648,72 @@ const SOURCES = {
   '--icon-warning':          '--secondary-500',
   '--icon-critical':         '--critical-500',
 
-  /* ---------- Semantic spacing ---------- */
-  '--margin-bottom-heading':    '--spacing-4x',
-  '--margin-bottom-subheading': '--spacing-3x',
-  '--margin-bottom-element':    '--spacing-2x',
-  '--margin-bottom-paragraph':  '--spacing-4x',
+  /* ---------- Semantic spacing — tier ladder ---------- */
+  '--space-tier-1': '--spacing-12x',
+  '--space-tier-2': '--spacing-8x',
+  '--space-tier-3': '--spacing-6x',
+  '--space-tier-4': '--spacing-4x',
+  '--space-tier-5': '--spacing-3x',
+  '--space-tier-6': '--spacing-2x',
+  '--space-tier-7': '--spacing-1x',
+
+  /* ---------- Region rhythm ---------- */
+  '--space-region-y-lg': '--spacing-16x',
+  '--space-region-y':    '--space-tier-1',
+  '--space-region-y-sm': '--space-tier-2',
+
+  /* ---------- Page gutter ---------- */
+  '--space-page-x':    '--spacing-8x',
+  '--space-page-x-md': '--spacing-5x',
+
+  /* ---------- Container insets ---------- */
+  '--space-container-y-sm': '--space-tier-4',
+  '--space-container-x-sm': '--spacing-5x',
+  '--space-container-y':    '--space-tier-3',
+  '--space-container-x':    '--space-tier-3',
+  '--space-container-y-lg': '--space-tier-2',
+  '--space-container-x-lg': '--space-tier-2',
+
+  /* ---------- Control insets ---------- */
+  '--space-control-y-xs':  '--space-tier-7',
+  '--space-control-y-sm':  '--space-tier-6',
+  '--space-control-y-md':  '--space-tier-5',
+  '--space-control-y-lg':  '--space-tier-4',
+  '--space-control-y-xl':  '--spacing-5x',
+  '--space-control-x-xs':  '--space-tier-4',
+  '--space-control-x-sm':  '--spacing-5x',
+  '--space-control-x-md':  '--space-tier-2',
+  '--space-control-x-lg':  '--spacing-10x',
+  '--space-control-x-xl':  '--space-tier-1',
+
+  /* ---------- Content insets ---------- */
+  '--space-content-y-sm': '--space-tier-6',
+  '--space-content-y-md': '--space-tier-4',
+  '--space-content-y-lg': '--spacing-5x',
+  '--space-content-x-sm': '--space-tier-5',
+  '--space-content-x-md': '--spacing-5x',
+  '--space-content-x-lg': '--space-tier-3',
+
+  /* ---------- Flow rhythm ---------- */
+  '--space-flow-section':  '--space-tier-2',
+  '--space-flow-block':    '--space-tier-3',
+  '--space-flow-heading':  '--space-tier-4',
+  '--space-flow-element':  '--space-tier-5',
+  '--space-flow-tight':    '--space-tier-6',
+  '--space-flow-micro':    '--space-tier-7',
+
+  /* ---------- Gap ---------- */
+  '--space-gap-loose':   '--space-tier-3',
+  '--space-gap-default': '--space-tier-4',
+  '--space-gap-tight':   '--space-tier-5',
+  '--space-gap-snug':    '--space-tier-6',
+  '--space-gap-micro':   '--space-tier-7',
+
+  /* ---------- Backward-compat aliases (deprecated) ---------- */
+  '--margin-bottom-heading':    '--space-flow-heading',
+  '--margin-bottom-subheading': '--space-flow-element',
+  '--margin-bottom-element':    '--space-flow-tight',
+  '--margin-bottom-paragraph':  '--space-flow-heading',
 
   /* ---------- Radius ---------- */
   '--radius-mc':   '--spacing-1x',
@@ -730,17 +829,29 @@ function renderIconGroup(group, list, opts = {}) {
 function renderSemSpacing() {
   const wrap = document.getElementById('semSpacing');
   if (!wrap) return;
-  wrap.innerHTML = SEM_SPACING.map(name => {
-    const value = SOURCES[name] || resolve(name) || '—';
-    return `
-      <div class="sem-space-row" data-var="${name}" tabindex="0" role="button" aria-label="Copy ${name}">
-        <span class="label">${name}</span>
-        <div class="bar-wrap">
-          <div class="bar" style="width: var(${name})"></div>
-        </div>
-        <span class="resolved">${escapeHtml(value)}</span>
-      </div>
+  wrap.innerHTML = SEM_SPACING.map(group => {
+    const heading = `
+      <h4 class="sem-space-group-title${group.deprecated ? ' is-deprecated' : ''}">
+        ${escapeHtml(group.title)}${group.note
+          ? ` <span class="sem-space-group-note">${escapeHtml(group.note)}</span>`
+          : ''}
+      </h4>
     `;
+    const rows = group.tokens.map(name => {
+      const value = SOURCES[name] || resolve(name) || '—';
+      return `
+        <div class="sem-space-row${group.deprecated ? ' is-deprecated' : ''}" data-var="${name}" tabindex="0" role="button" aria-label="Copy ${name}">
+          <span class="label">${name}${group.deprecated
+            ? ' <span class="sem-space-deprecated-tag">DEPRECATED</span>'
+            : ''}</span>
+          <div class="bar-wrap">
+            <div class="bar" style="width: var(${name})"></div>
+          </div>
+          <span class="resolved">${escapeHtml(value)}</span>
+        </div>
+      `;
+    }).join('');
+    return heading + rows;
   }).join('');
 }
 

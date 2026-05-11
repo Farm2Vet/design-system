@@ -36,8 +36,8 @@
     --modal-radius-sheet:     var(--radius-lg);
     --modal-border-width:     var(--border-width-base);
     --modal-shadow:           var(--shadow-lg);
-    --modal-gap:              var(--spacing-4x);
-    --modal-gap-tight:        var(--spacing-2x);
+    --modal-gap:              var(--space-gap-default);
+    --modal-gap-tight:        var(--space-gap-snug);
     --modal-z-backdrop:       80;
     --modal-z-surface:        81;
     --modal-transition:       background-color .18s ease, color .18s ease,
@@ -49,24 +49,24 @@
        driven up to a viewport-relative ceiling, after which the
        body slot scrolls (see .modal--scrollable). */
     --modal-xs-width:         320px;
-    --modal-xs-padding-x:     var(--spacing-5x);
-    --modal-xs-padding-y:     var(--spacing-5x);
+    --modal-xs-padding-x:     var(--space-container-x-sm);
+    --modal-xs-padding-y:     var(--space-container-y-sm);
 
     --modal-sm-width:         440px;
-    --modal-sm-padding-x:     var(--spacing-6x);
-    --modal-sm-padding-y:     var(--spacing-6x);
+    --modal-sm-padding-x:     var(--space-container-x);
+    --modal-sm-padding-y:     var(--space-container-y);
 
     --modal-md-width:         560px;     /* DEFAULT */
-    --modal-md-padding-x:     var(--spacing-6x);
-    --modal-md-padding-y:     var(--spacing-6x);
+    --modal-md-padding-x:     var(--space-container-x);
+    --modal-md-padding-y:     var(--space-container-y);
 
     --modal-lg-width:         720px;
-    --modal-lg-padding-x:     var(--spacing-8x);
-    --modal-lg-padding-y:     var(--spacing-6x);
+    --modal-lg-padding-x:     var(--space-container-x-lg);
+    --modal-lg-padding-y:     var(--space-container-y);
 
     --modal-xl-width:         960px;
-    --modal-xl-padding-x:     var(--spacing-8x);
-    --modal-xl-padding-y:     var(--spacing-8x);
+    --modal-xl-padding-x:     var(--space-container-x-lg);
+    --modal-xl-padding-y:     var(--space-container-y-lg);
 
     /* Body height cap — after which the body scrolls. */
     --modal-max-height:       min(86vh, 720px);
@@ -83,8 +83,9 @@
     --modal-backdrop-blur:    var(--blur-sm);
 
     /* ---------- Header ---------- */
-    --modal-header-padding-y: var(--spacing-5x);
-    --modal-header-gap:       var(--spacing-3x);
+    --modal-header-padding-y: var(--space-container-y);
+    --modal-body-padding-y:   var(--space-container-y);
+    --modal-header-gap:       var(--space-tier-5);
     --modal-title-font:       var(--text-h6);
     --modal-title-weight:     var(--font-weight-semibold);
     --modal-title-line:       var(--line-height-h6);
@@ -93,11 +94,11 @@
     /* ---------- Description / body ---------- */
     --modal-description-fg:   var(--text-default-subtle);
     --modal-body-line:        var(--line-height-body);
-    --modal-body-gap:         var(--spacing-3x);
+    --modal-body-gap:         var(--space-tier-5);
 
     /* ---------- Footer ---------- */
-    --modal-footer-gap:       var(--spacing-3x);
-    --modal-footer-padding-y: var(--spacing-4x);
+    --modal-footer-gap:       var(--space-tier-5);
+    --modal-footer-padding-y: var(--space-tier-4);
     --modal-footer-bg:        var(--background-default-subtle);
     --modal-footer-border:    var(--border-default-subtle);
 
@@ -168,7 +169,7 @@ body.has-modal-open {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: var(--spacing-6x);
+    padding: var(--space-container-y) var(--space-container-x);
     background: var(--modal-backdrop);
     backdrop-filter: var(--modal-backdrop-blur);
     -webkit-backdrop-filter: var(--modal-backdrop-blur);
@@ -270,7 +271,7 @@ body.has-modal-open {
     font-size: var(--text-sm);
     line-height: var(--modal-body-line);
     color: var(--modal-description-fg);
-    margin: var(--spacing-1x) 0 0 0;
+    margin: var(--space-tier-7) 0 0 0;
 }
 
 /* Title-leading icon — used by alert dialogs to carry the
@@ -286,7 +287,7 @@ body.has-modal-open {
     border-radius: var(--radius-md);
     background: var(--background-default-subtle);
     color: var(--icon-default);
-    margin-right: var(--spacing-3x);
+    margin-right: var(--space-tier-5);
 }
 .modal__icon svg { width: 22px; height: 22px; }
 
@@ -327,7 +328,7 @@ body.has-modal-open {
    simple confirmation dialogs read with no extra wrapper.
    ========================================================= */
 .modal__body {
-    padding: 0 var(--modal-md-padding-x) var(--modal-md-padding-y);
+    padding: 0 var(--modal-md-padding-x) var(--modal-body-padding-y);
     overflow-y: auto;
     flex: 1 1 auto;
     color: var(--modal-fg);
@@ -338,12 +339,12 @@ body.has-modal-open {
     gap: var(--modal-body-gap);
 }
 .modal__body p { margin: 0; }
-.modal__body p + p { margin-top: var(--spacing-2x); }
+.modal__body p + p { margin-top: var(--space-tier-6); }
 
 /* When the dialog has no header, the body owns the top
    padding so the content keeps a consistent gutter. */
 .modal__surface > .modal__body:first-child {
-    padding-top: var(--modal-md-padding-y);
+    padding-top: var(--modal-body-padding-y);
 }
 
 /* =========================================================
@@ -366,7 +367,7 @@ body.has-modal-open {
     margin-right: auto;
     display: flex;
     align-items: center;
-    gap: var(--spacing-3x);
+    gap: var(--space-tier-5);
     font-size: var(--text-sm);
     color: var(--modal-fg-subtle);
 }
@@ -386,7 +387,7 @@ body.has-modal-open {
 .modal--stack-actions .modal__footer-aux {
     margin-right: 0;
     justify-content: center;
-    margin-top: var(--spacing-2x);
+    margin-top: var(--space-tier-6);
 }
 
 /* =========================================================
@@ -399,23 +400,62 @@ body.has-modal-open {
     padding-left: var(--modal-xs-padding-x);
     padding-right: var(--modal-xs-padding-x);
 }
+.modal--xs .modal__header,
+.modal--xs .modal__body {
+    padding-top: var(--modal-xs-padding-y);
+    padding-bottom: var(--modal-xs-padding-y);
+}
+.modal--xs .modal__footer {
+    padding-top: var(--modal-footer-padding-y);
+    padding-bottom: var(--modal-footer-padding-y);
+}
+
 .modal--sm .modal__header,
 .modal--sm .modal__body,
 .modal--sm .modal__footer {
     padding-left: var(--modal-sm-padding-x);
     padding-right: var(--modal-sm-padding-x);
 }
+.modal--sm .modal__header,
+.modal--sm .modal__body {
+    padding-top: var(--modal-sm-padding-y);
+    padding-bottom: var(--modal-sm-padding-y);
+}
+.modal--sm .modal__footer {
+    padding-top: var(--modal-footer-padding-y);
+    padding-bottom: var(--modal-footer-padding-y);
+}
+
 .modal--lg .modal__header,
 .modal--lg .modal__body,
 .modal--lg .modal__footer {
     padding-left: var(--modal-lg-padding-x);
     padding-right: var(--modal-lg-padding-x);
 }
+.modal--lg .modal__header,
+.modal--lg .modal__body {
+    padding-top: var(--modal-lg-padding-y);
+    padding-bottom: var(--modal-lg-padding-y);
+}
+.modal--lg .modal__footer {
+    padding-top: var(--modal-footer-padding-y);
+    padding-bottom: var(--modal-footer-padding-y);
+}
+
 .modal--xl .modal__header,
 .modal--xl .modal__body,
 .modal--xl .modal__footer {
     padding-left: var(--modal-xl-padding-x);
     padding-right: var(--modal-xl-padding-x);
+}
+.modal--xl .modal__header,
+.modal--xl .modal__body {
+    padding-top: var(--modal-xl-padding-y);
+    padding-bottom: var(--modal-xl-padding-y);
+}
+.modal--xl .modal__footer {
+    padding-top: var(--modal-footer-padding-y);
+    padding-bottom: var(--modal-footer-padding-y);
 }
 
 /* =========================================================
@@ -434,12 +474,12 @@ body.has-modal-open {
    Title + description fit inside a single condensed surface.
    Used for short yes/no prompts, sign-off confirmations.
    ========================================================= */
-.modal--compact .modal__header { padding-bottom: var(--spacing-3x); }
+.modal--compact .modal__header { padding-bottom: var(--space-tier-5); }
 .modal--compact .modal__body { padding-top: 0; }
 .modal--compact .modal__footer {
     background: transparent;
     border-top: 0;
-    padding-top: var(--spacing-2x);
+    padding-top: var(--space-tier-6);
 }
 
 /* =========================================================
@@ -517,7 +557,7 @@ body.has-modal-open {
     height: 4px;
     border-radius: var(--radius-pill);
     background: var(--border-default-strong);
-    margin: var(--spacing-3x) auto var(--spacing-1x);
+    margin: var(--space-tier-5) auto var(--space-tier-7);
     flex: 0 0 auto;
 }
 
@@ -536,8 +576,8 @@ body.has-modal-open {
     border: 0;
 }
 .modal--fullscreen .modal__header {
-    padding-left: var(--spacing-8x);
-    padding-right: var(--spacing-8x);
+    padding-left: var(--space-container-x-lg);
+    padding-right: var(--space-container-x-lg);
     border-bottom: var(--modal-border-width) solid var(--modal-divider);
 }
 

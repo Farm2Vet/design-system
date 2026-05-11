@@ -15,7 +15,7 @@
     position: sticky;
     top: 0;
     z-index: 50;
-    padding: var(--spacing-3x) var(--spacing-8x);
+    padding: var(--space-tier-5) var(--space-page-x);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -100,7 +100,7 @@
 .shell {
     max-width: 1040px;
     margin: 0 auto;
-    padding: 0 var(--spacing-8x);
+    padding: 0 var(--space-page-x);
 }
 
 /* =========================================================
@@ -112,10 +112,10 @@
    lede (.lede) sub-elements.
    ========================================================= */
 .hero {
-    padding: var(--spacing-16x) 0 var(--spacing-12x);
+    padding: var(--space-region-y-lg) 0 var(--space-region-y);
     display: grid;
     grid-template-columns: 1.5fr 1fr;
-    gap: var(--spacing-12x);
+    gap: var(--space-region-y);
     align-items: end;
 }
 .hero .num {
@@ -124,7 +124,7 @@
     font-size:      var(--text-eyebrow);
     letter-spacing: var(--letter-spacing-widest);
     color:          var(--text-default-minimal);
-    margin-bottom:  var(--spacing-6x);
+    margin-bottom:  var(--space-tier-3);
     font-weight:    var(--font-weight-medium);
     text-transform: uppercase;
 }
@@ -139,7 +139,7 @@
    META STRIP (4-column key/value bar in hero)
    ========================================================= */
 .meta-strip {
-    margin-top: var(--spacing-12x);
+    margin-top: var(--space-region-y);
     grid-column: 1 / -1;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -150,7 +150,7 @@
 }
 .meta-strip > div {
     background: var(--background-glass-light);
-    padding: var(--spacing-4x) var(--spacing-5x);
+    padding: var(--space-tier-4) var(--spacing-5x);
     backdrop-filter: var(--blur-md);
 }
 .meta-strip dt {
@@ -172,12 +172,12 @@
    SECTION WRAPPER
    ========================================================= */
 section.chunk {
-    padding: var(--spacing-12x) 0;
+    padding: var(--space-region-y) 0;
     scroll-margin-top: var(--spacing-25x);
 }
 .chunk-head {
-    margin-bottom: var(--spacing-6x);
-    padding-bottom: var(--spacing-4x);
+    margin-bottom: var(--space-flow-block);
+    padding-bottom: var(--space-flow-heading);
     border-bottom: var(--border-width-base) solid var(--border-default);
 }
 /* Chunk-head heading: must carry class="text-display-sm".
@@ -189,7 +189,7 @@ section.chunk {
     font-size:      var(--text-eyebrow);
     letter-spacing: var(--letter-spacing-widest);
     color:          var(--text-default-minimal);
-    margin-bottom:  var(--spacing-4x);
+    margin-bottom:  var(--space-flow-heading);
     display:        block;
     text-transform: uppercase;
 }
@@ -202,7 +202,7 @@ section.chunk {
     color:        var(--text-default-subtle);
     line-height:  var(--line-height-body);
     max-width:    72ch;
-    margin:       0 0 var(--spacing-8x) 0;
+    margin:       0 0 var(--space-flow-section) 0;
 }
 
 /* =========================================================
@@ -213,11 +213,11 @@ section.chunk {
     font-weight: var(--font-weight-semibold);
     font-size: var(--text-h5);
     color: var(--text-default);
-    margin-top: var(--spacing-12x);
-    margin-bottom: var(--spacing-4x);
+    margin-top: var(--space-region-y);
+    margin-bottom: var(--space-flow-heading);
     display: flex;
     align-items: baseline;
-    gap: var(--spacing-3x);
+    gap: var(--space-gap-tight);
 }
 .subheading:first-of-type { margin-top: 0; }
 
@@ -250,8 +250,8 @@ section.chunk {
    primitive and component pages to restate the system rules.
    ========================================================= */
 .contract {
-    margin:          0 0 var(--spacing-12x);
-    padding:         var(--spacing-8x);
+    margin:          0 0 var(--space-region-y);
+    padding:         var(--space-container-y-lg) var(--space-container-x-lg);
     background:      var(--background-glass-light);
     border:          var(--border-width-base) solid var(--border-glass-light);
     border-left:     var(--spacing-1x) solid var(--border-primary);
@@ -259,14 +259,14 @@ section.chunk {
     backdrop-filter: var(--blur-md);
 }
 .contract .eyebrow {
-    margin-bottom: var(--spacing-3x);
+    margin-bottom: var(--space-flow-element);
     color:         var(--text-primary-strong);
 }
 .contract-body {
     font-size:     var(--text-body);
     line-height:   var(--line-height-body);
     color:         var(--text-default);
-    margin-bottom: var(--spacing-4x);
+    margin-bottom: var(--space-flow-heading);
     max-width:     72ch;
 }
 .contract-body:last-child { margin-bottom: 0; }
@@ -280,7 +280,7 @@ section.chunk {
    FOOTER
    ========================================================= */
 footer {
-    padding:        var(--spacing-16x) 0 var(--spacing-12x);
+    padding:        var(--space-region-y-lg) 0 var(--space-region-y);
     margin-top:     var(--spacing-10x);
     border-top:     var(--border-width-base) solid var(--border-default);
     display:        flex;
@@ -377,8 +377,8 @@ footer a:hover { color: var(--text-primary); }
     .toc         { display: none; }
 }
 @media (max-width: 600px) {
-    .shell       { padding: 0 var(--spacing-5x); }
-    .topbar      { padding: var(--spacing-3x) var(--spacing-5x); }
+    .shell       { padding: 0 var(--space-page-x-md); }
+    .topbar      { padding: var(--space-tier-5) var(--space-page-x-md); }
 }
 
 /* =========================================================

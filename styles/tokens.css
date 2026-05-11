@@ -316,11 +316,123 @@
     --icon-critical: var(--critical-500);
     --icon-safe:     var(--safe-500);
 
-    /* ---------- Semantic spacing ---------- */
-    --margin-bottom-heading:    var(--spacing-4x);
-    --margin-bottom-subheading: var(--spacing-3x);
-    --margin-bottom-element:    var(--spacing-2x);
-    --margin-bottom-paragraph:  var(--spacing-4x);
+    /* =========================================================
+       Semantic spacing
+       Four families, each pinned to a tier of the layout tree:
+         · TIER LADDER    — depth in the layout tree
+         · REGION         — top-level page rhythm (Y axis)
+         · CONTAINER      — surface-internal inset (Y + X)
+         · CONTROL        — interactive-control inset (Y + X)
+         · CONTENT        — content-surface inset (Y + X)
+         · FLOW           — vertical rhythm between flow items
+         · GAP            — flex/grid gap between siblings
+       The Russian-doll rule lives in the tier ladder: each step
+       names a depth, and components reference the depth they sit
+       at. New CSS must reference these semantic tokens; raw
+       --spacing-* primitives are now reserved for tokens.css
+       itself and one-off micro adjustments inside component CSS.
+       ========================================================= */
+
+    /* ---------- Tier ladder (the Russian-doll rule) ----------
+       Outer larger than inner. Padding, gap, or block spacing
+       that wants to express "I am this deep in the layout tree"
+       references the matching tier. Tiers compose: a section
+       carries tier-1 padding, the cards inside carry tier-3,
+       the rows inside the cards carry tier-5, and so on. */
+    --space-tier-1: var(--spacing-12x);   /* 48 — section, hero region    */
+    --space-tier-2: var(--spacing-8x);    /* 32 — large container         */
+    --space-tier-3: var(--spacing-6x);    /* 24 — standard container      */
+    --space-tier-4: var(--spacing-4x);    /* 16 — inner panel / card row  */
+    --space-tier-5: var(--spacing-3x);    /* 12 — control inset (Y at LG) */
+    --space-tier-6: var(--spacing-2x);    /*  8 — inline cluster          */
+    --space-tier-7: var(--spacing-1x);    /*  4 — micro cluster           */
+
+    /* ---------- Region rhythm (Y axis) ----------
+       Vertical breathing room between top-level page regions.
+       The .shell, section.chunk, hero, and footer reference
+       these so the whole site re-times from a single knob. */
+    --space-region-y-lg: var(--spacing-16x);  /* 64 — hero top edge       */
+    --space-region-y:    var(--space-tier-1); /* 48 — section.chunk Y     */
+    --space-region-y-sm: var(--space-tier-2); /* 32 — subsection break    */
+
+    /* ---------- Page gutter (X axis) ---------- */
+    --space-page-x:    var(--spacing-8x);   /* 32 — .shell side padding   */
+    --space-page-x-md: var(--spacing-5x);   /* 20 — .shell @ <600px       */
+
+    /* ---------- Container insets (Y + X) ----------
+       The padding inside a surface — card, modal, contract,
+       glass panel. Y is now a first-class axis: surfaces can
+       run square (Y = X), tall (Y > X), or wide (X > Y) by
+       picking the right pair. */
+    --space-container-y-sm: var(--space-tier-4);  /* 16 — modal XS / SM   */
+    --space-container-x-sm: var(--spacing-5x);    /* 20 — modal XS        */
+    --space-container-y:    var(--space-tier-3);  /* 24 — card, modal MD  */
+    --space-container-x:    var(--space-tier-3);  /* 24 — card, modal MD  */
+    --space-container-y-lg: var(--space-tier-2);  /* 32 — modal XL, contract */
+    --space-container-x-lg: var(--space-tier-2);  /* 32 — modal XL        */
+
+    /* ---------- Control insets (Y + X) ----------
+       For buttons, inputs, tabs, dropdown triggers, switches.
+       The H:V ratio target is 3:1 (the "buttons read
+       horizontally" rule); the minimum is 2:1. Y rides the
+       type scale; X is the rhythm decision. The values below
+       give per-size ratios of 4.0 / 2.5 / 2.67 / 2.5 / 2.4 —
+       all comfortably above the 2:1 floor, with the smallest
+       size leaning extra-wide to preserve optical balance at
+       reduced label sizes. */
+    --space-control-y-xs:  var(--space-tier-7);   /*  4 — SM control Y    */
+    --space-control-y-sm:  var(--space-tier-6);   /*  8 — MD control Y    */
+    --space-control-y-md:  var(--space-tier-5);   /* 12 — LG control Y    */
+    --space-control-y-lg:  var(--space-tier-4);   /* 16 — XL control Y    */
+    --space-control-y-xl:  var(--spacing-5x);     /* 20 — 2XL control Y   */
+    --space-control-x-xs:  var(--space-tier-4);   /* 16 — SM control X    */
+    --space-control-x-sm:  var(--spacing-5x);     /* 20 — MD control X    */
+    --space-control-x-md:  var(--space-tier-2);   /* 32 — LG control X    */
+    --space-control-x-lg:  var(--spacing-10x);    /* 40 — XL control X    */
+    --space-control-x-xl:  var(--space-tier-1);   /* 48 — 2XL control X   */
+
+    /* ---------- Content insets (Y + X) ----------
+       For alerts, toasts, and other content surfaces that hold
+       multi-line prose. The H:V ratio runs looser (≈1.5:1)
+       than control surfaces because vertical breathing room
+       matters more than horizontal tightness when the surface
+       is a paragraph, not a label. */
+    --space-content-y-sm: var(--space-tier-6);   /*  8 — SM               */
+    --space-content-y-md: var(--space-tier-4);   /* 16 — MD (was 12; +4)  */
+    --space-content-y-lg: var(--spacing-5x);     /* 20 — LG (was 16; +4)  */
+    --space-content-x-sm: var(--space-tier-5);   /* 12 — SM               */
+    --space-content-x-md: var(--spacing-5x);     /* 20 — MD               */
+    --space-content-x-lg: var(--space-tier-3);   /* 24 — LG               */
+
+    /* ---------- Flow (vertical rhythm) ----------
+       Margin-bottom between flow items: heading → body,
+       paragraph → paragraph, label → control. Replaces the
+       old --margin-bottom-* family (those names are kept
+       below as backward-compat aliases). */
+    --space-flow-section:  var(--space-tier-2);   /* 32 — region break    */
+    --space-flow-block:    var(--space-tier-3);   /* 24 — subsection break*/
+    --space-flow-heading:  var(--space-tier-4);   /* 16 — after .h1/.h2   */
+    --space-flow-element:  var(--space-tier-5);   /* 12 — after .h3/.h4   */
+    --space-flow-tight:    var(--space-tier-6);   /*  8 — after .h5/.h6   */
+    --space-flow-micro:    var(--space-tier-7);   /*  4 — within cluster  */
+
+    /* ---------- Gap (flex / grid sibling distance) ---------- */
+    --space-gap-loose:   var(--space-tier-3);     /* 24 — card grid       */
+    --space-gap-default: var(--space-tier-4);     /* 16 — card stack      */
+    --space-gap-tight:   var(--space-tier-5);     /* 12 — modal body      */
+    --space-gap-snug:    var(--space-tier-6);     /*  8 — button row      */
+    --space-gap-micro:   var(--space-tier-7);     /*  4 — icon + label    */
+
+    /* ---------- Backward-compat aliases ----------
+       The four legacy --margin-bottom-* tokens are kept alive
+       so existing components continue to compile. They now
+       resolve through the flow family so a single layer owns
+       vertical rhythm. New CSS must reference --space-flow-*
+       directly; do not introduce new --margin-bottom-* usages. */
+    --margin-bottom-heading:    var(--space-flow-heading);
+    --margin-bottom-subheading: var(--space-flow-element);
+    --margin-bottom-element:    var(--space-flow-tight);
+    --margin-bottom-paragraph:  var(--space-flow-heading);
 
     /* ---------- Radius ---------- */
     --radius-mc:   var(--spacing-1x);
@@ -374,7 +486,7 @@
     --btn-radius:         var(--radius-md);
     --btn-radius-pill:    var(--radius-pill);
     --btn-border-width:   var(--border-width-base);
-    --btn-gap:            var(--spacing-2x);
+    --btn-gap:            var(--space-gap-snug);
     --btn-shadow-rest:    var(--shadow-sm);
     --btn-shadow-hover:   var(--shadow-md);
     --btn-transition:     background-color .18s ease, color .18s ease,
@@ -383,32 +495,32 @@
 
     /* ---------- Sizes (LG is the focus per spec) ---------- */
     --btn-sm-font-size:  var(--text-sm);     /* 13.33px */
-    --btn-sm-padding-x:  var(--spacing-3x);
-    --btn-sm-padding-y:  var(--spacing-1x);
+    --btn-sm-padding-x:  var(--space-control-x-xs);
+    --btn-sm-padding-y:  var(--space-control-y-xs);
     --btn-sm-height:     28px;
     --btn-sm-icon:       14px;
 
     --btn-md-font-size:  var(--text-base);   /* 16px */
-    --btn-md-padding-x:  var(--spacing-4x);
-    --btn-md-padding-y:  var(--spacing-2x);
+    --btn-md-padding-x:  var(--space-control-x-sm);
+    --btn-md-padding-y:  var(--space-control-y-sm);
     --btn-md-height:     36px;
     --btn-md-icon:       18px;
 
     --btn-lg-font-size:  22.5px;             /* FOCUS */
-    --btn-lg-padding-x:  var(--spacing-6x);
-    --btn-lg-padding-y:  var(--spacing-3x);
+    --btn-lg-padding-x:  var(--space-control-x-md);
+    --btn-lg-padding-y:  var(--space-control-y-md);
     --btn-lg-height:     48px;
     --btn-lg-icon:       22px;
 
     --btn-xl-font-size:  var(--text-h4);     /* 27.65px */
-    --btn-xl-padding-x:  var(--spacing-8x);
-    --btn-xl-padding-y:  var(--spacing-4x);
+    --btn-xl-padding-x:  var(--space-control-x-lg);
+    --btn-xl-padding-y:  var(--space-control-y-lg);
     --btn-xl-height:     60px;
     --btn-xl-icon:       28px;
 
     --btn-2xl-font-size: var(--text-h3);     /* 33.18px */
-    --btn-2xl-padding-x: var(--spacing-10x);
-    --btn-2xl-padding-y: var(--spacing-5x);
+    --btn-2xl-padding-x: var(--space-control-x-xl);
+    --btn-2xl-padding-y: var(--space-control-y-xl);
     --btn-2xl-height:    74px;
     --btn-2xl-icon:      32px;
 
@@ -549,38 +661,38 @@
     --form-letter-spacing: 0;
     --form-radius:         var(--radius-md);
     --form-border-width:   var(--border-width-base);
-    --form-gap:            var(--spacing-2x);
+    --form-gap:            var(--space-gap-snug);
     --form-transition:     background-color .18s ease, color .18s ease,
                            border-color .18s ease, box-shadow .18s ease;
 
     /* ---------- Sizes (LG is the focus per spec) ---------- */
     --form-sm-font-size:  var(--text-sm);     /* 13.33px */
-    --form-sm-padding-x:  var(--spacing-3x);
-    --form-sm-padding-y:  var(--spacing-1x);
+    --form-sm-padding-x:  var(--space-control-x-xs);
+    --form-sm-padding-y:  var(--space-control-y-xs);
     --form-sm-height:     28px;
     --form-sm-control:    14px;
 
     --form-md-font-size:  var(--text-base);   /* 16px */
-    --form-md-padding-x:  var(--spacing-4x);
-    --form-md-padding-y:  var(--spacing-2x);
+    --form-md-padding-x:  var(--space-control-x-sm);
+    --form-md-padding-y:  var(--space-control-y-sm);
     --form-md-height:     36px;
     --form-md-control:    16px;
 
     --form-lg-font-size:  22.5px;             /* FOCUS */
-    --form-lg-padding-x:  var(--spacing-6x);
-    --form-lg-padding-y:  var(--spacing-3x);
+    --form-lg-padding-x:  var(--space-control-x-md);
+    --form-lg-padding-y:  var(--space-control-y-md);
     --form-lg-height:     48px;
     --form-lg-control:    20px;
 
     --form-xl-font-size:  var(--text-h4);     /* 27.65px */
-    --form-xl-padding-x:  var(--spacing-8x);
-    --form-xl-padding-y:  var(--spacing-4x);
+    --form-xl-padding-x:  var(--space-control-x-lg);
+    --form-xl-padding-y:  var(--space-control-y-lg);
     --form-xl-height:     60px;
     --form-xl-control:    24px;
 
     --form-2xl-font-size: var(--text-h3);     /* 33.18px */
-    --form-2xl-padding-x: var(--spacing-10x);
-    --form-2xl-padding-y: var(--spacing-5x);
+    --form-2xl-padding-x: var(--space-control-x-xl);
+    --form-2xl-padding-y: var(--space-control-y-xl);
     --form-2xl-height:    74px;
     --form-2xl-control:   28px;
 
@@ -662,12 +774,12 @@
     --dropdown-menu-border:          var(--border-default);
     --dropdown-menu-radius:          var(--radius-md);
     --dropdown-menu-shadow:          var(--shadow-lg);
-    --dropdown-menu-offset:          var(--spacing-1x);
-    --dropdown-menu-padding:         var(--spacing-1x);
+    --dropdown-menu-offset:          var(--space-tier-7);
+    --dropdown-menu-padding:         var(--space-tier-7);
     --dropdown-menu-max-height:      280px;
 
-    --dropdown-option-padding-x:     var(--spacing-3x);
-    --dropdown-option-padding-y:     var(--spacing-2x);
+    --dropdown-option-padding-x:     var(--space-tier-5);
+    --dropdown-option-padding-y:     var(--space-tier-6);
     --dropdown-option-radius:        var(--radius-sm);
     --dropdown-option-fg:            var(--text-default);
     --dropdown-option-bg-hover:      var(--background-primary-subtle);
@@ -701,38 +813,38 @@
     --form-letter-spacing: 0;
     --form-radius:         var(--radius-md);
     --form-border-width:   var(--border-width-base);
-    --form-gap:            var(--spacing-2x);
+    --form-gap:            var(--space-gap-snug);
     --form-transition:     background-color .18s ease, color .18s ease,
                            border-color .18s ease, box-shadow .18s ease;
 
     /* ---------- Sizes (LG is the focus per spec) ---------- */
     --form-sm-font-size:  var(--text-sm);     /* 13.33px */
-    --form-sm-padding-x:  var(--spacing-3x);
-    --form-sm-padding-y:  var(--spacing-1x);
+    --form-sm-padding-x:  var(--space-control-x-xs);
+    --form-sm-padding-y:  var(--space-control-y-xs);
     --form-sm-height:     28px;
     --form-sm-control:    14px;
 
     --form-md-font-size:  var(--text-base);   /* 16px */
-    --form-md-padding-x:  var(--spacing-4x);
-    --form-md-padding-y:  var(--spacing-2x);
+    --form-md-padding-x:  var(--space-control-x-sm);
+    --form-md-padding-y:  var(--space-control-y-sm);
     --form-md-height:     36px;
     --form-md-control:    16px;
 
     --form-lg-font-size:  22.5px;             /* FOCUS */
-    --form-lg-padding-x:  var(--spacing-6x);
-    --form-lg-padding-y:  var(--spacing-3x);
+    --form-lg-padding-x:  var(--space-control-x-md);
+    --form-lg-padding-y:  var(--space-control-y-md);
     --form-lg-height:     48px;
     --form-lg-control:    20px;
 
     --form-xl-font-size:  var(--text-h4);     /* 27.65px */
-    --form-xl-padding-x:  var(--spacing-8x);
-    --form-xl-padding-y:  var(--spacing-4x);
+    --form-xl-padding-x:  var(--space-control-x-lg);
+    --form-xl-padding-y:  var(--space-control-y-lg);
     --form-xl-height:     60px;
     --form-xl-control:    24px;
 
     --form-2xl-font-size: var(--text-h3);     /* 33.18px */
-    --form-2xl-padding-x: var(--spacing-10x);
-    --form-2xl-padding-y: var(--spacing-5x);
+    --form-2xl-padding-x: var(--space-control-x-xl);
+    --form-2xl-padding-y: var(--space-control-y-xl);
     --form-2xl-height:    74px;
     --form-2xl-control:   28px;
 
@@ -814,12 +926,12 @@
     --dropdown-menu-border:          var(--border-default);
     --dropdown-menu-radius:          var(--radius-md);
     --dropdown-menu-shadow:          var(--shadow-lg);
-    --dropdown-menu-offset:          var(--spacing-1x);
-    --dropdown-menu-padding:         var(--spacing-1x);
+    --dropdown-menu-offset:          var(--space-tier-7);
+    --dropdown-menu-padding:         var(--space-tier-7);
     --dropdown-menu-max-height:      280px;
 
-    --dropdown-option-padding-x:     var(--spacing-3x);
-    --dropdown-option-padding-y:     var(--spacing-2x);
+    --dropdown-option-padding-x:     var(--space-tier-5);
+    --dropdown-option-padding-y:     var(--space-tier-6);
     --dropdown-option-radius:        var(--radius-sm);
     --dropdown-option-fg:            var(--text-default);
     --dropdown-option-bg-hover:      var(--background-primary-subtle);
@@ -865,38 +977,38 @@
     --tabs-font-family:    var(--font-sans);
     --tabs-font-weight:    var(--font-weight-medium);
     --tabs-letter-spacing: 0;
-    --tabs-gap:            var(--spacing-1x);
+    --tabs-gap:            var(--space-gap-micro);
     --tabs-transition:     background-color .18s ease, color .18s ease,
                            border-color .18s ease, box-shadow .18s ease;
 
     /* ---------- Sizes (LG is the focus per spec) ---------- */
     --tabs-sm-font-size:  var(--text-sm);     /* 13.33px */
-    --tabs-sm-padding-x:  var(--spacing-3x);
-    --tabs-sm-padding-y:  var(--spacing-1x);
+    --tabs-sm-padding-x:  var(--space-control-x-xs);
+    --tabs-sm-padding-y:  var(--space-control-y-xs);
     --tabs-sm-height:     28px;
     --tabs-sm-icon:       14px;
 
     --tabs-md-font-size:  var(--text-base);   /* 16px */
-    --tabs-md-padding-x:  var(--spacing-4x);
-    --tabs-md-padding-y:  var(--spacing-2x);
+    --tabs-md-padding-x:  var(--space-control-x-sm);
+    --tabs-md-padding-y:  var(--space-control-y-sm);
     --tabs-md-height:     36px;
     --tabs-md-icon:       18px;
 
     --tabs-lg-font-size:  22.5px;             /* FOCUS */
-    --tabs-lg-padding-x:  var(--spacing-6x);
-    --tabs-lg-padding-y:  var(--spacing-3x);
+    --tabs-lg-padding-x:  var(--space-control-x-md);
+    --tabs-lg-padding-y:  var(--space-control-y-md);
     --tabs-lg-height:     48px;
     --tabs-lg-icon:       22px;
 
     --tabs-xl-font-size:  var(--text-h4);     /* 27.65px */
-    --tabs-xl-padding-x:  var(--spacing-8x);
-    --tabs-xl-padding-y:  var(--spacing-4x);
+    --tabs-xl-padding-x:  var(--space-control-x-lg);
+    --tabs-xl-padding-y:  var(--space-control-y-lg);
     --tabs-xl-height:     60px;
     --tabs-xl-icon:       28px;
 
     --tabs-2xl-font-size: var(--text-h3);     /* 33.18px */
-    --tabs-2xl-padding-x: var(--spacing-10x);
-    --tabs-2xl-padding-y: var(--spacing-5x);
+    --tabs-2xl-padding-x: var(--space-control-x-xl);
+    --tabs-2xl-padding-y: var(--space-control-y-xl);
     --tabs-2xl-height:    74px;
     --tabs-2xl-icon:      32px;
 
@@ -989,7 +1101,7 @@
     --tabs-badge-bg-muted:  var(--background-default-minimal);
     --tabs-badge-fg-muted:  var(--text-default-subtle);
     --tabs-badge-radius:    var(--radius-pill);
-    --tabs-badge-pad-x:     var(--spacing-2x);
+    --tabs-badge-pad-x:     var(--space-tier-6);
 
     /* ---------- Focus ring ----------
        Matches the button / form rings so tabbing through
@@ -1010,7 +1122,7 @@
     --breadcrumb-fg-current:    var(--text-default);
     --breadcrumb-fg-hover:      var(--text-primary-strong);
     --breadcrumb-separator-fg:  var(--text-default-minimal);
-    --breadcrumb-gap:           var(--spacing-2x);
+    --breadcrumb-gap:           var(--space-gap-snug);
     --breadcrumb-icon-size:     14px;
 
     /* ---------- Pagination (numeric step navigation) ----------
@@ -1031,5 +1143,5 @@
     --pagination-border:         var(--border-default);
     --pagination-radius:         var(--radius-sm);
     --pagination-size:           var(--btn-md-height);
-    --pagination-gap:            var(--spacing-1x);
+    --pagination-gap:            var(--space-gap-micro);
 }
