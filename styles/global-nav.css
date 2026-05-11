@@ -26,23 +26,44 @@
     -webkit-backdrop-filter: var(--glass-light-light-blur) var(--glass-saturate);
             backdrop-filter: var(--glass-light-light-blur) var(--glass-saturate);
     border-bottom: var(--border-width-base) solid var(--glass-light-light-border);
-    /* Single inset top highlight is enough for the header — a full
-       rim with bottom dim would compete with the border-bottom. */
-    box-shadow: 0 1px 0 color-mix(in srgb, var(--white-base) 60%, transparent) inset;
+    /* Outer raised shadow + canonical rim light. Both are part of
+       the glass rail — the bar carries the full anatomy at rest, and
+       elevates (not flattens) on the .is-scrolled and panel-open
+       states below. */
+    box-shadow: var(--glass-shadow-raised), var(--glass-inset-light-soft);
     transition:
         background 0.2s ease,
-        border-bottom-color 0.2s ease;
+        backdrop-filter 0.2s ease,
+        border-bottom-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
-/* When any panel is open, the bar adopts the panel's solid
-   background so bar + panel read as one continuous elevated
-   surface. The bottom border is hidden so no seam shows
-   between the two. :focus-within keeps the no-JS keyboard
-   fallback consistent. */
+/* When content has scrolled under the bar, density and elevation
+   step up. The frost ramps light → thick (denser tint + stronger
+   blur), and the outer shadow ramps raised → floating. The rim
+   light keeps the canonical token but in its strong variant so the
+   pane reads as physically thicker. Scroll threshold is owned by
+   scripts/global-nav.js. */
+.global-nav.is-scrolled {
+    background: var(--glass-light-thick-bg);
+    -webkit-backdrop-filter: var(--glass-light-thick-blur) var(--glass-saturate);
+            backdrop-filter: var(--glass-light-thick-blur) var(--glass-saturate);
+    border-bottom-color: var(--glass-light-thick-border);
+    box-shadow: var(--glass-shadow-floating), var(--glass-inset-light-strong);
+}
+
+/* When any panel is open, the bar steps to the thick frost (rather
+   than dropping to the solid background) so bar + panel read as
+   one continuous glass surface that has thickened. The bottom
+   border goes transparent so no seam shows between the two.
+   :focus-within keeps the no-JS keyboard fallback consistent. */
 .global-nav:has(.global-nav__item--has-panel.is-open),
 .global-nav:has(.global-nav__item--has-panel:focus-within) {
-    background: var(--background-default);
+    background: var(--glass-light-thick-bg);
+    -webkit-backdrop-filter: var(--glass-light-thick-blur) var(--glass-saturate);
+            backdrop-filter: var(--glass-light-thick-blur) var(--glass-saturate);
     border-bottom-color: transparent;
+    box-shadow: var(--glass-shadow-floating), var(--glass-inset-light-strong);
 }
 
 .global-nav__inner {
@@ -155,20 +176,6 @@
 }
 
 /* =========================================================
-   04 / VERSION PILL
-   ========================================================= */
-.global-nav__version {
-    font-family:    var(--font-mono);
-    font-size:      var(--text-eyebrow);
-    letter-spacing: var(--letter-spacing-wide);
-    color:          var(--text-default-minimal);
-    padding:        var(--spacing-half) var(--space-tier-5);
-    border-radius:  var(--radius-pill);
-    border:         var(--border-width-base) solid var(--border-default);
-    white-space: nowrap;
-}
-
-/* =========================================================
    05 / EXPANDING PANEL (TIER 2)
    The panel sits absolutely below the bar. Visibility is
    driven by `.is-open` (set by the runtime on mouseenter
@@ -182,9 +189,15 @@
     left: 0;
     right: 0;
     top: 100%;
-    background: var(--background-default);
-    border-bottom: var(--border-width-base) solid var(--border-default);
-    box-shadow: var(--shadow-md);
+    /* Same dense-frost glass as the bar's open state so the two
+       surfaces are visually continuous. The bar's rim-light carries
+       the upper edge of the combined surface; the panel relies on
+       its border-bottom + floating shadow for its lower edge. */
+    background: var(--glass-light-thick-bg);
+    -webkit-backdrop-filter: var(--glass-light-thick-blur) var(--glass-saturate);
+            backdrop-filter: var(--glass-light-thick-blur) var(--glass-saturate);
+    border-bottom: var(--border-width-base) solid var(--glass-light-thick-border);
+    box-shadow: var(--glass-shadow-floating);
     opacity: 0;
     visibility: hidden;
     transform: translateY(-4px);
@@ -306,7 +319,6 @@
         grid-template-columns: auto 1fr;
         gap: var(--space-tier-5);
     }
-    .global-nav__version { display: none; }
     .global-nav__sections {
         justify-self: end;
         overflow-x: auto;

@@ -1,7 +1,7 @@
 /* =========================================================
    FARM2VET DESIGN SYSTEM — GLOBAL NAV
    Drives the shared header chrome rendered by every
-   design-system page. Four responsibilities:
+   design-system page. Five responsibilities:
 
      1. Mark the current page. Each page declares its
         own filename via `<body data-page="…">`. The
@@ -25,6 +25,12 @@
         toggle a body-level "backdrop visible" flag so
         the rest of the page is dimmed/blurred behind
         any open panel.
+
+     5. Toggle a scroll-edge state. A small scroll
+        listener adds `.is-scrolled` to the bar once
+        page content moves underneath it, so the surface
+        ramps to a denser frost and a stronger shadow at
+        the scroll edge.
 
    Self-initialising IIFE; no per-page wiring required.
    ========================================================= */
@@ -157,6 +163,30 @@
                 if (event.detail > 0) trigger.blur();
             });
         });
+
+        /* ---------- 5b. Scroll-edge state ----------
+           Toggles .is-scrolled on the bar when page content has
+           moved beneath it, so the surface ramps from light → thick
+           frost (and raised → floating shadow) at the scroll edge.
+           Threshold is intentionally small: the change must read as
+           "anything is under the bar," not "the user has scrolled
+           significantly." Throttled with requestAnimationFrame so the
+           listener stays cheap. */
+        var SCROLL_EDGE_THRESHOLD = 4;
+        var scrollRaf = 0;
+        function syncScrollEdge() {
+            scrollRaf = 0;
+            if (window.scrollY > SCROLL_EDGE_THRESHOLD) {
+                nav.classList.add('is-scrolled');
+            } else {
+                nav.classList.remove('is-scrolled');
+            }
+        }
+        window.addEventListener('scroll', function () {
+            if (scrollRaf) return;
+            scrollRaf = requestAnimationFrame(syncScrollEdge);
+        }, { passive: true });
+        syncScrollEdge();
 
         /* ---------- 6. Dismiss ---------- */
         document.addEventListener('keydown', function (event) {

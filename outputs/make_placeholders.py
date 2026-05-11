@@ -99,7 +99,6 @@ NAV_BLOCK = '''<!-- ========================== GLOBAL NAV ======================
       </ul>
     </nav>
 
-    <span class="global-nav__version">v 0.5 · 2026</span>
   </div>
 </header>'''
 
