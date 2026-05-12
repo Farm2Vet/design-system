@@ -136,23 +136,21 @@
     </div>
     <div>
       <p class="lede reveal">
-        A modal presents content in a dedicated mode that
-        prevents interaction with the parent view and resolves
-        through an explicit action. The component documented
-        here covers four shapes —
-        <strong>dialogue</strong>, <strong>form</strong>,
-        <strong>scrollable</strong>, and <strong>drawer</strong>
-        — all rendered on the system's glass surface. Every
-        other variant sketched in earlier drafts has been
-        folded into one of these four or promoted to a
-        dedicated route.
+        A modal presents content in a dedicated mode that prevents
+        interaction with the parent view and resolves through an
+        explicit action. The component documented here covers three
+        centered shapes — <strong>dialogue</strong>,
+        <strong>form</strong>, and <strong>scrollable</strong> — all
+        rendered on the system's glass surface. The edge-anchored
+        blocking surface (drawer) lives alongside Side Panel on
+        <a href="III-07-side-panel.html">III-07</a>.
       </p>
     </div>
 
     <dl class="meta-strip reveal">
-      <div><dt>Variants</dt><dd>4</dd></div>
+      <div><dt>Variants</dt><dd>3</dd></div>
       <div><dt>Surface</dt><dd>Glass</dd></div>
-      <div><dt>Anchors</dt><dd>Centered · Edge</dd></div>
+      <div><dt>Anchors</dt><dd>Centered</dd></div>
     </dl>
   </section>
 
@@ -161,15 +159,19 @@
     <div class="card-callout reveal" role="note">
       <span class="label">Architectural note · scope boundaries</span>
       <p>
-        <strong>Modal is the blocking-message surface.</strong>
+        <strong>Modal is the centered blocking surface.</strong>
         A non-blocking, in-flow message is an Alert. A
         transient, auto-dismissing message is a Toast. A
         contextual surface anchored to a trigger (without a
         scrim, without focus trap) is a Dropdown or Popover.
-        Modal is reserved for surfaces that <em>must</em>
-        interrupt the underlying view: destructive
-        confirmations, focused tasks, and content that needs
-        a focus boundary to be usable.
+        An edge-anchored blocking surface — focus-trapping,
+        scroll-locking, dismissed through Esc, backdrop, or the
+        close button — is a Drawer, documented on
+        <a href="III-07-side-panel.html">III-07</a> alongside
+        Side Panel. Modal here is reserved for surfaces that
+        <em>must</em> interrupt the underlying view from the
+        centre: destructive confirmations, focused tasks, and
+        content that needs a focus boundary to be usable.
       </p>
     </div>
 
@@ -198,15 +200,18 @@
     </header>
 
     <p class="section-lede reveal">
-      Every modal resolves into the same vertical shell:
-        a backdrop (<code>.modal</code>), a surface
-        (<code>.modal__surface</code>), a header
-        (<code>.modal__header</code>) carrying the title and
-        the dismiss control, a body
-        (<code>.modal__body</code>), and a footer
-        (<code>.modal__footer</code>) for actions. Variants
-        differ only in which slots they expose and how the
-        surface is anchored on the viewport.
+      A modal is a Card with an envelope around it. The interior
+      — the slot structure, the eyebrow + title + description +
+      action-row patterns, and the glass surface itself — is the
+      standard Card pattern from
+      <a href="III-05-cards.html">III-05</a>. What makes this a
+      modal is the envelope: the backdrop scrim that interrupts
+      the parent view, the viewport-edge constraints that keep
+      the surface readable, the size cap that forces the body to
+      scroll when content overflows, and the dismiss contract
+      that ties focus capture, scroll lock, and the three exit
+      verbs together. The anatomy below documents the envelope.
+      For the interior, see Card.
     </p>
 
     <p class="usage-note reveal">
@@ -261,23 +266,49 @@
 
       <dl class="legend">
         <dt>.modal</dt>
-        <dd>The backdrop layer. Owns the scrim, the light-dismiss target, and the entry/exit fade. Fixed-position; dismissed by removing <code>.is-open</code>.</dd>
+        <dd>The backdrop. Owns the scrim colour, the blur tier, the
+          click-to-dismiss target, and the entry/exit fade.
+          Fixed-position; dismissal toggles <code>.is-open</code> on
+          this element.</dd>
 
         <dt>.modal__surface</dt>
-        <dd>The dialog box. Owns shape, max-width (size token), max-height cap, and the slide+scale entry transform.</dd>
-
-        <dt>.modal__header</dt>
-        <dd>Title region. Composes <code>.modal__eyebrow</code>, <code>.modal__title</code>, <code>.modal__description</code>, and the trailing <code>.modal__close</code>. Add <code>.has-icon</code> when a leading <code>.modal__icon</code> is present.</dd>
-
-        <dt>.modal__body</dt>
-        <dd>Primary content slot. Independently scrollable when content overflows the surface height cap.</dd>
-
-        <dt>.modal__footer</dt>
-        <dd>Action region. Right-aligned by convention; up to three actions plus a left-aligned <code>.modal__footer-aux</code> for tertiary links.</dd>
+        <dd>The envelope around the card. Owns max-width per size
+          token (<code>--modal-{xs|sm|md|lg|xl}-width</code>), the
+          max-height cap (<code>--modal-max-height</code>:
+          <code>min(86vh, 720px)</code>) that forces the body to
+          scroll on overflow, the viewport-edge gutters, the centred
+          anchor, and the slide+scale entry transform.</dd>
 
         <dt>.modal__close</dt>
-        <dd>Always last in the header DOM order. Wires to <code>data-modal-close</code> for the demo behaviour on this page.</dd>
+        <dd>The dismiss affordance. Always last in header DOM order,
+          always present — the close button is the explicit exit
+          verb. Esc and backdrop are implicit conveniences and may
+          be suppressed for high-stakes confirmations
+          (<code>data-modal-static</code>); the close button is
+          not.</dd>
       </dl>
+
+      <p class="dialog-anatomy__lineage">
+        <strong>Interior — from Card (III-05).</strong>
+        The slot structure inside the envelope follows Card's
+        pattern; modal scopes its own BEM names
+        (<code>.modal__*</code>) so it can carry its own padding
+        and typography tokens without affecting Card. Slot
+        reference below.
+      </p>
+    </div>
+
+    <div class="bem-key reveal" aria-label="Modal interior slot reference">
+      <span class="bem-key__head">Interior slots — same pattern as Card · III-05</span>
+      <ul class="bem-key__list">
+        <li><code>.modal__header</code><span>title region wrapper</span></li>
+        <li><code>.modal__eyebrow</code><span>category label above the title</span></li>
+        <li><code>.modal__title</code><span>required; resolves aria-labelledby</span></li>
+        <li><code>.modal__description</code><span>optional consequence line under the title</span></li>
+        <li><code>.modal__body</code><span>primary content; scrolls inside the height cap</span></li>
+        <li><code>.modal__footer</code><span>action row, right-aligned</span></li>
+        <li><code>.modal__footer-aux</code><span>left-aligned tertiary link slot</span></li>
+      </ul>
     </div>
   </section>
 
@@ -299,7 +330,6 @@
       <button type="button" class="btn btn--secondary btn--md" data-modal-open="live-dialogue">Open dialogue</button>
       <button type="button" class="btn btn--secondary btn--md" data-modal-open="live-form">Open form</button>
       <button type="button" class="btn btn--secondary btn--md" data-modal-open="live-scrollable">Open scrollable</button>
-      <button type="button" class="btn btn--secondary btn--md" data-modal-open="live-drawer">Open drawer</button>
     </div>
   </section>
 
@@ -311,12 +341,11 @@
     </header>
 
     <p class="section-lede reveal">
-      The dialogue is the everyday yes/no surface. The title
-        carries the question, the optional description states
-        the consequence, and the footer carries the two
-        actions. Used when the user must answer before the
-        flow continues — a reassignment, a sign-off, a
-        destructive confirmation.
+      The envelope trims to header + footer — no body slot. The
+      title carries the question, the optional description states
+      the consequence, the footer carries the two actions. Used
+      when the user must answer before the flow continues: a
+      reassignment, a sign-off, a destructive confirmation.
     </p>
 
     <p class="usage-note reveal">
@@ -363,12 +392,11 @@
     </header>
 
     <p class="section-lede reveal">
-      The form dialog hosts a small, self-contained data
-        entry task — a quick capture, an inline edit, a
-        single-step record. The body slot accepts any form
-        fields from the Form component; the footer carries
-        the submit/cancel pair. Surfaces longer than ~6
-        fields belong on a dedicated route, not in a modal.
+      The envelope is the full vertical: header + body + footer.
+      The body hosts a small, self-contained data-entry task — a
+      quick capture, an inline edit, a single-step record.
+      Surfaces longer than ~6 fields belong on a dedicated route,
+      not in a modal.
     </p>
 
     <p class="usage-note reveal">
@@ -435,14 +463,14 @@
     </header>
 
     <p class="section-lede reveal">
-      <code>.modal--scrollable</code> pins the header and
-        footer while the body scrolls inside the surface
-        height cap. Reserved for content the user must
-        navigate (terms, change-log, long lists) where
-        losing the dismiss control on scroll is incorrect.
-        The seam between the sticky slots and the scrolling
-        content is drawn by a hairline divider so the slot
-        boundaries stay legible.
+      The envelope pins the header and footer; the body scrolls
+      inside the surface's height cap
+      (<code>--modal-max-height</code>). Reserved for content the
+      user must navigate top-to-bottom in a single sitting —
+      terms, change-log, audit trail — where losing the dismiss
+      control on scroll is incorrect. The seam between sticky
+      slots and scrolling content is drawn by a hairline divider
+      so the slot boundaries stay legible.
     </p>
 
     <p class="usage-note reveal">
@@ -479,110 +507,6 @@
           <button type="button" class="btn btn--secondary btn--md">Decline</button>
           <button type="button" class="btn btn--cta btn--md">I agree</button>
         </footer>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========================== DRAWER ========================== -->
-  <section class="chunk" id="modal-drawer">
-    <header class="chunk-head reveal">
-      <span class="num-tag">05 / Modal — Drawer</span>
-      <h2 class="text-display-sm">Drawer.</h2>
-    </header>
-
-    <p class="section-lede reveal">
-      An edge-anchored modal pinned to one side of the
-        viewport instead of centered. Reserved for
-        supplementary context that benefits from staying
-        visible against the host page — filters, settings,
-        a detail panel — while still trapping focus inside
-        the panel until it is dismissed.
-    </p>
-
-    <p class="usage-note reveal">
-      <strong>The right edge is the convention for content reveals.</strong>
-      Left-anchored drawers are reserved for navigation or
-      workspace switchers. Sheets anchored to the bottom or
-      top edge are not part of this page; promote those
-      flows to the relevant component (Sidebar for
-      navigation, Toast for system interrupts).
-    </p>
-
-    <p class="usage-note reveal">
-      <strong>A drawer is still a modal.</strong> It traps
-      focus, locks body scroll, and dismisses through the
-      close button, backdrop, or <code>Escape</code>. A
-      surface that does not do all three is a Side Panel
-      (III-07), not a drawer.
-    </p>
-
-    <div class="dialog-preview is-drawer-right is-glass reveal">
-      <div class="dialog-preview__ambient" aria-hidden="true"></div>
-      <div class="dialog-preview__surface" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
-        <header class="modal__header">
-          <div class="modal__heading">
-            <p class="modal__eyebrow">Filters</p>
-            <h3 class="modal__title" id="drawer-title">Caseload · 124 records</h3>
-          </div>
-          <button type="button" class="modal__close" aria-label="Close drawer">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-          </button>
-        </header>
-        <div class="modal__body">
-          <div class="dialog-content-stub">
-            <div class="field-stub"><span class="lbl">Species</span><span class="ctrl">All species</span></div>
-            <div class="field-stub"><span class="lbl">Owner</span><span class="ctrl is-placeholder">Anyone</span></div>
-            <div class="field-stub"><span class="lbl">Status</span><span class="ctrl">Open · awaiting review</span></div>
-            <div class="field-stub"><span class="lbl">Updated</span><span class="ctrl">Last 7 days</span></div>
-          </div>
-        </div>
-        <footer class="modal__footer">
-          <span class="modal__footer-aux"><a href="#">Reset</a></span>
-          <button type="button" class="btn btn--cta btn--md">Apply</button>
-        </footer>
-      </div>
-    </div>
-
-    <p class="usage-note reveal">
-      <strong>The slide is the drawer's primary affordance.</strong>
-      The surface enters from the right edge and returns the
-      same way on dismissal. The toggle preview below holds
-      the animation inside the section so the slide reads
-      end-to-end without the dialog taking over the viewport.
-    </p>
-
-    <div class="drawer-toggle reveal">
-      <div class="drawer-toggle__controls">
-        <span class="drawer-toggle__label">In-section slide preview</span>
-        <button type="button" class="btn btn--secondary btn--sm" data-drawer-toggle aria-expanded="false" aria-controls="drawer-toggle-stage">
-          <span class="drawer-toggle__action">Slide drawer in</span>
-        </button>
-      </div>
-      <div class="dialog-preview is-drawer-right is-glass drawer-toggle__stage" id="drawer-toggle-stage">
-        <div class="dialog-preview__ambient" aria-hidden="true"></div>
-        <div class="dialog-preview__surface" role="dialog" aria-modal="false" aria-labelledby="drawer-toggle-title">
-          <header class="modal__header">
-            <div class="modal__heading">
-              <p class="modal__eyebrow">Filters</p>
-              <h3 class="modal__title" id="drawer-toggle-title">Caseload · 124 records</h3>
-            </div>
-            <button type="button" class="modal__close" data-drawer-toggle-close aria-label="Close drawer">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-            </button>
-          </header>
-          <div class="modal__body">
-            <div class="dialog-content-stub">
-              <div class="field-stub"><span class="lbl">Species</span><span class="ctrl">All species</span></div>
-              <div class="field-stub"><span class="lbl">Owner</span><span class="ctrl is-placeholder">Anyone</span></div>
-              <div class="field-stub"><span class="lbl">Status</span><span class="ctrl">Open · awaiting review</span></div>
-              <div class="field-stub"><span class="lbl">Updated</span><span class="ctrl">Last 7 days</span></div>
-            </div>
-          </div>
-          <footer class="modal__footer">
-            <span class="modal__footer-aux"><a href="#" data-drawer-toggle-close>Reset</a></span>
-            <button type="button" class="btn btn--cta btn--md" data-drawer-toggle-close>Apply</button>
-          </footer>
-        </div>
       </div>
     </div>
   </section>
@@ -703,33 +627,6 @@
   </div>
 </div>
 
-<!-- Drawer (right) -->
-<div class="modal modal--drawer-right modal--glass" id="live-drawer" role="dialog" aria-modal="true" aria-labelledby="live-drawer-title" aria-hidden="true">
-  <div class="modal__surface">
-    <header class="modal__header">
-      <div class="modal__heading">
-        <p class="modal__eyebrow">Filters</p>
-        <h3 class="modal__title" id="live-drawer-title">Caseload · 124 records</h3>
-      </div>
-      <button type="button" class="modal__close" data-modal-close aria-label="Close drawer">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-      </button>
-    </header>
-    <div class="modal__body">
-      <div class="dialog-content-stub">
-        <div class="field-stub"><span class="lbl">Species</span><span class="ctrl">All species</span></div>
-        <div class="field-stub"><span class="lbl">Owner</span><span class="ctrl is-placeholder">Anyone</span></div>
-        <div class="field-stub"><span class="lbl">Status</span><span class="ctrl">Open · awaiting review</span></div>
-        <div class="field-stub"><span class="lbl">Updated</span><span class="ctrl">Last 7 days</span></div>
-      </div>
-    </div>
-    <footer class="modal__footer">
-      <span class="modal__footer-aux"><a href="#" data-modal-close>Reset</a></span>
-      <button type="button" class="btn btn--cta btn--md" data-modal-close>Apply</button>
-    </footer>
-  </div>
-</div>
-
 <!-- ========================== TOAST · COPY-CONFIRMATION SNACKBAR ========================== -->
 <div class="toast toast--snackbar" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
@@ -829,11 +726,6 @@ const MODAL_TOKENS = [
     ['--modal-tone-critical-fg',     'var(--text-critical)'],
     ['--modal-tone-critical-icon',   'var(--text-critical)'],
     ['--modal-tone-critical-border', 'var(--border-critical)'],
-  ]},
-  { group: 'Modal · Drawer & sheet', tokens: [
-    ['--modal-drawer-width',     '420px'],
-    ['--modal-drawer-width-lg',  '560px'],
-    ['--modal-sheet-height',     'min(72vh, 640px)'],
   ]},
   { group: 'Modal · Animation', tokens: [
     ['--modal-anim-duration',    '260ms'],
@@ -990,33 +882,6 @@ function initModalController() {
 }
 
 /* =========================================================
-   DRAWER TOGGLE — in-section slide preview
-   Toggles .is-open on the contained drawer stage so the
-   slide-in animation reads inside the page (not behind the
-   global overlay).
-   ========================================================= */
-function initDrawerToggle() {
-  const trigger = document.querySelector('[data-drawer-toggle]');
-  const stage   = document.getElementById('drawer-toggle-stage');
-  if (!trigger || !stage) return;
-  const label = trigger.querySelector('.drawer-toggle__action');
-  const setOpen = (open) => {
-    stage.classList.toggle('is-open', open);
-    trigger.setAttribute('aria-expanded', String(open));
-    if (label) label.textContent = open ? 'Slide drawer out' : 'Slide drawer in';
-  };
-  trigger.addEventListener('click', () => {
-    setOpen(!stage.classList.contains('is-open'));
-  });
-  stage.querySelectorAll('[data-drawer-toggle-close]').forEach(el => {
-    el.addEventListener('click', (e) => {
-      e.preventDefault();
-      setOpen(false);
-    });
-  });
-}
-
-/* =========================================================
    REVEAL ON SCROLL
    ========================================================= */
 function initReveal() {
@@ -1042,7 +907,6 @@ function initReveal() {
 document.addEventListener('DOMContentLoaded', () => {
   renderTokenTable();
   initModalController();
-  initDrawerToggle();
   initReveal();
 });
 </script>

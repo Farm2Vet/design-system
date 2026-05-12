@@ -148,6 +148,19 @@ body[data-page="III-06-modal"] .modal {
     line-height: var(--line-height-body);
     margin: 0 0 var(--space-tier-5);
 }
+.dialog-anatomy__lineage {
+    grid-column: 1 / -1;
+    margin: var(--space-tier-3) 0 0;
+    padding-top: var(--space-tier-5);
+    border-top: 1px solid var(--border-default-subtle);
+    font-size: var(--text-sm);
+    color: var(--text-default-subtle);
+    line-height: var(--line-height-body);
+}
+.dialog-anatomy__lineage strong {
+    color: var(--text-default);
+    margin-right: var(--space-tier-7);
+}
 
 /* =========================================================
    TRIGGER ROW — buttons that open live dialogs
@@ -257,49 +270,49 @@ body[data-page="III-06-modal"] .modal.modal--glass .modal__surface {
 }
 
 /* =========================================================
-   DRAWER TOGGLE — in-section open/close preview
-   A controlled stage that demonstrates the right-anchored
-   drawer's slide-in / slide-out animation without taking
-   over the viewport. Surface starts off-stage to the right;
-   .is-open translates it back to flush.
+   BEM KEY — compact interior-slot reference
+   A scannable list of modal interior slot names, used in
+   the anatomy section after .dialog-anatomy. Carries no
+   re-documentation of each slot; the descriptions are
+   one-liners so the developer recognises what a slot is
+   without bouncing to Card · III-05.
    ========================================================= */
-.drawer-toggle {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-tier-5);
+.bem-key {
+    margin-top: var(--space-tier-2);
+    padding: var(--space-tier-4) var(--space-tier-3);
+    border-radius: var(--radius-lg);
+    border: var(--border-width-base) solid var(--border-default-subtle);
+    background: var(--background-default-subtle);
 }
-.drawer-toggle__controls {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-tier-5);
-    flex-wrap: wrap;
-}
-.drawer-toggle__label {
+.bem-key__head {
+    display: block;
     font-family: var(--font-mono);
     font-size: var(--text-micro);
     letter-spacing: var(--letter-spacing-eyebrow);
     text-transform: uppercase;
     color: var(--text-default-minimal);
+    margin-bottom: var(--space-tier-5);
 }
-/* The base .dialog-preview__surface rule pins transform and
-   opacity with !important so the static previews always read.
-   The toggle stage needs to defeat that so the slide animates. */
-.drawer-toggle__stage .dialog-preview__surface {
-    transform: translateX(calc(100% + var(--space-tier-2))) !important;
-    opacity: 0 !important;
-    transition: transform var(--modal-anim-duration, 260ms) var(--modal-anim-easing, cubic-bezier(.2, .8, .2, 1)),
-                opacity var(--modal-anim-duration, 260ms) var(--modal-anim-easing, cubic-bezier(.2, .8, .2, 1));
+.bem-key__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-tier-6) var(--space-tier-3);
 }
-.drawer-toggle__stage.is-open .dialog-preview__surface {
-    transform: translateX(0) !important;
-    opacity: 1 !important;
+.bem-key__list li {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tier-7);
+    font-size: var(--text-sm);
+    color: var(--text-default-subtle);
+    line-height: var(--line-height-body);
 }
-@media (prefers-reduced-motion: reduce) {
-    .drawer-toggle__stage .dialog-preview__surface {
-        transition: opacity var(--modal-anim-duration, 260ms) linear !important;
-        transform: none !important;
-    }
+.bem-key__list code {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--text-primary-strong);
 }
 
 /* =========================================================

@@ -411,9 +411,14 @@
    ========================================================= */
 .global-nav--marketing .global-nav__list {
     /* Slightly looser internal gap so CTAs read as buttons
-       rather than as crowded link siblings. The pill chrome
-       itself is unchanged. */
+       rather than as crowded link siblings. Extra horizontal
+       inset so the trailing CTA chip's filled edge doesn't
+       crowd the pill's rounded corner; the default list
+       padding (4px) is fine for unfilled links but reads as
+       cramped against a solid button. */
     gap: var(--space-gap-snug);
+    padding-left:  var(--space-tier-6);
+    padding-right: var(--space-tier-6);
 }
 .global-nav--marketing .global-nav__list a:not(.btn),
 .global-nav--marketing .global-nav__list button:not(.btn) {

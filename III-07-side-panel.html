@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
@@ -15,53 +15,22 @@
 <link rel="stylesheet" href="styles/typography.css" />
 <link rel="stylesheet" href="styles/shell.css" />
 <link rel="stylesheet" href="styles/global-nav.css" />
-<!-- Reuse: usage-note pattern + .card-callout -->
+<link rel="stylesheet" href="styles/button.css" />
+<link rel="stylesheet" href="styles/modal.css" />
+<link rel="stylesheet" href="styles/toast.css" />
+<!-- Reuse: dialog-preview infrastructure (.dialog-preview, glass
+     surface, edge-anchored variants, content stub) -->
+<link rel="stylesheet" href="styles/page-III-06.css" />
+<!-- Page-specific layout -->
+<link rel="stylesheet" href="styles/page-III-07.css" />
+<!-- Reuse: usage-note pattern + token-table styling + .card-callout -->
 <link rel="stylesheet" href="styles/page-III-03.css" />
+<link rel="stylesheet" href="styles/page-III-02.css" />
 <link rel="stylesheet" href="styles/page-III-05.css" />
 
+<!-- Shared behaviour: scroll-spy highlights the in-view TOC link -->
+<script src="scripts/scroll-spy.js" defer></script>
 <script src="scripts/global-nav.js" defer></script>
-
-<style>
-  .placeholder-card {
-    margin-top: var(--spacing-12x);
-    padding: var(--spacing-8x);
-    background: var(--background-default-subtle);
-    border: var(--border-width-base) solid var(--border-default);
-    border-radius: var(--radius-lg);
-  }
-  .placeholder-card h3 {
-    font-family: var(--font-mono);
-    font-size: var(--text-eyebrow);
-    letter-spacing: var(--letter-spacing-eyebrow);
-    text-transform: uppercase;
-    color: var(--text-default-minimal);
-    margin: 0 0 var(--spacing-4x);
-  }
-  .placeholder-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  .placeholder-list li {
-    display: grid;
-    grid-template-columns: 16ch 1fr;
-    column-gap: var(--spacing-6x);
-    padding: var(--spacing-3x) 0;
-    border-top: var(--border-width-base) solid var(--border-default);
-    font-size: var(--text-body);
-    color: var(--text-default);
-  }
-  .placeholder-list li:first-child { border-top: none; }
-  .placeholder-list li strong {
-    font-family: var(--font-mono);
-    font-size: var(--text-eyebrow);
-    letter-spacing: var(--letter-spacing-eyebrow);
-    text-transform: uppercase;
-    color: var(--text-primary-strong);
-    font-weight: var(--font-weight-medium);
-    padding-top: var(--spacing-half);
-  }
-</style>
 
 </head>
 <body data-page="III-07-side-panel">
@@ -159,42 +128,448 @@
 </header>
 <main class="shell" id="top">
 
+  <!-- ========================== HERO ========================== -->
   <section class="hero">
     <div>
-      <h1 class="text-display">
+      <h1 class="text-display reveal">
         <span class="num">III-07 / Components</span>
         Side Panel.
       </h1>
     </div>
     <div>
-      <p class="lede">Reserved page. The slide-in side panel component will document its anatomy, size scale, content slots, edge-attachment options, and dismiss behaviour once authored. Until then, use a Modal Dialog (Section 06) for blocking interruptions or a Toast (Section 08) for transient confirmations.</p>
+      <p class="lede reveal">
+        Side Panel covers the edge-anchored surfaces. The
+        variant documented here is the <strong>drawer</strong>:
+        a focus-trapping, scroll-locking modal pinned to a
+        viewport edge instead of the centre — the edge-anchored
+        counterpart to the centered modals on
+        <a href="III-06-modal.html">III-06</a>. A future
+        revision will add the non-blocking, in-flow side panel
+        for supplementary context that stays anchored without a
+        scrim.
+      </p>
     </div>
 
-    <dl class="meta-strip">
-      <div><dt>Status</dt><dd>Placeholder</dd></div>
-      <div><dt>Authored</dt><dd>—</dd></div>
-      <div><dt>Tokens</dt><dd>—</dd></div>
-      <div><dt>Variants</dt><dd>—</dd></div>
+    <dl class="meta-strip reveal">
+      <div><dt>Variants</dt><dd>1</dd></div>
+      <div><dt>Surface</dt><dd>Glass</dd></div>
+      <div><dt>Anchors</dt><dd>Edge</dd></div>
     </dl>
   </section>
 
-  <div class="placeholder-card">
-    <h3>Reserved scope · expected sub-areas</h3>
-    <ul class="placeholder-list">
-      <li><strong>Anatomy</strong><span>Header, body, footer, scroll mechanics.</span></li>
-      <li><strong>Sizes</strong><span>Three width scales aligned to the form-input width grid.</span></li>
-      <li><strong>Edges</strong><span>Left and right attachment; bottom sheet variant.</span></li>
-      <li><strong>Behaviour</strong><span>Open animation, focus trap, dismiss rules.</span></li>
-    </ul>
-  </div>
+  <!-- ========================== ARCHITECTURAL CALLOUT ========================== -->
+  <section class="chunk" style="padding-top: var(--spacing-8x); padding-bottom: 0;">
+    <div class="card-callout reveal" role="note">
+      <span class="label">Architectural note · the drawer is a modal</span>
+      <p>
+        <strong>The drawer is the edge-anchored blocking
+        surface.</strong> It traps focus, locks body scroll,
+        and dismisses through the close button, backdrop, or
+        <code>Escape</code> — the same dismiss contract as the
+        centered modals on
+        <a href="III-06-modal.html">III-06</a>. The only thing
+        that differs is the surface anchor: instead of centring
+        on the viewport, the drawer pins to one edge. A surface
+        that does not do all three is a non-modal Side Panel,
+        not a drawer.
+      </p>
+    </div>
+  </section>
 
+  <!-- ========================== ANATOMY ========================== -->
+  <section class="chunk" id="drawer-anatomy">
+    <header class="chunk-head reveal">
+      <span class="num-tag">01 / Drawer — Anatomy</span>
+      <h2 class="text-display-sm">Anatomy.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      A drawer is a modal with its envelope re-anchored to a
+      viewport edge instead of the centre. The interior — slot
+      structure, eyebrow + title + description + action-row
+      patterns, and the glass surface — is the standard Card
+      pattern from <a href="III-05-cards.html">III-05</a> and
+      is identical to the centered modals on
+      <a href="III-06-modal.html">III-06</a>. What makes this a
+      drawer is the envelope: a full-height surface anchored to
+      one edge, with the slide-in transform applied along the
+      orthogonal axis on open.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>The right edge is the convention for content reveals.</strong>
+      Left-anchored drawers are reserved for navigation or
+      workspace switchers. Sheets anchored to the bottom or
+      top edge are not part of this page; promote those
+      flows to the relevant component (Sidebar for
+      navigation, Toast for system interrupts).
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>A drawer is still a modal.</strong> It traps
+      focus, locks body scroll, and dismisses through the
+      close button, backdrop, or <code>Escape</code>. A
+      surface that does not do all three is a non-modal Side
+      Panel, not a drawer.
+    </p>
+
+    <div class="dialog-preview is-drawer-right is-glass reveal">
+      <div class="dialog-preview__ambient" aria-hidden="true"></div>
+      <div class="dialog-preview__surface" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+        <header class="modal__header">
+          <div class="modal__heading">
+            <p class="modal__eyebrow">Filters</p>
+            <h3 class="modal__title" id="drawer-title">Caseload · 124 records</h3>
+          </div>
+          <button type="button" class="modal__close" aria-label="Close drawer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          </button>
+        </header>
+        <div class="modal__body">
+          <div class="dialog-content-stub">
+            <div class="field-stub"><span class="lbl">Species</span><span class="ctrl">All species</span></div>
+            <div class="field-stub"><span class="lbl">Owner</span><span class="ctrl is-placeholder">Anyone</span></div>
+            <div class="field-stub"><span class="lbl">Status</span><span class="ctrl">Open · awaiting review</span></div>
+            <div class="field-stub"><span class="lbl">Updated</span><span class="ctrl">Last 7 days</span></div>
+          </div>
+        </div>
+        <footer class="modal__footer">
+          <span class="modal__footer-aux"><a href="#">Reset</a></span>
+          <button type="button" class="btn btn--cta btn--md">Apply</button>
+        </footer>
+      </div>
+    </div>
+
+    <p class="usage-note reveal">
+      <strong>The slide is the drawer's primary affordance.</strong>
+      The surface enters from the right edge and returns the
+      same way on dismissal. The toggle preview below holds
+      the animation inside the section so the slide reads
+      end-to-end without the dialog taking over the viewport.
+    </p>
+
+    <div class="drawer-toggle reveal">
+      <div class="drawer-toggle__controls">
+        <span class="drawer-toggle__label">In-section slide preview</span>
+        <button type="button" class="btn btn--secondary btn--sm" data-drawer-toggle aria-expanded="false" aria-controls="drawer-toggle-stage">
+          <span class="drawer-toggle__action">Slide drawer in</span>
+        </button>
+      </div>
+      <div class="dialog-preview is-drawer-right is-glass drawer-toggle__stage" id="drawer-toggle-stage">
+        <div class="dialog-preview__ambient" aria-hidden="true"></div>
+        <div class="dialog-preview__surface" role="dialog" aria-modal="false" aria-labelledby="drawer-toggle-title">
+          <header class="modal__header">
+            <div class="modal__heading">
+              <p class="modal__eyebrow">Filters</p>
+              <h3 class="modal__title" id="drawer-toggle-title">Caseload · 124 records</h3>
+            </div>
+            <button type="button" class="modal__close" data-drawer-toggle-close aria-label="Close drawer">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+          </header>
+          <div class="modal__body">
+            <div class="dialog-content-stub">
+              <div class="field-stub"><span class="lbl">Species</span><span class="ctrl">All species</span></div>
+              <div class="field-stub"><span class="lbl">Owner</span><span class="ctrl is-placeholder">Anyone</span></div>
+              <div class="field-stub"><span class="lbl">Status</span><span class="ctrl">Open · awaiting review</span></div>
+              <div class="field-stub"><span class="lbl">Updated</span><span class="ctrl">Last 7 days</span></div>
+            </div>
+          </div>
+          <footer class="modal__footer">
+            <span class="modal__footer-aux"><a href="#" data-drawer-toggle-close>Reset</a></span>
+            <button type="button" class="btn btn--cta btn--md" data-drawer-toggle-close>Apply</button>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================== LIVE DEMO ========================== -->
+  <section class="chunk" id="drawer-live">
+    <header class="chunk-head reveal">
+      <span class="num-tag">Live demo</span>
+      <h2 class="text-display-sm">Demo.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      Trigger the drawer below to see the live focus-trap,
+      scroll-lock, slide animation, and dismiss behaviour.
+      Press <code>Escape</code> or click the backdrop to close.
+    </p>
+
+    <div class="dialog-triggers reveal">
+      <button type="button" class="btn btn--secondary btn--md" data-modal-open="live-drawer">Open drawer</button>
+    </div>
+  </section>
+
+  <!-- ========================== TOKENS ========================== -->
+  <section class="chunk" id="drawer-tokens">
+    <header class="chunk-head reveal">
+      <span class="num-tag">02 / Drawer — Component tokens</span>
+      <h2 class="text-display-sm">Tokens.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      Drawer-specific tokens — the off-axis size caps. Every
+      other modal token (sizes, colours, animation, focus
+      ring) inherits from the shared modal layer documented on
+      <a href="III-06-modal.html">III-06</a>.
+    </p>
+
+    <table class="token-table reveal" aria-label="Drawer component tokens">
+      <thead>
+        <tr>
+          <th>Component token</th>
+          <th>References</th>
+          <th>Resolves to</th>
+          <th>Preview</th>
+        </tr>
+      </thead>
+      <tbody id="drawerTokenTable"></tbody>
+    </table>
+  </section>
+
+  <!-- ========================== FOOTER ========================== -->
   <footer>
     <span class="sigil">Farm2Vet — cultivated intelligence, since 2024.</span>
-    <a href="design-system-v1.html">← Design system home</a>
-    <span>Section 07 / Components</span>
+    <a href="III-06-modal.html">← Section 06 / Modal Dialog</a>
+    <span>End of Section 07 · Side Panel</span>
   </footer>
 
 </main>
+
+<!-- ========================================================
+     LIVE MODAL INSTANCES
+     ======================================================== -->
+
+<!-- Drawer (right) -->
+<div class="modal modal--drawer-right modal--glass" id="live-drawer" role="dialog" aria-modal="true" aria-labelledby="live-drawer-title" aria-hidden="true">
+  <div class="modal__surface">
+    <header class="modal__header">
+      <div class="modal__heading">
+        <p class="modal__eyebrow">Filters</p>
+        <h3 class="modal__title" id="live-drawer-title">Caseload · 124 records</h3>
+      </div>
+      <button type="button" class="modal__close" data-modal-close aria-label="Close drawer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </header>
+    <div class="modal__body">
+      <div class="dialog-content-stub">
+        <div class="field-stub"><span class="lbl">Species</span><span class="ctrl">All species</span></div>
+        <div class="field-stub"><span class="lbl">Owner</span><span class="ctrl is-placeholder">Anyone</span></div>
+        <div class="field-stub"><span class="lbl">Status</span><span class="ctrl">Open · awaiting review</span></div>
+        <div class="field-stub"><span class="lbl">Updated</span><span class="ctrl">Last 7 days</span></div>
+      </div>
+    </div>
+    <footer class="modal__footer">
+      <span class="modal__footer-aux"><a href="#" data-modal-close>Reset</a></span>
+      <button type="button" class="btn btn--cta btn--md" data-modal-close>Apply</button>
+    </footer>
+  </div>
+</div>
+
+<!-- ========================== TOAST · COPY-CONFIRMATION SNACKBAR ========================== -->
+<div class="toast toast--snackbar" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<script>
+/* =========================================================
+   COMPONENT TOKEN DATA — Drawer
+   Only the drawer-specific off-axis size caps live here;
+   other modal tokens (sizes, colours, animation, focus
+   ring) are documented on III-06.
+   ========================================================= */
+const DRAWER_TOKENS = [
+  { group: 'Drawer · off-axis size', tokens: [
+    ['--modal-drawer-width',     '420px'],
+    ['--modal-drawer-width-lg',  '560px'],
+    ['--modal-sheet-height',     'min(72vh, 640px)'],
+  ]},
+];
+
+/* =========================================================
+   RENDER — Drawer token table
+   ========================================================= */
+function resolveCss(varName) {
+  const styles = getComputedStyle(document.documentElement);
+  return styles.getPropertyValue(varName).trim();
+}
+function isColorish(value) {
+  if (!value) return false;
+  const v = value.toLowerCase();
+  return v.startsWith('#') ||
+         v.startsWith('rgb') ||
+         v.startsWith('hsl') ||
+         v.startsWith('color-mix') ||
+         v.startsWith('linear-gradient') ||
+         v.startsWith('radial-gradient') ||
+         v === 'transparent' ||
+         /^[a-z]+$/.test(v);
+}
+function renderTokenTable() {
+  const tbody = document.getElementById('drawerTokenTable');
+  if (!tbody) return;
+  let html = '';
+  DRAWER_TOKENS.forEach(group => {
+    html += `<tr class="group-row"><td colspan="4">${group.group}</td></tr>`;
+    group.tokens.forEach(([name, ref]) => {
+      const resolved = resolveCss(name) || '—';
+      const isColor = isColorish(resolved);
+      const chip = isColor
+        ? `<span class="chip" style="background:${resolved}"></span>`
+        : `<span class="chip" style="background: repeating-linear-gradient(45deg, var(--neutral-100) 0 6px, var(--neutral-50) 6px 12px); opacity:.6"></span>`;
+      html += `
+        <tr>
+          <td class="tk-name">${name}</td>
+          <td class="tk-ref">${ref.replace(/</g,'&lt;')}</td>
+          <td class="tk-resolved">${resolved.length > 60 ? resolved.slice(0,57)+'…' : resolved}</td>
+          <td class="tk-swatch">${chip}</td>
+        </tr>`;
+    });
+  });
+  tbody.innerHTML = html;
+}
+
+/* =========================================================
+   MODAL CONTROLLER — open / close / focus trap / scroll lock
+   Mirrors the controller on III-06.
+   ========================================================= */
+const FOCUSABLE_SELECTOR = [
+  'a[href]',
+  'button:not([disabled])',
+  'input:not([disabled]):not([type="hidden"])',
+  'select:not([disabled])',
+  'textarea:not([disabled])',
+  '[tabindex]:not([tabindex="-1"])'
+].join(',');
+
+let lastTrigger = null;
+
+function openModal(id) {
+  const modal = document.getElementById(id);
+  if (!modal) return;
+  lastTrigger = document.activeElement;
+  modal.setAttribute('aria-hidden', 'false');
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => modal.classList.add('is-open'));
+  });
+  document.body.classList.add('has-modal-open');
+  const preferred = modal.querySelector('[data-modal-default-focus]');
+  const focusables = modal.querySelectorAll(FOCUSABLE_SELECTOR);
+  const target = preferred || focusables[0];
+  if (target) setTimeout(() => target.focus(), 60);
+}
+
+function closeModal(modal) {
+  if (!modal || !modal.classList.contains('is-open')) return;
+  modal.classList.remove('is-open');
+  modal.setAttribute('aria-hidden', 'true');
+  setTimeout(() => {
+    if (!document.querySelector('.modal.is-open')) {
+      document.body.classList.remove('has-modal-open');
+    }
+    if (lastTrigger && typeof lastTrigger.focus === 'function') {
+      lastTrigger.focus();
+      lastTrigger = null;
+    }
+  }, 220);
+}
+
+function trapFocus(e) {
+  const modal = e.target.closest('.modal.is-open');
+  if (!modal) return;
+  if (e.key !== 'Tab') return;
+  const focusables = Array.from(modal.querySelectorAll(FOCUSABLE_SELECTOR))
+    .filter(el => !el.hasAttribute('disabled') && el.offsetParent !== null);
+  if (focusables.length === 0) return;
+  const first = focusables[0];
+  const last  = focusables[focusables.length - 1];
+  if (e.shiftKey && document.activeElement === first) {
+    e.preventDefault();
+    last.focus();
+  } else if (!e.shiftKey && document.activeElement === last) {
+    e.preventDefault();
+    first.focus();
+  }
+}
+
+function initModalController() {
+  document.querySelectorAll('[data-modal-open]').forEach(btn => {
+    btn.addEventListener('click', () => openModal(btn.dataset.modalOpen));
+  });
+  document.querySelectorAll('[data-modal-close]').forEach(btn => {
+    btn.addEventListener('click', () => closeModal(btn.closest('.modal')));
+  });
+  document.querySelectorAll('.modal').forEach(modal => {
+    modal.addEventListener('click', e => {
+      if (e.target !== modal) return;
+      if (modal.hasAttribute('data-modal-static')) return;
+      closeModal(modal);
+    });
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      const open = document.querySelector('.modal.is-open');
+      if (open && !open.hasAttribute('data-modal-static')) closeModal(open);
+    }
+    trapFocus(e);
+  });
+}
+
+/* =========================================================
+   DRAWER TOGGLE — in-section slide preview
+   ========================================================= */
+function initDrawerToggle() {
+  const trigger = document.querySelector('[data-drawer-toggle]');
+  const stage   = document.getElementById('drawer-toggle-stage');
+  if (!trigger || !stage) return;
+  const label = trigger.querySelector('.drawer-toggle__action');
+  const setOpen = (open) => {
+    stage.classList.toggle('is-open', open);
+    trigger.setAttribute('aria-expanded', String(open));
+    if (label) label.textContent = open ? 'Slide drawer out' : 'Slide drawer in';
+  };
+  trigger.addEventListener('click', () => {
+    setOpen(!stage.classList.contains('is-open'));
+  });
+  stage.querySelectorAll('[data-drawer-toggle-close]').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      setOpen(false);
+    });
+  });
+}
+
+/* =========================================================
+   REVEAL ON SCROLL
+   ========================================================= */
+function initReveal() {
+  const items = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    items.forEach(el => el.classList.add('in'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        en.target.classList.add('in');
+        io.unobserve(en.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(el => io.observe(el));
+}
+
+/* =========================================================
+   BOOT
+   ========================================================= */
+document.addEventListener('DOMContentLoaded', () => {
+  renderTokenTable();
+  initModalController();
+  initDrawerToggle();
+  initReveal();
+});
+</script>
 
 </body>
 </html>
