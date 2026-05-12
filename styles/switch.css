@@ -112,6 +112,16 @@
     gap: 0;
     padding: var(--_pad);
     cursor: default;
+    /* Override the inherited binary off-track tint with the
+       segmented-specific bright surface. The base .switch rule
+       above sets background/border-color for the binary variant;
+       the segmented variant has no "off" state, so it uses its
+       own component tokens. */
+    background:   var(--switch-segmented-track-bg);
+    border-color: var(--switch-segmented-track-border);
+}
+.switch.switch--segmented:hover {
+    background: var(--switch-segmented-track-bg);
 }
 
 .switch__indicator {

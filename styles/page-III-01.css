@@ -254,8 +254,13 @@ table.spec-table code {
     padding:    var(--spacing-half) var(--space-tier-7);
 }
 .component-preview {
-    min-width: 0;
-    overflow:  hidden;
+    min-width:      0;
+    /* Display tier uses --line-height-display (1.04). Clipping
+       overflow would crop descenders / ascenders on the wrapped
+       text-display sample; allow the cell to grow vertically and
+       let long samples wrap horizontally instead. */
+    overflow:       visible;
+    overflow-wrap:  anywhere;
 }
 .component-preview > * {
     margin-bottom: 0;

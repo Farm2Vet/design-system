@@ -143,11 +143,12 @@
     display: inline-flex;
     align-items: center;
     gap: var(--space-tier-7);
-    padding: var(--space-control-y-md) var(--space-control-x-sm);
-    font-family:    var(--font-mono);
-    font-size:      var(--text-eyebrow);
-    letter-spacing: var(--letter-spacing-wide);
-    text-transform: uppercase;
+    padding: var(--space-control-y-md) var(--space-control-x-md);
+    font-family:    var(--font-sans);
+    font-size:      var(--text-body-sm);
+    letter-spacing: 0;
+    text-transform: none;
+    font-weight:    var(--font-weight-medium);
     color:          var(--text-default);
     background:     transparent;
     border:         none;
@@ -199,11 +200,12 @@
 .global-nav__chip {
     display: inline-flex;
     align-items: center;
-    padding: var(--space-control-y-md) var(--space-control-x-sm);
-    font-family:    var(--font-mono);
-    font-size:      var(--text-eyebrow);
-    letter-spacing: var(--letter-spacing-wide);
-    text-transform: uppercase;
+    padding: var(--space-control-y-md) var(--space-control-x-md);
+    font-family:    var(--font-sans);
+    font-size:      var(--text-body-sm);
+    letter-spacing: 0;
+    text-transform: none;
+    font-weight:    var(--font-weight-medium);
     color:          var(--text-default);
     background:     var(--glass-light-clear-bg);
     -webkit-backdrop-filter: var(--glass-light-light-blur) var(--glass-saturate);
@@ -395,9 +397,8 @@
    07 / MARKETING VARIANT
    Same component, different surface. Used on product hero
    pages where the bar carries marketing voice rather than
-   docs catalog voice. Two changes versus the default:
-     · Link typography flips from mono uppercase eyebrow to
-       sans medium sentence-case.
+   docs catalog voice. The marketing variant is a composition
+   change, not a typography change:
      · The sections island absorbs the call-to-action slot.
        Both CTAs sit as <li> children inside the same
        .global-nav__list pill as the nav links, marked with
@@ -406,34 +407,35 @@
        at the inline pill height. No panels and no standalone
        actions island — the marketing variant is a two-island
        composition: brand + sections.
+     · The list pill carries a slightly looser inner gap and
+       a scope-local pill rule on its `.btn` descendants — the
+       CTAs adopt the container's pill geometry so their
+       curve nests cleanly inside the pill's curve. No
+       `.btn--pill` modifier is introduced; the override is
+       confined to this variant's list.
+   Link typography (sans / body-sm / medium / no-transform)
+   is shared with the doc variant and lives in §03.
    The brand island, scrolled-state rules, and panel
    mechanics are inherited unchanged.
    ========================================================= */
 .global-nav--marketing .global-nav__list {
     /* Slightly looser internal gap so CTAs read as buttons
-       rather than as crowded link siblings. Asymmetric
-       horizontal inset: the leading link is unfilled, so the
-       default 8px left padding reads fine; the trailing CTA
-       is solid-filled and needs 12px on the right so its
-       coloured edge doesn't crowd the pill's rounded corner. */
+       rather than as crowded link siblings. Symmetric 8px
+       horizontal inset — the trailing CTA is pill-shaped
+       (see the rule directly below), so its curve nests
+       inside the pill's curve and the same 8px reads as
+       intentional breathing room on both sides. */
     gap: var(--space-gap-snug);
-    padding-left:  var(--space-tier-6);   /*  8 — unfilled-link side */
-    padding-right: var(--space-tier-5);   /* 12 — solid-CTA side     */
+    padding-left:  var(--space-tier-6);
+    padding-right: var(--space-tier-6);
 }
-.global-nav--marketing .global-nav__list a:not(.btn),
-.global-nav--marketing .global-nav__list button:not(.btn) {
-    font-family:    var(--font-sans);
-    font-size:      var(--text-body-sm);
-    letter-spacing: 0;
-    text-transform: none;
-    font-weight:    var(--font-weight-medium);
-    color:          var(--text-default);
-    padding:        var(--space-control-y-md) var(--space-control-x-md);
-}
-.global-nav--marketing .global-nav__list a:not(.btn):hover,
-.global-nav--marketing .global-nav__list button:not(.btn):hover {
-    background: var(--background-default);
-    color:      var(--text-default);
+
+/* Pill the CTAs to the container's curve. Scope-local to
+   the marketing list — does not introduce a `.btn--pill`
+   modifier and does not affect `.btn--cta` or `.btn--glass`
+   anywhere outside this variant. */
+.global-nav--marketing .global-nav__list .btn {
+    border-radius: var(--radius-pill);
 }
 
 /* Action chips inside the sections pill get a slightly
