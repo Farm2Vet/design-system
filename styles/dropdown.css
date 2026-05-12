@@ -123,7 +123,7 @@
     background: var(--dropdown-menu-bg);
     border: var(--form-border-width) solid var(--dropdown-menu-border);
     border-radius: var(--dropdown-menu-radius);
-    box-shadow: var(--dropdown-menu-shadow), var(--dropdown-menu-inset);
+    box-shadow: var(--dropdown-menu-shadow);
     -webkit-backdrop-filter: var(--dropdown-menu-blur) var(--glass-saturate);
             backdrop-filter: var(--dropdown-menu-blur) var(--glass-saturate);
     padding: var(--dropdown-menu-padding);
@@ -195,10 +195,14 @@
     opacity: 1;
 }
 
-/* Optional secondary line under the option label (description) */
+/* Optional secondary line under the option label (description).
+   Sized as a ratio (0.78em) so it tracks whichever
+   .dropdown--{sm|md|lg|xl|2xl} the parent menu sits in — at MD
+   (16px option) this still lands at ~12.5px, close to the
+   previous --text-sm value. */
 .dropdown__option-meta {
     display: block;
-    font-size: var(--text-sm);
+    font-size: 0.78em;
     color: var(--text-default-minimal);
     font-weight: var(--font-weight-regular);
     margin-top: 2px;
@@ -206,14 +210,23 @@
 
 /* =========================================================
    SIZES — applied to .dropdown wrapper, propagates to trigger
-   Mirrors the .input--sm/md/lg/xl/2xl scale exactly so dropdown
-   sizing stays in lockstep with the rest of the form family.
+   AND to every option in the menu. Mirrors the
+   .input--sm/md/lg/xl/2xl scale exactly so dropdown sizing
+   stays in lockstep with the rest of the form family — and so
+   an opened menu doesn't collapse all sizes to the document
+   default.
    ========================================================= */
-.dropdown--sm .dropdown__trigger  { font-size: var(--form-sm-font-size);  padding: var(--form-sm-padding-y)  var(--form-sm-padding-x);  min-height: var(--form-sm-height);  border-radius: var(--radius-sm); }
-.dropdown--md .dropdown__trigger  { font-size: var(--form-md-font-size);  padding: var(--form-md-padding-y)  var(--form-md-padding-x);  min-height: var(--form-md-height); }
-.dropdown--lg .dropdown__trigger  { font-size: var(--form-lg-font-size);  padding: var(--form-lg-padding-y)  var(--form-lg-padding-x);  min-height: var(--form-lg-height); }
-.dropdown--xl .dropdown__trigger  { font-size: var(--form-xl-font-size);  padding: var(--form-xl-padding-y)  var(--form-xl-padding-x);  min-height: var(--form-xl-height);  border-radius: var(--radius-lg); }
+.dropdown--sm  .dropdown__trigger { font-size: var(--form-sm-font-size);  padding: var(--form-sm-padding-y)  var(--form-sm-padding-x);  min-height: var(--form-sm-height);  border-radius: var(--radius-sm); }
+.dropdown--md  .dropdown__trigger { font-size: var(--form-md-font-size);  padding: var(--form-md-padding-y)  var(--form-md-padding-x);  min-height: var(--form-md-height); }
+.dropdown--lg  .dropdown__trigger { font-size: var(--form-lg-font-size);  padding: var(--form-lg-padding-y)  var(--form-lg-padding-x);  min-height: var(--form-lg-height); }
+.dropdown--xl  .dropdown__trigger { font-size: var(--form-xl-font-size);  padding: var(--form-xl-padding-y)  var(--form-xl-padding-x);  min-height: var(--form-xl-height);  border-radius: var(--radius-lg); }
 .dropdown--2xl .dropdown__trigger { font-size: var(--form-2xl-font-size); padding: var(--form-2xl-padding-y) var(--form-2xl-padding-x); min-height: var(--form-2xl-height); border-radius: var(--radius-lg); }
+
+.dropdown--sm  .dropdown__option  { font-size: var(--form-sm-font-size);  padding: var(--form-sm-padding-y)  var(--form-sm-padding-x); }
+.dropdown--md  .dropdown__option  { font-size: var(--form-md-font-size);  padding: var(--form-md-padding-y)  var(--form-md-padding-x); }
+.dropdown--lg  .dropdown__option  { font-size: var(--form-lg-font-size);  padding: var(--form-lg-padding-y)  var(--form-lg-padding-x); }
+.dropdown--xl  .dropdown__option  { font-size: var(--form-xl-font-size);  padding: var(--form-xl-padding-y)  var(--form-xl-padding-x); }
+.dropdown--2xl .dropdown__option  { font-size: var(--form-2xl-font-size); padding: var(--form-2xl-padding-y) var(--form-2xl-padding-x); }
 
 /* =========================================================
    ERROR & DISABLED — mirror .input states
