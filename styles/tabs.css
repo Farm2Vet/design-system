@@ -642,8 +642,13 @@
     text-align: center;
     color:        var(--pagination-jump-input-fg);
     background:   var(--pagination-jump-input-bg);
-    border:       var(--border-width-base) solid transparent;
+    border:       var(--border-width-base) solid var(--pagination-jump-input-border);
     border-radius: var(--pagination-radius);
+    /* Subtle elevation so the field reads as a discrete
+       control on busy strips too — without the lift, an
+       adjacent .is-current pill anchors local brightness
+       and the input perceives as duller than it is. */
+    box-shadow: var(--shadow-sm);
     font-family: var(--pagination-font-family);
     font-size:   var(--pagination-font-size);
     transition: var(--tabs-transition);
@@ -665,9 +670,45 @@
     outline-offset: var(--tabs-focus-outline-offset);
     border-color: var(--pagination-jump-input-border);
 }
+/* Submit button — the explicit Go control next to the
+   input. Matches the .pagination__step quiet-at-rest
+   treatment so the form reads as one unit with the rest
+   of the navigator. */
+.pagination__jump-submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height:  var(--pagination-size);
+    padding: 0 var(--space-control-x-sm);
+    color:           var(--pagination-fg);
+    background:      transparent;
+    border:          var(--border-width-base) solid var(--pagination-border);
+    border-radius:   var(--pagination-radius);
+    font-family: var(--pagination-font-family);
+    font-size:   var(--pagination-font-size);
+    cursor: pointer;
+    transition: var(--tabs-transition);
+}
+.pagination__jump-submit:hover {
+    color: var(--pagination-fg-hover);
+    background: var(--pagination-bg-hover);
+}
+.pagination__jump-submit:focus-visible {
+    outline: var(--tabs-focus-outline-width) solid var(--tabs-focus-outline);
+    outline-offset: var(--tabs-focus-outline-offset);
+}
 /* Compact variant strips the rule and keeps the jump
    borderless to match the dense table-footer treatment. */
 .pagination--compact .pagination__jump {
+    border-left: none;
+    margin-left: var(--pagination-gap);
+    padding-left: 0;
+}
+/* When the jump form is the primary navigator (no
+   numbered list), drop the leading divider — it only
+   exists to set the form off as a trailing slot, but
+   here the form IS the navigator. */
+.pagination:not(:has(.pagination__list)) .pagination__jump {
     border-left: none;
     margin-left: var(--pagination-gap);
     padding-left: 0;
@@ -684,6 +725,7 @@
     .pagination__page,
     .pagination__step,
     .pagination__jump-input,
+    .pagination__jump-submit,
     .tabs__tab {
         transition: none;
     }

@@ -228,9 +228,12 @@
   .sidebar__brand-mark {
     width: 28px;
     height: 28px;
-    border-radius: var(--radius-sm);
-    background: var(--gradient-brand);
     flex-shrink: 0;
+    display: block;
+    object-fit: contain;
+  }
+  .sidebar--tone-dark .sidebar__brand-mark {
+    content: url("logo/logo-emblem-white.svg");
   }
   .sidebar--collapsed .sidebar__brand { display: none; }
   .sidebar--collapsed .sidebar__header { justify-content: center; }
@@ -588,9 +591,9 @@
      --sidebar-menu-* component tokens.
      ========================================================= */
   :root {
-    --sidebar-menu-bg:        var(--glass-light-light-bg);
-    --sidebar-menu-border:    var(--glass-light-light-border);
-    --sidebar-menu-blur:      var(--glass-light-light-blur);
+    --sidebar-menu-bg:        var(--glass-light-regular-bg);
+    --sidebar-menu-border:    var(--glass-light-regular-border);
+    --sidebar-menu-blur:      var(--glass-light-regular-blur);
     --sidebar-menu-shadow:    var(--glass-shadow-floating);
     --sidebar-menu-inset:     var(--glass-inset-light-soft);
     --sidebar-menu-radius:    var(--radius-md);
@@ -707,9 +710,9 @@
   }
 
   .sidebar--tone-dark {
-    --sidebar-menu-bg:        var(--glass-dark-light-bg);
-    --sidebar-menu-border:    var(--glass-dark-light-border);
-    --sidebar-menu-blur:      var(--glass-dark-light-blur);
+    --sidebar-menu-bg:        var(--glass-dark-regular-bg);
+    --sidebar-menu-border:    var(--glass-dark-regular-border);
+    --sidebar-menu-blur:      var(--glass-dark-regular-blur);
     --sidebar-menu-inset:     var(--glass-inset-dark-soft);
     --sidebar-menu-item-fg:        var(--text-inverted-subtle);
     --sidebar-menu-item-fg-hover:  var(--text-inverted);
@@ -882,12 +885,17 @@
     border-radius: var(--radius-lg);
     border: var(--border-width-base) solid var(--border-default-subtle);
     padding: var(--spacing-8x) var(--spacing-6x);
-    display: flex;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: max-content;
     align-items: stretch;
     justify-content: center;
     gap: var(--spacing-6x);
     overflow: hidden;
-    min-height: 480px;
+    /* Pin tall enough to host the expanded rail with disclosure
+       open: header 56 + nav 456 + footer 96 + padding ≈ 680, plus
+       a small reserve. Recompute if rail contents grow. */
+    min-height: 720px;
   }
   /* Light wash — soft warm-neutral, mirrors the product surface
      the light rail sits over in real product UIs. */
@@ -919,13 +927,15 @@
   }
   /* Override only the demo-level concerns — never the
      component's intrinsic width. The width comes from
-     .sidebar / .sidebar--collapsed, not from this rule. */
+     .sidebar / .sidebar--collapsed, not from this rule.
+     min-height: 100% pins each rail to the stage's height so
+     closing disclosure on the expanded rail doesn't shrink the
+     stage (and the compact rail with it). */
   .mode-preview__stage .sidebar {
     flex: 0 0 auto;
     min-height: 100%;
     align-self: stretch;
   }
-  .mode-preview__stage { align-items: stretch; min-height: 560px; }
   .mode-preview__meta {
     font-family:    var(--font-mono);
     font-size:      var(--text-eyebrow);
@@ -944,8 +954,8 @@
      the stage rather than letting them shrink. */
   @media (max-width: 760px) {
     .mode-preview__stage {
-      flex-direction: column;
-      align-items: center;
+      grid-auto-flow: row;
+      justify-items: center;
       gap: var(--spacing-5x);
     }
   }
@@ -982,279 +992,10 @@
      styles untouched; this is documentation chrome.
      ========================================================= */
   .anatomy-stage {
-    display: grid;
-    gap: var(--spacing-6x);
-    margin-top: var(--spacing-6x);
-  }
-
-  .anatomy-toolbar {
-    display: inline-flex;
-    flex-wrap: wrap;
-    gap: var(--spacing-1x);
-    padding: var(--spacing-1x);
-    border: var(--border-width-base) solid var(--border-default);
-    border-radius: var(--radius-md);
-    background: var(--background-default-subtle);
-    align-self: start;
-  }
-  .anatomy-toggle {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-2x);
-    padding: var(--spacing-2x) var(--spacing-3x);
-    border: none;
-    border-radius: var(--radius-sm);
-    background: transparent;
-    color: var(--text-default-subtle);
-    font-family: var(--font-sans);
-    font-size: var(--text-body-sm);
-    font-weight: var(--font-weight-medium);
-    cursor: pointer;
-    transition: background-color .15s ease, color .15s ease;
-  }
-  .anatomy-toggle:hover {
-    background: var(--background-default-hover);
-    color: var(--text-default);
-  }
-  .anatomy-toggle.is-active {
-    background: var(--background-primary-subtle);
-    color: var(--text-primary-strong);
-  }
-  .anatomy-toggle__meta {
-    font-family: var(--font-mono);
-    font-size: var(--text-eyebrow);
-    letter-spacing: var(--letter-spacing-mono);
-    color: var(--text-default-minimal);
-  }
-  .anatomy-toggle.is-active .anatomy-toggle__meta { color: var(--text-primary); }
-  .anatomy-toggle__dot {
-    width: 8px;
-    height: 8px;
-    border-radius: var(--radius-pill);
-    background: currentColor;
-    opacity: .35;
-  }
-  .anatomy-toggle.is-active .anatomy-toggle__dot { opacity: 1; }
-
-  .anatomy-frame {
-    position: relative;
-    border-radius: var(--radius-lg);
-    border: var(--border-width-base) solid var(--border-default-subtle);
-    padding: var(--spacing-12x) var(--spacing-8x) var(--spacing-10x);
-    min-height: 620px;
-    display: flex;
-    align-items: stretch;
-    justify-content: center;
-    overflow: hidden;
-    background:
-      radial-gradient(ellipse 70% 55% at 20% 25%,
-        color-mix(in srgb, var(--white-base) 70%, transparent),
-        transparent 70%),
-      radial-gradient(ellipse 65% 45% at 80% 80%,
-        color-mix(in srgb, var(--accent-100) 35%, transparent),
-        transparent 70%),
-      var(--neutral-100);
-    transition: padding .25s ease, min-height .25s ease;
-  }
-  .anatomy-frame__mode {
-    position: absolute;
-    top: var(--spacing-4x);
-    left: var(--spacing-5x);
-    font-family: var(--font-mono);
-    font-size: var(--text-eyebrow);
-    letter-spacing: var(--letter-spacing-eyebrow);
-    text-transform: uppercase;
-    color: var(--text-default-minimal);
-  }
-  .anatomy-frame .sidebar.anatomy-rail {
-    flex: 0 0 auto;
-    min-height: 0;
-    align-self: stretch;
-    position: relative;
-    z-index: 2;
-  }
-
-  .anatomy-rule { position: absolute; pointer-events: none; }
-  .anatomy-rule--width {
-    top: var(--spacing-7x);
-    left: 50%;
-    transform: translateX(-50%);
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: var(--spacing-1x);
-    transition: width .25s ease;
-  }
-  .anatomy-rule--width .anatomy-rule__line {
-    display: block;
-    width: 280px;
-    height: 1px;
-    background: var(--text-primary-strong);
-    position: relative;
-    transition: width .25s ease;
-  }
-  .anatomy-rule--width .anatomy-rule__line::before,
-  .anatomy-rule--width .anatomy-rule__line::after {
-    content: "";
-    position: absolute;
-    top: -3px;
-    width: 1px;
-    height: 7px;
-    background: var(--text-primary-strong);
-  }
-  .anatomy-rule--width .anatomy-rule__line::before { left: 0; }
-  .anatomy-rule--width .anatomy-rule__line::after  { right: 0; }
-  .anatomy-rule--width .anatomy-rule__value {
-    font-family: var(--font-mono);
-    font-size: var(--text-eyebrow);
-    letter-spacing: var(--letter-spacing-mono);
-    color: var(--text-primary-strong);
-  }
-
-  .anatomy-rule--height {
-    top: var(--spacing-12x);
-    bottom: var(--spacing-10x);
-    right: var(--spacing-5x);
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-1x);
-  }
-  .anatomy-rule--height .anatomy-rule__line {
-    display: block;
-    width: 1px;
-    height: 100%;
-    background: var(--text-primary-strong);
-    position: relative;
-  }
-  .anatomy-rule--height .anatomy-rule__line::before,
-  .anatomy-rule--height .anatomy-rule__line::after {
-    content: "";
-    position: absolute;
-    left: -3px;
-    width: 7px;
-    height: 1px;
-    background: var(--text-primary-strong);
-  }
-  .anatomy-rule--height .anatomy-rule__line::before { top: 0; }
-  .anatomy-rule--height .anatomy-rule__line::after  { bottom: 0; }
-  .anatomy-rule--height .anatomy-rule__value {
-    font-family: var(--font-mono);
-    font-size: var(--text-eyebrow);
-    letter-spacing: var(--letter-spacing-mono);
-    color: var(--text-primary-strong);
-    white-space: nowrap;
-  }
-  .anatomy-rule--height .anatomy-rule__value small {
-    display: block;
-    font-size: 10px;
-    color: var(--text-default-minimal);
-    text-transform: none;
-    letter-spacing: 0;
-  }
-
-  .anatomy-callout {
-    position: absolute;
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-1x);
-    pointer-events: none;
-    z-index: 3;
-  }
-  .anatomy-callout__dot {
-    width: 6px;
-    height: 6px;
-    border-radius: var(--radius-pill);
-    background: var(--text-primary-strong);
-    flex-shrink: 0;
-  }
-  .anatomy-callout__line {
-    width: 32px;
-    height: 1px;
-    background: var(--text-primary-strong);
-    flex-shrink: 0;
-  }
-  .anatomy-callout__label {
-    font-family: var(--font-mono);
-    font-size: var(--text-eyebrow);
-    letter-spacing: var(--letter-spacing-mono);
-    text-transform: uppercase;
-    color: var(--text-primary-strong);
-    white-space: nowrap;
-  }
-  .anatomy-callout__label small {
-    display: block;
-    font-size: 10px;
-    color: var(--text-default-minimal);
-    text-transform: none;
-    letter-spacing: 0;
-  }
-  .anatomy-frame { --rail-half: 140px; --rail-edge: calc(50% + var(--rail-half)); }
-  .anatomy-callout--header { top: var(--spacing-10x); left: var(--rail-edge); }
-  .anatomy-callout--icon   { top: 50%; left: var(--rail-edge); transform: translateY(-50%); }
-  .anatomy-callout--item   { top: calc(50% + 56px); left: var(--rail-edge); }
-  .anatomy-callout--avatar { bottom: var(--spacing-10x); left: var(--rail-edge); }
-
-  .anatomy-frame__scrim {
-    position: absolute;
-    inset: 0;
-    background: color-mix(in srgb, var(--black-base) 30%, transparent);
-    opacity: 0;
-    transition: opacity .25s ease;
-    z-index: 1;
-  }
-
-  .anatomy-frame[data-viewport="desktop"] .sidebar.anatomy-rail { width: var(--sidebar-width-expanded); }
-  .anatomy-frame[data-viewport="desktop"] .anatomy-rule--width .anatomy-rule__line { width: 280px; }
-  .anatomy-frame[data-viewport="desktop"] { --rail-half: 140px; }
-
-  .anatomy-frame[data-viewport="tablet"] .sidebar.anatomy-rail {
-    width: var(--sidebar-width-rail);
-  }
-  .anatomy-frame[data-viewport="tablet"] .anatomy-rail .sidebar__brand,
-  .anatomy-frame[data-viewport="tablet"] .anatomy-rail .sidebar__label,
-  .anatomy-frame[data-viewport="tablet"] .anatomy-rail .sidebar__trailing,
-  .anatomy-frame[data-viewport="tablet"] .anatomy-rail .sidebar__chev,
-  .anatomy-frame[data-viewport="tablet"] .anatomy-rail .sidebar__sublist,
-  .anatomy-frame[data-viewport="tablet"] .anatomy-rail .sidebar__profile-text,
-  .anatomy-frame[data-viewport="tablet"] .anatomy-rail .sidebar__overflow {
-    display: none;
-  }
-  .anatomy-frame[data-viewport="tablet"] .anatomy-rail .sidebar__header { justify-content: center; }
-  .anatomy-frame[data-viewport="tablet"] .anatomy-rail .sidebar__link {
-    display: flex; align-items: center; justify-content: center;
-    width: var(--sidebar-item-height);
-    height: var(--sidebar-item-height);
-    margin-inline: auto;
-    padding: 0;
-    grid-template-columns: none;
-  }
-  .anatomy-frame[data-viewport="tablet"] .anatomy-rule--width .anatomy-rule__line { width: 64px; }
-  .anatomy-frame[data-viewport="tablet"] { --rail-half: 32px; }
-  .anatomy-frame[data-viewport="tablet"] .anatomy-callout--avatar small,
-  .anatomy-frame[data-viewport="tablet"] .anatomy-callout--header small { display: none; }
-
-  .anatomy-frame[data-viewport="mobile"] {
-    padding: var(--spacing-12x) var(--spacing-4x) var(--spacing-10x);
-  }
-  .anatomy-frame[data-viewport="mobile"] .sidebar.anatomy-rail { width: var(--sidebar-width-expanded); }
-  .anatomy-frame[data-viewport="mobile"] .anatomy-frame__scrim { opacity: .9; }
-  .anatomy-frame[data-viewport="mobile"] .anatomy-rule--width .anatomy-rule__line { width: 280px; }
-  .anatomy-frame[data-viewport="mobile"] { --rail-half: 140px; }
-  .anatomy-frame[data-viewport="mobile"] .anatomy-callout__label,
-  .anatomy-frame[data-viewport="mobile"] .anatomy-rule__value,
-  .anatomy-frame[data-viewport="mobile"] .anatomy-frame__mode {
-    color: var(--text-inverted);
-  }
-  .anatomy-frame[data-viewport="mobile"] .anatomy-callout__dot,
-  .anatomy-frame[data-viewport="mobile"] .anatomy-callout__line,
-  .anatomy-frame[data-viewport="mobile"] .anatomy-rule__line,
-  .anatomy-frame[data-viewport="mobile"] .anatomy-rule__line::before,
-  .anatomy-frame[data-viewport="mobile"] .anatomy-rule__line::after {
-    background: var(--white-base);
-  }
-  .anatomy-frame[data-viewport="mobile"] .anatomy-callout__label small,
-  .anatomy-frame[data-viewport="mobile"] .anatomy-rule__value small {
-    color: color-mix(in srgb, var(--white-base) 70%, transparent);
+    gap: var(--spacing-6x);
+    margin-top: var(--spacing-6x);
   }
 
   .anatomy-specs {
@@ -1303,8 +1044,6 @@
   }
 
   @media (max-width: 760px) {
-    .anatomy-callout { display: none; }
-    .anatomy-frame { padding-inline: var(--spacing-4x); }
     .anatomy-specs { font-size: var(--text-eyebrow); }
     .anatomy-specs th, .anatomy-specs td { padding: var(--spacing-2x); }
   }
@@ -1425,7 +1164,7 @@
     <dl class="meta-strip reveal">
       <div><dt>Modes</dt><dd>2</dd></div>
       <div><dt>Slots</dt><dd>4</dd></div>
-      <div><dt>Viewports</dt><dd>3</dd></div>
+      <div><dt>Viewports</dt><dd>2</dd></div>
     </dl>
   </section>
 
@@ -1475,151 +1214,40 @@
     </header>
 
     <p class="section-lede reveal">
-      The rail resolves to one of three layouts driven by the
-      viewport. Width, item height, and icon size are fixed
-      component-token values; only the rail's <em>mode</em>
-      (expanded · compact · overlay) and total height change. Toggle
-      the viewport below to preview each layout with its measurements.
+      Width, item height, and icon size are fixed component-token
+      values. Above the responsive breakpoint the rail is persistent
+      and the user toggles between expanded and compact; below it,
+      the rail detaches and renders as an overlay drawer. Everything
+      else — header height, item row, icon size, padding, avatar —
+      is identical across viewports.
     </p>
 
-    <div class="anatomy-stage reveal" aria-label="Sidebar anatomy preview">
-
-      <div class="anatomy-toolbar" role="group" aria-label="Preview viewport">
-        <button type="button" class="anatomy-toggle is-active"
-                data-viewport="desktop" aria-pressed="true">
-          <span class="anatomy-toggle__dot" aria-hidden="true"></span>
-          Desktop <span class="anatomy-toggle__meta">≥ 1024 px</span>
-        </button>
-        <button type="button" class="anatomy-toggle"
-                data-viewport="tablet" aria-pressed="false">
-          <span class="anatomy-toggle__dot" aria-hidden="true"></span>
-          Tablet <span class="anatomy-toggle__meta">720 – 1023 px</span>
-        </button>
-        <button type="button" class="anatomy-toggle"
-                data-viewport="mobile" aria-pressed="false">
-          <span class="anatomy-toggle__dot" aria-hidden="true"></span>
-          Mobile <span class="anatomy-toggle__meta">≤ 719 px</span>
-        </button>
-      </div>
-
-      <div class="anatomy-frame" data-viewport="desktop">
-
-        <span class="anatomy-frame__mode" data-mode-label>
-          Expanded · user-controlled compact available
-        </span>
-
-        <div class="anatomy-rule anatomy-rule--width" aria-hidden="true">
-          <span class="anatomy-rule__line"></span>
-          <span class="anatomy-rule__value" data-width-label>280 px</span>
-        </div>
-
-        <aside class="sidebar anatomy-rail" aria-label="Anatomy preview rail">
-          <header class="sidebar__header">
-            <a href="#" class="sidebar__brand">
-              <span class="sidebar__brand-mark" aria-hidden="true"></span>
-              <span class="sidebar__brand-text">Farm2Vet</span>
-            </a>
-            <button type="button" class="sidebar__collapse"
-                    aria-label="Collapse sidebar" aria-pressed="false" tabindex="-1">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6"/></svg>
-            </button>
-          </header>
-          <nav class="sidebar__nav" aria-label="Anatomy preview destinations">
-            <ul class="sidebar__list">
-              <li class="sidebar__item"><a class="sidebar__link is-current" href="#" aria-current="page" tabindex="-1"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span><span class="sidebar__label">Overview Dashboard</span></a></li>
-              <li class="sidebar__item"><a class="sidebar__link" href="#" tabindex="-1"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/></svg></span><span class="sidebar__label">Data Management</span></a></li>
-              <li class="sidebar__item"><a class="sidebar__link" href="#" tabindex="-1"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg></span><span class="sidebar__label">Automated Testing</span></a></li>
-              <li class="sidebar__item"><a class="sidebar__link" href="#" tabindex="-1"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></span><span class="sidebar__label">Sync database</span></a></li>
-            </ul>
-          </nav>
-          <div class="sidebar__footer">
-            <div class="sidebar__profile-wrap">
-              <div class="sidebar__profile">
-                <span class="sidebar__avatar" aria-hidden="true">M</span>
-                <span class="sidebar__profile-text">
-                  <span class="sidebar__profile-name">Minh</span>
-                  <span class="sidebar__profile-role">Admin</span>
-                </span>
-                <button type="button" class="sidebar__overflow" aria-label="Account menu" tabindex="-1">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
-                </button>
-              </div>
-            </div>
-          </div>
-        </aside>
-
-        <div class="anatomy-rule anatomy-rule--height" aria-hidden="true">
-          <span class="anatomy-rule__line"></span>
-          <span class="anatomy-rule__value">100 vh<br><small>fills viewport</small></span>
-        </div>
-
-        <span class="anatomy-callout anatomy-callout--item">
-          <span class="anatomy-callout__dot"></span>
-          <span class="anatomy-callout__line"></span>
-          <span class="anatomy-callout__label">
-            Item · 44 px
-            <small>--sidebar-item-height</small>
-          </span>
-        </span>
-
-        <span class="anatomy-callout anatomy-callout--icon">
-          <span class="anatomy-callout__dot"></span>
-          <span class="anatomy-callout__line"></span>
-          <span class="anatomy-callout__label">
-            Icon · 20 px
-            <small>--sidebar-item-icon-size</small>
-          </span>
-        </span>
-
-        <span class="anatomy-callout anatomy-callout--header">
-          <span class="anatomy-callout__dot"></span>
-          <span class="anatomy-callout__line"></span>
-          <span class="anatomy-callout__label">
-            Header · 56 px min
-            <small>brand · collapse trigger</small>
-          </span>
-        </span>
-
-        <span class="anatomy-callout anatomy-callout--avatar">
-          <span class="anatomy-callout__dot"></span>
-          <span class="anatomy-callout__line"></span>
-          <span class="anatomy-callout__label">
-            Avatar · 36 px
-            <small>glass circle</small>
-          </span>
-        </span>
-
-        <div class="anatomy-frame__scrim" aria-hidden="true"></div>
-      </div>
+    <div class="anatomy-stage reveal" aria-label="Sidebar anatomy specifications">
 
       <table class="anatomy-specs" aria-label="Sidebar dimensions across viewports">
         <thead>
           <tr>
             <th scope="col">Dimension</th>
-            <th scope="col">Desktop ≥ 1024</th>
-            <th scope="col">Tablet 720 – 1023</th>
-            <th scope="col">Mobile ≤ 719</th>
+            <th scope="col">Persistent ≥ 720 px</th>
+            <th scope="col">Overlay ≤ 719 px</th>
             <th scope="col">Token</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <th scope="row">Mode</th>
-            <td>Expanded · user-collapsible</td>
-            <td>Compact (forced)</td>
+            <td>Expanded · user-collapsible to compact</td>
             <td>Overlay drawer</td>
             <td><span class="anatomy-cell-empty">—</span></td>
           </tr>
           <tr>
             <th scope="row">Width</th>
             <td>280 px · 64 px when compact</td>
-            <td>64 px</td>
             <td>280 px (raised) · 0 px at rest</td>
             <td><code>--sidebar-width-expanded</code><br><code>--sidebar-width-rail</code></td>
           </tr>
           <tr>
             <th scope="row">Height</th>
-            <td>100 vh</td>
             <td>100 vh</td>
             <td>100 vh (when raised)</td>
             <td><code>min-height: 100vh</code></td>
@@ -1627,39 +1255,37 @@
           <tr>
             <th scope="row">Min · max width</th>
             <td>min 64 · max 280</td>
-            <td>fixed 64</td>
             <td>min 0 · max 280</td>
             <td>—</td>
           </tr>
           <tr>
             <th scope="row">Header</th>
-            <td colspan="3">56 px min height · brand mark left · collapse trigger right (centred in compact)</td>
+            <td colspan="2">56 px min height · brand mark left · collapse trigger right (centred in compact)</td>
             <td><code>--sidebar-header-pad-y</code></td>
           </tr>
           <tr>
             <th scope="row">Item row</th>
-            <td colspan="3">44 px tall · 44 × 44 square in compact</td>
+            <td colspan="2">44 px tall · 44 × 44 square in compact</td>
             <td><code>--sidebar-item-height</code></td>
           </tr>
           <tr>
             <th scope="row">Icon</th>
-            <td colspan="3">20 px stroke icon · centred inside the row</td>
+            <td colspan="2">20 px stroke icon · centred inside the row</td>
             <td><code>--sidebar-item-icon-size</code></td>
           </tr>
           <tr>
             <th scope="row">Padding</th>
-            <td colspan="3">12 px inline · 16 px block · 4 px between rows</td>
+            <td colspan="2">12 px inline · 16 px block · 4 px between rows</td>
             <td><code>--sidebar-padding-x · -y · -gap</code></td>
           </tr>
           <tr>
             <th scope="row">Avatar</th>
-            <td colspan="3">36 px · pill radius · seven-layer glass</td>
+            <td colspan="2">36 px · pill radius · seven-layer glass</td>
             <td>see <a href="II-semantics.html#glass">II / Glass</a></td>
           </tr>
           <tr>
             <th scope="row">Trigger</th>
             <td>Collapse / expand toggle in header</td>
-            <td>Hidden (no alternate state)</td>
             <td>Raised from page top-bar trigger</td>
             <td>—</td>
           </tr>
@@ -1719,10 +1345,10 @@
         <aside class="sidebar sidebar--collapsed" aria-label="Sample light compact">
           <header class="sidebar__header">
             <a href="#" class="sidebar__brand" aria-label="Farm2Vet">
-              <span class="sidebar__brand-mark" aria-hidden="true"></span>
+              <img class="sidebar__brand-mark" src="logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
             </a>
             <button type="button" class="sidebar__collapse" aria-label="Expand sidebar" aria-pressed="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18 15 12 9 6"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6"/></svg>
             </button>
           </header>
           <nav class="sidebar__nav" aria-label="Sample light compact destinations">
@@ -1797,10 +1423,10 @@
         <aside class="sidebar" aria-label="Sample light expanded">
           <header class="sidebar__header">
             <a href="#" class="sidebar__brand">
-              <span class="sidebar__brand-mark" aria-hidden="true"></span>
+              <img class="sidebar__brand-mark" src="logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
               <span class="sidebar__brand-text">Farm2Vet</span>
             </a>
-            <button type="button" class="sidebar__collapse" aria-label="Collapse sidebar" aria-pressed="true">
+            <button type="button" class="sidebar__collapse" aria-label="Collapse sidebar" aria-pressed="false">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6"/></svg>
             </button>
           </header>
@@ -1912,10 +1538,10 @@
         <aside class="sidebar sidebar--collapsed sidebar--tone-dark" aria-label="Sample dark compact">
           <header class="sidebar__header">
             <a href="#" class="sidebar__brand" aria-label="Farm2Vet">
-              <span class="sidebar__brand-mark" aria-hidden="true"></span>
+              <img class="sidebar__brand-mark" src="logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
             </a>
             <button type="button" class="sidebar__collapse" aria-label="Expand sidebar" aria-pressed="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18 15 12 9 6"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6"/></svg>
             </button>
           </header>
           <nav class="sidebar__nav" aria-label="Sample dark compact destinations">
@@ -1990,10 +1616,10 @@
         <aside class="sidebar sidebar--tone-dark" aria-label="Sample dark expanded">
           <header class="sidebar__header">
             <a href="#" class="sidebar__brand">
-              <span class="sidebar__brand-mark" aria-hidden="true"></span>
+              <img class="sidebar__brand-mark" src="logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
               <span class="sidebar__brand-text">Farm2Vet</span>
             </a>
-            <button type="button" class="sidebar__collapse" aria-label="Collapse sidebar" aria-pressed="true">
+            <button type="button" class="sidebar__collapse" aria-label="Collapse sidebar" aria-pressed="false">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6"/></svg>
             </button>
           </header>
@@ -2370,9 +1996,9 @@ const SIDEBAR_TOKENS = [
     ['--sidebar-tip-offset', 'var(--spacing-3x)'],
   ]},
   { group: 'Popover menu', tokens: [
-    ['--sidebar-menu-bg',          'var(--glass-light-light-bg)'],
-    ['--sidebar-menu-border',      'var(--glass-light-light-border)'],
-    ['--sidebar-menu-blur',        'var(--glass-light-light-blur)'],
+    ['--sidebar-menu-bg',          'var(--glass-light-regular-bg)'],
+    ['--sidebar-menu-border',      'var(--glass-light-regular-border)'],
+    ['--sidebar-menu-blur',        'var(--glass-light-regular-blur)'],
     ['--sidebar-menu-shadow',      'var(--glass-shadow-floating)'],
     ['--sidebar-menu-inset',       'var(--glass-inset-light-soft)'],
     ['--sidebar-menu-radius',      'var(--radius-md)'],
@@ -2519,49 +2145,6 @@ function initProfileMenu() {
 }
 
 /* =========================================================
-   ANATOMY VIEWPORT TOGGLE — swap data-viewport on the frame
-   and the mode label / width readout so the preview re-renders
-   at the selected viewport. The CSS does the heavy lifting;
-   this is purely a state toggle on the wrapper.
-   ========================================================= */
-function initAnatomyViewport() {
-    const toolbar = document.querySelector('.anatomy-toolbar');
-    const frame   = document.querySelector('.anatomy-frame');
-    if (!toolbar || !frame) return;
-
-    const MODE_LABEL = {
-        desktop: 'Expanded · user-controlled compact available',
-        tablet:  'Compact (forced — no expanded state at this width)',
-        mobile:  'Overlay drawer · raised from page top-bar trigger',
-    };
-    const WIDTH_LABEL = {
-        desktop: '280 px',
-        tablet:  '64 px',
-        mobile:  '280 px (raised over scrim)',
-    };
-
-    const modeEl  = frame.querySelector('[data-mode-label]');
-    const widthEl = frame.querySelector('[data-width-label]');
-
-    toolbar.addEventListener('click', (e) => {
-        const btn = e.target.closest('.anatomy-toggle');
-        if (!btn) return;
-        const viewport = btn.dataset.viewport;
-        if (!viewport) return;
-
-        toolbar.querySelectorAll('.anatomy-toggle').forEach(b => {
-            const active = b === btn;
-            b.classList.toggle('is-active', active);
-            b.setAttribute('aria-pressed', String(active));
-        });
-
-        frame.dataset.viewport = viewport;
-        if (modeEl)  modeEl.textContent  = MODE_LABEL[viewport]  || '';
-        if (widthEl) widthEl.textContent = WIDTH_LABEL[viewport] || '';
-    });
-}
-
-/* =========================================================
    REVEAL — fade-up content as it scrolls into view.
    Mirrors the behaviour used on every other section page.
    ========================================================= */
@@ -2587,7 +2170,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initCollapseDemo();
     initDisclosureDemo();
     initProfileMenu();
-    initAnatomyViewport();
     initReveal();
 });
 </script>

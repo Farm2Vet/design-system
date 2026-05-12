@@ -735,6 +735,7 @@
         <span class="label">Default · bordered</span>
         <div class="demo">
           <nav class="pagination" aria-label="Pagination">
+            <button type="button" class="pagination__step" data-direction="first" aria-label="First page">«</button>
             <button type="button" class="pagination__step" data-direction="prev" aria-label="Previous page">‹</button>
             <ol class="pagination__list">
               <li><a class="pagination__page" href="#">1</a></li>
@@ -745,6 +746,7 @@
               <li><a class="pagination__page" href="#">12</a></li>
             </ol>
             <button type="button" class="pagination__step" data-direction="next" aria-label="Next page">›</button>
+            <button type="button" class="pagination__step" data-direction="last" aria-label="Last page">»</button>
           </nav>
         </div>
         <div class="meta"><span>.pagination</span><strong>system default</strong></div>
@@ -754,6 +756,7 @@
         <span class="label">With jump-to-page · long runs</span>
         <div class="demo">
           <nav class="pagination" aria-label="Pagination">
+            <button type="button" class="pagination__step" data-direction="first" aria-label="First page">«</button>
             <button type="button" class="pagination__step" data-direction="prev" aria-label="Previous page">‹</button>
             <ol class="pagination__list">
               <li><a class="pagination__page" href="#">1</a></li>
@@ -764,13 +767,13 @@
               <li><a class="pagination__page" href="#">42</a></li>
             </ol>
             <button type="button" class="pagination__step" data-direction="next" aria-label="Next page">›</button>
+            <button type="button" class="pagination__step" data-direction="last" aria-label="Last page">»</button>
             <form class="pagination__jump" data-pagination-jump action="#" role="search" aria-label="Go to page">
-              <label class="pagination__jump-label" for="pg-jump-default">Go to</label>
               <input type="text" id="pg-jump-default" name="p"
                      class="pagination__jump-input"
                      inputmode="numeric" pattern="[0-9]*" maxlength="4"
                      min="1" max="42" aria-label="Page number" placeholder="3" />
-              <span class="pagination__jump-of">of 42</span>
+              <button type="submit" class="pagination__jump-submit">Go</button>
             </form>
           </nav>
         </div>
@@ -781,16 +784,17 @@
         <span class="label">Jump-only · long-tail datasets</span>
         <div class="demo">
           <nav class="pagination" aria-label="Pagination">
+            <button type="button" class="pagination__step" data-direction="first" aria-label="First page">«</button>
             <button type="button" class="pagination__step" data-direction="prev" aria-label="Previous page">‹</button>
             <form class="pagination__jump" data-pagination-jump action="#" role="search" aria-label="Go to page">
-              <label class="pagination__jump-label" for="pg-jump-large">Page</label>
               <input type="text" id="pg-jump-large" name="p"
                      class="pagination__jump-input"
                      inputmode="numeric" pattern="[0-9]*" maxlength="5"
                      min="1" max="9421" aria-label="Page number" placeholder="847" />
-              <span class="pagination__jump-of">of 9,421</span>
+              <span class="pagination__jump-of">of 9,421 pages</span>
             </form>
             <button type="button" class="pagination__step" data-direction="next" aria-label="Next page">›</button>
+            <button type="button" class="pagination__step" data-direction="last" aria-label="Last page">»</button>
           </nav>
         </div>
         <div class="meta"><span>.pagination__jump</span><strong>numbered list dropped</strong></div>
@@ -800,6 +804,7 @@
         <span class="label">Compact · table-footer treatment</span>
         <div class="demo">
           <nav class="pagination pagination--compact" aria-label="Pagination">
+            <button type="button" class="pagination__step" data-direction="first" aria-label="First page">«</button>
             <button type="button" class="pagination__step" data-direction="prev" aria-label="Previous page">‹</button>
             <ol class="pagination__list">
               <li><a class="pagination__page" href="#">1</a></li>
@@ -809,6 +814,7 @@
               <li><a class="pagination__page" href="#">5</a></li>
             </ol>
             <button type="button" class="pagination__step" data-direction="next" aria-label="Next page">›</button>
+            <button type="button" class="pagination__step" data-direction="last" aria-label="Last page">»</button>
           </nav>
         </div>
         <div class="meta"><span>.pagination--compact</span><strong>dense footer</strong></div>
@@ -818,6 +824,7 @@
         <span class="label">Boundary state · first page</span>
         <div class="demo">
           <nav class="pagination" aria-label="Pagination">
+            <button type="button" class="pagination__step is-disabled" data-direction="first" aria-label="First page" disabled>«</button>
             <button type="button" class="pagination__step is-disabled" data-direction="prev" aria-label="Previous page" disabled>‹</button>
             <ol class="pagination__list">
               <li><a class="pagination__page is-current" href="#" aria-current="page">1</a></li>
@@ -827,6 +834,7 @@
               <li><a class="pagination__page" href="#">12</a></li>
             </ol>
             <button type="button" class="pagination__step" data-direction="next" aria-label="Next page">›</button>
+            <button type="button" class="pagination__step" data-direction="last" aria-label="Last page">»</button>
           </nav>
         </div>
         <div class="meta"><span>.pagination__step.is-disabled</span><strong>first / last edge</strong></div>
