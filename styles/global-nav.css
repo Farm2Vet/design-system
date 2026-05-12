@@ -148,7 +148,7 @@
     font-size:      var(--text-eyebrow);
     letter-spacing: var(--letter-spacing-wide);
     text-transform: uppercase;
-    color:          var(--text-default-subtle);
+    color:          var(--text-default);
     background:     transparent;
     border:         none;
     border-radius:  var(--radius-pill);
@@ -204,7 +204,7 @@
     font-size:      var(--text-eyebrow);
     letter-spacing: var(--letter-spacing-wide);
     text-transform: uppercase;
-    color:          var(--text-default-subtle);
+    color:          var(--text-default);
     background:     var(--glass-light-clear-bg);
     -webkit-backdrop-filter: var(--glass-light-light-blur) var(--glass-saturate);
             backdrop-filter: var(--glass-light-light-blur) var(--glass-saturate);
@@ -411,14 +411,14 @@
    ========================================================= */
 .global-nav--marketing .global-nav__list {
     /* Slightly looser internal gap so CTAs read as buttons
-       rather than as crowded link siblings. Extra horizontal
-       inset so the trailing CTA chip's filled edge doesn't
-       crowd the pill's rounded corner; the default list
-       padding (4px) is fine for unfilled links but reads as
-       cramped against a solid button. */
+       rather than as crowded link siblings. Asymmetric
+       horizontal inset: the leading link is unfilled, so the
+       default 8px left padding reads fine; the trailing CTA
+       is solid-filled and needs 12px on the right so its
+       coloured edge doesn't crowd the pill's rounded corner. */
     gap: var(--space-gap-snug);
-    padding-left:  var(--space-tier-6);
-    padding-right: var(--space-tier-6);
+    padding-left:  var(--space-tier-6);   /*  8 — unfilled-link side */
+    padding-right: var(--space-tier-5);   /* 12 — solid-CTA side     */
 }
 .global-nav--marketing .global-nav__list a:not(.btn),
 .global-nav--marketing .global-nav__list button:not(.btn) {

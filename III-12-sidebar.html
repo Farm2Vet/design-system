@@ -532,7 +532,11 @@
     line-height: 1;
     box-shadow: 0 0 0 2px var(--sidebar-bg);
   }
-  .sidebar--collapsed .sidebar__item { position: relative; }
+  .sidebar--collapsed .sidebar__item {
+    position: relative;
+    width: var(--sidebar-item-height);
+    margin-inline: auto;
+  }
 
   /* ---------- Footer slot ---------- */
   .sidebar__footer {
@@ -545,6 +549,19 @@
   }
 
   /* ---------- Collapsed (rail) — visual rules ---------- */
+
+  /* In rail mode the gutter responsibility moves from the
+     nav container to the tile itself. The nav becomes a flush
+     vertical track and the tile (sized to --sidebar-item-height
+     and centred via margin-inline: auto below) provides its own
+     breathing room from the rail edge. Leaving the expanded-mode
+     padding-inline in place would make the 44px tile wider than
+     the 38px content area, collapsing margin-inline: auto to 0
+     and pushing every tile against the rail's left padding. */
+  .sidebar--collapsed .sidebar__nav {
+    padding-inline: 0;
+  }
+
   .sidebar--collapsed .sidebar__link {
     display: flex;
     align-items: center;
