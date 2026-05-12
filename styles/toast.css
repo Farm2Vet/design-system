@@ -11,7 +11,7 @@
 
    One shared shape adapts across:
      • Status tones — Info, Safe (success), Warning,
-                      Critical, Neutral
+                      Critical
      • Style        — Soft (default), Solid
      • Layout       — Default, Compact, With body,
                       With actions, With auto-dismiss
@@ -129,21 +129,6 @@
     --toast-critical-bar:     var(--critical-500);
     --toast-critical-solid-bg:var(--critical-500);
     --toast-critical-solid-fg:var(--text-inverted);
-
-    /* ---------- Tone: Neutral ----------
-       Neutral gets the same gradient treatment as the status tones
-       so all five toasts share a consistent depth cue — just stepped
-       through the sage neutral ramp instead of a status hue. */
-    --toast-neutral-bg:       linear-gradient(135deg,
-                                  color-mix(in srgb, var(--neutral-100)  38%, transparent) 0%,
-                                  color-mix(in srgb, var(--neutral-300)  60%, transparent) 100%);
-    --toast-neutral-border:   var(--border-default);
-    --toast-neutral-fg:       var(--text-default);
-    --toast-neutral-fg-body:  var(--text-default-subtle);
-    --toast-neutral-icon:     var(--icon-default);
-    --toast-neutral-bar:      var(--neutral-400);
-    --toast-neutral-solid-bg: var(--neutral-700);
-    --toast-neutral-solid-fg: var(--text-inverted);
 
     /* ---------- Slot typography ---------- */
     --toast-title-weight:     var(--font-weight-semibold);
@@ -321,6 +306,26 @@
     background: var(--toast-fg, var(--toast-info-fg));
 }
 
+/* Ghost — same token as --strong, but inverted to outline so a
+   second action can share the same colour rail and still read as
+   secondary. Used on LG when a dominant toast carries two
+   actions ("Open records" + "Remind me later"). */
+.toast__action--ghost {
+    background: transparent;
+    color: var(--toast-fg, var(--toast-info-fg));
+    border-color: var(--toast-fg, var(--toast-info-fg));
+}
+.toast__action--ghost:hover {
+    background: color-mix(in srgb, var(--toast-fg, var(--toast-info-fg)) 8%, transparent);
+}
+.toast--solid .toast__action--ghost {
+    color: var(--toast-solid-fg);
+    border-color: var(--toast-solid-fg);
+}
+.toast--solid .toast__action--ghost:hover {
+    background: color-mix(in srgb, var(--white-base) 14%, transparent);
+}
+
 /* Close (×) — square ghost button sized to the title cap. */
 .toast__close {
     flex: 0 0 auto;
@@ -332,7 +337,12 @@
     border: 0;
     border-radius: var(--toast-close-radius);
     background: transparent;
-    color: var(--toast-close-fg);
+    /* Tint per-variant: the close uses the same tone token as the
+       leading icon so the dismiss affordance feels native to each
+       tone. Hover state keeps the neutral fg-hover token so a
+       moused-over X reads as a clearly-pressable target across
+       every tone. */
+    color: var(--toast-icon, var(--toast-close-fg));
     cursor: pointer;
     transition: var(--toast-transition);
     align-self: flex-start;
@@ -440,17 +450,6 @@
     --toast-solid-bg:  var(--toast-critical-solid-bg);
     --toast-solid-fg:  var(--toast-critical-solid-fg);
 }
-.toast.is-neutral {
-    --toast-bg:        var(--toast-neutral-bg);
-    --toast-border:    var(--toast-neutral-border);
-    --toast-fg:        var(--toast-neutral-fg);
-    --toast-fg-body:   var(--toast-neutral-fg-body);
-    --toast-icon:      var(--toast-neutral-icon);
-    --toast-bar:       var(--toast-neutral-bar);
-    --toast-solid-bg:  var(--toast-neutral-solid-bg);
-    --toast-solid-fg:  var(--toast-neutral-solid-fg);
-}
-
 /* =========================================================
    STYLE MODIFIERS
    Surface treatment that composes with any tone.
@@ -520,25 +519,52 @@
 }
 .toast--sm .toast__title { font-size: var(--toast-sm-title); }
 
+/* LG — dominant onboarding toast.
+   Switches the shared 3-column flex strip to a 2-column grid so the
+   action row can drop beneath the content while staying left-aligned
+   under the title column. Icon and title share the headline row; the
+   action row sits in the second row of the content column. The
+   close × stays absolutely-positioned in the top-right corner
+   (anchored to the card, outside the grid flow). */
 .toast--lg {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    grid-template-areas:
+        "icon content"
+        ".    actions";
+    column-gap: var(--spacing-4x);
+    row-gap: var(--spacing-4x);
     padding: var(--toast-lg-padding-y) var(--toast-lg-padding-x);
     /* Reserve right-edge room so the absolutely-positioned close
        button never overlaps content. */
     padding-right: calc(var(--toast-lg-padding-x) + var(--toast-close-size) + var(--spacing-2x));
     font-size: var(--toast-lg-font-size);
-    gap: var(--spacing-4x);
     min-width: var(--toast-lg-min-width);
     max-width: var(--toast-lg-max-width);
-    flex-wrap: wrap;
-    row-gap: var(--spacing-3x);
 }
 .toast--lg .toast__icon {
+    grid-area: icon;
     width: var(--toast-lg-icon);
     height: var(--toast-lg-icon);
+    align-self: start;
+}
+.toast--lg .toast__content {
+    grid-area: content;
+    flex: initial;          /* clear the base flex:1 1 auto */
+    min-width: 0;
 }
 .toast--lg .toast__title { font-size: var(--toast-lg-title); }
-.toast--lg .toast__content { flex: 1 1 260px; }
-.toast--lg .toast__actions { margin-left: auto; }
+.toast--lg .toast__actions {
+    grid-area: actions;
+    /* Override the base inline-flex auto-margin so the row sits at
+       the left edge of the content column, not pushed to the right. */
+    margin-left: 0;
+    margin-right: auto;
+    align-self: start;
+    justify-content: flex-start;
+    gap: var(--space-tier-6);
+}
 .toast--lg .toast__close {
     position: absolute;
     top: var(--space-tier-5);

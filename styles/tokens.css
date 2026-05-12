@@ -593,29 +593,37 @@
        step down). Glass surfaces ALWAYS carry visible shadow — a
        low-contrast tint without elevation reads as broken, not
        present. Hover elevates; pressed deepens but never goes flat. */
+
+    /* Glass shadow ink — the tint applied to every drop in the glass
+       shadow scale. Defaults to the deepest brand-mood primitive so
+       drops live in the same palette as the surface above them rather
+       than reading as neutral card shadows. Override on a scope if a
+       cooler / warmer cast is wanted. */
+    --glass-shadow-ink: var(--primary-950);
+
     --glass-shadow-flat:             none;
-    --glass-shadow-flat-hover:       0 2px 12px color-mix(in srgb, var(--black-base) 8%,  transparent);
+    --glass-shadow-flat-hover:       0 2px 12px color-mix(in srgb, var(--glass-shadow-ink) 8%,  transparent);
     --glass-shadow-flat-pressed:     none;
 
-    --glass-shadow-raised:           0 4px 30px color-mix(in srgb, var(--black-base) 10%, transparent),
-                                     0 1px 2px  color-mix(in srgb, var(--black-base) 4%,  transparent);
-    --glass-shadow-raised-hover:     0 12px 40px color-mix(in srgb, var(--black-base) 14%, transparent),
-                                     0 4px 12px  color-mix(in srgb, var(--black-base) 6%,  transparent);
-    --glass-shadow-raised-pressed:   0 2px 12px color-mix(in srgb, var(--black-base) 8%,  transparent);
+    --glass-shadow-raised:           0 4px 30px color-mix(in srgb, var(--glass-shadow-ink) 10%, transparent),
+                                     0 1px 2px  color-mix(in srgb, var(--glass-shadow-ink) 4%,  transparent);
+    --glass-shadow-raised-hover:     0 12px 40px color-mix(in srgb, var(--glass-shadow-ink) 14%, transparent),
+                                     0 4px 12px  color-mix(in srgb, var(--glass-shadow-ink) 6%,  transparent);
+    --glass-shadow-raised-pressed:   0 2px 12px color-mix(in srgb, var(--glass-shadow-ink) 8%,  transparent);
 
-    --glass-shadow-floating:         0 12px 40px color-mix(in srgb, var(--black-base) 14%, transparent),
-                                     0 4px 12px  color-mix(in srgb, var(--black-base) 6%,  transparent);
-    --glass-shadow-floating-hover:   0 20px 56px color-mix(in srgb, var(--black-base) 18%, transparent),
-                                     0 6px 18px  color-mix(in srgb, var(--black-base) 8%,  transparent);
-    --glass-shadow-floating-pressed: 0 6px 22px color-mix(in srgb, var(--black-base) 10%, transparent),
-                                     0 2px 6px  color-mix(in srgb, var(--black-base) 4%,  transparent);
+    --glass-shadow-floating:         0 12px 40px color-mix(in srgb, var(--glass-shadow-ink) 14%, transparent),
+                                     0 4px 12px  color-mix(in srgb, var(--glass-shadow-ink) 6%,  transparent);
+    --glass-shadow-floating-hover:   0 20px 56px color-mix(in srgb, var(--glass-shadow-ink) 18%, transparent),
+                                     0 6px 18px  color-mix(in srgb, var(--glass-shadow-ink) 8%,  transparent);
+    --glass-shadow-floating-pressed: 0 6px 22px color-mix(in srgb, var(--glass-shadow-ink) 10%, transparent),
+                                     0 2px 6px  color-mix(in srgb, var(--glass-shadow-ink) 4%,  transparent);
 
-    --glass-shadow-overlay:          0 24px 60px color-mix(in srgb, var(--black-base) 18%, transparent),
-                                     0 8px 20px  color-mix(in srgb, var(--black-base) 8%,  transparent);
-    --glass-shadow-overlay-hover:    0 32px 80px color-mix(in srgb, var(--black-base) 22%, transparent),
-                                     0 12px 28px color-mix(in srgb, var(--black-base) 10%, transparent);
-    --glass-shadow-overlay-pressed:  0 14px 40px color-mix(in srgb, var(--black-base) 14%, transparent),
-                                     0 4px 12px  color-mix(in srgb, var(--black-base) 6%,  transparent);
+    --glass-shadow-overlay:          0 24px 60px color-mix(in srgb, var(--glass-shadow-ink) 18%, transparent),
+                                     0 8px 20px  color-mix(in srgb, var(--glass-shadow-ink) 8%,  transparent);
+    --glass-shadow-overlay-hover:    0 32px 80px color-mix(in srgb, var(--glass-shadow-ink) 22%, transparent),
+                                     0 12px 28px color-mix(in srgb, var(--glass-shadow-ink) 10%, transparent);
+    --glass-shadow-overlay-pressed:  0 14px 40px color-mix(in srgb, var(--glass-shadow-ink) 14%, transparent),
+                                     0 4px 12px  color-mix(in srgb, var(--glass-shadow-ink) 6%,  transparent);
 
     /* ---------- Inner shadow — rim light / pane thickness ----------
        Inset shadows simulate light hitting the top edge of the glass

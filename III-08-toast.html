@@ -66,7 +66,7 @@
                 <li><a href="III-04-dropdowns.html"><span class="global-nav__index">04</span><span>Dropdowns</span></a></li>
                 <li><a href="III-05-cards.html"><span class="global-nav__index">05</span><span>Cards</span></a></li>
                 <li><a href="III-06-modal.html"><span class="global-nav__index">06</span><span>Modal Dialog</span></a></li>
-                <li><a href="III-07-side-panel.html" class="is-placeholder"><span class="global-nav__index">07</span><span>Side Panel</span></a></li>
+                <li><a href="III-07-side-panel.html"><span class="global-nav__index">07</span><span>Side Panel</span></a></li>
                 <li><a href="III-08-toast.html"><span class="global-nav__index">08</span><span>Toast</span></a></li>
                 <li><a href="III-09-alert-badges.html"><span class="global-nav__index">09</span><span>Alert &amp; Badge</span></a></li>
                 <li><a href="III-10-header-navigation.html"><span class="global-nav__index">10</span><span>Header &amp; Nav Bar</span></a></li>
@@ -89,8 +89,8 @@
           <div id="global-nav-panel-assets" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Assets">
             <div class="global-nav__panel-inner">
               <ul class="global-nav__panel-list">
-                <li><a href="IV-01-logo.html"   class="is-placeholder"><span class="global-nav__index">01</span><span>Logo</span></a></li>
-                <li><a href="IV-02-icons.html"  class="is-placeholder"><span class="global-nav__index">02</span><span>Icons</span></a></li>
+                <li><a href="IV-01-logo.html"><span class="global-nav__index">01</span><span>Logo</span></a></li>
+                <li><a href="IV-02-icons.html"><span class="global-nav__index">02</span><span>Icons</span></a></li>
                 <li><a href="IV-03-images.html" class="is-placeholder"><span class="global-nav__index">03</span><span>Images</span></a></li>
               </ul>
             </div>
@@ -108,7 +108,7 @@
           <div id="global-nav-panel-mockups" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Mockups">
             <div class="global-nav__panel-inner">
               <ul class="global-nav__panel-list">
-                <li><a href="V-01-wiki.html"    class="is-placeholder"><span class="global-nav__index">01</span><span>Wiki</span></a></li>
+                <li><a href="V-01-wiki.html"><span class="global-nav__index">01</span><span>Wiki</span></a></li>
                 <li><a href="V-02-chatbot.html" class="is-placeholder"><span class="global-nav__index">02</span><span>Chatbot</span></a></li>
                 <li><a href="V-03-hero.html"    class="is-placeholder"><span class="global-nav__index">03</span><span>Hero</span></a></li>
               </ul>
@@ -146,7 +146,7 @@
     </div>
 
     <dl class="meta-strip reveal">
-      <div><dt>Tones</dt><dd>5</dd></div>
+      <div><dt>Tones</dt><dd>4</dd></div>
       <div><dt>Layouts</dt><dd>6</dd></div>
       <div><dt>Sizes</dt><dd>3</dd></div>
       <div><dt>Positions</dt><dd>2</dd></div>
@@ -247,7 +247,7 @@
         <dd>Required for default and large sizes. Optional for compact one-liners — the body alone is enough.</dd>
 
         <dt>.toast__actions</dt>
-        <dd>Optional trailing region for ≤ 1 action (Undo, Retry, View). Two actions belong in an Alert; the toast lifetime is too short for a deliberation.</dd>
+        <dd>Optional trailing region. SM and MD cap at one action (Undo, Retry, View) — the auto-dismiss lifetime is too short for a deliberation. LG accepts up to two actions on a row beneath the content, for dominant onboarding cases that legitimately need a primary and an escape.</dd>
 
         <dt>.toast__close</dt>
         <dd>Always last in DOM order, before the progress bar. Cancels the auto-dismiss timer immediately.</dd>
@@ -266,8 +266,8 @@
     </header>
 
     <p class="section-lede reveal">
-      Five canonical tones — Info, Safe, Warning, Critical, Neutral —
-        each remap the toast's surface, border, foreground, and icon
+      Four canonical tones — Info, Safe, Warning, Critical — each
+        remap the toast's surface, border, foreground, and icon
         token slots. Tones map 1:1 with the system's status colour
         families and with the Alert component's <code>.is-*</code>
         modifiers.
@@ -279,8 +279,8 @@
       for confirmation of a successful action. Warning for
       non-blocking caution that does not require an immediate
       response. Critical for failures the user can still recover
-      from with one action. Neutral for tips, hints, and ambient
-      feedback with no status meaning.
+      from with one action. Ambient hints and ungraded tips belong
+      in a Compact info toast, not a tone of their own.
     </p>
 
     <p class="usage-note reveal">
@@ -340,17 +340,6 @@
         </div>
       </div>
 
-      <!-- NEUTRAL -->
-      <div class="toast is-neutral" role="status">
-        <span class="toast__icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
-        </span>
-        <div class="toast__content">
-          <p class="toast__title">Tip · drag rows to reorder</p>
-          <p class="toast__body">The caseload board now supports drag-reorder.</p>
-        </div>
-      </div>
-
     </div>
 
     <p class="usage-note reveal" style="margin-top: var(--spacing-5x);">
@@ -384,12 +373,6 @@
               data-body="Network timeout · the form is still drafted on this device.">
         Spawn critical
       </button>
-      <button type="button" class="toast-trigger"
-              data-spawn-toast data-tone="neutral"
-              data-title="Tip · drag rows to reorder"
-              data-body="The caseload board now supports drag-reorder.">
-        Spawn neutral
-      </button>
     </div>
   </section>
 
@@ -412,10 +395,13 @@
     </p>
 
     <p class="usage-note reveal">
-      <strong>Cap trailing actions at one.</strong> The toast
-      lifetime is too short for a deliberation between two
-      affordances. If a decision is required, the message belongs
-      in an Alert or Modal, not a Toast.
+      <strong>SM and MD cap trailing actions at one.</strong> The
+      auto-dismiss lifetime is too short for a deliberation between
+      two affordances at these sizes. LG is the exception — a
+      dominant onboarding toast is not auto-dismissed in a hurry,
+      and the two-action pairing (filled primary + ghost secondary)
+      gives the user a clear primary path and an escape without
+      promoting the message to an Alert or Modal.
     </p>
 
     <p class="usage-note reveal">
@@ -589,6 +575,28 @@
       one LG toast on screen at a time.
     </p>
 
+    <p class="usage-note reveal">
+      <strong>LG carries its actions on a row beneath the content.</strong>
+      SM and MD keep the inline trailing-action layout — the action
+      sits on the headline row and stays vertically tied to a single
+      line of content. LG content is multi-line by definition, so the
+      trailing-action position has no text element to anchor to; the
+      action drops to its own row, left-aligned under the title
+      column. Pair a filled <code>.toast__action--strong</code>
+      primary with a <code>.toast__action--ghost</code> secondary
+      when a dominant toast needs two affordances; cap at two — a
+      third belongs in a Modal.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>The close × is always present on LG.</strong> A
+      dominant onboarding toast carries a dismiss affordance on
+      principle — there's no scenario where the user is locked into
+      one action with no way out. Sticky / non-dismissible toasts
+      aren't part of this variant set; add as a separate variant if
+      a future blocking-onboarding case calls for it.
+    </p>
+
     <div class="preview-stage column glass-surface reveal">
       <span class="stage-caption">SM · narrow regions, mobile</span>
       <div class="toast toast--sm is-info">
@@ -611,7 +619,7 @@
         </div>
       </div>
 
-      <span class="stage-caption">LG · dominant onboarding toast</span>
+      <span class="stage-caption">LG · dominant onboarding toast · single action</span>
       <div class="toast toast--lg is-info">
         <span class="toast__icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
@@ -623,6 +631,27 @@
         <div class="toast__actions">
           <button type="button" class="toast__action toast__action--strong">Open records</button>
         </div>
+        <button type="button" class="toast__close" aria-label="Dismiss toast">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+
+      <span class="stage-caption">LG · dominant onboarding toast · two actions</span>
+      <div class="toast toast--lg is-info">
+        <span class="toast__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        </span>
+        <div class="toast__content">
+          <p class="toast__title">Quarterly compliance review opened</p>
+          <p class="toast__body">Open dispatch forms must be signed off before 2026-05-12.</p>
+        </div>
+        <div class="toast__actions">
+          <button type="button" class="toast__action toast__action--strong">Open records</button>
+          <button type="button" class="toast__action toast__action--ghost">Remind me later</button>
+        </div>
+        <button type="button" class="toast__close" aria-label="Dismiss toast">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
       </div>
     </div>
 
@@ -643,6 +672,13 @@
               data-title="Quarterly compliance review opened"
               data-body="Open dispatch forms must be signed off before 2026-05-12.">
         Spawn LG
+      </button>
+      <button type="button" class="toast-trigger is-tone-info"
+              data-spawn-toast data-tone="info" data-size="lg" data-action="Open records"
+              data-action-secondary="Remind me later"
+              data-title="Quarterly compliance review opened"
+              data-body="Open dispatch forms must be signed off before 2026-05-12.">
+        Spawn LG (two actions)
       </button>
     </div>
   </section>
@@ -848,16 +884,6 @@ const TOAST_TOKENS = [
     ['--toast-critical-solid-bg',  'var(--critical-500)'],
     ['--toast-critical-solid-fg',  'var(--text-inverted)'],
   ]},
-  { group: 'Toast · Tone — Neutral', tokens: [
-    ['--toast-neutral-bg',        'var(--background-default)'],
-    ['--toast-neutral-border',    'var(--border-default)'],
-    ['--toast-neutral-fg',        'var(--text-default)'],
-    ['--toast-neutral-fg-body',   'var(--text-default-subtle)'],
-    ['--toast-neutral-icon',      'var(--icon-default)'],
-    ['--toast-neutral-bar',       'var(--neutral-400)'],
-    ['--toast-neutral-solid-bg',  'var(--neutral-700)'],
-    ['--toast-neutral-solid-fg',  'var(--text-inverted)'],
-  ]},
   { group: 'Toast · Slots & dismiss', tokens: [
     ['--toast-title-weight',  'var(--font-weight-semibold)'],
     ['--toast-body-fg',       'var(--text-default-subtle)'],
@@ -1021,7 +1047,6 @@ const TONE_ICONS = {
   safe:     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
   warning:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>',
   critical: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>',
-  neutral:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>',
 };
 const CLOSE_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>';
 
@@ -1078,16 +1103,30 @@ function buildLiveToast(opts) {
   }
   t.appendChild(content);
 
-  // Trailing action
+  // Trailing action(s).
+  // Primary fills the tone token (--strong). An optional secondary
+  // action takes --ghost so both buttons share the same colour rail
+  // and the order conveys priority. Secondary is only allowed on LG.
   if (opts.action) {
     const actions = document.createElement('div');
     actions.className = 'toast__actions';
+
     const aBtn = document.createElement('button');
     aBtn.type = 'button';
     aBtn.className = 'toast__action toast__action--strong';
     aBtn.textContent = opts.action;
     aBtn.addEventListener('click', () => dismissToast(t));
     actions.appendChild(aBtn);
+
+    if (opts.actionSecondary && opts.size === 'lg') {
+      const bBtn = document.createElement('button');
+      bBtn.type = 'button';
+      bBtn.className = 'toast__action toast__action--ghost';
+      bBtn.textContent = opts.actionSecondary;
+      bBtn.addEventListener('click', () => dismissToast(t));
+      actions.appendChild(bBtn);
+    }
+
     t.appendChild(actions);
   }
 
@@ -1158,17 +1197,18 @@ function readSpawnOpts(btn) {
     catch (e) { promiseResolve = null; }
   }
   return {
-    tone:     ds.tone,
-    style:    ds.style,
-    size:     ds.size,
-    layout:   ds.layout,
-    position: ds.position,
-    title:    ds.title,
-    body:     ds.body,
-    action:   ds.action,
-    dismiss:  ds.dismiss === undefined ? true  : ds.dismiss !== 'false',
-    progress: ds.progress === undefined ? true : ds.progress !== 'false',
-    lifetime: ds.lifetime != null ? Number(ds.lifetime) : 5000,
+    tone:            ds.tone,
+    style:           ds.style,
+    size:            ds.size,
+    layout:          ds.layout,
+    position:        ds.position,
+    title:           ds.title,
+    body:            ds.body,
+    action:          ds.action,
+    actionSecondary: ds.actionSecondary,
+    dismiss:         ds.dismiss === undefined ? true  : ds.dismiss !== 'false',
+    progress:        ds.progress === undefined ? true : ds.progress !== 'false',
+    lifetime:        ds.lifetime != null ? Number(ds.lifetime) : 5000,
     promiseResolve,
   };
 }

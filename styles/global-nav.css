@@ -109,6 +109,8 @@
     background: var(--glass-light-clear-bg);
     border: var(--border-width-base) solid var(--glass-light-clear-border);
     box-shadow: var(--glass-shadow-raised), var(--glass-inset-light-soft);
+    -webkit-backdrop-filter: var(--glass-light-light-blur) var(--glass-saturate);
+            backdrop-filter: var(--glass-light-light-blur) var(--glass-saturate);
     transition:
         background 0.18s ease,
         border-color 0.18s ease,
@@ -159,22 +161,12 @@
     white-space: nowrap;
 }
 .global-nav__link:hover,
+.global-nav__link:focus-visible,
 .global-nav__trigger:hover,
+.global-nav__trigger:focus-visible,
 .global-nav__item--has-panel:hover .global-nav__trigger,
 .global-nav__item--has-panel:focus-within .global-nav__trigger {
-    background: var(--background-default);
-    color:      var(--text-default);
-}
-
-.global-nav__link.is-current,
-.global-nav__trigger.is-current {
-    background:  var(--background-primary-subtle);
-    color:       var(--text-primary-strong);
-    font-weight: var(--font-weight-medium);
-}
-.global-nav__link.is-current:hover,
-.global-nav__trigger.is-current:hover {
-    background: var(--background-primary-minimal);
+    background: var(--background-primary-subtle);
     color:      var(--text-primary-strong);
 }
 

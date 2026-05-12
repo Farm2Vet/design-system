@@ -9,59 +9,27 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
 
-<!-- Design system: shared, reusable foundation -->
+<!-- Foundations: shared, reusable -->
 <link rel="stylesheet" href="styles/tokens.css" />
 <link rel="stylesheet" href="styles/base.css" />
 <link rel="stylesheet" href="styles/typography.css" />
 <link rel="stylesheet" href="styles/shell.css" />
 <link rel="stylesheet" href="styles/global-nav.css" />
-<!-- Reuse: usage-note pattern + .card-callout -->
-<link rel="stylesheet" href="styles/page-III-03.css" />
-<link rel="stylesheet" href="styles/page-III-05.css" />
+
+<!-- Components consumed by the mockup -->
+<link rel="stylesheet" href="styles/button.css" />
+<link rel="stylesheet" href="styles/form.css" />
+<link rel="stylesheet" href="styles/dropdown.css" />
+<link rel="stylesheet" href="styles/badge.css" />
+
+<!-- Page-scaffolding patterns reused from earlier pages -->
+<link rel="stylesheet" href="styles/page-III-03.css" /> <!-- .usage-note / .usage-note--below -->
+
+<!-- Page-specific layout for V-01 -->
+<link rel="stylesheet" href="styles/page-V-01.css" />
 
 <script src="scripts/global-nav.js" defer></script>
-
-<style>
-  .placeholder-card {
-    margin-top: var(--spacing-12x);
-    padding: var(--spacing-8x);
-    background: var(--background-default-subtle);
-    border: var(--border-width-base) solid var(--border-default);
-    border-radius: var(--radius-lg);
-  }
-  .placeholder-card h3 {
-    font-family: var(--font-mono);
-    font-size: var(--text-eyebrow);
-    letter-spacing: var(--letter-spacing-eyebrow);
-    text-transform: uppercase;
-    color: var(--text-default-minimal);
-    margin: 0 0 var(--spacing-4x);
-  }
-  .placeholder-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  .placeholder-list li {
-    display: grid;
-    grid-template-columns: 16ch 1fr;
-    column-gap: var(--spacing-6x);
-    padding: var(--spacing-3x) 0;
-    border-top: var(--border-width-base) solid var(--border-default);
-    font-size: var(--text-body);
-    color: var(--text-default);
-  }
-  .placeholder-list li:first-child { border-top: none; }
-  .placeholder-list li strong {
-    font-family: var(--font-mono);
-    font-size: var(--text-eyebrow);
-    letter-spacing: var(--letter-spacing-eyebrow);
-    text-transform: uppercase;
-    color: var(--text-primary-strong);
-    font-weight: var(--font-weight-medium);
-    padding-top: var(--spacing-half);
-  }
-</style>
+<script src="scripts/dropdown.js" defer></script>
 
 </head>
 <body data-page="V-01-wiki">
@@ -101,7 +69,7 @@
                 <li><a href="III-04-dropdowns.html"><span class="global-nav__index">04</span><span>Dropdowns</span></a></li>
                 <li><a href="III-05-cards.html"><span class="global-nav__index">05</span><span>Cards</span></a></li>
                 <li><a href="III-06-modal.html"><span class="global-nav__index">06</span><span>Modal Dialog</span></a></li>
-                <li><a href="III-07-side-panel.html" class="is-placeholder"><span class="global-nav__index">07</span><span>Side Panel</span></a></li>
+                <li><a href="III-07-side-panel.html"><span class="global-nav__index">07</span><span>Side Panel</span></a></li>
                 <li><a href="III-08-toast.html"><span class="global-nav__index">08</span><span>Toast</span></a></li>
                 <li><a href="III-09-alert-badges.html"><span class="global-nav__index">09</span><span>Alert &amp; Badge</span></a></li>
                 <li><a href="III-10-header-navigation.html"><span class="global-nav__index">10</span><span>Header &amp; Nav Bar</span></a></li>
@@ -124,8 +92,8 @@
           <div id="global-nav-panel-assets" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Assets">
             <div class="global-nav__panel-inner">
               <ul class="global-nav__panel-list">
-                <li><a href="IV-01-logo.html"   class="is-placeholder"><span class="global-nav__index">01</span><span>Logo</span></a></li>
-                <li><a href="IV-02-icons.html"  class="is-placeholder"><span class="global-nav__index">02</span><span>Icons</span></a></li>
+                <li><a href="IV-01-logo.html"><span class="global-nav__index">01</span><span>Logo</span></a></li>
+                <li><a href="IV-02-icons.html"><span class="global-nav__index">02</span><span>Icons</span></a></li>
                 <li><a href="IV-03-images.html" class="is-placeholder"><span class="global-nav__index">03</span><span>Images</span></a></li>
               </ul>
             </div>
@@ -143,7 +111,7 @@
           <div id="global-nav-panel-mockups" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Mockups">
             <div class="global-nav__panel-inner">
               <ul class="global-nav__panel-list">
-                <li><a href="V-01-wiki.html"    class="is-placeholder"><span class="global-nav__index">01</span><span>Wiki</span></a></li>
+                <li><a href="V-01-wiki.html"><span class="global-nav__index">01</span><span>Wiki</span></a></li>
                 <li><a href="V-02-chatbot.html" class="is-placeholder"><span class="global-nav__index">02</span><span>Chatbot</span></a></li>
                 <li><a href="V-03-hero.html"    class="is-placeholder"><span class="global-nav__index">03</span><span>Hero</span></a></li>
               </ul>
@@ -160,42 +128,449 @@
 </header>
 <main class="shell" id="top">
 
+  <!-- ========================== HERO ========================== -->
   <section class="hero">
     <div>
       <h1 class="text-display">
         <span class="num">V-01 / Mockups</span>
-        Wiki.
+        Disease wiki.
       </h1>
     </div>
     <div>
-      <p class="lede">Reserved page. The Wiki mockup — a reference layout for long-form internal documentation, demonstrating Section 10 header, in-page table of contents, and prose typography in concert — will be published here once authored.</p>
+      <p class="lede">
+        The first surface an Admin sees on entering Disease
+        Management. A list landing: every disease the system knows
+        about, scannable in one view, with the four levers an admin
+        reaches for before drilling in — search by codename, filter
+        by version / completeness / active status, sort by codename
+        or last-updated, paginate through the long tail.
+      </p>
     </div>
 
     <dl class="meta-strip">
-      <div><dt>Status</dt><dd>Placeholder</dd></div>
-      <div><dt>Authored</dt><dd>—</dd></div>
-      <div><dt>Tokens</dt><dd>—</dd></div>
-      <div><dt>Variants</dt><dd>—</dd></div>
+      <div><dt>Status</dt><dd>Authored</dd></div>
+      <div><dt>Audience</dt><dd>Admin</dd></div>
+      <div><dt>Components</dt><dd>Input · Dropdown · Badge · Button</dd></div>
+      <div><dt>Pattern</dt><dd>List landing</dd></div>
     </dl>
   </section>
 
-  <div class="placeholder-card">
-    <h3>Reserved scope · expected sub-areas</h3>
-    <ul class="placeholder-list">
-      <li><strong>Header</strong><span>Global nav, breadcrumbs, search.</span></li>
-      <li><strong>Body</strong><span>Article column, in-page TOC, anchored headings.</span></li>
-      <li><strong>Aside</strong><span>Last-edited metadata, contributor list.</span></li>
-      <li><strong>Footer</strong><span>Cross-link rail, edit-on-GitHub link.</span></li>
-    </ul>
-  </div>
+  <!-- ========================== 01 · IN CONTEXT ========================== -->
+  <section class="chunk" id="in-context">
+    <header class="chunk-head reveal">
+      <span class="num-tag">01 / Disease wiki — In context</span>
+      <h2 class="text-display-sm">The list.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      The whole landing rendered as one viewport. A topbar names
+      the page and offers the only write-action on the surface;
+      the toolbar carries search, three filter dropdowns, and a
+      sort; the list itself is ten rows that read row-by-row from
+      left to right — codename, version, optional incomplete
+      warning, last-updated stamp, active status. The pager
+      footer carries a counter on the left and a five-control
+      cluster on the right.
+    </p>
+
+    <div class="app-frame reveal" role="region" aria-label="Disease Management — list landing mockup">
+
+      <!-- Topbar -->
+      <div class="app-frame__topbar">
+        <hgroup class="app-frame__heading">
+          <h3 class="app-frame__title">Disease Management</h3>
+          <p class="app-frame__subtitle">Catalogue of swine diseases recognised by the system.</p>
+        </hgroup>
+        <button type="button" class="btn btn--cta btn--md">
+          <span class="btn__leading" aria-hidden="true">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+          </span>
+          <span class="btn__label">New disease</span>
+        </button>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="app-frame__toolbar" role="toolbar" aria-label="Search, filter, and sort">
+        <!-- Search -->
+        <label class="app-frame__search">
+          <span class="app-frame__search-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          </span>
+          <input type="search" class="input" placeholder="Search by codename…" aria-label="Search diseases by codename" />
+        </label>
+
+        <!-- Filter: Version -->
+        <div class="dropdown" data-dropdown>
+          <button type="button" class="dropdown__trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Filter by version">
+            <span class="dropdown__value">Version · All</span>
+            <svg class="dropdown__chevron" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="dropdown__menu" role="listbox" aria-label="Version">
+            <button type="button" class="dropdown__option is-selected" role="option" data-value="all">All<svg class="dropdown__check" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6 L5 9 L10 3" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <button type="button" class="dropdown__option" role="option" data-value="base">base<svg class="dropdown__check" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6 L5 9 L10 3" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <button type="button" class="dropdown__option" role="option" data-value="draft">draft<svg class="dropdown__check" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6 L5 9 L10 3" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          </div>
+        </div>
+
+        <!-- Filter: Completeness -->
+        <div class="dropdown" data-dropdown>
+          <button type="button" class="dropdown__trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Filter by completeness">
+            <span class="dropdown__value">Completeness · All</span>
+            <svg class="dropdown__chevron" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="dropdown__menu" role="listbox" aria-label="Completeness">
+            <button type="button" class="dropdown__option is-selected" role="option" data-value="all">All<svg class="dropdown__check" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6 L5 9 L10 3" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <button type="button" class="dropdown__option" role="option" data-value="complete">Complete<svg class="dropdown__check" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6 L5 9 L10 3" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <button type="button" class="dropdown__option" role="option" data-value="incomplete">Incomplete<svg class="dropdown__check" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6 L5 9 L10 3" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          </div>
+        </div>
+
+        <!-- Filter: Active status -->
+        <div class="dropdown" data-dropdown>
+          <button type="button" class="dropdown__trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Filter by active status">
+            <span class="dropdown__value">Status · All</span>
+            <svg class="dropdown__chevron" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="dropdown__menu" role="listbox" aria-label="Active status">
+            <button type="button" class="dropdown__option is-selected" role="option" data-value="all">All<svg class="dropdown__check" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6 L5 9 L10 3" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <button type="button" class="dropdown__option" role="option" data-value="active">Active<svg class="dropdown__check" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6 L5 9 L10 3" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <button type="button" class="dropdown__option" role="option" data-value="inactive">Inactive<svg class="dropdown__check" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6 L5 9 L10 3" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          </div>
+        </div>
+
+        <!-- Sort -->
+        <div class="dropdown" data-dropdown>
+          <button type="button" class="dropdown__trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Sort by">
+            <span class="dropdown__value">Sort · Codename A → Z</span>
+            <svg class="dropdown__chevron" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="dropdown__menu" role="listbox" aria-label="Sort by">
+            <button type="button" class="dropdown__option is-selected" role="option" data-value="codename-asc">Codename · A → Z<svg class="dropdown__check" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6 L5 9 L10 3" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <button type="button" class="dropdown__option" role="option" data-value="codename-desc">Codename · Z → A<svg class="dropdown__check" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6 L5 9 L10 3" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <button type="button" class="dropdown__option" role="option" data-value="updated-desc">Last updated · Newest<svg class="dropdown__check" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6 L5 9 L10 3" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <button type="button" class="dropdown__option" role="option" data-value="updated-asc">Last updated · Oldest<svg class="dropdown__check" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6 L5 9 L10 3" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- List -->
+      <div class="app-frame__list" role="list" aria-label="Diseases — page 1 of 25">
+
+        <!-- Row 1 — ASF -->
+        <div class="disease-row" role="listitem">
+          <div class="disease-row__codename">
+            <span class="disease-row__name">ASF</span>
+            <span class="badge badge--sm is-primary">base</span>
+          </div>
+          <span class="disease-row__updated">Updated Apr 18, 2026</span>
+          <span class="disease-row__status">
+            <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Active</span></span>
+          </span>
+        </div>
+
+        <!-- Row 2 — CSF (incomplete) -->
+        <div class="disease-row" role="listitem">
+          <div class="disease-row__codename">
+            <span class="disease-row__name">CSF</span>
+            <span class="badge badge--sm is-primary">base</span>
+            <span class="badge badge--sm is-warning">
+              <span class="badge__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 21h20L12 3z"/><path d="M12 10v5"/><path d="M12 18h.01"/></svg>
+              </span>
+              <span class="badge__label">Incomplete</span>
+            </span>
+          </div>
+          <span class="disease-row__updated">Updated Apr 12, 2026</span>
+          <span class="disease-row__status">
+            <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Active</span></span>
+          </span>
+        </div>
+
+        <!-- Row 3 — PRRS -->
+        <div class="disease-row" role="listitem">
+          <div class="disease-row__codename">
+            <span class="disease-row__name">PRRS</span>
+            <span class="badge badge--sm is-primary">base</span>
+          </div>
+          <span class="disease-row__updated">Updated Apr 10, 2026</span>
+          <span class="disease-row__status">
+            <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Active</span></span>
+          </span>
+        </div>
+
+        <!-- Row 4 — Salmonellosis -->
+        <div class="disease-row" role="listitem">
+          <div class="disease-row__codename">
+            <span class="disease-row__name">Salmonellosis</span>
+            <span class="badge badge--sm is-primary">base</span>
+          </div>
+          <span class="disease-row__updated">Updated Apr 06, 2026</span>
+          <span class="disease-row__status">
+            <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Active</span></span>
+          </span>
+        </div>
+
+        <!-- Row 5 — TGE (inactive) -->
+        <div class="disease-row" role="listitem">
+          <div class="disease-row__codename">
+            <span class="disease-row__name">TGE</span>
+            <span class="badge badge--sm is-primary">base</span>
+          </div>
+          <span class="disease-row__updated">Updated Apr 02, 2026</span>
+          <span class="disease-row__status">
+            <span class="badge badge--sm is-neutral"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Inactive</span></span>
+          </span>
+        </div>
+
+        <!-- Row 6 — Swine Dysentery (incomplete) -->
+        <div class="disease-row" role="listitem">
+          <div class="disease-row__codename">
+            <span class="disease-row__name">Swine Dysentery</span>
+            <span class="badge badge--sm is-primary">base</span>
+            <span class="badge badge--sm is-warning">
+              <span class="badge__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 21h20L12 3z"/><path d="M12 10v5"/><path d="M12 18h.01"/></svg>
+              </span>
+              <span class="badge__label">Incomplete</span>
+            </span>
+          </div>
+          <span class="disease-row__updated">Updated Mar 28, 2026</span>
+          <span class="disease-row__status">
+            <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Active</span></span>
+          </span>
+        </div>
+
+        <!-- Row 7 — Glasser's disease -->
+        <div class="disease-row" role="listitem">
+          <div class="disease-row__codename">
+            <span class="disease-row__name">Glasser&rsquo;s disease</span>
+            <span class="badge badge--sm is-primary">base</span>
+          </div>
+          <span class="disease-row__updated">Updated Mar 24, 2026</span>
+          <span class="disease-row__status">
+            <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Active</span></span>
+          </span>
+        </div>
+
+        <!-- Row 8 — Pasteurellosis (incomplete, inactive) -->
+        <div class="disease-row" role="listitem">
+          <div class="disease-row__codename">
+            <span class="disease-row__name">Pasteurellosis</span>
+            <span class="badge badge--sm is-primary">base</span>
+            <span class="badge badge--sm is-warning">
+              <span class="badge__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 21h20L12 3z"/><path d="M12 10v5"/><path d="M12 18h.01"/></svg>
+              </span>
+              <span class="badge__label">Incomplete</span>
+            </span>
+          </div>
+          <span class="disease-row__updated">Updated Mar 19, 2026</span>
+          <span class="disease-row__status">
+            <span class="badge badge--sm is-neutral"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Inactive</span></span>
+          </span>
+        </div>
+
+        <!-- Row 9 — APP -->
+        <div class="disease-row" role="listitem">
+          <div class="disease-row__codename">
+            <span class="disease-row__name">APP</span>
+            <span class="badge badge--sm is-primary">base</span>
+          </div>
+          <span class="disease-row__updated">Updated Mar 14, 2026</span>
+          <span class="disease-row__status">
+            <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Active</span></span>
+          </span>
+        </div>
+
+        <!-- Row 10 — Edema -->
+        <div class="disease-row" role="listitem">
+          <div class="disease-row__codename">
+            <span class="disease-row__name">Edema</span>
+            <span class="badge badge--sm is-primary">base</span>
+          </div>
+          <span class="disease-row__updated">Updated Mar 08, 2026</span>
+          <span class="disease-row__status">
+            <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Active</span></span>
+          </span>
+        </div>
+
+      </div>
+
+      <!-- Pager -->
+      <div class="app-frame__pager-region">
+        <div class="pager" role="navigation" aria-label="Pagination">
+          <p class="pager__counter">
+            Showing <strong>1&ndash;10</strong> of <strong>247</strong> diseases
+          </p>
+          <div class="pager__controls">
+            <button type="button" class="btn btn--ghost btn--sm pager__btn" aria-label="First page">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 17-5-5 5-5"/><path d="m11 17-5-5 5-5"/></svg>
+            </button>
+            <button type="button" class="btn btn--ghost btn--sm pager__btn" aria-label="Previous page">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <label class="pager__jump">
+              <span>Page</span>
+              <input type="number" min="1" max="25" value="1" class="input input--sm pager__jump-input" aria-label="Jump to page" />
+              <span>of 25</span>
+            </label>
+            <button type="button" class="btn btn--ghost btn--sm pager__btn" aria-label="Next page">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
+            </button>
+            <button type="button" class="btn btn--ghost btn--sm pager__btn" aria-label="Last page">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m13 17 5-5-5-5"/><path d="m6 17 5-5-5-5"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <p class="usage-note usage-note--below reveal">
+      <strong>The list is the whole landing.</strong> No chrome
+      between the topbar and the rows — the toolbar lives directly
+      under the title because search and filters are the next thing
+      an Admin reaches for. The CTA on the topbar is the only
+      write-action visible from the list; everything else (edit,
+      deactivate, version-up) lives behind the row drill-in and is
+      out of scope for this page.
+    </p>
+  </section>
+
+  <!-- ========================== 02 · ANATOMY ========================== -->
+  <section class="chunk" id="anatomy">
+    <header class="chunk-head reveal">
+      <span class="num-tag">02 / Disease wiki — Anatomy</span>
+      <h2 class="text-display-sm">Regions.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      Four named regions, top to bottom. Each is a layout slot;
+      the controls inside each slot resolve to canonical
+      components (see section 03).
+    </p>
+
+    <dl class="anatomy-list reveal">
+      <dt>Topbar</dt>
+      <dd>
+        Page title <code>.app-frame__title</code> on the left, primary
+        write-action <code>.btn--cta</code> on the right. Subtitle
+        sits one line below the title for a one-sentence scope reminder.
+      </dd>
+
+      <dt>Toolbar</dt>
+      <dd>
+        Five controls on a single row. The search input (default
+        <code>.input</code> at LG with a leading magnifier glyph)
+        owns the elastic column. Three filter
+        <code>.dropdown</code> triggers — Version, Completeness,
+        Status — and one sort <code>.dropdown</code> trigger sit
+        in fixed columns to its right. Below 900px the grid
+        collapses to two columns; below 600px it collapses to one.
+      </dd>
+
+      <dt>List</dt>
+      <dd>
+        A stack of <code>.disease-row</code> elements, divided by
+        <code>border-default-subtle</code> hairlines. Each row
+        carries the codename (medium weight), a
+        <code>.badge.is-primary</code> version pill, an optional
+        <code>.badge.is-warning</code> incomplete badge, a mono
+        last-updated stamp, and a leading-dot active-status badge.
+        Row affordances stop at display — drill-in, edit, and
+        deactivate live behind the next view, not this one.
+      </dd>
+
+      <dt>Pager</dt>
+      <dd>
+        Counter on the left
+        (<code>Showing X&ndash;Y of N diseases</code>, mono
+        eyebrow), five-control cluster on the right: first /
+        previous / page-jump input / next / last. The jump is one
+        composite of three children — <code>Page</code> label,
+        <code>input--sm</code>, <code>of N</code> label — so it
+        reads as a single widget rather than three loose pieces.
+      </dd>
+    </dl>
+  </section>
+
+  <!-- ========================== 03 · COMPONENTS IN USE ========================== -->
+  <section class="chunk" id="components-in-use">
+    <header class="chunk-head reveal">
+      <span class="num-tag">03 / Disease wiki — Components in use</span>
+      <h2 class="text-display-sm">Reuse, not approximation.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      Every interactive element on the mockup is a canonical
+      component. The page-CSS in <code>page-V-01.css</code> only
+      contributes layout scaffolding — the viewport frame, the
+      row grid, the pager strip. If a control here looks broken
+      against its component page, fix the component page, not
+      the mockup.
+    </p>
+
+    <dl class="uses-list reveal">
+      <dt>Search input</dt>
+      <dd><code>.input</code> (default LG, see <a href="III-03-form.html">III-03</a>) with a page-scoped leading-icon wrapper <code>.app-frame__search</code>.</dd>
+
+      <dt>Filter triggers</dt>
+      <dd>Three <code>.dropdown</code> instances with full <code>dropdown__trigger</code> &nbsp;/ <code>dropdown__menu</code> &nbsp;/ <code>dropdown__option</code> markup (see <a href="III-04-dropdowns.html">III-04</a>). Selected state uses <code>.is-selected</code>; the resting trigger reads as <code>{Filter} &middot; All</code>.</dd>
+
+      <dt>Sort trigger</dt>
+      <dd>Same <code>.dropdown</code> markup as the filters. Value reads <code>Sort &middot; {key} &middot; {direction}</code>.</dd>
+
+      <dt>Version pill</dt>
+      <dd><code>.badge .badge--sm .is-primary</code> &mdash; soft style, primary tone. The same tone the system uses for selected / brand state across the rail (see <a href="III-09-alert-badges.html">III-09</a>).</dd>
+
+      <dt>Incomplete warning</dt>
+      <dd><code>.badge .badge--sm .is-warning</code> with a <code>.badge__icon</code> slot carrying a triangle glyph. Soft style only &mdash; the row is still readable, the badge is a flag, not a stop.</dd>
+
+      <dt>Active-status chip</dt>
+      <dd><code>.badge .badge--sm .is-safe</code> for Active, <code>.badge .badge--sm .is-neutral</code> for Inactive. Both carry a leading <code>.badge__dot</code> so the chip reads as a status, not a label.</dd>
+
+      <dt>New-disease CTA</dt>
+      <dd><code>.btn .btn--cta .btn--md</code> with a <code>.btn__leading</code> plus glyph and a <code>.btn__label</code>. Single primary action on the surface.</dd>
+
+      <dt>Pager arrows</dt>
+      <dd>Four <code>.btn .btn--ghost .btn--sm</code> icon buttons, square-capped by the page-scoped <code>.pager__btn</code> width override. Each carries an <code>aria-label</code> so screen-readers hear "First page", "Previous page", etc.</dd>
+
+      <dt>Page-jump input</dt>
+      <dd><code>.input .input--sm</code> with a page-scoped <code>.pager__jump-input</code> width override (5ch, centered, tabular-nums) so it reads as a numeric register, not a free-form text field.</dd>
+    </dl>
+  </section>
 
   <footer>
-    <span class="sigil">Farm2Vet — cultivated intelligence, since 2024.</span>
-    <a href="design-system-v1.html">← Design system home</a>
+    <span class="sigil">Farm2Vet &mdash; cultivated intelligence, since 2024.</span>
+    <a href="design-system-v1.html">&larr; Design system home</a>
     <span>Section 01 / Mockups</span>
   </footer>
 
 </main>
+
+<script>
+  /* REVEAL ON SCROLL — matches the canonical observer used on
+     I-primitives.html and every III-* component page. The active
+     class is .in (set by shell.css), the threshold is 0.08, and the
+     bottom rootMargin is -40px so the fade-in fires a touch before
+     the element fully enters the viewport. */
+  (function initReveal() {
+    const items = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) {
+      items.forEach((el) => el.classList.add('in'));
+      return;
+    }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        if (en.isIntersecting) {
+          en.target.classList.add('in');
+          io.unobserve(en.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    items.forEach((el) => io.observe(el));
+  })();
+</script>
 
 </body>
 </html>
