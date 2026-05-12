@@ -1,0 +1,1036 @@
+/* =========================================================
+   COMPONENT — SIDEBAR
+   Persistent in-app primary navigation. A glass rail
+   anchored to the viewport's leading edge; renders an
+   icon + label row per destination, grouped by
+   mono-eyebrow labels, with an optional pinned footer
+   slot for account / utility links. Two persistent modes
+   (expanded · compact); overlay is a responsive
+   behaviour, not a mode. Component tokens (--sidebar-*)
+   reference semantic tokens strictly, including the
+   system's seven-layer glass-rail composition for the
+   rail surface. Promoted to its own component file once V-01-wiki
+   became the second consumer.
+   ========================================================= */
+:root {
+  /* ---------- Container — width + shape ---------- */
+  --sidebar-width-expanded:  280px;
+  --sidebar-width-rail:      64px;
+  --sidebar-radius:          var(--glass-radius-lg);
+  --sidebar-padding-x:       var(--spacing-3x);
+  --sidebar-padding-y:       var(--spacing-4x);
+  --sidebar-gap:             var(--spacing-1x);
+  --sidebar-group-gap:       var(--spacing-6x);
+  --sidebar-shadow-overlay:  var(--shadow-lg);
+  --sidebar-z-overlay:       70;
+  --sidebar-transition:      width .22s cubic-bezier(.2,.8,.2,1),
+                             transform .22s cubic-bezier(.2,.8,.2,1),
+                             background-color .18s ease,
+                             color .18s ease,
+                             box-shadow .22s ease;
+
+  /* ---------- Container — glass rail (seven layers) ---------- */
+  --sidebar-bg:              var(--glass-light-light-bg);
+  --sidebar-bg-hover:        var(--glass-light-light-bg-hover);
+  --sidebar-bg-pressed:      var(--glass-light-light-bg-pressed);
+  --sidebar-border:          var(--glass-light-light-border);
+  --sidebar-blur:            var(--glass-light-light-blur);
+  --sidebar-saturate:        var(--glass-saturate);
+  --sidebar-shadow:          var(--glass-shadow-floating);
+  --sidebar-shadow-hover:    var(--glass-shadow-floating-hover);
+  --sidebar-inset:           var(--glass-inset-light-soft);
+
+  /* ---------- Header slot ---------- */
+  --sidebar-header-pad-y:    var(--spacing-3x);
+  --sidebar-header-border:   var(--border-default-subtle);
+
+  /* ---------- Item — shared shape ---------- */
+  --sidebar-item-radius:     var(--radius-md);
+  --sidebar-item-gap:        var(--spacing-3x);
+  --sidebar-item-padding-x:  var(--spacing-3x);
+  --sidebar-item-padding-y:  var(--spacing-3x);
+  --sidebar-item-height:     44px;
+  --sidebar-item-icon-size:  20px;
+
+  /* ---------- Item — colour ---------- */
+  --sidebar-item-fg:           var(--text-default-subtle);
+  --sidebar-item-fg-hover:     var(--text-default);
+  --sidebar-item-bg-hover:     var(--background-default-hover);
+  --sidebar-item-fg-current:   var(--text-primary-strong);
+  --sidebar-item-bg-current:   var(--background-primary-subtle);
+  --sidebar-item-fg-disabled:  var(--text-default-disabled);
+  --sidebar-item-icon:         var(--icon-default-subtle);
+  --sidebar-item-icon-hover:   var(--icon-default);
+  --sidebar-item-icon-current: var(--icon-primary-strong);
+
+  /* ---------- Group label ---------- */
+  --sidebar-group-label-font:     var(--font-mono);
+  --sidebar-group-label-size:     var(--text-eyebrow);
+  --sidebar-group-label-tracking: var(--letter-spacing-eyebrow);
+  --sidebar-group-label-color:    var(--text-default-minimal);
+  --sidebar-group-label-pad-x:    var(--spacing-3x);
+  --sidebar-group-label-pad-y:    var(--spacing-2x);
+
+  /* ---------- Sub-list (disclosure) ---------- */
+  --sidebar-sublist-indent:    calc(var(--sidebar-item-icon-size) + var(--sidebar-item-gap));
+  --sidebar-sublist-rail:      var(--border-default-subtle);
+
+  /* ---------- Trailing slot (badge / chevron) ---------- */
+  --sidebar-trailing-color:    var(--text-default-minimal);
+  --sidebar-chevron-size:      14px;
+  --sidebar-chevron-rotation:  90deg;
+
+  /* ---------- Footer slot ---------- */
+  --sidebar-footer-bg:        transparent;
+  --sidebar-footer-border:    var(--border-default-subtle);
+  --sidebar-footer-pad:       var(--spacing-3x);
+
+  /* ---------- Tooltip (rail mode) ---------- */
+  --sidebar-tip-bg:           var(--background-toast);
+  --sidebar-tip-fg:           var(--text-inverted);
+  --sidebar-tip-radius:       var(--radius-sm);
+  --sidebar-tip-pad-x:        var(--spacing-3x);
+  --sidebar-tip-pad-y:        var(--spacing-1x);
+  --sidebar-tip-offset:       var(--spacing-3x);
+
+  /* ---------- Overlay (mobile) ---------- */
+  --sidebar-overlay-scrim:    var(--background-overlay);
+}
+
+/* =========================================================
+   RAIL CONTAINER — glass surface
+   The rail composes the system's seven-layer glass rail:
+   tinted background, backdrop blur + saturation, hairline
+   border, large radius, outer floating shadow, inner rim.
+   States elevate (resting → floating, hover → floating-hover);
+   nothing flattens.
+   ========================================================= */
+.sidebar {
+  position: relative;
+  width: var(--sidebar-width-expanded);
+  border-radius: var(--sidebar-radius);
+  background: var(--sidebar-bg);
+  border: var(--border-width-base) solid var(--sidebar-border);
+  box-shadow: var(--sidebar-shadow), var(--sidebar-inset);
+  -webkit-backdrop-filter: var(--sidebar-blur) var(--sidebar-saturate);
+          backdrop-filter: var(--sidebar-blur) var(--sidebar-saturate);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: var(--sidebar-transition);
+  min-height: 100vh;
+  align-self: stretch;
+}
+.sidebar:hover {
+  box-shadow: var(--sidebar-shadow-hover), var(--sidebar-inset);
+}
+.sidebar--collapsed { width: var(--sidebar-width-rail); }
+
+/* =========================================================
+   TONE MODIFIER — dark
+   The rail is the same component whether it sits over a
+   light page or a dark / image-heavy one; only the glass
+   tone changes. .sidebar--tone-dark re-resolves the rail's
+   glass tokens to the dark-tone rail and inverts the
+   item-level colour so destinations read on the darker
+   surface. Markup and slots are untouched.
+   ========================================================= */
+.sidebar--tone-dark {
+  --sidebar-bg:           var(--glass-dark-light-bg);
+  --sidebar-bg-hover:     var(--glass-dark-light-bg-hover);
+  --sidebar-bg-pressed:   var(--glass-dark-light-bg-pressed);
+  --sidebar-border:       var(--glass-dark-light-border);
+  --sidebar-shadow:       var(--glass-shadow-floating);
+  --sidebar-shadow-hover: var(--glass-shadow-floating-hover);
+  --sidebar-inset:        var(--glass-inset-dark-soft);
+
+  --sidebar-item-fg:           var(--text-inverted-subtle);
+  --sidebar-item-fg-hover:     var(--text-inverted);
+  --sidebar-item-bg-hover:     var(--background-inverted-minimal);
+  --sidebar-item-fg-current:   var(--text-inverted);
+  --sidebar-item-bg-current:   color-mix(in srgb, var(--white-base) 12%, transparent);
+  --sidebar-item-fg-disabled:  color-mix(in srgb, var(--white-base) 25%, transparent);
+  --sidebar-item-icon:         var(--icon-inverted-subtle);
+  --sidebar-item-icon-hover:   var(--icon-inverted);
+  --sidebar-item-icon-current: var(--icon-inverted);
+
+  --sidebar-header-border:     color-mix(in srgb, var(--white-base) 12%, transparent);
+  --sidebar-footer-border:     color-mix(in srgb, var(--white-base) 12%, transparent);
+  --sidebar-group-label-color: color-mix(in srgb, var(--white-base) 50%, transparent);
+}
+.sidebar--tone-dark .sidebar__brand { color: var(--text-inverted); }
+.sidebar--tone-dark .sidebar__collapse { color: var(--icon-inverted-subtle); }
+.sidebar--tone-dark .sidebar__collapse:hover {
+  background: var(--background-inverted-minimal);
+  color: var(--icon-inverted);
+}
+.sidebar--tone-dark .sidebar__avatar {
+  background: var(--glass-dark-light-bg);
+  -webkit-backdrop-filter: var(--glass-dark-light-blur) var(--glass-saturate);
+          backdrop-filter: var(--glass-dark-light-blur) var(--glass-saturate);
+  border-color: var(--glass-dark-light-border);
+  box-shadow: var(--glass-shadow-raised), var(--glass-inset-dark-soft);
+  color: var(--text-inverted);
+}
+
+/* ---------- Header slot ---------- */
+.sidebar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-2x);
+  padding: var(--sidebar-header-pad-y) var(--sidebar-padding-x);
+  border-bottom: var(--border-width-base) solid var(--sidebar-header-border);
+  min-height: 56px;
+}
+.sidebar__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2x);
+  font-family: var(--font-sans);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--text-body);
+  color: var(--text-default);
+  text-decoration: none;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.sidebar__brand-mark {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  display: block;
+  object-fit: contain;
+}
+.sidebar--tone-dark .sidebar__brand-mark {
+  content: url("logo/logo-emblem-white.svg");
+}
+.sidebar--collapsed .sidebar__brand { display: none; }
+.sidebar--collapsed .sidebar__header { justify-content: center; }
+.sidebar__collapse {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--icon-default-subtle);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color .18s ease, color .18s ease;
+}
+.sidebar__collapse:hover { background: var(--background-default-hover); color: var(--icon-default); }
+.sidebar__collapse svg { width: 16px; height: 16px; transition: transform .22s ease; }
+.sidebar--collapsed .sidebar__collapse svg { transform: rotate(180deg); }
+
+/* ---------- Header slot — profile cluster variant ----------
+   Alternate shape of .sidebar__header that renders the
+   signed-in user (avatar + name + role + verified tick)
+   instead of the brand + collapse trigger. Use when the
+   rail's product surface routinely shows a signed-in user
+   inside the rail; the brand + collapse variant remains
+   the default. */
+.sidebar__header--profile {
+  align-items: center;
+  gap: var(--spacing-3x);
+  padding: var(--sidebar-header-pad-y) var(--sidebar-padding-x);
+  min-height: 64px;
+}
+.sidebar__profile {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3x);
+  width: 100%;
+  min-width: 0;
+  text-decoration: none;
+  color: inherit;
+}
+.sidebar__avatar {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  background: var(--glass-light-light-bg);
+  -webkit-backdrop-filter: var(--glass-light-light-blur) var(--glass-saturate);
+          backdrop-filter: var(--glass-light-light-blur) var(--glass-saturate);
+
+  border: var(--border-width-base) solid var(--glass-light-light-border);
+  border-radius: var(--radius-pill);
+
+  box-shadow: var(--glass-shadow-raised), var(--glass-inset-light-soft);
+
+  font-family: var(--font-sans);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--text-body-sm);
+  color: var(--text-default);
+  overflow: hidden;
+}
+.sidebar__avatar img,
+.sidebar__avatar svg { width: 100%; height: 100%; object-fit: cover; }
+.sidebar__profile-text {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.sidebar__profile-name {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1x);
+  font-family: var(--font-sans);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--text-body);
+  color: var(--text-default);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sidebar__profile-verified {
+  width: 16px;
+  height: 16px;
+  color: var(--icon-primary-strong);
+  flex-shrink: 0;
+}
+.sidebar__profile-role {
+  font-family: var(--font-sans);
+  font-size: var(--text-body-sm);
+  color: var(--text-default-subtle);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sidebar__overflow {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--icon-default-subtle);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color .18s ease, color .18s ease;
+}
+.sidebar__overflow:hover {
+  background: var(--background-default-hover);
+  color: var(--icon-default);
+}
+.sidebar__overflow svg { width: 16px; height: 16px; }
+.sidebar--collapsed .sidebar__profile-text,
+.sidebar--collapsed .sidebar__overflow { display: none; }
+
+/* ---------- Nav region ---------- */
+.sidebar__nav {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: var(--sidebar-padding-y) var(--sidebar-padding-x);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sidebar-group-gap);
+}
+.sidebar__group { display: flex; flex-direction: column; gap: var(--sidebar-gap); }
+.sidebar__group-label {
+  font-family:    var(--sidebar-group-label-font);
+  font-size:      var(--sidebar-group-label-size);
+  letter-spacing: var(--sidebar-group-label-tracking);
+  text-transform: uppercase;
+  color:          var(--sidebar-group-label-color);
+  font-weight:    var(--font-weight-medium);
+  padding:        var(--sidebar-group-label-pad-y) var(--sidebar-group-label-pad-x);
+  margin: 0;
+}
+.sidebar--collapsed .sidebar__group-label {
+  height: 1px;
+  background: var(--border-default-subtle);
+  color: transparent;
+  padding: 0;
+  margin: var(--spacing-2x) var(--spacing-2x);
+  overflow: hidden;
+}
+
+.sidebar__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sidebar-gap);
+}
+.sidebar__item { position: relative; }
+
+/* ---------- Item link ---------- */
+.sidebar__link {
+  display: grid;
+  grid-template-columns: var(--sidebar-item-icon-size) 1fr auto;
+  align-items: center;
+  gap: var(--sidebar-item-gap);
+  padding: var(--sidebar-item-padding-y) var(--sidebar-item-padding-x);
+  min-height: var(--sidebar-item-height);
+  border-radius: var(--sidebar-item-radius);
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  font-weight: var(--font-weight-medium);
+  color: var(--sidebar-item-fg);
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  transition: background-color .15s ease, color .15s ease;
+}
+.sidebar__link:hover {
+  background: var(--sidebar-item-bg-hover);
+  color: var(--sidebar-item-fg-hover);
+}
+.sidebar__link:hover .sidebar__icon { color: var(--sidebar-item-icon-hover); }
+.sidebar__link.is-current {
+  background: var(--sidebar-item-bg-current);
+  color: var(--sidebar-item-fg-current);
+}
+.sidebar__link.is-current .sidebar__icon { color: var(--sidebar-item-icon-current); }
+.sidebar__link[aria-disabled="true"],
+.sidebar__link.is-disabled {
+  color: var(--sidebar-item-fg-disabled);
+  pointer-events: none;
+}
+.sidebar__icon {
+  width: var(--sidebar-item-icon-size);
+  height: var(--sidebar-item-icon-size);
+  color: var(--sidebar-item-icon);
+  flex-shrink: 0;
+  display: inline-flex;
+}
+.sidebar__icon svg { width: 100%; height: 100%; }
+.sidebar__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sidebar__trailing {
+  color: var(--sidebar-trailing-color);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2x);
+}
+
+/* ---------- Disclosure (sub-items) ---------- */
+.sidebar__chev {
+  width: var(--sidebar-chevron-size);
+  height: var(--sidebar-chevron-size);
+  transition: transform .18s ease;
+  color: var(--icon-default-subtle);
+}
+.sidebar__item.is-open > .sidebar__link .sidebar__chev {
+  transform: rotate(var(--sidebar-chevron-rotation));
+}
+.sidebar__sublist {
+  list-style: none;
+  margin: var(--spacing-1x) 0 0 0;
+  padding: 0 0 0 var(--sidebar-sublist-indent);
+  border-left: var(--border-width-base) solid var(--sidebar-sublist-rail);
+  margin-left: calc(var(--sidebar-item-padding-x) + (var(--sidebar-item-icon-size) / 2));
+  display: flex;
+  flex-direction: column;
+  gap: var(--sidebar-gap);
+}
+.sidebar__sublist .sidebar__link {
+  grid-template-columns: 1fr auto;
+  font-size: var(--text-body-sm);
+}
+.sidebar__sublist .sidebar__icon { display: none; }
+.sidebar__item:not(.is-open) > .sidebar__sublist { display: none; }
+
+/* ---------- Trailing badge ---------- */
+.sidebar__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 var(--spacing-2x);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary-strong);
+  background: var(--background-primary-minimal);
+}
+.sidebar__badge--info     { color: var(--text-info-strong);     background: var(--background-info); }
+.sidebar__badge--critical { color: var(--text-inverted);        background: var(--background-critical-strong); }
+.sidebar__badge--dot {
+  min-width: 8px;
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  background: var(--background-critical-strong);
+}
+.sidebar__badge--warning { color: var(--text-warning-strong); background: var(--background-warning); }
+
+/* ---------- Pip — count badge that survives compact mode ----------
+   Routine trailing slots hide when the rail collapses
+   (.sidebar--collapsed .sidebar__trailing { display: none }).
+   The --pip modifier opts an individual badge out of that
+   rule and re-positions it at the top-right corner of the
+   leading icon while collapsed, so unread counts remain
+   visible. In expanded mode the badge renders inline like
+   any other trailing element. */
+.sidebar--collapsed .sidebar__trailing:has(> .sidebar__badge--pip) {
+  display: inline-flex;
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  pointer-events: none;
+  z-index: 1;
+}
+.sidebar--collapsed .sidebar__badge--pip {
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  font-size: 10px;
+  line-height: 1;
+  box-shadow: 0 0 0 2px var(--sidebar-bg);
+}
+.sidebar--collapsed .sidebar__item {
+  position: relative;
+  width: var(--sidebar-item-height);
+  margin-inline: auto;
+}
+
+/* ---------- Footer slot ---------- */
+.sidebar__footer {
+  padding: var(--sidebar-footer-pad);
+  border-top: var(--border-width-base) solid var(--sidebar-footer-border);
+  background: var(--sidebar-footer-bg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sidebar-gap);
+}
+
+/* ---------- Collapsed (rail) — visual rules ---------- */
+
+/* In rail mode the gutter responsibility moves from the
+   nav container to the tile itself. The nav becomes a flush
+   vertical track and the tile (sized to --sidebar-item-height
+   and centred via margin-inline: auto below) provides its own
+   breathing room from the rail edge. Leaving the expanded-mode
+   padding-inline in place would make the 44px tile wider than
+   the 38px content area, collapsing margin-inline: auto to 0
+   and pushing every tile against the rail's left padding. */
+.sidebar--collapsed .sidebar__nav {
+  padding-inline: 0;
+}
+
+.sidebar--collapsed .sidebar__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width:  var(--sidebar-item-height);
+  height: var(--sidebar-item-height);
+  margin-inline: auto;
+  padding: 0;
+}
+.sidebar--collapsed .sidebar__label,
+.sidebar--collapsed .sidebar__trailing,
+.sidebar--collapsed .sidebar__chev,
+.sidebar--collapsed .sidebar__sublist { display: none; }
+
+/* Tooltip (rail mode only) — appears on hover, name remains
+   accessible via the link's text content (kept in DOM,
+   visually clipped). Pure-CSS for the documentation preview. */
+.sidebar--collapsed .sidebar__item:hover .sidebar__label {
+  position: absolute;
+  left: calc(100% + var(--sidebar-tip-offset));
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--sidebar-tip-bg);
+  color: var(--sidebar-tip-fg);
+  padding: var(--sidebar-tip-pad-y) var(--sidebar-tip-pad-x);
+  border-radius: var(--sidebar-tip-radius);
+  white-space: nowrap;
+  font-size: var(--text-body-sm);
+  font-weight: var(--font-weight-medium);
+  pointer-events: none;
+  z-index: var(--sidebar-z-overlay);
+  display: inline-flex;
+}
+
+/* =========================================================
+   POPOVER MENU — raised from the user-opt overflow trigger.
+   The footer hosts the user opt only; Settings / Language /
+   Get Help / Logout live inside this menu. Anchors to the
+   .sidebar__profile container; opens upward because the
+   footer pins to the rail's bottom edge.
+
+   Composes the system's seven-layer glass rail at small
+   scale — same conventions as the dropdown menu, scoped to
+   --sidebar-menu-* component tokens.
+   ========================================================= */
+:root {
+  --sidebar-menu-bg:        var(--glass-light-regular-bg);
+  --sidebar-menu-border:    var(--glass-light-regular-border);
+  --sidebar-menu-blur:      var(--glass-light-regular-blur);
+  --sidebar-menu-shadow:    var(--glass-shadow-floating);
+  --sidebar-menu-inset:     var(--glass-inset-light-soft);
+  --sidebar-menu-radius:    var(--radius-md);
+  --sidebar-menu-padding:   var(--spacing-1x);
+  --sidebar-menu-min-width: 240px;
+  --sidebar-menu-offset:    var(--spacing-2x);
+
+  --sidebar-menu-item-radius:    var(--radius-sm);
+  --sidebar-menu-item-pad-x:     var(--spacing-3x);
+  --sidebar-menu-item-pad-y:     var(--spacing-2x);
+  --sidebar-menu-item-gap:       var(--spacing-3x);
+  --sidebar-menu-item-fg:        var(--text-default);
+  --sidebar-menu-item-fg-hover:  var(--text-default);
+  --sidebar-menu-item-bg-hover:  var(--background-default-hover);
+  --sidebar-menu-item-icon:      var(--icon-default-subtle);
+
+  --sidebar-menu-header-fg:      var(--text-default-subtle);
+  --sidebar-menu-divider:        var(--border-default-subtle);
+}
+
+.sidebar__profile-wrap {
+  position: relative;
+}
+
+.sidebar__menu {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(100% + var(--sidebar-menu-offset));
+  min-width: var(--sidebar-menu-min-width);
+  background: var(--sidebar-menu-bg);
+  border: var(--border-width-base) solid var(--sidebar-menu-border);
+  border-radius: var(--sidebar-menu-radius);
+  box-shadow: var(--sidebar-menu-shadow), var(--sidebar-menu-inset);
+  -webkit-backdrop-filter: var(--sidebar-menu-blur) var(--glass-saturate);
+          backdrop-filter: var(--sidebar-menu-blur) var(--glass-saturate);
+  padding: var(--sidebar-menu-padding);
+  z-index: var(--sidebar-z-overlay);
+
+  opacity: 0;
+  transform: translateY(4px) scale(.98);
+  transform-origin: bottom center;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .14s ease,
+              transform .14s ease,
+              visibility 0s linear .14s;
+}
+.sidebar__profile-wrap.is-open .sidebar__menu {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity .14s ease, transform .14s ease, visibility 0s;
+}
+
+.sidebar__menu-header {
+  display: block;
+  padding: var(--sidebar-menu-item-pad-y) var(--sidebar-menu-item-pad-x);
+  font-family: var(--font-sans);
+  font-size: var(--text-body-sm);
+  color: var(--sidebar-menu-header-fg);
+  border-bottom: var(--border-width-base) solid var(--sidebar-menu-divider);
+  margin-bottom: var(--sidebar-menu-padding);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar__menu-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sidebar__menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--sidebar-menu-item-gap);
+  width: 100%;
+  padding: var(--sidebar-menu-item-pad-y) var(--sidebar-menu-item-pad-x);
+  border: none;
+  background: transparent;
+  border-radius: var(--sidebar-menu-item-radius);
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  font-weight: var(--font-weight-medium);
+  color: var(--sidebar-menu-item-fg);
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color .12s ease, color .12s ease;
+}
+.sidebar__menu-item:hover,
+.sidebar__menu-item:focus-visible {
+  background: var(--sidebar-menu-item-bg-hover);
+  color: var(--sidebar-menu-item-fg-hover);
+}
+.sidebar__menu-item .sidebar__menu-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--sidebar-menu-item-icon);
+  flex-shrink: 0;
+}
+.sidebar__menu-item--divider {
+  height: var(--border-width-base);
+  background: var(--sidebar-menu-divider);
+  margin: var(--sidebar-menu-padding) 0;
+  padding: 0;
+  pointer-events: none;
+}
+
+.sidebar--tone-dark {
+  --sidebar-menu-bg:        var(--glass-dark-regular-bg);
+  --sidebar-menu-border:    var(--glass-dark-regular-border);
+  --sidebar-menu-blur:      var(--glass-dark-regular-blur);
+  --sidebar-menu-inset:     var(--glass-inset-dark-soft);
+  --sidebar-menu-item-fg:        var(--text-inverted-subtle);
+  --sidebar-menu-item-fg-hover:  var(--text-inverted);
+  --sidebar-menu-item-bg-hover:  var(--background-inverted-minimal);
+  --sidebar-menu-item-icon:      var(--icon-inverted-subtle);
+  --sidebar-menu-header-fg:      color-mix(in srgb, var(--white-base) 65%, transparent);
+  --sidebar-menu-divider:        color-mix(in srgb, var(--white-base) 12%, transparent);
+}
+
+.sidebar--collapsed .sidebar__menu {
+  left: calc(100% + var(--sidebar-menu-offset));
+  right: auto;
+  bottom: 0;
+  transform-origin: bottom left;
+  transform: translateX(-4px) scale(.98);
+}
+.sidebar--collapsed .sidebar__profile-wrap.is-open .sidebar__menu {
+  transform: translateX(0) scale(1);
+}
+
+/* =========================================================
+   PAGE — DEMONSTRATION SCAFFOLDING
+   One stage frame that hosts a sidebar + a stand-in for the
+   page body, plus the small grids used in the modes / density
+   sections. Reuses .form-variant-card chrome for showcase
+   cards (already imported via page-III-03.css).
+   ========================================================= */
+/* Stage backdrop — must read as glass.
+   A glass rail mounted on a flat colour blurs nothing and
+   renders as a solid tint. The stage carries enough
+   non-uniform variation (three soft elliptical highlights
+   over a warm grey base) for the rail's blur to be visible.
+   Reads as a textured warm-neutral surface — no chromatic
+   tint that would compete with the rail. */
+.sidebar-stage {
+  border-radius: var(--radius-lg);
+  border: var(--border-width-base) solid var(--border-default);
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  min-height: 480px;
+  box-shadow: var(--shadow-sm);
+  padding: var(--spacing-6x);
+  gap: var(--spacing-6x);
+
+  background:
+    radial-gradient(ellipse 70% 50% at 15% 20%,
+      color-mix(in srgb, var(--white-base) 60%, transparent),
+      transparent 70%),
+    radial-gradient(ellipse 60% 50% at 85% 70%,
+      color-mix(in srgb, var(--neutral-200) 35%, transparent),
+      transparent 70%),
+    radial-gradient(ellipse 80% 60% at 50% 110%,
+      color-mix(in srgb, var(--neutral-100) 45%, transparent),
+      transparent 70%),
+    var(--neutral-100);
+}
+.sidebar-stage__body {
+  padding: var(--spacing-6x);
+  background: color-mix(in srgb, var(--white-base) 96%, transparent);
+  border-radius: var(--radius-md);
+  border: var(--border-width-base) solid var(--border-default-subtle);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4x);
+}
+.sidebar-stage__heading {
+  font-family: var(--font-sans);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--text-h5);
+  color: var(--text-default);
+  margin: 0;
+}
+.sidebar-stage__lede {
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  color: var(--text-default-subtle);
+  line-height: var(--line-height-body);
+  max-width: 60ch;
+  margin: 0;
+}
+.sidebar-stage__placeholder {
+  flex: 1 1 auto;
+  border-radius: var(--radius-md);
+  border: var(--border-width-base) dashed var(--border-default);
+  background: var(--background-default-subtle);
+}
+
+/* Header variants — small two-up showcase pairing the
+   default brand+collapse header against the profile
+   cluster. Each tile shows only the header slot. */
+.header-variants {
+  margin-top: var(--spacing-5x);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-5x);
+}
+.header-variant {
+  border-radius: var(--radius-lg);
+  border: var(--border-width-base) solid var(--border-glass-light);
+  background: var(--background-glass-light);
+  -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
+          backdrop-filter: var(--blur-lg) saturate(140%);
+  padding: var(--spacing-5x);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4x);
+}
+.header-variant .label {
+  font-family:    var(--font-mono);
+  font-size:      var(--text-eyebrow);
+  letter-spacing: var(--letter-spacing-eyebrow);
+  text-transform: uppercase;
+  color:          var(--text-default-minimal);
+}
+.header-variant .demo {
+  border-radius: var(--radius-md);
+  border: var(--border-width-base) solid var(--border-default);
+  padding: var(--spacing-3x);
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 25%,
+      color-mix(in srgb, var(--white-base) 55%, transparent),
+      transparent 70%),
+    radial-gradient(ellipse 70% 50% at 80% 80%,
+      color-mix(in srgb, var(--neutral-200) 30%, transparent),
+      transparent 70%),
+    var(--neutral-100);
+}
+.header-variant .demo .sidebar { width: 100%; }
+.header-variant .meta {
+  font-family:    var(--font-mono);
+  font-size:      var(--text-eyebrow);
+  color:          var(--text-default-minimal);
+  letter-spacing: var(--letter-spacing-mono);
+  display: flex;
+  justify-content: space-between;
+  border-top: var(--border-width-base) solid var(--border-default-subtle);
+  padding-top: var(--spacing-3x);
+}
+.header-variant .meta strong {
+  color: var(--text-default);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Modes — two full-bleed previews stacked vertically.
+   Each stage carries a complex background so the rail's
+   backdrop blur has texture to resolve against. The rail
+   itself keeps its intrinsic widths (--sidebar-width-rail
+   for collapsed, --sidebar-width-expanded for expanded) so
+   the compact preview actually renders as a rail. */
+.mode-preview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3x);
+  margin-top: var(--spacing-6x);
+}
+.mode-preview__label {
+  font-family:    var(--font-mono);
+  font-size:      var(--text-eyebrow);
+  letter-spacing: var(--letter-spacing-eyebrow);
+  text-transform: uppercase;
+  color:          var(--text-default-minimal);
+}
+.mode-preview__stage {
+  position: relative;
+  border-radius: var(--radius-lg);
+  border: var(--border-width-base) solid var(--border-default-subtle);
+  padding: var(--spacing-8x) var(--spacing-6x);
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: max-content;
+  align-items: stretch;
+  justify-content: center;
+  gap: var(--spacing-6x);
+  overflow: hidden;
+  /* Pin tall enough to host the expanded rail with disclosure
+     open: header 56 + nav 456 + footer 96 + padding ≈ 680, plus
+     a small reserve. Recompute if rail contents grow. */
+  min-height: 720px;
+}
+/* Light wash — soft warm-neutral, mirrors the product surface
+   the light rail sits over in real product UIs. */
+.mode-preview__stage--light {
+  background:
+    radial-gradient(ellipse 70% 55% at 20% 25%,
+      color-mix(in srgb, var(--white-base) 70%, transparent),
+      transparent 70%),
+    radial-gradient(ellipse 65% 45% at 80% 80%,
+      color-mix(in srgb, var(--accent-100) 35%, transparent),
+      transparent 70%),
+    var(--neutral-100);
+}
+/* Dark abstract — deep neutral with overlapping radial washes
+   so the dark glass rail's blur resolves into real texture, not
+   a flat tint. */
+.mode-preview__stage--dark {
+  background:
+    radial-gradient(ellipse 80% 55% at 25% 30%,
+      color-mix(in srgb, var(--neutral-700) 55%, transparent),
+      transparent 70%),
+    radial-gradient(ellipse 70% 50% at 75% 75%,
+      color-mix(in srgb, var(--neutral-950) 70%, transparent),
+      transparent 70%),
+    radial-gradient(ellipse 50% 35% at 50% 50%,
+      color-mix(in srgb, var(--accent-900) 25%, transparent),
+      transparent 70%),
+    var(--neutral-900);
+}
+/* Override only the demo-level concerns — never the
+   component's intrinsic width. The width comes from
+   .sidebar / .sidebar--collapsed, not from this rule.
+   min-height: 100% pins each rail to the stage's height so
+   closing disclosure on the expanded rail doesn't shrink the
+   stage (and the compact rail with it). */
+.mode-preview__stage .sidebar {
+  flex: 0 0 auto;
+  min-height: 100%;
+  align-self: stretch;
+}
+.mode-preview__meta {
+  font-family:    var(--font-mono);
+  font-size:      var(--text-eyebrow);
+  color:          var(--text-default-minimal);
+  letter-spacing: var(--letter-spacing-mono);
+  display: flex;
+  justify-content: space-between;
+  gap: var(--spacing-4x);
+}
+.mode-preview__meta code {
+  font-family: var(--font-mono);
+  color:       var(--text-default);
+}
+
+/* Narrow viewport — stack the two rails vertically inside
+   the stage rather than letting them shrink. */
+@media (max-width: 760px) {
+  .mode-preview__stage {
+    grid-auto-flow: row;
+    justify-items: center;
+    gap: var(--spacing-5x);
+  }
+}
+
+/* State demo — reuses .state-grid / .state-card from page-III-10.
+   Override only the inner demo spacing to fit a sidebar row. */
+.state-card .demo--row {
+  width: 100%;
+  padding: var(--spacing-2x);
+  background: var(--background-default);
+  border-radius: var(--radius-md);
+  border: var(--border-width-base) solid var(--border-default);
+  align-items: stretch;
+  justify-content: stretch;
+  min-height: 0;
+}
+.state-card .demo--row .sidebar__link {
+  pointer-events: none;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 960px) {
+  .sidebar-stage { grid-template-columns: 1fr; }
+  .sidebar-stage .sidebar { width: 100%; }
+  .header-variants { grid-template-columns: 1fr; }
+}
+
+/* =========================================================
+   PAGE — ANATOMY STAGE
+   Hosts the live preview, the viewport toolbar, the
+   measurement callouts, and the specs table. Component
+   styles untouched; this is documentation chrome.
+   ========================================================= */
+.anatomy-stage {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6x);
+  margin-top: var(--spacing-6x);
+}
+
+.anatomy-specs {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-sans);
+  font-size: var(--text-body-sm);
+}
+.anatomy-specs th,
+.anatomy-specs td {
+  text-align: left;
+  padding: var(--spacing-3x) var(--spacing-4x);
+  border-bottom: var(--border-width-base) solid var(--border-default-subtle);
+  vertical-align: top;
+}
+.anatomy-specs thead th {
+  font-family: var(--font-mono);
+  font-size: var(--text-eyebrow);
+  letter-spacing: var(--letter-spacing-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-default-minimal);
+  font-weight: var(--font-weight-medium);
+  background: var(--background-default-subtle);
+  border-bottom: var(--border-width-base) solid var(--border-default);
+}
+.anatomy-specs tbody th {
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-default);
+  width: 18%;
+}
+.anatomy-specs td code {
+  font-family: var(--font-mono);
+  font-size: var(--text-eyebrow);
+  color: var(--text-primary-strong);
+}
+.anatomy-cell-empty { color: var(--text-default-minimal); }
+
+.anatomy-note {
+  font-family: var(--font-sans);
+  font-size: var(--text-body-sm);
+  color: var(--text-default-subtle);
+  background: var(--background-default-subtle);
+  border-left: 2px solid var(--border-primary);
+  padding: var(--spacing-3x) var(--spacing-4x);
+  margin: 0;
+}
+
+@media (max-width: 760px) {
+  .anatomy-specs { font-size: var(--text-eyebrow); }
+  .anatomy-specs th, .anatomy-specs td { padding: var(--spacing-2x); }
+}

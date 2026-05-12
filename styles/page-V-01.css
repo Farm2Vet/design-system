@@ -1,108 +1,159 @@
 /* =========================================================
-   PAGE — MOCKUP · DISEASE WIKI (V-01)
-   The Disease Management list landing. The page wraps the
-   composed mockup in an .app-frame surface so it reads as an
-   admin app viewport rendered inside the design-system page,
-   not as raw chrome bleeding to the canvas edges.
+   PAGE — DISEASE WIKI (V-01)
+   The Disease Management admin landing. This page IS the
+   product page — no design-system documentation chrome.
 
-   Three blocks live here:
-     · .app-frame   — the mockup viewport (topbar + toolbar +
-                      list + pager region)
-     · .disease-row — one row in the disease list
-     · .pager       — counter on the left, controls on the right
+   Every interactive surface on the page is a real component
+   instance. This file contributes only:
+     · A flat document body (no ambient gradient — this is
+       a product surface, not a docs page).
+     · The app-shell layout grid (sidebar | main).
+     · Slot positioning for the topbar, sidebar, breadcrumb
+       row, toolbar, catalogue, pager, and floating modal.
+     · Square-cap width overrides on .btn instances used in
+       the pager + filter + back-arrow slots.
+     · An inline-flex layout helper on .card__list-trail so
+       the row trail can host multiple children on one line.
+     · The cover-tile + form grid inside the modal.
 
-   .usage-note / .usage-note--below are reused from
-   page-III-03.css — link that file from the HTML head rather
-   than redeclaring those rules here.
-
-   Depends on: tokens.css, base.css, typography.css, shell.css,
-               form.css, dropdown.css, button.css, badge.css
+   Depends on: tokens.css, base.css, typography.css,
+               global-nav.css, form.css, dropdown.css,
+               button.css, badge.css, card.css, sidebar.css,
+               modal.css
    ========================================================= */
 
 /* =========================================================
-   APP FRAME — the mockup viewport
-   A solid surface (not glass) with system-level shadow so the
-   mocked admin app reads as a discrete viewport against the
-   page's ambient gradient backdrop. Glass would compete with
-   the page's own glass nav strip above it.
+   DOCUMENT BODY
+   Override base.css's ambient gradient: a product page reads
+   flat. The drifting gradient is documentation atmosphere,
+   not product chrome.
    ========================================================= */
-.app-frame {
-    display: block;
+body { background: var(--background-default-subtle); }
+body::before { content: none; }
+
+/* =========================================================
+   APP SHELL — sidebar | main grid, anchored under the
+   sticky .global-nav topbar.
+   ========================================================= */
+.app-shell {
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+    min-height: calc(100vh - 72px);
     background: var(--background-default);
-    border: var(--border-width-base) solid var(--border-default);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-lg);
-    overflow: hidden;
-    margin: 0 0 var(--space-flow-block);
+}
+@media (max-width: 880px) {
+    .app-shell { grid-template-columns: 1fr; }
+    .app-shell__side { display: none; }
 }
 
-/* Topbar — page title + the new-disease CTA. The CTA is in
-   the mockup because Admin lands here and the page should
-   show "where new diseases come from" without us building
-   that flow yet. */
-.app-frame__topbar {
+/* User-menu trigger — gap tweak so avatar + name + role
+   badge + chevron breathe properly. Colour, hover, focus,
+   variant — all inherited from .btn--ghost. */
+.app-user-menu.btn { gap: var(--space-tier-5); }
+.app-user-menu__avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--background-default-minimal);
+    color: var(--icon-default);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+.app-user-menu__avatar svg { width: 70%; height: 70%; }
+
+/* =========================================================
+   SIDEBAR SLOT
+   ========================================================= */
+.app-shell__side {
+    padding: var(--space-tier-4);
+    border-right: var(--border-width-base) solid var(--border-default);
+    background: var(--background-default-subtle);
+}
+.app-shell__side .sidebar {
+    /* Re-size the rail to the slot's 280-col without touching
+       the global token. */
+    --sidebar-width-expanded: 100%;
+    min-height: auto;
+}
+
+/* =========================================================
+   MAIN SLOT
+   ========================================================= */
+.app-shell__main {
+    position: relative; /* anchor for the floating modal */
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    background: var(--background-default);
+}
+
+/* Breadcrumb + CTA */
+.app-shell__breadcrumb-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: var(--space-gap-default);
-    padding: var(--space-container-y) var(--space-container-x);
-    border-bottom: var(--border-width-base) solid var(--border-default);
-    background: var(--background-default-subtle);
+    padding: var(--space-container-y) var(--space-container-x-lg);
+    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
 }
-.app-frame__heading {
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-tier-7);
-}
-.app-frame__title {
+.app-shell__breadcrumb {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-gap-snug);
     font-family: var(--font-sans);
-    font-size: var(--text-h5);
-    font-weight: var(--font-weight-semibold);
+    font-size: var(--text-h6);
     color: var(--text-default);
-    margin: 0;
     line-height: var(--line-height-h4);
 }
-.app-frame__subtitle {
-    font-family: var(--font-sans);
-    font-size: var(--text-body-sm);
+.app-shell__back-btn.btn {
+    width: 32px;
+    min-width: 32px;
+    padding-left: 0;
+    padding-right: 0;
+}
+.app-shell__back-btn .icon { width: 14px; height: 14px; }
+
+.app-shell__breadcrumb-link {
+    color: var(--text-default);
+    font-weight: var(--font-weight-semibold);
+    text-decoration: none;
+}
+.app-shell__breadcrumb-sep,
+.app-shell__breadcrumb-tail {
     color: var(--text-default-minimal);
-    margin: 0;
-    line-height: var(--line-height-body);
+    font-weight: var(--font-weight-regular);
 }
 
-/* Toolbar — search + three filters + sort.
-   A grid so each control gets a predictable column width and
-   the search input owns the elastic column. Collapses to two
-   columns under 900px and to a single column under 600px. */
-.app-frame__toolbar {
-    display: grid;
-    grid-template-columns: minmax(220px, 1fr)
-                           repeat(3, minmax(150px, 180px))
-                           minmax(180px, 220px);
-    column-gap: var(--space-gap-default);
-    row-gap: var(--space-gap-tight);
-    padding: var(--space-container-y) var(--space-container-x);
-    border-bottom: var(--border-width-base) solid var(--border-default);
-    align-items: stretch;
+/* Toolbar */
+.app-shell__toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-gap-default);
+    flex-wrap: wrap;
+    padding: var(--space-container-y) var(--space-container-x-lg);
 }
-@media (max-width: 900px) {
-    .app-frame__toolbar { grid-template-columns: 1fr 1fr; }
+.app-shell__toolbar-left,
+.app-shell__toolbar-right {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-gap-snug);
 }
-@media (max-width: 600px) {
-    .app-frame__toolbar { grid-template-columns: 1fr; }
-}
+.app-shell__toolbar-left { flex: 1 1 320px; min-width: 0; }
 
-/* Search slot — a relative wrapper that lets a leading magnifier
-   icon sit inside the .input's padding. */
-.app-frame__search {
+.app-shell__search {
     position: relative;
-    display: block;
+    flex: 1 1 240px;
+    max-width: 380px;
+    min-width: 0;
 }
-.app-frame__search .input {
+.app-shell__search .input {
     padding-left: calc(var(--form-lg-padding-x) + 22px);
 }
-.app-frame__search-icon {
+.app-shell__search-icon {
     position: absolute;
     left: var(--form-lg-padding-x);
     top: 50%;
@@ -112,142 +163,88 @@
     color: var(--icon-default-subtle);
     pointer-events: none;
 }
-
-/* List body */
-.app-frame__list {
-    display: flex;
-    flex-direction: column;
-}
-
-/* Pager region — sits at the bottom of the frame on a subtle
-   tinted ledge so the rows above don't get confused with it. */
-.app-frame__pager-region {
-    padding: var(--space-container-y) var(--space-container-x);
-    border-top: var(--border-width-base) solid var(--border-default);
-    background: var(--background-default-subtle);
-}
-
-/* =========================================================
-   DISEASE ROW
-   Three grid tracks: the codename track absorbs version pill
-   and optional incomplete warning so rows that don't carry a
-   warning don't force a dead column.
-
-     [ codename + version + warn? ]   [ last-updated ]   [ status ]
-   ========================================================= */
-.disease-row {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto auto;
-    align-items: center;
-    column-gap: var(--space-gap-loose);
-    padding: var(--space-tier-4) var(--space-container-x);
-    border-top: var(--border-width-base) solid var(--border-default-subtle);
-}
-.disease-row:first-child { border-top: none; }
-
-.disease-row__codename {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-gap-snug);
-    min-width: 0;
-    flex-wrap: wrap;
-    row-gap: var(--space-tier-7);
-}
-.disease-row__name {
-    font-family: var(--font-sans);
-    font-size: var(--text-body);
-    font-weight: var(--font-weight-medium);
-    color: var(--text-default);
-    line-height: var(--line-height-h4);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-.disease-row__updated {
-    font-family: var(--font-mono);
-    font-size: var(--text-eyebrow);
-    letter-spacing: var(--letter-spacing-eyebrow);
-    text-transform: uppercase;
-    color: var(--text-default-minimal);
-    white-space: nowrap;
-    min-width: 14ch;
-    text-align: right;
-    font-variant-numeric: tabular-nums;
-}
-.disease-row__status {
-    min-width: 9ch;
-    display: inline-flex;
-    justify-content: flex-end;
-}
-
-@media (max-width: 720px) {
-    .disease-row {
-        grid-template-columns: 1fr auto;
-        row-gap: var(--space-tier-6);
-    }
-    .disease-row__updated {
-        grid-column: 1 / -1;
-        text-align: left;
-        min-width: 0;
-    }
-}
-
-/* =========================================================
-   PAGER — counter on the left, controls on the right
-   ========================================================= */
-.pager {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-gap-default);
-    flex-wrap: wrap;
-}
-.pager__counter {
-    font-family: var(--font-mono);
-    font-size: var(--text-eyebrow);
-    letter-spacing: var(--letter-spacing-eyebrow);
-    text-transform: uppercase;
-    color: var(--text-default-minimal);
-}
-.pager__counter strong {
-    color: var(--text-default);
-    font-weight: var(--font-weight-medium);
-}
-
-.pager__controls {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-gap-snug);
-}
-
-/* Icon-button width override — .btn--ghost .btn--sm renders
-   wider than we want for a square chevron. Constrain to a
-   square cap so the four arrows align cleanly. */
-.pager__btn {
-    width: 32px;
+.app-shell__filter-btn.btn {
+    width: 44px;
+    min-width: 44px;
     padding-left: 0;
     padding-right: 0;
+    flex-shrink: 0;
 }
-.pager__btn .icon {
-    width: 14px;
-    height: 14px;
+.app-shell__filter-btn .icon { width: 18px; height: 18px; }
+
+.app-shell__sort.dropdown { width: auto; min-width: 220px; }
+
+/* =========================================================
+   DISEASE CATALOGUE — canonical .card .card--list, with
+   .disease-trail as an inline-flex layout helper on the
+   trail slot only. No colour or font edits.
+   ========================================================= */
+.app-shell__catalogue {
+    margin: 0 var(--space-container-x-lg) var(--space-container-y);
+}
+.app-shell__catalogue.card { box-shadow: none; }
+
+.disease-trail.card__list-trail {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-gap-snug);
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    text-align: right;
 }
 
-/* "Page [ n ] of N" composite — a small numeric input
-   bracketed by mono labels so the jump control reads as one
-   unit, not three separate widgets. */
-.pager__jump {
+/* =========================================================
+   PAGER — every clickable cell is a real .btn instance.
+   ========================================================= */
+.app-pager-region {
+    padding: var(--space-container-y) var(--space-container-x-lg);
+    border-top: var(--border-width-base) solid var(--border-default-subtle);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-gap-default);
+    background: var(--background-default-subtle);
+    margin-top: auto;
+}
+.app-pager {
     display: inline-flex;
     align-items: center;
     gap: var(--space-gap-micro);
+}
+.app-pager__btn.btn {
+    width: 32px;
+    min-width: 32px;
+    padding-left: 0;
+    padding-right: 0;
+}
+.app-pager__btn .icon { width: 14px; height: 14px; }
+
+.app-pager__ellipsis {
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    color: var(--text-default-minimal);
+    user-select: none;
+}
+
+.app-pager__jump {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-gap-micro);
+    margin-left: var(--space-tier-4);
+    padding-left: var(--space-tier-4);
+    border-left: var(--border-width-base) solid var(--border-default-subtle);
     font-family: var(--font-mono);
     font-size: var(--text-eyebrow);
     letter-spacing: var(--letter-spacing-eyebrow);
     text-transform: uppercase;
     color: var(--text-default-minimal);
-    padding: 0 var(--space-tier-5);
 }
-.pager__jump-input.input {
+.app-pager__jump-input.input {
     width: 5ch;
     min-width: 5ch;
     text-align: center;
@@ -256,85 +253,100 @@
     padding-left: var(--space-tier-6);
     padding-right: var(--space-tier-6);
 }
-.pager__jump-input.input::-webkit-outer-spin-button,
-.pager__jump-input.input::-webkit-inner-spin-button {
+.app-pager__jump-input.input::-webkit-outer-spin-button,
+.app-pager__jump-input.input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
-.pager__jump-input.input { -moz-appearance: textfield; }
+.app-pager__jump-input.input { -moz-appearance: textfield; }
 
 /* =========================================================
-   ANATOMY LIST — the labeled breakdown in section 02
-   A two-column dl: monospace eyebrow term on the left, prose
-   on the right. Matches the .placeholder-list shape used on
-   sibling V-* pages but lives here as a permanent pattern.
+   FLOATING MODAL — pinned to top-right of the main area.
+   Canonical .modal markup; only positioning changes.
    ========================================================= */
-.anatomy-list {
-    display: grid;
-    grid-template-columns: 16ch 1fr;
-    column-gap: var(--space-gap-loose);
-    row-gap: var(--space-tier-5);
-    margin: 0;
+.app-shell__modal-layer {
+    position: absolute;
+    top: var(--space-tier-4);
+    right: var(--space-tier-4);
+    width: clamp(380px, 32%, 480px);
+    z-index: 81;
 }
-.anatomy-list dt {
-    font-family: var(--font-mono);
-    font-size: var(--text-eyebrow);
-    letter-spacing: var(--letter-spacing-eyebrow);
-    text-transform: uppercase;
-    color: var(--text-primary-strong);
-    font-weight: var(--font-weight-medium);
-    padding-top: 2px;
+@media (max-width: 1100px) {
+    .app-shell__modal-layer {
+        position: static;
+        width: auto;
+        margin: var(--space-tier-4) var(--space-container-x-lg) var(--space-container-y);
+    }
 }
-.anatomy-list dd {
-    margin: 0;
-    font-size: var(--text-body);
-    color: var(--text-default);
-    line-height: var(--line-height-body);
+.app-shell__modal-layer .modal {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    max-width: none;
+    transform: none;
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
 }
-.anatomy-list dd code {
-    font-family: var(--font-mono);
-    font-size: var(--text-body-sm);
-    color: var(--text-primary-strong);
-    background: var(--background-primary-minimal);
-    padding: 0.1em 0.4em;
-    border-radius: var(--radius-sm);
-    white-space: nowrap;
+.app-shell__modal-layer .modal__surface {
+    width: 100%;
+    max-width: none;
 }
 
-/* =========================================================
-   COMPONENTS-IN-USE LIST — section 03 mapping
-   A flat dl where each region of the mockup points at the
-   canonical component(s) it consumes, so a reviewer can
-   verify "real-system reuse" at a glance.
-   ========================================================= */
-.uses-list {
+/* Modal form grid */
+.add-disease-form {
     display: grid;
-    grid-template-columns: 18ch 1fr;
-    column-gap: var(--space-gap-loose);
-    row-gap: var(--space-tier-5);
-    margin: 0;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: var(--space-gap-default);
 }
-.uses-list dt {
-    font-family: var(--font-mono);
-    font-size: var(--text-eyebrow);
-    letter-spacing: var(--letter-spacing-eyebrow);
-    text-transform: uppercase;
-    color: var(--text-default-minimal);
-    font-weight: var(--font-weight-medium);
-    padding-top: 2px;
+.add-disease-form > .field--cover    { grid-column: 1 / -1; justify-self: center; }
+.add-disease-form > .field--codename { grid-column: span 2; }
+.add-disease-form > .field--fullname { grid-column: span 4; }
+.add-disease-form > .field--species  { grid-column: span 3; }
+.add-disease-form > .field--pathogen { grid-column: span 3; }
+.add-disease-form > .field--aliases  { grid-column: 1 / -1; }
+.add-disease-form > .field--desc     { grid-column: 1 / -1; }
+
+@media (max-width: 600px) {
+    .add-disease-form > .field--codename,
+    .add-disease-form > .field--fullname,
+    .add-disease-form > .field--species,
+    .add-disease-form > .field--pathogen {
+        grid-column: 1 / -1;
+    }
 }
-.uses-list dd {
-    margin: 0;
-    font-size: var(--text-body-sm);
-    color: var(--text-default-subtle);
-    line-height: var(--line-height-body);
+
+/* Cover-image tile — page-scaffolding (no avatar-upload
+   component exists; .file-upload is a dropzone, wrong shape). */
+.cover-tile {
+    position: relative;
+    width: 88px;
+    height: 88px;
 }
-.uses-list dd code {
-    font-family: var(--font-mono);
-    font-size: var(--text-body-sm);
-    color: var(--text-primary-strong);
-    background: var(--background-primary-minimal);
-    padding: 0.1em 0.4em;
-    border-radius: var(--radius-sm);
-    white-space: nowrap;
+.cover-tile__square {
+    width: 88px;
+    height: 88px;
+    border-radius: var(--radius-md);
+    background: var(--background-default-minimal);
+    color: var(--icon-default);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
+.cover-tile__square svg { width: 44px; height: 44px; }
+.cover-tile__edit {
+    position: absolute;
+    bottom: -6px;
+    right: -6px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--background-primary);
+    color: var(--text-inverted);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--background-default);
+    box-shadow: var(--shadow-sm);
+}
+.cover-tile__edit svg { width: 14px; height: 14px; }
