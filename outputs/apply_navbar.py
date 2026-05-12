@@ -27,8 +27,18 @@ PAGES = [
     "III-04-dropdowns.html",
     "III-05-cards.html",
     "III-06-modal.html",
+    "III-07-side-panel.html",
     "III-08-toast.html",
     "III-09-alert-badges.html",
+    "III-10-header-navigation.html",
+    "III-12-sidebar.html",
+    "III-14-tabs.html",
+    "IV-01-logo.html",
+    "IV-02-icons.html",
+    "IV-03-images.html",
+    "V-01-wiki.html",
+    "V-02-chatbot.html",
+    "V-03-hero.html",
 ]
 
 NAV_MARKUP = '''<!-- ========================== GLOBAL NAV ========================== -->
@@ -118,14 +128,21 @@ NAV_MARKUP = '''<!-- ========================== GLOBAL NAV =====================
       </ul>
     </nav>
 
+    <a href="#" class="global-nav__chip" aria-label="Design system version">v1.0</a>
+
   </div>
 </header>
 '''
 
-# Match the entire <header class="topbar"> ... </header> block, plus the
-# preceding "<!-- TOP BAR -->" comment if present, so we don't leave the
-# stale section divider behind.
+# Match the entire GLOBAL NAV header block, including the canonical
+# comment fence that opens it. The fence is a stable anchor across
+# pages and survives the bar's evolution (topbar → global-nav → islands).
+# Also retains a fallback for any page still carrying the legacy
+# <header class="topbar"> block, plus the old "<!-- TOP BAR -->" comment.
 TOPBAR_RE = re.compile(
+    r'(?:<!--\s*=+\s*GLOBAL NAV\s*=+\s*-->\s*\n)'
+    r'<header class="global-nav"[^>]*>.*?</header>\s*\n'
+    r'|'
     r'(?:<!--\s*=+\s*TOP BAR\s*=+\s*-->\s*\n)?'
     r'<header class="topbar">.*?</header>\s*\n',
     re.DOTALL,

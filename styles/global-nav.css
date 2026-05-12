@@ -1,89 +1,78 @@
 /* =========================================================
    FARM2VET DESIGN SYSTEM — GLOBAL NAV
-   The header chrome shared by every design-system page.
-   Replaces the legacy per-page in-page TOC topbar with a
-   sticky, two-tier navigation surface:
-     · Tier 1 (top row): five Section entries — Primitives,
-       Semantics, Components, Assets, Mockups — plus the
-       brand mark on the left and the version pill on the
-       right.
-     · Tier 2 (panel): an absolutely-positioned panel that
-       expands below the bar on hover or focus, listing
-       every Subsection (each linking to a separate HTML
-       page). Sections that are documented in a single
-       file (Primitives, Semantics) do not expand.
+   The page chrome shared by every design-system page.
+   Composition: three floating glass ISLANDS held by a
+   transparent sticky bar.
+     · Brand island      — far left, holds logo + sub-label.
+     · Sections island   — right cluster, holds the five
+                           top-level section entries and their
+                           expanding panel triggers.
+     · Version chip      — right edge, compact mono pill.
+   Sections that are documented on a single page (Primitives,
+   Semantics) are direct links; multi-page sections
+   (Components, Assets, Mockups) are triggers that expand a
+   right-anchored floating panel that sits just below the
+   sections island, separated by a small breathing gap.
    Depends on: tokens.css, base.css
    ========================================================= */
 
 /* =========================================================
    01 / BAR
+   The bar is a transparent sticky layout container. It owns
+   the inner padding, the flex layout, and the sticky/scroll
+   behaviour. Visual weight lives entirely on the islands and
+   the panel below — the bar itself draws nothing.
    ========================================================= */
 .global-nav {
     position: sticky;
     top: 0;
     z-index: 50;
-    background: var(--glass-light-light-bg);
-    -webkit-backdrop-filter: var(--glass-light-light-blur) var(--glass-saturate);
-            backdrop-filter: var(--glass-light-light-blur) var(--glass-saturate);
-    border-bottom: var(--border-width-base) solid var(--glass-light-light-border);
-    /* Outer raised shadow + canonical rim light. Both are part of
-       the glass rail — the bar carries the full anatomy at rest, and
-       elevates (not flattens) on the .is-scrolled and panel-open
-       states below. */
-    box-shadow: var(--glass-shadow-raised), var(--glass-inset-light-soft);
-    transition:
-        background 0.2s ease,
-        backdrop-filter 0.2s ease,
-        border-bottom-color 0.2s ease,
-        box-shadow 0.2s ease;
-}
-
-/* When content has scrolled under the bar, density and elevation
-   step up. The frost ramps light → thick (denser tint + stronger
-   blur), and the outer shadow ramps raised → floating. The rim
-   light keeps the canonical token but in its strong variant so the
-   pane reads as physically thicker. Scroll threshold is owned by
-   scripts/global-nav.js. */
-.global-nav.is-scrolled {
-    background: var(--glass-light-thick-bg);
-    -webkit-backdrop-filter: var(--glass-light-thick-blur) var(--glass-saturate);
-            backdrop-filter: var(--glass-light-thick-blur) var(--glass-saturate);
-    border-bottom-color: var(--glass-light-thick-border);
-    box-shadow: var(--glass-shadow-floating), var(--glass-inset-light-strong);
-}
-
-/* When any panel is open, the bar steps to the thick frost (rather
-   than dropping to the solid background) so bar + panel read as
-   one continuous glass surface that has thickened. The bottom
-   border goes transparent so no seam shows between the two.
-   :focus-within keeps the no-JS keyboard fallback consistent. */
-.global-nav:has(.global-nav__item--has-panel.is-open),
-.global-nav:has(.global-nav__item--has-panel:focus-within) {
-    background: var(--glass-light-thick-bg);
-    -webkit-backdrop-filter: var(--glass-light-thick-blur) var(--glass-saturate);
-            backdrop-filter: var(--glass-light-thick-blur) var(--glass-saturate);
-    border-bottom-color: transparent;
-    box-shadow: var(--glass-shadow-floating), var(--glass-inset-light-strong);
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+            backdrop-filter: none;
 }
 
 .global-nav__inner {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
+    display: flex;
     align-items: center;
-    gap: var(--space-tier-3);
+    gap: var(--space-tier-6);
     padding: var(--space-tier-5) var(--space-page-x);
     max-width: 1440px;
     margin: 0 auto;
 }
 
 /* =========================================================
-   02 / BRAND
+   02 / BRAND ISLAND
+   The brand is now an island in its own right — full glass
+   anatomy at rest. Drifts to the left edge of the bar's
+   inner padding via margin-right:auto, which pushes the
+   remaining children (sections, chip) to the right cluster.
    ========================================================= */
 .global-nav__brand {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: var(--space-tier-5);
+    gap: var(--space-tier-4);
+    padding: var(--space-tier-5) var(--space-tier-3);
+    background: var(--glass-light-light-bg);
+    -webkit-backdrop-filter: var(--glass-light-light-blur) var(--glass-saturate);
+            backdrop-filter: var(--glass-light-light-blur) var(--glass-saturate);
+    border: var(--border-width-base) solid var(--glass-light-light-border);
+    border-radius: var(--radius-pill);
+    box-shadow: var(--glass-shadow-raised), var(--glass-inset-light-soft);
     text-decoration: none;
+    margin-right: auto;
+    transition:
+        background 0.18s ease,
+        border-color 0.18s ease,
+        box-shadow 0.18s ease;
+}
+.global-nav__brand:hover,
+.global-nav__brand:focus-visible {
+    background: var(--glass-light-light-bg-hover);
+    border-color: var(--glass-light-light-border-hover);
+    box-shadow: var(--glass-shadow-raised-hover), var(--glass-inset-light-strong);
 }
 .global-nav__logo {
     height: var(--spacing-10x);
@@ -102,10 +91,13 @@
 }
 
 /* =========================================================
-   03 / SECTION LIST (TIER 1)
+   03 / SECTIONS ISLAND (TIER 1)
+   The five-section pill. Already an island in today's CSS;
+   only its open-state handling moves here from the bar.
    ========================================================= */
 .global-nav__sections {
-    justify-self: center;
+    /* No flex/grid offset — sits in the right cluster of the
+       bar's inner flex, immediately before the version chip. */
 }
 .global-nav__list {
     list-style: none;
@@ -116,12 +108,33 @@
     border-radius: var(--radius-pill);
     background: var(--glass-light-clear-bg);
     border: var(--border-width-base) solid var(--glass-light-clear-border);
-    box-shadow: var(--glass-inset-light-soft);
+    box-shadow: var(--glass-shadow-raised), var(--glass-inset-light-soft);
+    transition:
+        background 0.18s ease,
+        border-color 0.18s ease,
+        box-shadow 0.18s ease,
+        backdrop-filter 0.18s ease;
 }
+
+/* When the sections island contains an open panel, it
+   densifies to thick frost and elevates to the floating
+   shadow tier. This is the only island that reacts to a
+   panel open — brand and chip are unrelated to the trigger
+   and stay at rest. */
+.global-nav__list:has(.global-nav__item--has-panel.is-open),
+.global-nav__list:has(.global-nav__item--has-panel:focus-within) {
+    background: var(--glass-light-thick-bg);
+    -webkit-backdrop-filter: var(--glass-light-thick-blur) var(--glass-saturate);
+            backdrop-filter: var(--glass-light-thick-blur) var(--glass-saturate);
+    border-color: var(--glass-light-thick-border);
+    box-shadow: var(--glass-shadow-floating), var(--glass-inset-light-strong);
+}
+
 .global-nav__item {
     /* Static positioning is intentional. The expanded panel
        is positioned against the .global-nav header instead
-       of the item itself, so it can span full bar width. */
+       of the item itself, so its width can be independent
+       of the trigger's width. */
     position: static;
 }
 
@@ -176,31 +189,78 @@
 }
 
 /* =========================================================
-   05 / EXPANDING PANEL (TIER 2)
-   The panel sits absolutely below the bar. Visibility is
-   driven by `.is-open` (set by the runtime on mouseenter
-   of a trigger or on click) and by `:focus-within` for
-   keyboard users. The runtime owns hover-open/close so
-   the panel can persist while the pointer is anywhere in
-   the bar — not just over the triggering item.
+   04 / VERSION CHIP
+   A compact mono pill on the right edge of the bar's inner
+   flex. Carries the lighter clear-frost glass so it reads as
+   subordinate to the sections island. Sits at rest unless
+   hovered/focused — the chip is not tied to the panel
+   surface and never densifies on panel open.
+   ========================================================= */
+.global-nav__chip {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-control-y-md) var(--space-control-x-sm);
+    font-family:    var(--font-mono);
+    font-size:      var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    color:          var(--text-default-subtle);
+    background:     var(--glass-light-clear-bg);
+    -webkit-backdrop-filter: var(--glass-light-light-blur) var(--glass-saturate);
+            backdrop-filter: var(--glass-light-light-blur) var(--glass-saturate);
+    border:         var(--border-width-base) solid var(--glass-light-clear-border);
+    border-radius:  var(--radius-pill);
+    box-shadow:     var(--glass-shadow-raised), var(--glass-inset-light-soft);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+}
+.global-nav__chip:hover,
+.global-nav__chip:focus-visible {
+    background: var(--glass-light-clear-bg-hover);
+    color:      var(--text-default);
+    box-shadow: var(--glass-shadow-raised-hover), var(--glass-inset-light-strong);
+}
+
+/* =========================================================
+   05 / SCROLLED STATE
+   When content has scrolled under the bar, every island
+   steps up in density together (light → thick frost,
+   raised → floating shadow, soft rim → strong rim). The
+   scroll-flag itself is set by scripts/global-nav.js on
+   the .global-nav element; the islands consume it via
+   descendant selectors below.
+   ========================================================= */
+.global-nav.is-scrolled .global-nav__brand,
+.global-nav.is-scrolled .global-nav__list,
+.global-nav.is-scrolled .global-nav__chip {
+    background: var(--glass-light-thick-bg);
+    -webkit-backdrop-filter: var(--glass-light-thick-blur) var(--glass-saturate);
+            backdrop-filter: var(--glass-light-thick-blur) var(--glass-saturate);
+    border-color: var(--glass-light-thick-border);
+    box-shadow: var(--glass-shadow-floating), var(--glass-inset-light-strong);
+}
+
+/* =========================================================
+   06 / PANEL — outer (positioning) + inner (visible card)
+   The outer panel is a transparent positioning shell that
+   spans the bar's full width. The visible card lives on
+   .global-nav__panel-inner: right-aligned with the bar's
+   right padding, max-width capped at 760px, sitting just
+   below the sections island with a small breathing gap
+   (≈4px) carried by a partial negative margin-top.
    ========================================================= */
 .global-nav__panel {
     position: absolute;
     left: 0;
     right: 0;
     top: 100%;
-    /* Same dense-frost glass as the bar's open state so the two
-       surfaces are visually continuous. The bar's rim-light carries
-       the upper edge of the combined surface; the panel relies on
-       its border-bottom + floating shadow for its lower edge. */
-    background: var(--glass-light-thick-bg);
-    -webkit-backdrop-filter: var(--glass-light-thick-blur) var(--glass-saturate);
-            backdrop-filter: var(--glass-light-thick-blur) var(--glass-saturate);
-    border-bottom: var(--border-width-base) solid var(--glass-light-thick-border);
-    box-shadow: var(--glass-shadow-floating);
+    background: transparent;
+    border: none;
+    box-shadow: none;
     opacity: 0;
     visibility: hidden;
-    transform: translateY(-4px);
+    transform: translateY(-2px);
     pointer-events: none;
     transition:
         opacity 0.2s ease,
@@ -221,13 +281,39 @@
         visibility 0s;
 }
 
+.global-nav__panel-inner {
+    /* Right-anchored floating card. Margin-right matches the
+       bar's horizontal padding so the panel's right edge
+       sits flush with the version chip's right edge.
+
+       Vertical placement: the .global-nav__list densifies on
+       open via the :has() rule below, which applies a
+       backdrop-filter. backdrop-filter promotes the list to
+       a containing block for absolute descendants, so the
+       panel's `top: 100%` resolves to the list's bottom
+       edge (not the header's). A small positive margin-top
+       therefore drops the panel's top a few pixels below the
+       sections island, giving enough air that the panel
+       reads as its own surface rather than as a continuation
+       of the pill. */
+    box-sizing: border-box;
+    max-width: 760px;
+    margin: var(--space-tier-6) var(--space-page-x) 0 auto;
+    padding: var(--space-tier-4) var(--space-tier-3);
+    background: var(--glass-light-thick-bg);
+    -webkit-backdrop-filter: var(--glass-light-thick-blur) var(--glass-saturate);
+            backdrop-filter: var(--glass-light-thick-blur) var(--glass-saturate);
+    border: var(--border-width-base) solid var(--glass-light-thick-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--glass-shadow-floating), var(--glass-inset-light-strong);
+}
+
 /* =========================================================
-   05a / BACKDROP
+   06a / BACKDROP
    When a panel is open, dim and blur the rest of the page
-   so the panel reads as an elevated surface. The backdrop
-   element is injected by the runtime (scripts/global-nav.js)
-   on init, so pages do not need to author markup for it.
-   Sits below the panel (z-49) and the bar (z-50) but above
+   so the panel reads as an elevated surface. Backdrop is
+   injected by the runtime (scripts/global-nav.js) on init,
+   sits below the panel (z-49) and the bar (z-50) but above
    the page content.
    ========================================================= */
 .global-nav__backdrop {
@@ -255,19 +341,13 @@
     .global-nav__backdrop { transition: none; }
 }
 
-.global-nav__panel-inner {
-    max-width: 1040px;
-    margin: 0 auto;
-    padding: var(--space-tier-1) var(--space-tier-2);
-}
-
 .global-nav__panel-list {
     list-style: none;
     margin: 0;
     padding: 0;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    column-gap: var(--space-tier-1);
+    column-gap: var(--space-tier-3);
     row-gap: var(--space-tier-7);
 }
 .global-nav__panel--compact .global-nav__panel-list {
@@ -281,17 +361,19 @@
     display: flex;
     align-items: baseline;
     gap: var(--space-tier-5);
-    padding: var(--space-tier-6) 0;
+    padding: var(--space-tier-6) var(--space-tier-6);
     font-family: var(--font-sans);
     font-size:   var(--text-h6);
     font-weight: var(--font-weight-medium);
     color: var(--text-default);
     text-decoration: none;
-    transition: color 0.15s ease;
+    border-radius: var(--radius-sm);
+    transition: color 0.15s ease, background 0.15s ease;
 }
 .global-nav__panel-list a:hover,
 .global-nav__panel-list a:focus-visible {
     color: var(--text-primary-strong);
+    background: var(--background-primary-minimal);
 }
 .global-nav__panel-list a.is-placeholder {
     color: var(--text-default-minimal);
@@ -310,17 +392,74 @@
 }
 
 /* =========================================================
-   06 / RESPONSIVE
-   The panel grid collapses on narrow viewports, and the
-   tier-1 list scrolls horizontally rather than wrapping.
+   07 / MARKETING VARIANT
+   Same component, different surface. Used on product hero
+   pages where the bar carries marketing voice rather than
+   docs catalog voice. Two changes versus the default:
+     · Link typography flips from mono uppercase eyebrow to
+       sans medium sentence-case.
+     · The sections island absorbs the call-to-action slot.
+       Both CTAs sit as <li> children inside the same
+       .global-nav__list pill as the nav links, marked with
+       .global-nav__item--action. .btn--glass carries the
+       secondary, .btn--cta the primary; .btn--sm keeps them
+       at the inline pill height. No panels and no standalone
+       actions island — the marketing variant is a two-island
+       composition: brand + sections.
+   The brand island, scrolled-state rules, and panel
+   mechanics are inherited unchanged.
+   ========================================================= */
+.global-nav--marketing .global-nav__list {
+    /* Slightly looser internal gap so CTAs read as buttons
+       rather than as crowded link siblings. The pill chrome
+       itself is unchanged. */
+    gap: var(--space-gap-snug);
+}
+.global-nav--marketing .global-nav__list a:not(.btn),
+.global-nav--marketing .global-nav__list button:not(.btn) {
+    font-family:    var(--font-sans);
+    font-size:      var(--text-body-sm);
+    letter-spacing: 0;
+    text-transform: none;
+    font-weight:    var(--font-weight-medium);
+    color:          var(--text-default);
+    padding:        var(--space-control-y-md) var(--space-control-x-md);
+}
+.global-nav--marketing .global-nav__list a:not(.btn):hover,
+.global-nav--marketing .global-nav__list button:not(.btn):hover {
+    background: var(--background-default);
+    color:      var(--text-default);
+}
+
+/* Action chips inside the sections pill get a slightly
+   larger left margin so they read as a distinct group from
+   the nav links to their left. Consecutive actions sit
+   tight together (the inter-action rhythm is owned by the
+   list's gap, not by this margin). */
+.global-nav__item--action {
+    margin-left: var(--space-tier-6);
+    display: inline-flex;
+    align-items: center;
+}
+.global-nav__item--action + .global-nav__item--action {
+    margin-left: 0;
+}
+
+/* =========================================================
+   08 / RESPONSIVE
+   The bar collapses in two stages. Below 960px the right
+   cluster scrolls horizontally rather than wrapping. Below
+   600px the brand's sub-label hides and the panel collapses
+   to a single column. The panel's negative margin-top
+   (which carries the small gap below the sections island)
+   needs no responsive override — the bar's vertical padding
+   is constant.
    ========================================================= */
 @media (max-width: 960px) {
     .global-nav__inner {
-        grid-template-columns: auto 1fr;
-        gap: var(--space-tier-5);
+        gap: var(--space-tier-6);
     }
     .global-nav__sections {
-        justify-self: end;
         overflow-x: auto;
         scrollbar-width: none;
     }
@@ -330,12 +469,11 @@
         column-gap: var(--space-tier-3);
     }
     .global-nav__panel-inner {
-        padding: var(--space-tier-2) var(--space-tier-3);
+        max-width: none;
+        margin-right: var(--space-page-x-md);
     }
 }
 @media (max-width: 600px) {
     .global-nav__brand small { display: none; }
-    .global-nav__panel-list {
-        grid-template-columns: 1fr;
-    }
+    .global-nav__panel-list { grid-template-columns: 1fr; }
 }

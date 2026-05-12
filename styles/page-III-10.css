@@ -217,10 +217,158 @@ pre.code .str    { color: var(--accent-700); }
 pre.code .com    { color: var(--text-default-minimal); font-style: italic; }
 
 /* =========================================================
+   ISLAND ANATOMY — three-up tile grid showing the brand,
+   sections, and chip island shapes side by side. Used in
+   Section 01 / Composition.
+   ========================================================= */
+.island-anatomy {
+    display: grid;
+    grid-template-columns: 2fr 3fr 1fr;
+    gap: var(--spacing-5x);
+    margin-top: var(--space-tier-6);
+}
+.island-anatomy__tile {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tier-5);
+}
+.island-anatomy__tile .label {
+    font-family:    var(--font-mono);
+    font-size:      var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color:          var(--text-default-minimal);
+}
+.island-anatomy__demo {
+    position: relative;
+    min-height: 96px;
+    border-radius: var(--radius-lg);
+    border: var(--border-width-base) solid var(--border-default);
+    background:
+        repeating-linear-gradient(
+            135deg,
+            var(--background-default-subtle) 0 14px,
+            var(--background-default) 14px 28px
+        );
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    padding: var(--space-tier-4);
+}
+.island-anatomy__pill {
+    display: block;
+    height: 28px;
+    border-radius: var(--radius-pill);
+    box-shadow: var(--glass-shadow-raised), var(--glass-inset-light-soft);
+    border: var(--border-width-base) solid var(--glass-light-light-border);
+    background: var(--glass-light-light-bg);
+    -webkit-backdrop-filter: var(--glass-light-light-blur) var(--glass-saturate);
+            backdrop-filter: var(--glass-light-light-blur) var(--glass-saturate);
+}
+/* Width per tile expresses the relative footprint of each
+   island. The grid above gives the tiles 2 : 3 : 1
+   proportions to reinforce the same idea visually. */
+.island-anatomy__demo--brand    .island-anatomy__pill { width: 70%; }
+.island-anatomy__demo--sections .island-anatomy__pill {
+    width: 90%;
+    background: var(--glass-light-clear-bg);
+    border-color: var(--glass-light-clear-border);
+}
+.island-anatomy__demo--chip     .island-anatomy__pill {
+    width: 60%;
+    background: var(--glass-light-clear-bg);
+    border-color: var(--glass-light-clear-border);
+}
+.island-anatomy__tile .meta {
+    display: flex;
+    justify-content: space-between;
+    font-family:    var(--font-mono);
+    font-size:      var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-mono);
+    color:          var(--text-default-minimal);
+}
+.island-anatomy__tile .meta strong {
+    color: var(--text-default);
+    font-weight: var(--font-weight-medium);
+}
+
+/* =========================================================
+   BAR-STATE GRID — third tile (panel open)
+   The first two tiles (--rest, --scrolled) already exist
+   in this file. Add the panel-open variant: same wall
+   pattern, but the bar inside renders three islands with
+   the sections pill in its thick-frost state.
+   ========================================================= */
+.bar-state__demo--panel-open .bar-state__bar {
+    background: var(--glass-light-thick-bg);
+    border: var(--border-width-base) solid var(--glass-light-thick-border);
+    -webkit-backdrop-filter: var(--glass-light-thick-blur) var(--glass-saturate);
+            backdrop-filter: var(--glass-light-thick-blur) var(--glass-saturate);
+    box-shadow: var(--glass-shadow-floating), var(--glass-inset-light-strong);
+}
+
+/* =========================================================
+   HERO STAGE — faux marketing-page surface used by the
+   main demo block at the top of III-10 (immediately after
+   the hero <section>). Provides background contrast so the
+   bar's glass effect is visible and so the visual story
+   matches "this is a product hero, not a docs page". The
+   peek text sits behind the bar via absolute positioning +
+   pointer-events:none.
+   ========================================================= */
+.hero-stage {
+    position: relative;
+    border: var(--border-width-base) solid var(--border-default);
+    border-radius: var(--radius-lg);
+    padding: var(--space-tier-4);
+    overflow: hidden;
+    min-height: 320px;
+    margin-top: var(--space-tier-2);
+    background:
+        radial-gradient(ellipse 60% 40% at 90% 30%,
+            color-mix(in srgb, var(--accent-500) 14%, transparent),
+            transparent 70%),
+        radial-gradient(ellipse 70% 50% at 10% 90%,
+            color-mix(in srgb, var(--primary-500) 12%, transparent),
+            transparent 70%),
+        var(--background-default-subtle);
+}
+.hero-stage > .global-nav {
+    /* Strip the sticky positioning inside the demo stage —
+       the stage is not a viewport; we want the bar to sit
+       at the top of the stage, not float across the page. */
+    position: relative;
+    top: auto;
+}
+.hero-stage__peek {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: var(--space-tier-4);
+    padding: 0 var(--space-tier-3);
+    pointer-events: none;
+}
+.hero-stage__peek h2 {
+    font-family: var(--font-sans);
+    font-size:   var(--text-display-sm);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--letter-spacing-tight);
+    line-height: var(--line-height-display);
+    margin: 0;
+    color: var(--text-default);
+}
+.hero-stage__peek h2 em {
+    font-style: italic;
+    font-weight: var(--font-weight-regular);
+    color: var(--text-accent);
+}
+
+/* =========================================================
    RESPONSIVE
    ========================================================= */
 @media (max-width: 880px) {
     .state-grid { grid-template-columns: 1fr; }
     .spec-list > li { grid-template-columns: 1fr; row-gap: var(--space-tier-7); }
     .bar-state-grid { grid-template-columns: 1fr; }
+    .island-anatomy { grid-template-columns: 1fr; }
 }

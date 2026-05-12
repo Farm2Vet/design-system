@@ -15,6 +15,8 @@
 <link rel="stylesheet" href="styles/typography.css" />
 <link rel="stylesheet" href="styles/shell.css" />
 <link rel="stylesheet" href="styles/global-nav.css" />
+<!-- Button component (consumed by the marketing-variant demo for .btn--cta + .btn--glass) -->
+<link rel="stylesheet" href="styles/button.css" />
 <!-- Toast component (provides the .toast--snackbar copy-confirmation pill) -->
 <link rel="stylesheet" href="styles/toast.css" />
 <!-- Page-specific layout for III-10 -->
@@ -116,9 +118,10 @@
       </ul>
     </nav>
 
+    <a href="#" class="global-nav__chip" aria-label="Design system version">v1.0</a>
+
   </div>
 </header>
-
 <main class="shell" id="top">
 
   <!-- ========================== HERO ========================== -->
@@ -131,22 +134,52 @@
     </div>
     <div>
       <p class="lede reveal">
-        The page chrome rendered at the top of every documentation page.
-        A two-tier surface — a sticky bar listing the five top-level
-        Sections, and an expanding panel that lists the Subsection pages
-        for the three Sections that contain more than one. The bar is a
-        glass surface; it carries the full seven-layer glass anatomy and
-        shifts to a denser frost when the page scrolls under it. On
-        panel open, bar and panel render as one continuous material.
+        The page chrome rendered at the top of every documentation
+        page. A composition of three floating glass islands — the
+        brand on the left, the sections pill on the right, and a
+        compact version chip in the corner — held by a transparent
+        sticky bar. Multi-page sections expand a right-anchored
+        floating panel that sits just below the sections island
+        with a small breathing gap between them; the sections
+        island alone densifies on open, anchoring the panel to its
+        trigger across the gap as one material event. The bar
+        itself never carries surface — only the islands and the
+        panel do.
       </p>
     </div>
 
     <dl class="meta-strip reveal">
-      <div><dt>Tiers</dt><dd>2</dd></div>
+      <div><dt>Islands</dt><dd>3</dd></div>
       <div><dt>Sections</dt><dd>5</dd></div>
       <div><dt>Panels</dt><dd>3 · expanding</dd></div>
       <div><dt>Position</dt><dd>sticky</dd></div>
     </dl>
+  </section>
+
+  <!-- ========================== MAIN DEMO · MARKETING VARIANT ========================== -->
+  <section class="chunk" id="demo" style="padding-top: var(--spacing-8x); padding-bottom: 0;">
+    <div class="hero-stage reveal" aria-label="Component preview · marketing variant">
+      <header class="global-nav global-nav--marketing" aria-label="Marketing variant preview">
+        <div class="global-nav__inner">
+
+          <a href="#" class="global-nav__brand" aria-label="Farm2Vet home">
+            <img src="logo/logo-wordmark-color.svg" alt="Farm2Vet" class="global-nav__logo" />
+          </a>
+
+          <nav class="global-nav__sections" aria-label="Product nav">
+            <ul class="global-nav__list">
+              <li class="global-nav__item"><a class="global-nav__link" href="#features">Features</a></li>
+              <li class="global-nav__item"><a class="global-nav__link" href="#demo-anchor">Demo</a></li>
+              <li class="global-nav__item"><a class="global-nav__link" href="#faq">FAQ</a></li>
+              <li class="global-nav__item"><a class="global-nav__link" href="#about">About us</a></li>
+              <li class="global-nav__item global-nav__item--action"><a class="btn btn--sm btn--glass" href="#contact">Contact us</a></li>
+              <li class="global-nav__item global-nav__item--action"><a class="btn btn--sm btn--cta" href="#signup">Get started free</a></li>
+            </ul>
+          </nav>
+
+        </div>
+      </header>
+    </div>
   </section>
 
   <!-- ========================== ARCHITECTURAL CALLOUT ========================== -->
@@ -177,69 +210,114 @@
     </div>
   </section>
 
-  <!-- ========================== 01 / TIER 1 — SECTION LIST ========================== -->
-  <section class="chunk" id="tier-1">
+  <!-- ========================== 01 / COMPOSITION — ISLANDS ========================== -->
+  <section class="chunk" id="islands">
     <header class="chunk-head reveal">
-      <span class="num-tag">01 / Tier 1 — Section list</span>
-      <h2 class="text-display-sm">Section list.</h2>
+      <span class="num-tag">01 / Composition</span>
+      <h2 class="text-display-sm">Islands.</h2>
     </header>
 
     <p class="section-lede reveal">
-      Each tier-1 entry is one of two element types. A direct link
-        (<code>.global-nav__link</code>) points to a single page;
-        a trigger (<code>.global-nav__trigger</code>) is a
-        <code>&lt;button&gt;</code> that toggles its associated
-        panel. Both share the same pill-shaped affordance — hover
-        background, mono-eyebrow type, primary-tinted current
-        state — so the list reads as a single uniform row.
+      Three islands compose the bar. The brand drifts to the
+      left edge of the bar's inner padding via margin-right:auto;
+      the sections pill and the version chip cluster on the
+      right. Each island declares its own glass anatomy and
+      its own state machine — none of them shares chrome with
+      its neighbours, and none of them reacts to events on
+      another island.
+    </p>
+
+    <div class="island-anatomy reveal" aria-label="Three-island composition">
+      <article class="island-anatomy__tile">
+        <span class="label">Brand · left</span>
+        <div class="island-anatomy__demo island-anatomy__demo--brand">
+          <span class="island-anatomy__pill"></span>
+        </div>
+        <div class="meta"><span>glass</span><strong>light · light</strong></div>
+        <div class="meta"><span>radius</span><strong>pill</strong></div>
+      </article>
+      <article class="island-anatomy__tile">
+        <span class="label">Sections · right cluster</span>
+        <div class="island-anatomy__demo island-anatomy__demo--sections">
+          <span class="island-anatomy__pill"></span>
+        </div>
+        <div class="meta"><span>glass</span><strong>light · clear</strong></div>
+        <div class="meta"><span>radius</span><strong>pill</strong></div>
+      </article>
+      <article class="island-anatomy__tile">
+        <span class="label">Chip · right edge</span>
+        <div class="island-anatomy__demo island-anatomy__demo--chip">
+          <span class="island-anatomy__pill"></span>
+        </div>
+        <div class="meta"><span>glass</span><strong>light · clear</strong></div>
+        <div class="meta"><span>radius</span><strong>pill</strong></div>
+      </article>
+    </div>
+
+    <p class="usage-note reveal">
+      The bar itself draws nothing. Background, blur, border,
+      and shadow are absent from <code>.global-nav</code> —
+      the bar is a transparent layout container that owns the
+      sticky positioning, the inner padding, and the flex
+      layout. Visual weight is entirely on the islands.
     </p>
 
     <p class="usage-note reveal">
-      Use a direct link when the Section maps to one page. Primitives
-      and Semantics each fit on a single page; no panel is offered.
-      An empty panel on a single-page Section dilutes the chevron's
-      meaning.
-    </p>
-
-    <p class="usage-note reveal">
-      Use a trigger when the Section is composed of multiple pages.
-      Components, Assets, and Mockups carry a chevron
-      (<code>.global-nav__chev</code>) that rotates 180° when the
-      panel is open.
+      Brand uses the <code>light · light</code> glass tier;
+      sections and chip use the lighter <code>light · clear</code>
+      tier. The contrast pulls the eye to the brand
+      first and lets the sections pill behave as the
+      navigational workhorse without competing for attention.
     </p>
   </section>
 
-  <!-- ========================== 02 / TIER 2 — PANEL ========================== -->
-  <section class="chunk" id="tier-2">
+  <!-- ========================== 02 / PANEL ========================== -->
+  <section class="chunk" id="panel">
     <header class="chunk-head reveal">
-      <span class="num-tag">02 / Tier 2 — Panel</span>
+      <span class="num-tag">02 / Panel</span>
       <h2 class="text-display-sm">Panel.</h2>
     </header>
 
     <p class="section-lede reveal">
-      A panel lists every page in its parent Section. The list is a
-        CSS grid with up to three columns
-        (<code>.global-nav__panel-list</code>), collapsed to one on
-        narrow viewports. Each entry is a two-part link: a mono index
-        (<code>01</code>, <code>02</code>, …) followed by the
-        Subsection's title. Indices reflect the canonical ordering of
-        the system and do not renumber when items are inserted. When
-        open, the panel shares the bar's dense-frost surface — bar and
-        panel read as one continuous material.
+      A panel lists every page in its parent section. When
+      open, it renders as a right-anchored floating card that
+      sits just below the sections island with a small
+      breathing gap between them — enough air that the panel
+      reads as its own surface rather than as a continuation
+      of the pill. The card carries the thick-frost glass and
+      the floating shadow tier; the sections island above it
+      matches the same density so the trigger and the panel
+      still read as one material event, separated only by
+      deliberate air.
     </p>
 
     <p class="usage-note reveal">
-      One panel per multi-page Section. Nested panels are not
-      supported; if a Section grows beyond a single panel, split it
-      into a new top-level Section with a documented version bump.
+      Width caps at <code>760px</code> via
+      <code>max-width</code> on the panel inner. The 3-column
+      grid is preserved for catalog browsing — the system has
+      twelve component pages, three asset pages, and three
+      mockup pages, and a one-column anchored dropdown would
+      cramp the catalog. At narrow viewports the grid drops to
+      two columns, then one, in line with the panel's
+      existing responsive rules.
     </p>
 
     <p class="usage-note reveal">
-      Width, not column count, owns the layout. The panel inner width
-      matches the shell width (<code>1040px</code>) so its columns
-      line up with page content. Three columns on desktop, two on
-      tablet, one on mobile. Column count is a function of viewport,
-      not item count.
+      The panel is right-aligned with the bar's right padding —
+      its right edge sits flush with the version chip's right
+      edge, and the card extends leftward from there. The
+      trigger inside the sections pill is not directly
+      centred over the card; the dropdown anchors to the
+      bar's right column, not to the trigger's centre. This
+      is deliberate: the panel is always-in-the-same-place
+      chrome, not a balloon tied to a moving trigger.
+    </p>
+
+    <p class="usage-note reveal">
+      One panel per multi-page section. Nested panels are not
+      supported; if a section grows beyond a single panel,
+      split it into a new top-level section with a documented
+      version bump.
     </p>
   </section>
 
@@ -251,11 +329,14 @@
     </header>
 
     <p class="section-lede reveal">
-      Two surfaces resolve states. The bar itself carries a rest and
-        a scrolled state — the scrolled state is set by the runtime
-        when content passes under the bar. Each tier-1 link carries
-        rest, hover, and current states; the current state is applied
-        by the runtime to the Section that contains the active page.
+      Three surface states resolve the bar. At rest every
+      island carries the light-frost variant of its glass
+      tier. When content scrolls under the bar, all three
+      islands step up in density together — light → thick
+      frost, raised → floating shadow, soft → strong rim. When
+      a panel opens, only the sections island densifies; the
+      brand and chip stay at rest because the panel is not
+      their event.
     </p>
 
     <div class="bar-state-grid reveal" aria-label="Bar surface states">
@@ -265,12 +346,8 @@
         <div class="bar-state__demo bar-state__demo--rest">
           <span class="bar-state__bar"></span>
         </div>
-        <div class="meta">
-          <span>frost</span><strong>light</strong>
-        </div>
-        <div class="meta">
-          <span>elevation</span><strong>raised</strong>
-        </div>
+        <div class="meta"><span>frost</span><strong>light</strong></div>
+        <div class="meta"><span>elevation</span><strong>raised</strong></div>
       </article>
 
       <article class="bar-state">
@@ -278,12 +355,17 @@
         <div class="bar-state__demo bar-state__demo--scrolled">
           <span class="bar-state__bar"></span>
         </div>
-        <div class="meta">
-          <span>frost</span><strong>thick</strong>
+        <div class="meta"><span>frost</span><strong>thick (all islands)</strong></div>
+        <div class="meta"><span>elevation</span><strong>floating</strong></div>
+      </article>
+
+      <article class="bar-state">
+        <span class="label">Panel open · sections island only</span>
+        <div class="bar-state__demo bar-state__demo--panel-open">
+          <span class="bar-state__bar"></span>
         </div>
-        <div class="meta">
-          <span>elevation</span><strong>floating</strong>
-        </div>
+        <div class="meta"><span>frost</span><strong>thick (sections)</strong></div>
+        <div class="meta"><span>elevation</span><strong>floating</strong></div>
       </article>
 
     </div>
@@ -318,21 +400,21 @@
 
     <p class="usage-note reveal" style="margin-top: var(--spacing-8x);">
       <strong>Inside the panel, the current page is not
-      highlighted.</strong> Tier-1 already shows location — the
-      parent Section trigger carries the primary-tinted
-      <code>.is-current</code> state — so reusing the affordance
-      one tier deeper would be redundant. The runtime still applies
-      <code>.is-current</code> to the matched link for downstream
-      tooling, but the panel's CSS does not style it.
+      highlighted.</strong> The sections island already shows
+      location — the parent section trigger carries the
+      primary-tinted <code>.is-current</code> state — so
+      reusing the affordance one surface deeper would be
+      redundant. The runtime still applies
+      <code>.is-current</code> to the matched link for
+      downstream tooling, but the panel's CSS does not style it.
     </p>
 
     <p class="usage-note reveal">
-      <strong>Placeholders are dimmed.</strong>
-      Subsection links pointing to pages that have not yet been
-      authored carry <code>.is-placeholder</code>. The class lowers
-      the link's contrast so the entry reads as a draft, while still
-      remaining clickable so the structure of the system stays
-      navigable as it's being built out.
+      <strong>Placeholders are dimmed.</strong> Subsection
+      links pointing to pages that have not yet been authored
+      carry <code>.is-placeholder</code>. The class lowers
+      contrast so the entry reads as a draft while remaining
+      clickable.
     </p>
   </section>
 
@@ -411,6 +493,18 @@
         </span>
       </li>
       <li>
+        <span class="spec-key">Chip</span>
+        <span class="spec-val">
+          The version chip is rendered as a static
+          <code>&lt;a&gt;</code> with an explicit
+          <code>aria-label="Design system version"</code>.
+          Its <code>href="#"</code> is a placeholder until a
+          versions/changelog page exists; until then the chip
+          serves purely as a typographic anchor at the right edge
+          of the bar.
+        </span>
+      </li>
+      <li>
         <span class="spec-key">Keyboard</span>
         <span class="spec-val">
           Tab progresses through each tier-1 entry in document order.
@@ -457,22 +551,25 @@
       <li>
         <span class="spec-key">≥ 960px</span>
         <span class="spec-val">
-          Full bar: brand and centred section list. Panel grid renders
-          three columns.
+          Full bar: brand island drifts left; sections island and
+          version chip cluster right. Panel inner caps at
+          <code>760px</code> and right-aligns with the chip's right
+          edge. Panel grid renders three columns.
         </span>
       </li>
       <li>
         <span class="spec-key">601–959px</span>
         <span class="spec-val">
-          Section list right-aligned and horizontally scrollable.
-          Panel grid renders two columns.
+          Section list scrolls horizontally inside its pill.
+          Panel inner removes the max-width cap and matches the
+          bar's narrow padding. Panel grid renders two columns.
         </span>
       </li>
       <li>
         <span class="spec-key">≤ 600px</span>
         <span class="spec-val">
-          Brand label hidden (logo only). Panel grid collapses to a
-          single column.
+          Brand sub-label hidden (logo only). Panel grid
+          collapses to a single column. Chip remains visible.
         </span>
       </li>
     </ul>
@@ -505,7 +602,7 @@
 <span class="com">&lt;!-- 4. Bar markup, identical across pages --&gt;</span>
 <span class="tag">&lt;header</span> <span class="attr">class</span>=<span class="str">"global-nav"</span> <span class="attr">aria-label</span>=<span class="str">"Design system navigation"</span><span class="tag">&gt;</span>
   <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"global-nav__inner"</span><span class="tag">&gt;</span>
-    <span class="com">&lt;!-- brand · sections · version --&gt;</span>
+    <span class="com">&lt;!-- brand island · sections island · version chip --&gt;</span>
   <span class="tag">&lt;/div&gt;</span>
 <span class="tag">&lt;/header&gt;</span></pre>
 
@@ -575,23 +672,25 @@
    semantic tokens are consumed by which slot.
    ========================================================= */
 const NAV_TOKENS = [
-  { group: 'Bar · surface (rest)', tokens: [
-    ['bar · background',        'var(--glass-light-light-bg)'],
-    ['bar · border-bottom',     'var(--glass-light-light-border)'],
-    ['bar · backdrop blur',     'var(--glass-light-light-blur)'],
-    ['bar · saturate',          'var(--glass-saturate)'],
-    ['bar · outer shadow',      'var(--glass-shadow-raised)'],
-    ['bar · inner rim light',   'var(--glass-inset-light-soft)'],
+  { group: 'Bar (transparent container)', tokens: [
+    ['bar · background',        'transparent'],
+    ['bar · border',            'none'],
+    ['bar · shadow',            'none'],
     ['bar · z-index',           '50'],
+    ['bar · max-width',         '1440px'],
+    ['bar · inner padding',     'var(--space-tier-5) var(--space-page-x)'],
+    ['bar · inner gap',         'var(--space-tier-6)'],
   ]},
-  { group: 'Bar · surface (scrolled / panel open)', tokens: [
-    ['bar · background',        'var(--glass-light-thick-bg)'],
-    ['bar · border-bottom',     'var(--glass-light-thick-border)'],
-    ['bar · backdrop blur',     'var(--glass-light-thick-blur)'],
-    ['bar · outer shadow',      'var(--glass-shadow-floating)'],
-    ['bar · inner rim light',   'var(--glass-inset-light-strong)'],
-  ]},
-  { group: 'Brand', tokens: [
+  { group: 'Brand island', tokens: [
+    ['brand · background',      'var(--glass-light-light-bg)'],
+    ['brand · border',          'var(--glass-light-light-border)'],
+    ['brand · backdrop blur',   'var(--glass-light-light-blur)'],
+    ['brand · saturate',        'var(--glass-saturate)'],
+    ['brand · outer shadow',    'var(--glass-shadow-raised)'],
+    ['brand · inner rim',       'var(--glass-inset-light-soft)'],
+    ['brand · radius',          'var(--radius-pill)'],
+    ['brand · padding (Y · X)', 'var(--space-tier-5) var(--space-tier-3)'],
+    ['brand · logo + label gap','var(--space-tier-4)'],
     ['brand · logo height',     'var(--spacing-10x)'],
     ['brand · label font',      'var(--font-mono)'],
     ['brand · label size',      'var(--text-eyebrow)'],
@@ -599,11 +698,12 @@ const NAV_TOKENS = [
     ['brand · label color',     'var(--text-default-minimal)'],
     ['brand · divider',         'var(--border-default)'],
   ]},
-  { group: 'Tier 1 · section list', tokens: [
+  { group: 'Sections island · at rest', tokens: [
     ['list · background',           'var(--glass-light-clear-bg)'],
     ['list · border',               'var(--glass-light-clear-border)'],
+    ['list · outer shadow',         'var(--glass-shadow-raised)'],
+    ['list · inner rim',            'var(--glass-inset-light-soft)'],
     ['list · radius',               'var(--radius-pill)'],
-    ['list · inner rim light',      'var(--glass-inset-light-soft)'],
     ['link · font',                 'var(--font-mono)'],
     ['link · size',                 'var(--text-eyebrow)'],
     ['link · tracking',             'var(--letter-spacing-wide)'],
@@ -613,28 +713,69 @@ const NAV_TOKENS = [
     ['link · color (current)',      'var(--text-primary-strong)'],
     ['link · background (current)', 'var(--background-primary-subtle)'],
   ]},
-  { group: 'Tier 2 · panel', tokens: [
-    ['panel · background',         'var(--glass-light-thick-bg)'],
-    ['panel · backdrop blur',      'var(--glass-light-thick-blur)'],
-    ['panel · border-bottom',      'var(--glass-light-thick-border)'],
-    ['panel · shadow',             'var(--glass-shadow-floating)'],
-    ['panel · inner max-width',    '1040px'],
-    ['panel · inner padding',      'var(--spacing-12x) var(--spacing-8x)'],
-    ['link · font',                'var(--font-sans)'],
-    ['link · size',                'var(--text-h6)'],
-    ['link · weight',              'var(--font-weight-medium)'],
-    ['link · color (rest)',        'var(--text-default)'],
-    ['link · color (hover)',       'var(--text-primary-strong)'],
-    ['index · font',               'var(--font-mono)'],
-    ['index · size',               'var(--text-eyebrow)'],
-    ['index · tracking',           'var(--letter-spacing-wide)'],
-    ['index · color',              'var(--text-default-minimal)'],
-    ['placeholder · color',        'var(--text-default-minimal)'],
+  { group: 'Sections island · panel open / scrolled', tokens: [
+    ['list · background',       'var(--glass-light-thick-bg)'],
+    ['list · border',           'var(--glass-light-thick-border)'],
+    ['list · backdrop blur',    'var(--glass-light-thick-blur)'],
+    ['list · outer shadow',     'var(--glass-shadow-floating)'],
+    ['list · inner rim',        'var(--glass-inset-light-strong)'],
+  ]},
+  { group: 'Version chip', tokens: [
+    ['chip · background',       'var(--glass-light-clear-bg)'],
+    ['chip · border',           'var(--glass-light-clear-border)'],
+    ['chip · backdrop blur',    'var(--glass-light-light-blur)'],
+    ['chip · outer shadow',     'var(--glass-shadow-raised)'],
+    ['chip · inner rim',        'var(--glass-inset-light-soft)'],
+    ['chip · radius',           'var(--radius-pill)'],
+    ['chip · font',             'var(--font-mono)'],
+    ['chip · size',             'var(--text-eyebrow)'],
+    ['chip · color',            'var(--text-default-subtle)'],
+  ]},
+  { group: 'Panel · outer (positioning)', tokens: [
+    ['outer · position',        'absolute'],
+    ['outer · left / right',    '0 / 0'],
+    ['outer · top',             '100%'],
+    ['outer · background',      'transparent'],
+    ['outer · z-index',         '49'],
+  ]},
+  { group: 'Panel · inner (visible card)', tokens: [
+    ['inner · background',      'var(--glass-light-thick-bg)'],
+    ['inner · border',          'var(--glass-light-thick-border)'],
+    ['inner · backdrop blur',   'var(--glass-light-thick-blur)'],
+    ['inner · outer shadow',    'var(--glass-shadow-floating)'],
+    ['inner · inner rim',       'var(--glass-inset-light-strong)'],
+    ['inner · radius',          'var(--radius-lg)'],
+    ['inner · max-width',       '760px'],
+    ['inner · margin-top',      'var(--space-tier-6)'],
+    ['inner · margin-right',    'var(--space-page-x)'],
+    ['inner · margin-left',     'auto'],
+    ['inner · padding',         'var(--space-tier-4) var(--space-tier-3)'],
+    ['link · font',             'var(--font-sans)'],
+    ['link · size',             'var(--text-h6)'],
+    ['link · weight',           'var(--font-weight-medium)'],
+    ['link · color (rest)',     'var(--text-default)'],
+    ['link · color (hover)',    'var(--text-primary-strong)'],
+    ['link · bg (hover)',       'var(--background-primary-minimal)'],
+    ['index · font',            'var(--font-mono)'],
+    ['index · size',            'var(--text-eyebrow)'],
+    ['index · color',           'var(--text-default-minimal)'],
+    ['placeholder · color',     'var(--text-default-minimal)'],
+  ]},
+  { group: 'Marketing variant', tokens: [
+    ['link · font',                 'var(--font-sans)'],
+    ['link · size',                 'var(--text-body-sm)'],
+    ['link · weight',               'var(--font-weight-medium)'],
+    ['link · tracking',             '0'],
+    ['link · transform',            'none'],
+    ['list · gap',                  'var(--space-gap-snug)'],
+    ['action item · left margin',   'var(--space-tier-6) (first action only)'],
+    ['primary CTA',                 '.btn .btn--sm .btn--cta (resolves to --background-accent)'],
+    ['secondary CTA',               '.btn .btn--sm .btn--glass'],
   ]},
   { group: 'Motion', tokens: [
     ['panel · open transition',  'opacity 0.2s ease, transform 0.2s ease'],
-    ['panel · enter offset',     'translateY(-4px)'],
-    ['bar · scroll-edge trans.', 'background, blur, shadow 0.2s ease'],
+    ['panel · enter offset',     'translateY(-2px)'],
+    ['island · transition',      'background, border-color, box-shadow 0.18s ease'],
     ['link · transition',        'background 0.18s ease, color 0.18s ease'],
     ['chevron · transition',     'transform 0.18s ease'],
     ['chevron · open transform', 'rotate(180deg)'],

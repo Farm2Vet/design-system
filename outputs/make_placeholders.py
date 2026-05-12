@@ -99,6 +99,8 @@ NAV_BLOCK = '''<!-- ========================== GLOBAL NAV ======================
       </ul>
     </nav>
 
+    <a href="#" class="global-nav__chip" aria-label="Design system version">v1.0</a>
+
   </div>
 </header>'''
 
