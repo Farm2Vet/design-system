@@ -703,7 +703,10 @@
       Pagination is a numeric step navigator for paged result sets.
         It shares Tabs' toolbar zone and its segmented-list visual
         contract, but it does not mount panels — it shifts the data
-        underneath an unchanged viewport.
+        underneath an unchanged viewport. A trailing
+        <code>.pagination__jump</code> form lets a user jump directly
+        to a page when the run is long enough that step-clicking is no
+        longer reasonable.
     </p>
 
     <p class="usage-note reveal">
@@ -713,6 +716,18 @@
       the last page rather than rendering them disabled — disabled
       controls in a recurring footer chrome read as a defect, not a
       contract. For dense table footers, reach for the compact variant.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>Add the jump form when the page count crosses ~10.</strong>
+      Below ten pages the numbered list is faster than typing a number.
+      Above ten the list elides middles, and the jump form becomes the
+      precise control. Mirror the current page in the input's
+      <code>placeholder</code> so the field reads as state, not as an
+      empty form. Clamp out-of-range submissions silently to
+      <code>[1, max]</code> — never reject with an error message;
+      pagination is a quiet surface and a thrown error here reads as
+      user-blame for a fat-finger.
     </p>
 
     <div class="form-version-stage reveal">
@@ -733,6 +748,52 @@
           </nav>
         </div>
         <div class="meta"><span>.pagination</span><strong>system default</strong></div>
+      </article>
+
+      <article class="form-version-card">
+        <span class="label">With jump-to-page · long runs</span>
+        <div class="demo">
+          <nav class="pagination" aria-label="Pagination">
+            <button type="button" class="pagination__step" data-direction="prev" aria-label="Previous page">‹</button>
+            <ol class="pagination__list">
+              <li><a class="pagination__page" href="#">1</a></li>
+              <li><a class="pagination__page" href="#">2</a></li>
+              <li><a class="pagination__page is-current" href="#" aria-current="page">3</a></li>
+              <li><a class="pagination__page" href="#">4</a></li>
+              <li><span class="pagination__ellipsis" aria-hidden="true">…</span></li>
+              <li><a class="pagination__page" href="#">42</a></li>
+            </ol>
+            <button type="button" class="pagination__step" data-direction="next" aria-label="Next page">›</button>
+            <form class="pagination__jump" data-pagination-jump action="#" role="search" aria-label="Go to page">
+              <label class="pagination__jump-label" for="pg-jump-default">Go to</label>
+              <input type="text" id="pg-jump-default" name="p"
+                     class="pagination__jump-input"
+                     inputmode="numeric" pattern="[0-9]*" maxlength="4"
+                     min="1" max="42" aria-label="Page number" placeholder="3" />
+              <span class="pagination__jump-of">of 42</span>
+            </form>
+          </nav>
+        </div>
+        <div class="meta"><span>.pagination__jump</span><strong>optional slot</strong></div>
+      </article>
+
+      <article class="form-version-card">
+        <span class="label">Jump-only · long-tail datasets</span>
+        <div class="demo">
+          <nav class="pagination" aria-label="Pagination">
+            <button type="button" class="pagination__step" data-direction="prev" aria-label="Previous page">‹</button>
+            <form class="pagination__jump" data-pagination-jump action="#" role="search" aria-label="Go to page">
+              <label class="pagination__jump-label" for="pg-jump-large">Page</label>
+              <input type="text" id="pg-jump-large" name="p"
+                     class="pagination__jump-input"
+                     inputmode="numeric" pattern="[0-9]*" maxlength="5"
+                     min="1" max="9421" aria-label="Page number" placeholder="847" />
+              <span class="pagination__jump-of">of 9,421</span>
+            </form>
+            <button type="button" class="pagination__step" data-direction="next" aria-label="Next page">›</button>
+          </nav>
+        </div>
+        <div class="meta"><span>.pagination__jump</span><strong>numbered list dropped</strong></div>
       </article>
 
       <article class="form-version-card">
@@ -923,6 +984,11 @@ const TABS_TOKENS = [
     ['--pagination-radius',      'var(--radius-sm)'],
     ['--pagination-size',        'var(--btn-md-height)'],
     ['--pagination-gap',         'var(--space-gap-micro)'],
+    ['--pagination-jump-input-width',  '5ch'],
+    ['--pagination-jump-input-bg',     'var(--background-default)'],
+    ['--pagination-jump-input-fg',     'var(--text-default)'],
+    ['--pagination-jump-input-border', 'var(--border-default)'],
+    ['--pagination-jump-label-fg',     'var(--text-default-subtle)'],
   ]},
 ];
 
@@ -1109,12 +1175,65 @@ function initTabs() {
 }
 
 /* =========================================================
+   PAGINATION JUMP-TO-PAGE
+   Author markup:
+     <form class="pagination__jump"
+           data-pagination-jump
+           action="?p"
+           role="search"
+           aria-label="Go to page">
+       <input type="text" name="p" min="1" max="N"
+              class="pagination__jump-input" />
+     </form>
+
+   On submit:
+     · clamp to [min, max]; if NaN, restore to empty and refocus.
+     · if data-href-template is set, navigate
+       (e.g. "/cases?p={page}").
+     · otherwise dispatch a 'pagination:jump' CustomEvent on
+       the .pagination root with detail { page }.
+   No-JS pages still submit the form naturally to its action.
+   ========================================================= */
+function initPaginationJump() {
+  document.querySelectorAll('form.pagination__jump[data-pagination-jump]').forEach(form => {
+    const input = form.querySelector('.pagination__jump-input');
+    const root  = form.closest('.pagination');
+    if (!input || !root) return;
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const min = parseInt(input.min || '1', 10);
+      const max = parseInt(input.max || '999999', 10);
+      const raw = parseInt(input.value, 10);
+      if (Number.isNaN(raw)) {
+        input.value = '';
+        input.focus();
+        return;
+      }
+      const page = Math.min(max, Math.max(min, raw));
+      input.value = String(page);
+
+      const tpl = form.dataset.hrefTemplate;
+      if (tpl) {
+        window.location.href = tpl.replace('{page}', String(page));
+        return;
+      }
+      root.dispatchEvent(new CustomEvent('pagination:jump', {
+        detail: { page },
+        bubbles: true,
+      }));
+    });
+  });
+}
+
+/* =========================================================
    BOOT
    ========================================================= */
 document.addEventListener('DOMContentLoaded', () => {
   renderTokenTable();
   initReveal();
   initTabs();
+  initPaginationJump();
 });
 </script>
 

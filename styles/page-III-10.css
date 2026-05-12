@@ -195,101 +195,6 @@
 }
 
 /* =========================================================
-   NAV PREVIEW — real-world mock of the bar inside the page
-   The wrapper renders a contained sandbox around a second
-   .global-nav element. Sticky positioning is overridden so
-   the preview stays inside its section; pointer events on
-   the inner spans are restricted to cursor changes only,
-   since no clickable items live in the preview.
-   ========================================================= */
-.nav-preview {
-    position: relative;
-    margin-top: var(--space-tier-6);
-    padding: var(--space-tier-2);
-    border-radius: var(--radius-lg);
-    border: var(--border-width-base) solid var(--border-default);
-    background:
-        repeating-linear-gradient(
-            135deg,
-            var(--background-default-subtle) 0 14px,
-            var(--background-default) 14px 28px
-        );
-    overflow: hidden;
-    /* Reserve enough vertical space for the bar + the held-open
-       Features panel underneath, so the panel doesn't bleed out
-       of the wrapper. */
-    min-height: 240px;
-}
-
-/* Override the canonical bar's sticky / z-index inside the preview.
-   This is the documentation page's static rendering — not the live
-   chrome — so it sits inline at z-index 1, never sticky. */
-.nav-preview .global-nav {
-    position: relative;
-    top: auto;
-    z-index: 1;
-    border-radius: var(--radius-md);
-}
-
-/* Logo placeholder — outlined wordmark, no real logo asset. */
-.nav-preview__logo {
-    display: inline-flex;
-    align-items: center;
-    padding: var(--space-tier-7) var(--space-tier-5);
-    border: var(--border-width-base) solid var(--text-default);
-    border-radius: var(--radius-sm);
-    color: var(--text-default);
-    font-family: var(--font-sans);
-    font-weight: var(--font-weight-semibold);
-    font-size: var(--text-body);
-    line-height: 1;
-}
-
-/* Trailing CTA slot. */
-.nav-preview__cta {
-    justify-self: end;
-    display: inline-flex;
-}
-
-/* The .btn .btn--cta span carries the canonical button styling
-   already; this rule only ensures it doesn't try to be a real
-   button (no focus ring, no active translate, no select). */
-.nav-preview__cta .btn {
-    cursor: pointer;
-    user-select: none;
-}
-
-/* Inner section "links" are spans. Cursor is already set by
-   .global-nav__link via the canonical rule; this just makes the
-   intent visible at this scope and ensures they don't render
-   like body text. */
-.nav-preview .global-nav__link,
-.nav-preview .global-nav__trigger {
-    cursor: pointer;
-    user-select: none;
-}
-
-/* The preview panel's spans (no <a>) — restate the link layout
-   and cursor here because .global-nav__panel-list a doesn't match
-   a <span>. */
-.nav-preview .global-nav__panel-list > li > span {
-    cursor: pointer;
-    display: flex;
-    align-items: baseline;
-    gap: var(--space-tier-5);
-    padding: var(--space-tier-6) 0;
-    font-family: var(--font-sans);
-    font-size:   var(--text-h6);
-    font-weight: var(--font-weight-medium);
-    color: var(--text-default);
-    text-decoration: none;
-    transition: color 0.15s ease;
-}
-.nav-preview .global-nav__panel-list > li > span:hover {
-    color: var(--text-primary-strong);
-}
-
-/* =========================================================
    CODE SNIPPET — fenced code block reused for HTML examples
    ========================================================= */
 pre.code {
@@ -318,5 +223,4 @@ pre.code .com    { color: var(--text-default-minimal); font-style: italic; }
     .state-grid { grid-template-columns: 1fr; }
     .spec-list > li { grid-template-columns: 1fr; row-gap: var(--space-tier-7); }
     .bar-state-grid { grid-template-columns: 1fr; }
-    .nav-preview { min-height: 0; }
 }

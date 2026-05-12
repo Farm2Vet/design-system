@@ -608,6 +608,71 @@
     text-decoration-thickness: 2px;
 }
 
+/* Jump-to-page — optional slot a consumer attaches to
+   .pagination when the page count is long enough that
+   step-clicking is no longer reasonable. The form submits
+   on Enter; the jump controller intercepts and either
+   navigates via data-href-template or dispatches
+   pagination:jump. Quiet surface — no border at rest,
+   border on hover/focus, matching the .pagination__page
+   pattern. The slot is set off from the prev/next/list
+   block by a thin left rule so the eye reads it as a
+   separate control, not as another page button. */
+.pagination__jump {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--pagination-gap);
+    margin-left: var(--space-gap-snug);
+    padding-left: var(--space-gap-snug);
+    border-left: var(--border-width-base) solid var(--pagination-border);
+    color: var(--pagination-jump-label-fg);
+}
+.pagination__jump-label,
+.pagination__jump-of {
+    color: var(--pagination-jump-label-fg);
+    font-family: var(--pagination-font-family);
+    font-size:   var(--pagination-font-size);
+    user-select: none;
+    white-space: nowrap;
+}
+.pagination__jump-input {
+    width:  var(--pagination-jump-input-width);
+    height: var(--pagination-size);
+    padding: 0 var(--spacing-2x);
+    text-align: center;
+    color:        var(--pagination-jump-input-fg);
+    background:   var(--pagination-jump-input-bg);
+    border:       var(--border-width-base) solid transparent;
+    border-radius: var(--pagination-radius);
+    font-family: var(--pagination-font-family);
+    font-size:   var(--pagination-font-size);
+    transition: var(--tabs-transition);
+    /* Hide the spinner — typing a number is the contract,
+       not nudging it. */
+    -moz-appearance: textfield;
+}
+.pagination__jump-input::-webkit-outer-spin-button,
+.pagination__jump-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.pagination__jump-input:hover {
+    border-color: var(--pagination-jump-input-border);
+}
+.pagination__jump-input:focus,
+.pagination__jump-input:focus-visible {
+    outline: var(--tabs-focus-outline-width) solid var(--tabs-focus-outline);
+    outline-offset: var(--tabs-focus-outline-offset);
+    border-color: var(--pagination-jump-input-border);
+}
+/* Compact variant strips the rule and keeps the jump
+   borderless to match the dense table-footer treatment. */
+.pagination--compact .pagination__jump {
+    border-left: none;
+    margin-left: var(--pagination-gap);
+    padding-left: 0;
+}
+
 /* =========================================================
    REDUCED MOTION — silence the sliding indicator and the
    bubble when the user has set the system-level
@@ -618,6 +683,7 @@
     .tabs__indicator,
     .pagination__page,
     .pagination__step,
+    .pagination__jump-input,
     .tabs__tab {
         transition: none;
     }
