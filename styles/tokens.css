@@ -807,34 +807,6 @@
     --btn-toggle-on-fg:     var(--text-inverted);
     --btn-toggle-on-border: var(--border-primary);
 
-    /* ---------- Variant: Switch (binary + segmented) ----------
-       Reuses the toggle variant's colour scheme and the
-       --btn-*-height scale. The aspect ratio + track padding
-       are the only new shape primitives this component needs;
-       both are kept here so any switch-like surface can reuse
-       them (e.g., language switch, segmented filter). */
-    --btn-switch-track-bg:        var(--btn-toggle-bg);
-    --btn-switch-track-bg-hover:  var(--btn-toggle-bg-hover);
-    --btn-switch-track-border:    var(--btn-toggle-border);
-    --btn-switch-fg:              var(--btn-toggle-fg);
-    --btn-switch-on-bg:           var(--btn-toggle-on-bg);
-    --btn-switch-on-border:       var(--btn-toggle-on-border);
-    --btn-switch-on-fg:           var(--btn-toggle-on-fg);
-    --btn-switch-thumb-bg:        var(--background-default);
-    --btn-switch-thumb-fg:        var(--text-default);
-    --btn-switch-thumb-shadow:    var(--shadow-sm);
-    /* Segmented active highlight — primary pill on the track,
-       distinct from the binary thumb (which stays white as a
-       contrast element on top of the coloured on-track). */
-    --btn-switch-active-bg:       var(--background-primary);
-    --btn-switch-active-fg:       var(--text-inverted);
-    --btn-switch-active-border:   transparent;
-    --btn-switch-track-pad:       3px;
-    --btn-switch-aspect:          1.85;   /* track-width = height × aspect */
-    --btn-switch-radius:          var(--btn-radius-pill);
-    --btn-switch-thumb-easing:    cubic-bezier(.4, 0, .2, 1);
-    --btn-switch-thumb-duration:  .25s;
-
     /* ---------- Version: Inverted Surface ---------- */
     --btn-inverted-cta-bg:           var(--background-default);
     --btn-inverted-cta-fg:           var(--text-accent-strong);
@@ -849,6 +821,42 @@
     --btn-focus-outline:        var(--outline-focus);
     --btn-focus-outline-width:  2px;
     --btn-focus-outline-offset: 2px;
+}
+
+/* =========================================================
+   COMPONENT · Switch
+   Binary on/off control + segmented variant. Reuses the
+   control-rail height scale (--btn-{sm…2xl}-height) but
+   owns its own colour rail.
+   ========================================================= */
+:root {
+    /* ---------- Off track tint ---------- */
+    --switch-track-bg:         var(--background-default-minimal);
+    --switch-track-bg-hover:   var(--background-default-hover);
+    --switch-track-border:     var(--border-default-strong);
+    --switch-fg:               var(--text-default);
+
+    /* ---------- On track ---------- */
+    --switch-on-bg:            var(--background-primary);
+    --switch-on-border:        var(--border-primary);
+    --switch-on-fg:            var(--text-inverted);
+
+    /* ---------- Thumb (binary) ---------- */
+    --switch-thumb-bg:         var(--background-default);
+    --switch-thumb-fg:         var(--text-default);
+    --switch-thumb-shadow:     var(--shadow-sm);
+
+    /* ---------- Segmented active pill ---------- */
+    --switch-active-bg:        var(--background-primary);
+    --switch-active-fg:        var(--text-inverted);
+    --switch-active-border:    transparent;
+
+    /* ---------- Shape ---------- */
+    --switch-track-pad:        3px;
+    --switch-aspect:           1.85;   /* track-width = height × aspect */
+    --switch-radius:           var(--btn-radius-pill);
+    --switch-thumb-easing:     cubic-bezier(.4, 0, .2, 1);
+    --switch-thumb-duration:   .25s;
 }
 
 /* =========================================================

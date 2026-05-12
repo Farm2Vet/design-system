@@ -68,6 +68,7 @@
                 <li><a href="III-08-toast.html"><span class="global-nav__index">08</span><span>Toast</span></a></li>
                 <li><a href="III-09-alert-badges.html"><span class="global-nav__index">09</span><span>Alert &amp; Badge</span></a></li>
                 <li><a href="III-10-header-navigation.html"><span class="global-nav__index">10</span><span>Header &amp; Nav Bar</span></a></li>
+                <li><a href="III-11-switch.html"><span class="global-nav__index">11</span><span>Switch</span></a></li>
                 <li><a href="III-12-sidebar.html"><span class="global-nav__index">12</span><span>Sidebar</span></a></li>
                 <li><a href="III-14-tabs.html"><span class="global-nav__index">14</span><span>Tabs</span></a></li>
               </ul>
@@ -140,10 +141,10 @@
 
     <dl class="meta-strip reveal">
       <div><dt>Component</dt><dd>Button</dd></div>
-      <div><dt>Variants</dt><dd>8 + switch</dd></div>
+      <div><dt>Variants</dt><dd>8</dd></div>
       <div><dt>States</dt><dd>6</dd></div>
-      <div><dt>Versions</dt><dd>5</dd></div>
-      <div><dt>Sizes</dt><dd>5 · LG focus</dd></div>
+      <div><dt>Versions</dt><dd>4</dd></div>
+      <div><dt>Sizes</dt><dd>5</dd></div>
     </dl>
   </section>
 
@@ -337,7 +338,7 @@
       The same variant adapts to its container. Default, inverted, and
       secondary-subtle surfaces shift the contrast scheme; icon-only and
       borderless re-shape the affordance for compact rails and inline
-      contexts; block claims the surface horizontally.
+      contexts.
     </p>
 
     <div class="version-stage reveal">
@@ -350,7 +351,6 @@
         </div>
         <div class="body">
           <span class="name">Default</span>
-          <span class="desc">light surface · standard</span>
         </div>
       </article>
 
@@ -362,7 +362,6 @@
         </div>
         <div class="body">
           <span class="name">Inverted Surface</span>
-          <span class="desc">dark / brand bg</span>
         </div>
       </article>
 
@@ -374,7 +373,6 @@
         </div>
         <div class="body">
           <span class="name">Secondary Subtle Surface</span>
-          <span class="desc">warm / secondary-tinted bg</span>
         </div>
       </article>
 
@@ -395,7 +393,6 @@
         </div>
         <div class="body">
           <span class="name">Icon Only</span>
-          <span class="desc">square · aria-label required</span>
         </div>
       </article>
 
@@ -407,19 +404,6 @@
         </div>
         <div class="body">
           <span class="name">Borderless</span>
-          <span class="desc">inline · text-like affordance</span>
-        </div>
-      </article>
-
-      <article class="version-card">
-        <div class="demo">
-          <button class="btn btn--cta btn--lg btn--block">
-            <span class="btn__label">Submit case file</span>
-          </button>
-        </div>
-        <div class="body">
-          <span class="name">Block</span>
-          <span class="desc">full-width · drawer / form footer</span>
         </div>
       </article>
 
@@ -434,9 +418,9 @@
     </header>
 
     <p class="section-lede reveal">
-      Five steps along the same scale that drives type. The middle is
-      canonical: <strong>Large · 22.5px</strong> for primary actions in
-      marketing surfaces and form footers.
+      Five steps along the same scale that drives type. Large · 22.5px is
+      the default for primary actions in marketing surfaces and form
+      footers.
     </p>
 
     <h4 class="subheading reveal">CTA — across all sizes <span class="tag">primary intent</span></h4>
@@ -449,9 +433,9 @@
         <button class="btn btn--cta btn--md">Diagnose</button>
         <span class="tag">MD · 16px</span>
       </div>
-      <div class="size-cell is-focus">
+      <div class="size-cell">
         <button class="btn btn--cta btn--lg">Diagnose</button>
-        <span class="tag">LG · 22.5px · focus</span>
+        <span class="tag">LG · 22.5px</span>
       </div>
       <div class="size-cell">
         <button class="btn btn--cta btn--xl">Diagnose</button>
@@ -477,11 +461,11 @@
         </button>
         <span class="tag">MD</span>
       </div>
-      <div class="size-cell is-focus">
+      <div class="size-cell">
         <button class="btn btn--cta btn--lg btn--icon-only" aria-label="Add diagnosis">
           <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
         </button>
-        <span class="tag">LG · focus</span>
+        <span class="tag">LG</span>
       </div>
       <div class="size-cell">
         <button class="btn btn--cta btn--xl btn--icon-only" aria-label="Add diagnosis">
@@ -501,7 +485,7 @@
   <!-- ========================== PADDING RATIO ========================== -->
   <section class="chunk" id="padding-ratio">
     <header class="chunk-head reveal">
-      <span class="num-tag">III-02 / 07</span>
+      <span class="num-tag">05 / Button — Padding ratio</span>
       <h2 class="text-display-sm">Padding ratio.</h2>
     </header>
     <p class="section-lede reveal">
@@ -552,7 +536,7 @@
             <td>0.50</td>
             <td><code>--space-control-x-md</code></td>
           </tr>
-          <tr class="is-focus">
+          <tr>
             <td>LG</td>
             <td>22.5px</td>
             <td>12 px</td>
@@ -610,168 +594,10 @@
     </aside>
   </section>
 
-  <!-- ========================== BUTTON · SWITCH ========================== -->
-  <section class="chunk" id="button-switch">
-    <header class="chunk-head reveal">
-      <span class="num-tag">05 / Button — Switch</span>
-      <h2 class="text-display-sm">Switch.</h2>
-    </header>
-
-    <p class="section-lede reveal">
-      A binary on/off control with a sliding thumb, plus a segmented
-      variant for one-of-N choices — the canonical shape for a language
-      switch. Both share the toggle variant's colour scheme and align
-      with the button height scale (LG · 48px focus).
-    </p>
-
-    <div class="variant-grid reveal">
-
-      <article class="variant-card">
-        <span class="label">Switch · Off</span>
-        <div class="demo">
-          <button class="btn-switch btn-switch--lg" role="switch" aria-checked="false" aria-label="Vitals monitor">
-            <span class="btn-switch__thumb"></span>
-          </button>
-        </div>
-        <div class="meta"><span>--btn-switch</span><strong>off state</strong></div>
-      </article>
-
-      <article class="variant-card">
-        <span class="label">Switch · On</span>
-        <div class="demo">
-          <button class="btn-switch btn-switch--lg is-on" role="switch" aria-checked="true" aria-label="Vitals monitor">
-            <span class="btn-switch__thumb"></span>
-          </button>
-        </div>
-        <div class="meta"><span>--btn-switch.is-on</span><strong>on state</strong></div>
-      </article>
-
-      <article class="variant-card">
-        <span class="label">Switch · Disabled</span>
-        <div class="demo">
-          <button class="btn-switch btn-switch--lg" role="switch" aria-checked="false" aria-label="Locked toggle" disabled>
-            <span class="btn-switch__thumb"></span>
-          </button>
-        </div>
-        <div class="meta"><span>[disabled]</span><strong>blocked</strong></div>
-      </article>
-
-      <article class="variant-card">
-        <span class="label">Language switch</span>
-        <div class="demo">
-          <div class="btn-switch btn-switch--segmented btn-switch--lg" role="group" aria-label="Language">
-            <button class="btn-switch__option is-on" type="button" aria-pressed="true">EN</button>
-            <button class="btn-switch__option" type="button" aria-pressed="false">VI</button>
-          </div>
-        </div>
-        <div class="meta"><span>--btn-switch--segmented</span><strong>EN / VI</strong></div>
-      </article>
-
-      <article class="variant-card">
-        <span class="label">Segmented · 3-way</span>
-        <div class="demo">
-          <div class="btn-switch btn-switch--segmented btn-switch--lg" role="group" aria-label="Caseload filter">
-            <button class="btn-switch__option" type="button" aria-pressed="false">All</button>
-            <button class="btn-switch__option is-on" type="button" aria-pressed="true">Active</button>
-            <button class="btn-switch__option" type="button" aria-pressed="false">Past</button>
-          </div>
-        </div>
-        <div class="meta"><span>3 options</span><strong>filter affordance</strong></div>
-      </article>
-
-      <article class="variant-card">
-        <span class="label">Language · 3-way</span>
-        <div class="demo">
-          <div class="btn-switch btn-switch--segmented btn-switch--lg" role="group" aria-label="Language">
-            <button class="btn-switch__option is-on" type="button" aria-pressed="true">EN</button>
-            <button class="btn-switch__option" type="button" aria-pressed="false">VI</button>
-            <button class="btn-switch__option" type="button" aria-pressed="false">FR</button>
-          </div>
-        </div>
-        <div class="meta"><span>3 locales</span><strong>i18n</strong></div>
-      </article>
-
-    </div>
-
-    <h4 class="subheading reveal">Switch — across all sizes <span class="tag">binary</span></h4>
-    <div class="glass size-stage reveal">
-      <div class="size-cell">
-        <button class="btn-switch btn-switch--sm" role="switch" aria-checked="false" aria-label="Demo SM"><span class="btn-switch__thumb"></span></button>
-        <span class="tag">SM</span>
-      </div>
-      <div class="size-cell">
-        <button class="btn-switch btn-switch--md" role="switch" aria-checked="false" aria-label="Demo MD"><span class="btn-switch__thumb"></span></button>
-        <span class="tag">MD</span>
-      </div>
-      <div class="size-cell is-focus">
-        <button class="btn-switch btn-switch--lg is-on" role="switch" aria-checked="true" aria-label="Demo LG"><span class="btn-switch__thumb"></span></button>
-        <span class="tag">LG · focus</span>
-      </div>
-      <div class="size-cell">
-        <button class="btn-switch btn-switch--xl" role="switch" aria-checked="false" aria-label="Demo XL"><span class="btn-switch__thumb"></span></button>
-        <span class="tag">XL</span>
-      </div>
-      <div class="size-cell">
-        <button class="btn-switch btn-switch--2xl is-on" role="switch" aria-checked="true" aria-label="Demo 2XL"><span class="btn-switch__thumb"></span></button>
-        <span class="tag">2XL</span>
-      </div>
-    </div>
-
-    <h4 class="subheading reveal">Language switch — across all sizes <span class="tag">segmented</span></h4>
-    <div class="glass size-stage reveal">
-      <div class="size-cell">
-        <div class="btn-switch btn-switch--segmented btn-switch--sm" role="group" aria-label="Language SM">
-          <button class="btn-switch__option is-on" type="button" aria-pressed="true">EN</button>
-          <button class="btn-switch__option" type="button" aria-pressed="false">VI</button>
-        </div>
-        <span class="tag">SM</span>
-      </div>
-      <div class="size-cell">
-        <div class="btn-switch btn-switch--segmented btn-switch--md" role="group" aria-label="Language MD">
-          <button class="btn-switch__option is-on" type="button" aria-pressed="true">EN</button>
-          <button class="btn-switch__option" type="button" aria-pressed="false">VI</button>
-        </div>
-        <span class="tag">MD</span>
-      </div>
-      <div class="size-cell is-focus">
-        <div class="btn-switch btn-switch--segmented btn-switch--lg" role="group" aria-label="Language LG">
-          <button class="btn-switch__option is-on" type="button" aria-pressed="true">EN</button>
-          <button class="btn-switch__option" type="button" aria-pressed="false">VI</button>
-        </div>
-        <span class="tag">LG · focus</span>
-      </div>
-      <div class="size-cell">
-        <div class="btn-switch btn-switch--segmented btn-switch--xl" role="group" aria-label="Language XL">
-          <button class="btn-switch__option is-on" type="button" aria-pressed="true">EN</button>
-          <button class="btn-switch__option" type="button" aria-pressed="false">VI</button>
-        </div>
-        <span class="tag">XL</span>
-      </div>
-      <div class="size-cell">
-        <div class="btn-switch btn-switch--segmented btn-switch--2xl" role="group" aria-label="Language 2XL">
-          <button class="btn-switch__option is-on" type="button" aria-pressed="true">EN</button>
-          <button class="btn-switch__option" type="button" aria-pressed="false">VI</button>
-        </div>
-        <span class="tag">2XL</span>
-      </div>
-    </div>
-
-    <p class="usage-note usage-note--below reveal">
-      <strong>Use a switch for a binary on/off setting whose change takes effect immediately.</strong>
-      No Save button, no confirmation step — flipping the thumb <em>is</em> the
-      action. A switch is wrong for anything destructive or anything that
-      needs explicit confirmation; reach for a button paired with a dialog
-      there. Pair every switch with a label describing what it controls
-      in the affirmative — "Notifications", not "Disable notifications" — so
-      the on-position reads true. The visible label sits next to the switch;
-      never let the slider stand alone.
-    </p>
-  </section>
-
   <!-- ========================== BUTTON · TOKENS ========================== -->
   <section class="chunk" id="button-tokens">
     <header class="chunk-head reveal">
-      <span class="num-tag">07 / Button — Component tokens</span>
+      <span class="num-tag">06 / Button — Component tokens</span>
       <h2 class="text-display-sm">Tokens.</h2>
     </header>
 
@@ -905,26 +731,6 @@ const BTN_TOKENS = [
     ['--btn-toggle-on-fg',      'var(--text-inverted)'],
     ['--btn-toggle-on-border',  'var(--border-primary)'],
   ]},
-  { group: 'Variant · Switch (binary + segmented)', tokens: [
-    ['--btn-switch-track-bg',        'var(--btn-toggle-bg)'],
-    ['--btn-switch-track-bg-hover',  'var(--btn-toggle-bg-hover)'],
-    ['--btn-switch-track-border',    'var(--btn-toggle-border)'],
-    ['--btn-switch-fg',              'var(--btn-toggle-fg)'],
-    ['--btn-switch-on-bg',           'var(--btn-toggle-on-bg)'],
-    ['--btn-switch-on-border',       'var(--btn-toggle-on-border)'],
-    ['--btn-switch-on-fg',           'var(--btn-toggle-on-fg)'],
-    ['--btn-switch-thumb-bg',        'var(--background-default)'],
-    ['--btn-switch-thumb-fg',        'var(--text-default)'],
-    ['--btn-switch-thumb-shadow',    'var(--shadow-sm)'],
-    ['--btn-switch-active-bg',       'var(--background-primary)'],
-    ['--btn-switch-active-fg',       'var(--text-inverted)'],
-    ['--btn-switch-active-border',   'transparent'],
-    ['--btn-switch-track-pad',       '3px'],
-    ['--btn-switch-aspect',          '1.85'],
-    ['--btn-switch-radius',          'var(--btn-radius-pill)'],
-    ['--btn-switch-thumb-easing',    'cubic-bezier(.4, 0, .2, 1)'],
-    ['--btn-switch-thumb-duration',  '.25s'],
-  ]},
   { group: 'Version · Inverted Surface', tokens: [
     ['--btn-inverted-cta-bg',         'var(--background-default)'],
     ['--btn-inverted-cta-fg',         'var(--text-accent-strong)'],
@@ -1022,95 +828,12 @@ function initToggles() {
 }
 
 /* =========================================================
-   SWITCH INTERACTION — binary + segmented
-   ========================================================= */
-function initSwitches() {
-  /* Binary on/off switches */
-  document.querySelectorAll('.btn-switch:not(.btn-switch--segmented)').forEach(sw => {
-    sw.addEventListener('click', () => {
-      if (sw.hasAttribute('disabled')) return;
-      const checked = sw.getAttribute('aria-checked') === 'true';
-      sw.setAttribute('aria-checked', String(!checked));
-      sw.classList.toggle('is-on', !checked);
-    });
-  });
-  /* Segmented switches (single-select) — single sliding indicator
-     glides between options instead of the active background snapping. */
-  document.querySelectorAll('.btn-switch--segmented').forEach(group => {
-    const opts = Array.from(group.querySelectorAll('.btn-switch__option'));
-    if (opts.length === 0) return;
-
-    /* Inject the sliding pill once per group. */
-    let indicator = group.querySelector(':scope > .btn-switch__indicator');
-    if (!indicator) {
-      indicator = document.createElement('span');
-      indicator.className = 'btn-switch__indicator is-initial';
-      indicator.setAttribute('aria-hidden', 'true');
-      group.prepend(indicator);
-    }
-
-    const activeOpt = () =>
-      opts.find(o => o.classList.contains('is-on')
-                  || o.getAttribute('aria-pressed') === 'true'
-                  || o.getAttribute('aria-selected') === 'true')
-      || opts[0];
-
-    const positionIndicator = (animate) => {
-      const target = activeOpt();
-      if (!target) return;
-      if (!animate) indicator.classList.add('is-initial');
-      /* Use rects so positioning is correct regardless of group border /
-         box-sizing. Indicator (position:absolute; left:0) is anchored to
-         the group's padding edge, which is borderLeft px inside the
-         group's bounding rect — subtract it to align with the option. */
-      const groupRect  = group.getBoundingClientRect();
-      const targetRect = target.getBoundingClientRect();
-      const borderLeft = parseFloat(getComputedStyle(group).borderLeftWidth) || 0;
-      const x = targetRect.left - groupRect.left - borderLeft;
-      indicator.style.width = targetRect.width + 'px';
-      indicator.style.transform = `translateX(${x}px)`;
-      if (!animate) {
-        /* Re-enable transitions on the next frame so the first selection
-           change after load slides smoothly. */
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => indicator.classList.remove('is-initial'));
-        });
-      }
-    };
-
-    /* First paint — measure without animating. */
-    positionIndicator(false);
-
-    /* Recompute on resize / font-load — layout shifts shouldn't desync the pill. */
-    window.addEventListener('resize', () => positionIndicator(false));
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(() => positionIndicator(false));
-    }
-
-    opts.forEach(opt => {
-      opt.addEventListener('click', () => {
-        if (opt.hasAttribute('disabled')) return;
-        if (opt.classList.contains('is-on')) return; /* no-op re-selecting active */
-        opts.forEach(o => {
-          o.classList.remove('is-on');
-          o.setAttribute('aria-pressed', 'false');
-        });
-        opt.classList.add('is-on');
-        opt.setAttribute('aria-pressed', 'true');
-        positionIndicator(true);
-      });
-    });
-  });
-}
-
-/* =========================================================
    BOOT
    ========================================================= */
 document.addEventListener('DOMContentLoaded', () => {
   renderTokenTable();
   initReveal();
   initToggles();
-  initSwitches();
 });
 </script>
 

@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Farm2Vet · Switch — Design System</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<!-- Design system: shared, reusable foundation -->
+<link rel="stylesheet" href="styles/tokens.css" />
+<link rel="stylesheet" href="styles/base.css" />
+<link rel="stylesheet" href="styles/typography.css" />
+<link rel="stylesheet" href="styles/shell.css" />
+<link rel="stylesheet" href="styles/global-nav.css" />
+<link rel="stylesheet" href="styles/switch.css" />
+<!-- Page-specific: only what is unique to III-11-switch.html -->
+<link rel="stylesheet" href="styles/page-III-11.css" />
+<!-- Reused: variant-grid / size-stage / token-table scaffolding from page-III-02.css -->
+<link rel="stylesheet" href="styles/page-III-02.css" />
+<!-- Reused: usage-note pattern lives in page-III-03.css -->
+<link rel="stylesheet" href="styles/page-III-03.css" />
+
+<!-- Shared behaviour: scroll-spy highlights the in-view TOC link -->
+<script src="scripts/scroll-spy.js" defer></script>
+
+<script src="scripts/global-nav.js" defer></script>
+
+</head>
+<body data-page="III-11-switch">
+
+<!-- ========================== GLOBAL NAV ========================== -->
+<header class="global-nav" aria-label="Design system navigation">
+  <div class="global-nav__inner">
+
+    <a href="design-system-v1.html" class="global-nav__brand" aria-label="Farm2Vet design system home">
+      <img src="logo/logo-wordmark-color.svg" alt="Farm2Vet" class="global-nav__logo" />
+      <small>Design System</small>
+    </a>
+
+    <nav class="global-nav__sections" aria-label="Design system sections">
+      <ul class="global-nav__list">
+        <li class="global-nav__item">
+          <a class="global-nav__link" href="I-primitives.html">I. Primitives</a>
+        </li>
+        <li class="global-nav__item">
+          <a class="global-nav__link" href="II-semantics.html">II. Semantics</a>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="components">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-components">
+            III. Components
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-components" class="global-nav__panel" role="region" aria-label="Components">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="III-01-typography.html"><span class="global-nav__index">01</span><span>Typography</span></a></li>
+                <li><a href="III-02-buttons.html"><span class="global-nav__index">02</span><span>Buttons</span></a></li>
+                <li><a href="III-03-form.html"><span class="global-nav__index">03</span><span>Form</span></a></li>
+                <li><a href="III-04-dropdowns.html"><span class="global-nav__index">04</span><span>Dropdowns</span></a></li>
+                <li><a href="III-05-cards.html"><span class="global-nav__index">05</span><span>Cards</span></a></li>
+                <li><a href="III-06-modal.html"><span class="global-nav__index">06</span><span>Modal Dialog</span></a></li>
+                <li><a href="III-07-side-panel.html" class="is-placeholder"><span class="global-nav__index">07</span><span>Side Panel</span></a></li>
+                <li><a href="III-08-toast.html"><span class="global-nav__index">08</span><span>Toast</span></a></li>
+                <li><a href="III-09-alert-badges.html"><span class="global-nav__index">09</span><span>Alert &amp; Badge</span></a></li>
+                <li><a href="III-10-header-navigation.html"><span class="global-nav__index">10</span><span>Header &amp; Nav Bar</span></a></li>
+                <li><a href="III-11-switch.html"><span class="global-nav__index">11</span><span>Switch</span></a></li>
+                <li><a href="III-12-sidebar.html"><span class="global-nav__index">12</span><span>Sidebar</span></a></li>
+                <li><a href="III-14-tabs.html"><span class="global-nav__index">14</span><span>Tabs</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="assets">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-assets">
+            IV. Assets
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-assets" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Assets">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="IV-01-logo.html"   class="is-placeholder"><span class="global-nav__index">01</span><span>Logo</span></a></li>
+                <li><a href="IV-02-icons.html"  class="is-placeholder"><span class="global-nav__index">02</span><span>Icons</span></a></li>
+                <li><a href="IV-03-images.html" class="is-placeholder"><span class="global-nav__index">03</span><span>Images</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="mockups">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-mockups">
+            V. Mockups
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-mockups" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Mockups">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="V-01-wiki.html"    class="is-placeholder"><span class="global-nav__index">01</span><span>Wiki</span></a></li>
+                <li><a href="V-02-chatbot.html" class="is-placeholder"><span class="global-nav__index">02</span><span>Chatbot</span></a></li>
+                <li><a href="V-03-hero.html"    class="is-placeholder"><span class="global-nav__index">03</span><span>Hero</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+      </ul>
+    </nav>
+
+    <a href="#" class="global-nav__chip" aria-label="Design system version">v1.0</a>
+
+  </div>
+</header>
+<main class="shell" id="top">
+
+  <!-- ========================== HERO ========================== -->
+  <section class="hero">
+    <div>
+      <h1 class="text-display reveal">
+        <span class="num">III-11 / Components</span>
+        Switch.
+      </h1>
+    </div>
+    <div>
+      <p class="lede reveal">
+        A binary on/off control. The thumb is the affordance — flipping
+        it <em>is</em> the action; there is no Save step. The segmented variant
+        handles one-of-N choices (language pickers, quick filters) with
+        the same colour rail and the same height scale.
+      </p>
+    </div>
+
+    <dl class="meta-strip reveal">
+      <div><dt>Component</dt><dd>Switch</dd></div>
+      <div><dt>Variants</dt><dd>2</dd></div>
+      <div><dt>States</dt><dd>4</dd></div>
+      <div><dt>Sizes</dt><dd>5</dd></div>
+    </dl>
+  </section>
+
+  <!-- ========================== SWITCH · VARIANTS ========================== -->
+  <section class="chunk" id="switch-variants">
+    <header class="chunk-head reveal">
+      <span class="num-tag">01 / Switch — Variants</span>
+      <h2 class="text-display-sm">Variants.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      Two variants: the binary thumb-on-a-track for one true/false
+      setting, and the segmented pill for picking one option from a
+      short list. Both inherit the same height scale as Button and
+      share the same on-state colour rail.
+    </p>
+
+    <div class="variant-grid reveal">
+
+      <article class="variant-card">
+        <span class="label">Binary · Off</span>
+        <div class="demo">
+          <button class="switch switch--lg" role="switch" aria-checked="false" aria-label="Vitals monitor">
+            <span class="switch__thumb"></span>
+          </button>
+        </div>
+        <div class="meta"><span>.switch</span><strong>off state</strong></div>
+      </article>
+
+      <article class="variant-card">
+        <span class="label">Binary · On</span>
+        <div class="demo">
+          <button class="switch switch--lg is-on" role="switch" aria-checked="true" aria-label="Vitals monitor">
+            <span class="switch__thumb"></span>
+          </button>
+        </div>
+        <div class="meta"><span>.switch.is-on</span><strong>on state</strong></div>
+      </article>
+
+      <article class="variant-card">
+        <span class="label">Segmented · 2-way</span>
+        <div class="demo">
+          <div class="switch switch--segmented switch--lg" role="group" aria-label="Language">
+            <button class="switch__option is-on" type="button" aria-pressed="true">EN</button>
+            <button class="switch__option" type="button" aria-pressed="false">VI</button>
+          </div>
+        </div>
+        <div class="meta"><span>.switch--segmented</span><strong>EN / VI</strong></div>
+      </article>
+
+      <article class="variant-card">
+        <span class="label">Segmented · 3-way</span>
+        <div class="demo">
+          <div class="switch switch--segmented switch--lg" role="group" aria-label="Caseload filter">
+            <button class="switch__option" type="button" aria-pressed="false">All</button>
+            <button class="switch__option is-on" type="button" aria-pressed="true">Active</button>
+            <button class="switch__option" type="button" aria-pressed="false">Past</button>
+          </div>
+        </div>
+        <div class="meta"><span>3 options</span><strong>filter affordance</strong></div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ========================== SWITCH · STATES ========================== -->
+  <section class="chunk" id="switch-states">
+    <header class="chunk-head reveal">
+      <span class="num-tag">02 / Switch — States</span>
+      <h2 class="text-display-sm">States.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      Four states: rest, hover, pressed, disabled. Hover and pressed
+      cells use static <code>data-state</code> proxies — they paint the
+      visual the live pseudo-class would produce, without altering
+      behaviour. Focus is rendered by the standard outline ring on
+      <code>:focus-visible</code>; it's a pseudo state rather than a
+      separate cell here.
+    </p>
+
+    <div class="variant-grid reveal">
+
+      <article class="variant-card">
+        <span class="label">Rest</span>
+        <div class="demo">
+          <button class="switch switch--lg" role="switch" aria-checked="false" aria-label="Demo rest">
+            <span class="switch__thumb"></span>
+          </button>
+        </div>
+        <div class="meta"><span>:default</span><strong>idle</strong></div>
+      </article>
+
+      <article class="variant-card">
+        <span class="label">Hover</span>
+        <div class="demo">
+          <button class="switch switch--lg" role="switch" aria-checked="false" aria-label="Demo hover" data-state="hover">
+            <span class="switch__thumb"></span>
+          </button>
+        </div>
+        <div class="meta"><span>:hover</span><strong>cursor over</strong></div>
+      </article>
+
+      <article class="variant-card">
+        <span class="label">Pressed</span>
+        <div class="demo">
+          <button class="switch switch--lg" role="switch" aria-checked="false" aria-label="Demo pressed" data-state="active">
+            <span class="switch__thumb"></span>
+          </button>
+        </div>
+        <div class="meta"><span>:active</span><strong>mid-click</strong></div>
+      </article>
+
+      <article class="variant-card">
+        <span class="label">Disabled</span>
+        <div class="demo">
+          <button class="switch switch--lg" role="switch" aria-checked="false" aria-label="Locked toggle" disabled>
+            <span class="switch__thumb"></span>
+          </button>
+        </div>
+        <div class="meta"><span>[disabled]</span><strong>blocked</strong></div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ========================== SWITCH · SIZES ========================== -->
+  <section class="chunk" id="switch-sizes">
+    <header class="chunk-head reveal">
+      <span class="num-tag">03 / Switch — Sizes</span>
+      <h2 class="text-display-sm">Sizes.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      Five steps along the same control-rail scale that drives Button.
+      The LG cell renders an on-state instance so the coloured track is
+      visible alongside the off cells.
+    </p>
+
+    <h4 class="subheading reveal">Switch — across all sizes <span class="tag">binary</span></h4>
+    <div class="glass size-stage reveal">
+      <div class="size-cell">
+        <button class="switch switch--sm" role="switch" aria-checked="false" aria-label="Demo SM"><span class="switch__thumb"></span></button>
+        <span class="tag">SM</span>
+      </div>
+      <div class="size-cell">
+        <button class="switch switch--md" role="switch" aria-checked="false" aria-label="Demo MD"><span class="switch__thumb"></span></button>
+        <span class="tag">MD</span>
+      </div>
+      <div class="size-cell">
+        <button class="switch switch--lg is-on" role="switch" aria-checked="true" aria-label="Demo LG"><span class="switch__thumb"></span></button>
+        <span class="tag">LG</span>
+      </div>
+      <div class="size-cell">
+        <button class="switch switch--xl" role="switch" aria-checked="false" aria-label="Demo XL"><span class="switch__thumb"></span></button>
+        <span class="tag">XL</span>
+      </div>
+      <div class="size-cell">
+        <button class="switch switch--2xl" role="switch" aria-checked="false" aria-label="Demo 2XL"><span class="switch__thumb"></span></button>
+        <span class="tag">2XL</span>
+      </div>
+    </div>
+
+    <h4 class="subheading reveal">Language switch — across all sizes <span class="tag">segmented</span></h4>
+    <div class="glass size-stage reveal">
+      <div class="size-cell">
+        <div class="switch switch--segmented switch--sm" role="group" aria-label="Language SM">
+          <button class="switch__option is-on" type="button" aria-pressed="true">EN</button>
+          <button class="switch__option" type="button" aria-pressed="false">VI</button>
+        </div>
+        <span class="tag">SM</span>
+      </div>
+      <div class="size-cell">
+        <div class="switch switch--segmented switch--md" role="group" aria-label="Language MD">
+          <button class="switch__option is-on" type="button" aria-pressed="true">EN</button>
+          <button class="switch__option" type="button" aria-pressed="false">VI</button>
+        </div>
+        <span class="tag">MD</span>
+      </div>
+      <div class="size-cell">
+        <div class="switch switch--segmented switch--lg" role="group" aria-label="Language LG">
+          <button class="switch__option is-on" type="button" aria-pressed="true">EN</button>
+          <button class="switch__option" type="button" aria-pressed="false">VI</button>
+        </div>
+        <span class="tag">LG</span>
+      </div>
+      <div class="size-cell">
+        <div class="switch switch--segmented switch--xl" role="group" aria-label="Language XL">
+          <button class="switch__option is-on" type="button" aria-pressed="true">EN</button>
+          <button class="switch__option" type="button" aria-pressed="false">VI</button>
+        </div>
+        <span class="tag">XL</span>
+      </div>
+      <div class="size-cell">
+        <div class="switch switch--segmented switch--2xl" role="group" aria-label="Language 2XL">
+          <button class="switch__option is-on" type="button" aria-pressed="true">EN</button>
+          <button class="switch__option" type="button" aria-pressed="false">VI</button>
+        </div>
+        <span class="tag">2XL</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================== SWITCH · SEGMENTED ========================== -->
+  <section class="chunk" id="switch-segmented">
+    <header class="chunk-head reveal">
+      <span class="num-tag">04 / Switch — Segmented</span>
+      <h2 class="text-display-sm">Segmented.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      The segmented variant carries the same colour rail as the binary
+      switch but renders the active selection as a sliding pill behind
+      the chosen option. Two- and three-way groups cover the common
+      shapes — language picker, caseload filter, locale chooser.
+    </p>
+
+    <div class="variant-grid reveal">
+
+      <article class="variant-card">
+        <span class="label">2-way · EN / VI</span>
+        <div class="demo">
+          <div class="switch switch--segmented switch--lg" role="group" aria-label="Language">
+            <button class="switch__option is-on" type="button" aria-pressed="true">EN</button>
+            <button class="switch__option" type="button" aria-pressed="false">VI</button>
+          </div>
+        </div>
+        <div class="meta"><span>.switch--segmented</span><strong>EN / VI</strong></div>
+      </article>
+
+      <article class="variant-card">
+        <span class="label">2-way · selected indicator</span>
+        <div class="demo">
+          <div class="switch switch--segmented switch--lg" role="group" aria-label="Status">
+            <button class="switch__option" type="button" aria-pressed="false">Off</button>
+            <button class="switch__option is-on" type="button" aria-pressed="true">On</button>
+          </div>
+        </div>
+        <div class="meta"><span>2 options</span><strong>trailing active</strong></div>
+      </article>
+
+      <article class="variant-card">
+        <span class="label">3-way · Caseload filter</span>
+        <div class="demo">
+          <div class="switch switch--segmented switch--lg" role="group" aria-label="Caseload filter">
+            <button class="switch__option" type="button" aria-pressed="false">All</button>
+            <button class="switch__option is-on" type="button" aria-pressed="true">Active</button>
+            <button class="switch__option" type="button" aria-pressed="false">Past</button>
+          </div>
+        </div>
+        <div class="meta"><span>3 options</span><strong>filter affordance</strong></div>
+      </article>
+
+      <article class="variant-card">
+        <span class="label">3-way · Language</span>
+        <div class="demo">
+          <div class="switch switch--segmented switch--lg" role="group" aria-label="Language">
+            <button class="switch__option is-on" type="button" aria-pressed="true">EN</button>
+            <button class="switch__option" type="button" aria-pressed="false">VI</button>
+            <button class="switch__option" type="button" aria-pressed="false">FR</button>
+          </div>
+        </div>
+        <div class="meta"><span>3 locales</span><strong>i18n</strong></div>
+      </article>
+
+    </div>
+
+    <p class="usage-note usage-note--below reveal">
+      <strong>Use a switch for a binary on/off setting whose change takes effect immediately.</strong>
+      No Save button, no confirmation step — flipping the thumb <em>is</em> the
+      action. A switch is wrong for anything destructive or anything that
+      needs explicit confirmation; reach for a button paired with a dialog
+      there. Pair every switch with a label describing what it controls
+      in the affirmative — "Notifications", not "Disable notifications" — so
+      the on-position reads true. The visible label sits next to the switch;
+      never let the slider stand alone.
+    </p>
+  </section>
+
+  <!-- ========================== SWITCH · TOKENS ========================== -->
+  <section class="chunk" id="switch-tokens">
+    <header class="chunk-head reveal">
+      <span class="num-tag">05 / Switch — Tokens</span>
+      <h2 class="text-display-sm">Tokens.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      Every Switch declaration resolves through this layer. Component
+      tokens only ever reference semantic tokens — never primitives — so
+      any change in intent is inherited automatically.
+    </p>
+
+    <table class="token-table reveal" aria-label="Switch component tokens">
+      <thead>
+        <tr>
+          <th>Component token</th>
+          <th>References</th>
+          <th>Resolves to</th>
+          <th>Preview</th>
+        </tr>
+      </thead>
+      <tbody id="switchTokenTable"></tbody>
+    </table>
+  </section>
+
+  <!-- ========================== FOOTER ========================== -->
+  <footer>
+    <span class="sigil">Farm2Vet — cultivated intelligence, since 2024.</span>
+    <span>End of Section III-11 · Switch</span>
+  </footer>
+
+</main>
+
+<script>
+/* =========================================================
+   COMPONENT TOKEN DATA — Switch
+   ========================================================= */
+const SWITCH_TOKENS = [
+  { group: 'Shape', tokens: [
+    ['--switch-radius',          'var(--btn-radius-pill)'],
+    ['--switch-track-pad',       '3px'],
+    ['--switch-aspect',          '1.85'],
+    ['--switch-thumb-easing',    'cubic-bezier(.4, 0, .2, 1)'],
+    ['--switch-thumb-duration',  '.25s'],
+  ]},
+  { group: 'Sizes', tokens: [
+    ['--switch-sm-height',  'var(--btn-sm-height)'],
+    ['--switch-md-height',  'var(--btn-md-height)'],
+    ['--switch-lg-height',  'var(--btn-lg-height)'],
+    ['--switch-xl-height',  'var(--btn-xl-height)'],
+    ['--switch-2xl-height', 'var(--btn-2xl-height)'],
+  ]},
+  { group: 'Track (off)', tokens: [
+    ['--switch-track-bg',         'var(--background-default-minimal)'],
+    ['--switch-track-bg-hover',   'var(--background-default-hover)'],
+    ['--switch-track-border',     'var(--border-default-strong)'],
+    ['--switch-fg',               'var(--text-default)'],
+  ]},
+  { group: 'Track (on)', tokens: [
+    ['--switch-on-bg',            'var(--background-primary)'],
+    ['--switch-on-border',        'var(--border-primary)'],
+    ['--switch-on-fg',            'var(--text-inverted)'],
+  ]},
+  { group: 'Thumb', tokens: [
+    ['--switch-thumb-bg',         'var(--background-default)'],
+    ['--switch-thumb-fg',         'var(--text-default)'],
+    ['--switch-thumb-shadow',     'var(--shadow-sm)'],
+  ]},
+  { group: 'Segmented · active pill', tokens: [
+    ['--switch-active-bg',        'var(--background-primary)'],
+    ['--switch-active-fg',        'var(--text-inverted)'],
+    ['--switch-active-border',    'transparent'],
+  ]},
+  { group: 'Focus ring', tokens: [
+    ['--switch-focus-outline',          'var(--outline-focus)'],
+    ['--switch-focus-outline-width',    '2px'],
+    ['--switch-focus-outline-offset',   '2px'],
+  ]},
+];
+
+/* =========================================================
+   RENDER — Switch token table
+   ========================================================= */
+function resolveCss(varName) {
+  const styles = getComputedStyle(document.documentElement);
+  return styles.getPropertyValue(varName).trim();
+}
+
+function isColorish(value) {
+  if (!value) return false;
+  const v = value.toLowerCase();
+  return v.startsWith('#') ||
+         v.startsWith('rgb') ||
+         v.startsWith('hsl') ||
+         v.startsWith('color-mix') ||
+         v.startsWith('linear-gradient') ||
+         v.startsWith('radial-gradient') ||
+         v === 'transparent' ||
+         /^[a-z]+$/.test(v);
+}
+
+function renderSwitchTokenTable() {
+  const tbody = document.getElementById('switchTokenTable');
+  let html = '';
+  SWITCH_TOKENS.forEach(group => {
+    html += `<tr class="group-row"><td colspan="4">${group.group}</td></tr>`;
+    group.tokens.forEach(([name, ref]) => {
+      const resolved = resolveCss(name) || '—';
+      const isColor = isColorish(resolved);
+      const chip = isColor
+        ? `<span class="chip" style="background:${resolved}"></span>`
+        : `<span class="chip" style="background: repeating-linear-gradient(45deg, var(--neutral-100) 0 6px, var(--neutral-50) 6px 12px); opacity:.6"></span>`;
+      html += `
+        <tr>
+          <td class="tk-name">${name}</td>
+          <td class="tk-ref">${ref.replace(/</g,'&lt;')}</td>
+          <td class="tk-resolved">${resolved.length > 60 ? resolved.slice(0,57)+'…' : resolved}</td>
+          <td class="tk-swatch">${chip}</td>
+        </tr>`;
+    });
+  });
+  tbody.innerHTML = html;
+}
+
+/* =========================================================
+   REVEAL ON SCROLL
+   ========================================================= */
+function initReveal() {
+  const items = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    items.forEach(el => el.classList.add('in'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        en.target.classList.add('in');
+        io.unobserve(en.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(el => io.observe(el));
+}
+
+/* =========================================================
+   SWITCH INTERACTION — binary + segmented
+   ========================================================= */
+function initSwitches() {
+  /* Binary on/off switches */
+  document.querySelectorAll('.switch:not(.switch--segmented)').forEach(sw => {
+    sw.addEventListener('click', () => {
+      if (sw.hasAttribute('disabled')) return;
+      const checked = sw.getAttribute('aria-checked') === 'true';
+      sw.setAttribute('aria-checked', String(!checked));
+      sw.classList.toggle('is-on', !checked);
+    });
+  });
+  /* Segmented switches (single-select) — single sliding indicator
+     glides between options instead of the active background snapping. */
+  document.querySelectorAll('.switch--segmented').forEach(group => {
+    const opts = Array.from(group.querySelectorAll('.switch__option'));
+    if (opts.length === 0) return;
+
+    /* Inject the sliding pill once per group. */
+    let indicator = group.querySelector(':scope > .switch__indicator');
+    if (!indicator) {
+      indicator = document.createElement('span');
+      indicator.className = 'switch__indicator is-initial';
+      indicator.setAttribute('aria-hidden', 'true');
+      group.prepend(indicator);
+    }
+
+    const activeOpt = () =>
+      opts.find(o => o.classList.contains('is-on')
+                  || o.getAttribute('aria-pressed') === 'true'
+                  || o.getAttribute('aria-selected') === 'true')
+      || opts[0];
+
+    const positionIndicator = (animate) => {
+      const target = activeOpt();
+      if (!target) return;
+      if (!animate) indicator.classList.add('is-initial');
+      const groupRect  = group.getBoundingClientRect();
+      const targetRect = target.getBoundingClientRect();
+      const borderLeft = parseFloat(getComputedStyle(group).borderLeftWidth) || 0;
+      const x = targetRect.left - groupRect.left - borderLeft;
+      indicator.style.width = targetRect.width + 'px';
+      indicator.style.transform = `translateX(${x}px)`;
+      if (!animate) {
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => indicator.classList.remove('is-initial'));
+        });
+      }
+    };
+
+    positionIndicator(false);
+
+    window.addEventListener('resize', () => positionIndicator(false));
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => positionIndicator(false));
+    }
+
+    opts.forEach(opt => {
+      opt.addEventListener('click', () => {
+        if (opt.hasAttribute('disabled')) return;
+        if (opt.classList.contains('is-on')) return;
+        opts.forEach(o => {
+          o.classList.remove('is-on');
+          o.setAttribute('aria-pressed', 'false');
+        });
+        opt.classList.add('is-on');
+        opt.setAttribute('aria-pressed', 'true');
+        positionIndicator(true);
+      });
+    });
+  });
+}
+
+/* =========================================================
+   BOOT
+   ========================================================= */
+document.addEventListener('DOMContentLoaded', () => {
+  renderSwitchTokenTable();
+  initReveal();
+  initSwitches();
+});
+</script>
+
+</body>
+</html>

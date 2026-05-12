@@ -1,0 +1,195 @@
+/* =========================================================
+   FARM2VET DESIGN SYSTEM — SWITCH COMPONENT
+   Binary on/off control with a sliding thumb, plus a
+   segmented variant for picking one-of-N (e.g. language
+   switch, quick filter). Resolves through --switch-*
+   component tokens defined in tokens.css. Reuses the
+   --btn-{sm…2xl}-height / -font-size control-rail scale.
+   Depends on: tokens.css
+   ========================================================= */
+
+/* =========================================================
+   SWITCH — binary on/off with sliding thumb
+   ========================================================= */
+.switch {
+    /* Local size variables — overridden by .switch--{sm|md|lg|xl|2xl} */
+    --_track-h: var(--btn-lg-height);
+    --_pad:     var(--switch-track-pad);
+    --_track-w: calc(var(--_track-h) * var(--switch-aspect));
+    --_thumb:   calc(var(--_track-h) - var(--_pad) * 2 - var(--btn-border-width) * 2);
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    width:  var(--_track-w);
+    height: var(--_track-h);
+    padding: var(--_pad);
+    margin: 0;
+    background:    var(--switch-track-bg);
+    color:         var(--switch-fg);
+    border: var(--btn-border-width) solid var(--switch-track-border);
+    border-radius: var(--switch-radius);
+    cursor: pointer;
+    user-select: none;
+    line-height: 1;
+    font-family: var(--btn-font-family);
+    font-weight: var(--btn-font-weight);
+    font-size:   var(--btn-lg-font-size);
+    transition:  var(--btn-transition);
+}
+.switch:hover { background: var(--switch-track-bg-hover); }
+.switch:focus-visible {
+    outline: var(--btn-focus-outline-width) solid var(--btn-focus-outline);
+    outline-offset: var(--btn-focus-outline-offset);
+}
+
+.switch__thumb {
+    --_thumb-scale: 1;
+    display: block;
+    width:  var(--_thumb);
+    height: var(--_thumb);
+    background:    var(--switch-thumb-bg);
+    border-radius: 50%;
+    box-shadow:    var(--switch-thumb-shadow);
+    transform: translateX(0) scale(var(--_thumb-scale));
+    transition: transform var(--switch-thumb-duration) var(--switch-thumb-easing),
+                background-color .18s ease;
+}
+
+.switch.is-on,
+.switch[aria-checked="true"] {
+    background:   var(--switch-on-bg);
+    color:        var(--switch-on-fg);
+    border-color: var(--switch-on-border);
+}
+.switch.is-on .switch__thumb,
+.switch[aria-checked="true"] .switch__thumb {
+    transform: translateX(calc(var(--_track-w) - var(--_thumb) - var(--_pad) * 2 - var(--btn-border-width) * 2))
+               scale(var(--_thumb-scale));
+}
+
+/* Press feedback — subtle thumb shrink, applies in both off and on states */
+.switch:active:not([disabled]):not(.is-disabled) .switch__thumb {
+    --_thumb-scale: .88;
+}
+
+/* ---- Sizes — same height scale as .btn ---- */
+.switch--sm  { --_track-h: var(--btn-sm-height);  font-size: var(--btn-sm-font-size); }
+.switch--md  { --_track-h: var(--btn-md-height);  font-size: var(--btn-md-font-size); }
+.switch--lg  { --_track-h: var(--btn-lg-height);  font-size: var(--btn-lg-font-size); }
+.switch--xl  { --_track-h: var(--btn-xl-height);  font-size: var(--btn-xl-font-size); }
+.switch--2xl { --_track-h: var(--btn-2xl-height); font-size: var(--btn-2xl-font-size); }
+
+/* ---- Disabled ---- */
+.switch[disabled],
+.switch.is-disabled {
+    background:   var(--btn-disabled-bg)     !important;
+    border-color: var(--btn-disabled-border) !important;
+    color:        var(--btn-disabled-fg)     !important;
+    cursor:       var(--btn-disabled-cursor);
+    opacity:      var(--btn-disabled-opacity);
+}
+.switch[disabled] .switch__thumb,
+.switch.is-disabled .switch__thumb {
+    background: var(--btn-disabled-fg);
+    box-shadow: none;
+}
+
+/* =========================================================
+   SEGMENTED SWITCH — multi-option (e.g., language switch).
+   Compose as: .switch.switch--segmented containing
+   .switch__option children; the active child carries
+   .is-on (or aria-pressed="true"). A single .switch__indicator
+   is injected at runtime as the sliding active pill so the
+   highlight glides between options instead of snapping.
+   ========================================================= */
+.switch.switch--segmented {
+    position: relative;
+    width: auto;
+    align-items: stretch;
+    gap: 0;
+    padding: var(--_pad);
+    cursor: default;
+}
+
+.switch__indicator {
+    position: absolute;
+    top: var(--_pad);
+    left: 0;
+    height: calc(100% - var(--_pad) * 2 - var(--btn-border-width) * 2);
+    width: 0;
+    background:    var(--switch-active-bg);
+    border:        var(--btn-border-width) solid var(--switch-active-border);
+    border-radius: var(--switch-radius);
+    box-shadow:    var(--switch-thumb-shadow);
+    transform: translateX(0);
+    pointer-events: none;
+    will-change: transform, width;
+    transition: transform var(--switch-thumb-duration) var(--switch-thumb-easing),
+                width     var(--switch-thumb-duration) var(--switch-thumb-easing);
+}
+/* First paint: skip the slide-in from x=0 by suppressing the transition
+   until the indicator has been measured into place. JS removes this class
+   on the next frame after positioning. */
+.switch__indicator.is-initial { transition: none; }
+
+.switch__option {
+    appearance: none;
+    -webkit-appearance: none;
+    background: transparent;
+    border: 0;
+    color: var(--switch-fg);
+    font: inherit;
+    font-weight: var(--btn-font-weight);
+    line-height: 1;
+    padding: 0 var(--space-tier-4);
+    border-radius: var(--switch-radius);
+    cursor: pointer;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: var(--_thumb);
+    position: relative;
+    z-index: 1;                                /* sit above the sliding indicator */
+    transition: color .18s ease;
+}
+.switch__option:hover { color: var(--text-default); }
+.switch__option:focus-visible {
+    outline: var(--btn-focus-outline-width) solid var(--btn-focus-outline);
+    outline-offset: 0;
+}
+/* Active state — visual fill is provided by .switch__indicator,
+   the option only adopts the active foreground colour. */
+.switch__option.is-on,
+.switch__option[aria-pressed="true"],
+.switch__option[aria-selected="true"] {
+    color: var(--switch-active-fg);
+}
+.switch__option.is-on:hover,
+.switch__option[aria-pressed="true"]:hover,
+.switch__option[aria-selected="true"]:hover { color: var(--switch-active-fg); }
+
+/* Segmented padding scales gently with size. */
+.switch--segmented.switch--sm  .switch__option { padding: 0 var(--space-tier-6); }
+.switch--segmented.switch--md  .switch__option { padding: 0 var(--space-tier-5); }
+.switch--segmented.switch--xl  .switch__option { padding: 0 var(--spacing-5x); }
+.switch--segmented.switch--2xl .switch__option { padding: 0 var(--space-tier-3); }
+
+.switch__option[disabled] {
+    cursor:  var(--btn-disabled-cursor);
+    color:   var(--btn-disabled-fg);
+    opacity: var(--btn-disabled-opacity);
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+    .switch,
+    .switch__thumb,
+    .switch__indicator,
+    .switch__option   { transition: none; }
+}

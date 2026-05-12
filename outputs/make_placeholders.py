@@ -51,6 +51,7 @@ NAV_BLOCK = '''<!-- ========================== GLOBAL NAV ======================
                 <li><a href="III-08-toast.html"><span class="global-nav__index">08</span><span>Toast</span></a></li>
                 <li><a href="III-09-alert-badges.html"><span class="global-nav__index">09</span><span>Alert &amp; Badge</span></a></li>
                 <li><a href="III-10-header-navigation.html"><span class="global-nav__index">10</span><span>Header &amp; Nav Bar</span></a></li>
+                <li><a href="III-11-switch.html"><span class="global-nav__index">11</span><span>Switch</span></a></li>
                 <li><a href="III-12-sidebar.html"><span class="global-nav__index">12</span><span>Sidebar</span></a></li>
                 <li><a href="III-14-tabs.html"><span class="global-nav__index">14</span><span>Tabs</span></a></li>
               </ul>
