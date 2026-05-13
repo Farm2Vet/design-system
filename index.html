@@ -1,70 +1,24 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Farm2Vet · Images — Design System</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Farm2Vet — Design System</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
 
-<!-- Design system: shared, reusable foundation -->
-<link rel="stylesheet" href="styles/tokens.css" />
-<link rel="stylesheet" href="styles/base.css" />
-<link rel="stylesheet" href="styles/typography.css" />
-<link rel="stylesheet" href="styles/shell.css" />
-<link rel="stylesheet" href="styles/global-nav.css" />
-<!-- Reuse: usage-note pattern + .card-callout -->
-<link rel="stylesheet" href="styles/page-III-03.css" />
-<link rel="stylesheet" href="styles/page-III-05.css" />
-
-<script src="scripts/global-nav.js" defer></script>
-
-<style>
-  .placeholder-card {
-    margin-top: var(--spacing-12x);
-    padding: var(--spacing-8x);
-    background: var(--background-default-subtle);
-    border: var(--border-width-base) solid var(--border-default);
-    border-radius: var(--radius-lg);
-  }
-  .placeholder-card h3 {
-    font-family: var(--font-mono);
-    font-size: var(--text-eyebrow);
-    letter-spacing: var(--letter-spacing-eyebrow);
-    text-transform: uppercase;
-    color: var(--text-default-minimal);
-    margin: 0 0 var(--spacing-4x);
-  }
-  .placeholder-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  .placeholder-list li {
-    display: grid;
-    grid-template-columns: 16ch 1fr;
-    column-gap: var(--spacing-6x);
-    padding: var(--spacing-3x) 0;
-    border-top: var(--border-width-base) solid var(--border-default);
-    font-size: var(--text-body);
-    color: var(--text-default);
-  }
-  .placeholder-list li:first-child { border-top: none; }
-  .placeholder-list li strong {
-    font-family: var(--font-mono);
-    font-size: var(--text-eyebrow);
-    letter-spacing: var(--letter-spacing-eyebrow);
-    text-transform: uppercase;
-    color: var(--text-primary-strong);
-    font-weight: var(--font-weight-medium);
-    padding-top: var(--spacing-half);
-  }
-</style>
-
+    <link rel="stylesheet" href="styles/tokens.css"/>
+    <link rel="stylesheet" href="styles/base.css"/>
+    <link rel="stylesheet" href="styles/typography.css"/>
+    <link rel="stylesheet" href="styles/shell.css" />
+    <link rel="stylesheet" href="styles/global-nav.css" />
+    <link rel="stylesheet" href="styles/card.css" />
+    <link rel="stylesheet" href="styles/page-home.css" />
+    <script src="scripts/global-nav.js" defer></script>
 </head>
-<body data-page="IV-03-images">
+<body data-page="index">
 
 <!-- ========================== GLOBAL NAV ========================== -->
 <header class="global-nav" aria-label="Design system navigation">
@@ -161,42 +115,113 @@
 </header>
 <main class="shell" id="top">
 
-  <section class="hero">
-    <div>
-      <h1 class="text-display">
-        <span class="num">IV-03 / Assets</span>
-        Images.
-      </h1>
-    </div>
-    <div>
-      <p class="lede">Reserved page. The image library — aspect ratios, crop rules, colour treatment, and the per-context manifest — will be published here once authored.</p>
-    </div>
-
-    <dl class="meta-strip">
-      <div><dt>Status</dt><dd>Placeholder</dd></div>
-      <div><dt>Authored</dt><dd>—</dd></div>
-      <div><dt>Tokens</dt><dd>—</dd></div>
-      <div><dt>Variants</dt><dd>—</dd></div>
-    </dl>
+  <!-- ========================== HERO ========================== -->
+  <section class="home-hero reveal">
+    <span class="home-hero__eyebrow">Farm2Vet · v1.0</span>
+    <h1 class="text-display home-hero__title">Design system.</h1>
+    <p class="lede home-hero__lede">
+      A documented system of primitives, semantics, components, assets,
+      and mockups — the shared foundation the Farm2Vet team builds
+      product from.
+    </p>
   </section>
 
-  <div class="placeholder-card">
-    <h3>Reserved scope · expected sub-areas</h3>
-    <ul class="placeholder-list">
-      <li><strong>Aspect ratios</strong><span>1:1 · 4:3 · 16:9 · 21:9.</span></li>
-      <li><strong>Treatments</strong><span>Full colour, duotone, desaturated.</span></li>
-      <li><strong>Crops</strong><span>Subject-safe area rules.</span></li>
-      <li><strong>Manifest</strong><span>Hero, card, illustration libraries.</span></li>
-    </ul>
-  </div>
+  <!-- ========================== SECTIONS GRID ========================== -->
+  <section class="home-sections" aria-label="Design system sections">
 
-  <footer>
+    <a href="I-primitives.html" class="card card--glass is-interactive home-tile reveal">
+      <span class="card__eyebrow home-tile__numeral">I</span>
+      <header class="card__header">
+        <h2 class="card__title">Primitives.</h2>
+        <p class="card__subtitle">Foundations</p>
+      </header>
+      <p class="card__body">
+        Raw values — colour ramps, spacing, radius, shadow, type scale.
+        The bottom rail of the token architecture.
+      </p>
+      <span class="home-tile__cta">Browse foundations →</span>
+    </a>
+
+    <a href="II-semantics.html" class="card card--glass is-interactive home-tile reveal">
+      <span class="card__eyebrow home-tile__numeral">II</span>
+      <header class="card__header">
+        <h2 class="card__title">Semantics.</h2>
+        <p class="card__subtitle">Foundations</p>
+      </header>
+      <p class="card__body">
+        Meaning-based aliases over primitives — action, surface,
+        border, text. The contract every component consumes.
+      </p>
+      <span class="home-tile__cta">Browse semantics →</span>
+    </a>
+
+    <a href="III-01-typography.html" class="card card--glass is-interactive home-tile reveal">
+      <span class="card__eyebrow home-tile__numeral">III</span>
+      <header class="card__header">
+        <h2 class="card__title">Components.</h2>
+        <p class="card__subtitle">Fourteen documented blocks</p>
+      </header>
+      <p class="card__body">
+        Typography, buttons, forms, cards, modals, toasts, alerts,
+        tabs — the surfaces the product is built from.
+      </p>
+      <span class="home-tile__cta">Browse components →</span>
+    </a>
+
+    <a href="IV-01-logo.html" class="card card--glass is-interactive home-tile reveal">
+      <span class="card__eyebrow home-tile__numeral">IV</span>
+      <header class="card__header">
+        <h2 class="card__title">Assets.</h2>
+        <p class="card__subtitle">Brand atoms</p>
+      </header>
+      <p class="card__body">
+        Logo, iconography, imagery — the brand-side resources that
+        live alongside the system.
+      </p>
+      <span class="home-tile__cta">Browse assets →</span>
+    </a>
+
+    <a href="V-01-wiki.html" class="card card--glass is-interactive home-tile reveal">
+      <span class="card__eyebrow home-tile__numeral">V</span>
+      <header class="card__header">
+        <h2 class="card__title">Mockups.</h2>
+        <p class="card__subtitle">The system in product</p>
+      </header>
+      <p class="card__body">
+        Real product surfaces — wiki, chatbot, hero — assembled
+        entirely from canonical components.
+      </p>
+      <span class="home-tile__cta">Browse mockups →</span>
+    </a>
+
+  </section>
+
+  <!-- ========================== FOOTER SIGIL ========================== -->
+  <footer class="home-sigil reveal">
     <span class="sigil">Farm2Vet — cultivated intelligence, since 2024.</span>
-    <a href="index.html">← Design system home</a>
-    <span>Section 03 / Assets</span>
   </footer>
 
 </main>
+
+<script>
+  /* Reveal-on-scroll. Same pattern as I-primitives.html. */
+  (function () {
+    const items = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) {
+      items.forEach(el => el.classList.add('in'));
+      return;
+    }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(en => {
+        if (en.isIntersecting) {
+          en.target.classList.add('in');
+          io.unobserve(en.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    items.forEach(el => io.observe(el));
+  })();
+</script>
 
 </body>
 </html>

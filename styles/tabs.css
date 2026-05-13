@@ -163,6 +163,20 @@
 }
 
 /* =========================================================
+   Tab — icon-only modifier
+   Square-cap padding so a trailing icon tab (e.g. the "+" to
+   create a new saved view) sits at the same height as the
+   text tabs without stretching horizontally. Pair with a
+   single .tabs__icon child and an aria-label on the button.
+   ========================================================= */
+.tabs__tab--icon-only {
+    padding-inline: var(--_pad-y);
+    aspect-ratio: 1 / 1;
+    gap: 0;
+}
+.tabs__tab--icon-only .tabs__label { display: none; }
+
+/* =========================================================
    INDICATOR — the moving primary marker.
    Used by .tabs--line, .tabs--vertical, and .tabs--segmented.
    Position is driven by JS that reads the offset of the

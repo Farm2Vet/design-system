@@ -1,25 +1,26 @@
 /* =========================================================
    PAGE — DISEASE WIKI (V-01)
    The Disease Management admin landing. This page IS the
-   product page — no design-system documentation chrome.
+   product page — no design-system documentation chrome and
+   no top app bar; the sidebar's brand and profile footer
+   are the single source of truth for identity.
 
    Every interactive surface on the page is a real component
    instance. This file contributes only:
      · A flat document body (no ambient gradient — this is
        a product surface, not a docs page).
      · The app-shell layout grid (sidebar | main).
-     · Slot positioning for the topbar, sidebar, breadcrumb
-       row, toolbar, catalogue, pager, and floating modal.
+     · Slot positioning for the page header (breadcrumb,
+       title, lede, primary action), the toolbar (saved-view
+       tabs + 2 icon-only buttons), the catalogue table, the
+       pager, and the floating modal.
      · Square-cap width overrides on .btn instances used in
-       the pager + filter + back-arrow slots.
-     · An inline-flex layout helper on .card__list-trail so
-       the row trail can host multiple children on one line.
+       the pager and toolbar slots.
      · The cover-tile + form grid inside the modal.
 
    Depends on: tokens.css, base.css, typography.css,
-               global-nav.css, form.css, dropdown.css,
-               button.css, badge.css, card.css, sidebar.css,
-               modal.css
+               form.css, dropdown.css, button.css, badge.css,
+               sidebar.css, tabs.css, table.css, modal.css
    ========================================================= */
 
 /* =========================================================
@@ -32,37 +33,19 @@ body { background: var(--background-default-subtle); }
 body::before { content: none; }
 
 /* =========================================================
-   APP SHELL — sidebar | main grid, anchored under the
-   sticky .global-nav topbar.
+   APP SHELL — sidebar | main grid. No top app bar lives
+   above the shell, so the grid takes the full viewport.
    ========================================================= */
 .app-shell {
     display: grid;
     grid-template-columns: 280px minmax(0, 1fr);
-    min-height: calc(100vh - 72px);
+    min-height: 100vh;
     background: var(--background-default);
 }
 @media (max-width: 880px) {
     .app-shell { grid-template-columns: 1fr; }
     .app-shell__side { display: none; }
 }
-
-/* User-menu trigger — gap tweak so avatar + name + role
-   badge + chevron breathe properly. Colour, hover, focus,
-   variant — all inherited from .btn--ghost. */
-.app-user-menu.btn { gap: var(--space-tier-5); }
-.app-user-menu__avatar {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: var(--background-default-minimal);
-    color: var(--icon-default);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    flex-shrink: 0;
-}
-.app-user-menu__avatar svg { width: 70%; height: 70%; }
 
 /* =========================================================
    SIDEBAR SLOT
@@ -83,114 +66,108 @@ body::before { content: none; }
    MAIN SLOT
    ========================================================= */
 .app-shell__main {
-    position: relative; /* anchor for the floating modal */
     display: flex;
     flex-direction: column;
     min-width: 0;
     background: var(--background-default);
 }
 
-/* Breadcrumb + CTA */
-.app-shell__breadcrumb-row {
+/* =========================================================
+   PAGE HEADER — breadcrumb · title · lede · primary action
+   Page-scoped scaffolding. Positioning only.
+   ========================================================= */
+.app-shell__page-header {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-gap-default);
-    padding: var(--space-container-y) var(--space-container-x-lg);
-    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
+    flex-direction: column;
+    gap: var(--space-tier-5);
+    padding: var(--space-tier-3) var(--space-page-x) 0;
 }
+
 .app-shell__breadcrumb {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-gap-snug);
-    font-family: var(--font-sans);
-    font-size: var(--text-h6);
-    color: var(--text-default);
-    line-height: var(--line-height-h4);
+    gap: var(--space-tier-7);
+    font-size: var(--text-eyebrow);
+    color: var(--text-default-minimal);
 }
-.app-shell__back-btn.btn {
-    width: 32px;
-    min-width: 32px;
-    padding-left: 0;
-    padding-right: 0;
-}
-.app-shell__back-btn .icon { width: 14px; height: 14px; }
-
 .app-shell__breadcrumb-link {
-    color: var(--text-default);
-    font-weight: var(--font-weight-semibold);
+    color: inherit;
     text-decoration: none;
 }
-.app-shell__breadcrumb-sep,
+.app-shell__breadcrumb-link:hover { color: var(--text-default-subtle); }
+.app-shell__breadcrumb-sep { color: var(--text-default-disabled); }
 .app-shell__breadcrumb-tail {
-    color: var(--text-default-minimal);
-    font-weight: var(--font-weight-regular);
+    color: var(--text-default-subtle);
+    font-weight: 600;
 }
 
-/* Toolbar */
+.app-shell__page-header-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-tier-3);
+}
+.app-shell__page-header-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tier-7);
+}
+.app-shell__page-title {
+    margin: 0;
+    font-size: var(--text-h3);
+    line-height: 1.2;
+    color: var(--text-default);
+    font-weight: 600;
+}
+.app-shell__page-lede {
+    margin: 0;
+    font-size: var(--text-body-sm);
+    color: var(--text-default-subtle);
+}
+
+/* =========================================================
+   TOOLBAR — saved-view tabs (left) + 2 icon-only btn--sm (right)
+   Positioning only. Tabs handle their own visuals.
+   ========================================================= */
 .app-shell__toolbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--space-gap-default);
-    flex-wrap: wrap;
-    padding: var(--space-container-y) var(--space-container-x-lg);
+    gap: var(--space-tier-4);
+    padding: var(--space-tier-4) var(--space-page-x) var(--space-tier-5);
+    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
 }
-.app-shell__toolbar-left,
-.app-shell__toolbar-right {
+.app-shell__toolbar-views { flex: 1 1 auto; min-width: 0; }
+.app-shell__toolbar-actions {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-gap-snug);
+    gap: var(--space-tier-7);
+    flex: 0 0 auto;
 }
-.app-shell__toolbar-left { flex: 1 1 320px; min-width: 0; }
-
-.app-shell__search {
-    position: relative;
-    flex: 1 1 240px;
-    max-width: 380px;
-    min-width: 0;
+/* Square-cap icon-only buttons — same trick used by .app-pager__btn. */
+.app-shell__toolbar-search,
+.app-shell__toolbar-sort > .dropdown__trigger {
+    width: 2rem;
+    min-width: 2rem;
+    height: 2rem;
+    padding: 0;
+    flex-shrink: 0;
+    justify-content: center;
 }
-.app-shell__search .input {
-    padding-left: calc(var(--form-lg-padding-x) + 22px);
-}
-.app-shell__search-icon {
-    position: absolute;
-    left: var(--form-lg-padding-x);
-    top: 50%;
-    transform: translateY(-50%);
+.app-shell__toolbar-sort { width: auto; min-width: auto; flex-shrink: 0; }
+.app-shell__toolbar-search .icon,
+.app-shell__toolbar-sort > .dropdown__trigger .icon {
     width: 16px;
     height: 16px;
-    color: var(--icon-default-subtle);
-    pointer-events: none;
 }
-.app-shell__filter-btn.btn {
-    width: 44px;
-    min-width: 44px;
-    padding-left: 0;
-    padding-right: 0;
-    flex-shrink: 0;
-}
-.app-shell__filter-btn .icon { width: 18px; height: 18px; }
-
-.app-shell__sort.dropdown { width: auto; min-width: 220px; }
 
 /* =========================================================
-   DISEASE CATALOGUE — canonical .card .card--list, with
-   .disease-trail as an inline-flex layout helper on the
-   trail slot only. No colour or font edits.
+   CATALOGUE SLOT — the .table inside the catalogue slot.
+   Width + margin only — the component owns its own visuals.
    ========================================================= */
 .app-shell__catalogue {
-    margin: 0 var(--space-container-x-lg) var(--space-container-y);
-}
-.app-shell__catalogue.card { box-shadow: none; }
-
-.disease-trail.card__list-trail {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-gap-snug);
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    text-align: right;
+    margin: var(--space-tier-4) var(--space-page-x) var(--space-tier-3);
+    width: calc(100% - 2 * var(--space-page-x));
 }
 
 /* =========================================================
@@ -231,38 +208,23 @@ body::before { content: none; }
     user-select: none;
 }
 
-.app-pager__jump {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-gap-micro);
-    margin-left: var(--space-tier-4);
-    padding-left: var(--space-tier-4);
-    border-left: var(--border-width-base) solid var(--border-default-subtle);
-    font-family: var(--font-mono);
-    font-size: var(--text-eyebrow);
-    letter-spacing: var(--letter-spacing-eyebrow);
-    text-transform: uppercase;
-    color: var(--text-default-minimal);
+/* =========================================================
+   DATA REGION — positioning context for the floating modal.
+   The modal anchors to the top of the table region, not to
+   the top of main, so it never overlaps the toolbar.
+   ========================================================= */
+.app-shell__data-region {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-width: 0;
 }
-.app-pager__jump-input.input {
-    width: 5ch;
-    min-width: 5ch;
-    text-align: center;
-    font-family: var(--font-mono);
-    font-variant-numeric: tabular-nums;
-    padding-left: var(--space-tier-6);
-    padding-right: var(--space-tier-6);
-}
-.app-pager__jump-input.input::-webkit-outer-spin-button,
-.app-pager__jump-input.input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-.app-pager__jump-input.input { -moz-appearance: textfield; }
 
 /* =========================================================
-   FLOATING MODAL — pinned to top-right of the main area.
-   Canonical .modal markup; only positioning changes.
+   FLOATING MODAL — pinned to top-right of the data region
+   (table + pager). Canonical .modal markup; only positioning
+   changes.
    ========================================================= */
 .app-shell__modal-layer {
     position: absolute;

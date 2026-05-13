@@ -13,7 +13,6 @@
 <link rel="stylesheet" href="styles/tokens.css" />
 <link rel="stylesheet" href="styles/base.css" />
 <link rel="stylesheet" href="styles/typography.css" />
-<link rel="stylesheet" href="styles/global-nav.css" />
 
 <!-- Components -->
 <link rel="stylesheet" href="styles/button.css" />
@@ -22,131 +21,211 @@
 <link rel="stylesheet" href="styles/badge.css" />
 <link rel="stylesheet" href="styles/card.css" />
 <link rel="stylesheet" href="styles/sidebar.css" />
+<link rel="stylesheet" href="styles/tabs.css" />
+<link rel="stylesheet" href="styles/table.css" />
 <link rel="stylesheet" href="styles/modal.css" />
 
 <!-- Page-specific layout -->
 <link rel="stylesheet" href="styles/page-V-01.css" />
 
 <script src="scripts/dropdown.js" defer></script>
+<script src="scripts/sidebar.js" defer></script>
 </head>
 <body>
-
-<!-- ============== TOP APP BAR (canonical .global-nav) ============== -->
-<header class="global-nav" aria-label="Farm2Vet admin top bar">
-  <div class="global-nav__inner">
-
-    <a href="#" class="global-nav__brand" aria-label="Farm2Vet admin home">
-      <img src="logo/logo-wordmark-color.svg" alt="Farm2Vet" class="global-nav__logo" />
-      <small>Admin</small>
-    </a>
-
-    <button type="button"
-            class="btn btn--ghost btn--sm app-user-menu"
-            aria-haspopup="menu" aria-expanded="false">
-      <span class="btn__leading" aria-hidden="true">
-        <span class="app-user-menu__avatar">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
-        </span>
-      </span>
-      <span class="btn__label">Dr. Linh Tran</span>
-      <span class="badge badge--sm is-primary">Admin</span>
-      <span class="btn__trailing" aria-hidden="true">
-        <svg class="icon" viewBox="0 0 12 12"><path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </span>
-    </button>
-
-  </div>
-</header>
 
 <!-- ============== APP SHELL ============== -->
 <div class="app-shell">
 
-  <!-- ───── Sidebar (canonical .sidebar, full anatomy) ───── -->
+  <!-- ───── Sidebar (canonical .sidebar, full anatomy from III-12) ───── -->
   <aside class="app-shell__side">
     <aside class="sidebar" aria-label="Admin primary navigation">
-
       <header class="sidebar__header">
-        <a href="#" class="sidebar__brand" aria-label="Farm2Vet home">
+        <a href="#" class="sidebar__brand">
           <img class="sidebar__brand-mark" src="logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
           <span class="sidebar__brand-text">Farm2Vet</span>
         </a>
         <button type="button" class="sidebar__collapse" aria-label="Collapse sidebar" aria-pressed="false">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18 9 12l6-6"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6"/></svg>
         </button>
       </header>
-
       <nav class="sidebar__nav" aria-label="Admin destinations">
         <ul class="sidebar__list">
-
-          <li class="sidebar__group">
-            <span class="sidebar__group-label">Main</span>
-            <ul class="sidebar__list">
-              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span><span class="sidebar__label">Dashboard</span></a></li>
-              <li class="sidebar__item"><a class="sidebar__link is-current" href="V-01-wiki.html" aria-current="page"><span class="sidebar__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v14"/><path d="M4 19a2 2 0 0 0 2 2h13"/><path d="M8 7h7M8 11h7M8 15h5"/></svg></span><span class="sidebar__label">Disease wiki</span></a></li>
-              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h3l2-7 4 14 2-7h7"/></svg></span><span class="sidebar__label">Symptoms</span></a></li>
-              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 8 4 4-7 7a2.828 2.828 0 1 1-4-4z"/><path d="M14 8a4 4 0 1 1 6 6"/></svg></span><span class="sidebar__label">Treatments</span></a></li>
-              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/><path d="M11 8v6M8 11h6"/></svg></span><span class="sidebar__label">Diagnoses</span></a></li>
-              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6h6V2"/><rect x="4" y="8" width="16" height="13" rx="2"/></svg></span><span class="sidebar__label">Cases</span></a></li>
-              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V10l9-6 9 6v11"/><path d="M9 21v-7h6v7"/></svg></span><span class="sidebar__label">Farms</span></a></li>
-              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><rect x="6" y="11" width="3" height="8"/><rect x="11" y="6" width="3" height="13"/><rect x="16" y="9" width="3" height="10"/></svg></span><span class="sidebar__label">Reports</span></a></li>
+          <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span><span class="sidebar__label">Overview Dashboard</span></a></li>
+          <li class="sidebar__item is-open">
+            <button type="button" class="sidebar__link" aria-expanded="true">
+              <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/></svg></span>
+              <span class="sidebar__label">Data Management</span>
+              <span class="sidebar__trailing"><svg class="sidebar__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></span>
+            </button>
+            <ul class="sidebar__sublist">
+              <li class="sidebar__item"><a class="sidebar__link is-current" href="V-01-wiki.html" aria-current="page"><span class="sidebar__label">Disease</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Question</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Conversation</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Image</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Resource</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">PDF Input</span></a></li>
             </ul>
           </li>
-
-          <li class="sidebar__group">
-            <span class="sidebar__group-label">Administration</span>
-            <ul class="sidebar__list">
-              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><span class="sidebar__label">Your profile</span></a></li>
-              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h12a3 3 0 0 1 3 3v13H7a3 3 0 0 1-3-3z"/><path d="M19 17H7a3 3 0 0 0-3 3"/></svg></span><span class="sidebar__label">User manual</span></a></li>
-              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6M9 5l3 3 3-3"/><rect x="3" y="8" width="18" height="13" rx="2"/></svg></span><span class="sidebar__label">Release notes</span></a></li>
-              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span class="sidebar__label">Audit log</span></a></li>
-            </ul>
-          </li>
-
+          <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg></span><span class="sidebar__label">Automated Testing</span></a></li>
+          <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></span><span class="sidebar__label">Sync database</span></a></li>
         </ul>
       </nav>
+      <div class="sidebar__footer">
+        <div class="sidebar__profile-wrap">
+          <div class="sidebar__profile">
+            <span class="sidebar__avatar" aria-hidden="true">M</span>
+            <span class="sidebar__profile-text">
+              <span class="sidebar__profile-name">Minh</span>
+              <span class="sidebar__profile-role">Admin</span>
+            </span>
+            <button type="button"
+                    class="sidebar__overflow"
+                    aria-label="Account menu"
+                    aria-haspopup="menu"
+                    aria-expanded="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="5" r="1"/>
+                <circle cx="12" cy="12" r="1"/>
+                <circle cx="12" cy="19" r="1"/>
+              </svg>
+            </button>
+          </div>
 
+          <div class="sidebar__menu" role="menu" aria-label="Account">
+            <span class="sidebar__menu-header">farm2vets.tech@gmail.com</span>
+            <ul class="sidebar__menu-list">
+              <li role="none">
+                <a class="sidebar__menu-item" role="menuitem" href="#">
+                  <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                  </svg>
+                  <span>Settings</span>
+                </a>
+              </li>
+              <li role="none">
+                <a class="sidebar__menu-item" role="menuitem" href="#">
+                  <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="2" y1="12" x2="22" y2="12"/>
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                  </svg>
+                  <span>Language</span>
+                </a>
+              </li>
+              <li role="none">
+                <a class="sidebar__menu-item" role="menuitem" href="#">
+                  <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                    <line x1="12" y1="17" x2="12.01" y2="17"/>
+                  </svg>
+                  <span>Get Help</span>
+                </a>
+              </li>
+              <li role="none" class="sidebar__menu-item--divider" aria-hidden="true"></li>
+              <li role="none">
+                <a class="sidebar__menu-item" role="menuitem" href="#">
+                  <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                    <polyline points="16 17 21 12 16 7"/>
+                    <line x1="21" y1="12" x2="9" y2="12"/>
+                  </svg>
+                  <span>Logout</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </aside>
   </aside>
 
   <!-- ───── Main ───── -->
   <main class="app-shell__main">
 
-    <!-- Breadcrumb + CTA -->
-    <div class="app-shell__breadcrumb-row">
-      <div class="app-shell__breadcrumb">
-        <a href="#" class="btn btn--ghost btn--sm app-shell__back-btn" aria-label="Back">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 6-6 6 6 6"/></svg>
-        </a>
-        <a href="#" class="app-shell__breadcrumb-link">Disease wiki</a>
-        <span class="app-shell__breadcrumb-sep">/</span>
-        <span class="app-shell__breadcrumb-tail">Catalogue</span>
-      </div>
-      <button type="button" class="btn btn--cta btn--md">
-        <span class="btn__leading" aria-hidden="true">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-        </span>
-        <span class="btn__label">New disease</span>
-      </button>
-    </div>
+    <!-- ───── Page header (breadcrumb · title · lede · primary action) ───── -->
+    <header class="app-shell__page-header">
+      <nav class="app-shell__breadcrumb" aria-label="Breadcrumb">
+        <a class="app-shell__breadcrumb-link" href="#">Data Management</a>
+        <span class="app-shell__breadcrumb-sep" aria-hidden="true">›</span>
+        <a class="app-shell__breadcrumb-link" href="#">Disease wiki</a>
+        <span class="app-shell__breadcrumb-sep" aria-hidden="true">›</span>
+        <span class="app-shell__breadcrumb-tail" aria-current="page">Catalogue</span>
+      </nav>
 
-    <!-- Toolbar -->
-    <div class="app-shell__toolbar" role="toolbar" aria-label="Search, filter, and sort">
-      <div class="app-shell__toolbar-left">
-        <label class="app-shell__search">
-          <span class="app-shell__search-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <div class="app-shell__page-header-row">
+        <div class="app-shell__page-header-text">
+          <h1 class="app-shell__page-title">Disease catalogue</h1>
+          <p class="app-shell__page-lede">
+            Codenames, full names, and lifecycle state for every disease entry.
+          </p>
+        </div>
+        <button type="button" class="btn btn--cta btn--md">
+          <span class="btn__leading" aria-hidden="true">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
           </span>
-          <input type="search" class="input" placeholder="Search by codename…" aria-label="Search diseases by codename" />
-        </label>
-        <button type="button" class="btn btn--ghost btn--md app-shell__filter-btn" aria-label="Open filters">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16l-6 8v6l-4-2v-4z"/></svg>
+          <span class="btn__label">New disease</span>
         </button>
       </div>
-      <div class="app-shell__toolbar-right">
-        <div class="dropdown app-shell__sort" data-dropdown>
-          <button type="button" class="dropdown__trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Sort by">
-            <span class="dropdown__value">Sort · Codename A → Z</span>
-            <svg class="dropdown__chevron" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </header>
+
+    <!-- ───── Toolbar — saved-view tabs + 2 icon buttons (Polaris IndexFilters pattern) ───── -->
+    <div class="app-shell__toolbar" role="toolbar" aria-label="Saved views, search, and sort">
+      <div class="tabs tabs--line tabs--sm app-shell__toolbar-views" data-tabs>
+        <div class="tabs__list" role="tablist" aria-label="Saved views">
+          <button type="button" class="tabs__tab is-selected" role="tab" aria-selected="true">
+            <span class="tabs__label">All</span>
+            <span class="tabs__badge">28</span>
+          </button>
+          <button type="button" class="tabs__tab" role="tab" aria-selected="false">
+            <span class="tabs__label">Active</span>
+            <span class="tabs__badge">21</span>
+          </button>
+          <button type="button" class="tabs__tab" role="tab" aria-selected="false">
+            <span class="tabs__label">Incomplete</span>
+            <span class="tabs__badge">5</span>
+          </button>
+          <button type="button" class="tabs__tab" role="tab" aria-selected="false">
+            <span class="tabs__label">Inactive</span>
+            <span class="tabs__badge">2</span>
+          </button>
+          <button type="button" class="tabs__tab" role="tab" aria-selected="false">
+            <span class="tabs__label">Swine only</span>
+            <span class="tabs__badge">23</span>
+          </button>
+          <button type="button" class="tabs__tab" role="tab" aria-selected="false" aria-haspopup="menu">
+            <span class="tabs__label">More views</span>
+            <span class="tabs__icon" aria-hidden="true">
+              <svg viewBox="0 0 12 12"><path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </button>
+          <button type="button" class="tabs__tab tabs__tab--icon-only" aria-label="Create new view">
+            <span class="tabs__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <div class="app-shell__toolbar-actions">
+        <button type="button" class="btn btn--ghost btn--sm app-shell__toolbar-search" aria-label="Search and filter">
+          <span class="btn__leading" aria-hidden="true">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="9" cy="10" r="4"/>
+              <path d="M12 13 l3 3"/>
+              <path d="M15 8 h6 M17 12 h4 M19 16 h2"/>
+            </svg>
+          </span>
+        </button>
+        <div class="dropdown app-shell__toolbar-sort" data-dropdown>
+          <button type="button" class="btn btn--ghost btn--sm dropdown__trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Sort">
+            <span class="btn__leading" aria-hidden="true">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8 4 v14 m-3 -3 l3 3 3 -3"/>
+                <path d="M16 20 V6 m-3 3 l3 -3 3 3"/>
+              </svg>
+            </span>
           </button>
           <div class="dropdown__menu" role="listbox" aria-label="Sort by">
             <button type="button" class="dropdown__option is-selected" role="option" data-value="codename-asc">Codename · A → Z<svg class="dropdown__check" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6 L5 9 L10 3" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -158,162 +237,128 @@
       </div>
     </div>
 
-    <!-- Disease catalogue (canonical .card .card--list) -->
-    <article class="card card--list app-shell__catalogue" aria-label="Disease catalogue">
-      <ul class="card__list" role="list">
+    <div class="app-shell__data-region">
 
-        <li class="card__list-item">
-          <span class="card__list-avatar" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 4v3M12 17v3M4 12h3M17 12h3M6 6l2 2M16 16l2 2M6 18l2-2M16 8l2-2"/></svg>
-          </span>
-          <div class="card__list-text">
-            <p class="card__list-title">ASF</p>
-            <p class="card__list-meta">African Swine Fever &middot; Swine &middot; DIS-001 &middot; base</p>
-          </div>
-          <div class="card__list-trail disease-trail">
+    <!-- ───── Disease catalogue — canonical .table ───── -->
+    <table class="table table--boxed app-shell__catalogue" aria-label="Disease catalogue">
+      <thead class="table__head">
+        <tr class="table__head-row">
+          <th class="table__head-cell" scope="col">
+            <button type="button" class="table__sort is-asc">
+              Codename
+              <svg class="table__sort-icon" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 8 L6 4 L9 8 z" fill="currentColor"/></svg>
+            </button>
+          </th>
+          <th class="table__head-cell" scope="col">Full name</th>
+          <th class="table__head-cell" scope="col">Species</th>
+          <th class="table__head-cell" scope="col">ID</th>
+          <th class="table__head-cell" scope="col">Updated</th>
+          <th class="table__head-cell" scope="col" style="text-align:right">State</th>
+        </tr>
+      </thead>
+      <tbody class="table__body">
+        <tr class="table__row">
+          <td class="table__cell table__cell--mono">ASF</td>
+          <td class="table__cell">African Swine Fever</td>
+          <td class="table__cell">Swine</td>
+          <td class="table__cell table__cell--mono table__cell--meta">DIS-001</td>
+          <td class="table__cell table__cell--meta">Apr 18, 2026</td>
+          <td class="table__cell table__cell--state">
             <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span>
-            <span class="updated">Apr 18, 2026</span>
-            <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Active</span></span>
-          </div>
-        </li>
-
-        <li class="card__list-item">
-          <span class="card__list-avatar" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 4v3M12 17v3M4 12h3M17 12h3M6 6l2 2M16 16l2 2M6 18l2-2M16 8l2-2"/></svg>
-          </span>
-          <div class="card__list-text">
-            <p class="card__list-title">CSF</p>
-            <p class="card__list-meta">Classical Swine Fever &middot; Swine &middot; DIS-002 &middot; base</p>
-          </div>
-          <div class="card__list-trail disease-trail">
-            <span class="badge badge--sm is-warning"><span class="badge__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 21h20L12 3z"/><path d="M12 10v5"/><path d="M12 18h.01"/></svg></span><span class="badge__label">Incomplete</span></span>
-            <span class="updated">Apr 12, 2026</span>
-            <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Active</span></span>
-          </div>
-        </li>
-
-        <li class="card__list-item">
-          <span class="card__list-avatar" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 4v3M12 17v3M4 12h3M17 12h3M6 6l2 2M16 16l2 2M6 18l2-2M16 8l2-2"/></svg>
-          </span>
-          <div class="card__list-text">
-            <p class="card__list-title">PRRS</p>
-            <p class="card__list-meta">Porcine Reproductive &amp; Respiratory Syndrome &middot; Swine &middot; DIS-003 &middot; base</p>
-          </div>
-          <div class="card__list-trail disease-trail">
+          </td>
+        </tr>
+        <tr class="table__row">
+          <td class="table__cell table__cell--mono">CSF</td>
+          <td class="table__cell">Classical Swine Fever</td>
+          <td class="table__cell">Swine</td>
+          <td class="table__cell table__cell--mono table__cell--meta">DIS-002</td>
+          <td class="table__cell table__cell--meta">Apr 12, 2026</td>
+          <td class="table__cell table__cell--state">
+            <span class="badge badge--sm is-warning"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Incomplete</span></span>
+          </td>
+        </tr>
+        <tr class="table__row">
+          <td class="table__cell table__cell--mono">PRRS</td>
+          <td class="table__cell">Porcine Reproductive &amp; Respiratory Syndrome</td>
+          <td class="table__cell">Swine</td>
+          <td class="table__cell table__cell--mono table__cell--meta">DIS-003</td>
+          <td class="table__cell table__cell--meta">Apr 10, 2026</td>
+          <td class="table__cell table__cell--state">
             <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span>
-            <span class="updated">Apr 10, 2026</span>
-            <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Active</span></span>
-          </div>
-        </li>
-
-        <li class="card__list-item">
-          <span class="card__list-avatar" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="12" rx="8" ry="4"/><path d="M5 14c0 2 3 3 7 3s7-1 7-3"/></svg>
-          </span>
-          <div class="card__list-text">
-            <p class="card__list-title">Salmonellosis</p>
-            <p class="card__list-meta">Salmonella enterica infection &middot; Multi &middot; DIS-004 &middot; base</p>
-          </div>
-          <div class="card__list-trail disease-trail">
+          </td>
+        </tr>
+        <tr class="table__row">
+          <td class="table__cell table__cell--mono">SALM</td>
+          <td class="table__cell">Salmonella enterica infection</td>
+          <td class="table__cell">Multi</td>
+          <td class="table__cell table__cell--mono table__cell--meta">DIS-004</td>
+          <td class="table__cell table__cell--meta">Apr 06, 2026</td>
+          <td class="table__cell table__cell--state">
             <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span>
-            <span class="updated">Apr 06, 2026</span>
-            <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Active</span></span>
-          </div>
-        </li>
-
-        <li class="card__list-item">
-          <span class="card__list-avatar" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 4v3M12 17v3M4 12h3M17 12h3M6 6l2 2M16 16l2 2M6 18l2-2M16 8l2-2"/></svg>
-          </span>
-          <div class="card__list-text">
-            <p class="card__list-title">TGE</p>
-            <p class="card__list-meta">Transmissible Gastroenteritis &middot; Swine &middot; DIS-005 &middot; base</p>
-          </div>
-          <div class="card__list-trail disease-trail">
+          </td>
+        </tr>
+        <tr class="table__row table__row--dim">
+          <td class="table__cell table__cell--mono">TGE</td>
+          <td class="table__cell">Transmissible Gastroenteritis</td>
+          <td class="table__cell">Swine</td>
+          <td class="table__cell table__cell--mono table__cell--meta">DIS-005</td>
+          <td class="table__cell table__cell--meta">Apr 02, 2026</td>
+          <td class="table__cell table__cell--state">
+            <span class="badge badge--sm is-neutral"><span class="badge__label">Inactive</span></span>
+          </td>
+        </tr>
+        <tr class="table__row">
+          <td class="table__cell table__cell--mono">SDYS</td>
+          <td class="table__cell">Brachyspira hyodysenteriae infection</td>
+          <td class="table__cell">Swine</td>
+          <td class="table__cell table__cell--mono table__cell--meta">DIS-006</td>
+          <td class="table__cell table__cell--meta">Mar 28, 2026</td>
+          <td class="table__cell table__cell--state">
+            <span class="badge badge--sm is-warning"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Incomplete</span></span>
+          </td>
+        </tr>
+        <tr class="table__row">
+          <td class="table__cell table__cell--mono">GLAS</td>
+          <td class="table__cell">Gl&auml;sser&rsquo;s disease (Glaesserella parasuis)</td>
+          <td class="table__cell">Swine</td>
+          <td class="table__cell table__cell--mono table__cell--meta">DIS-007</td>
+          <td class="table__cell table__cell--meta">Mar 24, 2026</td>
+          <td class="table__cell table__cell--state">
             <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span>
-            <span class="updated">Apr 02, 2026</span>
-            <span class="badge badge--sm is-neutral"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Inactive</span></span>
-          </div>
-        </li>
-
-        <li class="card__list-item">
-          <span class="card__list-avatar" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="12" rx="8" ry="4"/><path d="M5 14c0 2 3 3 7 3s7-1 7-3"/></svg>
-          </span>
-          <div class="card__list-text">
-            <p class="card__list-title">Swine Dysentery</p>
-            <p class="card__list-meta">Brachyspira hyodysenteriae infection &middot; Swine &middot; DIS-006 &middot; base</p>
-          </div>
-          <div class="card__list-trail disease-trail">
-            <span class="badge badge--sm is-warning"><span class="badge__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 21h20L12 3z"/><path d="M12 10v5"/><path d="M12 18h.01"/></svg></span><span class="badge__label">Incomplete</span></span>
-            <span class="updated">Mar 28, 2026</span>
-            <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Active</span></span>
-          </div>
-        </li>
-
-        <li class="card__list-item">
-          <span class="card__list-avatar" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="12" rx="8" ry="4"/><path d="M5 14c0 2 3 3 7 3s7-1 7-3"/></svg>
-          </span>
-          <div class="card__list-text">
-            <p class="card__list-title">Gl&auml;sser&rsquo;s</p>
-            <p class="card__list-meta">Gl&auml;sser&rsquo;s disease (Glaesserella parasuis) &middot; Swine &middot; DIS-007 &middot; base</p>
-          </div>
-          <div class="card__list-trail disease-trail">
+          </td>
+        </tr>
+        <tr class="table__row table__row--dim">
+          <td class="table__cell table__cell--mono">PAST</td>
+          <td class="table__cell">Pasteurella multocida infection</td>
+          <td class="table__cell">Multi</td>
+          <td class="table__cell table__cell--mono table__cell--meta">DIS-008</td>
+          <td class="table__cell table__cell--meta">Mar 19, 2026</td>
+          <td class="table__cell table__cell--state">
+            <span class="badge badge--sm is-neutral"><span class="badge__label">Inactive</span></span>
+          </td>
+        </tr>
+        <tr class="table__row">
+          <td class="table__cell table__cell--mono">APP</td>
+          <td class="table__cell">Actinobacillus Pleuropneumonia</td>
+          <td class="table__cell">Swine</td>
+          <td class="table__cell table__cell--mono table__cell--meta">DIS-009</td>
+          <td class="table__cell table__cell--meta">Mar 14, 2026</td>
+          <td class="table__cell table__cell--state">
             <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span>
-            <span class="updated">Mar 24, 2026</span>
-            <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Active</span></span>
-          </div>
-        </li>
-
-        <li class="card__list-item">
-          <span class="card__list-avatar" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="12" rx="8" ry="4"/><path d="M5 14c0 2 3 3 7 3s7-1 7-3"/></svg>
-          </span>
-          <div class="card__list-text">
-            <p class="card__list-title">Pasteurellosis</p>
-            <p class="card__list-meta">Pasteurella multocida infection &middot; Multi &middot; DIS-008 &middot; base</p>
-          </div>
-          <div class="card__list-trail disease-trail">
-            <span class="badge badge--sm is-warning"><span class="badge__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 21h20L12 3z"/><path d="M12 10v5"/><path d="M12 18h.01"/></svg></span><span class="badge__label">Incomplete</span></span>
-            <span class="updated">Mar 19, 2026</span>
-            <span class="badge badge--sm is-neutral"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Inactive</span></span>
-          </div>
-        </li>
-
-        <li class="card__list-item">
-          <span class="card__list-avatar" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="12" rx="8" ry="4"/><path d="M5 14c0 2 3 3 7 3s7-1 7-3"/></svg>
-          </span>
-          <div class="card__list-text">
-            <p class="card__list-title">APP</p>
-            <p class="card__list-meta">Actinobacillus Pleuropneumonia &middot; Swine &middot; DIS-009 &middot; base</p>
-          </div>
-          <div class="card__list-trail disease-trail">
+          </td>
+        </tr>
+        <tr class="table__row">
+          <td class="table__cell table__cell--mono">EDEM</td>
+          <td class="table__cell">Edema disease (Shiga-toxin <em>E. coli</em>)</td>
+          <td class="table__cell">Swine</td>
+          <td class="table__cell table__cell--mono table__cell--meta">DIS-010</td>
+          <td class="table__cell table__cell--meta">Mar 08, 2026</td>
+          <td class="table__cell table__cell--state">
             <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span>
-            <span class="updated">Mar 14, 2026</span>
-            <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Active</span></span>
-          </div>
-        </li>
-
-        <li class="card__list-item">
-          <span class="card__list-avatar" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="12" rx="8" ry="4"/><path d="M5 14c0 2 3 3 7 3s7-1 7-3"/></svg>
-          </span>
-          <div class="card__list-text">
-            <p class="card__list-title">Edema</p>
-            <p class="card__list-meta">Edema disease (Shiga-toxin <em>E. coli</em>) &middot; Swine &middot; DIS-010 &middot; base</p>
-          </div>
-          <div class="card__list-trail disease-trail">
-            <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span>
-            <span class="updated">Mar 08, 2026</span>
-            <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Active</span></span>
-          </div>
-        </li>
-
-      </ul>
-    </article>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
     <!-- Pager region -->
     <div class="app-pager-region">
@@ -332,10 +377,6 @@
         <button type="button" class="btn btn--ghost btn--sm app-pager__btn" aria-label="Next page">
           <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
         </button>
-        <label class="app-pager__jump">
-          <span>Go to</span>
-          <input type="number" min="1" max="15" value="4" class="input input--sm app-pager__jump-input" aria-label="Go to page" />
-        </label>
       </nav>
     </div>
 
@@ -407,6 +448,8 @@
 
         </div>
       </div>
+    </div>
+
     </div>
 
   </main>

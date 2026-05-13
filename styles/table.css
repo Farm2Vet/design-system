@@ -1,0 +1,213 @@
+/* =========================================================
+   FARM2VET DESIGN SYSTEM — TABLE COMPONENT
+   A grid of cells over tabular data. Different shape from
+   Card · List, which is a row stack of free-form items.
+   Use Table when columns are real columns (the same kind of
+   data appears in the same position on every row) and the
+   user expects to sort or compare across rows.
+
+   Anatomy
+     • .table              — block, rendered as <table>
+     • .table__head        — <thead>
+     • .table__head-row    — <tr> inside head
+     • .table__head-cell   — <th>
+     • .table__sort        — sort affordance inside head cell
+     • .table__sort-icon   — the arrow glyph
+     • .table__body        — <tbody>
+     • .table__row         — <tr>
+     • .table__cell        — <td>
+
+   Variants
+     • size: --md (default) · --sm  (denser row height)
+     • surface: --plain (default) · --boxed (rounded card-like
+       border + radius — used when the table sits inside its
+       own panel, as on V-01)
+
+   States
+     • .table__row:hover         — row hover background
+     • .table__row.is-selected   — selected row (for future
+       use; not consumed by V-01)
+     • .table__row--dim          — visually de-emphasised
+                                    (e.g. inactive entries)
+     • .table__sort.is-asc /
+       .is-desc                  — current sort direction
+
+   Cell modifiers
+     • .table__cell--mono        — JetBrains Mono (codenames,
+                                    IDs, hash values)
+     • .table__cell--meta        — smaller, muted (timestamps,
+                                    secondary IDs)
+     • .table__cell--num         — tabular-numeric, right-align
+     • .table__cell--state       — right-aligned badge slot,
+                                    used by the last column
+
+   Depends on: tokens.css
+   ========================================================= */
+
+/* =========================================================
+   COMPONENT TOKENS — Table
+   Reference semantic tokens only.
+   ========================================================= */
+:root {
+    --table-font-family:        var(--font-sans);
+    --table-radius:             var(--radius-lg);
+    --table-border-width:       var(--border-width-base);
+    --table-border:             var(--border-default);
+    --table-row-divider:        var(--border-default-subtle);
+
+    --table-bg:                 var(--background-default);
+    --table-head-bg:            var(--background-accent-subtle);
+    --table-head-fg:            var(--text-default-subtle);
+    --table-head-font-size:     var(--text-eyebrow);
+    --table-head-letter-spacing: 0.04em;
+    --table-head-font-weight:   700;
+    --table-head-pad-x:         var(--space-tier-4);
+    --table-head-pad-y:         var(--space-tier-6);
+
+    --table-row-bg:             var(--background-default);
+    --table-row-bg-hover:       var(--background-row-hover);
+    --table-row-fg:             var(--text-default);
+    --table-row-fg-subtle:      var(--text-default-subtle);
+    --table-row-fg-minimal:     var(--text-default-minimal);
+    --table-row-pad-x:          var(--space-tier-4);
+    --table-row-pad-y:          var(--space-tier-5);
+    --table-row-font-size:      var(--text-body-sm);
+    --table-row-dim-opacity:    0.55;
+
+    --table-mono-font-family:   var(--font-mono);
+    --table-mono-letter-spacing: var(--letter-spacing-mono);
+
+    --table-sort-icon-size:     0.7em;
+    --table-sort-gap:           var(--space-tier-7);
+    --table-transition:         background-color .15s ease,
+                                color .15s ease,
+                                opacity .15s ease;
+}
+
+/* =========================================================
+   BLOCK — .table
+   Rendered as <table>. The component owns the rounded outer
+   border via the --boxed variant; without --boxed, the table
+   is borderless (lives inside a parent that owns its frame).
+   ========================================================= */
+.table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-family: var(--table-font-family);
+    color: var(--table-row-fg);
+    background: var(--table-bg);
+    text-align: left;
+}
+
+.table--boxed {
+    border: var(--table-border-width) solid var(--table-border);
+    border-radius: var(--table-radius);
+    overflow: hidden;
+}
+
+/* =========================================================
+   HEAD
+   ========================================================= */
+.table__head {
+    background: var(--table-head-bg);
+}
+.table__head-row { background: transparent; }
+.table__head-cell {
+    padding: var(--table-head-pad-y) var(--table-head-pad-x);
+    color: var(--table-head-fg);
+    font-size: var(--table-head-font-size);
+    font-weight: var(--table-head-font-weight);
+    letter-spacing: var(--table-head-letter-spacing);
+    text-transform: uppercase;
+    line-height: 1.2;
+    border-bottom: var(--table-border-width) solid var(--table-border);
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+/* Sort affordance inside a head cell. Sortable cells wrap
+   their label in a .table__sort button so the entire label
+   is the click target. */
+.table__sort {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--table-sort-gap);
+    background: transparent;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    color: inherit;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    cursor: pointer;
+    transition: var(--table-transition);
+}
+.table__sort:hover { color: var(--text-default); }
+.table__sort-icon {
+    width: var(--table-sort-icon-size);
+    height: var(--table-sort-icon-size);
+    flex-shrink: 0;
+    opacity: 0.6;
+    transition: opacity .15s ease, transform .15s ease;
+}
+.table__sort.is-asc .table__sort-icon,
+.table__sort.is-desc .table__sort-icon { opacity: 1; }
+.table__sort.is-desc .table__sort-icon { transform: rotate(180deg); }
+
+/* =========================================================
+   BODY
+   ========================================================= */
+.table__body { background: transparent; }
+.table__row {
+    background: var(--table-row-bg);
+    transition: var(--table-transition);
+}
+.table__row + .table__row .table__cell {
+    border-top: var(--table-border-width) solid var(--table-row-divider);
+}
+.table__row:hover { background: var(--table-row-bg-hover); }
+.table__row.is-selected { background: var(--background-default-selected); }
+.table__row--dim { opacity: var(--table-row-dim-opacity); }
+.table__row--dim:hover { opacity: 0.7; }
+
+/* =========================================================
+   CELL
+   ========================================================= */
+.table__cell {
+    padding: var(--table-row-pad-y) var(--table-row-pad-x);
+    font-size: var(--table-row-font-size);
+    color: var(--table-row-fg);
+    vertical-align: middle;
+    line-height: 1.4;
+}
+
+/* Cell modifiers */
+.table__cell--mono {
+    font-family: var(--table-mono-font-family);
+    letter-spacing: var(--table-mono-letter-spacing);
+    font-weight: 600;
+}
+.table__cell--meta {
+    color: var(--table-row-fg-minimal);
+    font-size: var(--text-eyebrow);
+}
+.table__cell--mono.table__cell--meta { font-weight: 500; }
+.table__cell--num {
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+}
+.table__cell--state {
+    text-align: right;
+    white-space: nowrap;
+}
+
+/* =========================================================
+   SIZE — sm (denser)
+   ========================================================= */
+.table--sm {
+    --table-head-pad-y: var(--space-tier-7);
+    --table-row-pad-y:  var(--space-tier-6);
+    --table-row-font-size: var(--text-eyebrow);
+}

@@ -19,6 +19,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 PAGES = [
+    "index.html",
     "I-primitives.html",
     "II-semantics.html",
     "III-01-typography.html",
@@ -34,10 +35,10 @@ PAGES = [
     "III-11-switch.html",
     "III-12-sidebar.html",
     "III-14-tabs.html",
+    "III-15-table.html",
     "IV-01-logo.html",
     "IV-02-icons.html",
     "IV-03-images.html",
-    "V-01-wiki.html",
     "V-02-chatbot.html",
     "V-03-hero.html",
 ]
@@ -46,7 +47,7 @@ NAV_MARKUP = '''<!-- ========================== GLOBAL NAV =====================
 <header class="global-nav" aria-label="Design system navigation">
   <div class="global-nav__inner">
 
-    <a href="design-system-v1.html" class="global-nav__brand" aria-label="Farm2Vet design system home">
+    <a href="index.html" class="global-nav__brand" aria-label="Farm2Vet design system home">
       <img src="logo/logo-wordmark-color.svg" alt="Farm2Vet" class="global-nav__logo" />
       <small>Design System</small>
     </a>
@@ -84,6 +85,7 @@ NAV_MARKUP = '''<!-- ========================== GLOBAL NAV =====================
                 <li><a href="III-11-switch.html"><span class="global-nav__index">11</span><span>Switch</span></a></li>
                 <li><a href="III-12-sidebar.html"><span class="global-nav__index">12</span><span>Sidebar</span></a></li>
                 <li><a href="III-14-tabs.html"><span class="global-nav__index">14</span><span>Tabs</span></a></li>
+                <li><a href="III-15-table.html"><span class="global-nav__index">15</span><span>Table</span></a></li>
               </ul>
             </div>
           </div>

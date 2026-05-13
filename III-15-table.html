@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Farm2Vet · Table — Design System</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<!-- Foundations -->
+<link rel="stylesheet" href="styles/tokens.css" />
+<link rel="stylesheet" href="styles/base.css" />
+<link rel="stylesheet" href="styles/typography.css" />
+<link rel="stylesheet" href="styles/shell.css" />
+<link rel="stylesheet" href="styles/global-nav.css" />
+<!-- Components consumed on this page -->
+<link rel="stylesheet" href="styles/badge.css" />
+<link rel="stylesheet" href="styles/button.css" />
+<link rel="stylesheet" href="styles/table.css" />
+<!-- Cross-page reuse: .token-table (page-III-02), .usage-note + .preview-stage (page-III-03) -->
+<link rel="stylesheet" href="styles/page-III-02.css" />
+<link rel="stylesheet" href="styles/page-III-03.css" />
+<!-- Page-specific scaffolding -->
+<link rel="stylesheet" href="styles/page-III-15.css" />
+
+<script src="scripts/global-nav.js" defer></script>
+
+</head>
+<body data-page="III-15-table">
+
+<!-- ========================== GLOBAL NAV ========================== -->
+<header class="global-nav" aria-label="Design system navigation">
+  <div class="global-nav__inner">
+
+    <a href="index.html" class="global-nav__brand" aria-label="Farm2Vet design system home">
+      <img src="logo/logo-wordmark-color.svg" alt="Farm2Vet" class="global-nav__logo" />
+      <small>Design System</small>
+    </a>
+
+    <nav class="global-nav__sections" aria-label="Design system sections">
+      <ul class="global-nav__list">
+        <li class="global-nav__item">
+          <a class="global-nav__link" href="I-primitives.html">I. Primitives</a>
+        </li>
+        <li class="global-nav__item">
+          <a class="global-nav__link" href="II-semantics.html">II. Semantics</a>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="components">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-components">
+            III. Components
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-components" class="global-nav__panel" role="region" aria-label="Components">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="III-01-typography.html"><span class="global-nav__index">01</span><span>Typography</span></a></li>
+                <li><a href="III-02-buttons.html"><span class="global-nav__index">02</span><span>Buttons</span></a></li>
+                <li><a href="III-03-form.html"><span class="global-nav__index">03</span><span>Form</span></a></li>
+                <li><a href="III-04-dropdowns.html"><span class="global-nav__index">04</span><span>Dropdowns</span></a></li>
+                <li><a href="III-05-cards.html"><span class="global-nav__index">05</span><span>Cards</span></a></li>
+                <li><a href="III-06-modal.html"><span class="global-nav__index">06</span><span>Modal Dialog</span></a></li>
+                <li><a href="III-07-side-panel.html"><span class="global-nav__index">07</span><span>Side Panel</span></a></li>
+                <li><a href="III-08-toast.html"><span class="global-nav__index">08</span><span>Toast</span></a></li>
+                <li><a href="III-09-alert-badges.html"><span class="global-nav__index">09</span><span>Alert &amp; Badge</span></a></li>
+                <li><a href="III-10-header-navigation.html"><span class="global-nav__index">10</span><span>Header &amp; Nav Bar</span></a></li>
+                <li><a href="III-11-switch.html"><span class="global-nav__index">11</span><span>Switch</span></a></li>
+                <li><a href="III-12-sidebar.html"><span class="global-nav__index">12</span><span>Sidebar</span></a></li>
+                <li><a href="III-14-tabs.html"><span class="global-nav__index">14</span><span>Tabs</span></a></li>
+                <li><a href="III-15-table.html"><span class="global-nav__index">15</span><span>Table</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="assets">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-assets">
+            IV. Assets
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-assets" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Assets">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="IV-01-logo.html"><span class="global-nav__index">01</span><span>Logo</span></a></li>
+                <li><a href="IV-02-icons.html"><span class="global-nav__index">02</span><span>Icons</span></a></li>
+                <li><a href="IV-03-images.html" class="is-placeholder"><span class="global-nav__index">03</span><span>Images</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="mockups">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-mockups">
+            V. Mockups
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-mockups" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Mockups">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="V-01-wiki.html"><span class="global-nav__index">01</span><span>Wiki</span></a></li>
+                <li><a href="V-02-chatbot.html" class="is-placeholder"><span class="global-nav__index">02</span><span>Chatbot</span></a></li>
+                <li><a href="V-03-hero.html"    class="is-placeholder"><span class="global-nav__index">03</span><span>Hero</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+      </ul>
+    </nav>
+
+    <a href="#" class="global-nav__chip" aria-label="Design system version">v1.0</a>
+
+  </div>
+</header>
+<main class="shell" id="top">
+
+  <!-- ========================== HERO ========================== -->
+  <section class="hero">
+    <div>
+      <h1 class="text-display">
+        <span class="num">III-15 / Components</span>
+        Table.
+      </h1>
+    </div>
+    <div>
+      <p class="lede">
+        A grid of cells over tabular data. Use Table when columns are real
+        columns and the user will sort or compare across rows. For activity
+        feeds and free-form lists of mixed items, reach for Card · List
+        instead.
+      </p>
+    </div>
+  </section>
+
+  <!-- ========================== ANATOMY ========================== -->
+  <section class="anatomy">
+    <h2 class="text-display-sm">Anatomy.</h2>
+    <p class="section-lede">
+      The component renders as a real <code>&lt;table&gt;</code>. A head, a
+      body, head cells, rows, and cells — each addressable by a BEM-style
+      class hook. Sortable head cells wrap their label in a
+      <code>.table__sort</code> button so the entire label is the click
+      target.
+    </p>
+
+    <div class="preview-stage">
+      <table class="table table--boxed" aria-label="Anatomy example">
+        <thead class="table__head">
+          <tr class="table__head-row">
+            <th class="table__head-cell" scope="col">
+              <button type="button" class="table__sort is-asc">
+                Codename
+                <svg class="table__sort-icon" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 8 L6 4 L9 8 z" fill="currentColor"/></svg>
+              </button>
+            </th>
+            <th class="table__head-cell" scope="col">Full name</th>
+            <th class="table__head-cell" scope="col">Species</th>
+            <th class="table__head-cell" scope="col">ID</th>
+            <th class="table__head-cell" scope="col">Updated</th>
+            <th class="table__head-cell" scope="col" style="text-align:right">State</th>
+          </tr>
+        </thead>
+        <tbody class="table__body">
+          <tr class="table__row">
+            <td class="table__cell table__cell--mono">ASF</td>
+            <td class="table__cell">African Swine Fever</td>
+            <td class="table__cell">Swine</td>
+            <td class="table__cell table__cell--mono table__cell--meta">DIS-001</td>
+            <td class="table__cell table__cell--meta">Apr 18, 2026</td>
+            <td class="table__cell table__cell--state">
+              <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span>
+            </td>
+          </tr>
+          <tr class="table__row">
+            <td class="table__cell table__cell--mono">CSF</td>
+            <td class="table__cell">Classical Swine Fever</td>
+            <td class="table__cell">Swine</td>
+            <td class="table__cell table__cell--mono table__cell--meta">DIS-002</td>
+            <td class="table__cell table__cell--meta">Apr 12, 2026</td>
+            <td class="table__cell table__cell--state">
+              <span class="badge badge--sm is-warning"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Incomplete</span></span>
+            </td>
+          </tr>
+          <tr class="table__row">
+            <td class="table__cell table__cell--mono">PRRS</td>
+            <td class="table__cell">Porcine Reproductive &amp; Respiratory Syndrome</td>
+            <td class="table__cell">Swine</td>
+            <td class="table__cell table__cell--mono table__cell--meta">DIS-003</td>
+            <td class="table__cell table__cell--meta">Apr 10, 2026</td>
+            <td class="table__cell table__cell--state">
+              <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span>
+            </td>
+          </tr>
+          <tr class="table__row">
+            <td class="table__cell table__cell--mono">SALM</td>
+            <td class="table__cell">Salmonella enterica infection</td>
+            <td class="table__cell">Multi</td>
+            <td class="table__cell table__cell--mono table__cell--meta">DIS-004</td>
+            <td class="table__cell table__cell--meta">Apr 06, 2026</td>
+            <td class="table__cell table__cell--state">
+              <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span>
+            </td>
+          </tr>
+          <tr class="table__row table__row--dim">
+            <td class="table__cell table__cell--mono">TGE</td>
+            <td class="table__cell">Transmissible Gastroenteritis</td>
+            <td class="table__cell">Swine</td>
+            <td class="table__cell table__cell--mono table__cell--meta">DIS-005</td>
+            <td class="table__cell table__cell--meta">Apr 02, 2026</td>
+            <td class="table__cell table__cell--state">
+              <span class="badge badge--sm is-neutral"><span class="badge__label">Inactive</span></span>
+            </td>
+          </tr>
+          <tr class="table__row">
+            <td class="table__cell table__cell--mono">SDYS</td>
+            <td class="table__cell">Brachyspira hyodysenteriae infection</td>
+            <td class="table__cell">Swine</td>
+            <td class="table__cell table__cell--mono table__cell--meta">DIS-006</td>
+            <td class="table__cell table__cell--meta">Mar 28, 2026</td>
+            <td class="table__cell table__cell--state">
+              <span class="badge badge--sm is-warning"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Incomplete</span></span>
+            </td>
+          </tr>
+          <tr class="table__row">
+            <td class="table__cell table__cell--mono">GLAS</td>
+            <td class="table__cell">Gl&auml;sser&rsquo;s disease (Glaesserella parasuis)</td>
+            <td class="table__cell">Swine</td>
+            <td class="table__cell table__cell--mono table__cell--meta">DIS-007</td>
+            <td class="table__cell table__cell--meta">Mar 24, 2026</td>
+            <td class="table__cell table__cell--state">
+              <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span>
+            </td>
+          </tr>
+          <tr class="table__row table__row--dim">
+            <td class="table__cell table__cell--mono">PAST</td>
+            <td class="table__cell">Pasteurella multocida infection</td>
+            <td class="table__cell">Multi</td>
+            <td class="table__cell table__cell--mono table__cell--meta">DIS-008</td>
+            <td class="table__cell table__cell--meta">Mar 19, 2026</td>
+            <td class="table__cell table__cell--state">
+              <span class="badge badge--sm is-neutral"><span class="badge__label">Inactive</span></span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <dl class="anatomy-key">
+      <dt>A · root</dt>
+      <dd>The wrapper (<code>.table</code>) is rendered as a real <code>&lt;table&gt;</code> element. Variant and size modifiers go on the root.</dd>
+
+      <dt>B · head</dt>
+      <dd><code>.table__head</code> (<code>&lt;thead&gt;</code>) holds a single <code>.table__head-row</code> (<code>&lt;tr&gt;</code>) of <code>.table__head-cell</code> (<code>&lt;th&gt;</code>) cells. Background and eyebrow typography come from the component tokens.</dd>
+
+      <dt>C · sort</dt>
+      <dd><code>.table__sort</code> is a button placed inside a head cell when the column is sortable. The whole label is the click target. Direction states are <code>.is-asc</code> and <code>.is-desc</code>; the icon flips on <code>.is-desc</code>.</dd>
+
+      <dt>D · body</dt>
+      <dd><code>.table__body</code> (<code>&lt;tbody&gt;</code>) holds the <code>.table__row</code> (<code>&lt;tr&gt;</code>) instances. Rows divide on top borders so hover and selected backgrounds can paint without a seam.</dd>
+
+      <dt>E · cell</dt>
+      <dd><code>.table__cell</code> (<code>&lt;td&gt;</code>) supports four modifiers: <code>--mono</code> (codenames, IDs), <code>--meta</code> (smaller, muted text for timestamps), <code>--num</code> (tabular-numeric, right-aligned), and <code>--state</code> (right-aligned badge slot).</dd>
+    </dl>
+  </section>
+
+  <!-- ========================== VARIANTS ========================== -->
+  <section class="variants">
+    <h2 class="text-display-sm">Variants.</h2>
+    <p class="section-lede">
+      Two surface variants. Plain is borderless and lives inside a parent
+      that owns its frame (a panel, a card-body). Boxed carries its own
+      rounded border and lid; reach for it on V-01 and anywhere the table
+      is a standalone region on the page.
+    </p>
+
+    <p class="usage-note">
+      <strong>Boxed by default on standalone tables.</strong> A bare
+      <code>.table</code> with no frame floats — it reads as a fragment of
+      a parent that doesn&rsquo;t exist. Use <code>--boxed</code> unless
+      the table is a child of a card or panel that already owns the
+      border.
+    </p>
+
+    <div class="preview-stage">
+      <table class="table table--boxed" aria-label="Boxed variant">
+        <thead class="table__head">
+          <tr class="table__head-row">
+            <th class="table__head-cell" scope="col">Codename</th>
+            <th class="table__head-cell" scope="col">Full name</th>
+            <th class="table__head-cell" scope="col">Species</th>
+            <th class="table__head-cell" scope="col" style="text-align:right">State</th>
+          </tr>
+        </thead>
+        <tbody class="table__body">
+          <tr class="table__row">
+            <td class="table__cell table__cell--mono">ASF</td>
+            <td class="table__cell">African Swine Fever</td>
+            <td class="table__cell">Swine</td>
+            <td class="table__cell table__cell--state">
+              <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span>
+            </td>
+          </tr>
+          <tr class="table__row">
+            <td class="table__cell table__cell--mono">CSF</td>
+            <td class="table__cell">Classical Swine Fever</td>
+            <td class="table__cell">Swine</td>
+            <td class="table__cell table__cell--state">
+              <span class="badge badge--sm is-warning"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Incomplete</span></span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="sizes-grid__caption" style="margin-top: var(--space-tier-3)">Plain (no --boxed)</p>
+    <div class="preview-stage">
+      <table class="table" aria-label="Plain variant">
+        <thead class="table__head">
+          <tr class="table__head-row">
+            <th class="table__head-cell" scope="col">Codename</th>
+            <th class="table__head-cell" scope="col">Full name</th>
+            <th class="table__head-cell" scope="col">Species</th>
+            <th class="table__head-cell" scope="col" style="text-align:right">State</th>
+          </tr>
+        </thead>
+        <tbody class="table__body">
+          <tr class="table__row">
+            <td class="table__cell table__cell--mono">ASF</td>
+            <td class="table__cell">African Swine Fever</td>
+            <td class="table__cell">Swine</td>
+            <td class="table__cell table__cell--state">
+              <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span>
+            </td>
+          </tr>
+          <tr class="table__row">
+            <td class="table__cell table__cell--mono">CSF</td>
+            <td class="table__cell">Classical Swine Fever</td>
+            <td class="table__cell">Swine</td>
+            <td class="table__cell table__cell--state">
+              <span class="badge badge--sm is-warning"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Incomplete</span></span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ========================== STATES ========================== -->
+  <section class="states">
+    <h2 class="text-display-sm">States.</h2>
+    <p class="section-lede">
+      Four row states stack in the same table: default, hover, selected,
+      and dim. Hover paints a subtle row background; selected lifts the
+      whole row to the primary-tinted surface; dim de-emphasises a row
+      via opacity without changing its content. The sort affordance has
+      three states of its own — idle, ascending, descending.
+    </p>
+
+    <div class="preview-stage">
+      <table class="table table--boxed" aria-label="States example">
+        <thead class="table__head">
+          <tr class="table__head-row">
+            <th class="table__head-cell" scope="col">Codename</th>
+            <th class="table__head-cell" scope="col">Full name</th>
+            <th class="table__head-cell" scope="col">State</th>
+            <th class="table__head-cell" scope="col">Row treatment</th>
+          </tr>
+        </thead>
+        <tbody class="table__body">
+          <tr class="table__row">
+            <td class="table__cell table__cell--mono">ASF</td>
+            <td class="table__cell">African Swine Fever</td>
+            <td class="table__cell">
+              <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span>
+            </td>
+            <td class="table__cell table__cell--meta">default — rest state</td>
+          </tr>
+          <tr class="table__row is-demo-hover">
+            <td class="table__cell table__cell--mono">CSF</td>
+            <td class="table__cell">Classical Swine Fever</td>
+            <td class="table__cell">
+              <span class="badge badge--sm is-warning"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Incomplete</span></span>
+            </td>
+            <td class="table__cell table__cell--meta">hover — :hover or .is-demo-hover</td>
+          </tr>
+          <tr class="table__row is-selected">
+            <td class="table__cell table__cell--mono">PRRS</td>
+            <td class="table__cell">Porcine Reproductive &amp; Respiratory Syndrome</td>
+            <td class="table__cell">
+              <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span>
+            </td>
+            <td class="table__cell table__cell--meta">selected — .is-selected</td>
+          </tr>
+          <tr class="table__row table__row--dim">
+            <td class="table__cell table__cell--mono">TGE</td>
+            <td class="table__cell">Transmissible Gastroenteritis</td>
+            <td class="table__cell">
+              <span class="badge badge--sm is-neutral"><span class="badge__label">Inactive</span></span>
+            </td>
+            <td class="table__cell table__cell--meta">dim — .table__row--dim</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sort-demo" aria-label="Sort affordance states">
+      <span class="sort-demo__item">
+        <button type="button" class="table__sort">
+          Idle
+          <svg class="table__sort-icon" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 8 L6 4 L9 8 z" fill="currentColor"/></svg>
+        </button>
+        <span>no direction set</span>
+      </span>
+      <span class="sort-demo__item">
+        <button type="button" class="table__sort is-asc">
+          Ascending
+          <svg class="table__sort-icon" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 8 L6 4 L9 8 z" fill="currentColor"/></svg>
+        </button>
+        <span>.is-asc</span>
+      </span>
+      <span class="sort-demo__item">
+        <button type="button" class="table__sort is-desc">
+          Descending
+          <svg class="table__sort-icon" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 8 L6 4 L9 8 z" fill="currentColor"/></svg>
+        </button>
+        <span>.is-desc (icon rotated 180&deg;)</span>
+      </span>
+    </div>
+  </section>
+
+  <!-- ========================== SIZES ========================== -->
+  <section class="sizes">
+    <h2 class="text-display-sm">Sizes.</h2>
+    <p class="section-lede">
+      Two sizes. <code>md</code> is the default — comfortable row height,
+      body-sm cell text. <code>--sm</code> compresses the row to a denser
+      eyebrow-size text; reach for it in dense admin tables where many
+      rows are visible at once.
+    </p>
+
+    <div class="sizes-grid">
+      <div>
+        <p class="sizes-grid__caption">md — default</p>
+        <div class="preview-stage">
+          <table class="table table--boxed" aria-label="md size">
+            <thead class="table__head">
+              <tr class="table__head-row">
+                <th class="table__head-cell" scope="col">Codename</th>
+                <th class="table__head-cell" scope="col">Full name</th>
+                <th class="table__head-cell" scope="col" style="text-align:right">State</th>
+              </tr>
+            </thead>
+            <tbody class="table__body">
+              <tr class="table__row"><td class="table__cell table__cell--mono">ASF</td><td class="table__cell">African Swine Fever</td><td class="table__cell table__cell--state"><span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span></td></tr>
+              <tr class="table__row"><td class="table__cell table__cell--mono">CSF</td><td class="table__cell">Classical Swine Fever</td><td class="table__cell table__cell--state"><span class="badge badge--sm is-warning"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Incomplete</span></span></td></tr>
+              <tr class="table__row"><td class="table__cell table__cell--mono">PRRS</td><td class="table__cell">Porcine Reproductive &amp; Respiratory Syndrome</td><td class="table__cell table__cell--state"><span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div>
+        <p class="sizes-grid__caption">sm — denser</p>
+        <div class="preview-stage">
+          <table class="table table--boxed table--sm" aria-label="sm size">
+            <thead class="table__head">
+              <tr class="table__head-row">
+                <th class="table__head-cell" scope="col">Codename</th>
+                <th class="table__head-cell" scope="col">Full name</th>
+                <th class="table__head-cell" scope="col" style="text-align:right">State</th>
+              </tr>
+            </thead>
+            <tbody class="table__body">
+              <tr class="table__row"><td class="table__cell table__cell--mono">ASF</td><td class="table__cell">African Swine Fever</td><td class="table__cell table__cell--state"><span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span></td></tr>
+              <tr class="table__row"><td class="table__cell table__cell--mono">CSF</td><td class="table__cell">Classical Swine Fever</td><td class="table__cell table__cell--state"><span class="badge badge--sm is-warning"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Incomplete</span></span></td></tr>
+              <tr class="table__row"><td class="table__cell table__cell--mono">PRRS</td><td class="table__cell">Porcine Reproductive &amp; Respiratory Syndrome</td><td class="table__cell table__cell--state"><span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================== TOKENS ========================== -->
+  <section class="tokens">
+    <h2 class="text-display-sm">Tokens.</h2>
+    <p class="section-lede">
+      Every <code>--table-*</code> component token resolves through a
+      semantic token. The component never reaches across tiers for a
+      primitive; semantics are the seam between the component and the
+      colour / spacing palette.
+    </p>
+
+    <table class="token-table" aria-label="Table component tokens">
+      <thead>
+        <tr><th>Token</th><th>Reference</th><th>Purpose</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="tk-name">--table-font-family</td><td class="tk-ref">var(--font-sans)</td><td>Default body font for non-mono cells.</td></tr>
+        <tr><td class="tk-name">--table-radius</td><td class="tk-ref">var(--radius-lg)</td><td>Outer corner radius for the --boxed variant.</td></tr>
+        <tr><td class="tk-name">--table-border-width</td><td class="tk-ref">var(--border-width-base)</td><td>Border width used by the outer frame and row dividers.</td></tr>
+        <tr><td class="tk-name">--table-border</td><td class="tk-ref">var(--border-default)</td><td>Outer border colour on --boxed.</td></tr>
+        <tr><td class="tk-name">--table-row-divider</td><td class="tk-ref">var(--border-default-subtle)</td><td>Hairline between rows.</td></tr>
+        <tr><td class="tk-name">--table-bg</td><td class="tk-ref">var(--background-default)</td><td>Surface colour of the table.</td></tr>
+        <tr><td class="tk-name">--table-head-bg</td><td class="tk-ref">var(--background-accent-subtle)</td><td>Surface colour of the head row.</td></tr>
+        <tr><td class="tk-name">--table-head-fg</td><td class="tk-ref">var(--text-default-subtle)</td><td>Head-cell text colour.</td></tr>
+        <tr><td class="tk-name">--table-head-font-size</td><td class="tk-ref">var(--text-eyebrow)</td><td>Eyebrow-size head text.</td></tr>
+        <tr><td class="tk-name">--table-head-letter-spacing</td><td class="tk-ref">0.04em</td><td>Tracking on uppercase head labels.</td></tr>
+        <tr><td class="tk-name">--table-head-font-weight</td><td class="tk-ref">700</td><td>Head-cell weight.</td></tr>
+        <tr><td class="tk-name">--table-head-pad-x</td><td class="tk-ref">var(--space-tier-4)</td><td>Horizontal padding inside a head cell.</td></tr>
+        <tr><td class="tk-name">--table-head-pad-y</td><td class="tk-ref">var(--space-tier-6)</td><td>Vertical padding inside a head cell.</td></tr>
+        <tr><td class="tk-name">--table-row-bg</td><td class="tk-ref">var(--background-default)</td><td>Row rest background.</td></tr>
+        <tr><td class="tk-name">--table-row-bg-hover</td><td class="tk-ref">var(--background-row-hover)</td><td>Row hover background.</td></tr>
+        <tr><td class="tk-name">--table-row-fg</td><td class="tk-ref">var(--text-default)</td><td>Default cell text colour.</td></tr>
+        <tr><td class="tk-name">--table-row-fg-subtle</td><td class="tk-ref">var(--text-default-subtle)</td><td>Secondary cell text.</td></tr>
+        <tr><td class="tk-name">--table-row-fg-minimal</td><td class="tk-ref">var(--text-default-minimal)</td><td>Meta-cell text.</td></tr>
+        <tr><td class="tk-name">--table-row-pad-x</td><td class="tk-ref">var(--space-tier-4)</td><td>Horizontal padding inside a body cell.</td></tr>
+        <tr><td class="tk-name">--table-row-pad-y</td><td class="tk-ref">var(--space-tier-5)</td><td>Vertical padding inside a body cell.</td></tr>
+        <tr><td class="tk-name">--table-row-font-size</td><td class="tk-ref">var(--text-body-sm)</td><td>Default cell text size.</td></tr>
+        <tr><td class="tk-name">--table-row-dim-opacity</td><td class="tk-ref">0.55</td><td>Opacity for <code>.table__row--dim</code>.</td></tr>
+        <tr><td class="tk-name">--table-mono-font-family</td><td class="tk-ref">var(--font-mono)</td><td>Mono font for codenames and IDs.</td></tr>
+        <tr><td class="tk-name">--table-mono-letter-spacing</td><td class="tk-ref">var(--letter-spacing-mono)</td><td>Tracking on mono cells.</td></tr>
+        <tr><td class="tk-name">--table-sort-icon-size</td><td class="tk-ref">0.7em</td><td>Arrow glyph size next to a sortable label.</td></tr>
+        <tr><td class="tk-name">--table-sort-gap</td><td class="tk-ref">var(--space-tier-7)</td><td>Gap between sort label and icon.</td></tr>
+        <tr><td class="tk-name">--table-transition</td><td class="tk-ref">background-color/color/opacity .15s</td><td>Shared transition for row and sort affordances.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ========================== USAGE ========================== -->
+  <p class="usage-note">
+    <strong>Reach for Table when columns are stable and the user will sort
+    or compare across rows.</strong> Use one badge per row in
+    <code>.table__cell--state</code> — additional state flags belong in
+    row-level treatments (<code>.table__row--dim</code>,
+    <code>.is-selected</code>) or in a separate column. When a row carries
+    a free-form mix of icon, title, description, and trailing meta with no
+    shared schema across rows, that&rsquo;s a Card · List, not a Table.
+    Future work: an active filter / search state that swaps the toolbar
+    label-row for a single-input search bar; rest-state only ships today.
+  </p>
+
+</main>
+
+</body>
+</html>

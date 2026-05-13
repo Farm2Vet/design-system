@@ -1,0 +1,117 @@
+/* =========================================================
+   FARM2VET DESIGN SYSTEM — PAGE: HOME (index.html)
+   Layout-only scaffolding for the landing page. The five
+   section tiles are real .card.card--glass.is-interactive
+   instances; this file positions them, sets their internal
+   row template, and styles the hero block.
+   Depends on: tokens.css, typography.css, shell.css, card.css
+   ========================================================= */
+
+/* =========================================================
+   HERO
+   ========================================================= */
+.home-hero {
+    padding: var(--space-region-y-lg) 0 var(--space-region-y);
+    display: grid;
+    gap: var(--space-tier-4);
+    max-width: 64ch;
+}
+
+.home-hero__eyebrow {
+    font-family:     var(--font-mono);
+    font-size:       var(--text-eyebrow);
+    letter-spacing:  var(--letter-spacing-widest);
+    text-transform:  uppercase;
+    color:           var(--text-default-minimal);
+    font-weight:     var(--font-weight-medium);
+}
+
+.home-hero__title {
+    margin: 0;
+}
+
+.home-hero__lede {
+    margin: 0;
+}
+
+/* =========================================================
+   SECTIONS GRID
+   Five tiles, responsive grid. minmax(280px, 1fr) lets the
+   row collapse to 1 column on narrow viewports and grow to
+   3-up on wide ones. The fifth tile wraps cleanly because
+   auto-fit eliminates empty tracks.
+   ========================================================= */
+.home-sections {
+    padding: var(--space-region-y) 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-tier-3);
+}
+
+/* =========================================================
+   TILE — composed on top of .card.card--glass.is-interactive
+   Page CSS owns ONLY positioning here. Surface, blur, border,
+   shadow, hover/focus elevation all come from card.css.
+   ========================================================= */
+.home-tile {
+    /* Force the anchor to behave like a flex/grid container.
+       .card sets display:flex; we re-apply with the row template
+       we want for this page. */
+    display:               grid;
+    grid-template-rows:    auto auto 1fr auto;
+    gap:                   var(--space-tier-5);
+    min-height:            240px;
+    text-decoration:       none;
+    color:                 inherit;
+}
+
+.home-tile:hover,
+.home-tile:focus-visible {
+    text-decoration: none;
+}
+
+.home-tile__numeral {
+    /* Override .card__eyebrow's default (uppercase mono) with the
+       big serif Roman numeral that gives each tile its identity.
+       The system has no --font-serif token; Georgia is loaded
+       inline on this page and used directly as a page-scoped
+       treatment. */
+    font-family:    'Georgia', serif;
+    font-size:      var(--text-display-sm);
+    line-height:    1;
+    letter-spacing: -0.02em;
+    text-transform: none;
+    color:          var(--text-accent);
+    font-weight:    var(--font-weight-regular);
+}
+
+.home-tile__cta {
+    align-self:     end;
+    font-family:    var(--font-mono);
+    font-size:      var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-widest);
+    text-transform: uppercase;
+    color:          var(--text-accent);
+    font-weight:    var(--font-weight-medium);
+}
+
+/* =========================================================
+   FOOTER SIGIL
+   ========================================================= */
+.home-sigil {
+    padding-top:    var(--space-region-y);
+    padding-bottom: var(--space-region-y);
+    text-align:     center;
+    font-family:    'Georgia', serif;
+    font-style:     italic;
+    color:          var(--text-default-subtle);
+    border-top:     var(--border-width-base) solid var(--border-default-subtle);
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 720px) {
+    .home-hero { padding-top: var(--space-region-y); }
+    .home-sections { grid-template-columns: 1fr; }
+}
