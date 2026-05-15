@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Farm2Vet · Search Toolbar — Design System</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<!-- Design system: shared, reusable foundation -->
+<link rel="stylesheet" href="styles/tokens.css" />
+<link rel="stylesheet" href="styles/base.css" />
+<link rel="stylesheet" href="styles/typography.css" />
+<link rel="stylesheet" href="styles/shell.css" />
+<link rel="stylesheet" href="styles/global-nav.css" />
+<!-- Component -->
+<link rel="stylesheet" href="styles/search-toolbar.css" />
+<link rel="stylesheet" href="styles/chip.css" />
+<link rel="stylesheet" href="styles/button.css" />
+<link rel="stylesheet" href="styles/form.css" />
+<link rel="stylesheet" href="styles/dropdown.css" />
+<!-- Reuse: variant grid + usage-note pattern + preview stages -->
+<link rel="stylesheet" href="styles/page-III-03.css" />
+<!-- Reuse: token-table styling -->
+<link rel="stylesheet" href="styles/page-III-02.css" />
+<!-- Page-specific: anatomy diagram + state matrix -->
+<link rel="stylesheet" href="styles/page-III-16.css" />
+
+<script src="scripts/global-nav.js" defer></script>
+
+</head>
+<body data-page="III-16-search-toolbar">
+
+<!-- ========================== GLOBAL NAV ========================== -->
+<header class="global-nav" aria-label="Design system navigation">
+  <div class="global-nav__inner">
+
+    <a href="index.html" class="global-nav__brand" aria-label="Farm2Vet design system home">
+      <img src="logo/logo-wordmark-color.svg" alt="Farm2Vet" class="global-nav__logo" />
+      <small>Design System</small>
+    </a>
+
+    <nav class="global-nav__sections" aria-label="Design system sections">
+      <ul class="global-nav__list">
+        <li class="global-nav__item">
+          <a class="global-nav__link" href="I-primitives.html">I. Primitives</a>
+        </li>
+        <li class="global-nav__item">
+          <a class="global-nav__link" href="II-semantics.html">II. Semantics</a>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="components">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-components">
+            III. Components
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-components" class="global-nav__panel" role="region" aria-label="Components">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="III-01-typography.html"><span class="global-nav__index">01</span><span>Typography</span></a></li>
+                <li><a href="III-02-buttons.html"><span class="global-nav__index">02</span><span>Buttons</span></a></li>
+                <li><a href="III-03-form.html"><span class="global-nav__index">03</span><span>Form</span></a></li>
+                <li><a href="III-04-dropdowns.html"><span class="global-nav__index">04</span><span>Dropdowns</span></a></li>
+                <li><a href="III-05-cards.html"><span class="global-nav__index">05</span><span>Cards</span></a></li>
+                <li><a href="III-06-modal.html"><span class="global-nav__index">06</span><span>Modal Dialog</span></a></li>
+                <li><a href="III-07-side-panel.html"><span class="global-nav__index">07</span><span>Side Panel</span></a></li>
+                <li><a href="III-08-toast.html"><span class="global-nav__index">08</span><span>Toast</span></a></li>
+                <li><a href="III-09-alert-badges.html"><span class="global-nav__index">09</span><span>Alert &amp; Badge</span></a></li>
+                <li><a href="III-10-header-navigation.html"><span class="global-nav__index">10</span><span>Header &amp; Nav Bar</span></a></li>
+                <li><a href="III-11-switch.html"><span class="global-nav__index">11</span><span>Switch</span></a></li>
+                <li><a href="III-12-sidebar.html"><span class="global-nav__index">12</span><span>Sidebar</span></a></li>
+                <li><a href="III-13-chip.html"><span class="global-nav__index">13</span><span>Chip</span></a></li>
+                <li><a href="III-14-tabs.html"><span class="global-nav__index">14</span><span>Tabs</span></a></li>
+                <li><a href="III-15-table.html"><span class="global-nav__index">15</span><span>Table</span></a></li>
+                <li><a href="III-16-search-toolbar.html"><span class="global-nav__index">16</span><span>Search Toolbar</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="assets">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-assets">
+            IV. Assets
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-assets" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Assets">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="IV-01-logo.html"><span class="global-nav__index">01</span><span>Logo</span></a></li>
+                <li><a href="IV-02-icons.html"><span class="global-nav__index">02</span><span>Icons</span></a></li>
+                <li><a href="IV-03-images.html" class="is-placeholder"><span class="global-nav__index">03</span><span>Images</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="mockups">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-mockups">
+            V. Mockups
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-mockups" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Mockups">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="V-01-wiki.html"><span class="global-nav__index">01</span><span>Wiki</span></a></li>
+                <li><a href="V-02-chatbot.html" class="is-placeholder"><span class="global-nav__index">02</span><span>Chatbot</span></a></li>
+                <li><a href="V-03-hero.html"    class="is-placeholder"><span class="global-nav__index">03</span><span>Hero</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+      </ul>
+    </nav>
+
+    <a href="#" class="global-nav__chip" aria-label="Design system version">v1.0</a>
+
+  </div>
+</header>
+<main class="shell" id="top">
+
+  <!-- ========================== HERO ========================== -->
+  <section class="hero">
+    <div>
+      <h1 class="h1 reveal">
+        <span class="num">III-16 / Components</span>
+        Search toolbar.
+      </h1>
+    </div>
+    <div>
+      <p class="lede reveal">
+        The horizontal control strip that sits above a list view.
+        Three slots: an exposed search input, a row of applied-filter
+        chips, and a <code>+ Filter</code> trigger that opens a
+        two-step facet picker. Sort lives on the table column header,
+        not here. The applied filters carry no counts — a count per
+        chip would force a per-facet aggregate query before first
+        paint, which the catalogue can't afford as it grows.
+      </p>
+    </div>
+
+    <dl class="meta-strip reveal">
+      <div><dt>Component</dt><dd>Search toolbar</dd></div>
+      <div><dt>Slots</dt><dd>Search · Filters · + Filter</dd></div>
+      <div><dt>Composes</dt><dd>.search-field · .chip · .btn · .input</dd></div>
+      <div><dt>Pattern</dt><dd>Faceted filter picker</dd></div>
+    </dl>
+  </section>
+
+  <!-- ========================== 01 / ANATOMY ========================== -->
+  <section class="chunk" id="anatomy">
+    <header class="chunk-head reveal">
+      <span class="num-tag">01 / Search toolbar — Anatomy</span>
+      <h2 class="h2">Anatomy.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      One flex row. The search slot has a fixed basis on the leading
+      edge. The filters slot grows; chips wrap rather than scroll
+      horizontally. The filter popover hangs off the
+      <code>+ Filter</code> trigger and is absolutely positioned
+      below it; it sits above the data region (z-50) and below the
+      modal layer.
+    </p>
+
+    <!-- Live specimen — resting state, two filters applied. -->
+    <div class="search-toolbar search-toolbar--specimen reveal">
+      <label class="search-field search-toolbar__search">
+        <span class="search-field__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        </span>
+        <input type="search" class="input input--sm search-field__input" placeholder="Search…" />
+      </label>
+
+      <div class="search-toolbar__filters" role="group" aria-label="Filters">
+
+        <button type="button" class="chip chip--removable" aria-label="Edit State filter">
+          <span class="chip__label">
+            <span class="chip__facet">State:</span>
+            <span class="chip__values">Active</span>
+          </span>
+          <span class="chip__trailing" role="button" tabindex="0" aria-label="Remove State filter">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </span>
+        </button>
+
+        <button type="button" class="chip chip--removable" aria-label="Edit Owner filter">
+          <span class="chip__label">
+            <span class="chip__facet">Owner:</span>
+            <span class="chip__values">Minh, Hanh<span class="chip__more">+1</span></span>
+          </span>
+          <span class="chip__trailing" role="button" tabindex="0" aria-label="Remove Owner filter">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </span>
+        </button>
+
+        <div class="search-toolbar__add-filter">
+          <button type="button" class="btn btn--ghost btn--sm" aria-haspopup="dialog" aria-expanded="false" aria-controls="anatomy-menu">
+            <span class="btn__leading" aria-hidden="true">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+            </span>
+            <span class="btn__label">Filter</span>
+          </button>
+          <!-- popover closed in the anatomy specimen -->
+        </div>
+
+        <button type="button" class="btn btn--ghost btn--sm search-toolbar__clear">
+          <span class="btn__label">Clear filters</span>
+        </button>
+      </div>
+    </div>
+
+    <p class="usage-note usage-note--below reveal">
+      <strong>Counts on chips are out of contract.</strong> Every
+      consumer of this component is server-paginated; a count per
+      facet would force an aggregate query before first paint. If a
+      page seems to need counts, the user is asking a question the
+      toolbar isn't the right place to answer — point them at a
+      stats view instead.
+    </p>
+  </section>
+
+  <!-- ========================== 02 / STATES ========================== -->
+  <section class="chunk" id="states">
+    <header class="chunk-head reveal">
+      <span class="num-tag">02 / Search toolbar — States</span>
+      <h2 class="h2">States.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      The filter popover has two steps. Step 1 lets the user pick
+      which facet to filter on. Step 2 lets them pick one or more
+      values for that facet, with a search input for long lists and
+      a Clear / Apply footer. Both panels live in the same DOM; the
+      <code>--step-values</code> modifier on
+      <code>.search-toolbar__menu</code> flips which renders.
+    </p>
+
+    <div class="state-grid reveal">
+
+      <!-- Step 1 specimen -->
+      <figure class="state-grid__cell">
+        <figcaption>Popover open · Step 1 · pick a facet</figcaption>
+        <div class="state-grid__stage">
+          <div class="search-toolbar__add-filter">
+            <button type="button" class="btn btn--ghost btn--sm" aria-haspopup="dialog" aria-expanded="true">
+              <span class="btn__leading" aria-hidden="true">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+              </span>
+              <span class="btn__label">Filter</span>
+            </button>
+            <div class="search-toolbar__menu is-open" role="dialog" aria-label="Add filter">
+              <div class="search-toolbar__menu-panel search-toolbar__menu-panel--facets">
+                <div class="search-toolbar__menu-search">
+                  <input type="search" class="input input--sm" placeholder="Find a filter…" />
+                </div>
+                <ul class="search-toolbar__menu-list" role="menu">
+                  <li>
+                    <button type="button" class="search-toolbar__menu-option" role="menuitem">
+                      <span class="search-toolbar__menu-option-label">State</span>
+                      <svg class="search-toolbar__menu-chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 2 8 6 4 10"/></svg>
+                    </button>
+                  </li>
+                  <li>
+                    <button type="button" class="search-toolbar__menu-option" role="menuitem">
+                      <span class="search-toolbar__menu-option-label">Owner</span>
+                      <svg class="search-toolbar__menu-chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 2 8 6 4 10"/></svg>
+                    </button>
+                  </li>
+                  <li>
+                    <button type="button" class="search-toolbar__menu-option" role="menuitem">
+                      <span class="search-toolbar__menu-option-label">Tag</span>
+                      <svg class="search-toolbar__menu-chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 2 8 6 4 10"/></svg>
+                    </button>
+                  </li>
+                  <li>
+                    <button type="button" class="search-toolbar__menu-option" role="menuitem">
+                      <span class="search-toolbar__menu-option-label">Last updated</span>
+                      <svg class="search-toolbar__menu-chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 2 8 6 4 10"/></svg>
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </figure>
+
+      <!-- Step 2 specimen -->
+      <figure class="state-grid__cell">
+        <figcaption>Popover open · Step 2 · pick values</figcaption>
+        <div class="state-grid__stage">
+          <div class="search-toolbar__add-filter">
+            <button type="button" class="btn btn--ghost btn--sm" aria-haspopup="dialog" aria-expanded="true">
+              <span class="btn__leading" aria-hidden="true">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+              </span>
+              <span class="btn__label">Filter</span>
+            </button>
+            <div class="search-toolbar__menu is-open search-toolbar__menu--step-values" role="dialog" aria-label="Pick values">
+              <div class="search-toolbar__menu-panel search-toolbar__menu-panel--values">
+                <header class="search-toolbar__menu-header">
+                  <button type="button" class="search-toolbar__menu-back" aria-label="Back to filters">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                  </button>
+                  <span class="search-toolbar__menu-heading">Tag</span>
+                </header>
+                <div class="search-toolbar__menu-search">
+                  <input type="search" class="input input--sm" placeholder="Search tags…" />
+                </div>
+                <ul class="search-toolbar__menu-list" role="menu">
+                  <li><label class="search-toolbar__menu-option search-toolbar__menu-option--check"><input type="checkbox" class="search-toolbar__menu-checkbox" checked /><span class="search-toolbar__menu-option-label">Reviewed</span></label></li>
+                  <li><label class="search-toolbar__menu-option search-toolbar__menu-option--check"><input type="checkbox" class="search-toolbar__menu-checkbox" /><span class="search-toolbar__menu-option-label">Needs translation</span></label></li>
+                  <li><label class="search-toolbar__menu-option search-toolbar__menu-option--check"><input type="checkbox" class="search-toolbar__menu-checkbox" /><span class="search-toolbar__menu-option-label">Flagged</span></label></li>
+                  <li><label class="search-toolbar__menu-option search-toolbar__menu-option--check"><input type="checkbox" class="search-toolbar__menu-checkbox" /><span class="search-toolbar__menu-option-label">Draft</span></label></li>
+                  <li><label class="search-toolbar__menu-option search-toolbar__menu-option--check"><input type="checkbox" class="search-toolbar__menu-checkbox" /><span class="search-toolbar__menu-option-label">Archived</span></label></li>
+                </ul>
+                <footer class="search-toolbar__menu-footer">
+                  <button type="button" class="btn btn--ghost btn--sm">Clear</button>
+                  <button type="button" class="btn btn--cta btn--sm">Apply</button>
+                </footer>
+              </div>
+            </div>
+          </div>
+        </div>
+      </figure>
+
+    </div>
+  </section>
+
+  <!-- ========================== 03 / TOKENS ========================== -->
+  <section class="chunk" id="tokens">
+    <header class="chunk-head reveal">
+      <span class="num-tag">03 / Search toolbar — Tokens</span>
+      <h2 class="h2">Tokens.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      All component tokens reference semantic tokens — none reach
+      into primitives. Tokens are grouped by slot: row, search,
+      filters, menu, option.
+    </p>
+
+    <table class="token-table reveal">
+      <thead>
+        <tr><th>Token</th><th>Resolves to</th></tr>
+      </thead>
+      <tbody>
+        <tr><th colspan="2">Row</th></tr>
+        <tr><td><code>--search-toolbar-gap</code></td><td><code>var(--space-tier-4)</code></td></tr>
+        <tr><td><code>--search-toolbar-pad-x</code></td><td><code>var(--space-page-x)</code></td></tr>
+        <tr><td><code>--search-toolbar-pad-y</code></td><td><code>var(--space-tier-4)</code></td></tr>
+        <tr><td><code>--search-toolbar-pad-y-bottom</code></td><td><code>var(--space-tier-5)</code></td></tr>
+        <tr><td><code>--search-toolbar-border</code></td><td><code>var(--border-default-subtle)</code></td></tr>
+        <tr><th colspan="2">Menu (popover)</th></tr>
+        <tr><td><code>--search-toolbar-menu-w</code></td><td>280px</td></tr>
+        <tr><td><code>--search-toolbar-menu-max-h</code></td><td>360px</td></tr>
+        <tr><td><code>--search-toolbar-menu-radius</code></td><td><code>var(--radius-md)</code></td></tr>
+        <tr><td><code>--search-toolbar-menu-bg</code></td><td><code>var(--background-default)</code></td></tr>
+        <tr><td><code>--search-toolbar-menu-border</code></td><td><code>var(--border-default)</code></td></tr>
+        <tr><td><code>--search-toolbar-menu-shadow</code></td><td><code>var(--shadow-lg)</code></td></tr>
+        <tr><td><code>--search-toolbar-menu-offset</code></td><td><code>var(--space-tier-7)</code></td></tr>
+        <tr><td><code>--search-toolbar-menu-z</code></td><td>50</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</main>
+
+<script>
+/* =========================================================
+   REVEAL ON SCROLL
+   ========================================================= */
+function initReveal() {
+  const items = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    items.forEach(el => el.classList.add('in'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        en.target.classList.add('in');
+        io.unobserve(en.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(el => io.observe(el));
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initReveal();
+});
+</script>
+
+</body>
+</html>

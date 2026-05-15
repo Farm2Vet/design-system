@@ -37,6 +37,7 @@ PAGES = [
     "III-13-chip.html",
     "III-14-tabs.html",
     "III-15-table.html",
+    "III-16-search-toolbar.html",
     "IV-01-logo.html",
     "IV-02-icons.html",
     "IV-03-images.html",
@@ -88,6 +89,7 @@ NAV_MARKUP = '''<!-- ========================== GLOBAL NAV =====================
                 <li><a href="III-13-chip.html"><span class="global-nav__index">13</span><span>Chip</span></a></li>
                 <li><a href="III-14-tabs.html"><span class="global-nav__index">14</span><span>Tabs</span></a></li>
                 <li><a href="III-15-table.html"><span class="global-nav__index">15</span><span>Table</span></a></li>
+                <li><a href="III-16-search-toolbar.html"><span class="global-nav__index">16</span><span>Search Toolbar</span></a></li>
               </ul>
             </div>
           </div>

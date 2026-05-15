@@ -1,0 +1,263 @@
+/* =========================================================
+   COMPONENT — SEARCH TOOLBAR
+   The horizontal control strip that sits above a list view.
+   Composes four slots, left → right:
+
+     · Search    — exposed input, always visible.
+     · Filters   — applied .chip.chip--removable instances +
+                   a "+ Filter" trigger that opens __menu +
+                   a "Clear filters" link revealed when any
+                   filter is applied or the search has a
+                   value.
+     · Spacer    — implicit (filters slot grows).
+     · Actions   — sort dropdown, saved-views dropdown,
+                   save-current-view button.
+
+   The filter popover (__menu) is part of this component.
+   Its two panels — facets (step 1) and values (step 2) —
+   live in the same DOM; CSS toggles which is visible via
+   .search-toolbar__menu--step-values on the popover.
+
+   The component composes primitives: .search-field for the
+   input, .chip.chip--removable for applied filters, .input
+   for search rows inside the popover, .btn for triggers and
+   footer actions, .dropdown for the sort and views menus.
+   It does NOT redeclare any of their visuals.
+
+   Depends on: tokens.css, base.css (surface tokens), and
+   the canonical .search-field / .chip / .input / .btn /
+   .dropdown component CSS files at the consuming page.
+   ========================================================= */
+:root {
+  /* ---------- Row ---------- */
+  --search-toolbar-gap:           var(--space-tier-4);
+  --search-toolbar-pad-x:         var(--space-page-x);
+  --search-toolbar-pad-y:         var(--space-tier-4);
+  --search-toolbar-pad-y-bottom:  var(--space-tier-5);
+  --search-toolbar-border:        var(--border-default-subtle);
+
+  /* ---------- Search slot ---------- */
+  --search-toolbar-search-w:      240px;
+  --search-toolbar-search-w-sm:   180px;
+
+  /* ---------- Filters slot ---------- */
+  --search-toolbar-filters-gap:   var(--space-gap-micro);
+
+  /* ---------- Add-filter trigger ---------- */
+  --search-toolbar-trigger-fg:    var(--text-default-subtle);
+
+  /* ---------- Menu (popover) ---------- */
+  --search-toolbar-menu-w:        280px;
+  --search-toolbar-menu-max-h:    360px;
+  --search-toolbar-menu-radius:   var(--radius-md);
+  --search-toolbar-menu-bg:       var(--background-default);
+  --search-toolbar-menu-border:   var(--border-default);
+  --search-toolbar-menu-shadow:   var(--shadow-lg);
+  --search-toolbar-menu-pad-x:    var(--spacing-3x);
+  --search-toolbar-menu-pad-y:    var(--spacing-2x);
+  --search-toolbar-menu-offset:   var(--space-tier-7);
+  --search-toolbar-menu-z:        50;
+
+  /* ---------- Menu option ---------- */
+  --search-toolbar-option-pad-y:  var(--spacing-2x);
+  --search-toolbar-option-radius: var(--radius-sm);
+  --search-toolbar-option-fg:     var(--text-default);
+  --search-toolbar-option-mute:   var(--text-default-minimal);
+  --search-toolbar-option-hover:  var(--background-default-hover);
+}
+
+/* =========================================================
+   BLOCK
+   ========================================================= */
+.search-toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--search-toolbar-gap);
+  padding: var(--search-toolbar-pad-y) var(--search-toolbar-pad-x)
+           var(--search-toolbar-pad-y-bottom);
+  border-bottom: var(--border-width-base) solid var(--search-toolbar-border);
+}
+
+/* =========================================================
+   SEARCH SLOT — wraps a .search-field instance.
+   ========================================================= */
+.search-toolbar__search {
+  flex: 0 0 var(--search-toolbar-search-w);
+  min-width: 0;
+}
+@media (max-width: 1100px) {
+  .search-toolbar__search { flex-basis: var(--search-toolbar-search-w-sm); }
+}
+
+/* =========================================================
+   FILTERS SLOT — applied chips + "+ Filter" trigger +
+   "Clear filters" affordance. Grows to fill the middle;
+   chips wrap rather than horizontally scrolling.
+   ========================================================= */
+.search-toolbar__filters {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--search-toolbar-filters-gap);
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* "+ Filter" trigger + popover anchor.
+   The wrapper is the positioning context for __menu. */
+.search-toolbar__add-filter {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* "Clear filters" — revealed via :has() when at least one
+   removable chip is in the row OR the search input has a
+   value. Removable chips don't carry aria-pressed (their
+   existence IS the applied state), so the selector keys
+   off .chip--removable. */
+.search-toolbar__clear { display: none; }
+.search-toolbar:has(.chip--removable) .search-toolbar__clear,
+.search-toolbar:has(.search-field__input:not(:placeholder-shown)) .search-toolbar__clear {
+  display: inline-flex;
+}
+
+/* =========================================================
+   MENU (popover) — facets panel + values panel
+   Open state: .is-open. Step: .search-toolbar__menu--step-values
+   flips from facets (default) to values.
+   ========================================================= */
+.search-toolbar__menu {
+  position: absolute;
+  top: calc(100% + var(--search-toolbar-menu-offset));
+  left: 0;
+  z-index: var(--search-toolbar-menu-z);
+  width: var(--search-toolbar-menu-w);
+  max-height: var(--search-toolbar-menu-max-h);
+  background: var(--search-toolbar-menu-bg);
+  border: var(--border-width-base) solid var(--search-toolbar-menu-border);
+  border-radius: var(--search-toolbar-menu-radius);
+  box-shadow: var(--search-toolbar-menu-shadow);
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: var(--font-sans);
+  font-size: var(--text-body-sm);
+  color: var(--text-default);
+}
+.search-toolbar__menu.is-open { display: flex; }
+
+/* Panels — both live in the DOM; only one renders.
+   Facets panel is the default; --step-values flips to values. */
+.search-toolbar__menu-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.search-toolbar__menu-panel--values { display: none; }
+.search-toolbar__menu--step-values .search-toolbar__menu-panel--facets { display: none; }
+.search-toolbar__menu--step-values .search-toolbar__menu-panel--values { display: flex; }
+
+/* Header — values panel only — back arrow + facet name */
+.search-toolbar__menu-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2x);
+  padding: var(--search-toolbar-menu-pad-y) var(--search-toolbar-menu-pad-x);
+  border-bottom: var(--border-width-base) solid var(--border-default-subtle);
+}
+.search-toolbar__menu-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-sm);
+  color: var(--text-default-subtle);
+  cursor: pointer;
+  transition: background-color .15s ease, color .15s ease;
+}
+.search-toolbar__menu-back:hover {
+  background: var(--search-toolbar-option-hover);
+  color: var(--text-default);
+}
+.search-toolbar__menu-back svg { width: 14px; height: 14px; }
+.search-toolbar__menu-heading {
+  font-weight: var(--font-weight-medium);
+  color: var(--text-default);
+}
+
+/* Search row — composes the canonical .input input--sm.
+   This element is positioning only. */
+.search-toolbar__menu-search {
+  padding: var(--search-toolbar-menu-pad-y) var(--search-toolbar-menu-pad-x);
+  border-bottom: var(--border-width-base) solid var(--border-default-subtle);
+}
+
+/* Option list — scrolls when content overflows. */
+.search-toolbar__menu-list {
+  list-style: none;
+  margin: 0;
+  padding: var(--spacing-1x);
+  overflow-y: auto;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+.search-toolbar__menu-option {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2x);
+  width: 100%;
+  padding: var(--search-toolbar-option-pad-y) var(--spacing-2x);
+  border: none;
+  background: transparent;
+  border-radius: var(--search-toolbar-option-radius);
+  font: inherit;
+  color: var(--search-toolbar-option-fg);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color .15s ease;
+}
+.search-toolbar__menu-option:hover { background: var(--search-toolbar-option-hover); }
+.search-toolbar__menu-option:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--background-primary-subtle);
+}
+.search-toolbar__menu-option-label {
+  flex: 1 1 auto;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.search-toolbar__menu-chev {
+  width: 12px;
+  height: 12px;
+  color: var(--search-toolbar-option-mute);
+  flex-shrink: 0;
+}
+
+/* Checkbox option row (values panel) — the <label> is the
+   whole row so the entire row is clickable. */
+.search-toolbar__menu-option--check { cursor: pointer; }
+.search-toolbar__menu-checkbox {
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  flex-shrink: 0;
+  accent-color: var(--background-primary);
+}
+
+/* Footer — values panel only — Clear / Apply.
+   Buttons inside are canonical .btn instances. */
+.search-toolbar__menu-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-2x);
+  padding: var(--search-toolbar-menu-pad-y) var(--search-toolbar-menu-pad-x);
+  border-top: var(--border-width-base) solid var(--border-default-subtle);
+}

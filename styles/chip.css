@@ -192,3 +192,35 @@
 .chip--removable .chip__trailing:hover {
   background: var(--background-default-hover);
 }
+
+/* =========================================================
+   ELEMENTS — applied-filter shape (composes with --removable)
+   When a chip carries .chip--removable it doubles as an
+   "applied filter" pill: facet label + value summary +
+   trailing dismiss. These three elements compose inside
+   .chip__label and only have weight here — toggle chips
+   keep using a plain string inside .chip__label.
+
+   Reading order: "{facet}: {values}". The facet name reads
+   muted so the values carry the eye; "+N" is the overflow
+   summary when more values are selected than fit inline.
+   ========================================================= */
+.chip__facet {
+  color: var(--text-default-minimal);
+  font-weight: var(--font-weight-medium);
+  margin-right: var(--spacing-1x);
+}
+.chip__values {
+  color: var(--text-default);
+}
+.chip__more {
+  color: var(--text-default-minimal);
+  margin-left: var(--spacing-1x);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The × glyph reads a hair lighter than the values so the
+   dismiss target doesn't shout — and brightens on hover so
+   the user knows the trailing region is hot. */
+.chip--removable .chip__trailing svg { color: var(--text-default-minimal); }
+.chip--removable .chip__trailing:hover svg { color: var(--text-default); }

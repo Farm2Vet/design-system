@@ -20,7 +20,8 @@
 
    Depends on: tokens.css, base.css, typography.css,
                form.css, dropdown.css, button.css, badge.css,
-               sidebar.css, tabs.css, table.css, modal.css
+               sidebar.css, table.css, modal.css,
+               chip.css, search-toolbar.css
    ========================================================= */
 
 /* =========================================================
@@ -161,91 +162,6 @@ body::before { content: none; }
     margin: 0;
     font-size: var(--text-body-sm);
     color: var(--text-default-subtle);
-}
-
-/* =========================================================
-   TOOLBAR — search (left) · filter chips (middle) · utility (right)
-   Positioning only. The .search-field, .chip and .dropdown
-   components own their visuals.
-   ========================================================= */
-.app-shell__toolbar {
-    display: flex;
-    align-items: center;
-    gap: var(--space-tier-4);
-    padding: var(--space-tier-4) var(--space-page-x) var(--space-tier-5);
-    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
-}
-
-/* Search slot · fixed-ish width on the leading edge */
-.app-shell__toolbar-search {
-    flex: 0 0 240px;
-    min-width: 0;
-}
-@media (max-width: 1100px) {
-    .app-shell__toolbar-search { flex-basis: 180px; }
-}
-
-/* Filter slot · grows to fill the middle, chips wrap if the row
-   gets tight rather than horizontally scrolling. */
-.app-shell__toolbar-filters {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: var(--space-gap-micro);
-    flex: 1 1 auto;
-    min-width: 0;
-}
-
-/* Clear filters · hidden at rest, revealed when any chip is on
-   OR when the search input has a value. The :has() chain reads
-   from the toolbar wrapper so a query in the search field also
-   surfaces the link. */
-.app-shell__toolbar-clear { display: none; }
-.app-shell__toolbar:has(.chip[aria-pressed="true"]) .app-shell__toolbar-clear,
-.app-shell__toolbar:has(.chip.is-active) .app-shell__toolbar-clear,
-.app-shell__toolbar:has(.search-field__input:not(:placeholder-shown)) .app-shell__toolbar-clear {
-    display: inline-flex;
-}
-
-/* Utility slot · sort + views + new-view, square 32 px icon
-   triggers (matches .app-pager__btn). */
-.app-shell__toolbar-actions {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-tier-7);
-    flex: 0 0 auto;
-}
-.app-shell__toolbar-sort > .dropdown__trigger,
-.app-shell__toolbar-new-view {
-    width: 2rem;
-    min-width: 2rem;
-    height: 2rem;
-    padding: 0;
-    flex-shrink: 0;
-    justify-content: center;
-}
-.app-shell__toolbar-sort > .dropdown__trigger .icon,
-.app-shell__toolbar-new-view .icon {
-    width: 16px;
-    height: 16px;
-}
-
-/* Sort menu — same right-align fix as before. */
-.app-shell__toolbar-sort .dropdown__menu {
-    left: auto;
-    right: 0;
-    width: max-content;
-    min-width: 14rem;
-}
-
-/* Views menu — also right-aligns to its trigger; default
-   .dropdown__menu left/right stretch doesn't make sense for
-   a trigger this far right. */
-.app-shell__toolbar-views .dropdown__menu {
-    left: auto;
-    right: 0;
-    width: max-content;
-    min-width: 16rem;
 }
 
 /* =========================================================

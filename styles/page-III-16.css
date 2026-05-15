@@ -1,0 +1,55 @@
+/* =========================================================
+   PAGE — III-16 SEARCH TOOLBAR
+   Demo-stage scaffolding only. The .search-toolbar component
+   owns its own visuals; this file adds:
+
+     · A bordered "specimen" frame around the resting-state
+       toolbar so it reads as a contained example, not a real
+       page toolbar (which would span edge to edge).
+     · A vertically-stacked state-grid for popover-open specimens
+       (step 1 above step 2).
+
+   Depends on: tokens.css
+   ========================================================= */
+
+/* Specimen frame for the in-line .search-toolbar demo so it
+   reads as a documented example rather than a real toolbar
+   slot. Restores a left + right inset (the component's own
+   padding uses --space-page-x for live pages). */
+.search-toolbar--specimen {
+  padding-left: var(--space-tier-4);
+  padding-right: var(--space-tier-4);
+  border: var(--border-width-base) solid var(--border-default-subtle);
+  border-radius: var(--radius-md);
+  background: var(--background-default);
+  margin: var(--space-tier-4) 0;
+}
+
+/* Vertical stack of popover-open specimens — step 1, then
+   step 2. Side-by-side made the popovers feel cramped at
+   420px tall each; sequential reads more naturally and
+   doesn't compete for horizontal space. */
+.state-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-tier-3);
+  margin: var(--space-tier-4) 0;
+}
+.state-grid__cell {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-tier-7);
+}
+.state-grid__cell figcaption {
+  font-size: var(--text-body-sm);
+  color: var(--text-default-subtle);
+  font-weight: var(--font-weight-medium);
+}
+.state-grid__stage {
+  border: var(--border-width-base) solid var(--border-default-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-tier-3);
+  min-height: 420px;
+  background: var(--background-default-subtle);
+}
