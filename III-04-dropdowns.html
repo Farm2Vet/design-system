@@ -136,14 +136,13 @@
     </div>
     <div>
       <p class="lede reveal">
-        The system's selector. <code>.dropdown</code> is used on every form,
-        filter, and picker across the product — it carries the brand into
-        the most-touched surface in any UI, with primary-tinted option
-        highlights, a checkmark on the active choice, and a 180ms
-        slide-fade-down on open. Sized through the same
-        <code>--form-*</code> token rail as the rest of the form family, so
-        it sits flush next to a text input or date picker without any
-        sizing drift.
+        The system's single-choice selector. <code>.dropdown</code> appears
+        on every form, filter, and picker. The component renders
+        primary-tinted option highlights, a checkmark on the active choice,
+        and a 180 ms slide-and-fade animation on open. Sized through the
+        same <code>--form-*</code> token rail as the rest of the form
+        family, so the closed control sits flush next to a text input or
+        date picker.
       </p>
     </div>
 
@@ -168,9 +167,11 @@
 
     <div class="usage-note usage-note--below reveal">
       <p>
-        <strong>Use <code>.dropdown</code> on every product surface a user will actually see.</strong>
-        The dropdown is the brand's most repeated micro-interaction —
-        opening it should feel like F2V, not like the OS.
+        <strong>Use <code>.dropdown</code> on every product surface.</strong>
+        Native <code>&lt;select&gt;</code> elements render with
+        browser-default chrome and break visual continuity with the rest
+        of the form layer; <code>.dropdown</code> is the canonical
+        replacement.
       </p>
       <ul>
         <li>Intake forms — new patient, new visit, new case.</li>
@@ -191,9 +192,8 @@
     </header>
 
     <p class="section-lede reveal">
-      Three variants, each tuned to a distinct user task: making a
-        first-time choice, revising a saved value, or weighing options with
-        explanatory copy.
+      Three variants, one per task: choosing for the first time, revising
+        a saved value, or selecting from options that need an explanation.
     </p>
 
     <div class="form-variant-grid reveal">
@@ -562,16 +562,16 @@
 
     <p class="usage-note usage-note--below reveal">
       <strong>Override at the component-token layer, never at the call site.</strong>
-      Trigger tokens re-export the <code>--form-*</code> chain so a closed
-      dropdown sits flush next to a text input or date picker — change
-      those on <code>:root</code> in the form layer and every form
-      control follows. The menu surface sits on the semantic background
-      rail (<code>--background-default</code> / <code>--border-default</code>)
-      because it's a content-grade selection surface, not chrome — solid
-      over any backdrop, no tint pickup. Option and motion tokens are
-      dedicated to this component; tune
-      <code>--dropdown-anim-easing</code> once and every dropdown across
-      the product opens with the same cadence.
+      Trigger tokens re-export the <code>--form-*</code> chain, so a closed
+      dropdown sits flush next to a text input or date picker; changing
+      those tokens on <code>:root</code> in the form layer updates every
+      form control. The menu surface sits on the semantic background rail
+      (<code>--background-default</code> / <code>--border-default</code>)
+      because the menu is a content surface rather than chrome and must
+      remain opaque on any backdrop. Option and motion tokens are
+      dedicated to this component. Adjusting
+      <code>--dropdown-anim-easing</code> updates the open animation
+      across every dropdown in the product.
     </p>
   </section>
 

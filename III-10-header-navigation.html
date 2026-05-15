@@ -137,16 +137,16 @@
     <div>
       <p class="lede reveal">
         The page chrome rendered at the top of every documentation
-        page. A composition of three floating glass islands — the
-        brand on the left, the sections pill on the right, and a
-        compact version chip in the corner — held by a transparent
-        sticky bar. Multi-page sections expand a right-anchored
-        floating panel that sits just below the sections island
-        with a small breathing gap between them; the sections
+        page. Three floating glass elements held by a transparent
+        sticky bar: a brand mark anchored to the inner-left padding,
+        a sections pill anchored to the right, and a version chip in
+        the trailing corner. Multi-page sections expand a
+        right-anchored floating panel that sits just below the
+        sections island with a small visible gap; the sections
         island alone densifies on open, anchoring the panel to its
-        trigger across the gap as one material event. The bar
-        itself never carries surface — only the islands and the
-        panel do.
+        trigger across the gap as one material event. The bar itself
+        carries no surface — background, blur, border, and shadow
+        are on the islands and the panel.
       </p>
     </div>
 
@@ -220,13 +220,13 @@
     </header>
 
     <p class="section-lede reveal">
-      Three islands compose the bar. The brand drifts to the
+      Three elements compose the bar. The brand sits at the
       left edge of the bar's inner padding via margin-right:auto;
-      the sections pill and the version chip cluster on the
-      right. Each island declares its own glass anatomy and
-      its own state machine — none of them shares chrome with
-      its neighbours, and none of them reacts to events on
-      another island.
+      the sections pill and the version chip sit on the right.
+      Each element declares its own glass anatomy and its own
+      state machine. The three are independent: no shared
+      chrome, and no event on one element triggers a state
+      change on another.
     </p>
 
     <div class="island-anatomy reveal" aria-label="Three-island composition">
@@ -267,9 +267,10 @@
     <p class="usage-note reveal">
       Brand uses the <code>light · light</code> glass tier;
       sections and chip use the lighter <code>light · clear</code>
-      tier. The contrast pulls the eye to the brand
-      first and lets the sections pill behave as the
-      navigational workhorse without competing for attention.
+      tier. The contrast directs attention to the brand first
+      and keeps the sections pill at a lower visual weight, so
+      navigation does not compete with brand identity for the
+      user's first read.
     </p>
   </section>
 

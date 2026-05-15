@@ -13,6 +13,31 @@
    ========================================================= */
 
 /* =========================================================
+   USAGE-NOTE LIST — definition-list variant
+   The variant guidance under "Match the variant to the
+   surface" renders as a <dl class="usage-note usage-note--list">
+   so each variant gets its own term/description row instead
+   of a parallel-rhythm prose sentence. Inherits font, colour,
+   max-width, padding, and border-left from .usage-note in
+   page-III-03.css; this rule only fills in the dt/dd
+   typography and row rhythm.
+   ========================================================= */
+.usage-note--list {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    column-gap: var(--space-tier-4);
+    row-gap: var(--space-tier-7);
+}
+.usage-note--list dt {
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-default);
+}
+.usage-note--list dd {
+    margin: 0;
+    color: var(--text-default-subtle);
+}
+
+/* =========================================================
    VARIANT CARD — wide demo column for tabs
    The form-variant-card has a fixed two-column layout
    with the demo capped at 720px. Tabs need a wider demo

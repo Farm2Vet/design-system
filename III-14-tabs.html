@@ -282,22 +282,28 @@
     </header>
 
     <p class="section-lede reveal">
-      Five visual variants. Every variant honours the same ARIA roles,
-        the same keyboard model, and the same token chain — only the
-        surface treatment and the indicator strategy change. Picking a
-        variant is a layout decision, not a behavioural one.
+      Five visual variants. The ARIA roles, the keyboard model, and the
+        token chain are identical across variants; only the surface
+        treatment and the indicator strategy change. Picking a variant
+        is a layout decision, not a behavioural one.
     </p>
 
     <p class="usage-note reveal">
       <strong>Match the variant to the surface, not to the importance of
-      the choice.</strong> Line is the product default — quiet underline,
-      reads on any background. Enclosed is reserved for tabs that must
-      visually attach to a bordered card. Pill belongs on inverted or
-      glass surfaces where an underline gets lost. Segmented is the
-      treatment of choice for tab strips of three to five short labels in
-      a toolbar. Vertical is for settings panels and doc layouts where
-      labels are long enough to justify the column.
+      the choice.</strong>
     </p>
+    <dl class="usage-note usage-note--list reveal">
+      <dt>Line</dt>
+      <dd>The product default. The underlined indicator is low contrast and reads on any background.</dd>
+      <dt>Enclosed</dt>
+      <dd>Reserved for tabs that must visually attach to a bordered card.</dd>
+      <dt>Pill</dt>
+      <dd>For inverted or glass surfaces, where an underline becomes hard to see.</dd>
+      <dt>Segmented</dt>
+      <dd>For tab strips of three to five short labels inside a toolbar.</dd>
+      <dt>Vertical</dt>
+      <dd>For settings panels and long-form documentation, where labels are long enough to justify the column.</dd>
+    </dl>
 
     <div class="form-variant-grid reveal">
 
@@ -728,9 +734,11 @@
       precise control. Mirror the current page in the input's
       <code>placeholder</code> so the field reads as state, not as an
       empty form. Clamp out-of-range submissions silently to
-      <code>[1, max]</code> — never reject with an error message;
-      pagination is a quiet surface and a thrown error here reads as
-      user-blame for a fat-finger.
+      <code>[1, max]</code> rather than rejecting with an error
+      message. The pagination footer is a low-attention surface; an
+      error in this position is disproportionate to the cost of a
+      typo and is read as user error rather than as a recoverable
+      correction.
     </p>
 
     <div class="form-version-stage reveal">
