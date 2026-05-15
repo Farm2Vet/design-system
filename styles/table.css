@@ -58,7 +58,7 @@
     --table-bg:                 var(--background-default);
     --table-head-bg:            var(--background-accent-subtle);
     --table-head-fg:            var(--text-default-subtle);
-    --table-head-font-size:     var(--text-eyebrow);
+    --table-head-font-size:     var(--text-body-sm);
     --table-head-letter-spacing: 0.04em;
     --table-head-font-weight:   700;
     --table-head-pad-x:         var(--space-tier-4);
@@ -71,7 +71,8 @@
     --table-row-fg-minimal:     var(--text-default-minimal);
     --table-row-pad-x:          var(--space-tier-4);
     --table-row-pad-y:          var(--space-tier-5);
-    --table-row-font-size:      var(--text-body-sm);
+    --table-row-font-size:      var(--text-body);
+    --table-meta-font-size:     var(--text-body-sm);
     --table-row-dim-opacity:    0.55;
 
     --table-mono-font-family:   var(--font-mono);
@@ -145,16 +146,26 @@
     transition: var(--table-transition);
 }
 .table__sort:hover { color: var(--text-default); }
+/* Single Lucide arrow-up glyph (matches the icon style on
+   IV-02-icons.html). Idle: half opacity, points up — reads as a
+   sortable affordance with no direction set. .is-asc lifts opacity
+   to 1; .is-desc lifts opacity and rotates the arrow 180° so it
+   points down. One SVG, one path geometry — direction is a CSS
+   transform, not a different glyph. */
 .table__sort-icon {
     width: var(--table-sort-icon-size);
     height: var(--table-sort-icon-size);
     flex-shrink: 0;
-    opacity: 0.6;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 0.4;
     transition: opacity .15s ease, transform .15s ease;
 }
-.table__sort.is-asc .table__sort-icon,
-.table__sort.is-desc .table__sort-icon { opacity: 1; }
-.table__sort.is-desc .table__sort-icon { transform: rotate(180deg); }
+.table__sort.is-asc  .table__sort-icon { opacity: 1; }
+.table__sort.is-desc .table__sort-icon { opacity: 1; transform: rotate(180deg); }
 
 /* =========================================================
    BODY
@@ -191,7 +202,7 @@
 }
 .table__cell--meta {
     color: var(--table-row-fg-minimal);
-    font-size: var(--text-eyebrow);
+    font-size: var(--table-meta-font-size);
 }
 .table__cell--mono.table__cell--meta { font-weight: 500; }
 .table__cell--num {
@@ -207,7 +218,9 @@
    SIZE — sm (denser)
    ========================================================= */
 .table--sm {
-    --table-head-pad-y: var(--space-tier-7);
-    --table-row-pad-y:  var(--space-tier-6);
-    --table-row-font-size: var(--text-eyebrow);
+    --table-head-pad-y:     var(--space-tier-7);
+    --table-row-pad-y:      var(--space-tier-6);
+    --table-head-font-size: var(--text-eyebrow);
+    --table-row-font-size:  var(--text-body-sm);
+    --table-meta-font-size: var(--text-eyebrow);
 }

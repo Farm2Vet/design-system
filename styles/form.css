@@ -240,6 +240,19 @@
     width: 100%;
 }
 
+/* Suppress the native WebKit / Blink clear-X on the underlying
+   <input type="search">. The .search-field shell provides its own
+   .search-field__clear button, positioned and styled to match the
+   rest of the system; the native button would otherwise paint on
+   top of ours and break alignment. Firefox does not render a
+   native clear button on type="search", so no Gecko reset is
+   needed. */
+.search-field__input.input::-webkit-search-cancel-button,
+.search-field__input.input::-webkit-search-decoration {
+    -webkit-appearance: none;
+    appearance: none;
+}
+
 .search-field__clear {
     position: absolute;
     right: var(--spacing-2x);
