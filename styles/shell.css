@@ -105,11 +105,11 @@
 
 /* =========================================================
    HERO — layout only.
-   The hero heading must carry class="text-display"; sizing,
-   weight, line-height, and tracking are owned by that
-   component class in styles/typography.css. shell.css owns
-   only the grid layout and the in-hero supercaps (.num) and
-   lede (.lede) sub-elements.
+   The hero heading must carry class="h1"; sizing, weight,
+   line-height, and tracking are owned by that component
+   class in styles/typography.css. shell.css owns only the
+   grid layout and the in-hero supercaps (.num) and lede
+   (.lede) sub-elements.
    ========================================================= */
 .hero {
     padding: var(--space-region-y-lg) 0 var(--space-region-y);
@@ -180,7 +180,7 @@ section.chunk {
     padding-bottom: var(--space-flow-heading);
     border-bottom: var(--border-width-base) solid var(--border-default);
 }
-/* Chunk-head heading: must carry class="text-display-sm".
+/* Chunk-head heading: must carry class="h2".
    Sizing, weight, line-height, and tracking are owned by the
    component class in styles/typography.css. The summary lives
    below the header as <p class="section-lede">, not inside it. */
@@ -206,22 +206,21 @@ section.chunk {
 }
 
 /* =========================================================
-   SUBHEADING — section subheadings with optional .tag pill
+   H4 + TAG — heading-with-pill rail.
+   .h4 (and bare <h4>) is a flex baseline row so an optional
+   <span class="tag"> pill can sit beside the heading text.
+   Sizing / weight / color come from the .h4 component class
+   in styles/typography.css.
    ========================================================= */
-.subheading {
-    font-family: var(--font-sans);
-    font-weight: var(--font-weight-semibold);
-    font-size: var(--text-h5);
-    color: var(--text-default);
-    margin-top: var(--space-region-y);
-    margin-bottom: var(--space-flow-heading);
-    display: flex;
+h4,
+.h4 {
+    display:     flex;
     align-items: baseline;
-    gap: var(--space-gap-tight);
+    gap:         var(--space-gap-tight);
 }
-.subheading:first-of-type { margin-top: 0; }
 
-.subheading .tag {
+h4 .tag,
+.h4 .tag {
     font-family:    var(--font-mono);
     font-size:      var(--text-eyebrow);
     font-weight:    var(--font-weight-medium);

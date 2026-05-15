@@ -83,7 +83,7 @@ pages; deviate when the component genuinely needs more (e.g.
 ```
 <header class="global-nav"> … </header>            ← inlined, see below
 <main>
-  <h1 class="text-display">                        ← hero
+  <h1 class="h1">                                  ← hero
     <span class="num">III-{NN} / Components</span>
     {Component name}.
   </h1>

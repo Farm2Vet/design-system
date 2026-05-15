@@ -155,6 +155,18 @@ body::before { content: none; }
     justify-content: center;
 }
 .app-shell__toolbar-sort { width: auto; min-width: auto; flex-shrink: 0; }
+/* The toolbar sort uses an icon-only 32 px trigger (see above),
+   so the canonical .dropdown__menu — which stretches to its
+   wrapper's left/right edges — collapses to 32 px and wraps every
+   option character-by-character. Detach the menu from the wrapper
+   edges, right-align it to the trigger, and give it a width that
+   fits the longest option label. */
+.app-shell__toolbar-sort .dropdown__menu {
+    left: auto;
+    right: 0;
+    width: max-content;
+    min-width: 14rem;
+}
 .app-shell__toolbar-search .icon,
 .app-shell__toolbar-sort > .dropdown__trigger .icon {
     width: 16px;

@@ -124,7 +124,7 @@
   <!-- ========================== HERO ========================== -->
   <section class="hero">
     <div>
-      <h1 class="text-display reveal">
+      <h1 class="h1 reveal">
         <span class="num">III-01 / Components</span>
         Typography <em>components</em>.
       </h1>
@@ -150,7 +150,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">01 / Architecture</span>
-        <h2 class="text-display-sm">Three-layer model.</h2>
+        <h2 class="h2">Three-layer model.</h2>
       </div>
     </header>
 
@@ -174,20 +174,19 @@
         <li>
           <span class="spec-term">Semantic tokens</span> —
           <code>--text-body</code>, <code>--text-eyebrow</code>,
-          <code>--text-h1</code> through <code>--text-h6</code>,
-          <code>--text-display-sm</code>, <code>--text-display</code>.
+          <code>--text-h1</code> through <code>--text-h6</code>.
           Defined in <code>tokens.css</code> under SEMANTIC TOKENS. Each
           semantic token is a <code>var()</code> alias of a primitive.
           Renaming the role here updates every consumer.
         </li>
         <li>
           <span class="spec-term">Component classes</span> —
-          <code>.h1</code>–<code>.h6</code>, <code>.text-display</code>
-          family, <code>.body</code>, <code>.body-sm</code>,
-          <code>.caption</code>, <code>.eyebrow</code>,
-          <code>.text-accent</code>, <code>.italic</code>. Defined in
-          <code>typography.css</code>. Components reference semantic
-          tokens only. Pages apply component classes to markup.
+          <code>.h1</code>–<code>.h6</code>, <code>.body</code>,
+          <code>.body-sm</code>, <code>.caption</code>,
+          <code>.eyebrow</code>, <code>.text-accent</code>,
+          <code>.italic</code>. Defined in <code>typography.css</code>.
+          Components reference semantic tokens only. Pages apply
+          component classes to markup.
         </li>
       </ol>
 
@@ -207,7 +206,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">02 / Semantic tokens</span>
-        <h2 class="text-display-sm">Roles and aliases.</h2>
+        <h2 class="h2">Roles and aliases.</h2>
       </div>
     </header>
 
@@ -237,7 +236,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">03 / Components</span>
-        <h2 class="text-display-sm">Class previews.</h2>
+        <h2 class="h2">Class previews.</h2>
       </div>
     </header>
 
@@ -245,10 +244,11 @@
       Each component class below renders the role at its specified
       size, weight, line-height, and tracking. Apply the class directly
       to the appropriate semantic tag (e.g. <code>&lt;h2 class="h2"&gt;</code>,
-      <code>&lt;p class="body"&gt;</code>). Display-tier classes
-      (<code>.text-display</code> family) are used for hero and
-      chunk-head contexts; the heading classes (<code>.h1</code>–<code>.h6</code>)
-      are used for inline content.
+      <code>&lt;p class="body"&gt;</code>). Each heading class is
+      applied to the matching tag (<code>.h1</code> on
+      <code>&lt;h1&gt;</code>, etc.). The same family covers hero,
+      chunk-head, and inline use; rank is chosen by document outline,
+      visual treatment by class.
     </p>
 
     <div class="component-stack" id="componentStack"></div>
@@ -259,7 +259,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">04 / Heading levels</span>
-        <h2 class="text-display-sm">Semantic specification.</h2>
+        <h2 class="h2">Semantic specification.</h2>
       </div>
     </header>
 
@@ -275,18 +275,14 @@
         <dt><code>&lt;h1&gt;</code> — Page title</dt>
         <dd>
           Exactly one per page. The page's primary heading; almost
-          always the hero. Apply <code>class="text-display"</code> for
-          the page hero treatment, or <code>class="h1"</code> when the
-          page title appears inline within content.
+          always the hero. Apply <code>class="h1"</code>.
         </dd>
 
         <dt><code>&lt;h2&gt;</code> — Top-level section</dt>
         <dd>
           A major section within the page. In the section template,
           this is the chunk-head heading (Color, Spacing, Typography,
-          Shadow). Apply <code>class="text-display-sm"</code> for the
-          chunk-head treatment, or <code>class="h2"</code> for inline
-          section headings.
+          Shadow). Apply <code>class="h2"</code>.
         </dd>
 
         <dt><code>&lt;h3&gt;</code> — Subsection</dt>
@@ -300,8 +296,9 @@
         <dd>
           A grouping within a subsection: <em>Weights</em>,
           <em>Line heights</em>, <em>Letter spacing</em>. Apply
-          <code>class="h4"</code> or <code>class="subheading"</code>
-          when paired with the <code>.tag</code> pill.
+          <code>class="h4"</code>; an optional
+          <code>&lt;span class="tag"&gt;</code> pill sits beside the
+          heading on the same baseline.
         </dd>
 
         <dt><code>&lt;h5&gt;</code>, <code>&lt;h6&gt;</code> — Deep nesting</dt>
@@ -320,7 +317,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">05 / Italic &amp; emphasis</span>
-        <h2 class="text-display-sm">Emphasis.</h2>
+        <h2 class="h2">Emphasis.</h2>
       </div>
     </header>
 
@@ -336,13 +333,14 @@
           The semantic element for emphasis. Use when removing the
           italic would change the sentence's meaning (e.g.
           <em>this</em> is the one that matters). Renders italic by
-          default. Inside a <code>.text-display</code> family heading,
-          <code>&lt;em&gt;</code> additionally receives the brand voice
-          colour (forest green for hero tier, earthy brown for
-          chunk-head tier) by typographic component rule. The italic
-          on display headings is documented as a decorative voice
-          treatment and is not interpreted as stress emphasis by
-          assistive technology in that context.
+          default. Inside an <code>.h1</code> or <code>.h2</code>
+          heading, <code>&lt;em&gt;</code> additionally receives the
+          brand voice colour (forest green on <code>.h1</code>, earthy
+          brown on <code>.h2</code>) by typographic component rule.
+          The italic on heading-tier <code>&lt;em&gt;</code> is
+          documented as a decorative voice treatment and is not
+          interpreted as stress emphasis by assistive technology in
+          that context.
         </dd>
 
         <dt><code>&lt;i&gt;</code> — Alternate voice</dt>
@@ -377,7 +375,7 @@
     <header class="chunk-head reveal">
       <div>
         <span class="num-tag">06 / Colour utilities</span>
-        <h2 class="text-display-sm">Voice and emphasis colour.</h2>
+        <h2 class="h2">Voice and emphasis colour.</h2>
       </div>
     </header>
 
@@ -402,13 +400,13 @@
           <tr>
             <td class="var-name">.text-accent</td>
             <td class="var-value">--text-accent</td>
-            <td>Hero / primary brand voice. Default colour for <code>&lt;em&gt;</code> inside <code>.text-display</code>.</td>
+            <td>Hero / primary brand voice. Default colour for <code>&lt;em&gt;</code> inside <code>.h1</code>.</td>
             <td class="preview"><span class="h3"><span class="text-accent">Combatting AMR</span> on the Farm Frontier</span></td>
           </tr>
           <tr>
             <td class="var-name">.text-emphasis</td>
             <td class="var-value">--text-emphasis</td>
-            <td>Section / chunk-head voice. Default colour for <code>&lt;em&gt;</code> inside <code>.text-display-sm</code>.</td>
+            <td>Section / chunk-head voice. Default colour for <code>&lt;em&gt;</code> inside <code>.h2</code>.</td>
             <td class="preview"><span class="h3"><span class="text-emphasis">Combatting AMR</span> on the Farm Frontier</span></td>
           </tr>
           <tr>
@@ -446,8 +444,7 @@
 
   <!-- ========================== FOOTER ========================== -->
   <footer>
-    <span class="sigil">Farm2Vet — cultivated intelligence, since 2024.</span>
-    <span>End of Section 01b</span>
+    <span>END OF SECTION</span>
   </footer>
 
 </main>
@@ -457,10 +454,8 @@
    DATA
    ========================================================= */
 const SEMANTIC_TOKENS = [
-  ['--text-display',    '--text-7xl', '68.80', 'Page hero / first-fold display heading.'],
-  ['--text-display-sm', '--text-6xl', '57.34', 'Section heading / chunk-head display tier.'],
-  ['--text-h1',         '--text-5xl', '47.78', 'Inline page-title heading (when not using display).'],
-  ['--text-h2',         '--text-4xl', '39.81', 'Inline section heading.'],
+  ['--text-h1',         '--text-5xl', '47.78', 'Page-title heading. Apply via .h1.'],
+  ['--text-h2',         '--text-4xl', '39.81', 'Section heading. Apply via .h2.'],
   ['--text-h3',         '--text-3xl', '33.18', 'Subsection heading; card titles; named groups.'],
   ['--text-h4',         '--text-2xl', '27.65', 'Labelled grouping within a subsection.'],
   ['--text-h5',         '--text-xl',  '23.04', 'Deep-nesting heading; rare.'],
@@ -472,10 +467,8 @@ const SEMANTIC_TOKENS = [
 ];
 
 const COMPONENTS = [
-  { cls: 'text-display',    role: 'hero',                  note: 'Page hero. One per page. <code>&lt;em&gt;</code> wraps accent words to apply italic + accent colour.',                sample: 'Combatting <em>AMR</em> on the Farm Frontier' },
-  { cls: 'text-display-sm', role: 'section / chunk-head',  note: 'Section heading and chunk-head treatment. <code>&lt;em&gt;</code> wraps accent words to apply italic + emphasis colour.', sample: 'Combatting <em>AMR</em> on the Farm Frontier' },
-  { cls: 'h1',  role: 'page title (inline)', note: 'Inline rendering of the page title within content.', sample: 'Combatting AMR on the Farm Frontier' },
-  { cls: 'h2',  role: 'section (inline)',    note: 'Inline section heading; rendered upright by default.', sample: 'Combatting AMR on the Farm Frontier' },
+  { cls: 'h1',  role: 'page title',  note: 'Page hero and page title. Wrap accent words in <code>&lt;em&gt;</code> to apply italic + accent colour.',  sample: 'Combatting <em>AMR</em> on the Farm Frontier' },
+  { cls: 'h2',  role: 'section',     note: 'Section heading and chunk-head. Wrap accent words in <code>&lt;em&gt;</code> to apply italic + emphasis colour.', sample: 'Combatting <em>AMR</em> on the Farm Frontier' },
   { cls: 'h3',  role: 'subsection',          note: 'Card titles, named groups within a section.',       sample: 'Combatting AMR on the Farm Frontier' },
   { cls: 'h4',  role: 'labelled grouping',   note: 'Labelled grouping within a subsection.',            sample: 'Combatting AMR on the Farm Frontier' },
   { cls: 'h5',  role: 'deep nesting',        note: 'Reserved for documentation depth.',                 sample: 'Combatting AMR on the Farm Frontier' },

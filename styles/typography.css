@@ -6,9 +6,9 @@
    ARCHITECTURE
      Primitive (--text-xs..--text-9xl)
         ↑ referenced only by
-     Semantic (--text-body, --text-h1, --text-display, --text-display-sm, …)
+     Semantic (--text-body, --text-h1, --text-h2, …)
         ↑ referenced only by
-     Component (.h1, .text-display, .text-display-sm, .body, .eyebrow, …)
+     Component (.h1, .h2, .body, .eyebrow, …)
 
    CONTRACT
      Every numeric typography value declared in this file MUST
@@ -21,14 +21,14 @@
 
 /* =========================================================
    HEADINGS — semantic tags rendered at their token size.
-   Apply when a heading is used inline in body content
-   (cards, panels, forms). For hero / section headings see
-   the .text-display family below.
+   One heading family covers hero, chunk-head, and inline
+   use. Rank is chosen by document outline; visual treatment
+   by class (.h1 on <h1>, .h2 on <h2>, …).
    ========================================================= */
 .h1 {
     font-family:    var(--font-sans);
     font-size:      var(--text-h1);
-    font-weight:    var(--font-weight-regular);
+    font-weight:    var(--font-weight-semibold);
     line-height:    var(--line-height-heading);
     color:          var(--text-default);
     margin-bottom:  var(--space-flow-heading);
@@ -37,7 +37,7 @@
 .h2 {
     font-family:    var(--font-sans);
     font-size:      var(--text-h2);
-    font-weight:    var(--font-weight-regular);
+    font-weight:    var(--font-weight-semibold);
     line-height:    var(--line-height-heading);
     color:          var(--text-default);
     margin-bottom:  var(--space-flow-element);
@@ -79,47 +79,19 @@
     margin-bottom:  var(--space-flow-tight);
 }
 
-/* =========================================================
-   DISPLAY TIERS — outsized treatments reserved for hero and
-   section / chunk-head contexts. The visual hierarchy above
-   .h1 is a deliberate marketing tier; semantic heading rank
-   (h1/h2/…) remains an independent decision.
-
-     .text-display      hero / page title (first fold)
-     .text-display-sm   section heading, chunk-head
-   ========================================================= */
-.text-display,
-.text-display-sm {
-    font-family:    var(--font-sans);
-    font-weight:    var(--font-weight-regular);
-    line-height:    var(--line-height-display);
-    letter-spacing: var(--letter-spacing-tight);
-    color:          var(--text-default);
-    margin-bottom:  var(--space-flow-heading);
-}
-
-.text-display    { font-size: var(--text-display);    }
-.text-display-sm { font-size: var(--text-display-sm); }
-
-/* Accent words inside a display heading: wrap in <em> to
-   receive the brand italic + voice colour. Italic carries no
-   semantic stress in this context; it is a documented
-   decorative treatment of the display tier. The two display
-   ranks use different voice colours by design:
-
-     .text-display     (hero, page title)        → --text-accent
-     .text-display-sm  (section heading,
-                        chunk-head)               → --text-emphasis
-
-   To override the default voice colour, apply a colour
-   utility (.text-accent / .text-emphasis / .text-secondary)
-   directly on the <em>. See section-01b-typography for the
-   usage specification. */
-.text-display em {
+/* Accent words inside a heading: wrap in <em> to receive the
+   brand italic + voice colour. Italic carries no semantic
+   stress in this context; it is a documented decorative
+   treatment of the heading tier. The two large heading ranks
+   use different voice colours by design:
+     .h1 em → --text-accent     (forest green, page-title voice)
+     .h2 em → --text-emphasis   (earthy brown, section voice)
+*/
+.h1 em {
     font-style: italic;
     color:      var(--text-accent);
 }
-.text-display-sm em {
+.h2 em {
     font-style: italic;
     color:      var(--text-emphasis);
 }
