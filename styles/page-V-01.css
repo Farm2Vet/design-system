@@ -49,17 +49,28 @@ body::before { content: none; }
 
 /* =========================================================
    SIDEBAR SLOT
+   The slot is a bare column — the .sidebar--anchored rail
+   inside provides its own solid surface, flush edge, and
+   trailing-edge shadow. No slot padding, no slot background,
+   no slot border.
+
+   z-index lifts the rail above .app-shell__main so the rail's
+   trailing-edge shadow renders over the content column. Without
+   it, main (the later grid sibling) paints on top of the shadow
+   band and the shadow disappears at the boundary.
    ========================================================= */
 .app-shell__side {
-    padding: var(--space-tier-4);
-    border-right: var(--border-width-base) solid var(--border-default);
-    background: var(--background-default-subtle);
+    padding: 0;
+    position: relative;
+    z-index: 1;
 }
 .app-shell__side .sidebar {
     /* Re-size the rail to the slot's 280-col without touching
        the global token. */
     --sidebar-width-expanded: 100%;
-    min-height: auto;
+    /* Full viewport-height column; min-height: auto on the
+       base rail would let it shrink to content. */
+    min-height: 100vh;
 }
 
 /* =========================================================

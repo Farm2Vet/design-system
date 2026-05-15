@@ -173,6 +173,47 @@
   color: var(--text-inverted);
 }
 
+/* =========================================================
+   TONE MODIFIER — anchored
+   A structural column rail for data-dense product pages
+   (admin dashboards, wikis, consoles) where the floating
+   glass rail reads as noise. The rail flattens to a solid
+   surface, drops its radius and floating four-sided shadow,
+   and locks to the leading edge. A faint one-directional
+   shadow on the trailing edge replaces the column-separator
+   border — the rail elevates *over* main rather than sitting
+   beside it as an equal column.
+
+   The glass-rail rule ("glass always carries shadow, states
+   elevate") doesn't apply here — the anchored rail is
+   explicitly not a glass surface, and its trailing-edge
+   shadow is structural separation, not glass elevation.
+   That's also why the rail does not re-elevate on hover:
+   the rail is a column, not an interactive surface.
+   Item-level visuals (hover, current, icons) are inherited
+   from the base rail.
+   ========================================================= */
+.sidebar--anchored {
+  --sidebar-radius:       0;
+  --sidebar-bg:           var(--background-default-subtle);
+  --sidebar-border:       transparent;
+  /* No inner rim. `none` would invalidate the comma-list
+     shorthand (box-shadow: <shadow>, none is illegal), so a
+     zero-offset transparent shadow stands in as a no-op. */
+  --sidebar-inset:        0 0 transparent;
+  --sidebar-blur:         none;
+  --sidebar-saturate:     none;
+
+  /* Trailing-edge shadow — one-directional (offset-x only),
+     negative spread to keep the bloom tight to the right edge,
+     low alpha to read as separation rather than elevation.
+     Resting === hover (the rail is structural). */
+  --sidebar-shadow:
+      6px 0 14px -6px color-mix(in srgb, var(--glass-shadow-ink) 12%, transparent),
+      2px 0  4px -2px color-mix(in srgb, var(--glass-shadow-ink)  6%, transparent);
+  --sidebar-shadow-hover: var(--sidebar-shadow);
+}
+
 /* ---------- Header slot ---------- */
 .sidebar__header {
   display: flex;
