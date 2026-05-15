@@ -35,15 +35,42 @@ body::before { content: none; }
 /* =========================================================
    APP SHELL — sidebar | main grid. No top app bar lives
    above the shell, so the grid takes the full viewport.
+
+   The grid column tracks the sidebar's collapsed state via
+   :has(). When .sidebar--collapsed is toggled (by
+   scripts/sidebar.js), the column resolves from
+   --sidebar-width-expanded (280px) to --sidebar-width-rail
+   (64px) and main reflows into the freed space. Without
+   this, the slot would stay at the expanded width and leave
+   a dead gap between the collapsed rail and main.
+
+   Width tokens are read from :root (sidebar.css) — the local
+   override `--sidebar-width-expanded: 100%` on
+   `.app-shell__side .sidebar` only re-scopes the rail's own
+   width inside the slot, it does not cascade up to
+   .app-shell, so the root 280px / 64px values still resolve
+   here.
    ========================================================= */
 .app-shell {
     display: grid;
-    grid-template-columns: 280px minmax(0, 1fr);
+    grid-template-columns: var(--sidebar-width-expanded) minmax(0, 1fr);
     min-height: 100vh;
     background: var(--background-default);
+    /* Match the rail's own width transition so the column
+       animates in lock-step with the rail. */
+    transition: grid-template-columns .22s cubic-bezier(.2,.8,.2,1);
+}
+.app-shell:has(.sidebar--collapsed) {
+    grid-template-columns: var(--sidebar-width-rail) minmax(0, 1fr);
 }
 @media (max-width: 880px) {
-    .app-shell { grid-template-columns: 1fr; }
+    /* Below the sidebar breakpoint the rail is hidden, so the
+       collapsed-state column override must also collapse to a
+       single content column — otherwise :has() (which has
+       higher specificity than the base .app-shell rule) would
+       keep the 64px column even with .app-shell__side hidden. */
+    .app-shell,
+    .app-shell:has(.sidebar--collapsed) { grid-template-columns: 1fr; }
     .app-shell__side { display: none; }
 }
 
