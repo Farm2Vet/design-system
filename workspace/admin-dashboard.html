@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin · Overview — Farm2Vet</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<!-- I. Primitives + II. Semantics -->
+<link rel="stylesheet" href="../styles/tokens.css" />
+<link rel="stylesheet" href="../styles/base.css" />
+<link rel="stylesheet" href="../styles/typography.css" />
+
+<!-- III. Components -->
+<link rel="stylesheet" href="../styles/button.css" />
+<link rel="stylesheet" href="../styles/card.css" />
+<link rel="stylesheet" href="../styles/sidebar.css" />
+<link rel="stylesheet" href="../styles/badge.css" />
+<link rel="stylesheet" href="../styles/form.css" />
+<link rel="stylesheet" href="../styles/chip.css" />
+<link rel="stylesheet" href="../styles/global-nav.css" />
+
+<style>
+/* =========================================================
+   ADMIN DASHBOARD — workspace mockup
+   Built only from I-IV (tokens, semantics, III-* components,
+   IV-* logo asset). No mockup-page CSS imported; layout is
+   authored locally so the dashboard reads as a fresh
+   composition, not a copy of V-01-wiki.
+
+   The body inherits the design-system ambient ::before from
+   base.css — that's what gives the glass sidebar and glass
+   cards real backdrop texture to blur against. The dashboard
+   shell is a two-column grid: floating glass sidebar in the
+   leading column, scrollable main column trailing.
+   ========================================================= */
+
+/* =========================================================
+   GLASSMORPHISM BACKDROP — conic gradient swirl
+   A single large conic-gradient cycling through six brand
+   colors, anchored off-centre, then heavily blurred. The
+   conic creates a rotation of color around the anchor; the
+   blur dissolves the radial spokes into a smooth aurora
+   vortex. Reads as one continuous swirl behind the glass.
+
+   Why this works for glass:
+   1. Continuous rotation — radial blobs and meshes give
+      the page discrete color regions; a conic swirl gives
+      it *flow*. Glass surfaces over the swirl pick up a
+      diagonal hue gradient that shifts as you move from
+      one side of the card to the other. That continuous
+      shift is what sells the swirl as a single light
+      source rather than a collection of patches.
+   2. Off-centre anchor (75% 25%) — a centred swirl reads
+      as a target / bullseye. Pushing the rotation centre
+      into the upper-right corner makes the page feel like
+      it's lit by a single off-screen sun, with the colors
+      flowing diagonally away from that point.
+   3. Seam-hidden cycling — conic gradients have a visible
+      seam where the start and end colors meet. The first
+      and last stops are both primary-500 at the same
+      alpha, so the seam dissolves into the surrounding
+      lime. The 80px blur erases what's left.
+
+   Stop sequence: lime → forest → mint → earth → forest →
+   lime, six stops + a closing repeat. That's two laps
+   through the green family with a single warm earth note
+   at 200° (the cooler "back" side of the swirl).
+
+   inset bumped to -25% so the heavy blur doesn't leave a
+   sharp band at the viewport edges.
+   ========================================================= */
+body::before {
+    inset: -25%;
+    background:
+        conic-gradient(from 200deg at 75% 25%,
+            color-mix(in srgb, var(--primary-400) 50%, transparent) 0deg,
+            color-mix(in srgb, var(--accent-400) 44%, transparent) 60deg,
+            color-mix(in srgb, var(--primary-200) 42%, transparent) 130deg,
+            color-mix(in srgb, var(--secondary-200) 30%, transparent) 200deg,
+            color-mix(in srgb, var(--accent-300) 42%, transparent) 270deg,
+            color-mix(in srgb, var(--primary-300) 46%, transparent) 330deg,
+            color-mix(in srgb, var(--primary-400) 50%, transparent) 360deg),
+        var(--white-base);
+    filter: blur(80px);
+}
+
+/* ----- Shell layout ------------------------------------- */
+.dash {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--space-tier-3);
+    padding: var(--space-tier-3);
+    align-items: start;
+    min-height: 100vh;
+
+    /* AI feature palette — promoted to .dash scope so both the
+       AI card and the sidebar's Automated testing row share it.
+       Indigo + violet ramp roughly Tailwind's indigo-500 /
+       violet-500 axis. */
+    --ai-indigo:        #6366F1;
+    --ai-violet:        #8B5CF6;
+    --ai-indigo-deep:   #4338CA;
+    --ai-violet-deep:   #7C3AED;
+    --ai-indigo-darker: #3730A3;
+    --ai-violet-darker: #6D28D9;
+    --ai-indigo-light:  #A5B4FC;
+}
+
+/* Sticky-pin the rail so it stays put while main scrolls.
+   Override the component's own min-height: 100vh so the
+   floating rail respects the frame's 24px padding rather
+   than overflowing the viewport. */
+.dash__side {
+    position: sticky;
+    top: var(--space-tier-3);
+    align-self: start;
+}
+.dash__side .sidebar {
+    min-height: 0;
+    height: calc(100vh - var(--space-tier-3) * 2);
+}
+
+/* Bump the sidebar's brand: bigger emblem + one type-step up
+   on the wordmark, locally scoped so the canonical sidebar
+   tokens are untouched. */
+.dash__side .sidebar__brand-mark { width: 36px; height: 36px; }
+.dash__side .sidebar__brand { font-size: var(--text-h6); }
+
+/* Bump the sidebar's resting text tokens for legibility over
+   the bright conic backdrop. Glass tier left alone (still
+   light·light) — only foreground colors are darkened. The
+   canonical sidebar.css is untouched. */
+.dash__side .sidebar {
+    /* Was --text-default-subtle (~neutral 700/600 mix); now
+       --text-default (neutral-950). Items differentiate from
+       the current state via background tint, not text weight. */
+    --sidebar-item-fg:           var(--text-default);
+    --sidebar-item-icon:         var(--icon-default);
+    /* Was --text-default-minimal (neutral-600); now subtle. */
+    --sidebar-group-label-color: var(--text-default-subtle);
+}
+
+.dash__main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-flow-section);
+    min-width: 0;
+    padding: 0 var(--space-tier-3);
+}
+
+/* ----- Topbar — composes the III-10 .global-nav component
+   The bar itself is the canonical .global-nav (transparent
+   sticky shell from global-nav.css). The three islands re-use
+   the canonical pattern but with admin content:
+     · Island 1 — breadcrumb pill   (light·light glass)
+     · Island 2 — search + actions  (sections-list pill)
+     · Island 3 — version chip      (.global-nav__chip clear)
+   ------------------------------------------------------- */
+.dash-topbar {
+    /* Override .global-nav's top: 0 to align with the sidebar's
+       sticky pin (both stick at frame-padding offset). */
+    top: var(--space-tier-3);
+    z-index: 5;
+}
+.dash-topbar .global-nav__inner {
+    /* Drop the canonical 1440px max-width — we're inside a
+       constrained main column already. */
+    max-width: none;
+    padding: 0;
+    gap: var(--space-tier-5);
+}
+
+/* Shared height for islands 1 + 2 so they read as one row.
+   Both pills get this min-height; their internal align-items:
+   center handles the rest. */
+.dash-topbar__crumbs,
+.dash-topbar__cluster {
+    min-height: 48px;
+    box-sizing: border-box;
+}
+
+/* Island 1 — breadcrumb pill (mirrors .global-nav__brand glass
+   anatomy: light·light tier, pill radius, raised elevation).
+   Sans body, no uppercase — reads as page wayfinding, not as
+   a mono technical label. */
+.dash-topbar__crumbs {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-tier-6);
+    padding: var(--space-tier-5) var(--space-tier-3);
+    background: var(--glass-light-light-bg);
+    -webkit-backdrop-filter: var(--glass-light-light-blur) var(--glass-saturate);
+            backdrop-filter: var(--glass-light-light-blur) var(--glass-saturate);
+    border: var(--border-width-base) solid var(--glass-light-light-border);
+    border-radius: var(--radius-pill);
+    box-shadow: var(--glass-shadow-raised), var(--glass-inset-light-soft);
+    margin-right: auto;
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    color: var(--text-default-subtle);
+    white-space: nowrap;
+}
+.dash-topbar__crumbs a {
+    color: inherit;
+    text-decoration: none;
+    transition: color .15s ease;
+}
+.dash-topbar__crumbs a:hover { color: var(--text-default); }
+.dash-topbar__crumb-sep { color: var(--text-default-disabled); }
+.dash-topbar__crumb-tail {
+    color: var(--text-default);
+    font-weight: var(--font-weight-semibold);
+}
+
+/* Island 2 — actions cluster reuses .global-nav__list pill.
+   Override its inner gap so search + bell + lang lay out
+   compactly, and remove the bullets from <li>. */
+.dash-topbar__cluster {
+    list-style: none;
+    margin: 0;
+    gap: var(--space-tier-7);
+    align-items: center;
+}
+.dash-topbar__cluster .global-nav__item {
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Vertical divider between cluster groups inside the pill */
+.dash-topbar__divider {
+    width: var(--border-width-base);
+    height: 22px;
+    background: var(--border-default-subtle);
+    margin: 0 var(--space-tier-7);
+}
+
+/* Search field — inside the cluster pill. Strip the input's
+   own border + bg so it reads as part of the glass pill.
+   Icon is flex-centered inside its own 16×16 box (the SVG
+   inherits 100% so it fills the box; without that, browsers
+   fall back to the 300×150 SVG default and the glyph drifts
+   below the input baseline — that was the "drooped" bug). */
+.dash-topbar__search {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    width: 240px;
+}
+.dash-topbar__search .input {
+    padding-left: calc(var(--space-tier-3) + 16px + var(--space-tier-7));
+    padding-right: var(--space-tier-3);
+    border-radius: var(--radius-pill);
+    background: transparent;
+    border: none;
+    width: 100%;
+    box-shadow: none;
+}
+.dash-topbar__search .input:focus,
+.dash-topbar__search .input:focus-visible {
+    outline: none;
+}
+.dash-topbar__search-icon {
+    position: absolute;
+    left: var(--space-tier-3);
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--icon-default-subtle);
+    pointer-events: none;
+}
+.dash-topbar__search-icon svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Language segmented toggle — two pill buttons inside the cluster */
+.dash-topbar__lang {
+    display: inline-flex;
+    gap: 2px;
+    padding: 3px;
+    background: var(--background-default-subtle);
+    border-radius: var(--radius-pill);
+}
+.dash-topbar__lang button {
+    border: none;
+    background: transparent;
+    padding: var(--space-tier-6) var(--space-tier-4);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-default-minimal);
+    cursor: pointer;
+    transition: background-color .15s ease, color .15s ease;
+    min-width: 44px;
+}
+.dash-topbar__lang button:hover { color: var(--text-default); }
+.dash-topbar__lang button[aria-pressed="true"] {
+    background: var(--primary-500);
+    color: var(--text-inverted);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Notification bell — pill icon button living inside the cluster */
+.dash-topbar__icon-btn {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-pill);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: var(--icon-default);
+    cursor: pointer;
+    transition: background-color .15s ease, color .15s ease;
+}
+.dash-topbar__icon-btn:hover {
+    background: var(--background-primary-subtle);
+    color: var(--text-primary-strong);
+}
+.dash-topbar__icon-btn svg { width: 18px; height: 18px; }
+.dash-topbar__icon-btn .dot {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 8px;
+    height: 8px;
+    border-radius: var(--radius-pill);
+    background: var(--background-critical-strong);
+    box-shadow: 0 0 0 2px var(--white-base);
+}
+
+
+/* Mobile collapse */
+@media (max-width: 960px) {
+    .dash-topbar__search { width: 180px; }
+}
+@media (max-width: 720px) {
+    .dash-topbar .global-nav__inner { flex-wrap: wrap; }
+    .dash-topbar__crumbs { margin-right: 0; flex: 1 1 auto; }
+    .dash-topbar__search { width: 100%; }
+    .dash-topbar__cluster { flex-basis: 100%; justify-content: space-between; }
+}
+
+/* ----- Hero header -------------------------------------- */
+.dash-hero {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-tier-3);
+    padding-top: var(--space-tier-3);
+    flex-wrap: wrap;
+}
+.dash-hero__text { max-width: 60ch; }
+.dash-hero__eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+    display: inline-block;
+    margin-bottom: var(--space-flow-tight);
+}
+.dash-hero h1 {
+    margin: 0 0 var(--space-flow-element);
+    font-family: var(--font-sans);
+    font-size: var(--text-h2);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-heading);
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--text-default);
+}
+.dash-hero h1 em {
+    font-style: italic;
+    color: var(--text-accent);
+}
+.dash-hero__lede {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--line-height-body);
+    color: var(--text-default-subtle);
+}
+
+/* ----- Sync action cluster ------------------------------ */
+.dash-hero__sync {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--space-tier-7);
+    flex-shrink: 0;
+}
+.dash-hero__sync-meta {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-mono);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-tier-7);
+}
+.dash-hero__sync-meta .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: var(--radius-pill);
+    background: var(--background-warning-strong);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--warning-500) 22%, transparent);
+}
+
+/* Sync CTA — primary→accent gradient, locally scoped so the
+   canonical .btn--cta is untouched. */
+.dash-hero__sync .btn--cta {
+    background: linear-gradient(135deg, var(--primary-700) 0%, var(--primary-500) 100%);
+    border-color: transparent;
+    box-shadow: var(--shadow-md), 0 4px 14px color-mix(in srgb, var(--primary-700) 25%, transparent);
+}
+.dash-hero__sync .btn--cta:hover {
+    background: linear-gradient(135deg, var(--primary-800) 0%, var(--primary-600) 100%);
+    box-shadow: var(--shadow-lg), 0 6px 18px color-mix(in srgb, var(--primary-800) 30%, transparent);
+    transform: translateY(-1px);
+}
+.dash-hero__sync .btn--cta:active {
+    background: linear-gradient(135deg, var(--primary-900) 0%, var(--primary-700) 100%);
+    transform: translateY(0);
+}
+
+/* ----- KPI strip ---------------------------------------- */
+.dash-kpis {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-gap-default);
+}
+.dash-kpis .card {
+    padding: var(--space-container-y) var(--space-container-x);
+}
+.dash-kpis .card__metric-value { font-size: var(--text-h2); }
+.dash-kpis .card__metric-delta {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-mono);
+    color: var(--text-default-minimal);
+}
+
+/* ----- Section header ----------------------------------- */
+.dash-section__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-gap-default);
+    margin-bottom: var(--space-flow-heading);
+}
+.dash-section__head-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-flow-micro);
+}
+.dash-section__head h2 {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--text-h4);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-h4);
+    color: var(--text-default);
+}
+.dash-section__head-eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+}
+
+/* ----- Console card grid -------------------------------- */
+.dash-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-gap-loose);
+}
+
+/* ----- Console card (horizontal: icon · title · arrow) ---
+   Compact list-row layout. Each card is a single horizontal
+   slot — icon tile, title, trailing arrow. No footer, no
+   counts. Reads as a clean shortcut row rather than a
+   poster tile. */
+.console-card {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-tier-4);
+    padding: var(--space-tier-5) var(--space-tier-4);
+    min-height: 0;
+}
+.console-card__icon {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    background: var(--background-primary-minimal);
+    color: var(--text-primary-strong);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background-color .18s ease, color .18s ease, transform .18s ease;
+}
+.console-card__icon svg { width: 22px; height: 22px; }
+.console-card--accent .console-card__icon {
+    background: var(--background-accent-minimal);
+    color: var(--text-accent-strong);
+}
+.console-card--secondary .console-card__icon {
+    background: var(--background-secondary-minimal);
+    color: var(--text-secondary-strong);
+}
+/* Hover: icon tile lifts in saturation to its strong tone */
+.console-card:hover .console-card__icon {
+    background: var(--background-primary);
+    color: var(--text-inverted);
+}
+.console-card--accent:hover .console-card__icon {
+    background: var(--background-accent);
+    color: var(--text-inverted);
+}
+.console-card--secondary:hover .console-card__icon {
+    background: var(--secondary-500);
+    color: var(--text-inverted);
+}
+
+.console-card__title {
+    flex: 1 1 auto;
+    font-family: var(--font-sans);
+    font-size: var(--text-h6);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-default);
+    margin: 0;
+    line-height: 1.2;
+    min-width: 0;
+}
+
+.console-card__arrow {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    border-radius: var(--radius-pill);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    color: var(--text-default-minimal);
+    transition: color .18s ease, transform .18s ease;
+}
+.console-card:hover .console-card__arrow {
+    color: var(--text-default);
+    transform: translateX(3px);
+}
+
+/* ----- Featured console card — Disease (flagship) ------
+   Primary-tinted gradient overlay, primary-saturated border,
+   soft primary glow shadow, and a gradient-filled icon tile
+   so the card reads as "the one you should click first." */
+.console-card--featured {
+    background:
+        linear-gradient(135deg,
+            color-mix(in srgb, var(--primary-300) 32%, transparent) 0%,
+            color-mix(in srgb, var(--primary-100) 18%, transparent) 60%,
+            transparent 100%),
+        var(--glass-light-light-bg);
+    border-color: color-mix(in srgb, var(--primary-500) 60%, transparent);
+    box-shadow:
+        0 0 0 1px color-mix(in srgb, var(--primary-500) 25%, transparent),
+        0 10px 28px color-mix(in srgb, var(--primary-700) 22%, transparent),
+        var(--glass-inset-light-soft);
+}
+/* Specificity bump — canonical `a.card.card--glass:hover` is
+   (0,3,1); a bare `.console-card--featured:hover` is (0,2,0)
+   and loses, so the background falls back to the standard
+   glass-hover tint. Stacking the parent classes brings this
+   to (0,4,0) and the featured palette wins. */
+.card.card--glass.console-card--featured:hover {
+    /* Override card.css's -1px lift with a more pronounced 4px
+       so the featured card visibly leaps when you target it. */
+    transform: translateY(-4px);
+    background:
+        linear-gradient(135deg,
+            color-mix(in srgb, var(--primary-300) 50%, transparent) 0%,
+            color-mix(in srgb, var(--primary-100) 30%, transparent) 60%,
+            transparent 100%),
+        var(--glass-light-light-bg-hover);
+    border-color: color-mix(in srgb, var(--primary-600) 80%, transparent);
+    /* Three-layer shadow — sharp ring + tall lift drop + soft
+       outer glow. The outer glow is what reads as "this is
+       primary-tinted light" rather than a generic shadow. */
+    box-shadow:
+        0 0 0 2px color-mix(in srgb, var(--primary-500) 45%, transparent),
+        0 18px 44px color-mix(in srgb, var(--primary-700) 38%, transparent),
+        0 0 32px color-mix(in srgb, var(--primary-400) 28%, transparent),
+        var(--glass-inset-light-soft);
+}
+.console-card--featured .console-card__icon {
+    background: linear-gradient(135deg, var(--primary-700), var(--primary-500));
+    color: var(--white-base);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--primary-700) 30%, transparent);
+}
+.console-card--featured:hover .console-card__icon {
+    background: linear-gradient(135deg, var(--primary-800), var(--primary-600));
+    color: var(--white-base);
+    transform: scale(1.06);
+    box-shadow:
+        0 6px 18px color-mix(in srgb, var(--primary-700) 42%, transparent),
+        0 0 22px color-mix(in srgb, var(--primary-400) 32%, transparent);
+}
+
+/* ----- AI console card — Automated testing -------------
+   Indigo → violet gradient identity. The brand palette is
+   all greens, so AI gets a fully off-brand cool palette to
+   read as "different category of thing" — the convention
+   modern AI surfaces use (Copilot purple, Linear AI indigo,
+   most Claude / OpenAI marks). Pure color signal, no
+   sparkle, no pill — the hue alone does the work. */
+.console-card--ai {
+    /* AI palette is defined on .dash so the sidebar's Automated
+       testing row can share the same hex values. */
+    background:
+        linear-gradient(135deg,
+            color-mix(in srgb, var(--ai-indigo) 26%, transparent) 0%,
+            color-mix(in srgb, var(--ai-violet) 22%, transparent) 50%,
+            color-mix(in srgb, var(--ai-indigo-light) 16%, transparent) 100%),
+        var(--glass-light-light-bg);
+    border-color: color-mix(in srgb, var(--ai-indigo) 50%, transparent);
+}
+/* Same specificity bump as the featured card — needs (0,4,0)
+   to outrank the canonical glass-hover selector. */
+.card.card--glass.console-card--ai:hover {
+    /* Same dramatic 4px lift as the featured card — both
+       "special" cards leap together under the cursor. */
+    transform: translateY(-4px);
+    background:
+        linear-gradient(135deg,
+            color-mix(in srgb, var(--ai-indigo) 45%, transparent) 0%,
+            color-mix(in srgb, var(--ai-violet) 40%, transparent) 50%,
+            color-mix(in srgb, var(--ai-indigo-light) 28%, transparent) 100%),
+        var(--glass-light-light-bg-hover);
+    border-color: color-mix(in srgb, var(--ai-violet) 75%, transparent);
+    /* Indigo-violet ring + tall lift drop + outer violet glow.
+       The outer glow reads as "indigo light" rather than
+       generic shadow — colour-coded the same way the featured
+       card uses primary glow. Violet is more saturated than
+       primary lime so the glow alpha + radius are tuned a step
+       lower to keep the AI card from outweighing the featured
+       card visually. */
+    box-shadow:
+        0 0 0 2px color-mix(in srgb, var(--ai-indigo) 38%, transparent),
+        0 16px 36px color-mix(in srgb, var(--ai-indigo-deep) 28%, transparent),
+        0 0 22px color-mix(in srgb, var(--ai-violet) 18%, transparent),
+        var(--glass-inset-light-soft);
+}
+.console-card--ai .console-card__icon {
+    background: linear-gradient(135deg, var(--ai-indigo-deep), var(--ai-violet-deep));
+    color: var(--white-base);
+    box-shadow:
+        0 4px 12px color-mix(in srgb, var(--ai-indigo-deep) 30%, transparent),
+        0 0 16px color-mix(in srgb, var(--ai-violet) 22%, transparent);
+}
+.console-card--ai:hover .console-card__icon {
+    background: linear-gradient(135deg, var(--ai-indigo-darker), var(--ai-violet-darker));
+    color: var(--white-base);
+    transform: scale(1.06);
+    box-shadow:
+        0 5px 14px color-mix(in srgb, var(--ai-indigo-deep) 32%, transparent),
+        0 0 16px color-mix(in srgb, var(--ai-violet) 22%, transparent);
+}
+
+/* ----- Sidebar — sync-action emphasis ------------------- */
+.dash-sidebar__sync .sidebar__icon { color: var(--icon-primary-strong); }
+.dash-sidebar__sync:hover .sidebar__icon { color: var(--icon-primary-strong); }
+
+/* ----- Sidebar — Automated testing AI tint -------------
+   Mirrors the AI console card's indigo/violet identity so
+   the same "category of thing" reads as the same colour
+   wherever it appears. Icon = violet, label = deep indigo
+   (still readable as text). */
+.dash-sidebar__ai            { color: var(--ai-indigo-deep); }
+.dash-sidebar__ai .sidebar__icon  { color: var(--ai-violet); }
+.dash-sidebar__ai:hover      { color: var(--ai-indigo-darker); }
+.dash-sidebar__ai:hover .sidebar__icon { color: var(--ai-violet-deep); }
+.dash-sidebar__ai.is-current { color: var(--ai-indigo-darker); background: color-mix(in srgb, var(--ai-violet) 14%, transparent); }
+.dash-sidebar__ai.is-current .sidebar__icon { color: var(--ai-violet-deep); }
+
+/* ----- Responsive --------------------------------------- */
+@media (max-width: 1100px) {
+    .dash-cards { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 960px) {
+    .dash-kpis { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 720px) {
+    .dash {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+    .dash__side { position: static; }
+    .dash__side .sidebar { height: auto; }
+    .dash-cards { grid-template-columns: 1fr; }
+    .dash-hero { flex-direction: column; align-items: stretch; }
+    .dash-hero__sync { align-items: stretch; }
+    .dash-hero__sync .btn { width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<div class="dash">
+
+  <!-- ========================== SIDEBAR ========================== -->
+  <aside class="dash__side">
+    <aside class="sidebar" aria-label="Admin primary navigation">
+
+      <header class="sidebar__header">
+        <a href="#" class="sidebar__brand">
+          <img class="sidebar__brand-mark" src="../logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
+          <span class="sidebar__brand-text">Farm2Vet</span>
+        </a>
+        <button type="button" class="sidebar__collapse" aria-label="Collapse sidebar" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6"/></svg>
+        </button>
+      </header>
+
+      <nav class="sidebar__nav" aria-label="Admin destinations">
+        <ul class="sidebar__list">
+
+          <li class="sidebar__item">
+            <a class="sidebar__link is-current" href="#" aria-current="page">
+              <span class="sidebar__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+              </span>
+              <span class="sidebar__label">Overview</span>
+            </a>
+          </li>
+
+          <li class="sidebar__item is-open">
+            <button type="button" class="sidebar__link" aria-expanded="true">
+              <span class="sidebar__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/></svg>
+              </span>
+              <span class="sidebar__label">Data management</span>
+              <span class="sidebar__trailing">
+                <svg class="sidebar__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+              </span>
+            </button>
+            <ul class="sidebar__sublist">
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Disease</span><span class="sidebar__trailing"><span class="sidebar__badge">142</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Question</span><span class="sidebar__trailing"><span class="sidebar__badge">318</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Conversation</span><span class="sidebar__trailing"><span class="sidebar__badge">47</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Image</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Resource</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">PDF Input</span></a></li>
+            </ul>
+          </li>
+
+          <li class="sidebar__item">
+            <a class="sidebar__link dash-sidebar__ai" href="#">
+              <span class="sidebar__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
+              </span>
+              <span class="sidebar__label">Automated testing</span>
+            </a>
+          </li>
+
+          <li class="sidebar__item">
+            <a class="sidebar__link dash-sidebar__sync" href="#">
+              <span class="sidebar__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              </span>
+              <span class="sidebar__label">Sync database</span>
+              <span class="sidebar__trailing"><span class="sidebar__badge sidebar__badge--warning">6</span></span>
+            </a>
+          </li>
+
+        </ul>
+      </nav>
+
+      <div class="sidebar__footer">
+        <div class="sidebar__profile-wrap">
+          <div class="sidebar__profile">
+            <span class="sidebar__avatar" aria-hidden="true">M</span>
+            <span class="sidebar__profile-text">
+              <span class="sidebar__profile-name">Minh</span>
+              <span class="sidebar__profile-role">Admin</span>
+            </span>
+            <button type="button" class="sidebar__overflow" aria-label="Account menu" aria-haspopup="menu" aria-expanded="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+  </aside>
+
+  <!-- ========================== MAIN ========================== -->
+  <main class="dash__main">
+
+    <!-- Sticky topbar — III-10 .global-nav with three admin islands.
+         Bar = transparent sticky shell. Islands carry the visual weight. -->
+    <header class="global-nav dash-topbar" aria-label="Admin chrome">
+      <div class="global-nav__inner">
+
+        <!-- Island 1 — Breadcrumb pill (light·light glass, like .__brand) -->
+        <nav class="dash-topbar__crumbs" aria-label="Breadcrumb">
+          <a href="#">Admin</a>
+          <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
+          <span class="dash-topbar__crumb-tail" aria-current="page">Overview</span>
+        </nav>
+
+        <!-- Island 2 — Search + actions cluster (.global-nav__list pill) -->
+        <ul class="global-nav__list dash-topbar__cluster">
+          <li class="global-nav__item">
+            <label class="dash-topbar__search">
+              <span class="dash-topbar__search-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+              </span>
+              <input type="search" class="input input--sm" placeholder="Search…" aria-label="Search the admin console" />
+            </label>
+          </li>
+
+          <li class="global-nav__item" aria-hidden="true"><span class="dash-topbar__divider"></span></li>
+
+          <li class="global-nav__item">
+            <button type="button" class="dash-topbar__icon-btn" aria-label="Notifications, 3 unread">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+              <span class="dot" aria-hidden="true"></span>
+            </button>
+          </li>
+
+          <li class="global-nav__item">
+            <div class="dash-topbar__lang" role="group" aria-label="Interface language">
+              <button type="button" aria-pressed="true">EN</button>
+              <button type="button" aria-pressed="false">VI</button>
+            </div>
+          </li>
+        </ul>
+
+        <!-- Island 3 — Version chip (canonical .global-nav__chip) -->
+        <a href="#" class="global-nav__chip" aria-label="Admin version">v1.4.2</a>
+
+      </div>
+    </header>
+
+    <header class="dash-hero">
+      <div class="dash-hero__text">
+        <h1>Welcome back, <em>Minh</em>.</h1>
+        <p class="dash-hero__lede">
+          Manage the Farm2Vet chatbot's knowledge base and run automated tests against the live model.
+        </p>
+      </div>
+      <div class="dash-hero__sync">
+        <span class="dash-hero__sync-meta">
+          <span class="dot" aria-hidden="true"></span>
+          Last synced 2 h 14 m ago · 6 pending
+        </span>
+        <button type="button" class="btn btn--cta btn--lg">
+          <span class="btn__leading" aria-hidden="true">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          </span>
+          <span class="btn__label">Sync database</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Data management section --------------------------- -->
+    <section aria-labelledby="sect-data">
+      <header class="dash-section__head">
+        <div class="dash-section__head-text">
+          <h2 id="sect-data">Data management</h2>
+        </div>
+      </header>
+
+      <div class="dash-cards">
+
+        <a class="card card--glass is-interactive console-card console-card--featured" href="#">
+          <span class="console-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          </span>
+          <h3 class="console-card__title">Disease</h3>
+          <span class="console-card__arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </a>
+
+        <a class="card card--glass is-interactive console-card" href="#">
+          <span class="console-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </span>
+          <h3 class="console-card__title">Question</h3>
+          <span class="console-card__arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </a>
+
+        <a class="card card--glass is-interactive console-card" href="#">
+          <span class="console-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </span>
+          <h3 class="console-card__title">Conversation</h3>
+          <span class="console-card__arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </a>
+
+        <a class="card card--glass is-interactive console-card console-card--accent" href="#">
+          <span class="console-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          </span>
+          <h3 class="console-card__title">Image</h3>
+          <span class="console-card__arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </a>
+
+        <a class="card card--glass is-interactive console-card console-card--accent" href="#">
+          <span class="console-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </span>
+          <h3 class="console-card__title">Resource</h3>
+          <span class="console-card__arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </a>
+
+        <a class="card card--glass is-interactive console-card console-card--accent" href="#">
+          <span class="console-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+          </span>
+          <h3 class="console-card__title">PDF Input</h3>
+          <span class="console-card__arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- Operations section -------------------------------- -->
+    <section aria-labelledby="sect-ops">
+      <header class="dash-section__head">
+        <div class="dash-section__head-text">
+          <h2 id="sect-ops">Operations</h2>
+        </div>
+      </header>
+
+      <div class="dash-cards">
+
+        <a class="card card--glass is-interactive console-card console-card--ai" href="#">
+          <span class="console-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
+          </span>
+          <h3 class="console-card__title">Automated testing</h3>
+          <span class="console-card__arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </a>
+
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="../scripts/sidebar.js" defer></script>
+
+</body>
+</html>
