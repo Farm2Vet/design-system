@@ -69,6 +69,7 @@
                 <li><a href="III-10-header-navigation.html"><span class="global-nav__index">10</span><span>Header &amp; Nav Bar</span></a></li>
                 <li><a href="III-11-switch.html"><span class="global-nav__index">11</span><span>Switch</span></a></li>
                 <li><a href="III-12-sidebar.html"><span class="global-nav__index">12</span><span>Sidebar</span></a></li>
+                <li><a href="III-13-chip.html"><span class="global-nav__index">13</span><span>Chip</span></a></li>
                 <li><a href="III-14-tabs.html"><span class="global-nav__index">14</span><span>Tabs</span></a></li>
                 <li><a href="III-15-table.html"><span class="global-nav__index">15</span><span>Table</span></a></li>
               </ul>
@@ -400,6 +401,72 @@
       labels mutually exclusive. Reach for the bordered list variant once
       labels carry explanation or the set grows past four options; the inline
       group is for short, single-word choices.
+    </p>
+  </section>
+
+  <!-- ========================== FORM · SEARCH FIELD ========================== -->
+  <section class="chunk" id="form-search-field">
+    <header class="chunk-head reveal">
+      <span class="num-tag">01b / Form — Search field</span>
+      <h2 class="h2">Search field.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      A composed pattern, not a new component. The wrapper holds a
+      leading magnifier slot, the canonical <code>.input</code>, and a
+      trailing clear-button slot that auto-reveals once the input has a
+      value. Inherits the input token rail end-to-end — apply
+      <code>.input--sm</code>, <code>.input--md</code>, etc. on the
+      <code>.search-field__input</code> just as you would on a bare
+      <code>.input</code>.
+    </p>
+
+    <div class="form-version-stage reveal">
+
+      <article class="form-version-card">
+        <span class="label">Empty · rest</span>
+        <div class="demo">
+          <label class="search-field" style="max-width: 320px">
+            <span class="search-field__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+            </span>
+            <input type="search" class="input input--md search-field__input" placeholder="Search disease, codename, alias…" />
+            <button type="button" class="search-field__clear" aria-label="Clear search">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </button>
+          </label>
+        </div>
+        <div class="meta"><span>:placeholder-shown</span><strong>icon · input · no clear</strong></div>
+      </article>
+
+      <article class="form-version-card">
+        <span class="label">Active · with value</span>
+        <div class="demo">
+          <label class="search-field" style="max-width: 320px">
+            <span class="search-field__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+            </span>
+            <input type="search" class="input input--md search-field__input" placeholder="Search…" value="vinallergy" />
+            <button type="button" class="search-field__clear" aria-label="Clear search">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </button>
+          </label>
+        </div>
+        <div class="meta"><span>:not(:placeholder-shown)</span><strong>clear button auto-reveals</strong></div>
+      </article>
+
+    </div>
+
+    <p class="usage-note usage-note--below reveal">
+      <strong>Use <code>.search-field</code> when search is the primary
+      action of a region.</strong>
+      Toolbars, modal headers, and dense list filters all justify the
+      composed wrapper — the leading magnifier signals affordance from
+      across the page, the clear-button slot lets the user reset
+      without selecting and deleting. For a single free-text filter
+      buried inside a longer form (one of many fields, with its own
+      label), use a bare <code>.input</code> — the wrapper would crowd
+      the form rhythm and duplicate the field's label intent.
     </p>
   </section>
 

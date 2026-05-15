@@ -22,6 +22,7 @@
 <link rel="stylesheet" href="styles/card.css" />
 <link rel="stylesheet" href="styles/sidebar.css" />
 <link rel="stylesheet" href="styles/tabs.css" />
+<link rel="stylesheet" href="styles/chip.css" />
 <link rel="stylesheet" href="styles/table.css" />
 <link rel="stylesheet" href="styles/modal.css" />
 
@@ -170,54 +171,61 @@
       </div>
     </header>
 
-    <!-- ───── Toolbar — saved-view tabs + 2 icon buttons (Polaris IndexFilters pattern) ───── -->
-    <div class="app-shell__toolbar" role="toolbar" aria-label="Saved views, search, and sort">
-      <div class="tabs tabs--line tabs--sm app-shell__toolbar-views" data-tabs>
-        <div class="tabs__list" role="tablist" aria-label="Saved views">
-          <button type="button" class="tabs__tab is-selected" role="tab" aria-selected="true">
-            <span class="tabs__label">All</span>
-            <span class="tabs__badge">28</span>
-          </button>
-          <button type="button" class="tabs__tab" role="tab" aria-selected="false">
-            <span class="tabs__label">Active</span>
-            <span class="tabs__badge">21</span>
-          </button>
-          <button type="button" class="tabs__tab" role="tab" aria-selected="false">
-            <span class="tabs__label">Incomplete</span>
-            <span class="tabs__badge">5</span>
-          </button>
-          <button type="button" class="tabs__tab" role="tab" aria-selected="false">
-            <span class="tabs__label">Inactive</span>
-            <span class="tabs__badge">2</span>
-          </button>
-          <button type="button" class="tabs__tab" role="tab" aria-selected="false">
-            <span class="tabs__label">Swine only</span>
-            <span class="tabs__badge">23</span>
-          </button>
-          <button type="button" class="tabs__tab" role="tab" aria-selected="false" aria-haspopup="menu">
-            <span class="tabs__label">More views</span>
-            <span class="tabs__icon" aria-hidden="true">
-              <svg viewBox="0 0 12 12"><path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </span>
-          </button>
-          <button type="button" class="tabs__tab tabs__tab--icon-only" aria-label="Create new view">
-            <span class="tabs__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-            </span>
-          </button>
-        </div>
+    <!-- ───── Toolbar — exposed search · filter chips · tucked utility ───── -->
+    <div class="app-shell__toolbar" role="toolbar" aria-label="Search, filters, sort, and saved views">
+
+      <!-- Search · far left, always visible -->
+      <label class="search-field app-shell__toolbar-search">
+        <span class="search-field__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        </span>
+        <input type="search" class="input input--sm search-field__input" placeholder="Search disease, codename, alias…" />
+        <button type="button" class="search-field__clear" aria-label="Clear search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </label>
+
+      <!-- Filter chips · middle, multi-select, no implicit "All" chip -->
+      <div class="app-shell__toolbar-filters" role="group" aria-label="Filters">
+        <button type="button" class="chip" aria-pressed="false">
+          <span class="chip__leading" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+          <span class="chip__label">Active</span>
+          <span class="chip__count">21</span>
+        </button>
+        <button type="button" class="chip" aria-pressed="false">
+          <span class="chip__leading" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+          <span class="chip__label">Incomplete</span>
+          <span class="chip__count">5</span>
+        </button>
+        <button type="button" class="chip" aria-pressed="false">
+          <span class="chip__leading" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+          <span class="chip__label">Inactive</span>
+          <span class="chip__count">2</span>
+        </button>
+        <button type="button" class="chip" aria-pressed="false">
+          <span class="chip__leading" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+          <span class="chip__label">Swine only</span>
+          <span class="chip__count">23</span>
+        </button>
+
+        <!-- Clear filters · only renders when at least one chip is active
+             or the search has a value. Hidden by default; the toolbar
+             scaffolding flips it on via :has(). -->
+        <button type="button" class="btn btn--ghost btn--sm app-shell__toolbar-clear">
+          <span class="btn__label">Clear filters</span>
+        </button>
       </div>
 
+      <!-- Utility · far right · sort, views, new-view -->
       <div class="app-shell__toolbar-actions">
-        <button type="button" class="btn btn--ghost btn--sm app-shell__toolbar-search" aria-label="Search and filter">
-          <span class="btn__leading" aria-hidden="true">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="9" cy="10" r="4"/>
-              <path d="M12 13 l3 3"/>
-              <path d="M15 8 h6 M17 12 h4 M19 16 h2"/>
-            </svg>
-          </span>
-        </button>
         <div class="dropdown app-shell__toolbar-sort" data-dropdown>
           <button type="button" class="btn btn--ghost btn--sm dropdown__trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Sort">
             <span class="btn__leading" aria-hidden="true">
@@ -234,7 +242,26 @@
             <button type="button" class="dropdown__option" role="option" data-value="updated-asc">Last updated · Oldest<svg class="dropdown__check" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6 L5 9 L10 3" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
           </div>
         </div>
+
+        <div class="dropdown app-shell__toolbar-views" data-dropdown>
+          <button type="button" class="btn btn--ghost btn--sm dropdown__trigger" aria-haspopup="listbox" aria-expanded="false">
+            <span class="btn__label">Views</span>
+            <span class="btn__trailing" aria-hidden="true">
+              <svg class="icon" viewBox="0 0 12 12"><path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </button>
+          <div class="dropdown__menu" role="listbox" aria-label="Saved views">
+            <span class="dropdown__empty">No saved views yet</span>
+          </div>
+        </div>
+
+        <button type="button" class="btn btn--ghost btn--sm app-shell__toolbar-new-view" aria-label="Save current view">
+          <span class="btn__leading" aria-hidden="true">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+          </span>
+        </button>
       </div>
+
     </div>
 
     <div class="app-shell__data-region">

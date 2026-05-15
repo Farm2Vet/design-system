@@ -164,27 +164,59 @@ body::before { content: none; }
 }
 
 /* =========================================================
-   TOOLBAR — saved-view tabs (left) + 2 icon-only btn--sm (right)
-   Positioning only. Tabs handle their own visuals.
+   TOOLBAR — search (left) · filter chips (middle) · utility (right)
+   Positioning only. The .search-field, .chip and .dropdown
+   components own their visuals.
    ========================================================= */
 .app-shell__toolbar {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: var(--space-tier-4);
     padding: var(--space-tier-4) var(--space-page-x) var(--space-tier-5);
     border-bottom: var(--border-width-base) solid var(--border-default-subtle);
 }
-.app-shell__toolbar-views { flex: 1 1 auto; min-width: 0; }
+
+/* Search slot · fixed-ish width on the leading edge */
+.app-shell__toolbar-search {
+    flex: 0 0 240px;
+    min-width: 0;
+}
+@media (max-width: 1100px) {
+    .app-shell__toolbar-search { flex-basis: 180px; }
+}
+
+/* Filter slot · grows to fill the middle, chips wrap if the row
+   gets tight rather than horizontally scrolling. */
+.app-shell__toolbar-filters {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-gap-micro);
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+/* Clear filters · hidden at rest, revealed when any chip is on
+   OR when the search input has a value. The :has() chain reads
+   from the toolbar wrapper so a query in the search field also
+   surfaces the link. */
+.app-shell__toolbar-clear { display: none; }
+.app-shell__toolbar:has(.chip[aria-pressed="true"]) .app-shell__toolbar-clear,
+.app-shell__toolbar:has(.chip.is-active) .app-shell__toolbar-clear,
+.app-shell__toolbar:has(.search-field__input:not(:placeholder-shown)) .app-shell__toolbar-clear {
+    display: inline-flex;
+}
+
+/* Utility slot · sort + views + new-view, square 32 px icon
+   triggers (matches .app-pager__btn). */
 .app-shell__toolbar-actions {
     display: inline-flex;
     align-items: center;
     gap: var(--space-tier-7);
     flex: 0 0 auto;
 }
-/* Square-cap icon-only buttons — same trick used by .app-pager__btn. */
-.app-shell__toolbar-search,
-.app-shell__toolbar-sort > .dropdown__trigger {
+.app-shell__toolbar-sort > .dropdown__trigger,
+.app-shell__toolbar-new-view {
     width: 2rem;
     min-width: 2rem;
     height: 2rem;
@@ -192,23 +224,28 @@ body::before { content: none; }
     flex-shrink: 0;
     justify-content: center;
 }
-.app-shell__toolbar-sort { width: auto; min-width: auto; flex-shrink: 0; }
-/* The toolbar sort uses an icon-only 32 px trigger (see above),
-   so the canonical .dropdown__menu — which stretches to its
-   wrapper's left/right edges — collapses to 32 px and wraps every
-   option character-by-character. Detach the menu from the wrapper
-   edges, right-align it to the trigger, and give it a width that
-   fits the longest option label. */
+.app-shell__toolbar-sort > .dropdown__trigger .icon,
+.app-shell__toolbar-new-view .icon {
+    width: 16px;
+    height: 16px;
+}
+
+/* Sort menu — same right-align fix as before. */
 .app-shell__toolbar-sort .dropdown__menu {
     left: auto;
     right: 0;
     width: max-content;
     min-width: 14rem;
 }
-.app-shell__toolbar-search .icon,
-.app-shell__toolbar-sort > .dropdown__trigger .icon {
-    width: 16px;
-    height: 16px;
+
+/* Views menu — also right-aligns to its trigger; default
+   .dropdown__menu left/right stretch doesn't make sense for
+   a trigger this far right. */
+.app-shell__toolbar-views .dropdown__menu {
+    left: auto;
+    right: 0;
+    width: max-content;
+    min-width: 16rem;
 }
 
 /* =========================================================

@@ -1,0 +1,194 @@
+/* =========================================================
+   COMPONENT — CHIP
+   A toggleable filter pill. Composes a label, an optional
+   leading icon slot (for the on-state check), and an optional
+   trailing count slot (for "if you toggled this, how many
+   rows would match?"). Multi-select by contract — chips
+   within a filter row can be toggled independently and
+   stack as additive filters. Counts are read-only and never
+   live on the active fill, so the chip's tinted on-state
+   carries the visual signal alone.
+
+   Two flavours:
+   · Toggle chip (default) — aria-pressed, stays in the row
+     after click, fills tinted when active.
+   · Removable chip (.chip--removable) — for the "active
+     filters" tray pattern; carries a trailing × that
+     dismisses the chip entirely. Out of scope for V-01 but
+     reserved here so future consumers can opt in.
+
+   Depends on: tokens.css
+   ========================================================= */
+:root {
+  /* ---------- Container — shape + rhythm ---------- */
+  --chip-height:         28px;
+  --chip-radius:         var(--radius-pill);
+  --chip-padding-x:      var(--spacing-3x);
+  --chip-gap:            var(--spacing-2x);
+  --chip-font-size:      var(--text-body-sm);
+  --chip-font-weight:    var(--font-weight-regular);
+  --chip-icon-size:      14px;
+  --chip-transition:     background-color .15s ease,
+                         border-color .15s ease,
+                         color .15s ease;
+
+  /* ---------- Rest ---------- */
+  --chip-bg:             transparent;
+  --chip-fg:             var(--text-default-subtle);
+  --chip-border:         var(--border-default);
+  --chip-count-fg:       var(--text-default-minimal);
+
+  /* ---------- Hover ---------- */
+  --chip-bg-hover:       var(--background-default-hover);
+  --chip-fg-hover:       var(--text-default);
+  --chip-border-hover:   var(--border-default);
+
+  /* ---------- Pressed (mousedown only)
+     --background-default-pressed isn't in the semantic rail;
+     fall back to a slightly-deeper neutral by mixing hover
+     with text-default, matching the convention .btn uses
+     when its component-token rail names a colour the global
+     rail doesn't expose. */
+  --chip-bg-pressed:     color-mix(in srgb,
+                                   var(--background-default-hover) 88%,
+                                   var(--text-default));
+
+  /* ---------- Active (toggled on) ---------- */
+  --chip-bg-active:           var(--background-primary-subtle);
+  --chip-fg-active:           var(--text-primary-strong);
+  --chip-border-active:       var(--background-primary);
+  --chip-count-fg-active:     var(--text-primary-strong);
+  /* --background-primary-subtle-hover isn't in the semantic
+     rail either; mix the active fill with the primary
+     foreground so hover deepens the tint without leaving
+     the primary family. */
+  --chip-bg-active-hover:     color-mix(in srgb,
+                                        var(--background-primary-subtle) 88%,
+                                        var(--text-primary-strong));
+
+  /* ---------- Disabled ---------- */
+  --chip-bg-disabled:        transparent;
+  --chip-fg-disabled:        var(--text-default-disabled);
+  --chip-border-disabled:    var(--border-default-subtle);
+
+  /* ---------- Focus ring ---------- */
+  --chip-focus-ring:         0 0 0 3px var(--background-primary-subtle);
+}
+
+/* =========================================================
+   BLOCK
+   ========================================================= */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--chip-gap);
+  height: var(--chip-height);
+  padding: 0 var(--chip-padding-x);
+  border-radius: var(--chip-radius);
+  background: var(--chip-bg);
+  color: var(--chip-fg);
+  border: var(--border-width-base) solid var(--chip-border);
+  font-family: var(--font-sans);
+  font-size: var(--chip-font-size);
+  font-weight: var(--chip-font-weight);
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition: var(--chip-transition);
+  -webkit-appearance: none;
+       appearance: none;
+}
+.chip:hover {
+  background: var(--chip-bg-hover);
+  color: var(--chip-fg-hover);
+  border-color: var(--chip-border-hover);
+}
+.chip:active { background: var(--chip-bg-pressed); }
+.chip:focus-visible {
+  outline: none;
+  box-shadow: var(--chip-focus-ring);
+}
+
+/* =========================================================
+   ELEMENTS
+   ========================================================= */
+.chip__leading,
+.chip__trailing {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--chip-icon-size);
+  height: var(--chip-icon-size);
+  flex-shrink: 0;
+}
+.chip__leading svg,
+.chip__trailing svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.chip__label {
+  display: inline-flex;
+  align-items: center;
+}
+
+.chip__count {
+  color: var(--chip-count-fg);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--chip-font-size);
+}
+
+/* The leading slot only shows when the chip is active —
+   the on-state check is the chip's primary affordance.
+   Authors can keep the markup in place at rest; the slot
+   collapses visually. */
+.chip:not(.is-active):not([aria-pressed="true"]) .chip__leading {
+  display: none;
+}
+
+/* =========================================================
+   STATE — active (aria-pressed="true" or .is-active)
+   ========================================================= */
+.chip[aria-pressed="true"],
+.chip.is-active {
+  background: var(--chip-bg-active);
+  color: var(--chip-fg-active);
+  border-color: var(--chip-border-active);
+  font-weight: var(--font-weight-medium);
+}
+.chip[aria-pressed="true"]:hover,
+.chip.is-active:hover {
+  background: var(--chip-bg-active-hover);
+}
+.chip[aria-pressed="true"] .chip__count,
+.chip.is-active .chip__count {
+  color: var(--chip-count-fg-active);
+}
+
+/* =========================================================
+   STATE — disabled
+   ========================================================= */
+.chip[disabled],
+.chip.is-disabled {
+  background: var(--chip-bg-disabled);
+  color: var(--chip-fg-disabled);
+  border-color: var(--chip-border-disabled);
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   MODIFIER — removable
+   Reserved for the "active filters" tray pattern. The
+   trailing × dismisses the chip entirely (not the same as
+   toggling it off). Not used on V-01 yet.
+   ========================================================= */
+.chip--removable .chip__trailing {
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background-color .15s ease;
+}
+.chip--removable .chip__trailing:hover {
+  background: var(--background-default-hover);
+}

@@ -189,6 +189,87 @@
 .input--date::-webkit-calendar-picker-indicator:hover { opacity: 1; }
 
 /* =========================================================
+   COMPOSED — SEARCH FIELD
+   Wraps a canonical .input with a leading magnifier-icon
+   slot and a trailing clear-button slot. The wrapper, not
+   the input, owns the visual shell; the input keeps its
+   border and focus ring so authors can still apply size
+   modifiers (.input--sm, .input--md) and validation states.
+
+   Markup:
+     <label class="search-field">
+       <span class="search-field__icon" aria-hidden="true">
+         <svg> ... magnifier ... </svg>
+       </span>
+       <input type="search" class="input search-field__input"
+              placeholder="Search…" />
+       <button type="button" class="search-field__clear"
+               aria-label="Clear search">
+         <svg> ... × ... </svg>
+       </button>
+     </label>
+   ========================================================= */
+.search-field {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+}
+.search-field__icon {
+    position: absolute;
+    left: var(--spacing-3x);
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    color: var(--icon-default-subtle);
+    pointer-events: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.search-field__icon svg { width: 100%; height: 100%; display: block; }
+
+.search-field__input.input {
+    /* Leading padding clears the magnifier slot; trailing
+       padding clears the clear-button slot. Both must scale
+       with the input's size modifier so the icon never
+       overlaps the placeholder. */
+    padding-left:  calc(var(--spacing-3x) + 16px + var(--spacing-2x));
+    padding-right: calc(var(--spacing-3x) + 20px + var(--spacing-2x));
+    width: 100%;
+}
+
+.search-field__clear {
+    position: absolute;
+    right: var(--spacing-2x);
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: none;
+    background: var(--background-default-minimal);
+    color: var(--icon-default-subtle);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color .15s ease, color .15s ease;
+}
+.search-field__clear:hover {
+    background: var(--background-default-hover);
+    color: var(--icon-default);
+}
+.search-field__clear svg { width: 12px; height: 12px; display: block; }
+
+/* The clear button only shows when the input has a value.
+   Use the :has() selector so no JS is needed to toggle it. */
+.search-field:has(.search-field__input:not(:placeholder-shown)) .search-field__clear {
+    display: inline-flex;
+}
+
+/* =========================================================
    MULTI-SELECT — pillbox of chips + inline input
    Renders as a `.input` shell containing `.chip` elements
    followed by an inline text input.

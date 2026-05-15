@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Farm2Vet · Chip — Design System</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<!-- Design system: shared, reusable foundation -->
+<link rel="stylesheet" href="styles/tokens.css" />
+<link rel="stylesheet" href="styles/base.css" />
+<link rel="stylesheet" href="styles/typography.css" />
+<link rel="stylesheet" href="styles/shell.css" />
+<link rel="stylesheet" href="styles/global-nav.css" />
+<!-- Component -->
+<link rel="stylesheet" href="styles/chip.css" />
+<link rel="stylesheet" href="styles/button.css" />
+<!-- Reuse: variant grid + usage-note pattern + preview stages -->
+<link rel="stylesheet" href="styles/page-III-03.css" />
+<!-- Reuse: token-table styling -->
+<link rel="stylesheet" href="styles/page-III-02.css" />
+<!-- Page-specific: anatomy, state matrix, in-context filter row -->
+<link rel="stylesheet" href="styles/page-III-13.css" />
+
+<script src="scripts/global-nav.js" defer></script>
+
+</head>
+<body data-page="III-13-chip">
+
+<!-- ========================== GLOBAL NAV ========================== -->
+<header class="global-nav" aria-label="Design system navigation">
+  <div class="global-nav__inner">
+
+    <a href="index.html" class="global-nav__brand" aria-label="Farm2Vet design system home">
+      <img src="logo/logo-wordmark-color.svg" alt="Farm2Vet" class="global-nav__logo" />
+      <small>Design System</small>
+    </a>
+
+    <nav class="global-nav__sections" aria-label="Design system sections">
+      <ul class="global-nav__list">
+        <li class="global-nav__item">
+          <a class="global-nav__link" href="I-primitives.html">I. Primitives</a>
+        </li>
+        <li class="global-nav__item">
+          <a class="global-nav__link" href="II-semantics.html">II. Semantics</a>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="components">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-components">
+            III. Components
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-components" class="global-nav__panel" role="region" aria-label="Components">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="III-01-typography.html"><span class="global-nav__index">01</span><span>Typography</span></a></li>
+                <li><a href="III-02-buttons.html"><span class="global-nav__index">02</span><span>Buttons</span></a></li>
+                <li><a href="III-03-form.html"><span class="global-nav__index">03</span><span>Form</span></a></li>
+                <li><a href="III-04-dropdowns.html"><span class="global-nav__index">04</span><span>Dropdowns</span></a></li>
+                <li><a href="III-05-cards.html"><span class="global-nav__index">05</span><span>Cards</span></a></li>
+                <li><a href="III-06-modal.html"><span class="global-nav__index">06</span><span>Modal Dialog</span></a></li>
+                <li><a href="III-07-side-panel.html"><span class="global-nav__index">07</span><span>Side Panel</span></a></li>
+                <li><a href="III-08-toast.html"><span class="global-nav__index">08</span><span>Toast</span></a></li>
+                <li><a href="III-09-alert-badges.html"><span class="global-nav__index">09</span><span>Alert &amp; Badge</span></a></li>
+                <li><a href="III-10-header-navigation.html"><span class="global-nav__index">10</span><span>Header &amp; Nav Bar</span></a></li>
+                <li><a href="III-11-switch.html"><span class="global-nav__index">11</span><span>Switch</span></a></li>
+                <li><a href="III-12-sidebar.html"><span class="global-nav__index">12</span><span>Sidebar</span></a></li>
+                <li><a href="III-13-chip.html"><span class="global-nav__index">13</span><span>Chip</span></a></li>
+                <li><a href="III-14-tabs.html"><span class="global-nav__index">14</span><span>Tabs</span></a></li>
+                <li><a href="III-15-table.html"><span class="global-nav__index">15</span><span>Table</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="assets">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-assets">
+            IV. Assets
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-assets" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Assets">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="IV-01-logo.html"><span class="global-nav__index">01</span><span>Logo</span></a></li>
+                <li><a href="IV-02-icons.html"><span class="global-nav__index">02</span><span>Icons</span></a></li>
+                <li><a href="IV-03-images.html" class="is-placeholder"><span class="global-nav__index">03</span><span>Images</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="mockups">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-mockups">
+            V. Mockups
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-mockups" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Mockups">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="V-01-wiki.html"><span class="global-nav__index">01</span><span>Wiki</span></a></li>
+                <li><a href="V-02-chatbot.html" class="is-placeholder"><span class="global-nav__index">02</span><span>Chatbot</span></a></li>
+                <li><a href="V-03-hero.html"    class="is-placeholder"><span class="global-nav__index">03</span><span>Hero</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+      </ul>
+    </nav>
+
+    <a href="#" class="global-nav__chip" aria-label="Design system version">v1.0</a>
+
+  </div>
+</header>
+
+<main class="shell" id="top">
+
+  <!-- ========================== HERO ========================== -->
+  <section class="hero">
+    <div>
+      <h1 class="h1 reveal">
+        <span class="num">III-13 / Components</span>
+        Chip.
+      </h1>
+    </div>
+    <div>
+      <p class="lede reveal">
+        A toggleable filter pill. Multi-select by contract — chips
+        stack as additive filters within a row, OR-combining values on
+        the same axis and AND-combining across axes. Composes a label,
+        an optional leading slot for the on-state check, and an
+        optional trailing count. Sits between
+        <a href="III-09-alert-badges.html"><code>.badge</code></a> (read-only),
+        <a href="III-14-tabs.html"><code>.tabs</code></a> (single-select view
+        switcher) and <a href="III-02-buttons.html"><code>.btn--toggle</code></a>
+        (single boolean) — none of which carry the right grammar for a
+        stack of independent filter values.
+      </p>
+    </div>
+
+    <dl class="meta-strip reveal">
+      <div><dt>Component</dt><dd>Chip</dd></div>
+      <div><dt>Selection</dt><dd>Multi · independent</dd></div>
+      <div><dt>Sizes</dt><dd>One · 28px</dd></div>
+      <div><dt>Pattern</dt><dd>aria-pressed toggle</dd></div>
+    </dl>
+  </section>
+
+  <!-- ========================== 01 / SCOPE ========================== -->
+  <section class="chunk" id="scope">
+    <header class="chunk-head reveal">
+      <span class="num-tag">01 / Chip — Scope</span>
+      <h2 class="h2">Scope.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      Reach for a chip when the user needs to apply <em>more than one</em>
+      filter at the same time, and each filter should stay visible after
+      it's set. The chip is a toggle pill — clicking it stacks a value
+      onto the active filter set; clicking it again removes that value.
+      Selection is independent per chip.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>If exactly one item from the set must be selected, use Tabs
+      or a segmented switch instead.</strong> Chips have no concept of
+      "the chosen one" — they only know "on" and "off" per chip. A row
+      of chips with no chips active is a valid, meaningful state ("show
+      everything"). A row of tabs with no tab selected is an
+      authoring error.
+    </p>
+
+    <table class="rule-matrix reveal" aria-label="Chip vs sibling selection primitives">
+      <thead>
+        <tr>
+          <th>Component</th>
+          <th>Selection</th>
+          <th>Reach for it when</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="rm-name">.chip</td>
+          <td class="rm-purpose">Multi-select toggle (independent on/off per chip).</td>
+          <td class="rm-when">A list view exposes several axes of filtering and the user may want to stack values: <em>status: Active OR Incomplete · species: Swine</em>. Each chip is independent; no chips selected means "no filter applied."</td>
+        </tr>
+        <tr>
+          <td class="rm-name">.tabs</td>
+          <td class="rm-purpose">Single-select view switcher.</td>
+          <td class="rm-when">The user picks one of N peer views of the same content area. Selecting a tab mounts a panel; one tab is always selected.</td>
+        </tr>
+        <tr>
+          <td class="rm-name">.btn--toggle</td>
+          <td class="rm-purpose">Single boolean (one chip, on or off).</td>
+          <td class="rm-when">A single binary preference next to a control — "Show archived," "Compact rows." Use the button form when the toggle stands alone, not in a row.</td>
+        </tr>
+        <tr>
+          <td class="rm-name">.badge</td>
+          <td class="rm-purpose">Read-only status marker.</td>
+          <td class="rm-when">The element communicates state but is not interactive. Badge is what you reach for to label a row, not to filter one.</td>
+        </tr>
+        <tr>
+          <td class="rm-name">.checkbox-list</td>
+          <td class="rm-purpose">Multi-select inside a form.</td>
+          <td class="rm-when">The choice is part of a form being submitted, where label legibility and dense vertical scanning matter more than horizontal compactness.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ========================== 02 / ANATOMY ========================== -->
+  <section class="chunk" id="anatomy">
+    <header class="chunk-head reveal">
+      <span class="num-tag">02 / Chip — Anatomy</span>
+      <h2 class="h2">Anatomy.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      A pill container with three optional slots: a leading icon
+      (revealed only on the on-state), a required label, and a trailing
+      count. Slots are addressable by BEM-style class hooks; the chip
+      defaults to <code>aria-pressed="false"</code> and flips to
+      <code>"true"</code> when toggled on.
+    </p>
+
+    <div class="glass chip-anatomy reveal" aria-label="Chip anatomy diagram">
+      <div class="chip-anatomy__diagram">
+        <button type="button" class="chip is-active" aria-pressed="true">
+          <span class="chip__leading" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+          <span class="chip__label">Active</span>
+          <span class="chip__count">21</span>
+        </button>
+      </div>
+
+      <dl class="chip-anatomy__legend">
+        <dt>A · container</dt>
+        <dd><code>.chip</code> renders as a <code>&lt;button type="button"&gt;</code> with <code>aria-pressed</code>. The pill shape, fixed 28px height, and inline-flex layout are owned by the block — variants and modifiers compose by adding modifier classes, never by re-styling the block.</dd>
+
+        <dt>B · leading slot</dt>
+        <dd><code>.chip__leading</code> holds the on-state icon (typically a check). The slot collapses visually at rest — authors can keep the markup in place; the chip's <code>:not(.is-active)</code> rule hides the slot until the chip toggles on.</dd>
+
+        <dt>C · label</dt>
+        <dd><code>.chip__label</code> is the human-readable filter value. Required; never abbreviated to a glyph alone (use a leading icon if a glyph is needed alongside the label).</dd>
+
+        <dt>D · count</dt>
+        <dd><code>.chip__count</code> is the optional read-only trailing number — "if you toggled this, how many rows would match?" Renders in tabular numerals so columns of chips stay aligned. Skip the count when it's not knowable, not stable, or not useful.</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ========================== 03 / VARIANTS ========================== -->
+  <section class="chunk" id="variants">
+    <header class="chunk-head reveal">
+      <span class="num-tag">03 / Chip — Variants</span>
+      <h2 class="h2">Variants.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      Four shapes share the same block. The default toggle chip is the
+      product workhorse; the other three layer optional slots or one
+      modifier on top.
+    </p>
+
+    <div class="form-variant-grid reveal">
+
+      <article class="form-variant-card chip-variant-card">
+        <span class="label">Default · toggle</span>
+        <div class="demo">
+          <button type="button" class="chip" aria-pressed="false">
+            <span class="chip__leading" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            <span class="chip__label">Active</span>
+          </button>
+          <button type="button" class="chip" aria-pressed="true">
+            <span class="chip__leading" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            <span class="chip__label">Incomplete</span>
+          </button>
+        </div>
+        <div class="meta"><span>.chip</span><strong>label only</strong></div>
+      </article>
+
+      <article class="form-variant-card chip-variant-card">
+        <span class="label">With count</span>
+        <div class="demo">
+          <button type="button" class="chip" aria-pressed="false">
+            <span class="chip__leading" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            <span class="chip__label">Active</span>
+            <span class="chip__count">21</span>
+          </button>
+          <button type="button" class="chip" aria-pressed="true">
+            <span class="chip__leading" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            <span class="chip__label">Swine only</span>
+            <span class="chip__count">23</span>
+          </button>
+        </div>
+        <div class="meta"><span>.chip__count</span><strong>match preview</strong></div>
+      </article>
+
+      <article class="form-variant-card chip-variant-card">
+        <span class="label">With leading icon · sigil prefix</span>
+        <div class="demo">
+          <button type="button" class="chip chip--with-sigil" aria-pressed="true">
+            <span class="chip__leading" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+            </span>
+            <span class="chip__label">Updated · last 7d</span>
+          </button>
+          <button type="button" class="chip chip--with-sigil" aria-pressed="false">
+            <span class="chip__leading" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6l-8-4z"/></svg>
+            </span>
+            <span class="chip__label">Owner: me</span>
+          </button>
+        </div>
+        <div class="meta"><span>.chip__leading</span><strong>sigil-as-affordance</strong></div>
+      </article>
+
+      <article class="form-variant-card chip-variant-card">
+        <span class="label">Removable · active-filter tray</span>
+        <div class="demo">
+          <span class="chip chip--removable is-active" aria-pressed="true">
+            <span class="chip__leading" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            <span class="chip__label">Status: Active</span>
+            <span class="chip__trailing" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </span>
+          </span>
+          <span class="chip chip--removable is-active" aria-pressed="true">
+            <span class="chip__leading" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            <span class="chip__label">Species: Swine</span>
+            <span class="chip__trailing" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </span>
+          </span>
+        </div>
+        <div class="meta"><span>.chip--removable</span><strong>dismiss × dismiss</strong></div>
+      </article>
+
+    </div>
+
+    <p class="usage-note usage-note--below reveal">
+      <strong>Removable is for the "active filters" tray, not the filter
+      row itself.</strong> The toggle chip <em>stays in the row</em> — its
+      × is implicit (click it again to turn it off). The removable chip
+      <em>leaves the tray</em> when × is clicked. Mixing the two in the
+      same row is an authoring error.
+    </p>
+  </section>
+
+  <!-- ========================== 04 / STATES ========================== -->
+  <section class="chunk" id="states">
+    <header class="chunk-head reveal">
+      <span class="num-tag">04 / Chip — States</span>
+      <h2 class="h2">States.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      Seven discrete states. The on-state's tinted fill is the chip's
+      primary affordance — the leading check is a reinforcement, not the
+      signal — so the contrast between rest and active is the most
+      important contract to preserve when retuning tokens.
+    </p>
+
+    <div class="form-version-stage reveal">
+
+      <article class="form-version-card">
+        <span class="label">Rest</span>
+        <div class="demo">
+          <button type="button" class="chip" aria-pressed="false">
+            <span class="chip__leading" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            <span class="chip__label">Active</span>
+            <span class="chip__count">21</span>
+          </button>
+        </div>
+        <div class="meta"><span>aria-pressed="false"</span><strong>off</strong></div>
+      </article>
+
+      <article class="form-version-card">
+        <span class="label">Hover · simulated</span>
+        <div class="demo">
+          <button type="button" class="chip is-state-hover" aria-pressed="false">
+            <span class="chip__leading" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            <span class="chip__label">Active</span>
+            <span class="chip__count">21</span>
+          </button>
+        </div>
+        <div class="meta"><span>:hover</span><strong>off + pointer</strong></div>
+      </article>
+
+      <article class="form-version-card">
+        <span class="label">Focus-visible</span>
+        <div class="demo">
+          <button type="button" class="chip is-state-focus" aria-pressed="false">
+            <span class="chip__leading" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            <span class="chip__label">Active</span>
+            <span class="chip__count">21</span>
+          </button>
+        </div>
+        <div class="meta"><span>:focus-visible</span><strong>keyboard</strong></div>
+      </article>
+
+      <article class="form-version-card">
+        <span class="label">Active · on</span>
+        <div class="demo">
+          <button type="button" class="chip" aria-pressed="true">
+            <span class="chip__leading" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            <span class="chip__label">Active</span>
+            <span class="chip__count">21</span>
+          </button>
+        </div>
+        <div class="meta"><span>aria-pressed="true"</span><strong>on · tinted</strong></div>
+      </article>
+
+      <article class="form-version-card">
+        <span class="label">Active + hover · simulated</span>
+        <div class="demo">
+          <button type="button" class="chip is-state-active-hover" aria-pressed="true">
+            <span class="chip__leading" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            <span class="chip__label">Active</span>
+            <span class="chip__count">21</span>
+          </button>
+        </div>
+        <div class="meta"><span>[aria-pressed="true"]:hover</span><strong>on + pointer</strong></div>
+      </article>
+
+      <article class="form-version-card">
+        <span class="label">Pressed · mousedown</span>
+        <div class="demo">
+          <button type="button" class="chip is-state-pressed" aria-pressed="false">
+            <span class="chip__leading" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            <span class="chip__label">Active</span>
+            <span class="chip__count">21</span>
+          </button>
+        </div>
+        <div class="meta"><span>:active</span><strong>mousedown</strong></div>
+      </article>
+
+      <article class="form-version-card">
+        <span class="label">Disabled</span>
+        <div class="demo">
+          <button type="button" class="chip" aria-pressed="false" disabled>
+            <span class="chip__leading" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            <span class="chip__label">Active</span>
+            <span class="chip__count">21</span>
+          </button>
+        </div>
+        <div class="meta"><span>[disabled]</span><strong>not interactive</strong></div>
+      </article>
+
+    </div>
+
+    <p class="usage-note usage-note--below reveal">
+      <strong>Don't lean on the leading check to carry the on-state.</strong>
+      The tinted fill, the primary border, and the medium-weight label
+      are doing the work; the check icon is a reinforcement. If you skip
+      the leading slot entirely, the chip still reads correctly. If you
+      keep the slot but suppress the tint, the chip stops reading as
+      "on" — that combination is an authoring error.
+    </p>
+  </section>
+
+  <!-- ========================== 05 / IN-CONTEXT ========================== -->
+  <section class="chunk" id="examples">
+    <header class="chunk-head reveal">
+      <span class="num-tag">05 / Chip — In context</span>
+      <h2 class="h2">Filter row.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      The pattern V-01 reaches for: a horizontal row of toggle chips
+      with optional "Clear filters" affordance. Within a row, chips on
+      the same axis OR together (status: Active <em>or</em> Incomplete);
+      chips across axes AND together (status AND species). No chip
+      selected = "show everything," with the Clear button hidden.
+    </p>
+
+    <div class="chip-filter-row-demo reveal">
+      <div class="chip-filter-row" role="group" aria-label="Disease catalogue filters">
+        <button type="button" class="chip" aria-pressed="true">
+          <span class="chip__leading" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+          <span class="chip__label">Active</span>
+          <span class="chip__count">21</span>
+        </button>
+        <button type="button" class="chip" aria-pressed="false">
+          <span class="chip__leading" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+          <span class="chip__label">Incomplete</span>
+          <span class="chip__count">5</span>
+        </button>
+        <button type="button" class="chip" aria-pressed="false">
+          <span class="chip__leading" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+          <span class="chip__label">Inactive</span>
+          <span class="chip__count">2</span>
+        </button>
+        <button type="button" class="chip" aria-pressed="true">
+          <span class="chip__leading" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+          <span class="chip__label">Swine only</span>
+          <span class="chip__count">23</span>
+        </button>
+        <button type="button" class="btn btn--ghost btn--sm chip-filter-row__clear">
+          <span class="btn__label">Clear filters</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================== 06 / TOKENS ========================== -->
+  <section class="chunk" id="tokens">
+    <header class="chunk-head reveal">
+      <span class="num-tag">06 / Chip — Component tokens</span>
+      <h2 class="h2">Tokens.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      The full <code>--chip-*</code> map. Component tokens reference
+      semantics only; if a primitive looks necessary, that's usually a
+      sign a semantic is missing — file the gap rather than reaching
+      across the tier.
+    </p>
+
+    <table class="token-table reveal" aria-label="Chip component tokens">
+      <thead>
+        <tr>
+          <th>Component token</th>
+          <th>References</th>
+          <th>Resolves to</th>
+          <th>Preview</th>
+        </tr>
+      </thead>
+      <tbody id="chipTokenTable"></tbody>
+    </table>
+  </section>
+
+  <!-- ========================== FOOTER ========================== -->
+  <footer>
+    <span>END OF SECTION</span>
+  </footer>
+
+</main>
+
+<script>
+/* =========================================================
+   COMPONENT TOKEN DATA — Chip
+   ========================================================= */
+const CHIP_TOKENS = [
+  { group: 'Container — shape + rhythm', tokens: [
+    ['--chip-height',      '28px'],
+    ['--chip-radius',      'var(--radius-pill)'],
+    ['--chip-padding-x',   'var(--spacing-3x)'],
+    ['--chip-gap',         'var(--spacing-2x)'],
+    ['--chip-font-size',   'var(--text-body-sm)'],
+    ['--chip-font-weight', 'var(--font-weight-regular)'],
+    ['--chip-icon-size',   '14px'],
+    ['--chip-transition',  'background, border, color · 150ms ease'],
+  ]},
+  { group: 'Rest', tokens: [
+    ['--chip-bg',       'transparent'],
+    ['--chip-fg',       'var(--text-default-subtle)'],
+    ['--chip-border',   'var(--border-default)'],
+    ['--chip-count-fg', 'var(--text-default-minimal)'],
+  ]},
+  { group: 'Hover', tokens: [
+    ['--chip-bg-hover',     'var(--background-default-hover)'],
+    ['--chip-fg-hover',     'var(--text-default)'],
+    ['--chip-border-hover', 'var(--border-default)'],
+  ]},
+  { group: 'Pressed', tokens: [
+    ['--chip-bg-pressed', 'color-mix(hover × 88%, text-default)'],
+  ]},
+  { group: 'Active — toggled on', tokens: [
+    ['--chip-bg-active',         'var(--background-primary-subtle)'],
+    ['--chip-fg-active',         'var(--text-primary-strong)'],
+    ['--chip-border-active',     'var(--background-primary)'],
+    ['--chip-count-fg-active',   'var(--text-primary-strong)'],
+    ['--chip-bg-active-hover',   'color-mix(active × 88%, text-primary-strong)'],
+  ]},
+  { group: 'Disabled', tokens: [
+    ['--chip-bg-disabled',     'transparent'],
+    ['--chip-fg-disabled',     'var(--text-default-disabled)'],
+    ['--chip-border-disabled', 'var(--border-default-subtle)'],
+  ]},
+  { group: 'Focus ring', tokens: [
+    ['--chip-focus-ring', '0 0 0 3px var(--background-primary-subtle)'],
+  ]},
+];
+
+function resolveCss(varName) {
+  const styles = getComputedStyle(document.documentElement);
+  return styles.getPropertyValue(varName).trim();
+}
+function isColorish(value) {
+  if (!value) return false;
+  const v = value.toLowerCase();
+  return v.startsWith('#') || v.startsWith('rgb') || v.startsWith('hsl') ||
+         v.startsWith('color-mix') || v.startsWith('linear-gradient') ||
+         v.startsWith('radial-gradient') || v === 'transparent' ||
+         /^[a-z]+$/.test(v);
+}
+function renderTokenTable() {
+  const tbody = document.getElementById('chipTokenTable');
+  if (!tbody) return;
+  let html = '';
+  CHIP_TOKENS.forEach(group => {
+    html += `<tr class="group-row"><td colspan="4">${group.group}</td></tr>`;
+    group.tokens.forEach(([name, ref]) => {
+      const resolved = resolveCss(name) || '—';
+      const isColor = isColorish(resolved);
+      /* Render the swatch as a bare span (NOT .chip) so the
+         .tk-swatch .chip rule from page-III-02.css doesn't
+         collide with the new .chip component on this page. */
+      const swatch = isColor
+        ? `<span class="tk-tile" style="background:${resolved}"></span>`
+        : `<span class="tk-tile tk-tile--noncolor"></span>`;
+      html += `<tr>
+        <td class="tk-name">${name}</td>
+        <td class="tk-ref">${ref.replace(/</g,'&lt;')}</td>
+        <td class="tk-resolved">${resolved.length > 60 ? resolved.slice(0,57)+'…' : resolved}</td>
+        <td class="tk-swatch">${swatch}</td>
+      </tr>`;
+    });
+  });
+  tbody.innerHTML = html;
+}
+
+/* =========================================================
+   STATE-DEMO HOOKS
+   The .is-state-* classes pin a state for the static
+   demo — they're not part of the chip's contract, they only
+   force the visual that the corresponding pseudo-class
+   would produce in the live component.
+   ========================================================= */
+function applyStaticStateStyles() {
+  const root = document.documentElement;
+  // Cache the resolved tokens so the state-pin classes can
+  // mirror them via CSS custom properties below.
+  const get = (name) => getComputedStyle(root).getPropertyValue(name).trim();
+  // Feed the resolved values into a one-shot stylesheet so
+  // we don't have to re-declare the chip token chain in
+  // page-III-13.css.
+  const sheet = document.createElement('style');
+  sheet.textContent = `
+    .chip.is-state-hover {
+      background: ${get('--chip-bg-hover')};
+      color:      ${get('--chip-fg-hover')};
+      border-color: ${get('--chip-border-hover')};
+    }
+    .chip.is-state-pressed {
+      background: ${get('--chip-bg-pressed')};
+    }
+    .chip.is-state-focus {
+      box-shadow: ${get('--chip-focus-ring')};
+    }
+    .chip[aria-pressed="true"].is-state-active-hover {
+      background: ${get('--chip-bg-active-hover')};
+    }
+  `;
+  document.head.appendChild(sheet);
+}
+
+/* =========================================================
+   REVEAL ON SCROLL
+   ========================================================= */
+function initReveal() {
+  const items = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    items.forEach(el => el.classList.add('in'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        en.target.classList.add('in');
+        io.unobserve(en.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(el => io.observe(el));
+}
+
+/* =========================================================
+   BOOT
+   ========================================================= */
+document.addEventListener('DOMContentLoaded', () => {
+  renderTokenTable();
+  applyStaticStateStyles();
+  initReveal();
+});
+</script>
+
+</body>
+</html>

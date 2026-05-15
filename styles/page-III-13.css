@@ -1,0 +1,165 @@
+/* =========================================================
+   PAGE — COMPONENT · CHIP
+   Styles unique to III-13-chip.html: the anatomy diagram,
+   the rule-matrix table (chip vs sibling primitives), the
+   variant grid spacing, the in-context filter row, and the
+   token-table swatch tile.
+   Reuses .form-variant-card, .form-version-card, .usage-note
+   and .preview-stage from page-III-03.css, plus .token-table
+   from page-III-02.css. The chip itself lives in chip.css.
+   Depends on: tokens.css, base.css, shell.css, chip.css,
+               page-III-03.css, page-III-02.css
+   ========================================================= */
+
+/* =========================================================
+   RULE MATRIX — chip vs sibling selection primitives
+   Same shape as the .rule-matrix on III-14-tabs; the rule
+   isn't general enough to live in page-III-03 yet (only two
+   pages use it). Inline here until the third consumer
+   appears.
+   ========================================================= */
+.rule-matrix {
+    width: 100%;
+    border-collapse: collapse;
+    border: var(--border-width-base) solid var(--border-default);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    background: var(--background-default);
+    margin: var(--space-tier-3) 0;
+}
+.rule-matrix th,
+.rule-matrix td {
+    text-align: left;
+    padding: var(--space-tier-5) var(--space-tier-4);
+    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
+    vertical-align: top;
+}
+.rule-matrix tbody tr:last-child th,
+.rule-matrix tbody tr:last-child td {
+    border-bottom: none;
+}
+.rule-matrix thead th {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+    background: var(--background-default-subtle);
+    font-weight: var(--font-weight-medium);
+}
+.rule-matrix .rm-name {
+    font-family: var(--font-mono);
+    color: var(--text-primary-strong);
+    width: 22%;
+    white-space: nowrap;
+}
+.rule-matrix .rm-purpose {
+    color: var(--text-default);
+    width: 30%;
+}
+.rule-matrix .rm-when {
+    color: var(--text-default-subtle);
+}
+
+/* =========================================================
+   CHIP ANATOMY — labelled chip with slot vocabulary
+   Same shape as .tabs-anatomy on page-III-14.css.
+   ========================================================= */
+.chip-anatomy {
+    padding: var(--space-tier-2);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-tier-2);
+}
+.chip-anatomy__diagram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-tier-2) var(--space-tier-3);
+    border: var(--border-width-base) dashed var(--border-default);
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--background-default-subtle) 60%, transparent);
+}
+.chip-anatomy__legend {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: var(--space-tier-6) var(--spacing-5x);
+    margin: 0;
+}
+.chip-anatomy__legend dt {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-primary-strong);
+    font-weight: var(--font-weight-medium);
+    padding-top: 2px;
+}
+.chip-anatomy__legend dd {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    line-height: var(--line-height-body);
+    color: var(--text-default-subtle);
+    margin: 0 0 var(--space-tier-6);
+}
+
+/* =========================================================
+   CHIP VARIANT CARD — wrap chips inside the demo
+   The form-variant-card .demo defaults to a centred column.
+   Chips look better in a row-wrapped flex layout so multiple
+   chips per card sit side-by-side with consistent spacing.
+   ========================================================= */
+.chip-variant-card .demo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-gap-snug);
+    align-items: center;
+    justify-content: flex-start;
+    max-width: none;
+    width: 100%;
+}
+
+/* =========================================================
+   FILTER ROW — in-context demo of the V-01 toolbar pattern
+   ========================================================= */
+.chip-filter-row-demo {
+    padding: var(--space-tier-3) var(--space-tier-4);
+    background: var(--background-default-subtle);
+    border: var(--border-width-base) solid var(--border-default-subtle);
+    border-radius: var(--radius-md);
+}
+.chip-filter-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-gap-micro);
+}
+.chip-filter-row__clear {
+    margin-left: var(--space-gap-snug);
+}
+
+/* =========================================================
+   TOKEN-TABLE SWATCH TILE
+   The token-table on page-III-02.css uses .tk-swatch .chip
+   for its colour preview tile — but on this page that would
+   collide with the actual .chip component (cursor, transition,
+   hover). Use a local .tk-tile class instead and replicate the
+   swatch's geometry here.
+   ========================================================= */
+.tk-swatch .tk-tile {
+    display: inline-block;
+    width: 100%;
+    height: var(--space-tier-3);
+    border-radius: var(--radius-sm);
+    border: var(--border-width-base) solid var(--border-swatch, var(--border-default));
+}
+.tk-swatch .tk-tile--noncolor {
+    background: repeating-linear-gradient(
+        45deg,
+        var(--neutral-100) 0 6px,
+        var(--neutral-50)  6px 12px
+    );
+    opacity: .6;
+}
