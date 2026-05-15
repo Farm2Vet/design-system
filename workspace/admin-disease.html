@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin · Disease catalogue — Farm2Vet</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<!-- I. Primitives + II. Semantics -->
+<link rel="stylesheet" href="../styles/tokens.css" />
+<link rel="stylesheet" href="../styles/base.css" />
+<link rel="stylesheet" href="../styles/typography.css" />
+
+<!-- III. Components -->
+<link rel="stylesheet" href="../styles/button.css" />
+<link rel="stylesheet" href="../styles/card.css" />
+<link rel="stylesheet" href="../styles/sidebar.css" />
+<link rel="stylesheet" href="../styles/badge.css" />
+<link rel="stylesheet" href="../styles/form.css" />
+<link rel="stylesheet" href="../styles/chip.css" />
+<link rel="stylesheet" href="../styles/switch.css" />
+<link rel="stylesheet" href="../styles/search-toolbar.css" />
+<link rel="stylesheet" href="../styles/global-nav.css" />
+
+<style>
+/* =========================================================
+   ADMIN · DISEASE CATALOGUE — workspace mockup
+   The list view that opens when admin clicks "Disease" from
+   the dashboard. Per FR-376 this is the entry point for the
+   whole Disease Management feature.
+
+   Reuses everything from admin-dashboard.html — shell, glass
+   conic backdrop, sidebar, topbar — and adds the page-
+   specific composition: page header, search toolbar
+   (canonical .search-toolbar III-16), .card-wrapped .table
+   (III-15), and an inline pagination row.
+   ========================================================= */
+
+/* ----- Backdrop (identical to dashboard) ---------------- */
+body::before {
+    inset: -25%;
+    background:
+        conic-gradient(from 200deg at 75% 25%,
+            color-mix(in srgb, var(--primary-400) 50%, transparent) 0deg,
+            color-mix(in srgb, var(--accent-400) 44%, transparent) 60deg,
+            color-mix(in srgb, var(--primary-200) 42%, transparent) 130deg,
+            color-mix(in srgb, var(--secondary-200) 30%, transparent) 200deg,
+            color-mix(in srgb, var(--accent-300) 42%, transparent) 270deg,
+            color-mix(in srgb, var(--primary-300) 46%, transparent) 330deg,
+            color-mix(in srgb, var(--primary-400) 50%, transparent) 360deg),
+        var(--white-base);
+    filter: blur(80px);
+}
+
+/* ----- Shell layout (same as dashboard) ----------------- */
+.dash {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--space-tier-3);
+    padding: var(--space-tier-3);
+    align-items: start;
+    min-height: 100vh;
+
+    /* AI feature palette (used by the sidebar's Automated testing) */
+    --ai-indigo:        #6366F1;
+    --ai-violet:        #8B5CF6;
+    --ai-indigo-deep:   #4338CA;
+    --ai-violet-deep:   #7C3AED;
+    --ai-indigo-darker: #3730A3;
+    --ai-violet-darker: #6D28D9;
+    --ai-indigo-light:  #A5B4FC;
+}
+.dash__side {
+    position: sticky;
+    top: var(--space-tier-3);
+    align-self: start;
+}
+.dash__side .sidebar {
+    min-height: 0;
+    height: calc(100vh - var(--space-tier-3) * 2);
+}
+.dash__side .sidebar__brand-mark { width: 36px; height: 36px; }
+.dash__side .sidebar__brand { font-size: var(--text-h6); }
+.dash__side .sidebar {
+    --sidebar-item-fg:           var(--text-default);
+    --sidebar-item-icon:         var(--icon-default);
+    --sidebar-group-label-color: var(--text-default-subtle);
+}
+.dash__main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-flow-section);
+    min-width: 0;
+    padding: 0 var(--space-tier-3);
+}
+
+/* ----- Topbar (identical to dashboard) ------------------ */
+.dash-topbar { top: var(--space-tier-3); z-index: 5; }
+.dash-topbar .global-nav__inner { max-width: none; padding: 0; gap: var(--space-tier-5); }
+
+.dash-topbar__crumbs,
+.dash-topbar__cluster {
+    min-height: 48px;
+    box-sizing: border-box;
+}
+.dash-topbar__crumbs {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-tier-6);
+    padding: var(--space-tier-5) var(--space-tier-3);
+    background: var(--glass-light-light-bg);
+    -webkit-backdrop-filter: var(--glass-light-light-blur) var(--glass-saturate);
+            backdrop-filter: var(--glass-light-light-blur) var(--glass-saturate);
+    border: var(--border-width-base) solid var(--glass-light-light-border);
+    border-radius: var(--radius-pill);
+    box-shadow: var(--glass-shadow-raised), var(--glass-inset-light-soft);
+    margin-right: auto;
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    color: var(--text-default-subtle);
+    white-space: nowrap;
+}
+.dash-topbar__crumbs a { color: inherit; text-decoration: none; transition: color .15s ease; }
+.dash-topbar__crumbs a:hover { color: var(--text-default); }
+.dash-topbar__crumb-sep { color: var(--text-default-disabled); }
+.dash-topbar__crumb-tail { color: var(--text-default); font-weight: var(--font-weight-semibold); }
+
+.dash-topbar__cluster {
+    list-style: none;
+    margin: 0;
+    gap: var(--space-tier-7);
+    align-items: center;
+}
+.dash-topbar__cluster .global-nav__item { display: inline-flex; align-items: center; }
+
+.dash-topbar__divider {
+    width: var(--border-width-base);
+    height: 22px;
+    background: var(--border-default-subtle);
+    margin: 0 var(--space-tier-7);
+}
+
+.dash-topbar__search { position: relative; display: inline-flex; align-items: center; width: 240px; }
+.dash-topbar__search .input {
+    padding-left: calc(var(--space-tier-3) + 16px + var(--space-tier-7));
+    padding-right: var(--space-tier-3);
+    border-radius: var(--radius-pill);
+    background: transparent;
+    border: none;
+    width: 100%;
+    box-shadow: none;
+}
+.dash-topbar__search .input:focus,
+.dash-topbar__search .input:focus-visible { outline: none; }
+.dash-topbar__search-icon {
+    position: absolute;
+    left: var(--space-tier-3);
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--icon-default-subtle);
+    pointer-events: none;
+}
+.dash-topbar__search-icon svg { width: 100%; height: 100%; display: block; }
+
+.dash-topbar__icon-btn {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-pill);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: var(--icon-default);
+    cursor: pointer;
+    transition: background-color .15s ease, color .15s ease;
+}
+.dash-topbar__icon-btn:hover { background: var(--background-primary-subtle); color: var(--text-primary-strong); }
+.dash-topbar__icon-btn svg { width: 18px; height: 18px; }
+.dash-topbar__icon-btn .dot {
+    position: absolute; top: 6px; right: 6px;
+    width: 8px; height: 8px;
+    border-radius: var(--radius-pill);
+    background: var(--background-critical-strong);
+    box-shadow: 0 0 0 2px var(--white-base);
+}
+
+.dash-topbar__lang {
+    display: inline-flex;
+    gap: 2px;
+    padding: 3px;
+    background: var(--background-default-subtle);
+    border-radius: var(--radius-pill);
+}
+.dash-topbar__lang button {
+    border: none;
+    background: transparent;
+    padding: var(--space-tier-6) var(--space-tier-4);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-default-minimal);
+    cursor: pointer;
+    transition: background-color .15s ease, color .15s ease;
+    min-width: 44px;
+}
+.dash-topbar__lang button:hover { color: var(--text-default); }
+.dash-topbar__lang button[aria-pressed="true"] {
+    background: var(--primary-500);
+    color: var(--text-inverted);
+    box-shadow: var(--shadow-sm);
+}
+
+/* ----- Sidebar tints (same as dashboard) ---------------- */
+.dash-sidebar__sync .sidebar__icon { color: var(--icon-primary-strong); }
+.dash-sidebar__sync:hover .sidebar__icon { color: var(--icon-primary-strong); }
+
+.dash-sidebar__ai            { color: var(--ai-indigo-deep); }
+.dash-sidebar__ai .sidebar__icon  { color: var(--ai-violet); }
+.dash-sidebar__ai:hover      { color: var(--ai-indigo-darker); }
+.dash-sidebar__ai:hover .sidebar__icon { color: var(--ai-violet-deep); }
+.dash-sidebar__ai.is-current { color: var(--ai-indigo-darker); background: color-mix(in srgb, var(--ai-violet) 14%, transparent); }
+.dash-sidebar__ai.is-current .sidebar__icon { color: var(--ai-violet-deep); }
+
+/* =========================================================
+   PAGE-SPECIFIC SECTIONS
+   ========================================================= */
+
+/* ----- Page header (hero) -------------------------------
+   Same vertical rhythm as the dashboard hero, but the right
+   slot carries a "+ New disease" CTA in the same gradient
+   used for the Sync button on the dashboard, so the two
+   page-level "create / run" actions share one visual idiom. */
+.dash-page {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-tier-3);
+    padding-top: var(--space-tier-3);
+    flex-wrap: wrap;
+}
+.dash-page__text { max-width: 60ch; }
+.dash-page h1 {
+    margin: 0 0 var(--space-flow-element);
+    font-family: var(--font-sans);
+    font-size: var(--text-h2);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-heading);
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--text-default);
+}
+.dash-page h1 em { font-style: italic; color: var(--text-accent); }
+.dash-page__lede {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--line-height-body);
+    color: var(--text-default-subtle);
+}
+
+/* Primary CTA — primary-700 → primary-500 gradient (same
+   as the Sync button on the dashboard hero). */
+.dash-page__cta.btn--cta {
+    background: linear-gradient(135deg, var(--primary-700) 0%, var(--primary-500) 100%);
+    border-color: transparent;
+    box-shadow: var(--shadow-md), 0 4px 14px color-mix(in srgb, var(--primary-700) 25%, transparent);
+}
+.dash-page__cta.btn--cta:hover {
+    background: linear-gradient(135deg, var(--primary-800) 0%, var(--primary-600) 100%);
+    box-shadow: var(--shadow-lg), 0 6px 18px color-mix(in srgb, var(--primary-800) 30%, transparent);
+    transform: translateY(-1px);
+}
+.dash-page__cta.btn--cta:active {
+    background: linear-gradient(135deg, var(--primary-900) 0%, var(--primary-700) 100%);
+    transform: translateY(0);
+}
+
+/* ----- Unified catalogue card --------------------------
+   Toolbar (search · quick filters · sort) + item list +
+   pager, all bleeding to the card edges. No mono font
+   anywhere — sans throughout per Jack. */
+.dash-catalogue.card {
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Toolbar header — search left · quick-filter pills middle
+   · sort group right (sort-by dropdown + direction button) */
+.dash-catalogue__toolbar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-tier-5);
+    padding: var(--space-tier-4);
+    background: color-mix(in srgb, var(--white-base) 25%, transparent);
+    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
+    flex-wrap: wrap;
+}
+.dash-catalogue__search {
+    flex: 1 1 280px;
+    min-width: 200px;
+}
+
+/* Quick-filter pills — toggleable .chip via aria-pressed.
+   Each filter is themed to match the meaning of what it
+   filters TO: incomplete = red (critical), deactivated =
+   gray (neutral muted). */
+.dash-catalogue__quick-filters {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-tier-7);
+}
+
+/* Incomplete filter — red theme */
+.dash-catalogue__filter-incomplete {
+    color: var(--text-critical);
+    background: color-mix(in srgb, var(--critical-500) 8%, transparent);
+    border-color: color-mix(in srgb, var(--critical-500) 30%, transparent);
+}
+.dash-catalogue__filter-incomplete:hover {
+    color: var(--text-critical);
+    background: color-mix(in srgb, var(--critical-500) 16%, transparent);
+    border-color: color-mix(in srgb, var(--critical-500) 45%, transparent);
+}
+.dash-catalogue__filter-incomplete[aria-pressed="true"] {
+    background: var(--critical-500);
+    border-color: var(--critical-500);
+    color: var(--text-inverted);
+}
+.dash-catalogue__filter-incomplete[aria-pressed="true"]:hover {
+    background: var(--critical-600);
+    border-color: var(--critical-600);
+    color: var(--text-inverted);
+}
+
+/* Deactivated filter — gray theme */
+.dash-catalogue__filter-deactivated {
+    color: var(--text-default-subtle);
+    background: color-mix(in srgb, var(--neutral-500) 8%, transparent);
+    border-color: color-mix(in srgb, var(--neutral-500) 28%, transparent);
+}
+.dash-catalogue__filter-deactivated:hover {
+    color: var(--text-default);
+    background: color-mix(in srgb, var(--neutral-500) 16%, transparent);
+    border-color: color-mix(in srgb, var(--neutral-500) 42%, transparent);
+}
+.dash-catalogue__filter-deactivated[aria-pressed="true"] {
+    background: var(--neutral-700);
+    border-color: var(--neutral-700);
+    color: var(--text-inverted);
+}
+.dash-catalogue__filter-deactivated[aria-pressed="true"]:hover {
+    background: var(--neutral-800);
+    border-color: var(--neutral-800);
+    color: var(--text-inverted);
+}
+
+/* Sort group — sort-by dropdown trigger + direction toggle */
+.dash-catalogue__sort {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-tier-7);
+    margin-left: auto;
+}
+.dash-catalogue__sort-by {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-tier-7);
+    padding: var(--space-tier-7) var(--space-tier-5);
+    background: var(--background-default);
+    border: var(--border-width-base) solid var(--border-default);
+    border-radius: var(--radius-md);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    color: var(--text-default);
+    cursor: pointer;
+    transition: background-color .15s ease, border-color .15s ease;
+}
+.dash-catalogue__sort-by:hover {
+    background: var(--background-default-hover);
+    border-color: var(--border-default-strong);
+}
+.dash-catalogue__sort-by-label {
+    color: var(--text-default-subtle);
+}
+.dash-catalogue__sort-by svg {
+    width: 12px;
+    height: 12px;
+    color: var(--icon-default-subtle);
+}
+.dash-catalogue__sort-dir {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-md);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--background-default);
+    border: var(--border-width-base) solid var(--border-default);
+    color: var(--text-default-subtle);
+    cursor: pointer;
+    transition: background-color .15s ease, border-color .15s ease, color .15s ease;
+}
+.dash-catalogue__sort-dir:hover {
+    background: var(--background-default-hover);
+    border-color: var(--border-default-strong);
+    color: var(--text-default);
+}
+.dash-catalogue__sort-dir svg {
+    width: 14px;
+    height: 14px;
+    transition: transform .18s ease;
+}
+.dash-catalogue__sort-dir[aria-pressed="false"] svg {
+    transform: rotate(180deg);
+}
+
+/* Sort-by dropdown menu — pops below the trigger when the
+   button is clicked. Native popup, no library. */
+.dash-catalogue__sort-by-wrap { position: relative; }
+.dash-catalogue__sort-menu {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    min-width: 180px;
+    background: var(--background-default);
+    border: var(--border-width-base) solid var(--border-default);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    padding: var(--space-tier-7);
+    display: none;
+    flex-direction: column;
+    gap: 2px;
+    z-index: 10;
+}
+.dash-catalogue__sort-menu.is-open { display: flex; }
+.dash-catalogue__sort-menu button {
+    border: none;
+    background: transparent;
+    padding: var(--space-tier-6) var(--space-tier-5);
+    text-align: left;
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    color: var(--text-default);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background-color .15s ease, color .15s ease;
+}
+.dash-catalogue__sort-menu button:hover {
+    background: var(--background-default-hover);
+}
+.dash-catalogue__sort-menu button[aria-selected="true"] {
+    background: var(--background-primary-subtle);
+    color: var(--text-primary-strong);
+    font-weight: var(--font-weight-medium);
+}
+
+/* Item list */
+.dash-catalogue__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.dash-catalogue__item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tier-6);
+    padding: var(--space-tier-4);
+    transition: background-color .15s ease;
+}
+.dash-catalogue__item + .dash-catalogue__item {
+    border-top: var(--border-width-base) solid var(--border-default-subtle);
+}
+.dash-catalogue__item:hover {
+    background: color-mix(in srgb, var(--white-base) 30%, transparent);
+}
+
+/* Top row — Identity left (codename + full name), actions
+   right (version dropdown + activate button). Always
+   present, always same shape. */
+.dash-catalogue__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-tier-5);
+    flex-wrap: wrap;
+}
+.dash-catalogue__title {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-tier-5);
+    flex-wrap: wrap;
+    min-width: 0;
+}
+.dash-catalogue__codename {
+    font-family: var(--font-sans);
+    font-size: var(--text-h5);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-default);
+    line-height: 1.2;
+}
+.dash-catalogue__name {
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    color: var(--text-default-subtle);
+    line-height: 1.4;
+}
+
+/* Meta row — Updated time + (when applicable) incomplete-
+   fields accordion. Always present so every item has the
+   same two-row silhouette. */
+.dash-catalogue__meta {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-tier-5);
+    flex-wrap: wrap;
+}
+.dash-catalogue__updated {
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    color: var(--text-default-minimal);
+}
+
+/* Action cluster (right side of head row) */
+.dash-catalogue__actions {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-tier-6);
+    flex-shrink: 0;
+}
+
+/* Version dropdown trigger */
+.dash-catalogue__version {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-tier-7);
+    padding: var(--space-tier-6) var(--space-tier-5);
+    background: var(--background-default);
+    border: var(--border-width-base) solid var(--border-default);
+    border-radius: var(--radius-md);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    color: var(--text-default);
+    cursor: pointer;
+    transition: background-color .15s ease, border-color .15s ease;
+    min-height: 32px;
+}
+.dash-catalogue__version:hover {
+    background: var(--background-default-hover);
+    border-color: var(--border-default-strong);
+}
+.dash-catalogue__version svg {
+    width: 12px;
+    height: 12px;
+    color: var(--icon-default-subtle);
+}
+
+/* Activate / Deactivate — looks like a real button.
+   Activated: solid primary-500 fill + white text + lift
+   shadow (a CTA you can press).
+   Deactivated: outlined gray, transparent fill (a button
+   you'd press to bring it back). */
+.dash-catalogue__toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-tier-6) var(--space-tier-4);
+    border-radius: var(--radius-md);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-semibold);
+    cursor: pointer;
+    border: var(--border-width-base) solid transparent;
+    transition: background-color .15s ease, border-color .15s ease, color .15s ease, box-shadow .15s ease, transform .15s ease;
+    min-width: 110px;
+    min-height: 32px;
+    line-height: 1;
+}
+.dash-catalogue__toggle.is-active {
+    background: var(--primary-500);
+    border-color: var(--primary-500);
+    color: var(--text-inverted);
+    box-shadow: var(--shadow-sm);
+}
+.dash-catalogue__toggle.is-active:hover {
+    background: var(--primary-600);
+    border-color: var(--primary-600);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+.dash-catalogue__toggle.is-active:active {
+    background: var(--primary-700);
+    border-color: var(--primary-700);
+    box-shadow: var(--shadow-sm);
+    transform: translateY(0);
+}
+.dash-catalogue__toggle:not(.is-active) {
+    background: var(--background-default);
+    border-color: var(--border-default-strong);
+    color: var(--text-default-subtle);
+}
+.dash-catalogue__toggle:not(.is-active):hover {
+    background: var(--background-default-hover);
+    border-color: var(--text-default);
+    color: var(--text-default);
+}
+.dash-catalogue__toggle:not(.is-active):active {
+    background: var(--background-default-active);
+    transform: translateY(0);
+}
+
+/* Incomplete-fields accordion — sits in the meta row beside
+   the updated time. Compact critical-tinted tag with a
+   chevron; opens to a list below in normal flow. */
+.dash-catalogue__incomplete {
+    display: inline-block;
+}
+.dash-catalogue__incomplete summary {
+    list-style: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-tier-7);
+    padding: 2px var(--space-tier-6);
+    background: color-mix(in srgb, var(--critical-500) 8%, transparent);
+    color: var(--text-critical);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-medium);
+    border: var(--border-width-base) solid color-mix(in srgb, var(--critical-500) 28%, transparent);
+    transition: background-color .15s ease;
+}
+.dash-catalogue__incomplete summary::-webkit-details-marker { display: none; }
+.dash-catalogue__incomplete summary::marker { content: ''; }
+.dash-catalogue__incomplete summary:hover {
+    background: color-mix(in srgb, var(--critical-500) 16%, transparent);
+}
+.dash-catalogue__incomplete summary svg {
+    width: 12px;
+    height: 12px;
+    transition: transform .18s ease;
+}
+.dash-catalogue__incomplete[open] summary svg { transform: rotate(180deg); }
+.dash-catalogue__incomplete-list {
+    list-style: none;
+    margin: var(--space-tier-7) 0 0 0;
+    padding: var(--space-tier-5) var(--space-tier-4);
+    background: color-mix(in srgb, var(--critical-500) 6%, transparent);
+    border: var(--border-width-base) solid color-mix(in srgb, var(--critical-500) 18%, transparent);
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tier-7);
+    color: var(--text-critical);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    max-width: 360px;
+}
+.dash-catalogue__incomplete-list li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-tier-6);
+}
+.dash-catalogue__incomplete-list li::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    border-radius: var(--radius-pill);
+    background: currentColor;
+    flex-shrink: 0;
+}
+
+/* Pager footer — sans, no uppercase, matching toolbar tint. */
+.dash-catalogue__pager {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-tier-3);
+    padding: var(--space-tier-4);
+    background: color-mix(in srgb, var(--white-base) 25%, transparent);
+    border-top: var(--border-width-base) solid var(--border-default-subtle);
+}
+.dash-catalogue__pager-meta {
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    color: var(--text-default-minimal);
+}
+.dash-catalogue__pager-controls {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-tier-7);
+}
+.dash-catalogue__pager-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-md);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--background-default);
+    border: var(--border-width-base) solid var(--border-default);
+    color: var(--text-default-subtle);
+    cursor: pointer;
+    transition: background-color .15s ease, color .15s ease, border-color .15s ease;
+}
+.dash-catalogue__pager-btn:hover {
+    background: var(--background-default-hover);
+    border-color: var(--border-default-strong);
+    color: var(--text-default);
+}
+.dash-catalogue__pager-btn[disabled] {
+    opacity: 0.4;
+    pointer-events: none;
+}
+.dash-catalogue__pager-btn svg { width: 14px; height: 14px; }
+.dash-catalogue__pager-page {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-tier-7);
+    margin: 0 var(--space-tier-6);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    color: var(--text-default-subtle);
+}
+.dash-catalogue__pager-page .input {
+    width: 48px;
+    text-align: center;
+    padding: 4px var(--space-tier-7);
+    font-family: var(--font-sans);
+}
+
+/* ----- Responsive --------------------------------------- */
+@media (max-width: 720px) {
+    .dash {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+    .dash__side { position: static; }
+    .dash__side .sidebar { height: auto; }
+    .dash-page { flex-direction: column; align-items: stretch; }
+    .dash-page__cta { width: 100%; }
+    .dash-catalogue__pager { flex-direction: column; align-items: stretch; gap: var(--space-tier-5); }
+    .dash-catalogue__item { flex-direction: column; align-items: stretch; }
+    .dash-catalogue__actions { justify-content: flex-end; }
+}
+</style>
+</head>
+<body>
+
+<div class="dash">
+
+  <!-- ========================== SIDEBAR ========================== -->
+  <aside class="dash__side">
+    <aside class="sidebar" aria-label="Admin primary navigation">
+
+      <header class="sidebar__header">
+        <a href="admin-dashboard.html" class="sidebar__brand">
+          <img class="sidebar__brand-mark" src="../logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
+          <span class="sidebar__brand-text">Farm2Vet</span>
+        </a>
+        <button type="button" class="sidebar__collapse" aria-label="Collapse sidebar" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6"/></svg>
+        </button>
+      </header>
+
+      <nav class="sidebar__nav" aria-label="Admin destinations">
+        <ul class="sidebar__list">
+
+          <li class="sidebar__item">
+            <a class="sidebar__link" href="admin-dashboard.html">
+              <span class="sidebar__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+              </span>
+              <span class="sidebar__label">Overview</span>
+            </a>
+          </li>
+
+          <li class="sidebar__item is-open">
+            <button type="button" class="sidebar__link" aria-expanded="true">
+              <span class="sidebar__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/></svg>
+              </span>
+              <span class="sidebar__label">Data management</span>
+              <span class="sidebar__trailing">
+                <svg class="sidebar__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+              </span>
+            </button>
+            <ul class="sidebar__sublist">
+              <li class="sidebar__item"><a class="sidebar__link is-current" href="#" aria-current="page"><span class="sidebar__label">Disease</span><span class="sidebar__trailing"><span class="sidebar__badge">142</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Question</span><span class="sidebar__trailing"><span class="sidebar__badge">318</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Conversation</span><span class="sidebar__trailing"><span class="sidebar__badge">47</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Image</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Resource</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">PDF Input</span></a></li>
+            </ul>
+          </li>
+
+          <li class="sidebar__item">
+            <a class="sidebar__link dash-sidebar__ai" href="#">
+              <span class="sidebar__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
+              </span>
+              <span class="sidebar__label">Automated testing</span>
+            </a>
+          </li>
+
+          <li class="sidebar__item">
+            <a class="sidebar__link dash-sidebar__sync" href="#">
+              <span class="sidebar__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              </span>
+              <span class="sidebar__label">Sync database</span>
+              <span class="sidebar__trailing"><span class="sidebar__badge sidebar__badge--warning">6</span></span>
+            </a>
+          </li>
+
+        </ul>
+      </nav>
+
+      <div class="sidebar__footer">
+        <div class="sidebar__profile-wrap">
+          <div class="sidebar__profile">
+            <span class="sidebar__avatar" aria-hidden="true">M</span>
+            <span class="sidebar__profile-text">
+              <span class="sidebar__profile-name">Minh</span>
+              <span class="sidebar__profile-role">Admin</span>
+            </span>
+            <button type="button" class="sidebar__overflow" aria-label="Account menu">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+  </aside>
+
+  <!-- ========================== MAIN ========================== -->
+  <main class="dash__main">
+
+    <!-- Topbar — same three-island composition as dashboard, only
+         the breadcrumb tail and search placeholder change. -->
+    <header class="global-nav dash-topbar" aria-label="Admin chrome">
+      <div class="global-nav__inner">
+
+        <nav class="dash-topbar__crumbs" aria-label="Breadcrumb">
+          <a href="admin-dashboard.html">Admin</a>
+          <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
+          <span class="dash-topbar__crumb-tail" aria-current="page">Disease</span>
+        </nav>
+
+        <ul class="global-nav__list dash-topbar__cluster">
+          <li class="global-nav__item">
+            <label class="dash-topbar__search">
+              <span class="dash-topbar__search-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+              </span>
+              <input type="search" class="input input--sm" placeholder="Search…" aria-label="Search the admin console" />
+            </label>
+          </li>
+
+          <li class="global-nav__item" aria-hidden="true"><span class="dash-topbar__divider"></span></li>
+
+          <li class="global-nav__item">
+            <button type="button" class="dash-topbar__icon-btn" aria-label="Notifications, 3 unread">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+              <span class="dot" aria-hidden="true"></span>
+            </button>
+          </li>
+
+          <li class="global-nav__item">
+            <div class="dash-topbar__lang" role="group" aria-label="Interface language">
+              <button type="button" aria-pressed="true">EN</button>
+              <button type="button" aria-pressed="false">VI</button>
+            </div>
+          </li>
+        </ul>
+
+        <a href="#" class="global-nav__chip" aria-label="Admin version">v1.4.2</a>
+
+      </div>
+    </header>
+
+    <!-- Page header -->
+    <header class="dash-page">
+      <div class="dash-page__text">
+        <h1>Disease catalogue.</h1>
+        <p class="dash-page__lede">
+          Codenames, versions, and lifecycle state for every disease entry the chatbot can reference.
+        </p>
+      </div>
+      <button type="button" class="btn btn--cta btn--lg dash-page__cta">
+        <span class="btn__leading" aria-hidden="true">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        </span>
+        <span class="btn__label">New disease</span>
+      </button>
+    </header>
+
+    <!-- Unified catalogue card — toolbar (search · filters · sort)
+         + item list + pager, all bleeding to the card edges. -->
+    <section class="card card--glass dash-catalogue" aria-label="Disease catalogue">
+
+      <header class="dash-catalogue__toolbar" role="toolbar" aria-label="Search and filters">
+
+        <label class="search-field dash-catalogue__search">
+          <span class="search-field__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          </span>
+          <input type="search" class="input input--sm search-field__input" placeholder="Search by codename or name…" />
+          <button type="button" class="search-field__clear" aria-label="Clear search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
+        </label>
+
+        <!-- Quick filter pills — toggle on/off via aria-pressed.
+             Themed by meaning: incomplete = red, deactivated = gray. -->
+        <div class="dash-catalogue__quick-filters" role="group" aria-label="Quick filters">
+          <button type="button" class="chip dash-catalogue__filter-incomplete" aria-pressed="false">
+            <span class="chip__label">Incomplete</span>
+          </button>
+          <button type="button" class="chip dash-catalogue__filter-deactivated" aria-pressed="false">
+            <span class="chip__label">Deactivated</span>
+          </button>
+        </div>
+
+        <!-- Sort group: sort-by dropdown + direction toggle -->
+        <div class="dash-catalogue__sort" role="group" aria-label="Sort">
+          <div class="dash-catalogue__sort-by-wrap">
+            <button type="button" class="dash-catalogue__sort-by" aria-haspopup="menu" aria-expanded="false">
+              <span class="dash-catalogue__sort-by-label">Sort by:</span>
+              <span class="dash-catalogue__sort-by-value">Last updated</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="dash-catalogue__sort-menu" role="menu" aria-label="Sort options">
+              <button type="button" role="menuitem">Codename</button>
+              <button type="button" role="menuitem">Full name</button>
+              <button type="button" role="menuitem" aria-selected="true">Last updated</button>
+            </div>
+          </div>
+          <button type="button" class="dash-catalogue__sort-dir" aria-label="Sort direction: descending" aria-pressed="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+          </button>
+        </div>
+
+      </header>
+
+      <ul class="dash-catalogue__list">
+
+        <li class="dash-catalogue__item">
+          <div class="dash-catalogue__head">
+            <div class="dash-catalogue__title">
+              <span class="dash-catalogue__codename">PRRS</span>
+              <span class="dash-catalogue__name">Porcine Reproductive and Respiratory Syndrome</span>
+            </div>
+            <div class="dash-catalogue__actions">
+              <button type="button" class="dash-catalogue__version">
+                <span>v3.2</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <button type="button" class="dash-catalogue__toggle is-active">Activated</button>
+            </div>
+          </div>
+          <div class="dash-catalogue__meta">
+            <span class="dash-catalogue__updated">Updated 2 h ago</span>
+          </div>
+        </li>
+
+        <li class="dash-catalogue__item">
+          <div class="dash-catalogue__head">
+            <div class="dash-catalogue__title">
+              <span class="dash-catalogue__codename">ASF</span>
+              <span class="dash-catalogue__name">African Swine Fever</span>
+            </div>
+            <div class="dash-catalogue__actions">
+              <button type="button" class="dash-catalogue__version">
+                <span>v2.1</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <button type="button" class="dash-catalogue__toggle is-active">Activated</button>
+            </div>
+          </div>
+          <div class="dash-catalogue__meta">
+            <span class="dash-catalogue__updated">Updated 5 h ago</span>
+          </div>
+        </li>
+
+        <li class="dash-catalogue__item">
+          <div class="dash-catalogue__head">
+            <div class="dash-catalogue__title">
+              <span class="dash-catalogue__codename">PED</span>
+              <span class="dash-catalogue__name">Porcine Epidemic Diarrhea</span>
+            </div>
+            <div class="dash-catalogue__actions">
+              <button type="button" class="dash-catalogue__version">
+                <span>v1.4</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <button type="button" class="dash-catalogue__toggle is-active">Activated</button>
+            </div>
+          </div>
+          <div class="dash-catalogue__meta">
+            <span class="dash-catalogue__updated">Updated 1 d ago</span>
+          </div>
+        </li>
+
+        <li class="dash-catalogue__item">
+          <div class="dash-catalogue__head">
+            <div class="dash-catalogue__title">
+              <span class="dash-catalogue__codename">CSF</span>
+              <span class="dash-catalogue__name">Classical Swine Fever</span>
+            </div>
+            <div class="dash-catalogue__actions">
+              <button type="button" class="dash-catalogue__version">
+                <span>v1.0</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <button type="button" class="dash-catalogue__toggle is-active">Activated</button>
+            </div>
+          </div>
+          <div class="dash-catalogue__meta">
+            <span class="dash-catalogue__updated">Updated 2 d ago</span>
+          </div>
+        </li>
+
+        <li class="dash-catalogue__item">
+          <div class="dash-catalogue__head">
+            <div class="dash-catalogue__title">
+              <span class="dash-catalogue__codename">FMD</span>
+              <span class="dash-catalogue__name">Foot and Mouth Disease</span>
+            </div>
+            <div class="dash-catalogue__actions">
+              <button type="button" class="dash-catalogue__version">
+                <span>v2.5</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <button type="button" class="dash-catalogue__toggle is-active">Activated</button>
+            </div>
+          </div>
+          <div class="dash-catalogue__meta">
+            <span class="dash-catalogue__updated">Updated 3 d ago</span>
+          </div>
+        </li>
+
+        <li class="dash-catalogue__item">
+          <div class="dash-catalogue__head">
+            <div class="dash-catalogue__title">
+              <span class="dash-catalogue__codename">PCV2</span>
+              <span class="dash-catalogue__name">Porcine Circovirus Type 2</span>
+            </div>
+            <div class="dash-catalogue__actions">
+              <button type="button" class="dash-catalogue__version">
+                <span>v1.3</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <button type="button" class="dash-catalogue__toggle is-active">Activated</button>
+            </div>
+          </div>
+          <div class="dash-catalogue__meta">
+            <span class="dash-catalogue__updated">Updated 4 d ago</span>
+          </div>
+        </li>
+
+        <li class="dash-catalogue__item">
+          <div class="dash-catalogue__head">
+            <div class="dash-catalogue__title">
+              <span class="dash-catalogue__codename">TGE</span>
+              <span class="dash-catalogue__name">Transmissible Gastroenteritis</span>
+            </div>
+            <div class="dash-catalogue__actions">
+              <button type="button" class="dash-catalogue__version">
+                <span>v1.0</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <button type="button" class="dash-catalogue__toggle is-active">Activated</button>
+            </div>
+          </div>
+          <div class="dash-catalogue__meta">
+            <span class="dash-catalogue__updated">Updated 6 d ago</span>
+            <details class="dash-catalogue__incomplete">
+              <summary>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                4 incomplete fields
+              </summary>
+              <ul class="dash-catalogue__incomplete-list">
+                <li>Description (Vietnamese)</li>
+                <li>Mortality rate</li>
+                <li>Treatment</li>
+                <li>Differential diagnosis</li>
+              </ul>
+            </details>
+          </div>
+        </li>
+
+        <li class="dash-catalogue__item">
+          <div class="dash-catalogue__head">
+            <div class="dash-catalogue__title">
+              <span class="dash-catalogue__codename">MHYO</span>
+              <span class="dash-catalogue__name">Mycoplasma hyopneumoniae</span>
+            </div>
+            <div class="dash-catalogue__actions">
+              <button type="button" class="dash-catalogue__version">
+                <span>v1.1</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <button type="button" class="dash-catalogue__toggle is-active">Activated</button>
+            </div>
+          </div>
+          <div class="dash-catalogue__meta">
+            <span class="dash-catalogue__updated">Updated 1 w ago</span>
+          </div>
+        </li>
+
+        <li class="dash-catalogue__item">
+          <div class="dash-catalogue__head">
+            <div class="dash-catalogue__title">
+              <span class="dash-catalogue__codename">SSUI</span>
+              <span class="dash-catalogue__name">Streptococcus suis</span>
+            </div>
+            <div class="dash-catalogue__actions">
+              <button type="button" class="dash-catalogue__version">
+                <span>v1.0</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <button type="button" class="dash-catalogue__toggle is-active">Activated</button>
+            </div>
+          </div>
+          <div class="dash-catalogue__meta">
+            <span class="dash-catalogue__updated">Updated 1 w ago</span>
+          </div>
+        </li>
+
+        <li class="dash-catalogue__item">
+          <div class="dash-catalogue__head">
+            <div class="dash-catalogue__title">
+              <span class="dash-catalogue__codename">ERY</span>
+              <span class="dash-catalogue__name">Erysipelas</span>
+            </div>
+            <div class="dash-catalogue__actions">
+              <button type="button" class="dash-catalogue__version">
+                <span>v1.0</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <button type="button" class="dash-catalogue__toggle">Deactivated</button>
+            </div>
+          </div>
+          <div class="dash-catalogue__meta">
+            <span class="dash-catalogue__updated">Updated 2 w ago</span>
+          </div>
+        </li>
+
+        <li class="dash-catalogue__item">
+          <div class="dash-catalogue__head">
+            <div class="dash-catalogue__title">
+              <span class="dash-catalogue__codename">GLAS</span>
+              <span class="dash-catalogue__name">Glässer's disease</span>
+            </div>
+            <div class="dash-catalogue__actions">
+              <button type="button" class="dash-catalogue__version">
+                <span>v1.2</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <button type="button" class="dash-catalogue__toggle is-active">Activated</button>
+            </div>
+          </div>
+          <div class="dash-catalogue__meta">
+            <span class="dash-catalogue__updated">Updated 2 w ago</span>
+          </div>
+        </li>
+
+        <li class="dash-catalogue__item">
+          <div class="dash-catalogue__head">
+            <div class="dash-catalogue__title">
+              <span class="dash-catalogue__codename">APP</span>
+              <span class="dash-catalogue__name">Actinobacillus pleuropneumoniae</span>
+            </div>
+            <div class="dash-catalogue__actions">
+              <button type="button" class="dash-catalogue__version">
+                <span>v1.0</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <button type="button" class="dash-catalogue__toggle is-active">Activated</button>
+            </div>
+          </div>
+          <div class="dash-catalogue__meta">
+            <span class="dash-catalogue__updated">Updated 3 w ago</span>
+            <details class="dash-catalogue__incomplete">
+              <summary>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                2 incomplete fields
+              </summary>
+              <ul class="dash-catalogue__incomplete-list">
+                <li>Mortality rate</li>
+                <li>Treatment</li>
+              </ul>
+            </details>
+          </div>
+        </li>
+
+      </ul>
+
+      <footer class="dash-catalogue__pager" role="navigation" aria-label="Pagination">
+        <span class="dash-catalogue__pager-meta">Showing 1–12 of 142</span>
+        <div class="dash-catalogue__pager-controls">
+          <button type="button" class="dash-catalogue__pager-btn" aria-label="First page" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="11 17 6 12 11 7"/><polyline points="18 17 13 12 18 7"/></svg>
+          </button>
+          <button type="button" class="dash-catalogue__pager-btn" aria-label="Previous page" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <span class="dash-catalogue__pager-page">
+            <input type="text" class="input input--sm" value="1" aria-label="Current page" />
+            <span>/ 12</span>
+          </span>
+          <button type="button" class="dash-catalogue__pager-btn" aria-label="Next page">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+          <button type="button" class="dash-catalogue__pager-btn" aria-label="Last page">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>
+          </button>
+        </div>
+      </footer>
+
+    </section>
+
+  </main>
+</div>
+
+<script>
+  // ----- Activate / Deactivate toggle -----
+  // Clicking flips .is-active (which drives the colour) and
+  // swaps the label text.
+  document.querySelectorAll('.dash-catalogue__toggle').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var nowActive = btn.classList.toggle('is-active');
+      btn.textContent = nowActive ? 'Activated' : 'Deactivated';
+    });
+  });
+
+  // ----- Quick filter pills -----
+  // Toggle aria-pressed on click; CSS does the rest.
+  document.querySelectorAll('.dash-catalogue__quick-filters .chip').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var pressed = btn.getAttribute('aria-pressed') === 'true';
+      btn.setAttribute('aria-pressed', pressed ? 'false' : 'true');
+    });
+  });
+
+  // ----- Sort-by dropdown -----
+  var sortBtn   = document.querySelector('.dash-catalogue__sort-by');
+  var sortMenu  = document.querySelector('.dash-catalogue__sort-menu');
+  var sortValue = document.querySelector('.dash-catalogue__sort-by-value');
+
+  if (sortBtn && sortMenu && sortValue) {
+    sortBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var open = sortMenu.classList.toggle('is-open');
+      sortBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+
+    // Click an option → set selection + close
+    sortMenu.querySelectorAll('button').forEach(function (option) {
+      option.addEventListener('click', function (e) {
+        e.stopPropagation();
+        sortMenu.querySelectorAll('button').forEach(function (b) { b.removeAttribute('aria-selected'); });
+        option.setAttribute('aria-selected', 'true');
+        sortValue.textContent = option.textContent.trim();
+        sortMenu.classList.remove('is-open');
+        sortBtn.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    // Click anywhere else → close
+    document.addEventListener('click', function () {
+      if (sortMenu.classList.contains('is-open')) {
+        sortMenu.classList.remove('is-open');
+        sortBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  // ----- Sort direction toggle -----
+  // aria-pressed="true"  → descending (down arrow, default)
+  // aria-pressed="false" → ascending  (CSS rotates the arrow)
+  var sortDir = document.querySelector('.dash-catalogue__sort-dir');
+  if (sortDir) {
+    sortDir.addEventListener('click', function () {
+      var isDesc = sortDir.getAttribute('aria-pressed') === 'true';
+      sortDir.setAttribute('aria-pressed', isDesc ? 'false' : 'true');
+      sortDir.setAttribute('aria-label',
+        isDesc ? 'Sort direction: ascending' : 'Sort direction: descending');
+    });
+  }
+</script>
+
+</body>
+</html>
