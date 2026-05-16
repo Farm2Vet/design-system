@@ -6843,7 +6843,7 @@ button.card.card--inverted:hover {
 
       <header class="sidebar__header">
         <a href="#" class="sidebar__brand">
-          <img class="sidebar__brand-mark" src="../logo/logo-emblem-white.svg" alt="" aria-hidden="true" />
+          <img class="sidebar__brand-mark" src="../logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
           <span class="sidebar__brand-text">Farm2Vet</span>
         </a>
         <button type="button" class="sidebar__collapse" aria-label="Collapse sidebar" aria-pressed="false">
@@ -7094,7 +7094,25 @@ button.card.card--inverted:hover {
   </main>
 </div>
 
-<script src="../scripts/sidebar.js" defer></script>
+
+<script>
+  // ----- Sidebar collapse toggle -----
+  // Clicking the sidebar__collapse button toggles the .sidebar--collapsed
+  // class on the sidebar; the canonical sidebar.css handles the visual
+  // collapse (width shrinks to var(--sidebar-width-rail), labels hide,
+  // chevron rotates 180deg).
+  (function () {
+    var sidebar = document.querySelector('.dash__side .sidebar');
+    var btn = document.querySelector('.dash__side .sidebar__collapse');
+    if (sidebar && btn) {
+      btn.addEventListener('click', function () {
+        var collapsed = sidebar.classList.toggle('sidebar--collapsed');
+        btn.setAttribute('aria-pressed', collapsed ? 'true' : 'false');
+        btn.setAttribute('aria-label', collapsed ? 'Expand sidebar' : 'Collapse sidebar');
+      });
+    }
+  })();
+</script>
 
 </body>
 </html>
