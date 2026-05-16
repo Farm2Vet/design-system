@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Disease wiki (experiment B · dark glass) — Farm2Vet Admin</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<!-- Foundations -->
+<link rel="stylesheet" href="styles/tokens.css" />
+<link rel="stylesheet" href="styles/base.css" />
+<link rel="stylesheet" href="styles/typography.css" />
+
+<!-- Components -->
+<link rel="stylesheet" href="styles/button.css" />
+<link rel="stylesheet" href="styles/form.css" />
+<link rel="stylesheet" href="styles/dropdown.css" />
+<link rel="stylesheet" href="styles/badge.css" />
+<link rel="stylesheet" href="styles/card.css" />
+<link rel="stylesheet" href="styles/sidebar.css" />
+<link rel="stylesheet" href="styles/tabs.css" />
+<link rel="stylesheet" href="styles/chip.css" />
+<link rel="stylesheet" href="styles/search-toolbar.css" />
+<link rel="stylesheet" href="styles/table.css" />
+<link rel="stylesheet" href="styles/modal.css" />
+
+<!-- Page-specific layout (canonical V-01) -->
+<link rel="stylesheet" href="styles/page-V-01.css" />
+
+<!-- Experiment-only overrides (inline, scoped to this file) -->
+<style>
+  /* ============================================================
+     EXPERIMENT B — dark wash, dark-glass sidebar, glass panel
+     Same panel structure as Experiment A; the backdrop and
+     sidebar tone flip to the dark rail. Reuses the dark abstract
+     wash from sidebar.css's .mode-preview__stage--dark so the
+     glass blur resolves over real texture, not a flat tint.
+     ============================================================ */
+
+  /* --- 1. Page surface: dark abstract with overlapping
+         radials — same pattern the sidebar page uses for its
+         dark-rail demo, so dark glass has texture to resolve. --- */
+  body {
+    background:
+      radial-gradient(ellipse 80% 55% at 22% 28%,
+        color-mix(in srgb, var(--neutral-700) 55%, transparent),
+        transparent 70%),
+      radial-gradient(ellipse 70% 50% at 78% 75%,
+        color-mix(in srgb, var(--neutral-950) 65%, transparent),
+        transparent 70%),
+      radial-gradient(ellipse 55% 40% at 50% 50%,
+        color-mix(in srgb, var(--accent-900) 35%, transparent),
+        transparent 70%),
+      radial-gradient(ellipse 60% 40% at 90% 10%,
+        color-mix(in srgb, var(--secondary-900) 25%, transparent),
+        transparent 70%),
+      var(--neutral-900);
+    background-attachment: fixed;
+    min-height: 100vh;
+    color: var(--text-inverted);
+  }
+
+  /* --- 2. App shell + main: transparent, dark wash shows through. --- */
+  .app-shell,
+  .app-shell__main { background: transparent; }
+
+  /* --- 3. Sidebar slot: dark-glass rail floats off the edge. --- */
+  .app-shell__side { z-index: 1; }
+  .app-shell__side .sidebar {
+    margin: var(--spacing-3x) 0 var(--spacing-3x) var(--spacing-3x);
+    min-height: calc(100vh - var(--spacing-3x) * 2);
+    --sidebar-width-expanded: calc(100% - var(--spacing-3x));
+  }
+
+  /* --- 4. Page header — inverted text since it sits over the
+         dark bg, outside any glass panel. --- */
+  .app-shell__page-header { padding-top: var(--space-tier-4); }
+  .app-shell__page-title { color: var(--text-inverted); }
+  .app-shell__page-lede  { color: var(--text-inverted-subtle); }
+  .app-shell__breadcrumb { color: var(--text-inverted-minimal); }
+  .app-shell__breadcrumb-link { color: var(--text-inverted-minimal); }
+  .app-shell__breadcrumb-link:hover { color: var(--text-inverted-subtle); }
+  .app-shell__breadcrumb-sep { color: color-mix(in srgb, var(--white-base) 30%, transparent); }
+  .app-shell__breadcrumb-tail { color: var(--text-inverted-subtle); }
+
+  /* --- 5. Tabbed glass panel — same composition as Experiment A.
+         On dark backdrops, .card--glass-heavy (modal-grade slab,
+         thick frost) reads cleaner than --glass-frost because the
+         heavier blur defeats the dark wash showing through. --- */
+  .wiki-card {
+    margin: var(--space-tier-4) var(--space-page-x) var(--space-tier-4);
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .wiki-card__toolbar {
+    padding: var(--spacing-4x) var(--space-container-x-lg) 0;
+    background: transparent;
+  }
+  .wiki-card__toolbar .search-toolbar {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding-inline: 0;
+  }
+
+  .wiki-card__tabs { padding: var(--spacing-3x) var(--space-container-x-lg) 0; }
+  .wiki-card__tabs .tabs--line .tabs__list {
+    border-bottom-color: var(--glass-light-thick-border);
+  }
+
+  .wiki-card__panel { padding: 0; }
+  .wiki-card__panel .table {
+    margin: 0;
+    width: 100%;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
+  .wiki-card__panel .table--boxed { border-radius: 0; }
+  .wiki-card__panel .table__head-row {
+    background: color-mix(in srgb, var(--white-base) 30%, transparent);
+  }
+  .wiki-card__panel .table__row { background: transparent; }
+  .wiki-card__panel .table__row:hover {
+    background: color-mix(in srgb, var(--white-base) 40%, transparent);
+  }
+
+  .wiki-card__footer {
+    border-top: var(--border-width-base) solid
+      color-mix(in srgb, var(--neutral-300) 50%, transparent);
+    background: color-mix(in srgb, var(--white-base) 22%, transparent);
+    padding: var(--space-container-y) var(--space-container-x-lg);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-gap-default);
+  }
+
+  /* --- 6. Floating modal — keeps the floating glass shadow.
+         Reads against the heavy frosted panel below. --- */
+  .app-shell__modal-layer .modal__surface {
+    box-shadow: var(--glass-shadow-floating), var(--glass-inset-light-strong);
+  }
+
+  /* --- 7. Experiment ribbon (dark-tone variant). --- */
+  .experiment-ribbon {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2x);
+    margin: var(--space-tier-3) var(--space-page-x) 0;
+    padding: var(--spacing-1x) var(--spacing-3x);
+    width: max-content;
+    border-radius: var(--radius-pill);
+    background: var(--glass-dark-light-bg);
+    border: var(--border-width-base) solid var(--glass-dark-light-border);
+    -webkit-backdrop-filter: var(--blur-md) saturate(140%);
+            backdrop-filter: var(--blur-md) saturate(140%);
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-inverted-subtle);
+  }
+  .experiment-ribbon strong { color: var(--text-inverted); font-weight: var(--font-weight-medium); }
+</style>
+
+<script src="scripts/dropdown.js" defer></script>
+<script src="scripts/sidebar.js" defer></script>
+</head>
+<body>
+
+<!-- ============== APP SHELL ============== -->
+<div class="app-shell">
+
+  <!-- ───── Sidebar — canonical .sidebar with --tone-dark glass ───── -->
+  <aside class="app-shell__side">
+    <aside class="sidebar sidebar--tone-dark" aria-label="Admin primary navigation">
+      <header class="sidebar__header">
+        <a href="#" class="sidebar__brand">
+          <img class="sidebar__brand-mark" src="logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
+          <span class="sidebar__brand-text">Farm2Vet</span>
+        </a>
+        <button type="button" class="sidebar__collapse" aria-label="Collapse sidebar" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6"/></svg>
+        </button>
+      </header>
+      <nav class="sidebar__nav" aria-label="Admin destinations">
+        <ul class="sidebar__list">
+          <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span><span class="sidebar__label">Overview Dashboard</span></a></li>
+          <li class="sidebar__item is-open">
+            <button type="button" class="sidebar__link" aria-expanded="true">
+              <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/></svg></span>
+              <span class="sidebar__label">Data Management</span>
+              <span class="sidebar__trailing"><svg class="sidebar__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></span>
+            </button>
+            <ul class="sidebar__sublist">
+              <li class="sidebar__item"><a class="sidebar__link is-current" href="V-01-wiki-experiment-b.html" aria-current="page"><span class="sidebar__label">Disease</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Question</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Conversation</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Image</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Resource</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">PDF Input</span></a></li>
+            </ul>
+          </li>
+          <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg></span><span class="sidebar__label">Automated Testing</span></a></li>
+          <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></span><span class="sidebar__label">Sync database</span></a></li>
+        </ul>
+      </nav>
+      <div class="sidebar__footer">
+        <div class="sidebar__profile-wrap">
+          <div class="sidebar__profile">
+            <span class="sidebar__avatar" aria-hidden="true">M</span>
+            <span class="sidebar__profile-text">
+              <span class="sidebar__profile-name">Minh</span>
+              <span class="sidebar__profile-role">Admin</span>
+            </span>
+            <button type="button" class="sidebar__overflow" aria-label="Account menu" aria-haspopup="menu" aria-expanded="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="5" r="1"/>
+                <circle cx="12" cy="12" r="1"/>
+                <circle cx="12" cy="19" r="1"/>
+              </svg>
+            </button>
+          </div>
+          <div class="sidebar__menu" role="menu" aria-label="Account">
+            <span class="sidebar__menu-header">farm2vets.tech@gmail.com</span>
+            <ul class="sidebar__menu-list">
+              <li role="none"><a class="sidebar__menu-item" role="menuitem" href="#"><svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Settings</span></a></li>
+              <li role="none"><a class="sidebar__menu-item" role="menuitem" href="#"><svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>Language</span></a></li>
+              <li role="none"><a class="sidebar__menu-item" role="menuitem" href="#"><svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>Get Help</span></a></li>
+              <li role="none" class="sidebar__menu-item--divider" aria-hidden="true"></li>
+              <li role="none"><a class="sidebar__menu-item" role="menuitem" href="#"><svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>Logout</span></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </aside>
+
+  <!-- ───── Main ───── -->
+  <main class="app-shell__main">
+
+    <span class="experiment-ribbon"><strong>Experiment B</strong> · dark wash · dark glass</span>
+
+    <!-- Page header (same skeleton as canonical V-01, inverted text via the override block) -->
+    <header class="app-shell__page-header">
+      <nav class="app-shell__breadcrumb" aria-label="Breadcrumb">
+        <a class="app-shell__breadcrumb-link" href="#">Data Management</a>
+        <span class="app-shell__breadcrumb-sep" aria-hidden="true">›</span>
+        <a class="app-shell__breadcrumb-link" href="#">Disease wiki</a>
+        <span class="app-shell__breadcrumb-sep" aria-hidden="true">›</span>
+        <span class="app-shell__breadcrumb-tail" aria-current="page">Catalogue</span>
+      </nav>
+      <div class="app-shell__page-header-row">
+        <div class="app-shell__page-header-text">
+          <h1 class="app-shell__page-title">Disease catalogue</h1>
+          <p class="app-shell__page-lede">
+            Codenames, full names, and lifecycle state for every disease entry.
+          </p>
+        </div>
+        <button type="button" class="btn btn--cta btn--md">
+          <span class="btn__leading" aria-hidden="true">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+          </span>
+          <span class="btn__label">New disease</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="app-shell__data-region">
+
+    <!-- ───── Tabbed glass panel — canonical .card.card--glass-heavy ───── -->
+    <section class="card card--glass-heavy wiki-card" aria-label="Disease catalogue panel">
+
+      <header class="wiki-card__toolbar">
+        <header class="search-toolbar" role="toolbar" aria-label="Search and filters">
+          <label class="search-field search-toolbar__search">
+            <span class="search-field__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+            </span>
+            <input type="search" class="input input--sm search-field__input" placeholder="Search disease, codename, alias…" />
+            <button type="button" class="search-field__clear" aria-label="Clear search">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </button>
+          </label>
+
+          <div class="search-toolbar__filters" role="group" aria-label="Filters">
+            <button type="button" class="chip chip--removable" aria-label="Edit Species filter">
+              <span class="chip__label">
+                <span class="chip__facet">Species:</span>
+                <span class="chip__values">Swine, Bovine<span class="chip__more">+1</span></span>
+              </span>
+              <span class="chip__trailing" role="button" tabindex="0" aria-label="Remove Species filter">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+              </span>
+            </button>
+            <div class="search-toolbar__add-filter">
+              <button type="button" class="btn btn--ghost btn--sm" aria-haspopup="dialog" aria-expanded="false" aria-controls="disease-filter-menu-b">
+                <span class="btn__leading" aria-hidden="true">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+                </span>
+                <span class="btn__label">Filter</span>
+              </button>
+            </div>
+            <button type="button" class="btn btn--ghost btn--sm search-toolbar__clear">
+              <span class="btn__label">Clear filters</span>
+            </button>
+          </div>
+        </header>
+      </header>
+
+      <div class="wiki-card__tabs">
+        <div class="tabs tabs--line tabs--md" data-tabs>
+          <div class="tabs__list" role="tablist" aria-label="Saved views">
+            <button type="button" class="tabs__tab is-selected" role="tab" aria-selected="true" tabindex="0">
+              <span class="tabs__label">All</span>
+              <span class="tabs__badge">38</span>
+            </button>
+            <button type="button" class="tabs__tab" role="tab" aria-selected="false" tabindex="-1">
+              <span class="tabs__label">Complete</span>
+              <span class="tabs__badge">28</span>
+            </button>
+            <button type="button" class="tabs__tab" role="tab" aria-selected="false" tabindex="-1">
+              <span class="tabs__label">Incomplete</span>
+              <span class="tabs__badge">8</span>
+            </button>
+            <button type="button" class="tabs__tab" role="tab" aria-selected="false" tabindex="-1">
+              <span class="tabs__label">Inactive</span>
+              <span class="tabs__badge">2</span>
+            </button>
+            <span class="tabs__indicator" aria-hidden="true"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="wiki-card__panel" role="tabpanel">
+        <table class="table table--boxed" aria-label="Disease catalogue">
+          <thead class="table__head">
+            <tr class="table__head-row">
+              <th class="table__head-cell" scope="col">
+                <button type="button" class="table__sort is-asc">
+                  Codename
+                  <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="m5 12 7-7 7 7"/>
+                    <path d="M12 19V5"/>
+                  </svg>
+                </button>
+              </th>
+              <th class="table__head-cell" scope="col">Full name</th>
+              <th class="table__head-cell" scope="col">Species</th>
+              <th class="table__head-cell" scope="col">ID</th>
+              <th class="table__head-cell" scope="col">Updated</th>
+              <th class="table__head-cell" scope="col" style="text-align:right">State</th>
+            </tr>
+          </thead>
+          <tbody class="table__body">
+            <tr class="table__row"><td class="table__cell table__cell--mono">ASF</td><td class="table__cell">African Swine Fever</td><td class="table__cell">Swine</td><td class="table__cell table__cell--mono table__cell--meta">DIS-001</td><td class="table__cell table__cell--meta">Apr 18, 2026</td><td class="table__cell table__cell--state"><span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span></td></tr>
+            <tr class="table__row"><td class="table__cell table__cell--mono">CSF</td><td class="table__cell">Classical Swine Fever</td><td class="table__cell">Swine</td><td class="table__cell table__cell--mono table__cell--meta">DIS-002</td><td class="table__cell table__cell--meta">Apr 12, 2026</td><td class="table__cell table__cell--state"><span class="badge badge--sm is-warning"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Incomplete</span></span></td></tr>
+            <tr class="table__row"><td class="table__cell table__cell--mono">PRRS</td><td class="table__cell">Porcine Reproductive &amp; Respiratory Syndrome</td><td class="table__cell">Swine</td><td class="table__cell table__cell--mono table__cell--meta">DIS-003</td><td class="table__cell table__cell--meta">Apr 10, 2026</td><td class="table__cell table__cell--state"><span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span></td></tr>
+            <tr class="table__row"><td class="table__cell table__cell--mono">SALM</td><td class="table__cell">Salmonella enterica infection</td><td class="table__cell">Multi</td><td class="table__cell table__cell--mono table__cell--meta">DIS-004</td><td class="table__cell table__cell--meta">Apr 06, 2026</td><td class="table__cell table__cell--state"><span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span></td></tr>
+            <tr class="table__row table__row--dim"><td class="table__cell table__cell--mono">TGE</td><td class="table__cell">Transmissible Gastroenteritis</td><td class="table__cell">Swine</td><td class="table__cell table__cell--mono table__cell--meta">DIS-005</td><td class="table__cell table__cell--meta">Apr 02, 2026</td><td class="table__cell table__cell--state"><span class="badge badge--sm is-neutral"><span class="badge__label">Inactive</span></span></td></tr>
+            <tr class="table__row"><td class="table__cell table__cell--mono">SDYS</td><td class="table__cell">Brachyspira hyodysenteriae infection</td><td class="table__cell">Swine</td><td class="table__cell table__cell--mono table__cell--meta">DIS-006</td><td class="table__cell table__cell--meta">Mar 28, 2026</td><td class="table__cell table__cell--state"><span class="badge badge--sm is-warning"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Incomplete</span></span></td></tr>
+            <tr class="table__row"><td class="table__cell table__cell--mono">GLAS</td><td class="table__cell">Gl&auml;sser&rsquo;s disease (Glaesserella parasuis)</td><td class="table__cell">Swine</td><td class="table__cell table__cell--mono table__cell--meta">DIS-007</td><td class="table__cell table__cell--meta">Mar 24, 2026</td><td class="table__cell table__cell--state"><span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span></td></tr>
+            <tr class="table__row table__row--dim"><td class="table__cell table__cell--mono">PAST</td><td class="table__cell">Pasteurella multocida infection</td><td class="table__cell">Multi</td><td class="table__cell table__cell--mono table__cell--meta">DIS-008</td><td class="table__cell table__cell--meta">Mar 19, 2026</td><td class="table__cell table__cell--state"><span class="badge badge--sm is-neutral"><span class="badge__label">Inactive</span></span></td></tr>
+            <tr class="table__row"><td class="table__cell table__cell--mono">APP</td><td class="table__cell">Actinobacillus Pleuropneumonia</td><td class="table__cell">Swine</td><td class="table__cell table__cell--mono table__cell--meta">DIS-009</td><td class="table__cell table__cell--meta">Mar 14, 2026</td><td class="table__cell table__cell--state"><span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span></td></tr>
+            <tr class="table__row"><td class="table__cell table__cell--mono">EDEM</td><td class="table__cell">Edema disease (Shiga-toxin <em>E. coli</em>)</td><td class="table__cell">Swine</td><td class="table__cell table__cell--mono table__cell--meta">DIS-010</td><td class="table__cell table__cell--meta">Mar 08, 2026</td><td class="table__cell table__cell--state"><span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="wiki-card__footer">
+        <nav class="app-pager" aria-label="Pagination">
+          <button type="button" class="btn btn--ghost btn--sm app-pager__btn" aria-label="Previous page">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+          </button>
+          <button type="button" class="btn btn--ghost btn--sm app-pager__btn" aria-label="Page 1">1</button>
+          <button type="button" class="btn btn--ghost btn--sm app-pager__btn" aria-label="Page 2">2</button>
+          <button type="button" class="btn btn--ghost btn--sm app-pager__btn" aria-label="Page 3">3</button>
+          <button type="button" class="btn btn--tinted btn--sm app-pager__btn" aria-current="page" aria-label="Page 4, current">4</button>
+          <button type="button" class="btn btn--ghost btn--sm app-pager__btn" aria-label="Page 5">5</button>
+          <button type="button" class="btn btn--ghost btn--sm app-pager__btn" aria-label="Page 6">6</button>
+          <span class="app-pager__ellipsis" aria-hidden="true">…</span>
+          <button type="button" class="btn btn--ghost btn--sm app-pager__btn" aria-label="Page 15 (last)">15</button>
+          <button type="button" class="btn btn--ghost btn--sm app-pager__btn" aria-label="Next page">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
+          </button>
+        </nav>
+      </div>
+
+    </section>
+
+    <!-- ───── Floating modal — "Add new disease" (canonical .modal) ───── -->
+    <div class="app-shell__modal-layer" aria-hidden="false">
+      <div class="modal modal--md" id="add-disease" role="dialog" aria-modal="true" aria-labelledby="add-disease-title-b">
+        <div class="modal__surface">
+          <header class="modal__header">
+            <div class="modal__heading">
+              <h3 class="modal__title" id="add-disease-title-b">Add new disease</h3>
+            </div>
+            <button type="button" class="modal__close" aria-label="Close dialog">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </button>
+          </header>
+          <div class="modal__body">
+            <form class="add-disease-form" onsubmit="return false;">
+              <div class="field field--cover">
+                <div class="cover-tile" aria-hidden="true">
+                  <div class="cover-tile__square">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 4v3M12 17v3M4 12h3M17 12h3M6 6l2 2M16 16l2 2M6 18l2-2M16 8l2-2"/></svg>
+                  </div>
+                  <span class="cover-tile__edit">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+                  </span>
+                </div>
+              </div>
+              <div class="field field--codename"><label class="field__label" for="add-disease-codename-b">Codename</label><input type="text" id="add-disease-codename-b" class="input" value="ASF" /></div>
+              <div class="field field--fullname"><label class="field__label" for="add-disease-fullname-b">Full name</label><input type="text" id="add-disease-fullname-b" class="input" value="African Swine Fever" /></div>
+              <div class="field field--species"><label class="field__label" for="add-disease-species-b">Species</label><input type="text" id="add-disease-species-b" class="input" value="Swine" /></div>
+              <div class="field field--pathogen"><label class="field__label" for="add-disease-pathogen-b">Pathogen type</label><input type="text" id="add-disease-pathogen-b" class="input" value="Viral" /></div>
+              <div class="field field--aliases"><label class="field__label" for="add-disease-aliases-b">Aliases</label><input type="text" id="add-disease-aliases-b" class="input" value="Pig plague, African pig disease" /></div>
+              <div class="field field--desc"><label class="field__label" for="add-disease-desc-b">Short description</label><textarea id="add-disease-desc-b" class="input textarea" rows="3">A highly contagious haemorrhagic disease of pigs caused by African swine fever virus. No vaccine is available; control depends on surveillance and biosecurity.</textarea></div>
+            </form>
+          </div>
+          <footer class="modal__footer">
+            <button type="button" class="btn btn--ghost btn--md">Cancel</button>
+            <button type="button" class="btn btn--cta btn--md">Save</button>
+          </footer>
+        </div>
+      </div>
+    </div>
+
+    </div>
+
+  </main>
+
+</div>
+
+<!-- Minimal tab indicator controller (mirrors III-14-tabs.html's initTabs).
+     Inline-scoped to this experiment so the canonical files stay untouched. -->
+<script>
+  document.querySelectorAll('[data-tabs]').forEach(root => {
+    const list = root.querySelector('.tabs__list');
+    if (!list) return;
+    const tabs = Array.from(list.querySelectorAll('.tabs__tab'));
+    const move = (tab) => {
+      list.style.setProperty('--_x', tab.offsetLeft + 'px');
+      list.style.setProperty('--_w', tab.offsetWidth + 'px');
+    };
+    const select = (tab) => {
+      tabs.forEach(t => {
+        const on = t === tab;
+        t.classList.toggle('is-selected', on);
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.setAttribute('tabindex', on ? '0' : '-1');
+      });
+      move(tab);
+    };
+    const initial = tabs.find(t => t.classList.contains('is-selected')) || tabs[0];
+    if (initial) requestAnimationFrame(() => move(initial));
+    list.addEventListener('click', (e) => {
+      const tab = e.target.closest('.tabs__tab');
+      if (tab && list.contains(tab)) select(tab);
+    });
+    window.addEventListener('resize', () => {
+      const sel = tabs.find(t => t.classList.contains('is-selected'));
+      if (sel) move(sel);
+    });
+  });
+</script>
+
+</body>
+</html>
