@@ -6067,6 +6067,68 @@ button.card.card--inverted:hover {
 
 </style>
 
+<!-- Clear glass override — written from scratch, modeled on the
+     glass treatments used by Apple Vision OS, Stripe, and Linear.
+     Sits BETWEEN the inlined design-system CSS (above) and the
+     page-specific styles (below). Specificity bumped with the .dash
+     parent so this beats BOTH canonical (0,1,0) AND the page-
+     specific topbar styling that comes later in source. -->
+<style>
+/* Per Jack: the middle topbar island is the reference. Every glass
+   surface — cards, sidebar, all THREE topbar islands (breadcrumb pill
+   on the left, sections cluster in the middle, version chip on the
+   right) — now uses an identical formula so the page reads as one
+   consistent glass material.
+
+   Layered inset shadows simulate light catching the edges:
+     · INSET 0  1px 1px rgba(255,255,255,0.6)   top-edge rim highlight
+     · INSET 0 -1px 1px rgba(255,255,255,0.15)  bottom-edge subtle rim
+     · INSET 0  0  20px rgba(255,255,255,0.05)  ambient inner glow
+     · OUTER 0  6px 20px rgba(0,0,0,0.07)       soft elevation drop
+
+   Background 10% white tint, blur 8px, saturate 140%, border 30% white. */
+
+.dash .card.card--glass,
+.dash__side .sidebar,
+.dash .dash-topbar__crumbs,
+.dash .dash-topbar .global-nav__list,
+.dash .dash-topbar .global-nav__chip {
+    background: rgba(255, 255, 255, 0.1);
+    -webkit-backdrop-filter: blur(8px) saturate(140%);
+            backdrop-filter: blur(8px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow:
+        0 6px 20px rgba(0, 0, 0, 0.07),
+        inset 0 1px 1px rgba(255, 255, 255, 0.6),
+        inset 0 -1px 1px rgba(255, 255, 255, 0.15),
+        inset 0 0 20px rgba(255, 255, 255, 0.05);
+}
+
+/* Card hover keeps the same shape, just amped a step — top rim
+   brightens, ambient glow widens, outer drop deepens. */
+.dash .card.card--glass:hover {
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.45);
+    box-shadow:
+        0 10px 28px rgba(0, 0, 0, 0.09),
+        inset 0 1px 1px rgba(255, 255, 255, 0.72),
+        inset 0 -1px 1px rgba(255, 255, 255, 0.22),
+        inset 0 0 24px rgba(255, 255, 255, 0.08);
+    transform: translateY(-1px);
+}
+
+/* Version chip hover — same one-step amp as cards, no lift. */
+.dash .dash-topbar .global-nav__chip:hover {
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.45);
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.08),
+        inset 0 1px 1px rgba(255, 255, 255, 0.72),
+        inset 0 -1px 1px rgba(255, 255, 255, 0.22),
+        inset 0 0 22px rgba(255, 255, 255, 0.08);
+}
+</style>
+
 <style>
 /* =========================================================
    ADMIN DASHBOARD — workspace mockup
@@ -6640,7 +6702,7 @@ body::before {
    Primary-tinted gradient overlay, primary-saturated border,
    soft primary glow shadow, and a gradient-filled icon tile
    so the card reads as "the one you should click first." */
-.console-card--featured {
+.dash .card.card--glass.console-card--featured {
     background:
         linear-gradient(135deg,
             color-mix(in srgb, var(--primary-300) 32%, transparent) 0%,
@@ -6699,7 +6761,7 @@ body::before {
    modern AI surfaces use (Copilot purple, Linear AI indigo,
    most Claude / OpenAI marks). Pure color signal, no
    sparkle, no pill — the hue alone does the work. */
-.console-card--ai {
+.dash .card.card--glass.console-card--ai {
     /* AI palette is defined on .dash so the sidebar's Automated
        testing row can share the same hex values. */
     background:
