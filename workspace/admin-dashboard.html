@@ -73,19 +73,47 @@
    inset bumped to -25% so the heavy blur doesn't leave a
    sharp band at the viewport edges.
    ========================================================= */
+/* "Earth + sky" — entirely on-brand backdrop using only the
+   secondary (earth/terracotta) and info (Apple systemBlue,
+   the sky) ramps from tokens.css. No custom hex anywhere.
+   Most coherent option for the design system because it
+   reuses existing primitives — anything else introduces
+   colour values that don't appear elsewhere in the system.
+
+   Spatial composition is the most literal reading of the
+   metaphor: sky from above, earth from below, soft horizon-
+   blend through the middle. Even after heavy blur, the
+   warm-cool vertical gradient reads as "outdoors looking
+   forward." Glass cards in the upper third blur predominantly
+   blue; cards in the lower third blur predominantly tan;
+   cards in the middle pick up a soft warm-cool blend. */
 body::before {
     inset: -25%;
     background:
-        conic-gradient(from 200deg at 75% 25%,
-            color-mix(in srgb, var(--primary-400) 50%, transparent) 0deg,
-            color-mix(in srgb, var(--accent-400) 44%, transparent) 60deg,
-            color-mix(in srgb, var(--primary-200) 42%, transparent) 130deg,
-            color-mix(in srgb, var(--secondary-200) 30%, transparent) 200deg,
-            color-mix(in srgb, var(--accent-300) 42%, transparent) 270deg,
-            color-mix(in srgb, var(--primary-300) 46%, transparent) 330deg,
-            color-mix(in srgb, var(--primary-400) 50%, transparent) 360deg),
+        /* Soft white breathing area near the horizon — pushed
+           up to ~45% to match the higher horizon line that
+           comes with an earth-dominant composition. */
+        radial-gradient(ellipse 50% 30% at 50% 45%,
+            color-mix(in srgb, var(--white-base) 55%, transparent) 0%,
+            transparent 70%),
+        /* Sky — quieter blue band along the top. Alphas
+           halved vs before (42→24, 20→10) and ellipse height
+           reduced 75→55% so the sky reads as a narrower strip
+           rather than half the page. */
+        radial-gradient(ellipse 110% 55% at 50% 0%,
+            color-mix(in srgb, var(--info-300) 24%, transparent) 0%,
+            color-mix(in srgb, var(--info-500) 10%, transparent) 32%,
+            transparent 65%),
+        /* Earth — terracotta + tan now climbs higher and
+           carries more weight. Alphas bumped (38→55, 28→42)
+           and ellipse height grown 72→90% so the earth fills
+           roughly 2/3 of the visible frame. */
+        radial-gradient(ellipse 115% 90% at 50% 100%,
+            color-mix(in srgb, var(--secondary-300) 55%, transparent) 0%,
+            color-mix(in srgb, var(--secondary-200) 42%, transparent) 38%,
+            transparent 75%),
         var(--white-base);
-    filter: blur(80px);
+    filter: blur(80px) saturate(1.6);
 }
 
 /* ----- Shell layout ------------------------------------- */
