@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Admin · Overview — Farm2Vet</title>
+<title>Admin · Disease catalogue (Earth + Sky) — Farm2Vet</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -1511,12 +1511,39 @@ body {
     overflow-x: hidden;
 }
 
+/* Body must be transparent so the body::before gradient
+   (z-index: -2) shows through. base.css sets body { background:
+   var(--background-default) } = white, which would otherwise cover
+   the gradient since no SVG shapes are layered above to provide
+   visible colour. */
+body { background: transparent; }
+
 body::before {
-    /* Soft off-white base — was var(--white-base) (#F9FAF9), now
-       --background-default-subtle (#f2f2f2) for a less glaring,
-       slightly warmer page surface. Decorative shapes live in
-       <svg.dash-bg-shapes> below. */
-    background: var(--background-default-subtle);
+    /* "Lime + forest" pastel backdrop — diagonal composition,
+       lime upper-left fading to forest lower-right. Lightest
+       brand tier (50 → 100) so the colours read as a soft tinted
+       wash without competing with the foreground. */
+    content: '';
+    position: fixed;
+    z-index: -2;
+    inset: -25%;
+    background:
+        /* Barely-there white horizon-blend in the middle */
+        radial-gradient(ellipse 22% 16% at 50% 50%,
+            color-mix(in srgb, var(--white-base) 12%, transparent) 0%,
+            transparent 60%),
+        /* Lime — upper-LEFT */
+        radial-gradient(ellipse 85% 90% at 10% 10%,
+            color-mix(in srgb, var(--primary-50) 80%, transparent) 0%,
+            color-mix(in srgb, var(--primary-100) 50%, transparent) 35%,
+            transparent 65%),
+        /* Earth — lower-RIGHT */
+        radial-gradient(ellipse 95% 100% at 90% 95%,
+            color-mix(in srgb, var(--secondary-50) 90%, transparent) 0%,
+            color-mix(in srgb, var(--secondary-100) 70%, transparent) 40%,
+            transparent 75%),
+        var(--white-base);
+    filter: blur(50px) saturate(1.5);
 }
 
 @keyframes drift {
@@ -1577,7 +1604,7 @@ a:hover      { color: var(--text-primary); }
    to silence their own component transitions.
    ========================================================= */
 @media (prefers-reduced-motion: reduce) {
-    body::before { animation: none; }
+    
 }
 
 
@@ -5577,6 +5604,480 @@ button.card.card--inverted:hover {
 .chip--removable .chip__trailing:hover svg { color: var(--text-default); }
 
 
+/* ===== styles/switch.css ===== */
+/* =========================================================
+   FARM2VET DESIGN SYSTEM — SWITCH COMPONENT
+   Binary on/off control with a sliding thumb, plus a
+   segmented variant for picking one-of-N (e.g. language
+   switch, quick filter). Resolves through --switch-*
+   component tokens defined in tokens.css. Reuses the
+   --btn-{sm…2xl}-height / -font-size control-rail scale.
+   Depends on: tokens.css
+   ========================================================= */
+
+/* =========================================================
+   SWITCH — binary on/off with sliding thumb
+   ========================================================= */
+.switch {
+    /* Local size variables — overridden by .switch--{sm|md|lg|xl|2xl} */
+    --_track-h: var(--btn-lg-height);
+    --_pad:     var(--switch-track-pad);
+    --_track-w: calc(var(--_track-h) * var(--switch-aspect));
+    --_thumb:   calc(var(--_track-h) - var(--_pad) * 2 - var(--btn-border-width) * 2);
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    width:  var(--_track-w);
+    height: var(--_track-h);
+    padding: var(--_pad);
+    margin: 0;
+    background:    var(--switch-track-bg);
+    color:         var(--switch-fg);
+    border: var(--btn-border-width) solid var(--switch-track-border);
+    border-radius: var(--switch-radius);
+    cursor: pointer;
+    user-select: none;
+    line-height: 1;
+    font-family: var(--btn-font-family);
+    font-weight: var(--btn-font-weight);
+    font-size:   var(--btn-lg-font-size);
+    transition:  var(--btn-transition);
+}
+.switch:hover { background: var(--switch-track-bg-hover); }
+.switch:focus-visible {
+    outline: var(--btn-focus-outline-width) solid var(--btn-focus-outline);
+    outline-offset: var(--btn-focus-outline-offset);
+}
+
+.switch__thumb {
+    --_thumb-scale: 1;
+    display: block;
+    width:  var(--_thumb);
+    height: var(--_thumb);
+    background:    var(--switch-thumb-bg);
+    border-radius: 50%;
+    box-shadow:    var(--switch-thumb-shadow);
+    transform: translateX(0) scale(var(--_thumb-scale));
+    transition: transform var(--switch-thumb-duration) var(--switch-thumb-easing),
+                background-color .18s ease;
+}
+
+.switch.is-on,
+.switch[aria-checked="true"] {
+    background:   var(--switch-on-bg);
+    color:        var(--switch-on-fg);
+    border-color: var(--switch-on-border);
+}
+.switch.is-on .switch__thumb,
+.switch[aria-checked="true"] .switch__thumb {
+    transform: translateX(calc(var(--_track-w) - var(--_thumb) - var(--_pad) * 2 - var(--btn-border-width) * 2))
+               scale(var(--_thumb-scale));
+}
+
+/* Press feedback — subtle thumb shrink, applies in both off and on states */
+.switch:active:not([disabled]):not(.is-disabled) .switch__thumb {
+    --_thumb-scale: .88;
+}
+
+/* ---- Sizes — same height scale as .btn ---- */
+.switch--sm  { --_track-h: var(--btn-sm-height);  font-size: var(--btn-sm-font-size); }
+.switch--md  { --_track-h: var(--btn-md-height);  font-size: var(--btn-md-font-size); }
+.switch--lg  { --_track-h: var(--btn-lg-height);  font-size: var(--btn-lg-font-size); }
+.switch--xl  { --_track-h: var(--btn-xl-height);  font-size: var(--btn-xl-font-size); }
+.switch--2xl { --_track-h: var(--btn-2xl-height); font-size: var(--btn-2xl-font-size); }
+
+/* ---- Disabled ---- */
+.switch[disabled],
+.switch.is-disabled {
+    background:   var(--btn-disabled-bg)     !important;
+    border-color: var(--btn-disabled-border) !important;
+    color:        var(--btn-disabled-fg)     !important;
+    cursor:       var(--btn-disabled-cursor);
+    opacity:      var(--btn-disabled-opacity);
+}
+.switch[disabled] .switch__thumb,
+.switch.is-disabled .switch__thumb {
+    background: var(--btn-disabled-fg);
+    box-shadow: none;
+}
+
+/* =========================================================
+   SEGMENTED SWITCH — multi-option (e.g., language switch).
+   Compose as: .switch.switch--segmented containing
+   .switch__option children; the active child carries
+   .is-on (or aria-pressed="true"). A single .switch__indicator
+   is injected at runtime as the sliding active pill so the
+   highlight glides between options instead of snapping.
+   ========================================================= */
+.switch.switch--segmented {
+    position: relative;
+    width: auto;
+    align-items: stretch;
+    gap: 0;
+    padding: var(--_pad);
+    cursor: default;
+    /* Override the inherited binary off-track tint with the
+       segmented-specific bright surface. The base .switch rule
+       above sets background/border-color for the binary variant;
+       the segmented variant has no "off" state, so it uses its
+       own component tokens. */
+    background:   var(--switch-segmented-track-bg);
+    border-color: var(--switch-segmented-track-border);
+}
+.switch.switch--segmented:hover {
+    background: var(--switch-segmented-track-bg);
+}
+
+.switch__indicator {
+    position: absolute;
+    top: var(--_pad);
+    left: 0;
+    height: calc(100% - var(--_pad) * 2 - var(--btn-border-width) * 2);
+    width: 0;
+    background:    var(--switch-active-bg);
+    border:        var(--btn-border-width) solid var(--switch-active-border);
+    border-radius: var(--switch-radius);
+    box-shadow:    var(--switch-thumb-shadow);
+    transform: translateX(0);
+    pointer-events: none;
+    will-change: transform, width;
+    transition: transform var(--switch-thumb-duration) var(--switch-thumb-easing),
+                width     var(--switch-thumb-duration) var(--switch-thumb-easing);
+}
+/* First paint: skip the slide-in from x=0 by suppressing the transition
+   until the indicator has been measured into place. JS removes this class
+   on the next frame after positioning. */
+.switch__indicator.is-initial { transition: none; }
+
+.switch__option {
+    appearance: none;
+    -webkit-appearance: none;
+    background: transparent;
+    border: 0;
+    color: var(--switch-fg);
+    font: inherit;
+    font-weight: var(--btn-font-weight);
+    line-height: 1;
+    padding: 0 var(--space-tier-4);
+    border-radius: var(--switch-radius);
+    cursor: pointer;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: var(--_thumb);
+    position: relative;
+    z-index: 1;                                /* sit above the sliding indicator */
+    transition: color .18s ease;
+}
+.switch__option:hover { color: var(--text-default); }
+.switch__option:focus-visible {
+    outline: var(--btn-focus-outline-width) solid var(--btn-focus-outline);
+    outline-offset: 0;
+}
+/* Active state — visual fill is provided by .switch__indicator,
+   the option only adopts the active foreground colour. */
+.switch__option.is-on,
+.switch__option[aria-pressed="true"],
+.switch__option[aria-selected="true"] {
+    color: var(--switch-active-fg);
+}
+.switch__option.is-on:hover,
+.switch__option[aria-pressed="true"]:hover,
+.switch__option[aria-selected="true"]:hover { color: var(--switch-active-fg); }
+
+/* Segmented padding scales gently with size. */
+.switch--segmented.switch--sm  .switch__option { padding: 0 var(--space-tier-6); }
+.switch--segmented.switch--md  .switch__option { padding: 0 var(--space-tier-5); }
+.switch--segmented.switch--xl  .switch__option { padding: 0 var(--spacing-5x); }
+.switch--segmented.switch--2xl .switch__option { padding: 0 var(--space-tier-3); }
+
+.switch__option[disabled] {
+    cursor:  var(--btn-disabled-cursor);
+    color:   var(--btn-disabled-fg);
+    opacity: var(--btn-disabled-opacity);
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+    .switch,
+    .switch__thumb,
+    .switch__indicator,
+    .switch__option   { transition: none; }
+}
+
+
+/* ===== styles/search-toolbar.css ===== */
+/* =========================================================
+   COMPONENT — SEARCH TOOLBAR
+   The horizontal control strip that sits above a list view.
+   Composes four slots, left → right:
+
+     · Search    — exposed input, always visible.
+     · Filters   — applied .chip.chip--removable instances +
+                   a "+ Filter" trigger that opens __menu +
+                   a "Clear filters" link revealed when any
+                   filter is applied or the search has a
+                   value.
+     · Spacer    — implicit (filters slot grows).
+     · Actions   — sort dropdown, saved-views dropdown,
+                   save-current-view button.
+
+   The filter popover (__menu) is part of this component.
+   Its two panels — facets (step 1) and values (step 2) —
+   live in the same DOM; CSS toggles which is visible via
+   .search-toolbar__menu--step-values on the popover.
+
+   The component composes primitives: .search-field for the
+   input, .chip.chip--removable for applied filters, .input
+   for search rows inside the popover, .btn for triggers and
+   footer actions, .dropdown for the sort and views menus.
+   It does NOT redeclare any of their visuals.
+
+   Depends on: tokens.css, base.css (surface tokens), and
+   the canonical .search-field / .chip / .input / .btn /
+   .dropdown component CSS files at the consuming page.
+   ========================================================= */
+:root {
+  /* ---------- Row ---------- */
+  --search-toolbar-gap:           var(--space-tier-4);
+  --search-toolbar-pad-x:         var(--space-page-x);
+  --search-toolbar-pad-y:         var(--space-tier-4);
+  --search-toolbar-pad-y-bottom:  var(--space-tier-5);
+  --search-toolbar-border:        var(--border-default-subtle);
+
+  /* ---------- Search slot ---------- */
+  --search-toolbar-search-w:      240px;
+  --search-toolbar-search-w-sm:   180px;
+
+  /* ---------- Filters slot ---------- */
+  --search-toolbar-filters-gap:   var(--space-gap-micro);
+
+  /* ---------- Add-filter trigger ---------- */
+  --search-toolbar-trigger-fg:    var(--text-default-subtle);
+
+  /* ---------- Menu (popover) ---------- */
+  --search-toolbar-menu-w:        280px;
+  --search-toolbar-menu-max-h:    360px;
+  --search-toolbar-menu-radius:   var(--radius-md);
+  --search-toolbar-menu-bg:       var(--background-default);
+  --search-toolbar-menu-border:   var(--border-default);
+  --search-toolbar-menu-shadow:   var(--shadow-lg);
+  --search-toolbar-menu-pad-x:    var(--spacing-3x);
+  --search-toolbar-menu-pad-y:    var(--spacing-2x);
+  --search-toolbar-menu-offset:   var(--space-tier-7);
+  --search-toolbar-menu-z:        50;
+
+  /* ---------- Menu option ---------- */
+  --search-toolbar-option-pad-y:  var(--spacing-2x);
+  --search-toolbar-option-radius: var(--radius-sm);
+  --search-toolbar-option-fg:     var(--text-default);
+  --search-toolbar-option-mute:   var(--text-default-minimal);
+  --search-toolbar-option-hover:  var(--background-default-hover);
+}
+
+/* =========================================================
+   BLOCK
+   ========================================================= */
+.search-toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--search-toolbar-gap);
+  padding: var(--search-toolbar-pad-y) var(--search-toolbar-pad-x)
+           var(--search-toolbar-pad-y-bottom);
+  border-bottom: var(--border-width-base) solid var(--search-toolbar-border);
+}
+
+/* =========================================================
+   SEARCH SLOT — wraps a .search-field instance.
+   ========================================================= */
+.search-toolbar__search {
+  flex: 0 0 var(--search-toolbar-search-w);
+  min-width: 0;
+}
+@media (max-width: 1100px) {
+  .search-toolbar__search { flex-basis: var(--search-toolbar-search-w-sm); }
+}
+
+/* =========================================================
+   FILTERS SLOT — applied chips + "+ Filter" trigger +
+   "Clear filters" affordance. Grows to fill the middle;
+   chips wrap rather than horizontally scrolling.
+   ========================================================= */
+.search-toolbar__filters {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--search-toolbar-filters-gap);
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* "+ Filter" trigger + popover anchor.
+   The wrapper is the positioning context for __menu. */
+.search-toolbar__add-filter {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* "Clear filters" — revealed via :has() when at least one
+   removable chip is in the row OR the search input has a
+   value. Removable chips don't carry aria-pressed (their
+   existence IS the applied state), so the selector keys
+   off .chip--removable. */
+.search-toolbar__clear { display: none; }
+.search-toolbar:has(.chip--removable) .search-toolbar__clear,
+.search-toolbar:has(.search-field__input:not(:placeholder-shown)) .search-toolbar__clear {
+  display: inline-flex;
+}
+
+/* =========================================================
+   MENU (popover) — facets panel + values panel
+   Open state: .is-open. Step: .search-toolbar__menu--step-values
+   flips from facets (default) to values.
+   ========================================================= */
+.search-toolbar__menu {
+  position: absolute;
+  top: calc(100% + var(--search-toolbar-menu-offset));
+  left: 0;
+  z-index: var(--search-toolbar-menu-z);
+  width: var(--search-toolbar-menu-w);
+  max-height: var(--search-toolbar-menu-max-h);
+  background: var(--search-toolbar-menu-bg);
+  border: var(--border-width-base) solid var(--search-toolbar-menu-border);
+  border-radius: var(--search-toolbar-menu-radius);
+  box-shadow: var(--search-toolbar-menu-shadow);
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: var(--font-sans);
+  font-size: var(--text-body-sm);
+  color: var(--text-default);
+}
+.search-toolbar__menu.is-open { display: flex; }
+
+/* Panels — both live in the DOM; only one renders.
+   Facets panel is the default; --step-values flips to values. */
+.search-toolbar__menu-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.search-toolbar__menu-panel--values { display: none; }
+.search-toolbar__menu--step-values .search-toolbar__menu-panel--facets { display: none; }
+.search-toolbar__menu--step-values .search-toolbar__menu-panel--values { display: flex; }
+
+/* Header — values panel only — back arrow + facet name */
+.search-toolbar__menu-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2x);
+  padding: var(--search-toolbar-menu-pad-y) var(--search-toolbar-menu-pad-x);
+  border-bottom: var(--border-width-base) solid var(--border-default-subtle);
+}
+.search-toolbar__menu-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-sm);
+  color: var(--text-default-subtle);
+  cursor: pointer;
+  transition: background-color .15s ease, color .15s ease;
+}
+.search-toolbar__menu-back:hover {
+  background: var(--search-toolbar-option-hover);
+  color: var(--text-default);
+}
+.search-toolbar__menu-back svg { width: 14px; height: 14px; }
+.search-toolbar__menu-heading {
+  font-weight: var(--font-weight-medium);
+  color: var(--text-default);
+}
+
+/* Search row — composes the canonical .input input--sm.
+   This element is positioning only. */
+.search-toolbar__menu-search {
+  padding: var(--search-toolbar-menu-pad-y) var(--search-toolbar-menu-pad-x);
+  border-bottom: var(--border-width-base) solid var(--border-default-subtle);
+}
+
+/* Option list — scrolls when content overflows. */
+.search-toolbar__menu-list {
+  list-style: none;
+  margin: 0;
+  padding: var(--spacing-1x);
+  overflow-y: auto;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+.search-toolbar__menu-option {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2x);
+  width: 100%;
+  padding: var(--search-toolbar-option-pad-y) var(--spacing-2x);
+  border: none;
+  background: transparent;
+  border-radius: var(--search-toolbar-option-radius);
+  font: inherit;
+  color: var(--search-toolbar-option-fg);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color .15s ease;
+}
+.search-toolbar__menu-option:hover { background: var(--search-toolbar-option-hover); }
+.search-toolbar__menu-option:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--background-primary-subtle);
+}
+.search-toolbar__menu-option-label {
+  flex: 1 1 auto;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.search-toolbar__menu-chev {
+  width: 12px;
+  height: 12px;
+  color: var(--search-toolbar-option-mute);
+  flex-shrink: 0;
+}
+
+/* Checkbox option row (values panel) — the <label> is the
+   whole row so the entire row is clickable. */
+.search-toolbar__menu-option--check { cursor: pointer; }
+.search-toolbar__menu-checkbox {
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  flex-shrink: 0;
+  accent-color: var(--background-primary);
+}
+
+/* Footer — values panel only — Clear / Apply.
+   Buttons inside are canonical .btn instances. */
+.search-toolbar__menu-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-2x);
+  padding: var(--search-toolbar-menu-pad-y) var(--search-toolbar-menu-pad-x);
+  border-top: var(--border-width-base) solid var(--border-default-subtle);
+}
+
+
 /* ===== styles/global-nav.css ===== */
 /* =========================================================
    FARM2VET DESIGN SYSTEM — GLOBAL NAV
@@ -6148,6 +6649,22 @@ button.card.card--inverted:hover {
         inset 0 0 26px rgba(255, 255, 255, 0.08);
 }
 
+/* Disease catalogue card — heavier glass tier for list readability,
+   but not solid. 65% white tint reads as visibly glassier than the
+   nearly-opaque 88% it was at — you can still see the backdrop
+   shapes faintly through the surface, but text contrast stays high. */
+.dash .dash-catalogue.card.card--glass {
+    background: rgba(255, 255, 255, 0.4);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+            backdrop-filter: blur(20px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.08),
+        inset 0 1px 1px rgba(255, 255, 255, 0.65),
+        inset 0 -1px 1px rgba(255, 255, 255, 0.18),
+        inset 0 0 24px rgba(255, 255, 255, 0.05);
+}
+
 /* Sidebar — heavier glass for navigation legibility (same approach
    as the catalogue card: 40% white tint reads visibly glassy while
    the items/labels stay sharp and readable). Higher specificity
@@ -6168,54 +6685,19 @@ button.card.card--inverted:hover {
 
 <style>
 /* =========================================================
-   ADMIN DASHBOARD — workspace mockup
-   Built only from I-IV (tokens, semantics, III-* components,
-   IV-* logo asset). No mockup-page CSS imported; layout is
-   authored locally so the dashboard reads as a fresh
-   composition, not a copy of V-01-wiki.
+   ADMIN · DISEASE CATALOGUE — workspace mockup
+   The list view that opens when admin clicks "Disease" from
+   the dashboard. Per FR-376 this is the entry point for the
+   whole Disease Management feature.
 
-   The body inherits the design-system ambient ::before from
-   base.css — that's what gives the glass sidebar and glass
-   cards real backdrop texture to blur against. The dashboard
-   shell is a two-column grid: floating glass sidebar in the
-   leading column, scrollable main column trailing.
+   Reuses everything from admin-dashboard.html — shell, glass
+   conic backdrop, sidebar, topbar — and adds the page-
+   specific composition: page header, search toolbar
+   (canonical .search-toolbar III-16), .card-wrapped .table
+   (III-15), and an inline pagination row.
    ========================================================= */
 
-/* =========================================================
-   GLASSMORPHISM BACKDROP — conic gradient swirl
-   A single large conic-gradient cycling through six brand
-   colors, anchored off-centre, then heavily blurred. The
-   conic creates a rotation of color around the anchor; the
-   blur dissolves the radial spokes into a smooth aurora
-   vortex. Reads as one continuous swirl behind the glass.
-
-   Why this works for glass:
-   1. Continuous rotation — radial blobs and meshes give
-      the page discrete color regions; a conic swirl gives
-      it *flow*. Glass surfaces over the swirl pick up a
-      diagonal hue gradient that shifts as you move from
-      one side of the card to the other. That continuous
-      shift is what sells the swirl as a single light
-      source rather than a collection of patches.
-   2. Off-centre anchor (75% 25%) — a centred swirl reads
-      as a target / bullseye. Pushing the rotation centre
-      into the upper-right corner makes the page feel like
-      it's lit by a single off-screen sun, with the colors
-      flowing diagonally away from that point.
-   3. Seam-hidden cycling — conic gradients have a visible
-      seam where the start and end colors meet. The first
-      and last stops are both primary-500 at the same
-      alpha, so the seam dissolves into the surrounding
-      lime. The 80px blur erases what's left.
-
-   Stop sequence: lime → forest → mint → earth → forest →
-   lime, six stops + a closing repeat. That's two laps
-   through the green family with a single warm earth note
-   at 200° (the cooler "back" side of the swirl).
-
-   inset bumped to -25% so the heavy blur doesn't leave a
-   sharp band at the viewport edges.
-   ========================================================= */
+/* ----- Backdrop (identical to dashboard) ---------------- */
 /* "Earth + sky" — entirely on-brand backdrop using only the
    secondary (earth/terracotta) and info (Apple systemBlue,
    the sky) ramps from tokens.css. No custom hex anywhere.
@@ -6230,36 +6712,9 @@ button.card.card--inverted:hover {
    forward." Glass cards in the upper third blur predominantly
    blue; cards in the lower third blur predominantly tan;
    cards in the middle pick up a soft warm-cool blend. */
-body::before {
-    inset: -25%;
-    background:
-        /* Soft white breathing area near the horizon — pushed
-           up to ~45% to match the higher horizon line that
-           comes with an earth-dominant composition. */
-        radial-gradient(ellipse 50% 30% at 50% 45%,
-            color-mix(in srgb, var(--white-base) 55%, transparent) 0%,
-            transparent 70%),
-        /* Sky — quieter blue band along the top. Alphas
-           halved vs before (42→24, 20→10) and ellipse height
-           reduced 75→55% so the sky reads as a narrower strip
-           rather than half the page. */
-        radial-gradient(ellipse 110% 55% at 50% 0%,
-            color-mix(in srgb, var(--info-300) 24%, transparent) 0%,
-            color-mix(in srgb, var(--info-500) 10%, transparent) 32%,
-            transparent 65%),
-        /* Earth — terracotta + tan now climbs higher and
-           carries more weight. Alphas bumped (38→55, 28→42)
-           and ellipse height grown 72→90% so the earth fills
-           roughly 2/3 of the visible frame. */
-        radial-gradient(ellipse 115% 90% at 50% 100%,
-            color-mix(in srgb, var(--secondary-300) 55%, transparent) 0%,
-            color-mix(in srgb, var(--secondary-200) 42%, transparent) 38%,
-            transparent 75%),
-        var(--white-base);
-    filter: blur(80px) saturate(1.6);
-}
 
-/* ----- Shell layout ------------------------------------- */
+
+/* ----- Shell layout (same as dashboard) ----------------- */
 .dash {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
@@ -6268,10 +6723,7 @@ body::before {
     align-items: start;
     min-height: 100vh;
 
-    /* AI feature palette — promoted to .dash scope so both the
-       AI card and the sidebar's Automated testing row share it.
-       Indigo + violet ramp roughly Tailwind's indigo-500 /
-       violet-500 axis. */
+    /* AI feature palette (used by the sidebar's Automated testing) */
     --ai-indigo:        #6366F1;
     --ai-violet:        #8B5CF6;
     --ai-indigo-deep:   #4338CA;
@@ -6280,11 +6732,6 @@ body::before {
     --ai-violet-darker: #6D28D9;
     --ai-indigo-light:  #A5B4FC;
 }
-
-/* Sticky-pin the rail so it stays put while main scrolls.
-   Override the component's own min-height: 100vh so the
-   floating rail respects the frame's 24px padding rather
-   than overflowing the viewport. */
 .dash__side {
     position: sticky;
     top: var(--space-tier-3);
@@ -6294,13 +6741,8 @@ body::before {
     min-height: 0;
     height: calc(100vh - var(--space-tier-3) * 2);
 }
-
-/* Bump the sidebar's brand: bigger emblem + one type-step up
-   on the wordmark, locally scoped so the canonical sidebar
-   tokens are untouched. */
 .dash__side .sidebar__brand-mark { width: 36px; height: 36px; }
 .dash__side .sidebar__brand { font-size: var(--text-h6); }
-
 /* Sidebar contrast — text + interactive states tuned for glass.
    Resting text stays dark on transparent (works on light bg);
    hover uses a subtle dark overlay (visible on ANY backdrop because
@@ -6323,7 +6765,6 @@ body::before {
     --sidebar-item-bg-current:   var(--accent-500);
     --sidebar-item-icon-current: var(--text-inverted);
 }
-
 .dash__main {
     display: flex;
     flex-direction: column;
@@ -6332,41 +6773,15 @@ body::before {
     padding: 0 var(--space-tier-3);
 }
 
-/* ----- Topbar — composes the III-10 .global-nav component
-   The bar itself is the canonical .global-nav (transparent
-   sticky shell from global-nav.css). The three islands re-use
-   the canonical pattern but with admin content:
-     · Island 1 — breadcrumb pill   (light·light glass)
-     · Island 2 — search + actions  (sections-list pill)
-     · Island 3 — version chip      (.global-nav__chip clear)
-   ------------------------------------------------------- */
-.dash-topbar {
-    /* Override .global-nav's top: 0 to align with the sidebar's
-       sticky pin (both stick at frame-padding offset). */
-    top: var(--space-tier-3);
-    z-index: 5;
-}
-.dash-topbar .global-nav__inner {
-    /* Drop the canonical 1440px max-width — we're inside a
-       constrained main column already. */
-    max-width: none;
-    padding: 0;
-    gap: var(--space-tier-5);
-}
+/* ----- Topbar (identical to dashboard) ------------------ */
+.dash-topbar { top: var(--space-tier-3); z-index: 5; }
+.dash-topbar .global-nav__inner { max-width: none; padding: 0; gap: var(--space-tier-5); }
 
-/* Shared height for islands 1 + 2 so they read as one row.
-   Both pills get this min-height; their internal align-items:
-   center handles the rest. */
 .dash-topbar__crumbs,
 .dash-topbar__cluster {
     min-height: 48px;
     box-sizing: border-box;
 }
-
-/* Island 1 — breadcrumb pill (mirrors .global-nav__brand glass
-   anatomy: light·light tier, pill radius, raised elevation).
-   Sans body, no uppercase — reads as page wayfinding, not as
-   a mono technical label. */
 .dash-topbar__crumbs {
     display: inline-flex;
     align-items: center;
@@ -6384,33 +6799,19 @@ body::before {
     color: var(--text-default-subtle);
     white-space: nowrap;
 }
-.dash-topbar__crumbs a {
-    color: inherit;
-    text-decoration: none;
-    transition: color .15s ease;
-}
+.dash-topbar__crumbs a { color: inherit; text-decoration: none; transition: color .15s ease; }
 .dash-topbar__crumbs a:hover { color: var(--text-default); }
 .dash-topbar__crumb-sep { color: var(--text-default-disabled); }
-.dash-topbar__crumb-tail {
-    color: var(--text-default);
-    font-weight: var(--font-weight-semibold);
-}
+.dash-topbar__crumb-tail { color: var(--text-default); font-weight: var(--font-weight-semibold); }
 
-/* Island 2 — actions cluster reuses .global-nav__list pill.
-   Override its inner gap so search + bell + lang lay out
-   compactly, and remove the bullets from <li>. */
 .dash-topbar__cluster {
     list-style: none;
     margin: 0;
     gap: var(--space-tier-7);
     align-items: center;
 }
-.dash-topbar__cluster .global-nav__item {
-    display: inline-flex;
-    align-items: center;
-}
+.dash-topbar__cluster .global-nav__item { display: inline-flex; align-items: center; }
 
-/* Vertical divider between cluster groups inside the pill */
 .dash-topbar__divider {
     width: var(--border-width-base);
     height: 22px;
@@ -6418,18 +6819,7 @@ body::before {
     margin: 0 var(--space-tier-7);
 }
 
-/* Search field — inside the cluster pill. Strip the input's
-   own border + bg so it reads as part of the glass pill.
-   Icon is flex-centered inside its own 16×16 box (the SVG
-   inherits 100% so it fills the box; without that, browsers
-   fall back to the 300×150 SVG default and the glyph drifts
-   below the input baseline — that was the "drooped" bug). */
-.dash-topbar__search {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    width: 240px;
-}
+.dash-topbar__search { position: relative; display: inline-flex; align-items: center; width: 240px; }
 .dash-topbar__search .input {
     padding-left: calc(var(--space-tier-3) + 16px + var(--space-tier-7));
     padding-right: var(--space-tier-3);
@@ -6440,9 +6830,7 @@ body::before {
     box-shadow: none;
 }
 .dash-topbar__search .input:focus,
-.dash-topbar__search .input:focus-visible {
-    outline: none;
-}
+.dash-topbar__search .input:focus-visible { outline: none; }
 .dash-topbar__search-icon {
     position: absolute;
     left: var(--space-tier-3);
@@ -6456,13 +6844,32 @@ body::before {
     color: var(--icon-default-subtle);
     pointer-events: none;
 }
-.dash-topbar__search-icon svg {
-    width: 100%;
-    height: 100%;
-    display: block;
+.dash-topbar__search-icon svg { width: 100%; height: 100%; display: block; }
+
+.dash-topbar__icon-btn {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-pill);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: var(--icon-default);
+    cursor: pointer;
+    transition: background-color .15s ease, color .15s ease;
+}
+.dash-topbar__icon-btn:hover { background: var(--background-primary-subtle); color: var(--text-primary-strong); }
+.dash-topbar__icon-btn svg { width: 18px; height: 18px; }
+.dash-topbar__icon-btn .dot {
+    position: absolute; top: 6px; right: 6px;
+    width: 8px; height: 8px;
+    border-radius: var(--radius-pill);
+    background: var(--background-critical-strong);
+    box-shadow: 0 0 0 2px var(--white-base);
 }
 
-/* Language segmented toggle — two pill buttons inside the cluster */
 .dash-topbar__lang {
     display: inline-flex;
     gap: 2px;
@@ -6490,51 +6897,29 @@ body::before {
     box-shadow: var(--shadow-sm);
 }
 
-/* Notification bell — pill icon button living inside the cluster */
-.dash-topbar__icon-btn {
-    position: relative;
-    width: 32px;
-    height: 32px;
-    border-radius: var(--radius-pill);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    border: none;
-    color: var(--icon-default);
-    cursor: pointer;
-    transition: background-color .15s ease, color .15s ease;
-}
-.dash-topbar__icon-btn:hover {
-    background: var(--background-primary-subtle);
-    color: var(--text-primary-strong);
-}
-.dash-topbar__icon-btn svg { width: 18px; height: 18px; }
-.dash-topbar__icon-btn .dot {
-    position: absolute;
-    top: 6px;
-    right: 6px;
-    width: 8px;
-    height: 8px;
-    border-radius: var(--radius-pill);
-    background: var(--background-critical-strong);
-    box-shadow: 0 0 0 2px var(--white-base);
-}
+/* ----- Sidebar tints (same as dashboard) ---------------- */
+.dash-sidebar__sync .sidebar__icon { color: var(--icon-primary-strong); }
+.dash-sidebar__sync:hover .sidebar__icon { color: var(--icon-primary-strong); }
 
+.dash-sidebar__ai            { color: var(--ai-indigo-deep); }
+.dash-sidebar__ai .sidebar__icon  { color: var(--ai-violet); }
+.dash-sidebar__ai:hover      { color: var(--ai-indigo-darker); }
+.dash-sidebar__ai:hover .sidebar__icon { color: var(--ai-violet-deep); }
+.dash-sidebar__ai.is-current,
+.dash-sidebar__ai.is-current:hover { color: var(--text-inverted); background: var(--ai-violet-deep); }
+.dash-sidebar__ai.is-current .sidebar__icon,
+.dash-sidebar__ai.is-current:hover .sidebar__icon { color: var(--text-inverted); }
 
-/* Mobile collapse */
-@media (max-width: 960px) {
-    .dash-topbar__search { width: 180px; }
-}
-@media (max-width: 720px) {
-    .dash-topbar .global-nav__inner { flex-wrap: wrap; }
-    .dash-topbar__crumbs { margin-right: 0; flex: 1 1 auto; }
-    .dash-topbar__search { width: 100%; }
-    .dash-topbar__cluster { flex-basis: 100%; justify-content: space-between; }
-}
+/* =========================================================
+   PAGE-SPECIFIC SECTIONS
+   ========================================================= */
 
-/* ----- Hero header -------------------------------------- */
-.dash-hero {
+/* ----- Page header (hero) -------------------------------
+   Same vertical rhythm as the dashboard hero, but the right
+   slot carries a "+ New disease" CTA in the same gradient
+   used for the Sync button on the dashboard, so the two
+   page-level "create / run" actions share one visual idiom. */
+.dash-page {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
@@ -6542,17 +6927,8 @@ body::before {
     padding-top: var(--space-tier-3);
     flex-wrap: wrap;
 }
-.dash-hero__text { max-width: 60ch; }
-.dash-hero__eyebrow {
-    font-family: var(--font-mono);
-    font-size: var(--text-eyebrow);
-    letter-spacing: var(--letter-spacing-eyebrow);
-    text-transform: uppercase;
-    color: var(--text-default-minimal);
-    display: inline-block;
-    margin-bottom: var(--space-flow-tight);
-}
-.dash-hero h1 {
+.dash-page__text { max-width: 60ch; }
+.dash-page h1 {
     margin: 0 0 var(--space-flow-element);
     font-family: var(--font-sans);
     font-size: var(--text-h2);
@@ -6561,11 +6937,8 @@ body::before {
     letter-spacing: var(--letter-spacing-tight);
     color: var(--text-default);
 }
-.dash-hero h1 em {
-    font-style: italic;
-    color: var(--text-accent);
-}
-.dash-hero__lede {
+.dash-page h1 em { font-style: italic; color: var(--text-accent); }
+.dash-page__lede {
     margin: 0;
     font-family: var(--font-sans);
     font-size: var(--text-body);
@@ -6573,301 +6946,480 @@ body::before {
     color: var(--text-default-subtle);
 }
 
-/* ----- Sync action cluster ------------------------------ */
-.dash-hero__sync {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: var(--space-tier-7);
-    flex-shrink: 0;
-}
-.dash-hero__sync-meta {
-    font-family: var(--font-mono);
-    font-size: var(--text-eyebrow);
-    letter-spacing: var(--letter-spacing-mono);
-    text-transform: uppercase;
-    color: var(--text-default-minimal);
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-tier-7);
-}
-.dash-hero__sync-meta .dot {
-    width: 6px;
-    height: 6px;
-    border-radius: var(--radius-pill);
-    background: var(--background-warning-strong);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--warning-500) 22%, transparent);
-}
-
-/* Sync CTA — primary→accent gradient, locally scoped so the
-   canonical .btn--cta is untouched. */
-.dash-hero__sync .btn--cta {
+/* Primary CTA — primary-700 → primary-500 gradient (same
+   as the Sync button on the dashboard hero). */
+.dash-page__cta.btn--cta {
     background: linear-gradient(135deg, var(--primary-700) 0%, var(--primary-500) 100%);
     border-color: transparent;
     box-shadow: var(--shadow-md), 0 4px 14px color-mix(in srgb, var(--primary-700) 25%, transparent);
 }
-.dash-hero__sync .btn--cta:hover {
+.dash-page__cta.btn--cta:hover {
     background: linear-gradient(135deg, var(--primary-800) 0%, var(--primary-600) 100%);
     box-shadow: var(--shadow-lg), 0 6px 18px color-mix(in srgb, var(--primary-800) 30%, transparent);
     transform: translateY(-1px);
 }
-.dash-hero__sync .btn--cta:active {
+.dash-page__cta.btn--cta:active {
     background: linear-gradient(135deg, var(--primary-900) 0%, var(--primary-700) 100%);
     transform: translateY(0);
 }
 
-/* ----- KPI strip ---------------------------------------- */
-.dash-kpis {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: var(--space-gap-default);
-}
-.dash-kpis .card {
-    padding: var(--space-container-y) var(--space-container-x);
-}
-.dash-kpis .card__metric-value { font-size: var(--text-h2); }
-.dash-kpis .card__metric-delta {
-    font-family: var(--font-mono);
-    font-size: var(--text-eyebrow);
-    letter-spacing: var(--letter-spacing-mono);
-    color: var(--text-default-minimal);
-}
-
-/* ----- Section header ----------------------------------- */
-.dash-section__head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--space-gap-default);
-    margin-bottom: var(--space-flow-heading);
-}
-.dash-section__head-text {
+/* ----- Unified catalogue card --------------------------
+   Toolbar (search · quick filters · sort) + item list +
+   pager, all bleeding to the card edges. No mono font
+   anywhere — sans throughout per Jack. */
+.dash-catalogue.card {
+    padding: 0;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    gap: var(--space-flow-micro);
-}
-.dash-section__head h2 {
-    margin: 0;
-    font-family: var(--font-sans);
-    font-size: var(--text-h4);
-    font-weight: var(--font-weight-semibold);
-    line-height: var(--line-height-h4);
-    color: var(--text-default);
-}
-.dash-section__head-eyebrow {
-    font-family: var(--font-mono);
-    font-size: var(--text-eyebrow);
-    letter-spacing: var(--letter-spacing-eyebrow);
-    text-transform: uppercase;
-    color: var(--text-default-minimal);
 }
 
-/* ----- Console card grid -------------------------------- */
-.dash-cards {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-gap-loose);
-}
-
-/* ----- Console card (horizontal: icon · title · arrow) ---
-   Compact list-row layout. Each card is a single horizontal
-   slot — icon tile, title, trailing arrow. No footer, no
-   counts. Reads as a clean shortcut row rather than a
-   poster tile. */
-.console-card {
-    flex-direction: row;
+/* Toolbar header — search left · quick-filter pills middle
+   · sort group right (sort-by dropdown + direction button) */
+.dash-catalogue__toolbar {
+    display: flex;
     align-items: center;
-    gap: var(--space-tier-4);
-    padding: var(--space-tier-5) var(--space-tier-4);
-    min-height: 0;
+    gap: var(--space-tier-5);
+    padding: var(--space-tier-4);
+    background: color-mix(in srgb, var(--white-base) 25%, transparent);
+    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
+    flex-wrap: wrap;
 }
-.console-card__icon {
-    width: 44px;
-    height: 44px;
+.dash-catalogue__search {
+    flex: 1 1 280px;
+    min-width: 200px;
+}
+
+/* Quick-filter pills — toggleable .chip via aria-pressed.
+   Each filter is themed to match the meaning of what it
+   filters TO: incomplete = red (critical), deactivated =
+   gray (neutral muted). */
+.dash-catalogue__quick-filters {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-tier-7);
+}
+
+/* Incomplete filter — red theme */
+.dash-catalogue__filter-incomplete {
+    color: var(--text-critical);
+    background: color-mix(in srgb, var(--critical-500) 8%, transparent);
+    border-color: color-mix(in srgb, var(--critical-500) 30%, transparent);
+}
+.dash-catalogue__filter-incomplete:hover {
+    color: var(--text-critical);
+    background: color-mix(in srgb, var(--critical-500) 16%, transparent);
+    border-color: color-mix(in srgb, var(--critical-500) 45%, transparent);
+}
+.dash-catalogue__filter-incomplete[aria-pressed="true"] {
+    background: var(--critical-500);
+    border-color: var(--critical-500);
+    color: var(--text-inverted);
+}
+.dash-catalogue__filter-incomplete[aria-pressed="true"]:hover {
+    background: var(--critical-600);
+    border-color: var(--critical-600);
+    color: var(--text-inverted);
+}
+
+/* Deactivated filter — gray theme */
+.dash-catalogue__filter-deactivated {
+    color: var(--text-default-subtle);
+    background: color-mix(in srgb, var(--neutral-500) 8%, transparent);
+    border-color: color-mix(in srgb, var(--neutral-500) 28%, transparent);
+}
+.dash-catalogue__filter-deactivated:hover {
+    color: var(--text-default);
+    background: color-mix(in srgb, var(--neutral-500) 16%, transparent);
+    border-color: color-mix(in srgb, var(--neutral-500) 42%, transparent);
+}
+.dash-catalogue__filter-deactivated[aria-pressed="true"] {
+    background: var(--neutral-700);
+    border-color: var(--neutral-700);
+    color: var(--text-inverted);
+}
+.dash-catalogue__filter-deactivated[aria-pressed="true"]:hover {
+    background: var(--neutral-800);
+    border-color: var(--neutral-800);
+    color: var(--text-inverted);
+}
+
+/* Sort group — sort-by dropdown trigger + direction toggle */
+.dash-catalogue__sort {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-tier-7);
+    margin-left: auto;
+}
+.dash-catalogue__sort-by {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-tier-7);
+    padding: var(--space-tier-7) var(--space-tier-5);
+    background: var(--background-default);
+    border: var(--border-width-base) solid var(--border-default);
     border-radius: var(--radius-md);
-    background: var(--background-primary-minimal);
-    color: var(--text-primary-strong);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    color: var(--text-default);
+    cursor: pointer;
+    transition: background-color .15s ease, border-color .15s ease;
+}
+.dash-catalogue__sort-by:hover {
+    background: var(--background-default-hover);
+    border-color: var(--border-default-strong);
+}
+.dash-catalogue__sort-by-label {
+    color: var(--text-default-subtle);
+}
+.dash-catalogue__sort-by svg {
+    width: 12px;
+    height: 12px;
+    color: var(--icon-default-subtle);
+}
+.dash-catalogue__sort-dir {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-md);
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
-    transition: background-color .18s ease, color .18s ease, transform .18s ease;
+    background: var(--background-default);
+    border: var(--border-width-base) solid var(--border-default);
+    color: var(--text-default-subtle);
+    cursor: pointer;
+    transition: background-color .15s ease, border-color .15s ease, color .15s ease;
 }
-.console-card__icon svg { width: 22px; height: 22px; }
-.console-card--accent .console-card__icon {
-    background: var(--background-accent-minimal);
-    color: var(--text-accent-strong);
+.dash-catalogue__sort-dir:hover {
+    background: var(--background-default-hover);
+    border-color: var(--border-default-strong);
+    color: var(--text-default);
 }
-.console-card--secondary .console-card__icon {
-    background: var(--background-secondary-minimal);
-    color: var(--text-secondary-strong);
+.dash-catalogue__sort-dir svg {
+    width: 14px;
+    height: 14px;
+    transition: transform .18s ease;
 }
-/* Hover: icon tile lifts in saturation to its strong tone */
-.console-card:hover .console-card__icon {
-    background: var(--background-primary);
-    color: var(--text-inverted);
-}
-.console-card--accent:hover .console-card__icon {
-    background: var(--background-accent);
-    color: var(--text-inverted);
-}
-.console-card--secondary:hover .console-card__icon {
-    background: var(--secondary-500);
-    color: var(--text-inverted);
+.dash-catalogue__sort-dir[aria-pressed="false"] svg {
+    transform: rotate(180deg);
 }
 
-.console-card__title {
-    flex: 1 1 auto;
+/* Sort-by dropdown menu — pops below the trigger when the
+   button is clicked. Native popup, no library. */
+.dash-catalogue__sort-by-wrap { position: relative; }
+.dash-catalogue__sort-menu {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    min-width: 180px;
+    background: var(--background-default);
+    border: var(--border-width-base) solid var(--border-default);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    padding: var(--space-tier-7);
+    display: none;
+    flex-direction: column;
+    gap: 2px;
+    z-index: 10;
+}
+.dash-catalogue__sort-menu.is-open { display: flex; }
+.dash-catalogue__sort-menu button {
+    border: none;
+    background: transparent;
+    padding: var(--space-tier-6) var(--space-tier-5);
+    text-align: left;
     font-family: var(--font-sans);
-    font-size: var(--text-h6);
-    font-weight: var(--font-weight-semibold);
+    font-size: var(--text-body-sm);
     color: var(--text-default);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background-color .15s ease, color .15s ease;
+}
+.dash-catalogue__sort-menu button:hover {
+    background: var(--background-default-hover);
+}
+.dash-catalogue__sort-menu button[aria-selected="true"] {
+    background: var(--background-primary-subtle);
+    color: var(--text-primary-strong);
+    font-weight: var(--font-weight-medium);
+}
+
+/* Item list */
+.dash-catalogue__list {
+    list-style: none;
     margin: 0;
-    line-height: 1.2;
+    padding: 0;
+}
+.dash-catalogue__item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tier-6);
+    padding: var(--space-tier-4);
+    transition: background-color .15s ease;
+}
+.dash-catalogue__item + .dash-catalogue__item {
+    border-top: var(--border-width-base) solid var(--border-default-subtle);
+}
+.dash-catalogue__item:hover {
+    background: color-mix(in srgb, var(--white-base) 30%, transparent);
+}
+
+/* Top row — Identity left (codename + full name), actions
+   right (version dropdown + activate button). Always
+   present, always same shape. */
+.dash-catalogue__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-tier-5);
+    flex-wrap: wrap;
+}
+.dash-catalogue__title {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-tier-5);
+    flex-wrap: wrap;
     min-width: 0;
 }
+.dash-catalogue__codename {
+    font-family: var(--font-sans);
+    font-size: var(--text-h5);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-default);
+    line-height: 1.2;
+}
+.dash-catalogue__name {
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    color: var(--text-default-subtle);
+    line-height: 1.4;
+}
 
-.console-card__arrow {
-    width: 28px;
-    height: 28px;
+/* Meta row — Updated time + (when applicable) incomplete-
+   fields accordion. Always present so every item has the
+   same two-row silhouette. */
+.dash-catalogue__meta {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-tier-5);
+    flex-wrap: wrap;
+}
+.dash-catalogue__updated {
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    color: var(--text-default-minimal);
+}
+
+/* Action cluster (right side of head row) */
+.dash-catalogue__actions {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-tier-6);
     flex-shrink: 0;
-    border-radius: var(--radius-pill);
+}
+
+/* Version dropdown trigger */
+.dash-catalogue__version {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-tier-7);
+    padding: var(--space-tier-6) var(--space-tier-5);
+    background: var(--background-default);
+    border: var(--border-width-base) solid var(--border-default);
+    border-radius: var(--radius-md);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    color: var(--text-default);
+    cursor: pointer;
+    transition: background-color .15s ease, border-color .15s ease;
+    min-height: 32px;
+}
+.dash-catalogue__version:hover {
+    background: var(--background-default-hover);
+    border-color: var(--border-default-strong);
+}
+.dash-catalogue__version svg {
+    width: 12px;
+    height: 12px;
+    color: var(--icon-default-subtle);
+}
+
+/* Activate / Deactivate — looks like a real button.
+   Activated: solid primary-500 fill + white text + lift
+   shadow (a CTA you can press).
+   Deactivated: outlined gray, transparent fill (a button
+   you'd press to bring it back). */
+.dash-catalogue__toggle {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: transparent;
-    color: var(--text-default-minimal);
-    transition: color .18s ease, transform .18s ease;
+    padding: var(--space-tier-6) var(--space-tier-4);
+    border-radius: var(--radius-md);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-semibold);
+    cursor: pointer;
+    border: var(--border-width-base) solid transparent;
+    transition: background-color .15s ease, border-color .15s ease, color .15s ease, box-shadow .15s ease, transform .15s ease;
+    min-width: 110px;
+    min-height: 32px;
+    line-height: 1;
 }
-.console-card:hover .console-card__arrow {
+.dash-catalogue__toggle.is-active {
+    background: var(--accent-500);
+    border-color: var(--accent-500);
+    color: var(--text-inverted);
+    box-shadow: var(--shadow-sm);
+}
+.dash-catalogue__toggle.is-active:hover {
+    background: var(--accent-600);
+    border-color: var(--accent-600);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+.dash-catalogue__toggle.is-active:active {
+    background: var(--accent-700);
+    border-color: var(--accent-700);
+    box-shadow: var(--shadow-sm);
+    transform: translateY(0);
+}
+.dash-catalogue__toggle:not(.is-active) {
+    background: var(--background-default);
+    border-color: var(--border-default-strong);
+    color: var(--text-default-subtle);
+}
+.dash-catalogue__toggle:not(.is-active):hover {
+    background: var(--background-default-hover);
+    border-color: var(--text-default);
     color: var(--text-default);
-    transform: translateX(3px);
+}
+.dash-catalogue__toggle:not(.is-active):active {
+    background: var(--background-default-active);
+    transform: translateY(0);
 }
 
-/* ----- Featured console card — Disease (flagship) ------
-   Primary-tinted gradient overlay, primary-saturated border,
-   soft primary glow shadow, and a gradient-filled icon tile
-   so the card reads as "the one you should click first." */
-/* Featured (Disease) — updated for the new clear-glass aesthetic.
-   Lime-tinted gradient REPLACES the white glass tint, plus a
-   primary-coloured border + outer glow so the card stays light/
-   glassy like its peers but reads as featured. */
-.dash .card.card--glass.console-card--featured {
-    background: linear-gradient(135deg,
-        rgba(110, 193, 62, 0.28) 0%,
-        rgba(110, 193, 62, 0.12) 55%,
-        rgba(110, 193, 62, 0.05) 100%);
-    border: 1px solid rgba(110, 193, 62, 0.5);
-    box-shadow:
-        0 8px 24px rgba(0, 0, 0, 0.08),
-        0 0 28px rgba(110, 193, 62, 0.18),
-        inset 0 1px 1px rgba(255, 255, 255, 0.7),
-        inset 0 -1px 1px rgba(255, 255, 255, 0.15),
-        inset 0 0 24px rgba(255, 255, 255, 0.05);
+/* Incomplete-fields accordion — sits in the meta row beside
+   the updated time. Compact critical-tinted tag with a
+   chevron; opens to a list below in normal flow. */
+.dash-catalogue__incomplete {
+    display: inline-block;
 }
-.dash .card.card--glass.console-card--featured:hover {
-    transform: translateY(-3px);
-    background: linear-gradient(135deg,
-        rgba(110, 193, 62, 0.42) 0%,
-        rgba(110, 193, 62, 0.20) 55%,
-        rgba(110, 193, 62, 0.08) 100%);
-    border-color: rgba(110, 193, 62, 0.7);
-    box-shadow:
-        0 12px 32px rgba(0, 0, 0, 0.1),
-        0 0 40px rgba(110, 193, 62, 0.28),
-        inset 0 1px 1px rgba(255, 255, 255, 0.85),
-        inset 0 -1px 1px rgba(255, 255, 255, 0.2),
-        inset 0 0 28px rgba(255, 255, 255, 0.08);
+.dash-catalogue__incomplete summary {
+    list-style: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-tier-7);
+    padding: 2px var(--space-tier-6);
+    background: color-mix(in srgb, var(--critical-500) 8%, transparent);
+    color: var(--text-critical);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-medium);
+    border: var(--border-width-base) solid color-mix(in srgb, var(--critical-500) 28%, transparent);
+    transition: background-color .15s ease;
 }
-.console-card--featured .console-card__icon {
-    background: linear-gradient(135deg, var(--primary-700), var(--primary-500));
-    color: var(--white-base);
-    box-shadow: 0 4px 12px color-mix(in srgb, var(--primary-700) 30%, transparent);
+.dash-catalogue__incomplete summary::-webkit-details-marker { display: none; }
+.dash-catalogue__incomplete summary::marker { content: ''; }
+.dash-catalogue__incomplete summary:hover {
+    background: color-mix(in srgb, var(--critical-500) 16%, transparent);
 }
-.console-card--featured:hover .console-card__icon {
-    background: linear-gradient(135deg, var(--primary-800), var(--primary-600));
-    color: var(--white-base);
-    transform: scale(1.06);
-    box-shadow:
-        0 6px 18px color-mix(in srgb, var(--primary-700) 42%, transparent),
-        0 0 22px color-mix(in srgb, var(--primary-400) 32%, transparent);
+.dash-catalogue__incomplete summary svg {
+    width: 12px;
+    height: 12px;
+    transition: transform .18s ease;
 }
-
-/* ----- AI console card — Automated testing -------------
-   Indigo → violet gradient identity. The brand palette is
-   all greens, so AI gets a fully off-brand cool palette to
-   read as "different category of thing" — the convention
-   modern AI surfaces use (Copilot purple, Linear AI indigo,
-   most Claude / OpenAI marks). Pure color signal, no
-   sparkle, no pill — the hue alone does the work. */
-/* AI (Automated testing) — updated for the new clear-glass
-   aesthetic. Indigo→violet tinted gradient REPLACES the white
-   glass tint, with a violet border + outer indigo glow. */
-.dash .card.card--glass.console-card--ai {
-    background: linear-gradient(135deg,
-        rgba(99, 102, 241, 0.28) 0%,
-        rgba(139, 92, 246, 0.14) 55%,
-        rgba(165, 180, 252, 0.06) 100%);
-    border: 1px solid rgba(139, 92, 246, 0.5);
-    box-shadow:
-        0 8px 24px rgba(0, 0, 0, 0.08),
-        0 0 28px rgba(139, 92, 246, 0.16),
-        inset 0 1px 1px rgba(255, 255, 255, 0.7),
-        inset 0 -1px 1px rgba(255, 255, 255, 0.15),
-        inset 0 0 24px rgba(255, 255, 255, 0.05);
+.dash-catalogue__incomplete[open] summary svg { transform: rotate(180deg); }
+.dash-catalogue__incomplete-list {
+    list-style: none;
+    margin: var(--space-tier-7) 0 0 0;
+    padding: var(--space-tier-5) var(--space-tier-4);
+    background: color-mix(in srgb, var(--critical-500) 6%, transparent);
+    border: var(--border-width-base) solid color-mix(in srgb, var(--critical-500) 18%, transparent);
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tier-7);
+    color: var(--text-critical);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    max-width: 360px;
 }
-.dash .card.card--glass.console-card--ai:hover {
-    transform: translateY(-3px);
-    background: linear-gradient(135deg,
-        rgba(99, 102, 241, 0.42) 0%,
-        rgba(139, 92, 246, 0.22) 55%,
-        rgba(165, 180, 252, 0.10) 100%);
-    border-color: rgba(139, 92, 246, 0.7);
-    box-shadow:
-        0 12px 32px rgba(0, 0, 0, 0.1),
-        0 0 36px rgba(139, 92, 246, 0.25),
-        inset 0 1px 1px rgba(255, 255, 255, 0.85),
-        inset 0 -1px 1px rgba(255, 255, 255, 0.2),
-        inset 0 0 28px rgba(255, 255, 255, 0.08);
+.dash-catalogue__incomplete-list li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-tier-6);
 }
-.console-card--ai .console-card__icon {
-    background: linear-gradient(135deg, var(--ai-indigo-deep), var(--ai-violet-deep));
-    color: var(--white-base);
-    box-shadow:
-        0 4px 12px color-mix(in srgb, var(--ai-indigo-deep) 30%, transparent),
-        0 0 16px color-mix(in srgb, var(--ai-violet) 22%, transparent);
-}
-.console-card--ai:hover .console-card__icon {
-    background: linear-gradient(135deg, var(--ai-indigo-darker), var(--ai-violet-darker));
-    color: var(--white-base);
-    transform: scale(1.06);
-    box-shadow:
-        0 5px 14px color-mix(in srgb, var(--ai-indigo-deep) 32%, transparent),
-        0 0 16px color-mix(in srgb, var(--ai-violet) 22%, transparent);
+.dash-catalogue__incomplete-list li::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    border-radius: var(--radius-pill);
+    background: currentColor;
+    flex-shrink: 0;
 }
 
-/* ----- Sidebar — sync-action emphasis ------------------- */
-.dash-sidebar__sync .sidebar__icon { color: var(--icon-primary-strong); }
-.dash-sidebar__sync:hover .sidebar__icon { color: var(--icon-primary-strong); }
-
-/* ----- Sidebar — Automated testing AI tint -------------
-   Mirrors the AI console card's identity via the icon only;
-   the label uses the canonical sidebar text color so the row
-   reads as part of the same vertical rhythm as its peers. */
-.dash-sidebar__ai .sidebar__icon  { color: var(--ai-violet); }
-.dash-sidebar__ai:hover .sidebar__icon { color: var(--ai-violet-deep); }
-.dash-sidebar__ai.is-current,
-.dash-sidebar__ai.is-current:hover { color: var(--text-inverted); background: var(--ai-violet-deep); }
-.dash-sidebar__ai.is-current .sidebar__icon,
-.dash-sidebar__ai.is-current:hover .sidebar__icon { color: var(--text-inverted); }
+/* Pager footer — sans, no uppercase, matching toolbar tint. */
+.dash-catalogue__pager {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-tier-3);
+    padding: var(--space-tier-4);
+    background: color-mix(in srgb, var(--white-base) 25%, transparent);
+    border-top: var(--border-width-base) solid var(--border-default-subtle);
+}
+.dash-catalogue__pager-meta {
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    color: var(--text-default-minimal);
+}
+.dash-catalogue__pager-controls {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-tier-7);
+}
+.dash-catalogue__pager-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-md);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--background-default);
+    border: var(--border-width-base) solid var(--border-default);
+    color: var(--text-default-subtle);
+    cursor: pointer;
+    transition: background-color .15s ease, color .15s ease, border-color .15s ease;
+}
+.dash-catalogue__pager-btn:hover {
+    background: var(--background-default-hover);
+    border-color: var(--border-default-strong);
+    color: var(--text-default);
+}
+.dash-catalogue__pager-btn[disabled] {
+    opacity: 0.4;
+    pointer-events: none;
+}
+.dash-catalogue__pager-btn svg { width: 14px; height: 14px; }
+.dash-catalogue__pager-page {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-tier-7);
+    margin: 0 var(--space-tier-6);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    color: var(--text-default-subtle);
+}
+.dash-catalogue__pager-page .input {
+    width: 48px;
+    text-align: center;
+    padding: 4px var(--space-tier-7);
+    font-family: var(--font-sans);
+}
 
 /* ----- Responsive --------------------------------------- */
-@media (max-width: 1100px) {
-    .dash-cards { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 960px) {
-    .dash-kpis { grid-template-columns: repeat(2, 1fr); }
-}
 @media (max-width: 720px) {
     .dash {
         grid-template-columns: 1fr;
@@ -6875,25 +7427,11 @@ body::before {
     }
     .dash__side { position: static; }
     .dash__side .sidebar { height: auto; }
-    .dash-cards { grid-template-columns: 1fr; }
-    .dash-hero { flex-direction: column; align-items: stretch; }
-    .dash-hero__sync { align-items: stretch; }
-    .dash-hero__sync .btn { width: 100%; }
-}
-
-/* Decorative shape backdrop — anchored to the viewport, behind all
-   .dash content. Full opacity so the shapes read as bold solid forms
-   the way the glassmorphism-tutorial reference shows them. Behind
-   glass surfaces the 8px backdrop-blur diffuses these into rich
-   colour washes; in the empty space between cards they read as
-   crisp Memphis-style decoration. */
-.dash-bg-shapes {
-    position: fixed;
-    inset: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: -1;
-    pointer-events: none;
+    .dash-page { flex-direction: column; align-items: stretch; }
+    .dash-page__cta { width: 100%; }
+    .dash-catalogue__pager { flex-direction: column; align-items: stretch; gap: var(--space-tier-5); }
+    .dash-catalogue__item { flex-direction: column; align-items: stretch; }
+    .dash-catalogue__actions { justify-content: flex-end; }
 }
 
 /* Farm2Vet brand stays its resting color on hover (canonical
@@ -6908,76 +7446,6 @@ body::before {
 </head>
 <body>
 
-<!-- Decorative shape backdrop — fixed behind everything. Each
-     shape is a radial gradient between TWO RELATED VIVID GREENS
-     (no pale shades — pale was reading as "white shine"). The
-     gradient is the colour itself, like one half of the shape is
-     lime and the other half is deeper lime. -->
-<svg class="dash-bg-shapes" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-  <defs>
-    <filter id="dash-bg-glow" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="32" />
-    </filter>
-
-    <!-- All gradients off-centre (cx=40% cy=35%) so each shape reads
-         as TWO colours blending across it, not as a centred vignette.
-         Every stop is a saturated green — no near-white anywhere. -->
-
-    <!-- Top-left square — deep forest band (mid → deep → very deep) -->
-    <radialGradient id="grad-deep-forest" cx="40%" cy="35%" r="95%">
-      <stop offset="0%"  stop-color="#398c36" />
-      <stop offset="55%" stop-color="#237320" />
-      <stop offset="100%" stop-color="#1a6417" />
-    </radialGradient>
-
-    <!-- Hero circle — brand lime band (mid lime → brand → deeper) -->
-    <radialGradient id="grad-brand-lime" cx="40%" cy="35%" r="95%">
-      <stop offset="0%"  stop-color="#89c964" />
-      <stop offset="55%" stop-color="#6ec13e" />
-      <stop offset="100%" stop-color="#5dac2f" />
-    </radialGradient>
-
-    <!-- Right circle — mid forest band (soft → mid → deeper forest) -->
-    <radialGradient id="grad-mid-forest" cx="40%" cy="35%" r="95%">
-      <stop offset="0%"  stop-color="#78c175" />
-      <stop offset="55%" stop-color="#4eb24a" />
-      <stop offset="100%" stop-color="#2d802b" />
-    </radialGradient>
-
-    <!-- Mid-left square — lime blend, no pale (light lime → mid → brand) -->
-    <radialGradient id="grad-light-lime" cx="40%" cy="35%" r="95%">
-      <stop offset="0%"  stop-color="#a4d289" />
-      <stop offset="55%" stop-color="#89c964" />
-      <stop offset="100%" stop-color="#6ec13e" />
-    </radialGradient>
-
-    <!-- Bottom-left circle — forest band (mid → deep → very deep) -->
-    <radialGradient id="grad-bottom-forest" cx="40%" cy="35%" r="95%">
-      <stop offset="0%"  stop-color="#4eb24a" />
-      <stop offset="55%" stop-color="#398c36" />
-      <stop offset="100%" stop-color="#237320" />
-    </radialGradient>
-
-    <!-- Bottom-right square — vivid lime (mid → brand → deep) -->
-    <radialGradient id="grad-vivid-lime" cx="40%" cy="35%" r="95%">
-      <stop offset="0%"  stop-color="#89c964" />
-      <stop offset="55%" stop-color="#6ec13e" />
-      <stop offset="100%" stop-color="#4c9622" />
-    </radialGradient>
-
-    <g id="dash-bg-shape-set">
-      <rect x="-110" y="-60" width="340" height="400" fill="url(#grad-vivid-lime)" transform="rotate(-12 60 140)" />
-      <circle cx="800" cy="240" r="290" fill="url(#grad-brand-lime)" />
-      <circle cx="1520" cy="380" r="220" fill="url(#grad-mid-forest)" />
-      <rect x="180" y="430" width="290" height="290" fill="url(#grad-light-lime)" transform="rotate(15 325 575)" />
-      <circle cx="120" cy="950" r="260" fill="url(#grad-bottom-forest)" />
-      <rect x="900" y="620" width="480" height="480" fill="url(#grad-deep-forest)" transform="rotate(-8 1140 860)" />
-    </g>
-  </defs>
-  <use href="#dash-bg-shape-set" filter="url(#dash-bg-glow)" opacity="0.7" />
-  <use href="#dash-bg-shape-set" />
-</svg>
-
 <div class="dash">
 
   <!-- ========================== SIDEBAR ========================== -->
@@ -6985,7 +7453,7 @@ body::before {
     <aside class="sidebar" aria-label="Admin primary navigation">
 
       <header class="sidebar__header">
-        <a href="#" class="sidebar__brand">
+        <a href="admin-dashboard.html" class="sidebar__brand">
           <img class="sidebar__brand-mark" src="../logo/logo-emblem-white.svg" alt="" aria-hidden="true" />
           <span class="sidebar__brand-text">Farm2Vet</span>
         </a>
@@ -6998,7 +7466,7 @@ body::before {
         <ul class="sidebar__list">
 
           <li class="sidebar__item">
-            <a class="sidebar__link is-current" href="#" aria-current="page">
+            <a class="sidebar__link" href="admin-dashboard.html">
               <span class="sidebar__icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
               </span>
@@ -7017,7 +7485,7 @@ body::before {
               </span>
             </button>
             <ul class="sidebar__sublist">
-              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Disease</span><span class="sidebar__trailing"><span class="sidebar__badge">142</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link is-current" href="#" aria-current="page"><span class="sidebar__label">Disease</span><span class="sidebar__trailing"><span class="sidebar__badge">142</span></span></a></li>
               <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Question</span><span class="sidebar__trailing"><span class="sidebar__badge">318</span></span></a></li>
               <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Conversation</span><span class="sidebar__trailing"><span class="sidebar__badge">47</span></span></a></li>
               <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Image</span></a></li>
@@ -7056,7 +7524,7 @@ body::before {
               <span class="sidebar__profile-name">Minh</span>
               <span class="sidebar__profile-role">Admin</span>
             </span>
-            <button type="button" class="sidebar__overflow" aria-label="Account menu" aria-haspopup="menu" aria-expanded="false">
+            <button type="button" class="sidebar__overflow" aria-label="Account menu">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/>
               </svg>
@@ -7071,19 +7539,17 @@ body::before {
   <!-- ========================== MAIN ========================== -->
   <main class="dash__main">
 
-    <!-- Sticky topbar — III-10 .global-nav with three admin islands.
-         Bar = transparent sticky shell. Islands carry the visual weight. -->
+    <!-- Topbar — same three-island composition as dashboard, only
+         the breadcrumb tail and search placeholder change. -->
     <header class="global-nav dash-topbar" aria-label="Admin chrome">
       <div class="global-nav__inner">
 
-        <!-- Island 1 — Breadcrumb pill (light·light glass, like .__brand) -->
         <nav class="dash-topbar__crumbs" aria-label="Breadcrumb">
-          <a href="#">Admin</a>
+          <a href="admin-dashboard.html">Admin</a>
           <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
-          <span class="dash-topbar__crumb-tail" aria-current="page">Overview</span>
+          <span class="dash-topbar__crumb-tail" aria-current="page">Disease</span>
         </nav>
 
-        <!-- Island 2 — Search + actions cluster (.global-nav__list pill) -->
         <ul class="global-nav__list dash-topbar__cluster">
           <li class="global-nav__item">
             <label class="dash-topbar__search">
@@ -7111,133 +7577,346 @@ body::before {
           </li>
         </ul>
 
-        <!-- Island 3 — Version chip (canonical .global-nav__chip) -->
         <a href="#" class="global-nav__chip" aria-label="Admin version">v1.4.2</a>
 
       </div>
     </header>
 
-    <header class="dash-hero">
-      <div class="dash-hero__text">
-        <h1>Welcome back, <em>Minh</em>.</h1>
-        <p class="dash-hero__lede">
-          Manage the Farm2Vet chatbot's knowledge base and run automated tests against the live model.
+    <!-- Page header -->
+    <header class="dash-page">
+      <div class="dash-page__text">
+        <h1>Disease catalogue.</h1>
+        <p class="dash-page__lede">
+          Codenames, versions, and lifecycle state for every disease entry the chatbot can reference.
         </p>
       </div>
-      <div class="dash-hero__sync">
-        <span class="dash-hero__sync-meta">
-          <span class="dot" aria-hidden="true"></span>
-          Last synced 2 h 14 m ago · 6 pending
+      <button type="button" class="btn btn--cta btn--lg dash-page__cta">
+        <span class="btn__leading" aria-hidden="true">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
         </span>
-        <button type="button" class="btn btn--cta btn--lg">
-          <span class="btn__leading" aria-hidden="true">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-          </span>
-          <span class="btn__label">Sync database</span>
-        </button>
-      </div>
+        <span class="btn__label">New disease</span>
+      </button>
     </header>
 
-    <!-- Data management section --------------------------- -->
-    <section aria-labelledby="sect-data">
-      <header class="dash-section__head">
-        <div class="dash-section__head-text">
-          <h2 id="sect-data">Data management</h2>
+    <!-- Unified catalogue card — toolbar (search · filters · sort)
+         + item list + pager, all bleeding to the card edges. -->
+    <section class="card card--glass dash-catalogue" aria-label="Disease catalogue">
+
+      <header class="dash-catalogue__toolbar" role="toolbar" aria-label="Search and filters">
+
+        <label class="search-field dash-catalogue__search">
+          <span class="search-field__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          </span>
+          <input type="search" class="input input--sm search-field__input" placeholder="Search by codename or name…" />
+          <button type="button" class="search-field__clear" aria-label="Clear search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
+        </label>
+
+        <!-- Quick filter pills — toggle on/off via aria-pressed.
+             Themed by meaning: incomplete = red, deactivated = gray. -->
+        <div class="dash-catalogue__quick-filters" role="group" aria-label="Quick filters">
+          <button type="button" class="chip dash-catalogue__filter-incomplete" aria-pressed="false">
+            <span class="chip__label">Incomplete</span>
+          </button>
+          <button type="button" class="chip dash-catalogue__filter-deactivated" aria-pressed="false">
+            <span class="chip__label">Deactivated</span>
+          </button>
         </div>
+
+        <!-- Sort group: sort-by dropdown + direction toggle -->
+        <div class="dash-catalogue__sort" role="group" aria-label="Sort">
+          <div class="dash-catalogue__sort-by-wrap">
+            <button type="button" class="dash-catalogue__sort-by" aria-haspopup="menu" aria-expanded="false">
+              <span class="dash-catalogue__sort-by-label">Sort by:</span>
+              <span class="dash-catalogue__sort-by-value">Last updated</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="dash-catalogue__sort-menu" role="menu" aria-label="Sort options">
+              <button type="button" role="menuitem">Codename</button>
+              <button type="button" role="menuitem">Full name</button>
+              <button type="button" role="menuitem" aria-selected="true">Last updated</button>
+            </div>
+          </div>
+          <button type="button" class="dash-catalogue__sort-dir" aria-label="Sort direction: descending" aria-pressed="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+          </button>
+        </div>
+
       </header>
 
-      <div class="dash-cards">
+      <ul class="dash-catalogue__list">
 
-        <a class="card card--glass is-interactive console-card console-card--featured" href="#">
-          <span class="console-card__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-          </span>
-          <h3 class="console-card__title">Disease</h3>
-          <span class="console-card__arrow" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </span>
-        </a>
+        <li class="dash-catalogue__item">
+          <div class="dash-catalogue__head">
+            <div class="dash-catalogue__title">
+              <span class="dash-catalogue__codename">PRRS</span>
+              <span class="dash-catalogue__name">Porcine Reproductive and Respiratory Syndrome</span>
+            </div>
+            <div class="dash-catalogue__actions">
+              <button type="button" class="dash-catalogue__version">
+                <span>v3.2</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <button type="button" class="dash-catalogue__toggle is-active">Activated</button>
+            </div>
+          </div>
+          <div class="dash-catalogue__meta">
+            <span class="dash-catalogue__updated">Updated 2 h ago</span>
+          </div>
+        </li>
 
-        <a class="card card--glass is-interactive console-card" href="#">
-          <span class="console-card__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          </span>
-          <h3 class="console-card__title">Question</h3>
-          <span class="console-card__arrow" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </span>
-        </a>
+        <li class="dash-catalogue__item">
+          <div class="dash-catalogue__head">
+            <div class="dash-catalogue__title">
+              <span class="dash-catalogue__codename">ASF</span>
+              <span class="dash-catalogue__name">African Swine Fever</span>
+            </div>
+            <div class="dash-catalogue__actions">
+              <button type="button" class="dash-catalogue__version">
+                <span>v2.1</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <button type="button" class="dash-catalogue__toggle is-active">Activated</button>
+            </div>
+          </div>
+          <div class="dash-catalogue__meta">
+            <span class="dash-catalogue__updated">Updated 5 h ago</span>
+          </div>
+        </li>
 
-        <a class="card card--glass is-interactive console-card" href="#">
-          <span class="console-card__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          </span>
-          <h3 class="console-card__title">Conversation</h3>
-          <span class="console-card__arrow" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </span>
-        </a>
+        <li class="dash-catalogue__item">
+          <div class="dash-catalogue__head">
+            <div class="dash-catalogue__title">
+              <span class="dash-catalogue__codename">PED</span>
+              <span class="dash-catalogue__name">Porcine Epidemic Diarrhea</span>
+            </div>
+            <div class="dash-catalogue__actions">
+              <button type="button" class="dash-catalogue__version">
+                <span>v1.4</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <button type="button" class="dash-catalogue__toggle is-active">Activated</button>
+            </div>
+          </div>
+          <div class="dash-catalogue__meta">
+            <span class="dash-catalogue__updated">Updated 1 d ago</span>
+          </div>
+        </li>
 
-        <a class="card card--glass is-interactive console-card console-card--accent" href="#">
-          <span class="console-card__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-          </span>
-          <h3 class="console-card__title">Image</h3>
-          <span class="console-card__arrow" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </span>
-        </a>
+        <li class="dash-catalogue__item">
+          <div class="dash-catalogue__head">
+            <div class="dash-catalogue__title">
+              <span class="dash-catalogue__codename">CSF</span>
+              <span class="dash-catalogue__name">Classical Swine Fever</span>
+            </div>
+            <div class="dash-catalogue__actions">
+              <button type="button" class="dash-catalogue__version">
+                <span>v1.0</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <button type="button" class="dash-catalogue__toggle is-active">Activated</button>
+            </div>
+          </div>
+          <div class="dash-catalogue__meta">
+            <span class="dash-catalogue__updated">Updated 2 d ago</span>
+          </div>
+        </li>
 
-        <a class="card card--glass is-interactive console-card console-card--accent" href="#">
-          <span class="console-card__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-          </span>
-          <h3 class="console-card__title">Resource</h3>
-          <span class="console-card__arrow" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </span>
-        </a>
+        <li class="dash-catalogue__item">
+          <div class="dash-catalogue__head">
+            <div class="dash-catalogue__title">
+              <span class="dash-catalogue__codename">FMD</span>
+              <span class="dash-catalogue__name">Foot and Mouth Disease</span>
+            </div>
+            <div class="dash-catalogue__actions">
+              <button type="button" class="dash-catalogue__version">
+                <span>v2.5</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <button type="button" class="dash-catalogue__toggle is-active">Activated</button>
+            </div>
+          </div>
+          <div class="dash-catalogue__meta">
+            <span class="dash-catalogue__updated">Updated 3 d ago</span>
+          </div>
+        </li>
 
-        <a class="card card--glass is-interactive console-card console-card--accent" href="#">
-          <span class="console-card__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
-          </span>
-          <h3 class="console-card__title">PDF Input</h3>
-          <span class="console-card__arrow" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </span>
-        </a>
+        <li class="dash-catalogue__item">
+          <div class="dash-catalogue__head">
+            <div class="dash-catalogue__title">
+              <span class="dash-catalogue__codename">TGE</span>
+              <span class="dash-catalogue__name">Transmissible Gastroenteritis</span>
+            </div>
+            <div class="dash-catalogue__actions">
+              <button type="button" class="dash-catalogue__version">
+                <span>v1.0</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <button type="button" class="dash-catalogue__toggle is-active">Activated</button>
+            </div>
+          </div>
+          <div class="dash-catalogue__meta">
+            <span class="dash-catalogue__updated">Updated 6 d ago</span>
+            <details class="dash-catalogue__incomplete">
+              <summary>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                4 incomplete fields
+              </summary>
+              <ul class="dash-catalogue__incomplete-list">
+                <li>Description (Vietnamese)</li>
+                <li>Mortality rate</li>
+                <li>Treatment</li>
+                <li>Differential diagnosis</li>
+              </ul>
+            </details>
+          </div>
+        </li>
 
-      </div>
-    </section>
+        <li class="dash-catalogue__item">
+          <div class="dash-catalogue__head">
+            <div class="dash-catalogue__title">
+              <span class="dash-catalogue__codename">ERY</span>
+              <span class="dash-catalogue__name">Erysipelas</span>
+            </div>
+            <div class="dash-catalogue__actions">
+              <button type="button" class="dash-catalogue__version">
+                <span>v1.0</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <button type="button" class="dash-catalogue__toggle">Deactivated</button>
+            </div>
+          </div>
+          <div class="dash-catalogue__meta">
+            <span class="dash-catalogue__updated">Updated 2 w ago</span>
+          </div>
+        </li>
 
-    <!-- Operations section -------------------------------- -->
-    <section aria-labelledby="sect-ops">
-      <header class="dash-section__head">
-        <div class="dash-section__head-text">
-          <h2 id="sect-ops">Operations</h2>
+        <li class="dash-catalogue__item">
+          <div class="dash-catalogue__head">
+            <div class="dash-catalogue__title">
+              <span class="dash-catalogue__codename">APP</span>
+              <span class="dash-catalogue__name">Actinobacillus pleuropneumoniae</span>
+            </div>
+            <div class="dash-catalogue__actions">
+              <button type="button" class="dash-catalogue__version">
+                <span>v1.0</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <button type="button" class="dash-catalogue__toggle is-active">Activated</button>
+            </div>
+          </div>
+          <div class="dash-catalogue__meta">
+            <span class="dash-catalogue__updated">Updated 3 w ago</span>
+            <details class="dash-catalogue__incomplete">
+              <summary>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                2 incomplete fields
+              </summary>
+              <ul class="dash-catalogue__incomplete-list">
+                <li>Mortality rate</li>
+                <li>Treatment</li>
+              </ul>
+            </details>
+          </div>
+        </li>
+
+      </ul>
+
+      <footer class="dash-catalogue__pager" role="navigation" aria-label="Pagination">
+        <span class="dash-catalogue__pager-meta">Showing 1–8 of 142</span>
+        <div class="dash-catalogue__pager-controls">
+          <button type="button" class="dash-catalogue__pager-btn" aria-label="First page" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="11 17 6 12 11 7"/><polyline points="18 17 13 12 18 7"/></svg>
+          </button>
+          <button type="button" class="dash-catalogue__pager-btn" aria-label="Previous page" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <span class="dash-catalogue__pager-page">
+            <input type="text" class="input input--sm" value="1" aria-label="Current page" />
+            <span>/ 18</span>
+          </span>
+          <button type="button" class="dash-catalogue__pager-btn" aria-label="Next page">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+          <button type="button" class="dash-catalogue__pager-btn" aria-label="Last page">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>
+          </button>
         </div>
-      </header>
+      </footer>
 
-      <div class="dash-cards">
-
-        <a class="card card--glass is-interactive console-card console-card--ai" href="#">
-          <span class="console-card__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
-          </span>
-          <h3 class="console-card__title">Automated testing</h3>
-          <span class="console-card__arrow" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </span>
-        </a>
-
-      </div>
     </section>
 
   </main>
 </div>
 
-<script src="../scripts/sidebar.js" defer></script>
+<script>
+  // ----- Activate / Deactivate toggle -----
+  // Clicking flips .is-active (which drives the colour) and
+  // swaps the label text.
+  document.querySelectorAll('.dash-catalogue__toggle').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var nowActive = btn.classList.toggle('is-active');
+      btn.textContent = nowActive ? 'Activated' : 'Deactivated';
+    });
+  });
+
+  // ----- Quick filter pills -----
+  // Toggle aria-pressed on click; CSS does the rest.
+  document.querySelectorAll('.dash-catalogue__quick-filters .chip').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var pressed = btn.getAttribute('aria-pressed') === 'true';
+      btn.setAttribute('aria-pressed', pressed ? 'false' : 'true');
+    });
+  });
+
+  // ----- Sort-by dropdown -----
+  var sortBtn   = document.querySelector('.dash-catalogue__sort-by');
+  var sortMenu  = document.querySelector('.dash-catalogue__sort-menu');
+  var sortValue = document.querySelector('.dash-catalogue__sort-by-value');
+
+  if (sortBtn && sortMenu && sortValue) {
+    sortBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var open = sortMenu.classList.toggle('is-open');
+      sortBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+
+    // Click an option → set selection + close
+    sortMenu.querySelectorAll('button').forEach(function (option) {
+      option.addEventListener('click', function (e) {
+        e.stopPropagation();
+        sortMenu.querySelectorAll('button').forEach(function (b) { b.removeAttribute('aria-selected'); });
+        option.setAttribute('aria-selected', 'true');
+        sortValue.textContent = option.textContent.trim();
+        sortMenu.classList.remove('is-open');
+        sortBtn.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    // Click anywhere else → close
+    document.addEventListener('click', function () {
+      if (sortMenu.classList.contains('is-open')) {
+        sortMenu.classList.remove('is-open');
+        sortBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  // ----- Sort direction toggle -----
+  // aria-pressed="true"  → descending (down arrow, default)
+  // aria-pressed="false" → ascending  (CSS rotates the arrow)
+  var sortDir = document.querySelector('.dash-catalogue__sort-dir');
+  if (sortDir) {
+    sortDir.addEventListener('click', function () {
+      var isDesc = sortDir.getAttribute('aria-pressed') === 'true';
+      sortDir.setAttribute('aria-pressed', isDesc ? 'false' : 'true');
+      sortDir.setAttribute('aria-label',
+        isDesc ? 'Sort direction: ascending' : 'Sort direction: descending');
+    });
+  }
+</script>
 
 </body>
 </html>

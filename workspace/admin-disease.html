@@ -1512,12 +1512,11 @@ body {
 }
 
 body::before {
-    content: '';
-    position: fixed;
-    inset: -10%;
-    z-index: -2;
-    background: var(--background-ambient);
-    animation: drift 32s ease-in-out infinite alternate;
+    /* Soft off-white base — was var(--white-base) (#F9FAF9), now
+       --background-default-subtle (#f2f2f2) for a less glaring,
+       slightly warmer page surface. Decorative shapes live in
+       <svg.dash-bg-shapes> below. */
+    background: var(--background-default-subtle);
 }
 
 @keyframes drift {
@@ -6542,64 +6541,118 @@ button.card.card--inverted:hover {
 </style>
 
 <!-- Clear glass override — written from scratch, modeled on the
-     glass treatments used by Apple Vision OS, Stripe, and Linear.
-     Sits BETWEEN the inlined design-system CSS (above) and the
-     page-specific styles (below). Specificity bumped with the .dash
-     parent so this beats BOTH canonical (0,1,0) AND the page-
-     specific topbar styling that comes later in source. -->
+     glassmorphism-tutorial reference image: heavier blur, diagonal
+     light-source gradient, brighter top-rim highlight. Sits BETWEEN
+     the inlined design-system CSS (above) and the page-specific
+     styles (below). Specificity bumped with the .dash parent so it
+     beats canonical (0,1,0) without using !important. -->
 <style>
-/* Per Jack: the middle topbar island is the reference. Every glass
-   surface — cards, sidebar, all THREE topbar islands (breadcrumb pill
-   on the left, sections cluster in the middle, version chip on the
-   right) — now uses an identical formula so the page reads as one
-   consistent glass material.
+/* Per the reference image, real-glass quality comes from FOUR
+   things working together:
 
-   Layered inset shadows simulate light catching the edges:
-     · INSET 0  1px 1px rgba(255,255,255,0.6)   top-edge rim highlight
-     · INSET 0 -1px 1px rgba(255,255,255,0.15)  bottom-edge subtle rim
-     · INSET 0  0  20px rgba(255,255,255,0.05)  ambient inner glow
-     · OUTER 0  6px 20px rgba(0,0,0,0.07)       soft elevation drop
+   1. A diagonal LINEAR-GRADIENT background instead of flat tint —
+      simulates light entering from upper-left and dimming toward
+      lower-right. This gives the surface dimensionality, not just
+      uniform translucency.
 
-   Background 10% white tint, blur 8px, saturate 140%, border 30% white. */
+   2. Heavier backdrop blur (~20px) — strong enough that shapes
+      behind are clearly diffused, like the tutorial reference.
+      4-8px reads as "tinted plastic"; 20px reads as "real frosted
+      glass."
+
+   3. Brighter top-rim INSET highlight (0.7 alpha) — the brightest
+      single cue. Light from above catching the upper inner edge
+      is what the eye reads as "glass."
+
+   4. Slight saturate boost (150%) — real glass intensifies the
+      colours that pass through it; a dead 100% saturation reads
+      as cellophane. */
 
 .dash .card.card--glass,
 .dash__side .sidebar,
 .dash .dash-topbar__crumbs,
 .dash .dash-topbar .global-nav__list,
 .dash .dash-topbar .global-nav__chip {
-    background: rgba(255, 255, 255, 0.1);
-    -webkit-backdrop-filter: blur(8px) saturate(140%);
-            backdrop-filter: blur(8px) saturate(140%);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.28) 0%,
+        rgba(255, 255, 255, 0.10) 55%,
+        rgba(255, 255, 255, 0.05) 100%
+    );
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+            backdrop-filter: blur(20px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.35);
     box-shadow:
-        0 6px 20px rgba(0, 0, 0, 0.07),
-        inset 0 1px 1px rgba(255, 255, 255, 0.6),
+        0 8px 24px rgba(0, 0, 0, 0.08),
+        inset 0 1px 1px rgba(255, 255, 255, 0.7),
         inset 0 -1px 1px rgba(255, 255, 255, 0.15),
-        inset 0 0 20px rgba(255, 255, 255, 0.05);
+        inset 0 0 24px rgba(255, 255, 255, 0.05);
 }
 
-/* Card hover keeps the same shape, just amped a step — top rim
-   brightens, ambient glow widens, outer drop deepens. */
+/* Card hover keeps the same shape, brightens the gradient + rim. */
 .dash .card.card--glass:hover {
-    background: rgba(255, 255, 255, 0.18);
-    border-color: rgba(255, 255, 255, 0.45);
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.4) 0%,
+        rgba(255, 255, 255, 0.18) 55%,
+        rgba(255, 255, 255, 0.1) 100%
+    );
+    border-color: rgba(255, 255, 255, 0.5);
     box-shadow:
-        0 10px 28px rgba(0, 0, 0, 0.09),
-        inset 0 1px 1px rgba(255, 255, 255, 0.72),
+        0 12px 32px rgba(0, 0, 0, 0.1),
+        inset 0 1px 1px rgba(255, 255, 255, 0.85),
         inset 0 -1px 1px rgba(255, 255, 255, 0.22),
-        inset 0 0 24px rgba(255, 255, 255, 0.08);
+        inset 0 0 28px rgba(255, 255, 255, 0.08);
     transform: translateY(-1px);
 }
 
 /* Version chip hover — same one-step amp as cards, no lift. */
 .dash .dash-topbar .global-nav__chip:hover {
-    background: rgba(255, 255, 255, 0.18);
-    border-color: rgba(255, 255, 255, 0.45);
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.4) 0%,
+        rgba(255, 255, 255, 0.18) 55%,
+        rgba(255, 255, 255, 0.1) 100%
+    );
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow:
+        0 10px 28px rgba(0, 0, 0, 0.09),
+        inset 0 1px 1px rgba(255, 255, 255, 0.85),
+        inset 0 -1px 1px rgba(255, 255, 255, 0.22),
+        inset 0 0 26px rgba(255, 255, 255, 0.08);
+}
+
+/* Disease catalogue card — heavier glass tier for list readability,
+   but not solid. 65% white tint reads as visibly glassier than the
+   nearly-opaque 88% it was at — you can still see the backdrop
+   shapes faintly through the surface, but text contrast stays high. */
+.dash .dash-catalogue.card.card--glass {
+    background: rgba(255, 255, 255, 0.4);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+            backdrop-filter: blur(20px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.45);
     box-shadow:
         0 8px 24px rgba(0, 0, 0, 0.08),
-        inset 0 1px 1px rgba(255, 255, 255, 0.72),
-        inset 0 -1px 1px rgba(255, 255, 255, 0.22),
-        inset 0 0 22px rgba(255, 255, 255, 0.08);
+        inset 0 1px 1px rgba(255, 255, 255, 0.65),
+        inset 0 -1px 1px rgba(255, 255, 255, 0.18),
+        inset 0 0 24px rgba(255, 255, 255, 0.05);
+}
+
+/* Sidebar — heavier glass for navigation legibility (same approach
+   as the catalogue card: 40% white tint reads visibly glassy while
+   the items/labels stay sharp and readable). Higher specificity
+   (.dash .dash__side .sidebar = 0,3,0) beats the base clear-glass
+   rule (0,3,0 too — wins on source order since it's later). */
+.dash .dash__side .sidebar {
+    background: rgba(255, 255, 255, 0.4);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+            backdrop-filter: blur(20px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.08),
+        inset 0 1px 1px rgba(255, 255, 255, 0.65),
+        inset 0 -1px 1px rgba(255, 255, 255, 0.18),
+        inset 0 0 24px rgba(255, 255, 255, 0.05);
 }
 </style>
 
@@ -6690,10 +6743,27 @@ body::before {
 }
 .dash__side .sidebar__brand-mark { width: 36px; height: 36px; }
 .dash__side .sidebar__brand { font-size: var(--text-h6); }
+/* Sidebar contrast — text + interactive states tuned for glass.
+   Resting text stays dark on transparent (works on light bg);
+   hover uses a subtle dark overlay (visible on ANY backdrop because
+   it's darker than glass-tinted backdrop); active uses a solid
+   forest-green fill with white text (4.5:1 contrast, passes WCAG
+   AA — primary-500 lime would only give 2.2:1 with white). */
 .dash__side .sidebar {
+    /* Resting */
     --sidebar-item-fg:           var(--text-default);
     --sidebar-item-icon:         var(--icon-default);
     --sidebar-group-label-color: var(--text-default-subtle);
+
+    /* Hover — subtle dark overlay, legible on any backdrop */
+    --sidebar-item-fg-hover:     var(--text-default);
+    --sidebar-item-bg-hover:     rgba(0, 0, 0, 0.06);
+    --sidebar-item-icon-hover:   var(--icon-default);
+
+    /* Current/active — solid forest green with white text */
+    --sidebar-item-fg-current:   var(--text-inverted);
+    --sidebar-item-bg-current:   var(--accent-500);
+    --sidebar-item-icon-current: var(--text-inverted);
 }
 .dash__main {
     display: flex;
@@ -6835,8 +6905,10 @@ body::before {
 .dash-sidebar__ai .sidebar__icon  { color: var(--ai-violet); }
 .dash-sidebar__ai:hover      { color: var(--ai-indigo-darker); }
 .dash-sidebar__ai:hover .sidebar__icon { color: var(--ai-violet-deep); }
-.dash-sidebar__ai.is-current { color: var(--ai-indigo-darker); background: color-mix(in srgb, var(--ai-violet) 14%, transparent); }
-.dash-sidebar__ai.is-current .sidebar__icon { color: var(--ai-violet-deep); }
+.dash-sidebar__ai.is-current,
+.dash-sidebar__ai.is-current:hover { color: var(--text-inverted); background: var(--ai-violet-deep); }
+.dash-sidebar__ai.is-current .sidebar__icon,
+.dash-sidebar__ai.is-current:hover .sidebar__icon { color: var(--text-inverted); }
 
 /* =========================================================
    PAGE-SPECIFIC SECTIONS
@@ -7194,20 +7266,20 @@ body::before {
     line-height: 1;
 }
 .dash-catalogue__toggle.is-active {
-    background: var(--primary-500);
-    border-color: var(--primary-500);
+    background: var(--accent-500);
+    border-color: var(--accent-500);
     color: var(--text-inverted);
     box-shadow: var(--shadow-sm);
 }
 .dash-catalogue__toggle.is-active:hover {
-    background: var(--primary-600);
-    border-color: var(--primary-600);
+    background: var(--accent-600);
+    border-color: var(--accent-600);
     box-shadow: var(--shadow-md);
     transform: translateY(-1px);
 }
 .dash-catalogue__toggle.is-active:active {
-    background: var(--primary-700);
-    border-color: var(--primary-700);
+    background: var(--accent-700);
+    border-color: var(--accent-700);
     box-shadow: var(--shadow-sm);
     transform: translateY(0);
 }
@@ -7361,9 +7433,103 @@ body::before {
     .dash-catalogue__item { flex-direction: column; align-items: stretch; }
     .dash-catalogue__actions { justify-content: flex-end; }
 }
+
+/* Decorative shape backdrop — anchored to the viewport, behind all
+   .dash content. Full opacity so the shapes read as bold solid forms
+   the way the glassmorphism-tutorial reference shows them. Behind
+   glass surfaces the 8px backdrop-blur diffuses these into rich
+   colour washes; in the empty space between cards they read as
+   crisp Memphis-style decoration. */
+.dash-bg-shapes {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Farm2Vet brand stays its resting color on hover (canonical
+   a:hover { color: --text-primary } in base.css would otherwise
+   tint it lime). */
+.dash__side .sidebar__brand,
+.dash__side .sidebar__brand:hover,
+.dash__side .sidebar__brand:focus {
+    color: var(--text-default);
+}
 </style>
 </head>
 <body>
+
+<!-- Decorative shape backdrop — fixed behind everything. Each
+     shape is a radial gradient between TWO RELATED VIVID GREENS
+     (no pale shades — pale was reading as "white shine"). The
+     gradient is the colour itself, like one half of the shape is
+     lime and the other half is deeper lime. -->
+<svg class="dash-bg-shapes" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <defs>
+    <filter id="dash-bg-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="32" />
+    </filter>
+
+    <!-- All gradients off-centre (cx=40% cy=35%) so each shape reads
+         as TWO colours blending across it, not as a centred vignette.
+         Every stop is a saturated green — no near-white anywhere. -->
+
+    <!-- Top-left square — deep forest band (mid → deep → very deep) -->
+    <radialGradient id="grad-deep-forest" cx="40%" cy="35%" r="95%">
+      <stop offset="0%"  stop-color="#398c36" />
+      <stop offset="55%" stop-color="#237320" />
+      <stop offset="100%" stop-color="#1a6417" />
+    </radialGradient>
+
+    <!-- Hero circle — brand lime band (mid lime → brand → deeper) -->
+    <radialGradient id="grad-brand-lime" cx="40%" cy="35%" r="95%">
+      <stop offset="0%"  stop-color="#89c964" />
+      <stop offset="55%" stop-color="#6ec13e" />
+      <stop offset="100%" stop-color="#5dac2f" />
+    </radialGradient>
+
+    <!-- Right circle — mid forest band (soft → mid → deeper forest) -->
+    <radialGradient id="grad-mid-forest" cx="40%" cy="35%" r="95%">
+      <stop offset="0%"  stop-color="#78c175" />
+      <stop offset="55%" stop-color="#4eb24a" />
+      <stop offset="100%" stop-color="#2d802b" />
+    </radialGradient>
+
+    <!-- Mid-left square — lime blend, no pale (light lime → mid → brand) -->
+    <radialGradient id="grad-light-lime" cx="40%" cy="35%" r="95%">
+      <stop offset="0%"  stop-color="#a4d289" />
+      <stop offset="55%" stop-color="#89c964" />
+      <stop offset="100%" stop-color="#6ec13e" />
+    </radialGradient>
+
+    <!-- Bottom-left circle — forest band (mid → deep → very deep) -->
+    <radialGradient id="grad-bottom-forest" cx="40%" cy="35%" r="95%">
+      <stop offset="0%"  stop-color="#4eb24a" />
+      <stop offset="55%" stop-color="#398c36" />
+      <stop offset="100%" stop-color="#237320" />
+    </radialGradient>
+
+    <!-- Bottom-right square — vivid lime (mid → brand → deep) -->
+    <radialGradient id="grad-vivid-lime" cx="40%" cy="35%" r="95%">
+      <stop offset="0%"  stop-color="#89c964" />
+      <stop offset="55%" stop-color="#6ec13e" />
+      <stop offset="100%" stop-color="#4c9622" />
+    </radialGradient>
+
+    <g id="dash-bg-shape-set">
+      <rect x="-110" y="-60" width="340" height="400" fill="url(#grad-vivid-lime)" transform="rotate(-12 60 140)" />
+      <circle cx="800" cy="240" r="290" fill="url(#grad-brand-lime)" />
+      <circle cx="1520" cy="380" r="220" fill="url(#grad-mid-forest)" />
+      <rect x="180" y="430" width="290" height="290" fill="url(#grad-light-lime)" transform="rotate(15 325 575)" />
+      <circle cx="120" cy="950" r="260" fill="url(#grad-bottom-forest)" />
+      <rect x="900" y="620" width="480" height="480" fill="url(#grad-deep-forest)" transform="rotate(-8 1140 860)" />
+    </g>
+  </defs>
+  <use href="#dash-bg-shape-set" filter="url(#dash-bg-glow)" opacity="0.7" />
+  <use href="#dash-bg-shape-set" />
+</svg>
 
 <div class="dash">
 
@@ -7373,7 +7539,7 @@ body::before {
 
       <header class="sidebar__header">
         <a href="admin-dashboard.html" class="sidebar__brand">
-          <img class="sidebar__brand-mark" src="../logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
+          <img class="sidebar__brand-mark" src="../logo/logo-emblem-white.svg" alt="" aria-hidden="true" />
           <span class="sidebar__brand-text">Farm2Vet</span>
         </a>
         <button type="button" class="sidebar__collapse" aria-label="Collapse sidebar" aria-pressed="false">
@@ -7665,25 +7831,6 @@ body::before {
         <li class="dash-catalogue__item">
           <div class="dash-catalogue__head">
             <div class="dash-catalogue__title">
-              <span class="dash-catalogue__codename">PCV2</span>
-              <span class="dash-catalogue__name">Porcine Circovirus Type 2</span>
-            </div>
-            <div class="dash-catalogue__actions">
-              <button type="button" class="dash-catalogue__version">
-                <span>v1.3</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-              </button>
-              <button type="button" class="dash-catalogue__toggle is-active">Activated</button>
-            </div>
-          </div>
-          <div class="dash-catalogue__meta">
-            <span class="dash-catalogue__updated">Updated 4 d ago</span>
-          </div>
-        </li>
-
-        <li class="dash-catalogue__item">
-          <div class="dash-catalogue__head">
-            <div class="dash-catalogue__title">
               <span class="dash-catalogue__codename">TGE</span>
               <span class="dash-catalogue__name">Transmissible Gastroenteritis</span>
             </div>
@@ -7715,44 +7862,6 @@ body::before {
         <li class="dash-catalogue__item">
           <div class="dash-catalogue__head">
             <div class="dash-catalogue__title">
-              <span class="dash-catalogue__codename">MHYO</span>
-              <span class="dash-catalogue__name">Mycoplasma hyopneumoniae</span>
-            </div>
-            <div class="dash-catalogue__actions">
-              <button type="button" class="dash-catalogue__version">
-                <span>v1.1</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-              </button>
-              <button type="button" class="dash-catalogue__toggle is-active">Activated</button>
-            </div>
-          </div>
-          <div class="dash-catalogue__meta">
-            <span class="dash-catalogue__updated">Updated 1 w ago</span>
-          </div>
-        </li>
-
-        <li class="dash-catalogue__item">
-          <div class="dash-catalogue__head">
-            <div class="dash-catalogue__title">
-              <span class="dash-catalogue__codename">SSUI</span>
-              <span class="dash-catalogue__name">Streptococcus suis</span>
-            </div>
-            <div class="dash-catalogue__actions">
-              <button type="button" class="dash-catalogue__version">
-                <span>v1.0</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-              </button>
-              <button type="button" class="dash-catalogue__toggle is-active">Activated</button>
-            </div>
-          </div>
-          <div class="dash-catalogue__meta">
-            <span class="dash-catalogue__updated">Updated 1 w ago</span>
-          </div>
-        </li>
-
-        <li class="dash-catalogue__item">
-          <div class="dash-catalogue__head">
-            <div class="dash-catalogue__title">
               <span class="dash-catalogue__codename">ERY</span>
               <span class="dash-catalogue__name">Erysipelas</span>
             </div>
@@ -7762,25 +7871,6 @@ body::before {
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
               </button>
               <button type="button" class="dash-catalogue__toggle">Deactivated</button>
-            </div>
-          </div>
-          <div class="dash-catalogue__meta">
-            <span class="dash-catalogue__updated">Updated 2 w ago</span>
-          </div>
-        </li>
-
-        <li class="dash-catalogue__item">
-          <div class="dash-catalogue__head">
-            <div class="dash-catalogue__title">
-              <span class="dash-catalogue__codename">GLAS</span>
-              <span class="dash-catalogue__name">Glässer's disease</span>
-            </div>
-            <div class="dash-catalogue__actions">
-              <button type="button" class="dash-catalogue__version">
-                <span>v1.2</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-              </button>
-              <button type="button" class="dash-catalogue__toggle is-active">Activated</button>
             </div>
           </div>
           <div class="dash-catalogue__meta">
@@ -7820,7 +7910,7 @@ body::before {
       </ul>
 
       <footer class="dash-catalogue__pager" role="navigation" aria-label="Pagination">
-        <span class="dash-catalogue__pager-meta">Showing 1–12 of 142</span>
+        <span class="dash-catalogue__pager-meta">Showing 1–8 of 142</span>
         <div class="dash-catalogue__pager-controls">
           <button type="button" class="dash-catalogue__pager-btn" aria-label="First page" disabled>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="11 17 6 12 11 7"/><polyline points="18 17 13 12 18 7"/></svg>
@@ -7830,7 +7920,7 @@ body::before {
           </button>
           <span class="dash-catalogue__pager-page">
             <input type="text" class="input input--sm" value="1" aria-label="Current page" />
-            <span>/ 12</span>
+            <span>/ 18</span>
           </span>
           <button type="button" class="dash-catalogue__pager-btn" aria-label="Next page">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
