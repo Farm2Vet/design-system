@@ -6921,7 +6921,7 @@ button.card.card--inverted:hover {
    page-level "create / run" actions share one visual idiom. */
 .dash-page {
     display: flex;
-    align-items: flex-end;
+    align-items: flex-start;
     justify-content: space-between;
     gap: var(--space-tier-3);
     padding-top: var(--space-tier-3);
@@ -6972,6 +6972,7 @@ button.card.card--inverted:hover {
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    gap: 0;
 }
 
 /* Toolbar header — search left · quick-filter pills middle
@@ -6980,7 +6981,7 @@ button.card.card--inverted:hover {
     display: flex;
     align-items: center;
     gap: var(--space-tier-5);
-    padding: var(--space-tier-4);
+    padding: var(--space-tier-5);
     background: color-mix(in srgb, var(--white-base) 25%, transparent);
     border-bottom: var(--border-width-base) solid var(--border-default-subtle);
     flex-wrap: wrap;
@@ -7153,15 +7154,21 @@ button.card.card--inverted:hover {
 .dash-catalogue__item {
     display: flex;
     flex-direction: column;
-    gap: var(--space-tier-6);
-    padding: var(--space-tier-4);
+    gap: 2px;
+    padding: var(--space-tier-5);
     transition: background-color .15s ease;
 }
+
+
 .dash-catalogue__item + .dash-catalogue__item {
     border-top: var(--border-width-base) solid var(--border-default-subtle);
 }
+.dash-catalogue__item {
+    cursor: pointer;
+}
 .dash-catalogue__item:hover {
-    background: color-mix(in srgb, var(--white-base) 30%, transparent);
+    background: color-mix(in srgb, var(--primary-500) 10%, transparent);
+    box-shadow: inset 3px 0 0 var(--primary-500);
 }
 
 /* Top row — Identity left (codename + full name), actions
@@ -7183,10 +7190,10 @@ button.card.card--inverted:hover {
 }
 .dash-catalogue__codename {
     font-family: var(--font-sans);
-    font-size: var(--text-h5);
+    font-size: var(--text-body);
     font-weight: var(--font-weight-semibold);
     color: var(--text-default);
-    line-height: 1.2;
+    line-height: 1.1;
 }
 .dash-catalogue__name {
     font-family: var(--font-sans);
@@ -7359,6 +7366,33 @@ button.card.card--inverted:hover {
     background: currentColor;
     flex-shrink: 0;
 }
+/* When the accordion is OPEN, the <details> element itself becomes
+   the unified visual block. The summary loses its standalone chip
+   styling (it's now the top section of the unified block), and the
+   field list loses its own background/border (bottom section). */
+.dash-catalogue__incomplete[open] {
+    display: block;
+    background: color-mix(in srgb, var(--critical-500) 8%, transparent);
+    border: var(--border-width-base) solid color-mix(in srgb, var(--critical-500) 28%, transparent);
+    border-radius: var(--radius-md);
+    padding: var(--space-tier-7) var(--space-tier-6);
+    max-width: 360px;
+}
+.dash-catalogue__incomplete[open] summary {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0 0 var(--space-tier-7) 0;
+}
+.dash-catalogue__incomplete[open] .dash-catalogue__incomplete-list {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    margin: 0;
+    padding: 0;
+    max-width: none;
+}
+
 
 /* Pager footer — sans, no uppercase, matching toolbar tint. */
 .dash-catalogue__pager {
@@ -7366,7 +7400,7 @@ button.card.card--inverted:hover {
     align-items: center;
     justify-content: space-between;
     gap: var(--space-tier-3);
-    padding: var(--space-tier-4);
+    padding: var(--space-tier-5);
     background: color-mix(in srgb, var(--white-base) 25%, transparent);
     border-top: var(--border-width-base) solid var(--border-default-subtle);
 }
@@ -7442,6 +7476,25 @@ button.card.card--inverted:hover {
 .dash__side .sidebar__brand:focus {
     color: var(--text-default);
 }
+
+/* ========================================================
+   TYPE-SCALE REVAMP (earthsky)
+   Establish clear hierarchy from page hero down. Current
+   issues being fixed:
+   1. Section H2 was same size as hero H1 (both 27.65px) →
+      no hierarchy. Reduced to text-h5 (23px).
+   2. Sidebar item label was text-body (16px) — heavy for
+      admin sidebar density. Reduced to text-body-sm (13.33).
+      Convention: Notion/Linear sidebars use 13-14px.
+   3. Catalogue codename was text-h5 (23px) — bigger than
+      the sidebar brand (19px), inverted hierarchy. Reduced
+      to text-h6 (19.2px), matches sidebar brand level.
+   ======================================================== */
+.dash__side .sidebar__link {
+    font-size: var(--text-body-sm);
+}
+
+.dash-catalogue__codename { font-size: var(--text-body) !important; }
 </style>
 </head>
 <body>
@@ -7454,7 +7507,7 @@ button.card.card--inverted:hover {
 
       <header class="sidebar__header">
         <a href="admin-dashboard.html" class="sidebar__brand">
-          <img class="sidebar__brand-mark" src="../logo/logo-emblem-white.svg" alt="" aria-hidden="true" />
+          <img class="sidebar__brand-mark" src="../logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
           <span class="sidebar__brand-text">Farm2Vet</span>
         </a>
         <button type="button" class="sidebar__collapse" aria-label="Collapse sidebar" aria-pressed="false">
@@ -7590,7 +7643,7 @@ button.card.card--inverted:hover {
           Codenames, versions, and lifecycle state for every disease entry the chatbot can reference.
         </p>
       </div>
-      <button type="button" class="btn btn--cta btn--lg dash-page__cta">
+      <button type="button" class="btn btn--cta dash-page__cta">
         <span class="btn__leading" aria-hidden="true">
           <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
         </span>
@@ -7689,63 +7742,6 @@ button.card.card--inverted:hover {
         <li class="dash-catalogue__item">
           <div class="dash-catalogue__head">
             <div class="dash-catalogue__title">
-              <span class="dash-catalogue__codename">PED</span>
-              <span class="dash-catalogue__name">Porcine Epidemic Diarrhea</span>
-            </div>
-            <div class="dash-catalogue__actions">
-              <button type="button" class="dash-catalogue__version">
-                <span>v1.4</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-              </button>
-              <button type="button" class="dash-catalogue__toggle is-active">Activated</button>
-            </div>
-          </div>
-          <div class="dash-catalogue__meta">
-            <span class="dash-catalogue__updated">Updated 1 d ago</span>
-          </div>
-        </li>
-
-        <li class="dash-catalogue__item">
-          <div class="dash-catalogue__head">
-            <div class="dash-catalogue__title">
-              <span class="dash-catalogue__codename">CSF</span>
-              <span class="dash-catalogue__name">Classical Swine Fever</span>
-            </div>
-            <div class="dash-catalogue__actions">
-              <button type="button" class="dash-catalogue__version">
-                <span>v1.0</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-              </button>
-              <button type="button" class="dash-catalogue__toggle is-active">Activated</button>
-            </div>
-          </div>
-          <div class="dash-catalogue__meta">
-            <span class="dash-catalogue__updated">Updated 2 d ago</span>
-          </div>
-        </li>
-
-        <li class="dash-catalogue__item">
-          <div class="dash-catalogue__head">
-            <div class="dash-catalogue__title">
-              <span class="dash-catalogue__codename">FMD</span>
-              <span class="dash-catalogue__name">Foot and Mouth Disease</span>
-            </div>
-            <div class="dash-catalogue__actions">
-              <button type="button" class="dash-catalogue__version">
-                <span>v2.5</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-              </button>
-              <button type="button" class="dash-catalogue__toggle is-active">Activated</button>
-            </div>
-          </div>
-          <div class="dash-catalogue__meta">
-            <span class="dash-catalogue__updated">Updated 3 d ago</span>
-          </div>
-        </li>
-
-        <li class="dash-catalogue__item">
-          <div class="dash-catalogue__head">
-            <div class="dash-catalogue__title">
               <span class="dash-catalogue__codename">TGE</span>
               <span class="dash-catalogue__name">Transmissible Gastroenteritis</span>
             </div>
@@ -7825,7 +7821,7 @@ button.card.card--inverted:hover {
       </ul>
 
       <footer class="dash-catalogue__pager" role="navigation" aria-label="Pagination">
-        <span class="dash-catalogue__pager-meta">Showing 1–8 of 142</span>
+        <span class="dash-catalogue__pager-meta">Showing 1–5 of 142</span>
         <div class="dash-catalogue__pager-controls">
           <button type="button" class="dash-catalogue__pager-btn" aria-label="First page" disabled>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="11 17 6 12 11 7"/><polyline points="18 17 13 12 18 7"/></svg>
@@ -7852,6 +7848,23 @@ button.card.card--inverted:hover {
 </div>
 
 <script>
+  // ----- Sidebar collapse toggle -----
+  // Clicking the sidebar__collapse button toggles the .sidebar--collapsed
+  // class on the sidebar; the canonical sidebar.css handles the visual
+  // collapse (width shrinks to var(--sidebar-width-rail), labels hide,
+  // chevron rotates 180deg).
+  (function () {
+    var sidebar = document.querySelector('.dash__side .sidebar');
+    var btn = document.querySelector('.dash__side .sidebar__collapse');
+    if (sidebar && btn) {
+      btn.addEventListener('click', function () {
+        var collapsed = sidebar.classList.toggle('sidebar--collapsed');
+        btn.setAttribute('aria-pressed', collapsed ? 'true' : 'false');
+        btn.setAttribute('aria-label', collapsed ? 'Expand sidebar' : 'Collapse sidebar');
+      });
+    }
+  })();
+
   // ----- Activate / Deactivate toggle -----
   // Clicking flips .is-active (which drives the colour) and
   // swaps the label text.

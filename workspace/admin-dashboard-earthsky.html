@@ -6461,7 +6461,7 @@ button.card.card--inverted:hover {
 /* ----- Hero header -------------------------------------- */
 .dash-hero {
     display: flex;
-    align-items: flex-end;
+    align-items: flex-start;
     justify-content: space-between;
     gap: var(--space-tier-3);
     padding-top: var(--space-tier-3);
@@ -6501,7 +6501,7 @@ button.card.card--inverted:hover {
 /* ----- Sync action cluster ------------------------------ */
 .dash-hero__sync {
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     align-items: flex-end;
     gap: var(--space-tier-7);
     flex-shrink: 0;
@@ -6574,7 +6574,7 @@ button.card.card--inverted:hover {
 .dash-section__head h2 {
     margin: 0;
     font-family: var(--font-sans);
-    font-size: var(--text-h4);
+    font-size: var(--text-h5);
     font-weight: var(--font-weight-semibold);
     line-height: var(--line-height-h4);
     color: var(--text-default);
@@ -6814,6 +6814,23 @@ button.card.card--inverted:hover {
 .dash__side .sidebar__brand:focus {
     color: var(--text-default);
 }
+
+/* ========================================================
+   TYPE-SCALE REVAMP (earthsky)
+   Establish clear hierarchy from page hero down. Current
+   issues being fixed:
+   1. Section H2 was same size as hero H1 (both 27.65px) →
+      no hierarchy. Reduced to text-h5 (23px).
+   2. Sidebar item label was text-body (16px) — heavy for
+      admin sidebar density. Reduced to text-body-sm (13.33).
+      Convention: Notion/Linear sidebars use 13-14px.
+   3. Catalogue codename was text-h5 (23px) — bigger than
+      the sidebar brand (19px), inverted hierarchy. Reduced
+      to text-h6 (19.2px), matches sidebar brand level.
+   ======================================================== */
+.dash__side .sidebar__link {
+    font-size: var(--text-body-sm);
+}
 </style>
 </head>
 <body>
@@ -6969,7 +6986,7 @@ button.card.card--inverted:hover {
           <span class="dot" aria-hidden="true"></span>
           Last synced 2 h 14 m ago · 6 pending
         </span>
-        <button type="button" class="btn btn--cta btn--lg">
+        <button type="button" class="btn btn--cta">
           <span class="btn__leading" aria-hidden="true">
             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
           </span>
