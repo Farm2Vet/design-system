@@ -111,79 +111,6 @@ NAV_BLOCK = '''<!-- ========================== GLOBAL NAV ======================
 
 PLACEHOLDERS = [
     {
-        'file': 'III-07-side-panel.html',
-        'title': 'Side Panel',
-        'section_eyebrow': 'Section 07 / Components',
-        'h1': 'Side Panel.',
-        'lede': (
-            'Reserved page. The slide-in side panel component will document its '
-            'anatomy, size scale, content slots, edge-attachment options, and '
-            'dismiss behaviour once authored. Until then, use a Modal Dialog '
-            '(Section 06) for blocking interruptions or a Toast (Section 08) '
-            'for transient confirmations.'
-        ),
-        'todo': [
-            ['Anatomy', 'Header, body, footer, scroll mechanics.'],
-            ['Sizes', 'Three width scales aligned to the form-input width grid.'],
-            ['Edges', 'Left and right attachment; bottom sheet variant.'],
-            ['Behaviour', 'Open animation, focus trap, dismiss rules.'],
-        ],
-    },
-    {
-        'file': 'III-14-tabs.html',
-        'title': 'Tabs',
-        'section_eyebrow': 'Section 14 / Components',
-        'h1': 'Tabs.',
-        'lede': (
-            'Reserved page. The Tabs component will document its anatomy, '
-            'orientations, sizes, selection model, and accessibility '
-            'requirements once authored. Tabs are reserved for switching '
-            'between peer views of the same content; for navigating between '
-            'pages, use the global header (Section 10).'
-        ),
-        'todo': [
-            ['Anatomy', 'Tablist, tab, panel, optional badge slot.'],
-            ['Orientations', 'Horizontal · vertical.'],
-            ['Sizes', 'Compact, default, large.'],
-            ['Behaviour', 'Keyboard model, manual vs. automatic activation.'],
-        ],
-    },
-    {
-        'file': 'IV-01-logo.html',
-        'title': 'Logo',
-        'section_eyebrow': 'Section 01 / Assets',
-        'h1': 'Logo.',
-        'lede': (
-            'Reserved page. The Farm2Vet logo asset library — wordmark, '
-            'monogram, lockups, and the rules that govern clear-space, '
-            'minimum size, and colour treatment — will be published here '
-            'once authored.'
-        ),
-        'todo': [
-            ['Variants', 'Wordmark · monogram · stacked lockup.'],
-            ['Colour', 'Full colour, mono, knock-out.'],
-            ['Clearspace', 'Minimum padding around the mark.'],
-            ['Files', 'SVG, PNG, EPS download manifest.'],
-        ],
-    },
-    {
-        'file': 'IV-02-icons.html',
-        'title': 'Icons',
-        'section_eyebrow': 'Section 02 / Assets',
-        'h1': 'Icons.',
-        'lede': (
-            'Reserved page. The icon set — stroke weight, grid, optical '
-            'corrections, sizes, and download manifest — will be published '
-            'here once authored.'
-        ),
-        'todo': [
-            ['Grid', '24px base, 1.5px stroke.'],
-            ['Sizes', 'sm 16 · md 20 · lg 24 · xl 32.'],
-            ['Variants', 'Outline (default) · filled.'],
-            ['Manifest', 'Searchable index with copy-as-SVG action.'],
-        ],
-    },
-    {
         'file': 'IV-03-images.html',
         'title': 'Images',
         'section_eyebrow': 'Section 03 / Assets',
@@ -198,24 +125,6 @@ PLACEHOLDERS = [
             ['Treatments', 'Full colour, duotone, desaturated.'],
             ['Crops', 'Subject-safe area rules.'],
             ['Manifest', 'Hero, card, illustration libraries.'],
-        ],
-    },
-    {
-        'file': 'V-01-wiki.html',
-        'title': 'Wiki',
-        'section_eyebrow': 'Section 01 / Mockups',
-        'h1': 'Wiki.',
-        'lede': (
-            'Reserved page. The Wiki mockup — a reference layout for '
-            'long-form internal documentation, demonstrating Section 10 '
-            'header, in-page table of contents, and prose typography in '
-            'concert — will be published here once authored.'
-        ),
-        'todo': [
-            ['Header', 'Global nav, breadcrumbs, search.'],
-            ['Body', 'Article column, in-page TOC, anchored headings.'],
-            ['Aside', 'Last-edited metadata, contributor list.'],
-            ['Footer', 'Cross-link rail, edit-on-GitHub link.'],
         ],
     },
     {
