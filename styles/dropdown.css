@@ -49,6 +49,15 @@
 /* =========================================================
    TRIGGER — looks/feels like .input but is a button
    ========================================================= */
+
+/* When the trigger is composed with .btn (icon-only kebab,
+   overflow menu in a table row, etc.), the .btn rules supply
+   surface and sizing. Both class systems carry equal-specificity
+   rules for background / border / padding / min-height / width, so
+   the page must load dropdown.css BEFORE button.css for the .btn
+   variants to win on source order. No reset rule lives here on
+   purpose — the cascade does the work. See V-04-disease-input.html
+   for an in-use example. */
 .dropdown__trigger {
     display: flex;
     align-items: center;

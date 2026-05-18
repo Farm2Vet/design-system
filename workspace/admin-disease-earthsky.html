@@ -7550,12 +7550,21 @@ button.card.card--inverted:hover {
           </li>
 
           <li class="sidebar__item">
-            <a class="sidebar__link dash-sidebar__ai" href="#">
+            <button type="button" class="sidebar__link" aria-expanded="false">
               <span class="sidebar__icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
               </span>
               <span class="sidebar__label">Automated testing</span>
-            </a>
+              <span class="sidebar__trailing">
+                <svg class="sidebar__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+              </span>
+            </button>
+            <ul class="sidebar__sublist">
+              <li class="sidebar__item"><a class="sidebar__link" href="admin-test-console-earthsky.html"><span class="sidebar__label">Console</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="admin-test-profiles-earthsky.html"><span class="sidebar__label">Profiles</span><span class="sidebar__trailing"><span class="sidebar__badge">142</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="admin-test-suites-earthsky.html"><span class="sidebar__label">Suites</span><span class="sidebar__trailing"><span class="sidebar__badge">12</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="admin-test-run-earthsky.html"><span class="sidebar__label">Runs</span><span class="sidebar__trailing"><span class="sidebar__badge sidebar__badge--warning">3</span></span></a></li>
+            </ul>
           </li>
 
           <li class="sidebar__item">
@@ -7866,6 +7875,21 @@ button.card.card--inverted:hover {
       });
     }
   })();
+
+  // ----- Sidebar group expand/collapse -----
+  // When a .sidebar__item contains a <button class="sidebar__link">, clicking
+  // toggles is-open on the <li> and flips aria-expanded on the button. The
+  // canonical sidebar.css handles the visual sublist show/hide via
+  // .sidebar__item.is-open > .sidebar__sublist.
+  document.querySelectorAll('.dash__side .sidebar__link[aria-expanded]').forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      var item = btn.closest('.sidebar__item');
+      if (!item) return;
+      var open = item.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  });
 
   // ----- Activate / Deactivate toggle -----
   // Clicking flips .is-active (which drives the colour) and

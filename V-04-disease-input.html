@@ -1,0 +1,1986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Edit disease — Farm2Vet Admin</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<!-- Foundations -->
+<link rel="stylesheet" href="styles/tokens.css" />
+<link rel="stylesheet" href="styles/base.css" />
+<link rel="stylesheet" href="styles/typography.css" />
+
+<!-- Canonical components (consumed, never re-implemented) -->
+<!-- dropdown.css loads before button.css so that .btn rules win
+     source-order ties when a trigger composes both class systems
+     (icon-only kebab, overflow menu in a table row). See the
+     load-order note at the top of the trigger section in
+     styles/dropdown.css. -->
+<link rel="stylesheet" href="styles/dropdown.css" />
+<link rel="stylesheet" href="styles/button.css" />
+<link rel="stylesheet" href="styles/form.css" />
+<link rel="stylesheet" href="styles/badge.css" />
+<link rel="stylesheet" href="styles/card.css" />
+<link rel="stylesheet" href="styles/sidebar.css" />
+<link rel="stylesheet" href="styles/chip.css" />
+<link rel="stylesheet" href="styles/tabs.css" />
+<link rel="stylesheet" href="styles/switch.css" />
+<link rel="stylesheet" href="styles/alert.css" />
+<link rel="stylesheet" href="styles/modal.css" />
+
+<!-- Reuse the admin shell scaffolding established by V-01 -->
+<link rel="stylesheet" href="styles/page-V-01.css" />
+
+<script src="scripts/dropdown.js" defer></script>
+<script src="scripts/sidebar.js" defer></script>
+
+<style>
+  /* =========================================================
+     PAGE V-04 — DISEASE INPUT (CREATE / EDIT)
+
+     Each per-language field carries its own EN/VI tabs strip;
+     the inactive locale's input is `hidden`. Chrome (labels,
+     helpers, section titles) stays in the admin UI language.
+
+     Every interactive surface composes a canonical component:
+       .btn  .input  .textarea  .multi-select + .chip
+       .tabs  .badge  .sidebar  .dropdown
+     Page-scoped classes below are positioning-only:
+       .disease-edit__banner       version meta + version dropdown
+       .disease-edit__body         TOC | form grid
+       .disease-edit__toc          sticky section navigator
+       .disease-edit__form         form column
+       .disease-edit__section      one of six anchored sections
+       .disease-edit__rates        number-range row
+       .disease-edit__symptom      one of five symptom subsections
+       .disease-edit__lang-tabs    per-field EN/VI tabs strip
+       .disease-edit__notes-add    "Add severity notes" affordance
+       .disease-edit__notes        compact notes editor (collapsible)
+       .md-editor                  positioning wrapper that places a
+                                   row of canonical .btn instances
+                                   above a canonical .input.textarea
+     Typography rule: nothing below 16px in this page except the
+     true uppercase mono eyebrow tokens. Inputs are .input--md
+     (16px). Body copy is --text-body.
+     ========================================================= */
+
+  /* Tighten the page-header bottom rule — the banner sits
+     immediately below it and would otherwise read as a duplicated
+     rule. */
+  .app-shell__page-header { padding-bottom: var(--spacing-4x); }
+
+  /* Pin the sidebar slot to the viewport so it doesn't scroll
+     away on long forms. page-V-01.css ships it as
+     position: relative (which suits the short catalogue page);
+     override here, page-scoped, instead of touching the shared
+     stylesheet. align-self: start prevents the grid row from
+     stretching the cell to full content height — otherwise the
+     sticky element has nowhere to stick. */
+  .app-shell__side {
+    position: sticky;
+    top: 0;
+    align-self: start;
+    height: 100vh;
+  }
+  .app-shell__side .sidebar { min-height: 100vh; height: 100%; }
+
+  /* ────────────── VERSION BANNER ──────────────
+     Constrained to the same 720px as the form column so the
+     banner and form below it read as a single vertical block,
+     not a wide strip floating above a narrow form. Two
+     intentional rows: identity meta (status pill + version
+     meta) above, version dropdown below, separated by a thin
+     horizontal rule. */
+  .disease-edit__banner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3x);
+    padding: var(--spacing-4x);
+    width: min(100% - 2 * var(--space-page-x), 1080px);
+    margin: 0 auto var(--spacing-4x);
+    font-size: var(--text-body);
+    color: var(--text-default);
+  }
+  .disease-edit__banner-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-4x);
+  }
+  .disease-edit__banner-row + .disease-edit__banner-row {
+    padding-top: var(--spacing-3x);
+    border-top: var(--border-width-base) solid var(--border-default-subtle);
+  }
+  .disease-edit__banner-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2x);
+    color: var(--text-default);
+  }
+  .disease-edit__banner-meta strong { font-weight: var(--font-weight-semibold); }
+  .disease-edit__banner-key {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+  }
+  .disease-edit__banner-divider {
+    width: 1px;
+    align-self: stretch;
+    background: var(--border-default-subtle);
+  }
+  /* Canonical .dropdown is display:block / width:100%. In the
+     inline-flex banner-row we want it content-sized like its
+     sibling .btn instances. */
+  .disease-edit__versions { width: auto; }
+  .disease-edit__versions .dropdown__menu { min-width: 100%; }
+
+  /* Row 1 (meta) stays as-is. Row 2 becomes the toolbar — single
+     non-wrapping flex row. Picker + actions groups float left,
+     a 1px divider follows, then the disease kebab pushes itself
+     to the far right via margin-left:auto. flex-wrap:nowrap is
+     deliberate: combining auto-margin with flex-wrap:wrap pushes
+     the auto-margin element onto its own line even when there's
+     room beside its siblings. */
+  .disease-edit__toolbar {
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: var(--spacing-3x);
+  }
+  .disease-edit__toolbar-group {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2x);
+    flex-wrap: nowrap;
+  }
+  .disease-edit__toolbar-divider {
+    width: 1px;
+    align-self: stretch;
+    background: var(--border-default);
+  }
+  .disease-edit__disease-menu {
+    width: auto;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+  /* Anchor the menu to the right edge of the kebab so it drops
+     down opening leftward (kebab sits at the far right of the
+     toolbar — without this override the menu inherits the default
+     left:0/right:0 of a 36px-wide container and clips to nothing,
+     or — when we widen it — pushes past the right edge of the
+     viewport). */
+  .disease-edit__disease-menu .dropdown__menu {
+    left: auto;
+    right: 0;
+    min-width: 220px;
+  }
+
+  /* When any dropdown inside the banner is open (version picker
+     or disease-scope kebab), lift the entire banner card so its
+     menu paints above the body card below. The banner's
+     backdrop-filter establishes a stacking context — z-index on
+     the menu alone can't escape it. See styles/page-III-03.css
+     for the canonical pattern. .card already sets position:
+     relative; we only need z-index here. */
+  .disease-edit__banner:has(.dropdown.is-open) {
+    z-index: 50;
+  }
+
+  /* Version trigger — picker badge sits inline with the value label.
+     Spec already gave .disease-edit__versions { width: auto } above. */
+  .disease-edit__versions .dropdown__trigger {
+    gap: var(--spacing-2x);
+  }
+  .disease-edit__version-status {
+    /* The badge component supplies its own size; nothing to override.
+       Class exists only to give the controller a query target. */
+  }
+  .disease-edit__version-option {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2x);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Danger menuitem inside the kebab — same dropdown__option shape,
+     tinted text. Hover keeps the dropdown's primary tint background
+     but swaps to a critical-tinted background so the destructive
+     target is unambiguous on hover. */
+  .dropdown__option--danger {
+    color: var(--text-critical);
+  }
+  .dropdown__option--danger:hover,
+  .dropdown__option--danger.is-focus {
+    background: var(--background-critical-subtle);
+    color: var(--text-critical);
+  }
+
+  /* When the form is in edit mode, the document gets data-edit-mode="on".
+     The two edit-only buttons (Set as live / Delete version) stay
+     enabled; the Edit button swaps label + style; siblings can read
+     this attribute if they need to react. */
+  [data-edit-mode="on"] #version-edit-toggle {
+    background: var(--btn-cta-bg);
+    color: var(--btn-cta-fg);
+    border-color: var(--btn-cta-border);
+  }
+
+  /* Disabled state — the two version-state buttons (Set as live,
+     Delete version) are disabled when they don't apply. The btn
+     styles already cover [disabled]; nothing extra needed here.
+     Keep this rule comment in the file as a note for future work. */
+
+  /* ────────────── BODY GRID ────────────── */
+  /* Body content sits inside a glass-frost panel — same pattern as
+     V-01 wiki-card. The card supplies the gutter (var(--space-page-x))
+     so it lines up with the page header's horizontal padding. */
+  .disease-edit__card {
+    width: min(100% - 2 * var(--space-page-x), 1080px);
+    margin: 0 auto var(--spacing-12x);
+    padding: var(--space-container-x-lg);
+  }
+  .disease-edit__body {
+    display: grid;
+    /* Inside the glass-frost card. Form fills the available column,
+       TOC pins to the right at 240px. The card's outer margin
+       (var(--space-page-x)) handles the page gutter; the grid gap
+       handles only the form/TOC separation. */
+    grid-template-columns: minmax(0, 1fr) 240px;
+    gap: var(--space-container-x-lg);
+    align-items: start;
+  }
+  /* Explicit grid placement keeps DOM order (TOC first, then form
+     — correct for assistive tech) while painting them flipped.
+     `grid-row: 1` on both pins them into the same row; without it
+     the auto-placer puts each item into its own row and the form
+     drops below the TOC's bottom edge on first paint. */
+  .disease-edit__toc  { grid-column: 2; grid-row: 1; }
+  .disease-edit__form { grid-column: 1; grid-row: 1; }
+  @media (max-width: 1100px) {
+    .disease-edit__body { grid-template-columns: 1fr; }
+    .disease-edit__toc, .disease-edit__form { grid-column: auto; grid-row: auto; }
+  }
+
+  /* ────────────── STICKY TOC ──────────────
+     align-self: start prevents the sticky-positioned TOC from
+     stretching the grid row to its content height and pushing
+     the sibling form column down on first paint. */
+  .disease-edit__toc {
+    position: sticky;
+    top: var(--spacing-6x);
+    align-self: start;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1x);
+  }
+  .disease-edit__toc-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-2x);
+    margin: 0 var(--spacing-3x) var(--spacing-2x);
+  }
+  .disease-edit__toc-eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+    margin: 0;
+  }
+  /* (i) info disclosure beside the SECTIONS heading.
+     Reveals the status-dot key on hover or keyboard focus —
+     frees the rail height the bottom legend used to consume. */
+  .disease-edit__toc-info {
+    position: relative;
+    display: inline-flex;
+  }
+  .disease-edit__toc-info-trigger {
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    border-radius: 50%;
+    border: var(--border-width-base) solid var(--border-default);
+    background: transparent;
+    color: var(--text-default-minimal);
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    line-height: 1;
+    cursor: help;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .disease-edit__toc-info-trigger:hover,
+  .disease-edit__toc-info-trigger:focus-visible {
+    color: var(--text-default);
+    border-color: var(--text-default);
+    outline: none;
+  }
+  .disease-edit__toc-info-popover {
+    position: absolute;
+    top: calc(100% + var(--spacing-2x));
+    right: 0;
+    z-index: 20;
+    padding: var(--spacing-3x);
+    border: var(--border-width-base) solid var(--border-default);
+    border-radius: var(--radius-md);
+    background: var(--background-default);
+    box-shadow: 0 8px 24px -16px rgba(0, 0, 0, 0.18);
+    font-size: var(--text-body);
+    color: var(--text-default-subtle);
+    display: none;
+    flex-direction: column;
+    gap: var(--spacing-2x);
+    white-space: nowrap;
+  }
+  .disease-edit__toc-info:hover .disease-edit__toc-info-popover,
+  .disease-edit__toc-info:focus-within .disease-edit__toc-info-popover {
+    display: flex;
+  }
+  .disease-edit__toc-item {
+    display: grid;
+    grid-template-columns: 20px 1fr auto;
+    align-items: center;
+    gap: var(--spacing-2x);
+    padding: var(--spacing-3x);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: var(--text-default-subtle);
+    font-size: var(--text-body);
+    line-height: 1.3;
+    transition: background-color .15s ease, color .15s ease;
+  }
+  .disease-edit__toc-item:hover { background: var(--background-default-hover); color: var(--text-default); }
+  .disease-edit__toc-item.is-current {
+    background: var(--background-primary-subtle);
+    color: var(--text-primary-strong);
+    font-weight: var(--font-weight-medium);
+  }
+  .disease-edit__toc-status {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border-default);
+    background: transparent;
+    justify-self: center;
+  }
+  .disease-edit__toc-status.is-filled { background: var(--icon-safe); border-color: var(--icon-safe); }
+  .disease-edit__toc-status.is-partial {
+    background: linear-gradient(90deg, var(--icon-safe) 50%, transparent 50%);
+    border-color: var(--icon-safe);
+  }
+  .disease-edit__toc-status.is-error { background: var(--icon-critical); border-color: var(--icon-critical); }
+  .disease-edit__toc-warn {
+    color: var(--text-warning);
+    font-size: var(--text-body);
+    line-height: 1;
+  }
+  .disease-edit__toc-legend-row {
+    display: inline-flex; align-items: center; gap: var(--spacing-2x);
+  }
+
+  /* ────────────── FORM SECTIONS ────────────── */
+  .disease-edit__form {
+    display: flex; flex-direction: column;
+    gap: var(--spacing-12x);
+    align-self: start;
+  }
+  .disease-edit__section { scroll-margin-top: var(--spacing-6x); }
+  .disease-edit__section-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: var(--spacing-4x);
+    margin-bottom: var(--spacing-3x);
+    padding-bottom: var(--spacing-3x);
+    border-bottom: var(--border-width-base) solid var(--border-default);
+  }
+  .disease-edit__section-title {
+    font-family: var(--font-sans);
+    font-size: var(--text-h4);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-default);
+    letter-spacing: var(--letter-spacing-tight);
+    margin: 0;
+  }
+  .disease-edit__section-num {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+    margin-right: var(--spacing-2x);
+  }
+  .disease-edit__section-summary {
+    font-size: var(--text-body);
+    color: var(--text-default-subtle);
+    line-height: 1.55;
+    margin: 0 0 var(--spacing-6x);
+    max-width: 80ch;
+  }
+  .disease-edit__section-fields {
+    display: flex; flex-direction: column;
+    gap: var(--spacing-6x);
+  }
+
+  /* ────────────── FIELD WIDTH DEFAULTS ──────────────
+     Form inputs that aren't in a layout grid get a comfortable
+     reading width. Per-field inline max-widths (e.g. Codename's
+     32ch) and grid-context inputs (rates) override.            */
+  .disease-edit__section-fields > .field > .input,
+  .disease-edit__section-fields > .field > .multi-select,
+  .disease-edit__section-fields > .field > .dropdown {
+    max-width: 560px;
+  }
+  .disease-edit__section-fields > .field > .md-editor,
+  .disease-edit__section-fields > .field > .textarea {
+    max-width: 720px;
+  }
+
+  /* The disease-rates grid lives *outside* .disease-edit__section-fields,
+     so its inputs are naturally not caught by the rules above. No explicit
+     override needed today — this comment exists so future maintainers
+     know why the rule is scoped via .disease-edit__section-fields > .field
+     rather than the broader .disease-edit__form .field. */
+  .disease-edit__optional {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+    font-weight: var(--font-weight-regular);
+  }
+
+  /* ────────────── NUMBER RANGE ROW ────────────── */
+  .disease-edit__rates {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: var(--spacing-6x);
+  }
+  @media (max-width: 880px) {
+    .disease-edit__rates { grid-template-columns: 1fr; }
+  }
+  .disease-edit__range {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: var(--spacing-2x);
+  }
+  .disease-edit__range-dash {
+    color: var(--text-default-minimal);
+    font-weight: var(--font-weight-medium);
+    font-size: var(--text-body);
+  }
+  .disease-edit__range .input {
+    text-align: right;
+  }
+  .disease-edit__range-suffix {
+    position: absolute;
+    right: var(--spacing-3x);
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--text-default-minimal);
+    font-size: var(--text-body);
+  }
+  .disease-edit__range-cell { position: relative; }
+  .disease-edit__range-cell .input { padding-right: 40px; }
+
+  /* ────────────── CONSTRAINED MARKDOWN EDITOR (page-scoped wrapper)
+     The wrapper places a row of canonical .btn.btn--ghost.btn--sm
+     instances above a canonical .input.textarea. The toolbar +
+     textarea share the same border so they read as one control. */
+  .md-editor { display: flex; flex-direction: column; }
+  .md-editor__toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--spacing-1x);
+    padding: var(--spacing-2x);
+    background: var(--background-default-subtle);
+    border: var(--border-width-base) solid var(--border-default);
+    border-bottom: none;
+    border-top-left-radius: var(--form-radius);
+    border-top-right-radius: var(--form-radius);
+  }
+  .md-editor__toolbar .btn {
+    color: var(--text-default-subtle);
+    min-width: 32px;
+    padding-inline: var(--spacing-2x);
+  }
+  .md-editor__toolbar-sep {
+    width: 1px;
+    align-self: stretch;
+    background: var(--border-default);
+    margin: 2px var(--spacing-1x);
+  }
+  .md-editor__textarea.input.textarea {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+  .md-editor__hint {
+    margin-top: var(--spacing-2x);
+    font-size: var(--text-body);
+    color: var(--text-default-subtle);
+  }
+  .md-editor__hint--missing { color: var(--text-warning); }
+  /* Small subscript inside heading buttons (H1/H2/H3). */
+  .md-editor__sub { font-size: .72em; vertical-align: sub; line-height: 1; }
+
+  /* ────────────── SYMPTOM SUBSECTIONS ────────────── */
+  .disease-edit__symptom + .disease-edit__symptom {
+    margin-top: var(--spacing-8x);
+  }
+  .disease-edit__symptom-head {
+    display: flex; align-items: center;
+    gap: var(--spacing-2x);
+    margin-bottom: var(--spacing-3x);
+  }
+  .disease-edit__symptom-title {
+    font-family: var(--font-sans);
+    font-size: var(--text-h5);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-default);
+    margin: 0;
+  }
+
+  /* ────────────── PER-FIELD LANGUAGE TABS ──────────────
+     Per-language fields: tabs strip sits above the input with a
+     small gap. We tried merging the input's top border into the
+     tabs underline (.tabs--line) and it left the input as a U-
+     shape because the underline doesn't span the container.
+     Treat them as two stacked controls instead. */
+  .disease-edit__lang-tabs {
+    margin-bottom: var(--spacing-2x);
+  }
+
+  /* ────────────── SEVERITY NOTES (per-stat collapsible) ────────────── */
+  .disease-edit__notes-add {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-1x);
+    margin-top: var(--spacing-3x);
+    padding: var(--spacing-2x) 0;
+    background: transparent;
+    border: 0;
+    color: var(--text-primary-strong);
+    font-size: var(--text-body);
+    font-family: inherit;
+    cursor: pointer;
+  }
+  .disease-edit__notes-add .icon { width: 14px; height: 14px; }
+  .disease-edit__notes-add:hover { text-decoration: underline; }
+
+  .disease-edit__notes { margin-top: var(--spacing-3x); }
+
+  /* Compact markdown editor — shorter toolbar, used inline under
+     numeric stats for short variability notes. */
+  .md-editor--compact .md-editor__toolbar { padding: var(--spacing-1x); }
+  .md-editor--compact .md-editor__textarea { min-height: 64px; }
+
+  /* Override .input { display: block } from form.css so the hidden
+     attribute on the inactive locale input actually hides it.
+     Specificity 0-1-1 beats the form.css 0-1-0 rule without
+     needing !important. */
+  .input[hidden] { display: none; }
+</style>
+</head>
+<body>
+
+<!-- ============== APP SHELL ============== -->
+<div class="app-shell">
+
+  <!-- ───── Sidebar (canonical .sidebar) ───── -->
+  <aside class="app-shell__side">
+    <aside class="sidebar" aria-label="Admin primary navigation">
+      <header class="sidebar__header">
+        <a href="V-01-wiki.html" class="sidebar__brand">
+          <img class="sidebar__brand-mark" src="logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
+          <span class="sidebar__brand-text">Farm2Vet</span>
+        </a>
+        <button type="button" class="sidebar__collapse" aria-label="Collapse sidebar" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6"/></svg>
+        </button>
+      </header>
+      <nav class="sidebar__nav" aria-label="Admin destinations">
+        <ul class="sidebar__list">
+          <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span><span class="sidebar__label">Overview Dashboard</span></a></li>
+          <li class="sidebar__item is-open">
+            <button type="button" class="sidebar__link" aria-expanded="true">
+              <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/></svg></span>
+              <span class="sidebar__label">Data Management</span>
+              <span class="sidebar__trailing"><svg class="sidebar__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></span>
+            </button>
+            <ul class="sidebar__sublist">
+              <li class="sidebar__item"><a class="sidebar__link is-current" href="V-01-wiki.html" aria-current="page"><span class="sidebar__label">Disease</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Question</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Conversation</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Image</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Resource</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">PDF Input</span></a></li>
+            </ul>
+          </li>
+          <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg></span><span class="sidebar__label">Automated Testing</span></a></li>
+          <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></span><span class="sidebar__label">Sync database</span></a></li>
+        </ul>
+      </nav>
+      <div class="sidebar__footer">
+        <div class="sidebar__profile-wrap">
+          <div class="sidebar__profile">
+            <span class="sidebar__avatar" aria-hidden="true">M</span>
+            <span class="sidebar__profile-text">
+              <span class="sidebar__profile-name">Minh</span>
+              <span class="sidebar__profile-role">Admin</span>
+            </span>
+            <button type="button" class="sidebar__overflow" aria-label="Account menu" aria-haspopup="menu" aria-expanded="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </aside>
+
+  <!-- ───── Main ───── -->
+  <main class="app-shell__main">
+
+    <!-- ───── Page header — breadcrumb + title + back ───── -->
+    <header class="app-shell__page-header">
+      <nav class="app-shell__breadcrumb" aria-label="Breadcrumb">
+        <a class="app-shell__breadcrumb-link" href="#">Data Management</a>
+        <span class="app-shell__breadcrumb-sep" aria-hidden="true">›</span>
+        <a class="app-shell__breadcrumb-link" href="V-01-wiki.html">Disease wiki</a>
+        <span class="app-shell__breadcrumb-sep" aria-hidden="true">›</span>
+        <span class="app-shell__breadcrumb-tail" aria-current="page">PRRS</span>
+      </nav>
+
+      <div class="app-shell__page-header-row">
+        <div class="app-shell__page-header-text">
+          <h1 class="app-shell__page-title">Edit disease.</h1>
+        </div>
+        <a class="btn btn--ghost btn--md" href="V-01-wiki.html">
+          <span class="btn__leading" aria-hidden="true">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </span>
+          <span class="btn__label">Back to catalogue</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- ───── VERSION BANNER ─────
+         Row 1: identity meta readout.
+         Row 2: three-scope toolbar — version picker + new (A),
+         version actions (B), divider, disease kebab (C). -->
+    <section class="card card--glass disease-edit__banner" role="region" aria-label="Disease record state">
+
+      <!-- Row 1 — identity meta. No Draft badge: versions are Active or Inactive only. -->
+      <div class="disease-edit__banner-row disease-edit__banner-row--meta">
+        <span class="disease-edit__banner-meta">
+          <span class="disease-edit__banner-key">Editing</span>
+          <strong>v3.3</strong>
+        </span>
+        <span class="disease-edit__banner-divider" aria-hidden="true"></span>
+        <span class="disease-edit__banner-meta">
+          <span class="disease-edit__banner-key">Active</span>
+          <span>v3.2</span>
+        </span>
+        <span class="disease-edit__banner-divider" aria-hidden="true"></span>
+        <span class="disease-edit__banner-meta">
+          <span class="disease-edit__banner-key">Last edited</span>
+          <span>2 minutes ago by Minh</span>
+        </span>
+      </div>
+
+      <!-- Row 2 — toolbar. -->
+      <div class="disease-edit__banner-row disease-edit__toolbar">
+
+        <!-- A · Version picker + new version -->
+        <div class="disease-edit__toolbar-group disease-edit__toolbar-group--picker">
+          <div class="dropdown dropdown--sm disease-edit__versions" id="version-picker" data-dropdown>
+            <button type="button" class="dropdown__trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Version">
+              <span class="dropdown__value">v3.3</span>
+              <span class="badge badge--sm is-warning disease-edit__version-status">Inactive</span>
+              <svg class="dropdown__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="dropdown__menu" role="listbox">
+              <button type="button" class="dropdown__option is-selected" role="option" data-value="v3.3" data-status="inactive">
+                <span class="disease-edit__version-option">v3.3<span class="badge is-warning">Inactive</span></span>
+                <svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>
+              </button>
+              <button type="button" class="dropdown__option" role="option" data-value="v3.2" data-status="active">
+                <span class="disease-edit__version-option">v3.2<span class="badge is-safe">Active</span></span>
+                <svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>
+              </button>
+              <button type="button" class="dropdown__option" role="option" data-value="v3.1" data-status="inactive">
+                <span class="disease-edit__version-option">v3.1<span class="badge is-warning">Inactive</span></span>
+                <svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <button type="button" class="btn btn--secondary btn--sm" data-modal-open="modal-new-version">
+            <span class="btn__leading" aria-hidden="true">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </span>
+            <span class="btn__label">New version</span>
+          </button>
+        </div>
+
+        <!-- B · Selected-version actions -->
+        <div class="disease-edit__toolbar-group disease-edit__toolbar-group--actions">
+          <button type="button" class="btn btn--secondary btn--sm" id="version-edit-toggle" aria-pressed="false">
+            <span class="btn__leading" aria-hidden="true">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+            </span>
+            <span class="btn__label">Edit</span>
+          </button>
+
+          <button type="button" class="btn btn--secondary btn--sm" id="version-set-live" data-modal-open="modal-set-live">
+            <span class="btn__leading" aria-hidden="true">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09Z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2Z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
+            </span>
+            <span class="btn__label">Set as live</span>
+          </button>
+
+          <button type="button" class="btn btn--caution btn--sm" id="version-delete" data-modal-open="modal-delete-version">
+            <span class="btn__leading" aria-hidden="true">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6 17.27 20.27A2 2 0 0 1 15.28 22H8.72a2 2 0 0 1-1.99-1.73L5 6"/><path d="M10 11v6M14 11v6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            </span>
+            <span class="btn__label">Delete version</span>
+          </button>
+        </div>
+
+        <!-- Scope divider — visual cue that the next island operates on the whole disease, not the version. -->
+        <span class="disease-edit__toolbar-divider" aria-hidden="true"></span>
+
+        <!-- C · Disease-scope kebab -->
+        <div class="dropdown dropdown--sm disease-edit__disease-menu" data-dropdown>
+          <button type="button" class="dropdown__trigger btn btn--secondary btn--sm btn--icon-only" aria-haspopup="menu" aria-expanded="false" aria-label="Disease actions">
+            <svg class="icon" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><circle cx="12" cy="6" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="18" r="2"/></svg>
+          </button>
+          <div class="dropdown__menu" role="menu">
+            <button type="button" class="dropdown__option" role="menuitem" data-modal-open="modal-deactivate-disease">
+              <span>Deactivate disease</span>
+            </button>
+            <button type="button" class="dropdown__option dropdown__option--danger" role="menuitem" data-modal-open="modal-delete-disease">
+              <span>Delete disease…</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ───── BODY — TOC | FORM ───── -->
+    <section class="card card--glass-frost disease-edit__card" aria-label="Disease editor panel">
+    <div class="disease-edit__body">
+
+      <!-- ─── Sticky section navigator with completion dots ─── -->
+      <nav class="disease-edit__toc" aria-label="Sections">
+        <div class="disease-edit__toc-heading">
+          <p class="disease-edit__toc-eyebrow">Sections</p>
+          <span class="disease-edit__toc-info">
+            <button type="button" class="disease-edit__toc-info-trigger"
+                    aria-label="Status key"
+                    aria-describedby="toc-legend-popover">i</button>
+            <span class="disease-edit__toc-info-popover" id="toc-legend-popover" role="tooltip">
+              <span class="disease-edit__toc-legend-row">
+                <span class="disease-edit__toc-status is-filled" aria-hidden="true"></span>
+                <span>All fields filled</span>
+              </span>
+              <span class="disease-edit__toc-legend-row">
+                <span class="disease-edit__toc-status is-partial" aria-hidden="true"></span>
+                <span>Partial</span>
+              </span>
+              <span class="disease-edit__toc-legend-row">
+                <span class="disease-edit__toc-status" aria-hidden="true"></span>
+                <span>Empty</span>
+              </span>
+            </span>
+          </span>
+        </div>
+
+        <a class="disease-edit__toc-item is-current" href="#section-basic">
+          <span class="disease-edit__toc-status is-filled" aria-hidden="true"></span>
+          <span>1. Basic info</span>
+          <span></span>
+        </a>
+        <a class="disease-edit__toc-item" href="#section-general">
+          <span class="disease-edit__toc-status is-filled" aria-hidden="true"></span>
+          <span>2. General</span>
+          <span></span>
+        </a>
+        <a class="disease-edit__toc-item" href="#section-rates">
+          <span class="disease-edit__toc-status is-filled" aria-hidden="true"></span>
+          <span>3. Disease rates</span>
+          <span></span>
+        </a>
+        <a class="disease-edit__toc-item" href="#section-symptoms">
+          <span class="disease-edit__toc-status is-partial" aria-hidden="true"></span>
+          <span>4. Symptoms</span>
+          <span class="disease-edit__toc-warn" aria-label="2 of 5 categories empty">⚠</span>
+        </a>
+        <a class="disease-edit__toc-item" href="#section-management">
+          <span class="disease-edit__toc-status is-partial" aria-hidden="true"></span>
+          <span>5. Management</span>
+          <span></span>
+        </a>
+        <a class="disease-edit__toc-item" href="#section-additional">
+          <span class="disease-edit__toc-status" aria-hidden="true"></span>
+          <span>6. Additional</span>
+          <span></span>
+        </a>
+      </nav>
+
+      <!-- ─── Form ─── -->
+      <form class="disease-edit__form" novalidate>
+
+        <!-- =========================================================
+             SECTION 1 — BASIC INFO (language-neutral)
+             ========================================================= -->
+        <section id="section-basic" class="disease-edit__section">
+          <div class="disease-edit__section-head">
+            <h2 class="disease-edit__section-title">
+              <span class="disease-edit__section-num">01</span> Basic information
+            </h2>
+            <span class="disease-edit__optional">Language-neutral</span>
+          </div>
+
+          <div class="disease-edit__section-fields">
+
+            <label class="field" style="max-width:32ch;">
+              <span class="field__label">Codename <span class="req" aria-label="required">*</span></span>
+              <input type="text" class="input input--md" value="PRRS" placeholder="e.g. PRRS, ASF, FMD" />
+            </label>
+
+            <div class="field">
+              <span class="field__label">Pig types affected</span>
+              <div class="multi-select input input--md" role="group" aria-label="Pig types affected">
+                <span class="chip">Sow <button type="button" aria-label="Remove Sow">×</button></span>
+                <span class="chip">Boar <button type="button" aria-label="Remove Boar">×</button></span>
+                <span class="chip">Piglet <button type="button" aria-label="Remove Piglet">×</button></span>
+                <span class="chip">Grower <button type="button" aria-label="Remove Grower">×</button></span>
+                <input type="text" class="ms-input" placeholder="Add type…" />
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- =========================================================
+             SECTION 2 — GENERAL (per-language content)
+             ========================================================= -->
+        <section id="section-general" class="disease-edit__section">
+          <div class="disease-edit__section-head">
+            <h2 class="disease-edit__section-title">
+              <span class="disease-edit__section-num">02</span> General information
+            </h2>
+          </div>
+
+          <div class="disease-edit__section-fields">
+
+            <div class="field">
+              <span class="field__label" id="f-gen-name-label">Name <span class="req" aria-label="required">*</span></span>
+              <div class="tabs tabs--line tabs--sm disease-edit__lang-tabs" data-tabs>
+                <div class="tabs__list" role="tablist" aria-label="Language">
+                  <button type="button" class="tabs__tab is-selected" role="tab" data-locale="en" aria-selected="true" tabindex="0">EN</button>
+                  <button type="button" class="tabs__tab"             role="tab" data-locale="vi" aria-selected="false" tabindex="-1">VI</button>
+                  <span class="tabs__indicator" aria-hidden="true"></span>
+                </div>
+              </div>
+              <input data-locale="en" type="text" class="input input--md disease-edit__lang-input" aria-labelledby="f-gen-name-label" value="Porcine Reproductive and Respiratory Syndrome" />
+              <input data-locale="vi" type="text" class="input input--md disease-edit__lang-input" aria-labelledby="f-gen-name-label" value="Hội chứng rối loạn sinh sản và hô hấp ở lợn" hidden />
+            </div>
+
+            <div class="field">
+              <span class="field__label" id="f-gen-desc-label">Description</span>
+              <div class="tabs tabs--line tabs--sm disease-edit__lang-tabs" data-tabs>
+                <div class="tabs__list" role="tablist" aria-label="Language">
+                  <button type="button" class="tabs__tab is-selected" role="tab" data-locale="en" aria-selected="true" tabindex="0">EN</button>
+                  <button type="button" class="tabs__tab"             role="tab" data-locale="vi" aria-selected="false" tabindex="-1">VI</button>
+                  <span class="tabs__indicator" aria-hidden="true"></span>
+                </div>
+              </div>
+              <div class="md-editor">
+                <div class="md-editor__toolbar" role="toolbar" aria-label="Formatting">
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Bold"><strong>B</strong></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Italic"><em>I</em></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Underline"><span style="text-decoration:underline">U</span></button>
+                  <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 1">H<span class="md-editor__sub">1</span></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 2">H<span class="md-editor__sub">2</span></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 3">H<span class="md-editor__sub">3</span></button>
+                  <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Bullet list"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Numbered list"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></button>
+                  <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Link"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Image"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Table"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg></button>
+                  <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Undo"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Redo"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/></svg></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Clear"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+                </div>
+                <textarea data-locale="en" class="input input--md textarea md-editor__textarea" rows="4" aria-labelledby="f-gen-desc-label">A viral disease causing reproductive failure in breeding stock and respiratory illness in growing pigs.</textarea>
+                <textarea data-locale="vi" class="input input--md textarea md-editor__textarea" rows="4" aria-labelledby="f-gen-desc-label" hidden>Bệnh do virus gây rối loạn sinh sản ở lợn nái và viêm đường hô hấp ở lợn con đang lớn.</textarea>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- =========================================================
+             SECTION 3 — DISEASE RATES (numeric, language-neutral)
+             ========================================================= -->
+        <section id="section-rates" class="disease-edit__section">
+          <div class="disease-edit__section-head">
+            <h2 class="disease-edit__section-title">
+              <span class="disease-edit__section-num">03</span> Disease rates
+            </h2>
+            <span class="disease-edit__optional">Numeric, language-neutral</span>
+          </div>
+
+          <div class="disease-edit__rates">
+
+            <div class="field">
+              <span class="field__label">Mortality rate</span>
+              <div class="disease-edit__range" role="group" aria-label="Mortality rate range">
+                <span class="disease-edit__range-cell">
+                  <input type="number" class="input input--md" min="0" max="100" step="0.1" value="5" aria-label="Mortality min" />
+                  <span class="disease-edit__range-suffix">%</span>
+                </span>
+                <span class="disease-edit__range-dash" aria-hidden="true">to</span>
+                <span class="disease-edit__range-cell">
+                  <input type="number" class="input input--md" min="0" max="100" step="0.1" value="30" aria-label="Mortality max" />
+                  <span class="disease-edit__range-suffix">%</span>
+                </span>
+              </div>
+
+              <button type="button" class="disease-edit__notes-add" aria-expanded="true" hidden>
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add severity notes
+              </button>
+
+              <div class="disease-edit__notes">
+                <div class="md-editor md-editor--compact">
+                  <div class="md-editor__toolbar" role="toolbar" aria-label="Formatting">
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Bold"><strong>B</strong></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Italic"><em>I</em></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Underline"><span style="text-decoration:underline">U</span></button>
+                    <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Bullet list"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Numbered list"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></button>
+                    <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Link"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
+                  </div>
+                  <textarea class="input input--md textarea md-editor__textarea" rows="3">Highly virulent: 90–100%. Moderate: 20–40% adult, 70–80% young. Low: 10–30%. Peracute deaths in 1–4 days.</textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <span class="field__label">Morbidity rate</span>
+              <div class="disease-edit__range" role="group" aria-label="Morbidity rate range">
+                <span class="disease-edit__range-cell">
+                  <input type="number" class="input input--md" min="0" max="100" step="0.1" value="40" aria-label="Morbidity min" />
+                  <span class="disease-edit__range-suffix">%</span>
+                </span>
+                <span class="disease-edit__range-dash" aria-hidden="true">to</span>
+                <span class="disease-edit__range-cell">
+                  <input type="number" class="input input--md" min="0" max="100" step="0.1" value="80" aria-label="Morbidity max" />
+                  <span class="disease-edit__range-suffix">%</span>
+                </span>
+              </div>
+
+              <button type="button" class="disease-edit__notes-add" aria-expanded="false">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add severity notes
+              </button>
+
+              <div class="disease-edit__notes" hidden>
+                <div class="md-editor md-editor--compact">
+                  <div class="md-editor__toolbar" role="toolbar" aria-label="Formatting">
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Bold"><strong>B</strong></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Italic"><em>I</em></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Underline"><span style="text-decoration:underline">U</span></button>
+                    <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Bullet list"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Numbered list"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></button>
+                    <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Link"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
+                  </div>
+                  <textarea class="input input--md textarea md-editor__textarea" rows="3"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <span class="field__label">Fever range</span>
+              <div class="disease-edit__range" role="group" aria-label="Fever temperature range">
+                <span class="disease-edit__range-cell">
+                  <input type="number" class="input input--md" min="35" max="45" step="0.1" value="40.5" aria-label="Fever min" />
+                  <span class="disease-edit__range-suffix">°C</span>
+                </span>
+                <span class="disease-edit__range-dash" aria-hidden="true">to</span>
+                <span class="disease-edit__range-cell">
+                  <input type="number" class="input input--md" min="35" max="45" step="0.1" value="42.0" aria-label="Fever max" />
+                  <span class="disease-edit__range-suffix">°C</span>
+                </span>
+              </div>
+
+              <button type="button" class="disease-edit__notes-add" aria-expanded="false">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add severity notes
+              </button>
+
+              <div class="disease-edit__notes" hidden>
+                <div class="md-editor md-editor--compact">
+                  <div class="md-editor__toolbar" role="toolbar" aria-label="Formatting">
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Bold"><strong>B</strong></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Italic"><em>I</em></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Underline"><span style="text-decoration:underline">U</span></button>
+                    <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Bullet list"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Numbered list"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></button>
+                    <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Link"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
+                  </div>
+                  <textarea class="input input--md textarea md-editor__textarea" rows="3"></textarea>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- =========================================================
+             SECTION 4 — SYMPTOMS (per-language, tabbed categories)
+             ========================================================= -->
+        <section id="section-symptoms" class="disease-edit__section">
+          <div class="disease-edit__section-head">
+            <h2 class="disease-edit__section-title">
+              <span class="disease-edit__section-num">04</span> Symptoms by system
+            </h2>
+          </div>
+
+          <!-- DIGESTIVE -->
+          <div class="disease-edit__symptom">
+            <div class="disease-edit__symptom-head">
+              <span class="badge badge--dot-only is-safe" aria-hidden="true"></span>
+              <h3 class="disease-edit__symptom-title" id="f-symp-digestive-label">Digestive</h3>
+            </div>
+            <div class="field">
+              <div class="tabs tabs--line tabs--sm disease-edit__lang-tabs" data-tabs>
+                <div class="tabs__list" role="tablist" aria-label="Language">
+                  <button type="button" class="tabs__tab is-selected" role="tab" data-locale="en" aria-selected="true" tabindex="0">EN</button>
+                  <button type="button" class="tabs__tab"             role="tab" data-locale="vi" aria-selected="false" tabindex="-1">VI</button>
+                  <span class="tabs__indicator" aria-hidden="true"></span>
+                </div>
+              </div>
+              <div class="md-editor">
+                <div class="md-editor__toolbar" role="toolbar" aria-label="Formatting">
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Bold"><strong>B</strong></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Italic"><em>I</em></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Underline"><span style="text-decoration:underline">U</span></button>
+                  <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 1">H<span class="md-editor__sub">1</span></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 2">H<span class="md-editor__sub">2</span></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 3">H<span class="md-editor__sub">3</span></button>
+                  <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Bullet list"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Numbered list"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></button>
+                  <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Link"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Image"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Table"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg></button>
+                  <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Undo"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Redo"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/></svg></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Clear"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+                </div>
+                <textarea data-locale="en" class="input input--md textarea md-editor__textarea" rows="5" aria-labelledby="f-symp-digestive-label">- Inappetence in 80–90% of cases
+- Diarrhoea, occasionally with mucus
+- Reduced feed conversion</textarea>
+                <textarea data-locale="vi" class="input input--md textarea md-editor__textarea" rows="5" aria-labelledby="f-symp-digestive-label" hidden>- Bỏ ăn ở 80–90% trường hợp
+- Tiêu chảy, đôi khi có lẫn dịch nhầy
+- Giảm chuyển hóa thức ăn</textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- RESPIRATORY -->
+          <div class="disease-edit__symptom">
+            <div class="disease-edit__symptom-head">
+              <span class="badge badge--dot-only is-safe" aria-hidden="true"></span>
+              <h3 class="disease-edit__symptom-title" id="f-symp-respiratory-label">Respiratory</h3>
+            </div>
+            <div class="field">
+              <div class="tabs tabs--line tabs--sm disease-edit__lang-tabs" data-tabs>
+                <div class="tabs__list" role="tablist" aria-label="Language">
+                  <button type="button" class="tabs__tab is-selected" role="tab" data-locale="en" aria-selected="true" tabindex="0">EN</button>
+                  <button type="button" class="tabs__tab"             role="tab" data-locale="vi" aria-selected="false" tabindex="-1">VI</button>
+                  <span class="tabs__indicator" aria-hidden="true"></span>
+                </div>
+              </div>
+              <div class="md-editor">
+                <div class="md-editor__toolbar" role="toolbar" aria-label="Formatting">
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Bold"><strong>B</strong></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Italic"><em>I</em></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Underline"><span style="text-decoration:underline">U</span></button>
+                  <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 1">H<span class="md-editor__sub">1</span></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 2">H<span class="md-editor__sub">2</span></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 3">H<span class="md-editor__sub">3</span></button>
+                  <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Bullet list"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Numbered list"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></button>
+                  <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Link"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Image"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Table"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg></button>
+                  <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Undo"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Redo"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/></svg></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Clear"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+                </div>
+                <textarea data-locale="en" class="input input--md textarea md-editor__textarea" rows="5" aria-labelledby="f-symp-respiratory-label">- Dyspnoea with prolonged expiration
+- Sneezing in young pigs
+- Cyanosis in severe cases</textarea>
+                <textarea data-locale="vi" class="input input--md textarea md-editor__textarea" rows="5" aria-labelledby="f-symp-respiratory-label" hidden>- Khó thở, thở ra kéo dài
+- Hắt hơi ở lợn con
+- Tím tái trong các ca nặng</textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- NEUROLOGICAL -->
+          <div class="disease-edit__symptom">
+            <div class="disease-edit__symptom-head">
+              <span class="badge badge--dot-only" aria-hidden="true"></span>
+              <h3 class="disease-edit__symptom-title" id="f-symp-neuro-label">Neurological</h3>
+            </div>
+            <div class="field">
+              <div class="tabs tabs--line tabs--sm disease-edit__lang-tabs" data-tabs>
+                <div class="tabs__list" role="tablist" aria-label="Language">
+                  <button type="button" class="tabs__tab is-selected" role="tab" data-locale="en" aria-selected="true" tabindex="0">EN</button>
+                  <button type="button" class="tabs__tab"             role="tab" data-locale="vi" aria-selected="false" tabindex="-1">VI</button>
+                  <span class="tabs__indicator" aria-hidden="true"></span>
+                </div>
+              </div>
+              <div class="md-editor">
+                <div class="md-editor__toolbar" role="toolbar" aria-label="Formatting">
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Bold"><strong>B</strong></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Italic"><em>I</em></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Underline"><span style="text-decoration:underline">U</span></button>
+                  <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 1">H<span class="md-editor__sub">1</span></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 2">H<span class="md-editor__sub">2</span></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 3">H<span class="md-editor__sub">3</span></button>
+                  <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Bullet list"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Numbered list"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></button>
+                  <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Link"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Image"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Table"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg></button>
+                  <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Undo"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Redo"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/></svg></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Clear"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+                </div>
+                <textarea data-locale="en" class="input input--md textarea md-editor__textarea" rows="5" aria-labelledby="f-symp-neuro-label" placeholder="Tremors, ataxia, paresis…"></textarea>
+                <textarea data-locale="vi" class="input input--md textarea md-editor__textarea" rows="5" aria-labelledby="f-symp-neuro-label" placeholder="Run, mất điều hòa, liệt nhẹ…" hidden></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- DERMATOLOGICAL -->
+          <div class="disease-edit__symptom">
+            <div class="disease-edit__symptom-head">
+              <span class="badge badge--dot-only is-safe" aria-hidden="true"></span>
+              <h3 class="disease-edit__symptom-title" id="f-symp-derma-label">Dermatological</h3>
+            </div>
+            <div class="field">
+              <div class="tabs tabs--line tabs--sm disease-edit__lang-tabs" data-tabs>
+                <div class="tabs__list" role="tablist" aria-label="Language">
+                  <button type="button" class="tabs__tab is-selected" role="tab" data-locale="en" aria-selected="true" tabindex="0">EN</button>
+                  <button type="button" class="tabs__tab"             role="tab" data-locale="vi" aria-selected="false" tabindex="-1">VI</button>
+                  <span class="tabs__indicator" aria-hidden="true"></span>
+                </div>
+              </div>
+              <div class="md-editor">
+                <div class="md-editor__toolbar" role="toolbar" aria-label="Formatting">
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Bold"><strong>B</strong></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Italic"><em>I</em></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Underline"><span style="text-decoration:underline">U</span></button>
+                  <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 1">H<span class="md-editor__sub">1</span></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 2">H<span class="md-editor__sub">2</span></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 3">H<span class="md-editor__sub">3</span></button>
+                  <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Bullet list"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Numbered list"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></button>
+                  <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Link"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Image"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Table"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg></button>
+                  <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Undo"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Redo"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/></svg></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Clear"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+                </div>
+                <textarea data-locale="en" class="input input--md textarea md-editor__textarea" rows="5" aria-labelledby="f-symp-derma-label">- Cyanotic discolouration of ears and abdomen
+- Erythema along flanks in acute cases</textarea>
+                <textarea data-locale="vi" class="input input--md textarea md-editor__textarea" rows="5" aria-labelledby="f-symp-derma-label" hidden>- Tím tái vùng tai và bụng
+- Đỏ da hai bên sườn ở thể cấp</textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- REPRODUCTIVE -->
+          <div class="disease-edit__symptom">
+            <div class="disease-edit__symptom-head">
+              <span class="badge badge--dot-only" aria-hidden="true"></span>
+              <h3 class="disease-edit__symptom-title" id="f-symp-repro-label">Reproductive</h3>
+            </div>
+            <div class="field">
+              <div class="tabs tabs--line tabs--sm disease-edit__lang-tabs" data-tabs>
+                <div class="tabs__list" role="tablist" aria-label="Language">
+                  <button type="button" class="tabs__tab is-selected" role="tab" data-locale="en" aria-selected="true" tabindex="0">EN</button>
+                  <button type="button" class="tabs__tab"             role="tab" data-locale="vi" aria-selected="false" tabindex="-1">VI</button>
+                  <span class="tabs__indicator" aria-hidden="true"></span>
+                </div>
+              </div>
+              <div class="md-editor">
+                <div class="md-editor__toolbar" role="toolbar" aria-label="Formatting">
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Bold"><strong>B</strong></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Italic"><em>I</em></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Underline"><span style="text-decoration:underline">U</span></button>
+                  <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 1">H<span class="md-editor__sub">1</span></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 2">H<span class="md-editor__sub">2</span></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 3">H<span class="md-editor__sub">3</span></button>
+                  <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Bullet list"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Numbered list"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></button>
+                  <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Link"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Image"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Table"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg></button>
+                  <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Undo"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Redo"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/></svg></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Clear"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+                </div>
+                <textarea data-locale="en" class="input input--md textarea md-editor__textarea" rows="5" aria-labelledby="f-symp-repro-label" placeholder="Late-term abortions, mummified foetuses, stillbirths…"></textarea>
+                <textarea data-locale="vi" class="input input--md textarea md-editor__textarea" rows="5" aria-labelledby="f-symp-repro-label" placeholder="Sảy thai cuối kỳ, thai chết khô, thai chết lưu…" hidden></textarea>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================================================
+             SECTION 5 — MANAGEMENT & TREATMENT (per-language)
+             ========================================================= -->
+        <section id="section-management" class="disease-edit__section">
+          <div class="disease-edit__section-head">
+            <h2 class="disease-edit__section-title">
+              <span class="disease-edit__section-num">05</span> Management &amp; treatment
+            </h2>
+          </div>
+
+          <div class="disease-edit__section-fields">
+
+            <div class="field">
+              <span class="field__label" id="f-mgmt-vaccines-label">Vaccines</span>
+              <div class="tabs tabs--line tabs--sm disease-edit__lang-tabs" data-tabs>
+                <div class="tabs__list" role="tablist" aria-label="Language">
+                  <button type="button" class="tabs__tab is-selected" role="tab" data-locale="en" aria-selected="true" tabindex="0">EN</button>
+                  <button type="button" class="tabs__tab"             role="tab" data-locale="vi" aria-selected="false" tabindex="-1">VI</button>
+                  <span class="tabs__indicator" aria-hidden="true"></span>
+                </div>
+              </div>
+              <div class="md-editor">
+                  <div class="md-editor__toolbar" role="toolbar" aria-label="Formatting">
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Bold"><strong>B</strong></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Italic"><em>I</em></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Underline"><span style="text-decoration:underline">U</span></button>
+                    <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 1">H<span class="md-editor__sub">1</span></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 2">H<span class="md-editor__sub">2</span></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 3">H<span class="md-editor__sub">3</span></button>
+                    <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Bullet list"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Numbered list"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></button>
+                    <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Link"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Image"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Table"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg></button>
+                    <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Undo"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Redo"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/></svg></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Clear"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+                  </div>
+                  <textarea data-locale="en" class="input input--md textarea md-editor__textarea" rows="3" aria-labelledby="f-mgmt-vaccines-label">Modified live virus (MLV) at 3–4 weeks of age; killed vaccines for sows pre-breeding.</textarea>
+                  <textarea data-locale="vi" class="input input--md textarea md-editor__textarea" rows="3" aria-labelledby="f-mgmt-vaccines-label" hidden>Vắc-xin virus sống nhược độc (MLV) lúc 3–4 tuần tuổi; vắc-xin vô hoạt cho lợn nái trước phối.</textarea>
+              </div>
+            </div>
+
+            <div class="field">
+              <span class="field__label" id="f-mgmt-treatment-label">Treatment</span>
+              <div class="tabs tabs--line tabs--sm disease-edit__lang-tabs" data-tabs>
+                <div class="tabs__list" role="tablist" aria-label="Language">
+                  <button type="button" class="tabs__tab is-selected" role="tab" data-locale="en" aria-selected="true" tabindex="0">EN</button>
+                  <button type="button" class="tabs__tab"             role="tab" data-locale="vi" aria-selected="false" tabindex="-1">VI</button>
+                  <span class="tabs__indicator" aria-hidden="true"></span>
+                </div>
+              </div>
+              <div class="md-editor">
+                  <div class="md-editor__toolbar" role="toolbar" aria-label="Formatting">
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Bold"><strong>B</strong></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Italic"><em>I</em></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Underline"><span style="text-decoration:underline">U</span></button>
+                    <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 1">H<span class="md-editor__sub">1</span></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 2">H<span class="md-editor__sub">2</span></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 3">H<span class="md-editor__sub">3</span></button>
+                    <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Bullet list"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Numbered list"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></button>
+                    <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Link"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Image"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Table"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg></button>
+                    <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Undo"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Redo"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/></svg></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Clear"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+                  </div>
+                  <textarea data-locale="en" class="input input--md textarea md-editor__textarea" rows="3" aria-labelledby="f-mgmt-treatment-label">Supportive care; antibiotics only to control secondary bacterial infections.</textarea>
+                  <textarea data-locale="vi" class="input input--md textarea md-editor__textarea" rows="3" aria-labelledby="f-mgmt-treatment-label" hidden>Chăm sóc hỗ trợ; kháng sinh chỉ dùng để kiểm soát nhiễm khuẩn thứ phát.</textarea>
+              </div>
+            </div>
+
+            <div class="field">
+              <span class="field__label" id="f-mgmt-recommendation-label">Recommendation</span>
+              <div class="tabs tabs--line tabs--sm disease-edit__lang-tabs" data-tabs>
+                <div class="tabs__list" role="tablist" aria-label="Language">
+                  <button type="button" class="tabs__tab is-selected" role="tab" data-locale="en" aria-selected="true" tabindex="0">EN</button>
+                  <button type="button" class="tabs__tab"             role="tab" data-locale="vi" aria-selected="false" tabindex="-1">VI</button>
+                  <span class="tabs__indicator" aria-hidden="true"></span>
+                </div>
+              </div>
+              <div class="md-editor">
+                  <div class="md-editor__toolbar" role="toolbar" aria-label="Formatting">
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Bold"><strong>B</strong></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Italic"><em>I</em></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Underline"><span style="text-decoration:underline">U</span></button>
+                    <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 1">H<span class="md-editor__sub">1</span></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 2">H<span class="md-editor__sub">2</span></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 3">H<span class="md-editor__sub">3</span></button>
+                    <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Bullet list"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Numbered list"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></button>
+                    <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Link"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Image"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Table"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg></button>
+                    <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Undo"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Redo"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/></svg></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Clear"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+                  </div>
+                  <textarea data-locale="en" class="input input--md textarea md-editor__textarea" rows="3" aria-labelledby="f-mgmt-recommendation-label" placeholder="Biosecurity and herd-level recommendations…"></textarea>
+                  <textarea data-locale="vi" class="input input--md textarea md-editor__textarea" rows="3" aria-labelledby="f-mgmt-recommendation-label" placeholder="Khuyến nghị về an toàn sinh học và chăn nuôi…" hidden></textarea>
+              </div>
+            </div>
+
+            <div class="field">
+              <span class="field__label" id="f-mgmt-prevention-label">Prevention</span>
+              <div class="tabs tabs--line tabs--sm disease-edit__lang-tabs" data-tabs>
+                <div class="tabs__list" role="tablist" aria-label="Language">
+                  <button type="button" class="tabs__tab is-selected" role="tab" data-locale="en" aria-selected="true" tabindex="0">EN</button>
+                  <button type="button" class="tabs__tab"             role="tab" data-locale="vi" aria-selected="false" tabindex="-1">VI</button>
+                  <span class="tabs__indicator" aria-hidden="true"></span>
+                </div>
+              </div>
+              <div class="md-editor">
+                  <div class="md-editor__toolbar" role="toolbar" aria-label="Formatting">
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Bold"><strong>B</strong></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Italic"><em>I</em></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Underline"><span style="text-decoration:underline">U</span></button>
+                    <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 1">H<span class="md-editor__sub">1</span></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 2">H<span class="md-editor__sub">2</span></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 3">H<span class="md-editor__sub">3</span></button>
+                    <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Bullet list"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Numbered list"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></button>
+                    <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Link"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Image"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Table"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg></button>
+                    <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Undo"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Redo"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/></svg></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Clear"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+                  </div>
+                  <textarea data-locale="en" class="input input--md textarea md-editor__textarea" rows="3" aria-labelledby="f-mgmt-prevention-label">All-in/all-out flow, gilt acclimation, strict biosecurity at gilt entry.</textarea>
+                  <textarea data-locale="vi" class="input input--md textarea md-editor__textarea" rows="3" aria-labelledby="f-mgmt-prevention-label" hidden>Cùng vào — cùng ra, cách ly hậu bị, an toàn sinh học nghiêm ngặt khi nhập hậu bị.</textarea>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- =========================================================
+             SECTION 6 — ADDITIONAL (per-language)
+             ========================================================= -->
+        <section id="section-additional" class="disease-edit__section">
+          <div class="disease-edit__section-head">
+            <h2 class="disease-edit__section-title">
+              <span class="disease-edit__section-num">06</span> Additional information
+            </h2>
+          </div>
+
+          <div class="disease-edit__section-fields">
+
+            <div class="field">
+              <span class="field__label" id="f-add-immediate-label">Immediate actions</span>
+              <div class="tabs tabs--line tabs--sm disease-edit__lang-tabs" data-tabs>
+                <div class="tabs__list" role="tablist" aria-label="Language">
+                  <button type="button" class="tabs__tab is-selected" role="tab" data-locale="en" aria-selected="true" tabindex="0">EN</button>
+                  <button type="button" class="tabs__tab"             role="tab" data-locale="vi" aria-selected="false" tabindex="-1">VI</button>
+                  <span class="tabs__indicator" aria-hidden="true"></span>
+                </div>
+              </div>
+              <div class="md-editor">
+                  <div class="md-editor__toolbar" role="toolbar" aria-label="Formatting">
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Bold"><strong>B</strong></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Italic"><em>I</em></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Underline"><span style="text-decoration:underline">U</span></button>
+                    <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 1">H<span class="md-editor__sub">1</span></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 2">H<span class="md-editor__sub">2</span></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 3">H<span class="md-editor__sub">3</span></button>
+                    <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Bullet list"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Numbered list"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></button>
+                    <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Link"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Image"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Table"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg></button>
+                    <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Undo"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Redo"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/></svg></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Clear"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+                  </div>
+                  <textarea data-locale="en" class="input input--md textarea md-editor__textarea" rows="3" aria-labelledby="f-add-immediate-label" placeholder="What to do in the first 24 hours…"></textarea>
+                  <textarea data-locale="vi" class="input input--md textarea md-editor__textarea" rows="3" aria-labelledby="f-add-immediate-label" placeholder="Cần làm gì trong 24 giờ đầu…" hidden></textarea>
+              </div>
+            </div>
+
+            <div class="field">
+              <span class="field__label" id="f-add-differential-label">Differential diagnosis</span>
+              <div class="tabs tabs--line tabs--sm disease-edit__lang-tabs" data-tabs>
+                <div class="tabs__list" role="tablist" aria-label="Language">
+                  <button type="button" class="tabs__tab is-selected" role="tab" data-locale="en" aria-selected="true" tabindex="0">EN</button>
+                  <button type="button" class="tabs__tab"             role="tab" data-locale="vi" aria-selected="false" tabindex="-1">VI</button>
+                  <span class="tabs__indicator" aria-hidden="true"></span>
+                </div>
+              </div>
+              <div class="md-editor">
+                  <div class="md-editor__toolbar" role="toolbar" aria-label="Formatting">
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Bold"><strong>B</strong></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Italic"><em>I</em></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Underline"><span style="text-decoration:underline">U</span></button>
+                    <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 1">H<span class="md-editor__sub">1</span></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 2">H<span class="md-editor__sub">2</span></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 3">H<span class="md-editor__sub">3</span></button>
+                    <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Bullet list"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Numbered list"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></button>
+                    <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Link"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Image"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Table"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg></button>
+                    <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Undo"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Redo"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/></svg></button>
+                    <button type="button" class="btn btn--ghost btn--sm" aria-label="Clear"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+                  </div>
+                  <textarea data-locale="en" class="input input--md textarea md-editor__textarea" rows="3" aria-labelledby="f-add-differential-label" placeholder="Diseases to rule out…"></textarea>
+                  <textarea data-locale="vi" class="input input--md textarea md-editor__textarea" rows="3" aria-labelledby="f-add-differential-label" placeholder="Các bệnh cần loại trừ…" hidden></textarea>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+      </form>
+    </div><!-- /.disease-edit__body -->
+    </section><!-- /.disease-edit__card -->
+
+  </main>
+
+  <!-- ═════ Modal · unsaved changes when switching version ═════ -->
+  <div class="modal modal--sm" id="modal-unsaved-switch" role="dialog" aria-modal="true" aria-labelledby="modal-unsaved-switch-title" aria-hidden="true" data-modal-static>
+    <div class="modal__surface">
+      <header class="modal__header">
+        <div class="modal__heading">
+          <h3 class="modal__title" id="modal-unsaved-switch-title">Unsaved changes to <span data-current-version>v3.3</span></h3>
+          <p class="modal__description">Switching to <span data-target-version>another version</span> will discard the edits you've made since opening this version.</p>
+        </div>
+        <button type="button" class="modal__close" data-modal-close aria-label="Close dialog">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </header>
+      <footer class="modal__footer">
+        <button type="button" class="btn btn--ghost btn--md" data-modal-close>Cancel</button>
+        <button type="button" class="btn btn--caution btn--md" data-action="discard-and-switch">Discard</button>
+        <button type="button" class="btn btn--cta btn--md" data-action="save-and-switch">Save &amp; switch</button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ═════ Modal · new version (copies from Active) ═════ -->
+  <div class="modal modal--sm" id="modal-new-version" role="dialog" aria-modal="true" aria-labelledby="modal-new-version-title" aria-hidden="true">
+    <div class="modal__surface">
+      <header class="modal__header">
+        <div class="modal__heading">
+          <p class="modal__eyebrow">From v3.2 (Active)</p>
+          <h3 class="modal__title" id="modal-new-version-title">Create a new version?</h3>
+          <p class="modal__description">A new Inactive version will be created with v3.2's content as its starting point. You'll open it in edit mode right away.</p>
+        </div>
+        <button type="button" class="modal__close" data-modal-close aria-label="Close dialog">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </header>
+      <footer class="modal__footer">
+        <button type="button" class="btn btn--ghost btn--md" data-modal-close>Cancel</button>
+        <button type="button" class="btn btn--cta btn--md" data-modal-close data-action="create-version">Create version</button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ═════ Modal · set selected version as live ═════ -->
+  <div class="modal modal--sm" id="modal-set-live" role="dialog" aria-modal="true" aria-labelledby="modal-set-live-title" aria-hidden="true">
+    <div class="modal__surface">
+      <header class="modal__header">
+        <div class="modal__heading">
+          <h3 class="modal__title" id="modal-set-live-title">Make <span data-target-version>v3.3</span> the live version?</h3>
+          <p class="modal__description">v3.2 will become Inactive. End users on the chatbot and wiki will see <span data-target-version>v3.3</span>'s content immediately.</p>
+        </div>
+        <button type="button" class="modal__close" data-modal-close aria-label="Close dialog">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </header>
+      <footer class="modal__footer">
+        <button type="button" class="btn btn--ghost btn--md" data-modal-close>Cancel</button>
+        <button type="button" class="btn btn--cta btn--md" data-modal-close data-action="set-live">Set as live</button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ═════ Modal · delete selected version ═════ -->
+  <div class="modal modal--sm" id="modal-delete-version" role="dialog" aria-modal="true" aria-labelledby="modal-delete-version-title" aria-hidden="true">
+    <div class="modal__surface">
+      <header class="modal__header">
+        <div class="modal__heading">
+          <h3 class="modal__title" id="modal-delete-version-title">Delete <span data-target-version>v3.3</span>?</h3>
+          <p class="modal__description">This version's content will be removed. v3.2 (Active) and any other versions remain untouched. This can't be undone.</p>
+        </div>
+        <button type="button" class="modal__close" data-modal-close aria-label="Close dialog">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </header>
+      <footer class="modal__footer">
+        <button type="button" class="btn btn--ghost btn--md" data-modal-close>Cancel</button>
+        <button type="button" class="btn btn--caution btn--md" data-modal-close data-action="delete-version">Delete version</button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ═════ Modal · deactivate disease (whole record) ═════ -->
+  <div class="modal modal--sm" id="modal-deactivate-disease" role="dialog" aria-modal="true" aria-labelledby="modal-deactivate-disease-title" aria-hidden="true">
+    <div class="modal__surface">
+      <header class="modal__header">
+        <div class="modal__heading">
+          <p class="modal__eyebrow">Disease: PRRS</p>
+          <h3 class="modal__title" id="modal-deactivate-disease-title">Deactivate this disease?</h3>
+          <p class="modal__description">PRRS will stop appearing in the public wiki and the chatbot will stop answering queries about it. Versions and content stay intact — you can reactivate from the catalogue list view.</p>
+        </div>
+        <button type="button" class="modal__close" data-modal-close aria-label="Close dialog">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </header>
+      <footer class="modal__footer">
+        <button type="button" class="btn btn--ghost btn--md" data-modal-close>Cancel</button>
+        <button type="button" class="btn btn--caution btn--md" data-modal-close data-action="deactivate-disease">Deactivate</button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ═════ Modal · delete disease (typed confirmation) ═════ -->
+  <div class="modal modal--md" id="modal-delete-disease" role="dialog" aria-modal="true" aria-labelledby="modal-delete-disease-title" aria-hidden="true" data-modal-static>
+    <div class="modal__surface">
+      <header class="modal__header">
+        <div class="modal__heading">
+          <p class="modal__eyebrow">Disease: PRRS</p>
+          <h3 class="modal__title" id="modal-delete-disease-title">Delete PRRS?</h3>
+          <p class="modal__description">All 3 versions, both languages, and every linked translation will be removed. The chatbot will stop answering queries about PRRS. This can't be undone.</p>
+        </div>
+        <button type="button" class="modal__close" data-modal-close aria-label="Close dialog">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </header>
+      <div class="modal__body">
+        <label class="field">
+          <span class="field__label">Type <code>PRRS</code> to confirm</span>
+          <input type="text" class="input input--md" id="delete-disease-confirm" placeholder="PRRS" autocomplete="off" data-modal-default-focus />
+        </label>
+      </div>
+      <footer class="modal__footer">
+        <button type="button" class="btn btn--ghost btn--md" data-modal-close>Cancel</button>
+        <button type="button" class="btn btn--caution btn--md" id="delete-disease-submit" data-action="delete-disease" disabled>Delete disease</button>
+      </footer>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Per-field EN/VI tabs — each .disease-edit__lang-tabs controls
+  // only the sibling [data-locale] inputs within its own .field.
+  // Positions .tabs__indicator on init and on tab click so the
+  // line variant's selected underline is visible.
+  (function () {
+    document.querySelectorAll('.disease-edit__lang-tabs').forEach(function (root) {
+      var list = root.querySelector('.tabs__list');
+      if (!list) return;
+      var field = root.closest('.field');
+      if (!field) return;
+      var tabs = list.querySelectorAll('.tabs__tab');
+      var indicator = list.querySelector('.tabs__indicator');
+      var inputs = field.querySelectorAll('[data-locale]');
+
+      function moveIndicator(tab) {
+        if (!indicator) return;
+        list.style.setProperty('--_x', tab.offsetLeft + 'px');
+        list.style.setProperty('--_w', tab.offsetWidth + 'px');
+      }
+
+      function selectTab(tab) {
+        var locale = tab.getAttribute('data-locale');
+        tabs.forEach(function (t) {
+          var on = t === tab;
+          t.classList.toggle('is-selected', on);
+          t.setAttribute('aria-selected', on ? 'true' : 'false');
+          t.setAttribute('tabindex', on ? '0' : '-1');
+        });
+        inputs.forEach(function (i) {
+          i.hidden = i.getAttribute('data-locale') !== locale;
+        });
+        moveIndicator(tab);
+      }
+
+      // Seed the indicator on the initially-selected tab. Defer one
+      // frame so fonts/layout settle before measuring offsets.
+      var initial = list.querySelector('.tabs__tab.is-selected') || tabs[0];
+      if (initial) {
+        requestAnimationFrame(function () { moveIndicator(initial); });
+      }
+
+      tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () { selectTab(tab); });
+      });
+    });
+  })();
+
+  // Sticky TOC — highlight section in view.
+  (function () {
+    var links = document.querySelectorAll('.disease-edit__toc-item');
+    var sections = Array.prototype.map.call(links, function (a) {
+      return document.querySelector(a.getAttribute('href'));
+    });
+    if (!('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          var idx = sections.indexOf(entry.target);
+          if (idx === -1) return;
+          links.forEach(function (l) { l.classList.remove('is-current'); });
+          links[idx].classList.add('is-current');
+        }
+      });
+    }, { rootMargin: '-30% 0px -60% 0px', threshold: 0 });
+    sections.forEach(function (s) { if (s) io.observe(s); });
+  })();
+
+  // Severity-notes collapse — each .disease-edit__notes-add toggles
+  // the .disease-edit__notes sibling in the same .field.
+  (function () {
+    document.querySelectorAll('.disease-edit__notes-add').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var field = btn.closest('.field');
+        if (!field) return;
+        var panel = field.querySelector('.disease-edit__notes');
+        if (!panel) return;
+        panel.hidden = false;
+        btn.hidden = true;
+        btn.setAttribute('aria-expanded', 'true');
+      });
+    });
+  })();
+
+  /* =========================================================
+     MODAL CONTROLLER — open / close / focus trap.
+     Adapted from III-06-modal.html. data-modal-open opens the
+     target by id; data-modal-close or [data-modal-static]'s
+     own close button dismisses; Esc dismisses non-static modals;
+     backdrop click dismisses non-static modals. Focus returns
+     to the element that opened the modal. data-modal-default-focus
+     on a child element overrides the default first-focusable target.
+     ========================================================= */
+  (function () {
+    var FOCUSABLE = 'a[href],button:not([disabled]),input:not([disabled]):not([type="hidden"]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
+    var lastTrigger = null;
+
+    function openModal(id) {
+      var modal = document.getElementById(id);
+      if (!modal) return;
+      lastTrigger = document.activeElement;
+      modal.setAttribute('aria-hidden', 'false');
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () { modal.classList.add('is-open'); });
+      });
+      document.body.classList.add('has-modal-open');
+      var preferred = modal.querySelector('[data-modal-default-focus]');
+      var fallback  = modal.querySelector(FOCUSABLE);
+      var target = preferred || fallback;
+      if (target) setTimeout(function () { target.focus(); }, 60);
+    }
+    function closeModal(modal) {
+      if (!modal || !modal.classList.contains('is-open')) return;
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      setTimeout(function () {
+        if (!document.querySelector('.modal.is-open')) {
+          document.body.classList.remove('has-modal-open');
+        }
+        if (lastTrigger && typeof lastTrigger.focus === 'function') {
+          lastTrigger.focus();
+          lastTrigger = null;
+        }
+      }, 220);
+    }
+    // Open triggers.
+    document.querySelectorAll('[data-modal-open]').forEach(function (btn) {
+      btn.addEventListener('click', function () { openModal(btn.dataset.modalOpen); });
+    });
+    // Close affordances.
+    document.querySelectorAll('[data-modal-close]').forEach(function (btn) {
+      btn.addEventListener('click', function () { closeModal(btn.closest('.modal')); });
+    });
+    // Backdrop dismiss — only when click lands on the backdrop itself,
+    // not bubbled from a child; suppressed when data-modal-static.
+    document.querySelectorAll('.modal').forEach(function (modal) {
+      modal.addEventListener('click', function (e) {
+        if (e.target !== modal) return;
+        if (modal.hasAttribute('data-modal-static')) return;
+        closeModal(modal);
+      });
+    });
+    // Escape dismiss for non-static modals.
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      var open = document.querySelector('.modal.is-open');
+      if (!open) return;
+      if (open.hasAttribute('data-modal-static')) return;
+      closeModal(open);
+    });
+    // Focus trap.
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Tab') return;
+      var modal = document.querySelector('.modal.is-open');
+      if (!modal) return;
+      var nodes = Array.prototype.filter.call(modal.querySelectorAll(FOCUSABLE), function (el) {
+        return !el.hasAttribute('disabled') && el.offsetParent !== null;
+      });
+      if (nodes.length === 0) return;
+      var first = nodes[0], last = nodes[nodes.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
+    // Expose for the version-picker guard to call into.
+    window.__v04_openModal = openModal;
+    window.__v04_closeModal = closeModal;
+  })();
+
+
+  /* =========================================================
+     EDIT MODE — clicking the Edit button toggles
+     data-edit-mode on <html>. While on, the Edit button reads
+     "Save"; a sibling "Discard" button is appended next to it
+     for the duration. Saving or discarding flips the attribute
+     off and removes the Discard sibling.
+     The actual save/discard logic is a stub here — replace with
+     real persistence once wired up.
+     ========================================================= */
+  (function () {
+    var btn = document.getElementById('version-edit-toggle');
+    if (!btn) return;
+    var labelEl = btn.querySelector('.btn__label');
+    var leadingEl = btn.querySelector('.btn__leading');
+    var discardBtn = null;
+
+    function enterEditMode() {
+      document.documentElement.setAttribute('data-edit-mode', 'on');
+      btn.setAttribute('aria-pressed', 'true');
+      if (labelEl) labelEl.textContent = 'Save';
+      if (leadingEl) leadingEl.innerHTML = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+      if (!discardBtn) {
+        discardBtn = document.createElement('button');
+        discardBtn.type = 'button';
+        discardBtn.className = 'btn btn--ghost btn--md';
+        discardBtn.id = 'version-edit-discard';
+        discardBtn.innerHTML = '<span class="btn__label">Discard</span>';
+        discardBtn.addEventListener('click', exitEditMode);
+        btn.insertAdjacentElement('afterend', discardBtn);
+      }
+    }
+    function exitEditMode() {
+      document.documentElement.removeAttribute('data-edit-mode');
+      btn.setAttribute('aria-pressed', 'false');
+      if (labelEl) labelEl.textContent = 'Edit';
+      if (leadingEl) leadingEl.innerHTML = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
+      if (discardBtn) { discardBtn.remove(); discardBtn = null; }
+    }
+    function isOn() {
+      return document.documentElement.getAttribute('data-edit-mode') === 'on';
+    }
+    btn.addEventListener('click', function () { isOn() ? exitEditMode() : enterEditMode(); });
+    // Expose for the version-switch guard.
+    window.__v04_isEditMode = isOn;
+    window.__v04_exitEditMode = exitEditMode;
+  })();
+
+
+  /* =========================================================
+     VERSION-PICKER — listens for dropdown:change, updates the
+     trigger badge to reflect the new selection's status, and
+     recalculates the enabled/disabled state of Set as live and
+     Delete version. If edit mode is on at the moment the user
+     picks a different version, intercept and open the unsaved-
+     changes modal instead of letting the switch happen silently.
+     The dropdown still flips its internal selection regardless
+     (dropdown.js doesn't expose a cancel hook); the guard's job
+     is to surface the question before any real save/discard
+     logic runs in a future wiring pass.
+     ========================================================= */
+  (function () {
+    var picker = document.getElementById('version-picker');
+    if (!picker) return;
+    var trigger = picker.querySelector('.dropdown__trigger');
+    var statusBadge = trigger.querySelector('.disease-edit__version-status');
+    var setLiveBtn = document.getElementById('version-set-live');
+    var deleteBtn  = document.getElementById('version-delete');
+
+    function refreshActions() {
+      var selected = picker.querySelector('.dropdown__option.is-selected');
+      if (!selected) return;
+      var status = selected.dataset.status; // "active" | "inactive"
+      var total  = picker.querySelectorAll('.dropdown__option').length;
+      // Set as live is only useful when the selected version isn't already Active.
+      setLiveBtn.disabled = (status === 'active');
+      setLiveBtn.title = setLiveBtn.disabled ? 'Already Active' : '';
+      // Delete version is only allowed on Inactive versions, and only when
+      // more than one version exists.
+      deleteBtn.disabled = (status === 'active') || (total <= 1);
+      deleteBtn.title = deleteBtn.disabled
+        ? (status === 'active' ? 'Can’t delete the Active version' : 'Can’t delete the only version')
+        : '';
+    }
+
+    function refreshTriggerBadge() {
+      var selected = picker.querySelector('.dropdown__option.is-selected');
+      if (!selected || !statusBadge) return;
+      var status = selected.dataset.status;
+      statusBadge.textContent = status === 'active' ? 'Active' : 'Inactive';
+      statusBadge.className = 'badge badge--sm ' + (status === 'active' ? 'is-safe' : 'is-warning') + ' disease-edit__version-status';
+    }
+
+    picker.addEventListener('dropdown:change', function (e) {
+      // If edit mode is on, intercept the switch by opening the unsaved guard.
+      // dropdown.js has already flipped the internal selection; here we just
+      // surface the dialog. Save/discard actions in the modal would, in a real
+      // implementation, either commit the buffer or revert it before the new
+      // version's content loads. For now the modal is the prompt only.
+      if (window.__v04_isEditMode && window.__v04_isEditMode()) {
+        var modal = document.getElementById('modal-unsaved-switch');
+        if (modal) {
+          // Stamp the target version name into the modal copy.
+          modal.querySelectorAll('[data-current-version]').forEach(function (el) {
+            el.textContent = (e.detail && e.detail.label) ? e.detail.label : '';
+          });
+          modal.querySelectorAll('[data-target-version]').forEach(function (el) {
+            el.textContent = (e.detail && e.detail.label) ? e.detail.label : '';
+          });
+          if (window.__v04_openModal) window.__v04_openModal('modal-unsaved-switch');
+        }
+      }
+      refreshTriggerBadge();
+      refreshActions();
+    });
+
+    // Stamp the version label into the Set-as-live and Delete-version modals
+    // each time those triggers are clicked, so the dialog reads the picker's
+    // current selection.
+    ['version-set-live', 'version-delete'].forEach(function (id) {
+      var b = document.getElementById(id);
+      if (!b) return;
+      b.addEventListener('click', function () {
+        var selected = picker.querySelector('.dropdown__option.is-selected');
+        if (!selected) return;
+        var label = selected.dataset.value;
+        var modalId = b.dataset.modalOpen;
+        var modal = document.getElementById(modalId);
+        if (!modal) return;
+        modal.querySelectorAll('[data-target-version]').forEach(function (el) {
+          el.textContent = label;
+        });
+      });
+    });
+
+    // Initial paint.
+    refreshTriggerBadge();
+    refreshActions();
+  })();
+
+
+  /* =========================================================
+     DELETE-DISEASE TYPED CONFIRMATION — enables the destructive
+     submit button only when the user types the disease codename
+     exactly. The codename is read from the eyebrow + title in
+     the modal (currently hard-coded "PRRS"); when this view
+     is wired to real data, replace the literal with a data
+     attribute on the modal.
+     ========================================================= */
+  (function () {
+    var input = document.getElementById('delete-disease-confirm');
+    var submit = document.getElementById('delete-disease-submit');
+    if (!input || !submit) return;
+    var EXPECTED = 'PRRS';
+    input.addEventListener('input', function () {
+      submit.disabled = input.value.trim() !== EXPECTED;
+    });
+  })();
+</script>
+
+</body>
+</html>
