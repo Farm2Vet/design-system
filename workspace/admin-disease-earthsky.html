@@ -1537,10 +1537,10 @@ body::before {
             color-mix(in srgb, var(--primary-50) 80%, transparent) 0%,
             color-mix(in srgb, var(--primary-100) 50%, transparent) 35%,
             transparent 65%),
-        /* Earth — lower-RIGHT */
+        /* Forest — lower-RIGHT */
         radial-gradient(ellipse 95% 100% at 90% 95%,
-            color-mix(in srgb, var(--secondary-50) 90%, transparent) 0%,
-            color-mix(in srgb, var(--secondary-100) 70%, transparent) 40%,
+            color-mix(in srgb, var(--accent-50) 90%, transparent) 0%,
+            color-mix(in srgb, var(--accent-100) 70%, transparent) 40%,
             transparent 75%),
         var(--white-base);
     filter: blur(50px) saturate(1.5);
@@ -6665,7 +6665,7 @@ button.card.card--inverted:hover {
    (.dash .dash__side .sidebar = 0,3,0) beats the base clear-glass
    rule (0,3,0 too — wins on source order since it's later). */
 .dash .dash__side .sidebar {
-    background: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.15);
     -webkit-backdrop-filter: blur(20px) saturate(150%);
             backdrop-filter: blur(20px) saturate(150%);
     border: 1px solid rgba(255, 255, 255, 0.45);
@@ -6735,6 +6735,11 @@ button.card.card--inverted:hover {
     min-height: 0;
     height: calc(100vh - var(--space-tier-3) * 2);
 }
+/* Sidebar sizing — conventional admin proportions. Item text
+   sits at body-sm (13.3px), the chrome size used by Linear,
+   Vercel, Stripe, GitHub, Notion. Width + dimensions fall back
+   to the canonical sidebar tokens; only the brand mark gets a
+   small bump so it reads as the section header. */
 .dash__side .sidebar__brand-mark { width: 36px; height: 36px; }
 .dash__side .sidebar__brand { font-size: var(--text-h6); }
 /* Sidebar contrast — text + interactive states tuned for glass.
@@ -6754,9 +6759,11 @@ button.card.card--inverted:hover {
     --sidebar-item-bg-hover:     rgba(0, 0, 0, 0.06);
     --sidebar-item-icon-hover:   var(--icon-default);
 
-    /* Current/active — solid forest green with white text */
+    /* Current/active — solid lime with white text per design
+       direction. (Lime+white is 2.2:1, below WCAG AA — keeping
+       this is an aesthetic call by the designer.) */
     --sidebar-item-fg-current:   var(--text-inverted);
-    --sidebar-item-bg-current:   var(--accent-500);
+    --sidebar-item-bg-current:   var(--primary-500);
     --sidebar-item-icon-current: var(--text-inverted);
 }
 .dash__main {
@@ -6891,6 +6898,13 @@ button.card.card--inverted:hover {
     box-shadow: var(--shadow-sm);
 }
 
+
+/* Version chip — bumped to match sidebar/breadcrumb text scale */
+.dash-topbar .global-nav__chip {
+    font-size: var(--text-body);
+    min-height: 48px;
+    box-sizing: border-box;
+}
 
 /* Mobile collapse */
 @media (max-width: 960px) {
@@ -7495,6 +7509,9 @@ button.card.card--inverted:hover {
    ======================================================== */
 .dash__side .sidebar__link {
     font-size: var(--text-body-sm);
+}
+.dash__side .sidebar__list > .sidebar__item > .sidebar__link {
+    font-weight: var(--font-weight-semibold);
 }
 
 </style>
