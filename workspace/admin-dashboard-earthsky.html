@@ -6707,7 +6707,7 @@ button.card.card--inverted:hover {
    columns so the items in each align top-to-bottom. */
 .dash-stat--cols.card {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 35% 65%;     /* chart col is 1.3x wider than 50/50 */
     gap: var(--space-tier-5);
 }
 .dash-stat__col {
@@ -6727,9 +6727,8 @@ button.card.card--inverted:hover {
    line uses the full available width regardless of card size;
    stroke + circle radii stay constant via vector-effect. */
 .dash-stat__chart {
-    flex: 1;
     width: 100%;
-    min-height: 110px;
+    aspect-ratio: 400 / 160;            /* matches the new shorter viewBox (5:2) */
     color: var(--text-default-subtle);
 }
 .dash-stat__chart svg {
@@ -6765,7 +6764,10 @@ button.card.card--inverted:hover {
     height: 100%;
     display: block;
 }
-.dash-stat__footer--end { justify-content: flex-end; }
+.dash-stat__footer.dash-stat__footer--end {
+    justify-content: flex-end;
+    padding-right: var(--space-tier-5);   /* breathing room from card edge */
+}
 
 /* Footer variant that holds the big value + delta on one row
    - value is large, delta is small caption next to it. */
@@ -7282,26 +7284,26 @@ button.card.card--inverted:hover {
         </div>
         <div class="dash-stat__col">
           <div class="dash-stat__chart" role="img" aria-label="Comprehensive evaluation score: 62, 70, 82, 88 across updates 3.0.0, 3.0.3, 3.0.8, 3.0.9.">
-            <svg viewBox="0 0 400 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <svg viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg">
               <defs>
                 <linearGradient id="perfFill" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%"   stop-color="var(--primary-500)" stop-opacity="0.30"/>
                   <stop offset="100%" stop-color="var(--primary-500)" stop-opacity="0"/>
                 </linearGradient>
               </defs>
-              <polygon points="30,64 147,54 263,38 380,31 380,82 30,82" fill="url(#perfFill)" />
-              <polyline points="30,64 147,54 263,38 380,31"
+              <polygon points="30,76 147,54 263,20 380,4 380,115 30,115" fill="url(#perfFill)" />
+              <polyline points="30,76 147,54 263,20 380,4"
                         fill="none" stroke="var(--primary-600)" stroke-width="2.5"
                         stroke-linecap="round" stroke-linejoin="round"
                         vector-effect="non-scaling-stroke" />
-              <circle cx="30"  cy="64" r="3"   fill="var(--primary-600)" />
-              <circle cx="147" cy="54" r="3"   fill="var(--primary-600)" />
-              <circle cx="263" cy="38" r="3"   fill="var(--primary-600)" />
-              <circle cx="380" cy="31" r="4.5" fill="var(--primary-700)" stroke="var(--white-base)" stroke-width="2" />
-              <text x="30"  y="105" font-size="11" fill="currentColor" text-anchor="start"  opacity="0.55">3.0.0</text>
-              <text x="147" y="105" font-size="11" fill="currentColor" text-anchor="middle" opacity="0.55">3.0.3</text>
-              <text x="263" y="105" font-size="11" fill="currentColor" text-anchor="middle" opacity="0.55">3.0.8</text>
-              <text x="380" y="105" font-size="11" fill="currentColor" text-anchor="end"    opacity="0.55">3.0.9</text>
+              <circle cx="30"  cy="76" r="4" fill="var(--primary-600)" />
+              <circle cx="147" cy="54" r="4" fill="var(--primary-600)" />
+              <circle cx="263" cy="20" r="4" fill="var(--primary-600)" />
+              <circle cx="380" cy="4"  r="6" fill="var(--primary-700)" stroke="var(--white-base)" stroke-width="2.5" />
+              <text x="30"  y="145" font-size="16" fill="currentColor" text-anchor="start"  opacity="0.55">3.0.0</text>
+              <text x="147" y="145" font-size="16" fill="currentColor" text-anchor="middle" opacity="0.55">3.0.3</text>
+              <text x="263" y="145" font-size="16" fill="currentColor" text-anchor="middle" opacity="0.55">3.0.8</text>
+              <text x="380" y="145" font-size="16" fill="currentColor" text-anchor="end"    opacity="0.55">3.0.9</text>
             </svg>
           </div>
           <footer class="dash-stat__footer dash-stat__footer--end">
