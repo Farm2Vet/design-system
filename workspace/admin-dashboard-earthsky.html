@@ -1519,31 +1519,13 @@ body {
 body { background: transparent; }
 
 body::before {
-    /* "Earth + sky" backdrop — sky from above (info blue), earth
-       from below (secondary terracotta + tan), soft white horizon
-       blend through the middle. Stronger alphas + lighter blur so
-       the tints actually read against the white base layer. */
+    /* Backdrop image — Illiya Vjestica pastoral landscape
+       (Unsplash W5FdAcHp7l8). Scaled to cover the viewport. */
     content: '';
     position: fixed;
     z-index: -2;
-    inset: -25%;
-    background:
-        /* Barely-there white horizon-blend in the middle. */
-        radial-gradient(ellipse 22% 16% at 50% 50%,
-            color-mix(in srgb, var(--white-base) 12%, transparent) 0%,
-            transparent 60%),
-        /* Lime — upper-LEFT (lightest tier: primary 50 → 100) */
-        radial-gradient(ellipse 85% 90% at 10% 10%,
-            color-mix(in srgb, var(--primary-50) 80%, transparent) 0%,
-            color-mix(in srgb, var(--primary-100) 50%, transparent) 35%,
-            transparent 65%),
-        /* Forest — lower-RIGHT (lightest tier: accent 50 → 100) */
-        radial-gradient(ellipse 95% 100% at 90% 95%,
-            color-mix(in srgb, var(--accent-50) 90%, transparent) 0%,
-            color-mix(in srgb, var(--accent-100) 70%, transparent) 40%,
-            transparent 75%),
-        var(--white-base);
-    filter: blur(50px) saturate(1.5);
+    inset: 0;
+    background: url('illiya-vjestica-W5FdAcHp7l8-unsplash.jpg') center/cover no-repeat;
 }
 
 
@@ -6071,8 +6053,8 @@ button.card.card--inverted:hover {
         rgba(255, 255, 255, 0.10) 55%,
         rgba(255, 255, 255, 0.05) 100%
     );
-    -webkit-backdrop-filter: blur(20px) saturate(150%);
-            backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(32px) saturate(150%);
+            backdrop-filter: blur(32px) saturate(150%);
     border: 1px solid rgba(255, 255, 255, 0.35);
     box-shadow:
         0 8px 24px rgba(0, 0, 0, 0.08),
@@ -6121,8 +6103,8 @@ button.card.card--inverted:hover {
    rule (0,3,0 too — wins on source order since it's later). */
 .dash .dash__side .sidebar {
     background: rgba(255, 255, 255, 0.15);
-    -webkit-backdrop-filter: blur(20px) saturate(150%);
-            backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(32px) saturate(150%);
+            backdrop-filter: blur(32px) saturate(150%);
     border: 1px solid rgba(255, 255, 255, 0.45);
     box-shadow:
         0 8px 24px rgba(0, 0, 0, 0.08),
@@ -6568,19 +6550,19 @@ button.card.card--inverted:hover {
    blur) and become lighter surfaces sitting on top so hierarchy
    stays: BODY = surface, CARDS = elements on the surface. */
 .dash-body {
-    /* Tier-3 glass — the whitest of the three tiers. Heavier
-       white tint than the cards (tier 2) so the body reads as a
-       distinct surface beneath them. No backdrop-filter: the
-       cards on top need to see the lime/forest gradient for
-       their own glass to refract real colour, not a uniform
-       blurred white. The directional white gradient + rim border
-       + drop shadow carry the "glass" feel without the blur. */
+    /* Body glass tier. Earlier we had no backdrop-filter so the
+       cards above could refract the gradient; now the cards are
+       solid white (so refraction is moot) and the backdrop is a
+       bold image — adding a real blur here lets the body read as
+       a proper frosted plate against the image. */
     background: linear-gradient(
         135deg,
         rgba(255, 255, 255, 0.28) 0%,
         rgba(255, 255, 255, 0.16) 55%,
         rgba(255, 255, 255, 0.09) 100%
     );
+    -webkit-backdrop-filter: blur(32px) saturate(150%);
+            backdrop-filter: blur(32px) saturate(150%);
     border: 1px solid rgba(255, 255, 255, 0.45);
     border-radius: var(--radius-xl);
     box-shadow:
@@ -6599,25 +6581,19 @@ button.card.card--inverted:hover {
    white tint is heavier than the body itself so they sit visibly
    on top. :not() excludes Disease (--featured) and Automated
    testing (--ai), which keep their own gradient treatments. */
+/* Cards inside the body are SOLID white (was transparent glass).
+   Featured/AI/Sync keep their colored fills via :not exclusion. */
 .dash-body .card.card--glass:not(.console-card--featured):not(.console-card--ai):not(.console-card--sync) {
-    background: rgba(255, 255, 255, 0.15);
-    -webkit-backdrop-filter: blur(20px) saturate(150%);
-            backdrop-filter: blur(20px) saturate(150%);
-    border: 1px solid rgba(255, 255, 255, 0.45);
-    box-shadow:
-        0 8px 24px rgba(0, 0, 0, 0.08),
-        inset 0 1px 1px rgba(255, 255, 255, 0.65),
-        inset 0 -1px 1px rgba(255, 255, 255, 0.18),
-        inset 0 0 24px rgba(255, 255, 255, 0.05);
+    background: var(--white-base);
+    -webkit-backdrop-filter: none;
+            backdrop-filter: none;
+    border: 1px solid var(--border-default-subtle);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 .dash-body .card.card--glass:not(.console-card--featured):not(.console-card--ai):not(.console-card--sync):hover {
-    background: rgba(255, 255, 255, 0.25);
-    border-color: rgba(255, 255, 255, 0.55);
-    box-shadow:
-        0 10px 28px rgba(0, 0, 0, 0.1),
-        inset 0 1px 1px rgba(255, 255, 255, 0.78),
-        inset 0 -1px 1px rgba(255, 255, 255, 0.22),
-        inset 0 0 26px rgba(255, 255, 255, 0.08);
+    background: var(--white-base);
+    border-color: var(--border-default);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.09);
     transform: translateY(-1px);
 }
 
@@ -7114,6 +7090,85 @@ button.card.card--inverted:hover {
 .dash__side .sidebar__list > .sidebar__item > .sidebar__link {
     font-weight: var(--font-weight-semibold);
 }
+
+/* ========================================================
+   CHROME OVERRIDES FOR PHOTO BACKDROP
+   The body::before is a real photo with mixed lighting
+   (golden sky, green pasture, dark trees). Sidebar + header
+   islands are only ~15% white glass so default dark text
+   reads poorly. Flip chrome text + icons to white, with a
+   subtle text shadow so they hold against light AND dark
+   patches of the photo. Content inside SOLID WHITE cards is
+   unaffected and keeps dark text.
+   ======================================================== */
+
+/* --- Subtle dark text shadow so white text reads against
+       light parts of the photo too --- */
+.dash__side .sidebar,
+.dash-topbar { text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35); }
+
+/* --- Sidebar nav tokens: dark -> light --- */
+.dash__side .sidebar {
+    --sidebar-item-fg:           var(--text-inverted);
+    --sidebar-item-icon:         var(--icon-inverted);
+    --sidebar-group-label-color: var(--text-inverted-subtle);
+    --sidebar-item-fg-hover:     var(--text-inverted);
+    --sidebar-item-bg-hover:     rgba(255, 255, 255, 0.18);
+    --sidebar-item-icon-hover:   var(--icon-inverted);
+    /* current/active still uses lime fill + white text from earlier */
+}
+
+/* --- Sidebar brand, profile, chrome buttons --- */
+.dash__side .sidebar__brand,
+.dash__side .sidebar__brand:hover,
+.dash__side .sidebar__brand:focus { color: var(--text-inverted); }
+.dash__side .sidebar__profile-name { color: var(--text-inverted); }
+.dash__side .sidebar__profile-role { color: var(--text-inverted-subtle); }
+.dash__side .sidebar__avatar       { color: var(--text-inverted); }
+.dash__side .sidebar__overflow,
+.dash__side .sidebar__collapse     { color: var(--icon-inverted); }
+.dash__side .sidebar__overflow:hover,
+.dash__side .sidebar__collapse:hover {
+    color: var(--icon-inverted);
+    background: rgba(255, 255, 255, 0.18);
+}
+
+/* --- Header breadcrumb --- */
+.dash-topbar__crumbs        { color: rgba(255, 255, 255, 0.8); }
+.dash-topbar__crumbs a,
+.dash-topbar__crumbs a:hover { color: var(--text-inverted); }
+.dash-topbar__crumb-sep     { color: rgba(255, 255, 255, 0.5); }
+.dash-topbar__crumb-tail    { color: var(--text-inverted); }
+
+/* --- Header search --- */
+.dash-topbar__search .input              { color: var(--text-inverted); }
+.dash-topbar__search .input::placeholder { color: rgba(255, 255, 255, 0.65); }
+.dash-topbar__search-icon                { color: rgba(255, 255, 255, 0.7); }
+
+/* --- Header notification bell --- */
+.dash-topbar__icon-btn        { color: var(--icon-inverted); }
+.dash-topbar__icon-btn:hover  {
+    color: var(--icon-inverted);
+    background: rgba(255, 255, 255, 0.18);
+}
+
+/* --- Header lang segmented control --- */
+.dash-topbar__lang             { background: rgba(255, 255, 255, 0.15); }
+.dash-topbar__lang button      { color: rgba(255, 255, 255, 0.78); }
+.dash-topbar__lang button:hover { color: var(--text-inverted); }
+/* aria-pressed=true keeps lime fill + white text via existing rule */
+
+/* --- Header divider + version chip --- */
+.dash-topbar__divider                 { background: rgba(255, 255, 255, 0.3); }
+.dash-topbar .global-nav__chip,
+.dash-topbar .global-nav__chip:hover  { color: var(--text-inverted); }
+
+/* --- Body section headers (Data management, Testing) sit on
+       the body's frosted glass over the photo --- */
+.dash-body .dash-section__head h2 {
+    color: var(--text-inverted);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
 </style>
 </head>
 <body>
@@ -7291,19 +7346,19 @@ button.card.card--inverted:hover {
                   <stop offset="100%" stop-color="var(--primary-500)" stop-opacity="0"/>
                 </linearGradient>
               </defs>
-              <polygon points="30,76 147,54 263,20 380,4 380,115 30,115" fill="url(#perfFill)" />
-              <polyline points="30,76 147,54 263,20 380,4"
+              <polygon points="30,84 147,62 263,28 380,12 380,123 30,123" fill="url(#perfFill)" />
+              <polyline points="30,84 147,62 263,28 380,12"
                         fill="none" stroke="var(--primary-600)" stroke-width="2.5"
                         stroke-linecap="round" stroke-linejoin="round"
                         vector-effect="non-scaling-stroke" />
-              <circle cx="30"  cy="76" r="4" fill="var(--primary-600)" />
-              <circle cx="147" cy="54" r="4" fill="var(--primary-600)" />
-              <circle cx="263" cy="20" r="4" fill="var(--primary-600)" />
-              <circle cx="380" cy="4"  r="6" fill="var(--primary-700)" stroke="var(--white-base)" stroke-width="2.5" />
-              <text x="30"  y="145" font-size="16" fill="currentColor" text-anchor="start"  opacity="0.55">3.0.0</text>
-              <text x="147" y="145" font-size="16" fill="currentColor" text-anchor="middle" opacity="0.55">3.0.3</text>
-              <text x="263" y="145" font-size="16" fill="currentColor" text-anchor="middle" opacity="0.55">3.0.8</text>
-              <text x="380" y="145" font-size="16" fill="currentColor" text-anchor="end"    opacity="0.55">3.0.9</text>
+              <circle cx="30"  cy="84" r="4" fill="var(--primary-600)" />
+              <circle cx="147" cy="62" r="4" fill="var(--primary-600)" />
+              <circle cx="263" cy="28" r="4" fill="var(--primary-600)" />
+              <circle cx="380" cy="12" r="6" fill="var(--primary-700)" stroke="var(--white-base)" stroke-width="2.5" />
+              <text x="30"  y="153" font-size="16" fill="currentColor" text-anchor="start"  opacity="0.55">3.0.0</text>
+              <text x="147" y="153" font-size="16" fill="currentColor" text-anchor="middle" opacity="0.55">3.0.3</text>
+              <text x="263" y="153" font-size="16" fill="currentColor" text-anchor="middle" opacity="0.55">3.0.8</text>
+              <text x="380" y="153" font-size="16" fill="currentColor" text-anchor="end"    opacity="0.55">3.0.9</text>
             </svg>
           </div>
           <footer class="dash-stat__footer dash-stat__footer--end">
