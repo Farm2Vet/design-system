@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Admin · Profile SP-002 · edit (Earth + Sky) — Farm2Vet</title>
+<title>Admin · Profile SP-002 · view (Earth + Sky) — Farm2Vet</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -4772,6 +4772,36 @@ button.card.card--inverted:hover {
 }
 
 /* =========================================================
+   FIELD VALUE — view-mode readout
+   Sibling of .field__label inside a <dl class="field">.
+   The wrapper is <div class="field"> on edit pages and
+   <dl class="field"> on view pages — both share .field
+   typography and layout. The view-mode label override
+   below only applies when the wrapper is a <dl>.
+   ========================================================= */
+dl.field { margin: 0; }
+
+.field__value {
+    margin: 0;                                    /* nukes <dd>'s default margin-inline-start: 40px */
+    font-family: var(--font-sans);
+    font-size: var(--text-lg);                    /* 19.20px — value reads as the content, clear step over label */
+    line-height: var(--line-height-body);
+    color: var(--text-default);
+    font-weight: var(--font-weight-regular);
+}
+.field__value--empty {
+    color: var(--text-default-minimal);
+    font-style: italic;
+}
+
+/* In view mode (.field wrapper is a <dl>), the label recedes
+   so the value leads. Edit-mode .field__label is unaffected. */
+dl.field > .field__label {
+    color: var(--text-default-subtle);
+    font-weight: var(--font-weight-regular);
+}
+
+/* =========================================================
    INPUT — base for text input, textarea, date input
    Defaults to LG (the canonical focus size).
    ========================================================= */
@@ -7083,6 +7113,26 @@ body.has-modal-open { overflow: hidden; }
     color: var(--text-default-subtle);
 }
 
+/* Subtle meta line shown under the H1 on detail pages
+   (e.g. "Created 2026-04-12 · Updated 2 h ago"). */
+.dash-page__meta {
+    margin: 0;
+    margin-top: var(--space-tier-6);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-tier-6);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    color: var(--text-default-subtle);
+}
+.dash-page__meta-val {
+    color: var(--text-default);
+    font-variant-numeric: tabular-nums;
+}
+.dash-page__meta-sep {
+    color: var(--text-default-minimal);
+}
+
 /* Primary CTA — primary-700 → primary-500 gradient (same
    as the Sync button on the dashboard hero). */
 .dash-page__cta.btn--cta {
@@ -7912,7 +7962,7 @@ body.has-modal-open { overflow: hidden; }
           <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
           <a href="admin-test-profiles-earthsky.html">Profiles</a>
           <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
-          <span class="dash-topbar__crumb-tail" aria-current="page">SP-002 · edit</span>
+          <span class="dash-topbar__crumb-tail" aria-current="page">SP-002</span>
         </nav>
 
         <ul class="global-nav__list dash-topbar__cluster">
@@ -7951,157 +8001,127 @@ body.has-modal-open { overflow: hidden; }
     <header class="dash-page dash-test-editor__page">
       <div class="dash-page__text">
         <h1>SP-002.</h1>
+        <p class="dash-page__meta">
+          <span>Created <span class="dash-page__meta-val">2026-04-12</span></span>
+          <span class="dash-page__meta-sep" aria-hidden="true">·</span>
+          <span>Updated <span class="dash-page__meta-val">2 h ago</span></span>
+        </p>
       </div>
       <div class="dash-test-editor__cta-cluster">
-        <button type="button" class="btn btn--md btn--ghost"><span class="btn__label">Discard changes</span></button>
-        <button type="button" class="btn btn--md btn--ghost dash-test-editor__delete-btn"><span class="btn__label">Delete</span></button>
-        <button type="button" class="btn btn--md btn--cta dash-page__cta"><span class="btn__label">Save changes</span></button>
+        <a href="admin-test-profile-editor-earthsky.html" class="btn btn--md btn--ghost" aria-pressed="false">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 20h9"/>
+            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+          </svg>
+          <span class="btn__label">Edit</span>
+        </a>
       </div>
     </header>
 
-    <!-- Profile editor — single glass card with a two-column form -->
-    <section class="card card--glass dash-test-editor__card" aria-label="Profile editor">
-      <div class="dash-test-editor__grid">
+    <!-- Profile data — single glass card, single-column form -->
+    <section class="card card--glass dash-test-editor__card" aria-label="Profile data">
+      <div class="dash-test-editor__form-stack">
 
-        <div class="dash-test-editor__form-stack">
+        <section class="dash-test-editor__group" aria-labelledby="grp-farm">
+          <header class="dash-test-editor__group-head">
+            <span class="dash-test-editor__group-eyebrow">farm_background</span>
+            <h2 id="grp-farm" class="dash-test-editor__group-title">Farm background</h2>
+          </header>
+          <div class="dash-test-editor__field-grid dash-test-editor__field-grid--2col">
 
-          <div class="dash-test-editor__id-row">
-            <span class="dash-test-editor__id-key">Profile ID</span>
-            <span class="dash-test-editor__id-val">SP-002</span>
+            <dl class="field">
+              <dt class="field__label">Farm size</dt>
+              <dd class="field__value">300 pigs</dd>
+            </dl>
+
+            <dl class="field">
+              <dt class="field__label">Pig types</dt>
+              <dd class="field__value">weaners, growers, finishers</dd>
+            </dl>
+
+            <dl class="field">
+              <dt class="field__label">Location &amp; climate</dt>
+              <dd class="field__value">subtropical</dd>
+            </dl>
+
           </div>
+        </section>
 
-          <section class="dash-test-editor__group" aria-labelledby="grp-farm">
-            <header class="dash-test-editor__group-head">
-              <span class="dash-test-editor__group-eyebrow">farm_background</span>
-              <h2 id="grp-farm" class="dash-test-editor__group-title">Farm background</h2>
-            </header>
-            <div class="dash-test-editor__field-grid dash-test-editor__field-grid--2col">
+        <section class="dash-test-editor__group" aria-labelledby="grp-obs">
+          <header class="dash-test-editor__group-head">
+            <span class="dash-test-editor__group-eyebrow">observed_evidences</span>
+            <h2 id="grp-obs" class="dash-test-editor__group-title">Observed evidences</h2>
+          </header>
+          <div class="dash-test-editor__field-grid dash-test-editor__field-grid--2col">
 
-              <div class="field">
-                <label class="field__label" for="profile-farm-size">Farm size</label>
-                <input type="text" id="profile-farm-size" class="input input--sm" value="300 pigs" />
-              </div>
+            <dl class="field">
+              <dt class="field__label">Affected pig types</dt>
+              <dd class="field__value">Mostly growers and finishers</dd>
+            </dl>
 
-              <div class="field">
-                <label class="field__label" for="profile-pig-types">Pig types</label>
-                <input type="text" id="profile-pig-types" class="input input--sm" value="weaners, growers, finishers" />
-              </div>
+            <dl class="field">
+              <dt class="field__label">Total affected</dt>
+              <dd class="field__value">About 180 out of 300</dd>
+            </dl>
 
-              <div class="field">
-                <label class="field__label" for="profile-location-climate">Location &amp; climate</label>
-                <input type="text" id="profile-location-climate" class="input input--sm" value="subtropical" />
-              </div>
+            <dl class="field">
+              <dt class="field__label">Mortality</dt>
+              <dd class="field__value">High, many pigs dying</dd>
+            </dl>
 
-            </div>
-          </section>
+            <dl class="field">
+              <dt class="field__label">Fever</dt>
+              <dd class="field__value">High fever</dd>
+            </dl>
 
-          <section class="dash-test-editor__group" aria-labelledby="grp-obs">
-            <header class="dash-test-editor__group-head">
-              <span class="dash-test-editor__group-eyebrow">observed_evidences</span>
-              <h2 id="grp-obs" class="dash-test-editor__group-title">Observed evidences</h2>
-            </header>
-            <div class="dash-test-editor__field-grid dash-test-editor__field-grid--2col">
+            <dl class="field">
+              <dt class="field__label">Digestive symptoms</dt>
+              <dd class="field__value">Lost appetite, bloody diarrhea</dd>
+            </dl>
 
-              <div class="field">
-                <label class="field__label" for="profile-affected">Affected pig types</label>
-                <input type="text" id="profile-affected" class="input input--sm" value="Mostly growers and finishers" />
-              </div>
+            <dl class="field">
+              <dt class="field__label">Respiratory symptoms</dt>
+              <dd class="field__value">Coughing, nasal discharge</dd>
+            </dl>
 
-              <div class="field">
-                <label class="field__label" for="profile-total-affected">Total affected</label>
-                <input type="text" id="profile-total-affected" class="input input--sm" value="About 180 out of 300" />
-              </div>
+            <dl class="field">
+              <dt class="field__label">Neurological symptoms</dt>
+              <dd class="field__value">Some pigs have wobbly gait, hind limb paralysis</dd>
+            </dl>
 
-              <div class="field">
-                <label class="field__label" for="profile-mortality">Mortality</label>
-                <textarea id="profile-mortality" class="input input--sm textarea" rows="2">High, many pigs dying</textarea>
-              </div>
+            <dl class="field">
+              <dt class="field__label">Dermatological symptoms</dt>
+              <dd class="field__value">Blue-purple discoloration on ears and belly</dd>
+            </dl>
 
-              <div class="field">
-                <label class="field__label" for="profile-fever">Fever</label>
-                <textarea id="profile-fever" class="input input--sm textarea" rows="2">High fever</textarea>
-              </div>
+            <dl class="field">
+              <dt class="field__label">Reproductive symptoms</dt>
+              <dd class="field__value field__value--empty">Not observed</dd>
+            </dl>
 
-              <div class="field">
-                <label class="field__label" for="profile-sym-digestive">Digestive symptoms</label>
-                <textarea id="profile-sym-digestive" class="input input--sm textarea" rows="3">Lost appetite, bloody diarrhea</textarea>
-              </div>
+            <dl class="field">
+              <dt class="field__label">Vaccination history</dt>
+              <dd class="field__value">Vaccinated against CSF 6 months ago but unsure if all pigs covered</dd>
+            </dl>
 
-              <div class="field">
-                <label class="field__label" for="profile-sym-respiratory">Respiratory symptoms</label>
-                <textarea id="profile-sym-respiratory" class="input input--sm textarea" rows="3">Coughing, nasal discharge</textarea>
-              </div>
+            <dl class="field">
+              <dt class="field__label">Treatment history</dt>
+              <dd class="field__value">None yet</dd>
+            </dl>
 
-              <div class="field">
-                <label class="field__label" for="profile-sym-neurological">Neurological symptoms</label>
-                <textarea id="profile-sym-neurological" class="input input--sm textarea" rows="3">Some pigs have wobbly gait, hind limb paralysis</textarea>
-              </div>
-
-              <div class="field">
-                <label class="field__label" for="profile-sym-dermatology">Dermatological symptoms</label>
-                <textarea id="profile-sym-dermatology" class="input input--sm textarea" rows="3">Blue-purple discoloration on ears and belly</textarea>
-              </div>
-
-              <div class="field">
-                <label class="field__label" for="profile-sym-reproductive">Reproductive symptoms</label>
-                <textarea id="profile-sym-reproductive" class="input input--sm textarea" rows="3"></textarea>
-              </div>
-
-              <div class="field">
-                <label class="field__label" for="profile-vaccination">Vaccination history</label>
-                <textarea id="profile-vaccination" class="input input--sm textarea" rows="3">Vaccinated against CSF 6 months ago but unsure if all pigs covered</textarea>
-              </div>
-
-              <div class="field">
-                <label class="field__label" for="profile-treatment">Treatment history</label>
-                <textarea id="profile-treatment" class="input input--sm textarea" rows="2">None yet</textarea>
-              </div>
-
-            </div>
-          </section>
-
-          <div class="field">
-            <label class="field__label" for="profile-disease">Disease label</label>
-            <select id="profile-disease" class="input input--sm">
-              <option value="" disabled>Pick a disease…</option>
-              <option value="PRRS">PRRS — Porcine Reproductive and Respiratory Syndrome</option>
-              <option value="ASF">ASF — African Swine Fever</option>
-              <option value="TGE">TGE — Transmissible Gastroenteritis</option>
-              <option value="ERY">ERY — Erysipelas</option>
-              <option value="APP">APP — Actinobacillus pleuropneumoniae</option>
-              <option value="CSF" selected>CSF — Classical Swine Fever</option>
-            </select>
           </div>
+        </section>
 
-        </div>
-
-        <div class="dash-test-editor__right">
-
-          <div class="dash-test-editor__upload" tabindex="0" role="button" aria-label="Upload a picture for this profile">
-            <svg class="dash-test-editor__upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-              <polyline points="17 8 12 3 7 8"/>
-              <line x1="12" y1="3" x2="12" y2="15"/>
-            </svg>
-            <span>Drag a picture here or click to browse · Replace</span>
-          </div>
-
-          <dl class="dash-test-editor__meta">
-            <div class="dash-test-editor__meta-row">
-              <span class="dash-test-editor__meta-key">ID</span>
-              <span class="dash-test-editor__meta-val dash-test-editor__meta-val--mono">SP-002</span>
-            </div>
-            <div class="dash-test-editor__meta-row">
-              <span class="dash-test-editor__meta-key">Created</span>
-              <span class="dash-test-editor__meta-val">2026-04-12</span>
-            </div>
-            <div class="dash-test-editor__meta-row">
-              <span class="dash-test-editor__meta-key">Updated</span>
-              <span class="dash-test-editor__meta-val">2 h ago</span>
-            </div>
+        <section class="dash-test-editor__group" aria-labelledby="grp-label">
+          <header class="dash-test-editor__group-head">
+            <span class="dash-test-editor__group-eyebrow">label</span>
+            <h2 id="grp-label" class="dash-test-editor__group-title">Disease label</h2>
+          </header>
+          <dl class="field">
+            <dt class="field__label">Diagnosis</dt>
+            <dd class="field__value">CSF — Classical Swine Fever</dd>
           </dl>
-
-        </div>
+        </section>
 
       </div>
     </section>

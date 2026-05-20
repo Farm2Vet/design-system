@@ -7345,13 +7345,24 @@ body.has-modal-open { overflow: hidden; }
 }
 .dash-test-table__check-col { width: 36px; }
 .dash-test-table__id {
-    font-family: var(--font-mono);
-    color: var(--text-default-subtle);
-    font-size: var(--text-body-sm);
+    /* font-family, font-size, color moved to .dash-test-table__id-link */
 }
-.dash-test-table__name {
+.dash-test-table__id-link {
     color: var(--text-default);
-    font-weight: var(--font-weight-medium);
+    font-family: var(--font-mono);
+    font-size: var(--text-body-sm);
+    letter-spacing: var(--letter-spacing-mono);
+    text-decoration: none;
+    transition: color .15s ease;
+    border-radius: var(--radius-sm);
+}
+.dash-test-table__id-link:hover {
+    color: var(--text-accent);
+}
+.dash-test-table__id-link:focus-visible {
+    color: var(--text-accent);
+    outline: 2px solid var(--primary-500);
+    outline-offset: 2px;
 }
 .dash-test-table__updated {
     color: var(--text-default-minimal);
@@ -7377,6 +7388,7 @@ body.has-modal-open { overflow: hidden; }
 .dash-test-label--tge { background: color-mix(in srgb, var(--secondary-300) 18%, var(--white-base)); color: var(--secondary-900); border-color: color-mix(in srgb, var(--secondary-300) 35%, transparent); }
 .dash-test-label--ery { background: color-mix(in srgb, var(--accent-500) 16%, var(--white-base)); color: var(--accent-900); border-color: color-mix(in srgb, var(--accent-500) 30%, transparent); }
 .dash-test-label--app { background: color-mix(in srgb, var(--info-500, var(--primary-700)) 16%, var(--white-base)); color: var(--text-default); border-color: color-mix(in srgb, var(--primary-700) 30%, transparent); }
+.dash-test-label--csf { background: color-mix(in srgb, var(--warning-500) 16%, var(--white-base)); color: var(--warning-700); border-color: color-mix(in srgb, var(--warning-500) 30%, transparent); }
 
 /* ----- Pager (matches catalogue pager visually) -------- */
 .dash-test-pager {
@@ -8212,8 +8224,7 @@ body.has-modal-open { overflow: hidden; }
           <thead>
             <tr>
               <th class="dash-test-table__check-col"><input type="checkbox" class="checkbox" aria-label="Select all profiles" /></th>
-              <th>ID</th>
-              <th>Name</th>
+              <th>Profile</th>
               <th>Label</th>
               <th>Updated</th>
               <th class="dash-test-table__row-action-col" aria-label="Row actions"></th>
@@ -8221,66 +8232,58 @@ body.has-modal-open { overflow: hidden; }
           </thead>
           <tbody>
             <tr class="is-selected">
-              <td><input type="checkbox" class="checkbox" aria-label="Select SP_0142" checked /></td>
-              <td class="dash-test-table__id">SP_0142</td>
-              <td class="dash-test-table__name">Sow 8mo · coughing &amp; fever</td>
-              <td><span class="badge badge--neutral dash-test-label--prrs">PRRS</span></td>
+              <td><input type="checkbox" class="checkbox" aria-label="Select SP-008" checked /></td>
+              <td class="dash-test-table__id"><a class="dash-test-table__id-link" href="admin-test-profile-view-earthsky.html">SP-008</a></td>
+              <td><span class="badge badge--neutral dash-test-label--csf">CSF</span></td>
               <td class="dash-test-table__updated">2 h ago</td>
               <td class="dash-test-table__row-action-col"><button type="button" class="dash-test-table__row-action" aria-label="Row actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
             </tr>
             <tr class="is-selected">
-              <td><input type="checkbox" class="checkbox" aria-label="Select SP_0141" checked /></td>
-              <td class="dash-test-table__id">SP_0141</td>
-              <td class="dash-test-table__name">Sow 5mo · lethargy + red ears</td>
+              <td><input type="checkbox" class="checkbox" aria-label="Select SP-007" checked /></td>
+              <td class="dash-test-table__id"><a class="dash-test-table__id-link" href="admin-test-profile-view-earthsky.html">SP-007</a></td>
               <td><span class="badge badge--neutral dash-test-label--prrs">PRRS</span></td>
               <td class="dash-test-table__updated">5 h ago</td>
               <td class="dash-test-table__row-action-col"><button type="button" class="dash-test-table__row-action" aria-label="Row actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
             </tr>
             <tr class="is-selected">
-              <td><input type="checkbox" class="checkbox" aria-label="Select SP_0140" checked /></td>
-              <td class="dash-test-table__id">SP_0140</td>
-              <td class="dash-test-table__name">Sow 4mo · cough cluster (15 head)</td>
-              <td><span class="badge badge--neutral dash-test-label--prrs">PRRS</span></td>
+              <td><input type="checkbox" class="checkbox" aria-label="Select SP-006" checked /></td>
+              <td class="dash-test-table__id"><a class="dash-test-table__id-link" href="admin-test-profile-view-earthsky.html">SP-006</a></td>
+              <td><span class="badge badge--neutral dash-test-label--asf">ASF</span></td>
               <td class="dash-test-table__updated">1 d ago</td>
               <td class="dash-test-table__row-action-col"><button type="button" class="dash-test-table__row-action" aria-label="Row actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
             </tr>
             <tr>
-              <td><input type="checkbox" class="checkbox" aria-label="Select SP_0138" /></td>
-              <td class="dash-test-table__id">SP_0138</td>
-              <td class="dash-test-table__name">Piglet 3wk — sudden death cluster</td>
-              <td><span class="badge badge--neutral dash-test-label--asf">ASF</span></td>
+              <td><input type="checkbox" class="checkbox" aria-label="Select SP-005" /></td>
+              <td class="dash-test-table__id"><a class="dash-test-table__id-link" href="admin-test-profile-view-earthsky.html">SP-005</a></td>
+              <td><span class="badge badge--neutral dash-test-label--tge">TGE</span></td>
               <td class="dash-test-table__updated">2 d ago</td>
               <td class="dash-test-table__row-action-col"><button type="button" class="dash-test-table__row-action" aria-label="Row actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
             </tr>
             <tr>
-              <td><input type="checkbox" class="checkbox" aria-label="Select SP_0137" /></td>
-              <td class="dash-test-table__id">SP_0137</td>
-              <td class="dash-test-table__name">Piglet 5wk · bloody diarrhoea</td>
-              <td><span class="badge badge--neutral dash-test-label--asf">ASF</span></td>
+              <td><input type="checkbox" class="checkbox" aria-label="Select SP-004" /></td>
+              <td class="dash-test-table__id"><a class="dash-test-table__id-link" href="admin-test-profile-view-earthsky.html">SP-004</a></td>
+              <td><span class="badge badge--neutral dash-test-label--ery">ERY</span></td>
               <td class="dash-test-table__updated">3 d ago</td>
               <td class="dash-test-table__row-action-col"><button type="button" class="dash-test-table__row-action" aria-label="Row actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
             </tr>
             <tr>
-              <td><input type="checkbox" class="checkbox" aria-label="Select SP_0136" /></td>
-              <td class="dash-test-table__id">SP_0136</td>
-              <td class="dash-test-table__name">Weaner 6wk · diarrhoea + dehydration</td>
-              <td><span class="badge badge--neutral dash-test-label--tge">TGE</span></td>
+              <td><input type="checkbox" class="checkbox" aria-label="Select SP-003" /></td>
+              <td class="dash-test-table__id"><a class="dash-test-table__id-link" href="admin-test-profile-view-earthsky.html">SP-003</a></td>
+              <td><span class="badge badge--neutral dash-test-label--app">APP</span></td>
               <td class="dash-test-table__updated">5 d ago</td>
               <td class="dash-test-table__row-action-col"><button type="button" class="dash-test-table__row-action" aria-label="Row actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
             </tr>
             <tr>
-              <td><input type="checkbox" class="checkbox" aria-label="Select SP_0134" /></td>
-              <td class="dash-test-table__id">SP_0134</td>
-              <td class="dash-test-table__name">Boar 14mo · diamond-shape skin lesions</td>
-              <td><span class="badge badge--neutral dash-test-label--ery">ERY</span></td>
+              <td><input type="checkbox" class="checkbox" aria-label="Select SP-002" /></td>
+              <td class="dash-test-table__id"><a class="dash-test-table__id-link" href="admin-test-profile-view-earthsky.html">SP-002</a></td>
+              <td><span class="badge badge--neutral dash-test-label--csf">CSF</span></td>
               <td class="dash-test-table__updated">1 w ago</td>
               <td class="dash-test-table__row-action-col"><button type="button" class="dash-test-table__row-action" aria-label="Row actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
             </tr>
             <tr>
-              <td><input type="checkbox" class="checkbox" aria-label="Select SP_0132" /></td>
-              <td class="dash-test-table__id">SP_0132</td>
-              <td class="dash-test-table__name">Sow 12mo · respiratory distress + foam</td>
-              <td><span class="badge badge--neutral dash-test-label--app">APP</span></td>
+              <td><input type="checkbox" class="checkbox" aria-label="Select SP-001" /></td>
+              <td class="dash-test-table__id"><a class="dash-test-table__id-link" href="admin-test-profile-view-earthsky.html">SP-001</a></td>
+              <td><span class="badge badge--neutral dash-test-label--prrs">PRRS</span></td>
               <td class="dash-test-table__updated">2 w ago</td>
               <td class="dash-test-table__row-action-col"><button type="button" class="dash-test-table__row-action" aria-label="Row actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
             </tr>
@@ -8451,9 +8454,8 @@ body.has-modal-open { overflow: hidden; }
   (function () {
     function openDeleteModal(selectedRows) {
       var names = selectedRows.map(function (row) {
-        var id = (row.querySelector('.dash-test-table__id') || {}).textContent || '';
-        var nm = (row.querySelector('.dash-test-table__name') || {}).textContent || '';
-        return (id + ' · ' + nm).trim();
+        var a = row.querySelector('.dash-test-table__id-link');
+        return (a ? a.textContent : '').trim();
       });
       var modal = document.createElement('div');
       modal.className = 'modal modal--xs';

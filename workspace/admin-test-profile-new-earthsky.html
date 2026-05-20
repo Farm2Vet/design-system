@@ -7002,11 +7002,67 @@ button.card.card--inverted:hover {
     flex-direction: column;
     gap: var(--space-tier-5);
 }
-.dash-test-editor__field {
+/* ---- ID badge (top of form-stack) ---- */
+.dash-test-editor__id-row {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-tier-6);
+    align-self: start;
+    padding: var(--space-tier-7) var(--space-tier-5);
+    background: color-mix(in srgb, var(--white-base) 35%, transparent);
+    border: var(--border-width-base) solid var(--border-default-subtle);
+    border-radius: var(--radius-md);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+}
+.dash-test-editor__id-key { color: var(--text-default-subtle); }
+.dash-test-editor__id-val {
+    color: var(--text-default);
+    font-family: var(--font-mono);
+    letter-spacing: var(--letter-spacing-mono);
+}
+
+/* ---- Grouped section (farm_background / observed_evidences) ---- */
+.dash-test-editor__group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tier-5);
+}
+.dash-test-editor__group-head {
     display: flex;
     flex-direction: column;
     gap: var(--space-tier-7);
+    padding-bottom: var(--space-tier-6);
+    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
 }
+.dash-test-editor__group-eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+}
+.dash-test-editor__group-title {
+    font-family: var(--font-sans);
+    font-size: var(--text-h5);
+    font-weight: 600;
+    color: var(--text-default);
+    margin: 0;
+    letter-spacing: -0.01em;
+}
+
+/* ---- Field grid (used inside a group) ---- */
+.dash-test-editor__field-grid {
+    display: grid;
+    gap: var(--space-tier-5);
+}
+.dash-test-editor__field-grid--2col {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@media (max-width: 720px) {
+    .dash-test-editor__field-grid--2col { grid-template-columns: 1fr; }
+}
+
 .dash-test-editor__hint {
     font-family: var(--font-sans);
     font-size: var(--text-body-sm);
@@ -7766,8 +7822,8 @@ button.card.card--inverted:hover {
         <h1>New profile.</h1>
       </div>
       <div class="dash-test-editor__cta-cluster">
-        <button type="button" class="btn btn--ghost"><span class="btn__label">Cancel</span></button>
-        <button type="button" class="btn btn--cta dash-page__cta" disabled aria-disabled="true"><span class="btn__label">Create profile</span></button>
+        <button type="button" class="btn btn--md btn--ghost"><span class="btn__label">Cancel</span></button>
+        <button type="button" class="btn btn--md btn--cta dash-page__cta" disabled aria-disabled="true"><span class="btn__label">Create profile</span></button>
       </div>
     </header>
 
@@ -7777,30 +7833,111 @@ button.card.card--inverted:hover {
 
         <div class="dash-test-editor__form-stack">
 
-          <div class="dash-test-editor__field">
-            <label class="label" for="profile-name">Profile name</label>
-            <input type="text" id="profile-name" class="input" placeholder="Sow 8mo · coughing &amp; fever" />
+          <div class="dash-test-editor__id-row">
+            <span class="dash-test-editor__id-key">Profile ID</span>
+            <span class="dash-test-editor__id-val">SP-003</span>
           </div>
 
-          <div class="dash-test-editor__field">
-            <label class="label" for="profile-farm">Farm basic info</label>
-            <textarea id="profile-farm" class="input" rows="3" placeholder="Herd size, region, housing, vaccination status…"></textarea>
-          </div>
+          <section class="dash-test-editor__group" aria-labelledby="grp-farm">
+            <header class="dash-test-editor__group-head">
+              <span class="dash-test-editor__group-eyebrow">farm_background</span>
+              <h2 id="grp-farm" class="dash-test-editor__group-title">Farm background</h2>
+            </header>
+            <div class="dash-test-editor__field-grid dash-test-editor__field-grid--2col">
 
-          <div class="dash-test-editor__field">
-            <label class="label" for="profile-symptoms">Symptoms</label>
-            <textarea id="profile-symptoms" class="input" rows="5" placeholder="cough, fever, red ears, lethargy"></textarea>
-          </div>
+              <div class="field">
+                <label class="field__label" for="profile-farm-size">Farm size</label>
+                <input type="text" id="profile-farm-size" class="input input--sm" placeholder="e.g. 300 pigs" />
+              </div>
 
-          <div class="dash-test-editor__field">
-            <label class="label" for="profile-disease">Disease label</label>
-            <select id="profile-disease" class="input">
+              <div class="field">
+                <label class="field__label" for="profile-pig-types">Pig types</label>
+                <input type="text" id="profile-pig-types" class="input input--sm" placeholder="e.g. weaners, growers, finishers" />
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="profile-location-climate">Location &amp; climate</label>
+                <input type="text" id="profile-location-climate" class="input input--sm" placeholder="e.g. subtropical" />
+              </div>
+
+            </div>
+          </section>
+
+          <section class="dash-test-editor__group" aria-labelledby="grp-obs">
+            <header class="dash-test-editor__group-head">
+              <span class="dash-test-editor__group-eyebrow">observed_evidences</span>
+              <h2 id="grp-obs" class="dash-test-editor__group-title">Observed evidences</h2>
+            </header>
+            <div class="dash-test-editor__field-grid dash-test-editor__field-grid--2col">
+
+              <div class="field">
+                <label class="field__label" for="profile-affected">Affected pig types</label>
+                <input type="text" id="profile-affected" class="input input--sm" placeholder="e.g. mostly growers and finishers" />
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="profile-total-affected">Total affected</label>
+                <input type="text" id="profile-total-affected" class="input input--sm" placeholder="e.g. about 180 out of 300" />
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="profile-mortality">Mortality</label>
+                <textarea id="profile-mortality" class="input input--sm textarea" rows="2" placeholder="e.g. high, many pigs dying"></textarea>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="profile-fever">Fever</label>
+                <textarea id="profile-fever" class="input input--sm textarea" rows="2" placeholder="e.g. high fever"></textarea>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="profile-sym-digestive">Digestive symptoms</label>
+                <textarea id="profile-sym-digestive" class="input input--sm textarea" rows="3" placeholder="e.g. lost appetite, bloody diarrhea"></textarea>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="profile-sym-respiratory">Respiratory symptoms</label>
+                <textarea id="profile-sym-respiratory" class="input input--sm textarea" rows="3" placeholder="e.g. coughing, nasal discharge"></textarea>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="profile-sym-neurological">Neurological symptoms</label>
+                <textarea id="profile-sym-neurological" class="input input--sm textarea" rows="3" placeholder="e.g. wobbly gait, hind limb paralysis"></textarea>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="profile-sym-dermatology">Dermatological symptoms</label>
+                <textarea id="profile-sym-dermatology" class="input input--sm textarea" rows="3" placeholder="e.g. blue-purple discoloration on ears"></textarea>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="profile-sym-reproductive">Reproductive symptoms</label>
+                <textarea id="profile-sym-reproductive" class="input input--sm textarea" rows="3" placeholder="e.g. abortions, weak piglets"></textarea>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="profile-vaccination">Vaccination history</label>
+                <textarea id="profile-vaccination" class="input input--sm textarea" rows="3" placeholder="e.g. CSF 6 months ago, coverage unclear"></textarea>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="profile-treatment">Treatment history</label>
+                <textarea id="profile-treatment" class="input input--sm textarea" rows="2" placeholder="e.g. none yet"></textarea>
+              </div>
+
+            </div>
+          </section>
+
+          <div class="field">
+            <label class="field__label" for="profile-disease">Disease label</label>
+            <select id="profile-disease" class="input input--sm">
               <option value="" selected disabled>Pick a disease…</option>
               <option value="PRRS">PRRS — Porcine Reproductive and Respiratory Syndrome</option>
               <option value="ASF">ASF — African Swine Fever</option>
               <option value="TGE">TGE — Transmissible Gastroenteritis</option>
               <option value="ERY">ERY — Erysipelas</option>
               <option value="APP">APP — Actinobacillus pleuropneumoniae</option>
+              <option value="CSF">CSF — Classical Swine Fever</option>
             </select>
           </div>
 
