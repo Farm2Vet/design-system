@@ -7269,6 +7269,674 @@ body.has-modal-open { overflow: hidden; }
     .dash-test-editor__cta-cluster { flex-wrap: wrap; justify-content: flex-end; }
 }
 
+/* =========================================================
+   TOP-LEVEL SECTION STACK + PANE SCAFFOLDING
+   Ported from admin-test-profile-view-earthsky.html so the
+   editor renders the same dossier section structure.
+   ========================================================= */
+.dash-test-editor__sections {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tier-3);
+}
+.dash-test-editor__section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tier-5);
+}
+.dash-test-editor__section-title {
+    font-family: var(--font-sans);
+    font-size: var(--text-h4);
+    font-weight: 600;
+    color: var(--text-default);
+    letter-spacing: -0.01em;
+    margin: 0;
+}
+.dash-test-editor__card-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-tier-4);
+    align-items: start;
+}
+@media (max-width: 720px) {
+    .dash-test-editor__card-row { grid-template-columns: 1fr; }
+}
+.dash-test-editor__pane.card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tier-5);
+    padding: var(--space-tier-4);
+}
+.dash-test-editor__pane-head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tier-7);
+    padding-bottom: var(--space-tier-6);
+    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
+}
+.dash-test-editor__pane-title {
+    font-family: var(--font-sans);
+    font-size: var(--text-h5);
+    font-weight: 600;
+    color: var(--text-default);
+    letter-spacing: -0.01em;
+    margin: 0;
+}
+.dash-test-editor__pane-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tier-5);
+}
+
+/* =========================================================
+   SYNTHETIC PROFILE · DOSSIER ADDITIONS
+   ========================================================= */
+
+/* Page meta strip — extra dots beside the existing updated meta. */
+.dash-page__meta > .dash-page__meta-sep { color: var(--text-default-minimal); padding: 0 var(--space-tier-7); }
+.dash-page__meta > .dash-page__meta-key { color: var(--text-default-subtle); }
+
+/* CTA cluster (alias to existing editor cluster — same rules). */
+.dash-test-profile__cta-cluster {
+    display: flex;
+    align-items: center;
+    gap: var(--space-tier-6);
+    flex-wrap: wrap;
+}
+
+/* -------- Hero ------------------------------------------- */
+.dash-test-profile__hero {
+    display: grid;
+    grid-template-columns: 160px 1fr 220px;
+    gap: var(--space-tier-3);
+    align-items: stretch;
+    padding: var(--space-tier-3);
+}
+.dash-test-profile__hero-photo {
+    margin: 0;
+    width: 160px;
+    height: 160px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--background-default-subtle);
+    border: 1px solid var(--border-default);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.dash-test-profile__hero-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.dash-test-profile__hero-photo--empty .dash-test-profile__hero-photo-icon {
+    width: 40%;
+    height: 40%;
+    color: var(--icon-default-subtle);
+}
+.dash-test-profile__hero-photo-cap {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    padding: var(--space-tier-7) var(--space-tier-6);
+    background: linear-gradient(0deg, color-mix(in srgb, var(--background-default) 90%, transparent), transparent);
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--text-default-subtle);
+}
+.dash-test-profile__hero-body { display: flex; flex-direction: column; gap: var(--space-tier-5); min-width: 0; }
+.dash-test-profile__hero-title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--text-h3);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: -0.01em;
+    color: var(--text-default);
+}
+.dash-test-profile__hero-title-input {
+    width: 100%;
+    font-size: var(--text-h3);
+    font-weight: var(--font-weight-semibold);
+}
+.dash-test-profile__hero-chips {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-tier-7);
+}
+.dash-test-profile__hero-meta {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-tier-5) var(--space-tier-3);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    color: var(--text-default-subtle);
+}
+.dash-test-profile__hero-meta > div { display: flex; gap: var(--space-tier-7); align-items: baseline; }
+.dash-test-profile__hero-meta dt { color: var(--text-default-minimal); }
+.dash-test-profile__hero-meta dd { margin: 0; color: var(--text-default); }
+.dash-test-profile__hero-meta-mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+/* -------- Score ring ------------------------------------- */
+.dash-test-profile__hero-score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-tier-7);
+    padding-top: var(--space-tier-7);
+    border-left: 1px dashed var(--border-default-subtle);
+    padding-left: var(--space-tier-5);
+}
+.dash-test-profile__score-ring {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background:
+        conic-gradient(
+            var(--accent-500) 0 calc(var(--p, 0) * 1%),
+            var(--background-default-subtle) calc(var(--p, 0) * 1%) 100%
+        );
+    display: grid;
+    place-items: center;
+    box-shadow: var(--glass-shadow-raised), 0 0 0 1px var(--border-default-subtle);
+}
+.dash-test-profile__score-ring-inner {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: var(--background-default);
+    display: grid;
+    grid-auto-flow: column;
+    place-items: baseline center;
+    gap: 1px;
+}
+.dash-test-profile__score-num {
+    font-family: var(--font-sans);
+    font-size: var(--text-h3);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-default);
+}
+.dash-test-profile__score-unit {
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    color: var(--text-default-subtle);
+}
+.dash-test-profile__score-label {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    color: var(--text-default);
+}
+.dash-test-profile__score-hint {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    color: var(--text-default-subtle);
+    text-align: center;
+    max-width: 160px;
+}
+
+/* -------- Main + rail grid ------------------------------- */
+.dash-test-profile__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: var(--space-tier-3);
+    align-items: start;
+    margin-top: var(--space-tier-3);
+}
+.dash-test-profile__main { min-width: 0; }
+.dash-test-profile__rail {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tier-4);
+    position: sticky;
+    top: var(--space-tier-3);
+}
+
+/* -------- Rail card ------------------------------------- */
+.dash-test-profile__rail-card { padding: var(--space-tier-4); }
+.dash-test-profile__rail-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-tier-6);
+    margin-bottom: var(--space-tier-5);
+}
+.dash-test-profile__rail-title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-default);
+}
+.dash-test-profile__rail-more { margin-top: var(--space-tier-5); }
+
+/* -------- Usage rows ----------------------------------- */
+.dash-test-profile__usage-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+.dash-test-profile__usage-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-tier-6);
+    padding: var(--space-tier-6) 0;
+    border-bottom: 1px dashed var(--border-default-subtle);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+}
+.dash-test-profile__usage-row:last-child { border-bottom: 0; }
+.dash-test-profile__usage-key { color: var(--text-default); min-width: 0; }
+.dash-test-profile__usage-meta {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--text-default-subtle);
+}
+
+/* -------- System head dot ------------------------------ */
+.dash-test-profile__system-head { display: flex; flex-direction: row; align-items: center; gap: var(--space-tier-6); }
+.dash-test-profile__field--observed .field__label { display: inline-flex; align-items: center; gap: var(--space-tier-7); }
+
+/* -------- Hint card body -------------------------------- */
+.dash-test-profile__hint {
+    margin: 0;
+    padding-left: var(--space-tier-5);
+    border-left: 2px solid var(--border-accent-subtle);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    color: var(--text-default);
+    font-style: italic;
+}
+
+/* -------- Responsive collapse -------------------------- */
+@media (max-width: 1100px) {
+    .dash-test-profile__grid { grid-template-columns: 1fr; }
+    .dash-test-profile__rail { position: static; }
+    .dash-test-profile__hero {
+        grid-template-columns: 120px 1fr;
+        grid-template-areas:
+            "photo body"
+            "score score";
+    }
+    .dash-test-profile__hero-photo  { grid-area: photo; width: 120px; height: 120px; }
+    .dash-test-profile__hero-body   { grid-area: body; }
+    .dash-test-profile__hero-score  { grid-area: score; flex-direction: row; border-left: 0; border-top: 1px dashed var(--border-default-subtle); padding: var(--space-tier-5) 0 0; gap: var(--space-tier-4); }
+}
+
+/* =========================================================
+   DROPDOWN — canonical listbox component (styles/dropdown.css)
+   Replaces the native <select> on the categorical fields.
+   ========================================================= */
+.dropdown {
+    position: relative;
+    display: block;
+    width: 100%;
+}
+.dropdown.is-open {
+    z-index: 50;
+}
+.dropdown__trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-gap-tight);
+    width: 100%;
+    font-family: var(--form-font-family);
+    font-weight: var(--form-font-weight);
+    letter-spacing: var(--form-letter-spacing);
+    color: var(--dropdown-trigger-fg);
+    background: var(--dropdown-trigger-bg);
+    border: var(--form-border-width) solid var(--dropdown-trigger-border);
+    border-radius: var(--dropdown-trigger-radius);
+    cursor: pointer;
+    text-align: left;
+    line-height: var(--line-height-h3);
+    transition: var(--form-transition);
+    font-size:  var(--form-lg-font-size);
+    padding:    var(--form-lg-padding-y) var(--form-lg-padding-x);
+    min-height: var(--form-lg-height);
+}
+.dropdown__trigger:hover:not([disabled]):not(.is-error) {
+    border-color: var(--dropdown-trigger-border-hover);
+}
+.dropdown__trigger:focus-visible,
+.dropdown.is-open .dropdown__trigger {
+    outline: none;
+    border-color: var(--dropdown-trigger-border-focus);
+    box-shadow: 0 0 0 3px var(--dropdown-trigger-ring-focus);
+}
+.dropdown__value {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.dropdown__trigger.is-empty .dropdown__value {
+    color: var(--dropdown-trigger-placeholder);
+}
+.dropdown__chevron {
+    width:  var(--dropdown-chevron-size);
+    height: var(--dropdown-chevron-size);
+    color:  var(--dropdown-chevron-color);
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+}
+.dropdown.is-open .dropdown__chevron {
+    transform: rotate(180deg);
+}
+.dropdown__menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: var(--dropdown-menu-offset);
+    max-height: var(--dropdown-menu-max-height);
+    overflow-y: auto;
+    background: var(--dropdown-menu-bg);
+    border: var(--form-border-width) solid var(--dropdown-menu-border);
+    border-radius: var(--dropdown-menu-radius);
+    box-shadow: var(--dropdown-menu-shadow);
+    -webkit-backdrop-filter: var(--dropdown-menu-blur) var(--glass-saturate);
+            backdrop-filter: var(--dropdown-menu-blur) var(--glass-saturate);
+    padding: var(--dropdown-menu-padding);
+    z-index: 100;
+    opacity: 0;
+    transform: translateY(calc(-1 * var(--dropdown-anim-translate))) scale(0.98);
+    transform-origin: top center;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+        opacity   var(--dropdown-anim-duration) var(--dropdown-anim-easing),
+        transform var(--dropdown-anim-duration) var(--dropdown-anim-easing),
+        visibility 0s linear var(--dropdown-anim-duration);
+}
+.dropdown.is-open .dropdown__menu {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    visibility: visible;
+    pointer-events: auto;
+    transition:
+        opacity   var(--dropdown-anim-duration) var(--dropdown-anim-easing),
+        transform var(--dropdown-anim-duration) var(--dropdown-anim-easing),
+        visibility 0s;
+}
+.dropdown__option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-2x);
+    width: 100%;
+    padding: var(--dropdown-option-padding-y) var(--dropdown-option-padding-x);
+    border: none;
+    border-radius: var(--dropdown-option-radius);
+    background: transparent;
+    color: var(--dropdown-option-fg);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.12s ease, color 0.12s ease;
+}
+.dropdown__option:hover,
+.dropdown__option.is-focus {
+    background: var(--dropdown-option-bg-hover);
+    color: var(--dropdown-option-fg-hover);
+}
+.dropdown__option.is-selected {
+    background: var(--dropdown-option-bg-selected);
+    color: var(--dropdown-option-fg-selected);
+    font-weight: var(--font-weight-medium);
+}
+.dropdown__option-label {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.dropdown__check {
+    width:  16px;
+    height: 16px;
+    color: var(--dropdown-option-check-color);
+    flex-shrink: 0;
+    opacity: 0;
+    transition: opacity 0.12s ease;
+}
+.dropdown__option.is-selected .dropdown__check {
+    opacity: 1;
+}
+.dropdown--sm  .dropdown__trigger { font-size: var(--form-sm-font-size);  padding: var(--form-sm-padding-y)  var(--form-sm-padding-x);  min-height: var(--form-sm-height);  border-radius: var(--radius-sm); }
+.dropdown--md  .dropdown__trigger { font-size: var(--form-md-font-size);  padding: var(--form-md-padding-y)  var(--form-md-padding-x);  min-height: var(--form-md-height); }
+.dropdown--lg  .dropdown__trigger { font-size: var(--form-lg-font-size);  padding: var(--form-lg-padding-y)  var(--form-lg-padding-x);  min-height: var(--form-lg-height); }
+.dropdown--sm  .dropdown__option  { font-size: var(--form-sm-font-size);  padding: var(--form-sm-padding-y)  var(--form-sm-padding-x); }
+.dropdown--md  .dropdown__option  { font-size: var(--form-md-font-size);  padding: var(--form-md-padding-y)  var(--form-md-padding-x); }
+.dropdown--lg  .dropdown__option  { font-size: var(--form-lg-font-size);  padding: var(--form-lg-padding-y)  var(--form-lg-padding-x); }
+.dropdown.is-error .dropdown__trigger {
+    border-color: var(--form-border-error);
+}
+.dropdown__trigger[disabled],
+.dropdown.is-disabled .dropdown__trigger {
+    background: var(--form-bg-disabled);
+    color: var(--form-fg-disabled);
+    cursor: not-allowed;
+    border-color: var(--form-border);
+    box-shadow: none;
+}
+@media (prefers-reduced-motion: reduce) {
+    .dropdown__menu {
+        transform: none;
+        transition:
+            opacity 0.01ms,
+            visibility 0s linear var(--dropdown-anim-duration);
+    }
+    .dropdown.is-open .dropdown__menu {
+        transform: none;
+        transition:
+            opacity 0.01ms,
+            visibility 0s;
+    }
+    .dropdown__chevron,
+    .dropdown__option { transition: none; }
+}
+
+/* =========================================================
+   CHIP PICKER — multi-select tag input (styles/chip-picker.css)
+   Layout glue only; chips reuse .badge, rows reuse .checkbox-list.
+   ========================================================= */
+.chip-picker {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2x);
+    position: relative;
+}
+.chip-picker__chips {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-1x);
+}
+.chip-picker__chips:empty {
+    display: none;
+}
+.chip-picker__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-1x);
+    padding-right: var(--spacing-1x);
+}
+.chip-picker__chip-remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: currentColor;
+    opacity: 0.7;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.chip-picker__chip-remove:hover {
+    opacity: 1;
+}
+.chip-picker__chip-remove .icon {
+    width: 12px;
+    height: 12px;
+}
+.chip-picker__search {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2x);
+    padding: var(--form-md-padding-y) var(--form-md-padding-x);
+    border: var(--border-width-base) solid var(--border-default);
+    border-radius: var(--radius-md);
+    background: var(--background-default);
+    cursor: text;
+    transition: border-color .15s ease;
+}
+.chip-picker.is-open .chip-picker__search,
+.chip-picker__search:focus-within {
+    border-color: var(--border-default-strong);
+}
+.chip-picker__search-icon {
+    display: inline-flex;
+    color: var(--text-default-minimal);
+}
+.chip-picker__search-icon .icon {
+    width: 14px;
+    height: 14px;
+}
+.chip-picker__input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    color: var(--text-default);
+}
+.chip-picker__input::placeholder {
+    color: var(--text-default-minimal);
+}
+.chip-picker__toggle {
+    display: inline-flex;
+    align-items: center;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--text-default-minimal);
+    cursor: pointer;
+    transition: transform .15s ease;
+}
+.chip-picker__toggle .icon {
+    width: 14px;
+    height: 14px;
+}
+.chip-picker.is-open .chip-picker__toggle {
+    transform: rotate(180deg);
+}
+.chip-picker__menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: var(--spacing-1x);
+    background: var(--background-default);
+    border: var(--border-width-base) solid var(--border-default);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    z-index: 30;
+    max-height: 320px;
+    overflow: hidden;
+    transform-origin: top center;
+    opacity: 0;
+    transform: translateY(-4px) scaleY(.98);
+    pointer-events: none;
+    visibility: hidden;
+    transition:
+        opacity   .16s ease,
+        transform .18s cubic-bezier(.2, .8, .2, 1),
+        visibility 0s linear .18s;
+}
+.chip-picker.is-open .chip-picker__menu {
+    opacity: 1;
+    transform: translateY(0) scaleY(1);
+    pointer-events: auto;
+    visibility: visible;
+    transition:
+        opacity   .16s ease,
+        transform .18s cubic-bezier(.2, .8, .2, 1),
+        visibility 0s linear 0s;
+}
+.chip-picker__menu .checkbox-list {
+    height: 100%;
+    overflow-y: auto;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+}
+.chip-picker .checkbox-list__row {
+    background: transparent;
+}
+.chip-picker .checkbox-list__row:hover {
+    background: var(--form-list-bg-hover);
+}
+.chip-picker .checkbox-list__row.is-checked {
+    background: var(--background-default-selected);
+}
+.chip-picker .checkbox-list__row.is-checked:hover {
+    background: color-mix(in srgb,
+        var(--background-default-selected) 70%,
+        var(--form-list-bg-hover));
+}
+.chip-picker .checkbox-list__row.is-active {
+    background: var(--form-list-bg-hover);
+}
+.chip-picker__add-row {
+    border: none;
+    background: transparent;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-size: var(--form-sm-font-size);
+    font-weight: 400;
+    line-height: inherit;
+    color: var(--text-accent-strong);
+}
+.chip-picker__add-row:hover {
+    color: var(--text-accent);
+}
+.chip-picker__add-row .icon {
+    width: 14px;
+    height: 14px;
+    color: currentColor;
+    flex-shrink: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+    .chip-picker__search,
+    .chip-picker__toggle,
+    .chip-picker__menu { transition: none; }
+    .chip-picker__menu {
+        transform: none;
+    }
+    .chip-picker:not(.is-open) .chip-picker__menu {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+.card:has(.chip-picker.is-open) {
+    position: relative;
+    z-index: 30;
+}
+
 /* ----- Disease catalogue (unused on this page) ---------- */
 .dash-catalogue.card {
     padding: 0;
@@ -7952,53 +8620,121 @@ body.has-modal-open { overflow: hidden; }
       <div class="dash-page__text">
         <h1>SP-002.</h1>
       </div>
-      <div class="dash-test-editor__cta-cluster">
-        <button type="button" class="btn btn--md btn--ghost"><span class="btn__label">Discard changes</span></button>
-        <button type="button" class="btn btn--md btn--ghost dash-test-editor__delete-btn"><span class="btn__label">Delete</span></button>
+      <div class="dash-test-profile__cta-cluster">
+        <a href="admin-test-profile-view-earthsky.html" class="btn btn--md btn--ghost"><span class="btn__label">Discard changes</span></a>
+        <button type="button" class="btn btn--md btn--ghost dash-test-profile__delete-btn"><span class="btn__label">Delete</span></button>
         <button type="button" class="btn btn--md btn--cta dash-page__cta"><span class="btn__label">Save changes</span></button>
       </div>
     </header>
 
-    <!-- Profile editor — single glass card with a two-column form -->
-    <section class="card card--glass dash-test-editor__card" aria-label="Profile editor">
-      <div class="dash-test-editor__grid">
+    <!-- Hero -->
+    <section class="card card--glass dash-test-profile__hero" aria-label="Profile summary">
 
-        <div class="dash-test-editor__form-stack">
+      <div class="dash-test-profile__hero-photo dash-test-editor__upload" tabindex="0" role="button" aria-label="Upload a picture for this profile">
+        <svg class="dash-test-editor__upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="17 8 12 3 7 8"/>
+          <line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+        <span>Drag a picture here or click to browse · Replace</span>
+      </div>
 
-          <div class="dash-test-editor__id-row">
-            <span class="dash-test-editor__id-key">Profile ID</span>
-            <span class="dash-test-editor__id-val">SP-002</span>
+      <div class="dash-test-profile__hero-body">
+        <input type="text" id="profile-name" class="input input--md dash-test-profile__hero-title-input" value="Subtropical CSF outbreak — 300-head, mixed ages" aria-label="Profile name" />
+        <ul class="dash-test-profile__hero-chips" aria-label="Profile tags">
+          <li><span class="badge badge--solid is-critical">CSF</span></li>
+          <li><span class="chip"><span class="chip__label">300 pigs</span></span></li>
+          <li><span class="chip"><span class="chip__label">Subtropical</span></span></li>
+          <li><span class="chip"><span class="chip__label">Weaners · Growers · Finishers</span></span></li>
+          <li><span class="chip"><span class="chip__label">Difficulty: medium</span></span></li>
+        </ul>
+        <dl class="dash-test-profile__hero-meta">
+          <div><dt>ID</dt><dd class="dash-test-profile__hero-meta-mono">SP-002</dd></div>
+          <div><dt>Created</dt><dd>04 May 2026</dd></div>
+          <div><dt>Updated</dt><dd>2 h ago</dd></div>
+          <div><dt>Version</dt><dd>v7</dd></div>
+        </dl>
+      </div>
+
+      <div class="dash-test-profile__hero-score" aria-label="Profile completeness">
+        <div class="dash-test-profile__score-ring" role="img" aria-label="85 percent complete" style="--p: 85;">
+          <div class="dash-test-profile__score-ring-inner">
+            <span class="dash-test-profile__score-num">85</span>
+            <span class="dash-test-profile__score-unit">%</span>
+          </div>
+        </div>
+        <p class="dash-test-profile__score-label">Completeness</p>
+        <p class="dash-test-profile__score-hint">Photo, label, and 3 of 6 systems filled.</p>
+      </div>
+    </section>
+
+    <!-- TODO: LLM preview tab — see SP_PREVIEW_SPEC.md (future) -->
+    <div class="dash-test-profile__grid">
+
+    <div class="dash-test-profile__main">
+    <div class="dash-test-editor__sections">
+
+      <section class="dash-test-editor__section" aria-labelledby="sec-farm">
+        <h2 id="sec-farm" class="dash-test-editor__section-title">Farm background</h2>
+        <div class="dash-test-editor__field-grid dash-test-editor__field-grid--2col">
+
+          <div class="field">
+            <label class="field__label" for="profile-farm-size">Farm size</label>
+            <input type="text" id="profile-farm-size" class="input input--sm" value="300 pigs" />
           </div>
 
-          <section class="dash-test-editor__group" aria-labelledby="grp-farm">
-            <header class="dash-test-editor__group-head">
-              <span class="dash-test-editor__group-eyebrow">farm_background</span>
-              <h2 id="grp-farm" class="dash-test-editor__group-title">Farm background</h2>
-            </header>
-            <div class="dash-test-editor__field-grid dash-test-editor__field-grid--2col">
+          <div class="field">
+            <div class="chip-picker" data-chip-picker
+                 data-vocab="pig-types"
+                 data-picker-id="profile-pig-types"
+                 data-label="Pig types"
+                 data-placeholder-key="chipPicker.searchPigTypes"
+                 data-selected="Weaners,Growers,Finishers"></div>
+          </div>
 
-              <div class="field">
-                <label class="field__label" for="profile-farm-size">Farm size</label>
-                <input type="text" id="profile-farm-size" class="input input--sm" value="300 pigs" />
+          <div class="field">
+            <label class="field__label" for="profile-climate-trigger">Climate</label>
+            <div class="dropdown dropdown--md" data-dropdown>
+              <button type="button" id="profile-climate-trigger" class="dropdown__trigger" aria-haspopup="listbox" aria-expanded="false">
+                <span class="dropdown__value">Subtropical</span>
+                <svg class="dropdown__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="dropdown__menu" role="listbox">
+                <button type="button" class="dropdown__option" role="option" data-value="Tropical"><span class="dropdown__option-label">Tropical</span><svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></button>
+                <button type="button" class="dropdown__option is-selected" role="option" data-value="Subtropical" aria-selected="true"><span class="dropdown__option-label">Subtropical</span><svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></button>
+                <button type="button" class="dropdown__option" role="option" data-value="Temperate"><span class="dropdown__option-label">Temperate</span><svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></button>
+                <button type="button" class="dropdown__option" role="option" data-value="Arid"><span class="dropdown__option-label">Arid</span><svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></button>
+                <button type="button" class="dropdown__option" role="option" data-value="Cold"><span class="dropdown__option-label">Cold</span><svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></button>
               </div>
-
-              <div class="field">
-                <label class="field__label" for="profile-pig-types">Pig types</label>
-                <input type="text" id="profile-pig-types" class="input input--sm" value="weaners, growers, finishers" />
-              </div>
-
-              <div class="field">
-                <label class="field__label" for="profile-location-climate">Location &amp; climate</label>
-                <input type="text" id="profile-location-climate" class="input input--sm" value="subtropical" />
-              </div>
-
             </div>
-          </section>
+          </div>
 
-          <section class="dash-test-editor__group" aria-labelledby="grp-obs">
-            <header class="dash-test-editor__group-head">
-              <span class="dash-test-editor__group-eyebrow">observed_evidences</span>
-              <h2 id="grp-obs" class="dash-test-editor__group-title">Observed evidences</h2>
+          <div class="field">
+            <label class="field__label" for="profile-difficulty-trigger">Difficulty</label>
+            <div class="dropdown dropdown--md" data-dropdown>
+              <button type="button" id="profile-difficulty-trigger" class="dropdown__trigger" aria-haspopup="listbox" aria-expanded="false">
+                <span class="dropdown__value">Medium</span>
+                <svg class="dropdown__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="dropdown__menu" role="listbox">
+                <button type="button" class="dropdown__option" role="option" data-value="Easy"><span class="dropdown__option-label">Easy</span><svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></button>
+                <button type="button" class="dropdown__option is-selected" role="option" data-value="Medium" aria-selected="true"><span class="dropdown__option-label">Medium</span><svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></button>
+                <button type="button" class="dropdown__option" role="option" data-value="Hard"><span class="dropdown__option-label">Hard</span><svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="dash-test-editor__section" aria-labelledby="sec-obs">
+        <h2 id="sec-obs" class="dash-test-editor__section-title">Observed evidences</h2>
+        <div class="dash-test-editor__card-row">
+
+          <section class="card card--glass dash-test-editor__pane" aria-labelledby="pane-general">
+            <header class="dash-test-editor__pane-head dash-test-profile__system-head">
+              <span class="badge badge--dot-only is-safe" aria-hidden="true"></span>
+              <h3 id="pane-general" class="dash-test-editor__pane-title">General</h3>
             </header>
             <div class="dash-test-editor__field-grid dash-test-editor__field-grid--2col">
 
@@ -8021,6 +8757,16 @@ body.has-modal-open { overflow: hidden; }
                 <label class="field__label" for="profile-fever">Fever</label>
                 <textarea id="profile-fever" class="input input--sm textarea" rows="2">High fever</textarea>
               </div>
+
+            </div>
+          </section>
+
+          <section class="card card--glass dash-test-editor__pane" aria-labelledby="pane-clinical">
+            <header class="dash-test-editor__pane-head dash-test-profile__system-head">
+              <span class="badge badge--dot-only is-safe" aria-hidden="true"></span>
+              <h3 id="pane-clinical" class="dash-test-editor__pane-title">Clinical</h3>
+            </header>
+            <div class="dash-test-editor__field-grid">
 
               <div class="field">
                 <label class="field__label" for="profile-sym-digestive">Digestive symptoms</label>
@@ -8047,64 +8793,116 @@ body.has-modal-open { overflow: hidden; }
                 <textarea id="profile-sym-reproductive" class="input input--sm textarea" rows="3"></textarea>
               </div>
 
+            </div>
+          </section>
+
+        </div>
+      </section>
+
+      <section class="dash-test-editor__section" aria-labelledby="sec-hist">
+        <h2 id="sec-hist" class="dash-test-editor__section-title">Medical history</h2>
+        <div class="dash-test-editor__card-row">
+
+          <section class="card card--glass dash-test-editor__pane" aria-labelledby="pane-vacc">
+            <header class="dash-test-editor__pane-head dash-test-profile__system-head">
+              <span class="badge badge--dot-only is-safe" aria-hidden="true"></span>
+              <h3 id="pane-vacc" class="dash-test-editor__pane-title">Vaccination history</h3>
+            </header>
+            <div class="dash-test-editor__pane-body">
               <div class="field">
                 <label class="field__label" for="profile-vaccination">Vaccination history</label>
                 <textarea id="profile-vaccination" class="input input--sm textarea" rows="3">Vaccinated against CSF 6 months ago but unsure if all pigs covered</textarea>
               </div>
+            </div>
+          </section>
 
+          <section class="card card--glass dash-test-editor__pane" aria-labelledby="pane-treat">
+            <header class="dash-test-editor__pane-head dash-test-profile__system-head">
+              <span class="badge badge--dot-only is-safe" aria-hidden="true"></span>
+              <h3 id="pane-treat" class="dash-test-editor__pane-title">Treatment history</h3>
+            </header>
+            <div class="dash-test-editor__pane-body">
               <div class="field">
                 <label class="field__label" for="profile-treatment">Treatment history</label>
                 <textarea id="profile-treatment" class="input input--sm textarea" rows="2">None yet</textarea>
               </div>
-
             </div>
           </section>
 
+        </div>
+      </section>
+
+      <section class="card card--glass dash-test-editor__pane" aria-labelledby="pane-label">
+        <header class="dash-test-editor__pane-head dash-test-profile__system-head">
+          <span class="badge badge--dot-only is-safe" aria-hidden="true"></span>
+          <h2 id="pane-label" class="dash-test-editor__section-title">Disease label</h2>
+        </header>
+        <div class="dash-test-editor__pane-body">
           <div class="field">
-            <label class="field__label" for="profile-disease">Disease label</label>
-            <select id="profile-disease" class="input input--sm">
-              <option value="" disabled>Pick a disease…</option>
-              <option value="PRRS">PRRS — Porcine Reproductive and Respiratory Syndrome</option>
-              <option value="ASF">ASF — African Swine Fever</option>
-              <option value="TGE">TGE — Transmissible Gastroenteritis</option>
-              <option value="ERY">ERY — Erysipelas</option>
-              <option value="APP">APP — Actinobacillus pleuropneumoniae</option>
-              <option value="CSF" selected>CSF — Classical Swine Fever</option>
-            </select>
+            <label class="field__label" for="profile-disease-trigger">Disease label</label>
+            <div class="dropdown dropdown--md" data-dropdown>
+              <button type="button" id="profile-disease-trigger" class="dropdown__trigger" aria-haspopup="listbox" aria-expanded="false">
+                <span class="dropdown__value">CSF — Classical Swine Fever</span>
+                <svg class="dropdown__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="dropdown__menu" role="listbox">
+                <button type="button" class="dropdown__option" role="option" data-value="PRRS"><span class="dropdown__option-label">PRRS — Porcine Reproductive and Respiratory Syndrome</span><svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></button>
+                <button type="button" class="dropdown__option" role="option" data-value="ASF"><span class="dropdown__option-label">ASF — African Swine Fever</span><svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></button>
+                <button type="button" class="dropdown__option" role="option" data-value="TGE"><span class="dropdown__option-label">TGE — Transmissible Gastroenteritis</span><svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></button>
+                <button type="button" class="dropdown__option" role="option" data-value="ERY"><span class="dropdown__option-label">ERY — Erysipelas</span><svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></button>
+                <button type="button" class="dropdown__option" role="option" data-value="APP"><span class="dropdown__option-label">APP — Actinobacillus pleuropneumoniae</span><svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></button>
+                <button type="button" class="dropdown__option is-selected" role="option" data-value="CSF" aria-selected="true"><span class="dropdown__option-label">CSF — Classical Swine Fever</span><svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></button>
+              </div>
+            </div>
           </div>
-
         </div>
+      </section>
 
-        <div class="dash-test-editor__right">
+    </div>
+    </div>
 
-          <div class="dash-test-editor__upload" tabindex="0" role="button" aria-label="Upload a picture for this profile">
-            <svg class="dash-test-editor__upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-              <polyline points="17 8 12 3 7 8"/>
-              <line x1="12" y1="3" x2="12" y2="15"/>
-            </svg>
-            <span>Drag a picture here or click to browse · Replace</span>
-          </div>
+    <aside class="dash-test-profile__rail" aria-label="Profile usage and activity">
 
-          <dl class="dash-test-editor__meta">
-            <div class="dash-test-editor__meta-row">
-              <span class="dash-test-editor__meta-key">ID</span>
-              <span class="dash-test-editor__meta-val dash-test-editor__meta-val--mono">SP-002</span>
-            </div>
-            <div class="dash-test-editor__meta-row">
-              <span class="dash-test-editor__meta-key">Created</span>
-              <span class="dash-test-editor__meta-val">2026-04-12</span>
-            </div>
-            <div class="dash-test-editor__meta-row">
-              <span class="dash-test-editor__meta-key">Updated</span>
-              <span class="dash-test-editor__meta-val">2 h ago</span>
-            </div>
-          </dl>
+      <section class="card card--glass dash-test-profile__rail-card" aria-labelledby="rail-used">
+        <header class="dash-test-profile__rail-head">
+          <h3 id="rail-used" class="dash-test-profile__rail-title">Used in</h3>
+          <span class="badge badge--ghost is-neutral badge--sm"><span class="badge__label">4 suites</span></span>
+        </header>
+        <ul class="dash-test-profile__usage-list">
+          <li class="dash-test-profile__usage-row"><span class="dash-test-profile__usage-key">TS-014 · GPT-4o sweep</span><span class="badge badge--ghost is-neutral badge--sm"><span class="badge__label">8 runs</span></span></li>
+          <li class="dash-test-profile__usage-row"><span class="dash-test-profile__usage-key">TS-009 · Claude-haiku</span><span class="badge badge--ghost is-neutral badge--sm"><span class="badge__label">3 runs</span></span></li>
+          <li class="dash-test-profile__usage-row"><span class="dash-test-profile__usage-key">TS-007 · llama-3 baseline</span><span class="badge badge--ghost is-neutral badge--sm"><span class="badge__label">12 runs</span></span></li>
+          <li class="dash-test-profile__usage-row"><span class="dash-test-profile__usage-key">TS-003 · regression</span><span class="badge badge--ghost is-neutral badge--sm"><span class="badge__label">22 runs</span></span></li>
+        </ul>
+        <a href="admin-test-suites-earthsky.html" class="btn btn--ghost btn--sm dash-test-profile__rail-more"><span class="btn__label">See all 4 suites →</span></a>
+      </section>
 
-        </div>
+      <section class="card card--glass dash-test-profile__rail-card" aria-labelledby="rail-runs">
+        <header class="dash-test-profile__rail-head">
+          <h3 id="rail-runs" class="dash-test-profile__rail-title">Recent runs</h3>
+        </header>
+        <ul class="dash-test-profile__usage-list">
+          <li class="dash-test-profile__usage-row"><span class="dash-test-profile__usage-key">R-1042 · 2 h ago</span><span class="badge badge--solid is-safe badge--sm"><span class="badge__label">acc 0.91</span></span></li>
+          <li class="dash-test-profile__usage-row"><span class="dash-test-profile__usage-key">R-1031 · 1 d ago</span><span class="badge badge--ghost is-neutral badge--sm"><span class="badge__label">acc 0.74</span></span></li>
+          <li class="dash-test-profile__usage-row"><span class="dash-test-profile__usage-key">R-0998 · 3 d ago</span><span class="badge badge--solid is-critical badge--sm"><span class="badge__label">acc 0.43</span></span></li>
+          <li class="dash-test-profile__usage-row"><span class="dash-test-profile__usage-key">R-0987 · 4 d ago</span><span class="badge badge--ghost is-neutral badge--sm"><span class="badge__label">acc 0.80</span></span></li>
+        </ul>
+      </section>
 
-      </div>
-    </section>
+      <section class="card card--glass dash-test-profile__rail-card" aria-labelledby="rail-activity">
+        <header class="dash-test-profile__rail-head">
+          <h3 id="rail-activity" class="dash-test-profile__rail-title">Activity</h3>
+        </header>
+        <ul class="dash-test-profile__usage-list">
+          <li class="dash-test-profile__usage-row"><span class="dash-test-profile__usage-key">Mai edited &ldquo;Fever&rdquo;</span><span class="dash-test-profile__usage-meta">2 h</span></li>
+          <li class="dash-test-profile__usage-row"><span class="dash-test-profile__usage-key">Tien added photo</span><span class="dash-test-profile__usage-meta">1 d</span></li>
+          <li class="dash-test-profile__usage-row"><span class="dash-test-profile__usage-key">System auto-saved v6</span><span class="dash-test-profile__usage-meta">1 d</span></li>
+        </ul>
+      </section>
+
+    </aside>
+
+    </div>
 
 
   </main>
@@ -8148,11 +8946,11 @@ body.has-modal-open { overflow: hidden; }
   // editor CTA cluster injects a .modal--xs into <body> and opens it.
   // Closing or confirming removes the markup entirely.
   (function () {
-    var deleteBtn = document.querySelector('.dash-test-editor__delete-btn');
+    var deleteBtn = document.querySelector('.dash-test-profile__delete-btn');
     if (!deleteBtn) return;
     deleteBtn.addEventListener('click', function () {
       var nameInput = document.getElementById('profile-name');
-      var idLabel = document.querySelector('.dash-test-editor__meta-val--mono');
+      var idLabel = document.querySelector('.dash-test-profile__hero-meta-mono');
       var name = nameInput ? nameInput.value : '';
       var id   = idLabel ? idLabel.textContent : '';
       var modal = document.createElement('div');
@@ -8196,6 +8994,434 @@ body.has-modal-open { overflow: hidden; }
       document.addEventListener('keydown', function escHandler(e) {
         if (e.key === 'Escape') { close(); document.removeEventListener('keydown', escHandler); }
       });
+    });
+  })();
+
+
+  /* =========================================================
+     DROPDOWN CONTROLLER — ARIA listbox for every [data-dropdown]
+     (ported from scripts/dropdown.js). Replaces the native
+     <select> on the categorical fields.
+     ========================================================= */
+  (function () {
+    function initOne(dropdown) {
+      if (dropdown.dataset.dropdownBound === 'true') return;
+      dropdown.dataset.dropdownBound = 'true';
+
+      const trigger  = dropdown.querySelector('.dropdown__trigger');
+      const menu     = dropdown.querySelector('.dropdown__menu');
+      const valueEl  = dropdown.querySelector('.dropdown__value');
+      const options  = Array.from(dropdown.querySelectorAll('.dropdown__option'));
+      let focusIdx = -1;
+
+      function open() {
+        document.querySelectorAll('.dropdown.is-open').forEach(d => {
+          if (d !== dropdown) d.classList.remove('is-open');
+        });
+        dropdown.classList.add('is-open');
+        trigger.setAttribute('aria-expanded', 'true');
+        const selected = dropdown.querySelector('.dropdown__option.is-selected');
+        focusIdx = selected ? options.indexOf(selected) : 0;
+        updateFocus();
+      }
+      function close() {
+        dropdown.classList.remove('is-open');
+        trigger.setAttribute('aria-expanded', 'false');
+        focusIdx = -1;
+        options.forEach(o => o.classList.remove('is-focus'));
+      }
+      function toggle() {
+        dropdown.classList.contains('is-open') ? close() : open();
+      }
+      function select(option) {
+        options.forEach(o => o.classList.remove('is-selected'));
+        option.classList.add('is-selected');
+        const labelNode = option.querySelector('span') || option;
+        const labelText = (labelNode.firstChild && labelNode.firstChild.nodeType === 3)
+          ? labelNode.firstChild.textContent.trim()
+          : option.textContent.trim();
+        valueEl.textContent = labelText;
+        trigger.classList.remove('is-empty');
+        dropdown.dispatchEvent(new CustomEvent('dropdown:change', {
+          detail: { value: option.dataset.value, label: labelText }
+        }));
+        close();
+        trigger.focus();
+      }
+      function updateFocus() {
+        options.forEach((o, i) => {
+          o.classList.toggle('is-focus', i === focusIdx);
+          if (i === focusIdx) o.scrollIntoView({ block: 'nearest' });
+        });
+      }
+
+      trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggle();
+      });
+      trigger.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
+          e.preventDefault();
+          if (!dropdown.classList.contains('is-open')) open();
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          if (!dropdown.classList.contains('is-open')) {
+            open();
+            focusIdx = options.length - 1;
+            updateFocus();
+          }
+        }
+      });
+
+      options.forEach((option, i) => {
+        option.addEventListener('click', (e) => {
+          e.stopPropagation();
+          select(option);
+        });
+        option.addEventListener('mouseenter', () => {
+          focusIdx = i;
+          updateFocus();
+        });
+      });
+
+      dropdown.addEventListener('keydown', (e) => {
+        if (!dropdown.classList.contains('is-open')) return;
+        if (e.key === 'Escape') {
+          e.preventDefault();
+          close();
+          trigger.focus();
+        } else if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          focusIdx = (focusIdx + 1) % options.length;
+          updateFocus();
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          focusIdx = focusIdx <= 0 ? options.length - 1 : focusIdx - 1;
+          updateFocus();
+        } else if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          if (focusIdx >= 0) select(options[focusIdx]);
+        } else if (e.key === 'Tab') {
+          close();
+        }
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!dropdown.contains(e.target)) close();
+      });
+    }
+    document.querySelectorAll('[data-dropdown]').forEach(initOne);
+  })();
+
+
+  /* =========================================================
+     CHIP-PICKER CONTROLLER — multi-select tag input for every
+     [data-chip-picker] (ported from scripts/v04-disease.js).
+     The "pig-types" vocabulary literal stands in for a
+     production API call.
+     ========================================================= */
+  (function () {
+    var VOCAB = {
+      "pig-types": ["Sucklers", "Weaners", "Growers", "Finishers", "Sows", "Boars", "All ages"]
+    };
+
+    var ICON_SEARCH  = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>';
+    var ICON_CHEVRON = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>';
+    var ICON_X       = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+    var ICON_PLUS    = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>';
+
+    function slug(label) {
+      return label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    }
+    function tr(key, fallback) {
+      return (typeof t === 'function') ? t(key) : fallback;
+    }
+    function byLabel(a, b) { return a.localeCompare(b); }
+
+    function initPicker(root) {
+      var vocabKey = root.dataset.vocab;
+      var vocab = (VOCAB[vocabKey] || []).slice().sort(byLabel);
+      var id = root.dataset.pickerId || ('chip-picker-' + Math.random().toString(36).slice(2, 8));
+      var menuId  = id + '-menu';
+      var chipsId = id + '-chips';
+      var placeholderKey = root.dataset.placeholderKey || 'chipPicker.searchSymptoms';
+      var addVocabKey    = root.dataset.addvocabKey   || 'chipPicker.addVocab';
+      var labelText = root.dataset.label || '';
+      var chipTone = root.classList.contains('chip-picker--areas') ? 'is-safe' : 'is-info';
+
+      var selected = (root.dataset.selected || '').split(',')
+        .map(function (s) { return s.trim(); })
+        .filter(Boolean);
+
+      var label = document.createElement('label');
+      label.className = 'field__label chip-picker__field-label';
+      label.setAttribute('for', id);
+      if (root.dataset.labelKey) label.dataset.i18n = root.dataset.labelKey;
+      label.textContent = labelText;
+
+      var chips = document.createElement('ul');
+      chips.className = 'chip-picker__chips';
+      chips.id = chipsId;
+      chips.setAttribute('aria-label', 'Selected ' + labelText.toLowerCase());
+
+      var search = document.createElement('div');
+      search.className = 'chip-picker__search';
+      search.innerHTML =
+        '<span class="chip-picker__search-icon" aria-hidden="true">' + ICON_SEARCH + '</span>' +
+        '<input type="text" id="' + id + '" class="chip-picker__input" autocomplete="off" ' +
+          'aria-autocomplete="list" aria-controls="' + menuId + '" aria-expanded="false" role="combobox" />' +
+        '<button type="button" class="chip-picker__toggle" tabindex="-1">' + ICON_CHEVRON + '</button>';
+      var input  = search.querySelector('.chip-picker__input');
+      var toggle = search.querySelector('.chip-picker__toggle');
+      input.placeholder = tr(placeholderKey, 'Search…');
+      toggle.setAttribute('aria-label', tr('chipPicker.openMenu', 'Open menu'));
+
+      var menu = document.createElement('div');
+      menu.className = 'chip-picker__menu';
+      menu.id = menuId;
+      menu.setAttribute('role', 'listbox');
+      menu.setAttribute('aria-multiselectable', 'true');
+      menu.setAttribute('aria-hidden', 'true');
+      var options = document.createElement('div');
+      options.className = 'checkbox-list checkbox-list--sm';
+      options.setAttribute('role', 'presentation');
+      menu.appendChild(options);
+      var addRow = document.createElement('button');
+      addRow.type = 'button';
+      addRow.className = 'checkbox-list__row chip-picker__add-row';
+      addRow.setAttribute('data-action', 'add-vocab');
+      addRow.setAttribute('data-vocab', vocabKey);
+      addRow.innerHTML =
+        ICON_PLUS +
+        '<span data-i18n="' + addVocabKey + '">' + tr(addVocabKey, 'Add to vocabulary') + '</span>';
+
+      root.appendChild(label);
+      root.appendChild(chips);
+      root.appendChild(search);
+      root.appendChild(menu);
+
+      var optionEls = {};
+      function makeOption(value) {
+        var row = document.createElement('label');
+        row.className = 'checkbox checkbox--sm checkbox-list__row';
+        row.id = id + '-opt-' + slug(value);
+        row.dataset.tagValue = slug(value);
+        row.dataset.label = value;
+        row.setAttribute('role', 'option');
+        row.setAttribute('aria-selected', 'false');
+        var cb = document.createElement('input');
+        cb.type = 'checkbox';
+        var span = document.createElement('span');
+        span.textContent = value;
+        row.appendChild(cb);
+        row.appendChild(span);
+        return row;
+      }
+      vocab.forEach(function (value) {
+        var row = makeOption(value);
+        optionEls[slug(value)] = row;
+        options.appendChild(row);
+      });
+      options.appendChild(addRow);
+
+      function isSelected(value) {
+        var s = slug(value);
+        return selected.some(function (v) { return slug(v) === s; });
+      }
+      function renderChips() {
+        chips.innerHTML = '';
+        selected.forEach(function (value) {
+          var li = document.createElement('li');
+          li.className = 'chip-picker__chip badge badge--sm ' + chipTone;
+          li.appendChild(document.createTextNode(value));
+          var remove = document.createElement('button');
+          remove.type = 'button';
+          remove.className = 'chip-picker__chip-remove';
+          remove.dataset.tagValue = slug(value);
+          remove.setAttribute('aria-label',
+            tr('chipPicker.removeLabel', 'Remove {tag}').replace('{tag}', value));
+          remove.innerHTML = ICON_X;
+          li.appendChild(remove);
+          chips.appendChild(li);
+        });
+      }
+      function syncOption(value) {
+        var row = optionEls[slug(value)];
+        if (!row) return;
+        var on = isSelected(value);
+        row.classList.toggle('is-checked', on);
+        row.setAttribute('aria-selected', on ? 'true' : 'false');
+        var cb = row.querySelector('input[type="checkbox"]');
+        if (cb) cb.checked = on;
+      }
+      function addTag(value) {
+        if (isSelected(value)) return;
+        selected.push(value);
+        renderChips();
+        syncOption(value);
+      }
+      function removeTag(value) {
+        var s = slug(value);
+        selected = selected.filter(function (v) { return slug(v) !== s; });
+        renderChips();
+        syncOption(value);
+      }
+      function toggleTag(value) {
+        if (isSelected(value)) removeTag(value); else addTag(value);
+      }
+
+      renderChips();
+      vocab.forEach(syncOption);
+
+      var activeIndex = -1;
+      function visibleOptions() {
+        return Array.prototype.filter.call(options.children, function (li) {
+          return !li.hidden && li !== addRow;
+        });
+      }
+      function setActive(idx) {
+        var vis = visibleOptions();
+        Array.prototype.forEach.call(options.children, function (li) { li.classList.remove('is-active'); });
+        activeIndex = idx;
+        if (idx >= 0 && idx < vis.length) {
+          vis[idx].classList.add('is-active');
+          input.setAttribute('aria-activedescendant', vis[idx].id);
+          vis[idx].scrollIntoView({ block: 'nearest' });
+        } else {
+          input.removeAttribute('aria-activedescendant');
+        }
+      }
+      function open() {
+        if (root.classList.contains('is-open')) return;
+        root.classList.add('is-open');
+        menu.setAttribute('aria-hidden', 'false');
+        input.setAttribute('aria-expanded', 'true');
+      }
+      function close() {
+        if (!root.classList.contains('is-open')) return;
+        root.classList.remove('is-open');
+        menu.setAttribute('aria-hidden', 'true');
+        input.setAttribute('aria-expanded', 'false');
+        setActive(-1);
+      }
+
+      root.addEventListener('click', function (e) {
+        if (e.target.closest('.chip-picker__chip-remove')) return;
+        if (e.target.closest('.checkbox-list__row')) return;
+        if (e.target.closest('.chip-picker__toggle')) return;
+        open();
+        input.focus();
+      });
+      toggle.addEventListener('click', function (e) {
+        e.stopPropagation();
+        if (root.classList.contains('is-open')) { close(); }
+        else { open(); input.focus(); }
+      });
+
+      options.addEventListener('change', function (e) {
+        var cb = e.target;
+        if (!cb || cb.type !== 'checkbox') return;
+        var row = cb.closest('.checkbox-list__row');
+        if (!row) return;
+        if (cb.checked) addTag(row.dataset.label);
+        else            removeTag(row.dataset.label);
+      });
+
+      chips.addEventListener('click', function (e) {
+        var btn = e.target.closest('.chip-picker__chip-remove');
+        if (!btn) return;
+        var s = btn.dataset.tagValue;
+        var match = selected.filter(function (v) { return slug(v) === s; })[0];
+        if (match) removeTag(match);
+      });
+
+      function applyFilter() {
+        var q = input.value.trim().toLowerCase();
+        Array.prototype.forEach.call(options.children, function (li) {
+          if (li === addRow) return;
+          li.hidden = !!q && li.dataset.label.toLowerCase().indexOf(q) === -1;
+        });
+        setActive(-1);
+      }
+      input.addEventListener('input', applyFilter);
+
+      input.addEventListener('keydown', function (e) {
+        var vis = visibleOptions();
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          open();
+          setActive(Math.min(activeIndex + 1, vis.length - 1));
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          setActive(Math.max(activeIndex - 1, 0));
+        } else if (e.key === 'Enter') {
+          e.preventDefault();
+          if (root.classList.contains('is-open') && activeIndex >= 0 && vis[activeIndex]) {
+            toggleTag(vis[activeIndex].dataset.label);
+          } else {
+            open();
+          }
+        } else if (e.key === 'Escape') {
+          if (root.classList.contains('is-open')) { e.preventDefault(); close(); input.focus(); }
+        } else if (e.key === 'Backspace' && input.value === '') {
+          if (selected.length) removeTag(selected[selected.length - 1]);
+        } else if (e.key === 'Tab') {
+          close();
+        }
+      });
+
+      addRow.addEventListener('click', function () {
+        var raw = window.prompt(tr(addVocabKey, 'Add to vocabulary'));
+        if (!raw) { input.focus(); return; }
+        var value = raw.trim();
+        if (!value) { input.focus(); return; }
+        var existing = vocab.filter(function (v) { return slug(v) === slug(value); })[0];
+        if (existing) { addTag(existing); input.focus(); return; }
+        vocab.push(value);
+        vocab.sort(byLabel);
+        var row = makeOption(value);
+        optionEls[slug(value)] = row;
+        options.insertBefore(row, options.children[vocab.indexOf(value)] || addRow);
+        addTag(value);
+        input.focus();
+      });
+
+      document.addEventListener('click', function (e) {
+        if (!root.contains(e.target)) close();
+      });
+      root.addEventListener('focusout', function () {
+        setTimeout(function () {
+          if (!root.contains(document.activeElement)) close();
+        }, 0);
+      });
+    }
+
+    document.querySelectorAll('[data-chip-picker]').forEach(initPicker);
+  })();
+
+
+  /* =========================================================
+     OBSERVED-EVIDENCE DOT INDICATORS — each .dash-test-editor__pane
+     head carries a .badge--dot-only. The dot is .is-safe when any
+     textarea/input inside that pane holds content, hollow when
+     every control is empty. Scoped to the pane ancestor.
+     ========================================================= */
+  (function () {
+    document.querySelectorAll('.dash-test-editor__pane').forEach(function (pane) {
+      var dot = pane.querySelector('.badge--dot-only');
+      if (!dot) return;
+      var controls = pane.querySelectorAll('textarea, input');
+      if (!controls.length) return;
+      function sync() {
+        var filled = Array.prototype.some.call(controls, function (c) {
+          return c.value.trim() !== '';
+        });
+        dot.classList.toggle('is-safe', filled);
+      }
+      controls.forEach(function (c) {
+        c.addEventListener('input', sync);
+      });
+      sync();
     });
   })();
 

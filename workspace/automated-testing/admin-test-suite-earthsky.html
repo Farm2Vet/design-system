@@ -7693,6 +7693,67 @@ button.card.card--inverted:hover {
     font-size: var(--text-body-sm);
 }
 
+/* ===== REFERENCE-ENRICHMENT PATTERNS =====
+   Page-scoped helpers added by TESTING_REF_DESIGN_ENRICHMENT_SPEC.
+   Status dot, accuracy donut.
+   ========================================================= */
+
+/* --- A. Status dot --- */
+.dash-test-status {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--neutral-300);
+  flex: 0 0 auto;
+  box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 12%, transparent);
+}
+.dash-test-status--safe     { background: var(--safe-500); }
+.dash-test-status--warning  { background: var(--warning-500); }
+.dash-test-status--critical { background: var(--critical-500); }
+.dash-test-status--info     { background: var(--info-500); }
+.dash-test-status--neutral  { background: var(--neutral-400); }
+.dash-test-status--lg { width: 14px; height: 14px; }
+
+/* --- B. Accuracy donut --- */
+.dash-test-donut {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 32px; height: 32px;
+  flex: 0 0 auto;
+}
+.dash-test-donut__track { stroke: var(--border-default); }
+.dash-test-donut__arc   { stroke: var(--neutral-500); transition: stroke .2s ease; }
+.dash-test-donut__value {
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  font: 500 10px/1 var(--font-mono);
+  color: var(--text-default);
+  letter-spacing: -0.01em;
+}
+.dash-test-donut--safe     .dash-test-donut__arc { stroke: var(--safe-500); }
+.dash-test-donut--warning  .dash-test-donut__arc { stroke: var(--warning-500); }
+.dash-test-donut--critical .dash-test-donut__arc { stroke: var(--critical-500); }
+.dash-test-donut--info     .dash-test-donut__arc { stroke: var(--info-500); }
+.dash-test-donut--lg { width: 56px; height: 56px; }
+.dash-test-donut--lg .dash-test-donut__value { font-size: 14px; }
+.dash-test-donut--lg svg { width: 56px; height: 56px; }
+
+/* --- Page-specific: recent-run row restructure --- */
+.dash-test-suite__run-row {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacing-3x);
+}
+.dash-test-suite__run-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-tier-7);
+  flex: 1;
+  min-width: 0;
+}
+
 </style>
 </head>
 <body>
@@ -7952,32 +8013,68 @@ button.card.card--inverted:hover {
         <div class="dash-test-suite__runs">
 
           <div class="dash-test-suite__run-row">
-            <div class="dash-test-suite__run-head">
-              <code class="dash-test-mono dash-test-suite__run-id">run_2026-05-18_14:02</code>
-              <a href="admin-test-run-earthsky.html" class="badge badge--safe" style="text-decoration: none;">42 / 45 passed</a>
-            </div>
-            <div class="dash-test-suite__run-metrics">
-              <strong>Acc</strong> 91% · <strong>Flu</strong> 87% · <strong>Lat</strong> 3.2s · <strong>Cost</strong> $0.42
+            <span class="dash-test-status dash-test-status--lg dash-test-status--safe"></span>
+            <span class="dash-test-donut dash-test-donut--lg dash-test-donut--safe" role="img" aria-label="Accuracy 91%">
+              <svg viewBox="0 0 36 36" width="56" height="56" aria-hidden="true">
+                <circle class="dash-test-donut__track" cx="18" cy="18" r="14" fill="none" stroke-width="3"/>
+                <circle class="dash-test-donut__arc"   cx="18" cy="18" r="14" fill="none" stroke-width="3"
+                        stroke-dasharray="91 100" pathLength="100"
+                        transform="rotate(-90 18 18)" stroke-linecap="round"/>
+              </svg>
+              <span class="dash-test-donut__value">91</span>
+            </span>
+            <div class="dash-test-suite__run-body">
+              <div class="dash-test-suite__run-head">
+                <code class="dash-test-mono dash-test-suite__run-id">run_2026-05-18_14:02</code>
+                <a href="admin-test-run-earthsky.html" class="badge badge--safe" style="text-decoration: none;">42 / 45 passed</a>
+              </div>
+              <div class="dash-test-suite__run-metrics">
+                <strong>Acc</strong> 91% · <strong>Flu</strong> 87% · <strong>Lat</strong> 3.2s · <strong>Cost</strong> $0.42
+              </div>
             </div>
           </div>
 
           <div class="dash-test-suite__run-row">
-            <div class="dash-test-suite__run-head">
-              <code class="dash-test-mono dash-test-suite__run-id">run_2026-05-17_22:14</code>
-              <a href="admin-test-run-earthsky.html" class="badge badge--warning" style="text-decoration: none;">39 / 45 passed</a>
-            </div>
-            <div class="dash-test-suite__run-metrics">
-              <strong>Acc</strong> 88% · <strong>Flu</strong> 84% · <strong>Lat</strong> 3.4s · <strong>Cost</strong> $0.46
+            <span class="dash-test-status dash-test-status--lg dash-test-status--warning"></span>
+            <span class="dash-test-donut dash-test-donut--lg dash-test-donut--warning" role="img" aria-label="Accuracy 88%">
+              <svg viewBox="0 0 36 36" width="56" height="56" aria-hidden="true">
+                <circle class="dash-test-donut__track" cx="18" cy="18" r="14" fill="none" stroke-width="3"/>
+                <circle class="dash-test-donut__arc"   cx="18" cy="18" r="14" fill="none" stroke-width="3"
+                        stroke-dasharray="88 100" pathLength="100"
+                        transform="rotate(-90 18 18)" stroke-linecap="round"/>
+              </svg>
+              <span class="dash-test-donut__value">88</span>
+            </span>
+            <div class="dash-test-suite__run-body">
+              <div class="dash-test-suite__run-head">
+                <code class="dash-test-mono dash-test-suite__run-id">run_2026-05-17_22:14</code>
+                <a href="admin-test-run-earthsky.html" class="badge badge--warning" style="text-decoration: none;">39 / 45 passed</a>
+              </div>
+              <div class="dash-test-suite__run-metrics">
+                <strong>Acc</strong> 88% · <strong>Flu</strong> 84% · <strong>Lat</strong> 3.4s · <strong>Cost</strong> $0.46
+              </div>
             </div>
           </div>
 
           <div class="dash-test-suite__run-row">
-            <div class="dash-test-suite__run-head">
-              <code class="dash-test-mono dash-test-suite__run-id">run_2026-05-17_09:01</code>
-              <a href="admin-test-run-earthsky.html" class="badge badge--safe" style="text-decoration: none;">43 / 45 passed</a>
-            </div>
-            <div class="dash-test-suite__run-metrics">
-              <strong>Acc</strong> 93% · <strong>Flu</strong> 90% · <strong>Lat</strong> 3.1s · <strong>Cost</strong> $0.41
+            <span class="dash-test-status dash-test-status--lg dash-test-status--safe"></span>
+            <span class="dash-test-donut dash-test-donut--lg dash-test-donut--safe" role="img" aria-label="Accuracy 93%">
+              <svg viewBox="0 0 36 36" width="56" height="56" aria-hidden="true">
+                <circle class="dash-test-donut__track" cx="18" cy="18" r="14" fill="none" stroke-width="3"/>
+                <circle class="dash-test-donut__arc"   cx="18" cy="18" r="14" fill="none" stroke-width="3"
+                        stroke-dasharray="93 100" pathLength="100"
+                        transform="rotate(-90 18 18)" stroke-linecap="round"/>
+              </svg>
+              <span class="dash-test-donut__value">93</span>
+            </span>
+            <div class="dash-test-suite__run-body">
+              <div class="dash-test-suite__run-head">
+                <code class="dash-test-mono dash-test-suite__run-id">run_2026-05-17_09:01</code>
+                <a href="admin-test-run-earthsky.html" class="badge badge--safe" style="text-decoration: none;">43 / 45 passed</a>
+              </div>
+              <div class="dash-test-suite__run-metrics">
+                <strong>Acc</strong> 93% · <strong>Flu</strong> 90% · <strong>Lat</strong> 3.1s · <strong>Cost</strong> $0.41
+              </div>
             </div>
           </div>
 

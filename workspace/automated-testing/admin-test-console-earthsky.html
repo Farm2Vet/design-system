@@ -7689,6 +7689,71 @@ button.card.card--inverted:hover {
     font-size: var(--text-body-sm);
 }
 
+/* ===== REFERENCE-ENRICHMENT PATTERNS =====
+   Page-scoped helpers added by TESTING_REF_DESIGN_ENRICHMENT_SPEC.
+   Status dot, accuracy donut.
+   ========================================================= */
+
+/* --- A. Status dot --- */
+.dash-test-status {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--neutral-300);
+  flex: 0 0 auto;
+  box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 12%, transparent);
+}
+.dash-test-status--safe     { background: var(--safe-500); }
+.dash-test-status--warning  { background: var(--warning-500); }
+.dash-test-status--critical { background: var(--critical-500); }
+.dash-test-status--info     { background: var(--info-500); }
+.dash-test-status--neutral  { background: var(--neutral-400); }
+.dash-test-status--lg { width: 14px; height: 14px; }
+
+/* --- B. Accuracy donut --- */
+.dash-test-donut {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 32px; height: 32px;
+  flex: 0 0 auto;
+}
+.dash-test-donut__track { stroke: var(--border-default); }
+.dash-test-donut__arc   { stroke: var(--neutral-500); transition: stroke .2s ease; }
+.dash-test-donut__value {
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  font: 500 10px/1 var(--font-mono);
+  color: var(--text-default);
+  letter-spacing: -0.01em;
+}
+.dash-test-donut--safe     .dash-test-donut__arc { stroke: var(--safe-500); }
+.dash-test-donut--warning  .dash-test-donut__arc { stroke: var(--warning-500); }
+.dash-test-donut--critical .dash-test-donut__arc { stroke: var(--critical-500); }
+.dash-test-donut--info     .dash-test-donut__arc { stroke: var(--info-500); }
+.dash-test-donut--lg { width: 56px; height: 56px; }
+.dash-test-donut--lg .dash-test-donut__value { font-size: 14px; }
+.dash-test-donut--lg svg { width: 56px; height: 56px; }
+
+/* --- Page-specific: recent-run card head + suite/profile dots --- */
+.dash-test-console__run-head {
+  display: grid;
+  grid-template-columns: 14px 1fr auto;
+  gap: var(--spacing-3x);
+  align-items: center;
+}
+.dash-test-console__run-head .dash-test-donut { justify-self: end; }
+.dash-test-console__suite-name .dash-test-status {
+  margin-right: var(--spacing-2x);
+  vertical-align: middle;
+}
+.dash-test-console__profile-lead {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2x);
+}
+
 </style>
 </head>
 <body>
@@ -7863,8 +7928,17 @@ button.card.card--inverted:hover {
 
         <article class="card card--glass dash-test-console__run-card">
           <div class="dash-test-console__run-head">
+            <span class="dash-test-status dash-test-status--lg dash-test-status--safe"></span>
             <div class="dash-test-console__run-suite">PRRS regression — EN</div>
-            <span class="badge badge--safe">42 / 45 passed</span>
+            <span class="dash-test-donut dash-test-donut--lg dash-test-donut--safe" role="img" aria-label="Accuracy 93%">
+              <svg viewBox="0 0 36 36" width="56" height="56" aria-hidden="true">
+                <circle class="dash-test-donut__track" cx="18" cy="18" r="14" fill="none" stroke-width="3"/>
+                <circle class="dash-test-donut__arc"   cx="18" cy="18" r="14" fill="none" stroke-width="3"
+                        stroke-dasharray="93 100" pathLength="100"
+                        transform="rotate(-90 18 18)" stroke-linecap="round"/>
+              </svg>
+              <span class="dash-test-donut__value">93</span>
+            </span>
           </div>
           <div class="dash-test-metric-row">
             <span><strong>Acc</strong> 91%</span><span class="dash-test-metric-row__sep">·</span>
@@ -7876,8 +7950,17 @@ button.card.card--inverted:hover {
 
         <article class="card card--glass dash-test-console__run-card">
           <div class="dash-test-console__run-head">
+            <span class="dash-test-status dash-test-status--lg dash-test-status--warning"></span>
             <div class="dash-test-console__run-suite">ASF screening — VI</div>
-            <span class="badge badge--warning">38 / 45 passed</span>
+            <span class="dash-test-donut dash-test-donut--lg dash-test-donut--warning" role="img" aria-label="Accuracy 84%">
+              <svg viewBox="0 0 36 36" width="56" height="56" aria-hidden="true">
+                <circle class="dash-test-donut__track" cx="18" cy="18" r="14" fill="none" stroke-width="3"/>
+                <circle class="dash-test-donut__arc"   cx="18" cy="18" r="14" fill="none" stroke-width="3"
+                        stroke-dasharray="84 100" pathLength="100"
+                        transform="rotate(-90 18 18)" stroke-linecap="round"/>
+              </svg>
+              <span class="dash-test-donut__value">84</span>
+            </span>
           </div>
           <div class="dash-test-metric-row">
             <span><strong>Acc</strong> 82%</span><span class="dash-test-metric-row__sep">·</span>
@@ -7889,8 +7972,14 @@ button.card.card--inverted:hover {
 
         <article class="card card--glass dash-test-console__run-card">
           <div class="dash-test-console__run-head">
+            <span class="dash-test-status dash-test-status--lg dash-test-status--critical"></span>
             <div class="dash-test-console__run-suite">TGE smoke — EN</div>
-            <span class="badge badge--critical">errored</span>
+            <span class="dash-test-donut dash-test-donut--lg dash-test-donut--critical" role="img" aria-label="Run errored">
+              <svg viewBox="0 0 36 36" width="56" height="56" aria-hidden="true">
+                <circle class="dash-test-donut__track" cx="18" cy="18" r="14" fill="none" stroke-width="3"/>
+              </svg>
+              <span class="dash-test-donut__value">—</span>
+            </span>
           </div>
           <div class="dash-test-metric-row">
             <span><strong>Acc</strong> —</span><span class="dash-test-metric-row__sep">·</span>
@@ -7902,8 +7991,17 @@ button.card.card--inverted:hover {
 
         <article class="card card--glass dash-test-console__run-card">
           <div class="dash-test-console__run-head">
+            <span class="dash-test-status dash-test-status--lg dash-test-status--info"></span>
             <div class="dash-test-console__run-suite">Nightly regression — EN</div>
-            <span class="badge badge--info">running 18 / 60</span>
+            <span class="dash-test-donut dash-test-donut--lg dash-test-donut--info" role="img" aria-label="Accuracy 87% so far">
+              <svg viewBox="0 0 36 36" width="56" height="56" aria-hidden="true">
+                <circle class="dash-test-donut__track" cx="18" cy="18" r="14" fill="none" stroke-width="3"/>
+                <circle class="dash-test-donut__arc"   cx="18" cy="18" r="14" fill="none" stroke-width="3"
+                        stroke-dasharray="87 100" pathLength="100"
+                        transform="rotate(-90 18 18)" stroke-linecap="round"/>
+              </svg>
+              <span class="dash-test-donut__value">87</span>
+            </span>
           </div>
           <div class="dash-test-metric-row">
             <span><strong>Acc</strong> 87% (so far)</span><span class="dash-test-metric-row__sep">·</span>
@@ -7924,7 +8022,7 @@ button.card.card--inverted:hover {
       <div class="dash-test-console__suites">
 
         <a class="card card--glass dash-test-console__suite-card" href="admin-test-suite-earthsky.html">
-          <div class="dash-test-console__suite-name">PRRS regression — EN</div>
+          <div class="dash-test-console__suite-name"><span class="dash-test-status dash-test-status--safe"></span>PRRS regression — EN</div>
           <div class="dash-test-console__suite-tags">
             <span class="badge badge--neutral">claude-sonnet-4-6</span>
             <span class="badge badge--neutral">Question-by-question</span>
@@ -7934,7 +8032,7 @@ button.card.card--inverted:hover {
         </a>
 
         <a class="card card--glass dash-test-console__suite-card" href="admin-test-suite-earthsky.html">
-          <div class="dash-test-console__suite-name">ASF screening — VI</div>
+          <div class="dash-test-console__suite-name"><span class="dash-test-status dash-test-status--warning"></span>ASF screening — VI</div>
           <div class="dash-test-console__suite-tags">
             <span class="badge badge--neutral">claude-haiku-4-5</span>
             <span class="badge badge--neutral">Free-form</span>
@@ -7944,7 +8042,7 @@ button.card.card--inverted:hover {
         </a>
 
         <a class="card card--glass dash-test-console__suite-card" href="admin-test-suite-earthsky.html">
-          <div class="dash-test-console__suite-name">TGE smoke — EN</div>
+          <div class="dash-test-console__suite-name"><span class="dash-test-status dash-test-status--critical"></span>TGE smoke — EN</div>
           <div class="dash-test-console__suite-tags">
             <span class="badge badge--neutral">claude-opus-4-7</span>
             <span class="badge badge--neutral">Question-by-question</span>
@@ -7954,7 +8052,7 @@ button.card.card--inverted:hover {
         </a>
 
         <a class="card card--glass dash-test-console__suite-card" href="admin-test-suite-earthsky.html">
-          <div class="dash-test-console__suite-name">Erysipelas baseline — EN</div>
+          <div class="dash-test-console__suite-name"><span class="dash-test-status dash-test-status--safe"></span>Erysipelas baseline — EN</div>
           <div class="dash-test-console__suite-tags">
             <span class="badge badge--neutral">claude-sonnet-4-6</span>
             <span class="badge badge--neutral">Free-form</span>
@@ -7964,7 +8062,7 @@ button.card.card--inverted:hover {
         </a>
 
         <a class="card card--glass dash-test-console__suite-card" href="admin-test-suite-earthsky.html">
-          <div class="dash-test-console__suite-name">APP differential — VI</div>
+          <div class="dash-test-console__suite-name"><span class="dash-test-status dash-test-status--safe"></span>APP differential — VI</div>
           <div class="dash-test-console__suite-tags">
             <span class="badge badge--neutral">claude-sonnet-4-6</span>
             <span class="badge badge--neutral">Question-by-question</span>
@@ -7974,7 +8072,7 @@ button.card.card--inverted:hover {
         </a>
 
         <a class="card card--glass dash-test-console__suite-card" href="admin-test-suite-earthsky.html">
-          <div class="dash-test-console__suite-name">Nightly regression — EN</div>
+          <div class="dash-test-console__suite-name"><span class="dash-test-status dash-test-status--info"></span>Nightly regression — EN</div>
           <div class="dash-test-console__suite-tags">
             <span class="badge badge--neutral">claude-sonnet-4-6</span>
             <span class="badge badge--neutral">Question-by-question</span>
@@ -7998,17 +8096,26 @@ button.card.card--inverted:hover {
         </div>
         <ul class="dash-test-console__profiles-list">
           <li class="dash-test-console__profile-row">
-            <span class="dash-test-console__profile-id">SP_0142</span>
+            <span class="dash-test-console__profile-lead">
+              <span class="dash-test-status dash-test-status--neutral"></span>
+              <span class="dash-test-console__profile-id">SP_0142</span>
+            </span>
             <span class="dash-test-console__profile-name">Sow 8mo · coughing &amp; fever</span>
             <span class="badge badge--neutral">PRRS</span>
           </li>
           <li class="dash-test-console__profile-row">
-            <span class="dash-test-console__profile-id">SP_0138</span>
+            <span class="dash-test-console__profile-lead">
+              <span class="dash-test-status dash-test-status--neutral"></span>
+              <span class="dash-test-console__profile-id">SP_0138</span>
+            </span>
             <span class="dash-test-console__profile-name">Piglet 3wk — sudden death cluster</span>
             <span class="badge badge--neutral">ASF</span>
           </li>
           <li class="dash-test-console__profile-row">
-            <span class="dash-test-console__profile-id">SP_0136</span>
+            <span class="dash-test-console__profile-lead">
+              <span class="dash-test-status dash-test-status--neutral"></span>
+              <span class="dash-test-console__profile-id">SP_0136</span>
+            </span>
             <span class="dash-test-console__profile-name">Weaner 6wk · diarrhoea + dehydration</span>
             <span class="badge badge--neutral">TGE</span>
           </li>

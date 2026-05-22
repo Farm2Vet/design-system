@@ -7769,6 +7769,56 @@ button.card.card--inverted:hover {
     font-size: var(--text-body-sm);
 }
 
+/* ===== REFERENCE-ENRICHMENT PATTERNS =====
+   Page-scoped helpers added by TESTING_REF_DESIGN_ENRICHMENT_SPEC.
+   Status dot, metric strip.
+   ========================================================= */
+
+/* --- A. Status dot --- */
+.dash-test-status {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--neutral-300);
+  flex: 0 0 auto;
+  box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 12%, transparent);
+}
+.dash-test-status--safe     { background: var(--safe-500); }
+.dash-test-status--warning  { background: var(--warning-500); }
+.dash-test-status--critical { background: var(--critical-500); }
+.dash-test-status--info     { background: var(--info-500); }
+.dash-test-status--neutral  { background: var(--neutral-400); }
+.dash-test-status--lg { width: 14px; height: 14px; }
+
+/* --- D. Inline metric strip --- */
+.dash-test-metric-strip {
+  display: flex; flex-wrap: wrap;
+  gap: var(--spacing-4x);
+  margin: var(--spacing-2x) 0 0 0;
+  padding: 0; list-style: none;
+}
+.dash-test-metric-strip li {
+  display: inline-flex; align-items: baseline; gap: 4px;
+  font: 500 13px/1.2 var(--font-mono);
+}
+.dash-test-metric-strip__key {
+  color: var(--text-default-subtle);
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+.dash-test-metric-strip__val {
+  color: var(--text-default);
+  font-size: 14px;
+}
+
+/* --- Page-specific: H1 status dot --- */
+.dash-test-case__page h1 .dash-test-status {
+  margin-right: var(--spacing-2x);
+  vertical-align: middle;
+}
+
 </style>
 </head>
 <body>
@@ -7926,7 +7976,7 @@ button.card.card--inverted:hover {
     <header class="dash-page dash-test-case__page">
       <div class="dash-page__text">
         <span class="dash-test-case__eyebrow">Case · <span class="dash-test-case__sp-id">SP_0138</span> · ASF · rep 2/3</span>
-        <h1>Piglet 3wk — sudden death cluster.</h1>
+        <h1><span class="dash-test-status dash-test-status--lg dash-test-status--critical"></span>Piglet 3wk — sudden death cluster.</h1>
         <div class="dash-test-case__meta-row">
           <span class="badge badge--warning">Anomaly flagged</span>
           <span class="badge badge--neutral">7 turns · 4.7s avg</span>
@@ -7937,6 +7987,16 @@ button.card.card--inverted:hover {
         <button type="button" class="btn btn--ghost btn--sm"><span class="btn__label">.json</span></button>
       </div>
     </header>
+
+    <ul class="dash-test-metric-strip" aria-label="Case scores">
+      <li><span class="dash-test-metric-strip__key">Acc</span><span class="dash-test-metric-strip__val">0.61</span></li>
+      <li><span class="dash-test-metric-strip__key">Flu</span><span class="dash-test-metric-strip__val">0.72</span></li>
+      <li><span class="dash-test-metric-strip__key">Eff</span><span class="dash-test-metric-strip__val">0.65</span></li>
+      <li><span class="dash-test-metric-strip__key">Lat</span><span class="dash-test-metric-strip__val">4.7s</span></li>
+      <li><span class="dash-test-metric-strip__key">Turns</span><span class="dash-test-metric-strip__val">7</span></li>
+      <li><span class="dash-test-metric-strip__key">Cost</span><span class="dash-test-metric-strip__val">$0.018</span></li>
+      <li><span class="dash-test-metric-strip__key">Step</span><span class="dash-test-metric-strip__val">final</span></li>
+    </ul>
 
     <!-- Two-column case body: chat thread left, evaluation cards right -->
     <div class="dash-test-case__split">

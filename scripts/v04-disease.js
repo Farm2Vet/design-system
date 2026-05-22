@@ -79,11 +79,11 @@
       "field.formnotes":           "Form-specific notes",
       "field.formnotes.hint":      "Explain how this form differs from the primary form (e.g., distinct clinical pattern, override rationale). Optional.",
       "form.default.tag":          "Default",
-      "form.default.on":           "Default ✓",
-      "form.default.off":          "Set as Default",
+      "form.setDefault":           "Set as Default",
       "symptom.affectedAreas":     "Affected areas",
       "section.symptoms.eyebrow":  "Symptoms",
       "form.inherit":              "Inherit from Acute",
+      "form.codename.title":       "Codename",
       "form.basic.title":          "Basic information",
       "form.general.title":        "General information",
       "form.management.title":     "Management",
@@ -166,11 +166,11 @@
       "field.formnotes":           "Ghi chú riêng cho thể",
       "field.formnotes.hint":      "Giải thích thể này khác với thể chính như thế nào (ví dụ: kiểu bệnh, lý do ghi đè). Không bắt buộc.",
       "form.default.tag":          "Mặc định",
-      "form.default.on":           "Mặc định ✓",
-      "form.default.off":          "Đặt làm mặc định",
+      "form.setDefault":           "Đặt làm mặc định",
       "symptom.affectedAreas":     "Vùng ảnh hưởng",
       "section.symptoms.eyebrow":  "Triệu chứng",
       "form.inherit":              "Kế thừa từ Acute",
+      "form.codename.title":       "Mã định danh",
       "form.basic.title":          "Thông tin cơ bản",
       "form.general.title":        "Thông tin tổng quát",
       "form.management.title":     "Quản lý",
@@ -369,19 +369,18 @@
     });
   })();
 
-  /* ────────────── PER-FIELD INHERITANCE TOGGLE ──────────────
-     Each field on a non-primary clinical form carries an "Inherit
-     from {primary}" checkbox. Checked = the field inherits (muted,
-     read-only); unchecked = the field is overridden (editable).
-     The checkbox drives the field's data-inherit attribute, which
-     the CSS keys off for the muted treatment.                     */
+  /* ────────────── PER-SECTION INHERITANCE TOGGLE ──────────────
+     Checked = the section inherits (read-only); unchecked = the
+     section is overridden (editable). The checkbox drives the
+     section's data-inherit attribute, which the CSS keys off for
+     the swap treatment.                                           */
   (function () {
     document.querySelectorAll('.disease-edit__inherit-checkbox').forEach(function (box) {
-      var field = box.closest('.field');
-      if (!field) return;
-      box.checked = field.getAttribute('data-inherit') === 'true';
+      var section = box.closest('.disease-edit__section');
+      if (!section) return;
+      box.checked = section.getAttribute('data-inherit') === 'true';
       box.addEventListener('change', function () {
-        field.setAttribute('data-inherit', box.checked ? 'true' : 'false');
+        section.setAttribute('data-inherit', box.checked ? 'true' : 'false');
       });
     });
   })();
@@ -890,10 +889,10 @@
       function renderChips() {
         chips.innerHTML = '';
         selected.forEach(function (value) {
-          // Each chip IS a .badge (badge--sm + tone); the chip-picker
+          // Each chip IS a .badge (default size + tone); the chip-picker
           // only adds the remove button and its layout glue.
           var li = document.createElement('li');
-          li.className = 'chip-picker__chip badge badge--sm ' + chipTone;
+          li.className = 'chip-picker__chip badge ' + chipTone;
           li.appendChild(document.createTextNode(value));
           var remove = document.createElement('button');
           remove.type = 'button';
@@ -1120,50 +1119,6 @@
     var EXPECTED = 'ASF';
     input.addEventListener('input', function () {
       submit.disabled = input.value.trim() !== EXPECTED;
-    });
-  })();
-
-
-  /* =========================================================
-     DEFAULT-FORM TOGGLE — one form per disease is the default.
-     The pressed text-button on the active form reads "Default ✓"
-     and is inert (clicking it does nothing); a click on a non-
-     pressed toggle promotes that card and demotes the rest by
-     flipping data-is-primary on the form cards. The view-mode
-     "Default" badge follows the data attribute via CSS — no JS
-     touches the badge directly.
-     ========================================================= */
-  (function () {
-    var toggles = document.querySelectorAll('[data-default-toggle]');
-    if (!toggles.length) return;
-
-    function labelKey(pressed) {
-      return pressed ? 'form.default.on' : 'form.default.off';
-    }
-
-    function refresh(toggle) {
-      var card = toggle.closest('.disease-edit__card--form');
-      var pressed = card && card.dataset.isPrimary === 'true';
-      toggle.setAttribute('aria-pressed', pressed ? 'true' : 'false');
-      var label = toggle.querySelector('.disease-edit__default-toggle-label');
-      if (label) {
-        label.dataset.i18n = labelKey(pressed);
-        label.textContent = (typeof t === 'function') ? t(labelKey(pressed))
-                                                      : (pressed ? 'Default ✓' : 'Set as Default');
-      }
-    }
-
-    toggles.forEach(function (toggle) {
-      refresh(toggle);
-      toggle.addEventListener('click', function () {
-        var card = toggle.closest('.disease-edit__card--form');
-        if (!card || card.dataset.isPrimary === 'true') return;   // already default — inert
-        document.querySelectorAll('.disease-edit__card--form').forEach(function (other) {
-          other.dataset.isPrimary = 'false';
-        });
-        card.dataset.isPrimary = 'true';
-        document.querySelectorAll('[data-default-toggle]').forEach(refresh);
-      });
     });
   })();
 

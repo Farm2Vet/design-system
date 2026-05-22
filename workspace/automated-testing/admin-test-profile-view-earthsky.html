@@ -7419,6 +7419,246 @@ body.has-modal-open { overflow: hidden; }
     .dash-test-editor__cta-cluster { flex-wrap: wrap; justify-content: flex-end; }
 }
 
+/* =========================================================
+   SYNTHETIC PROFILE · DOSSIER ADDITIONS
+   ========================================================= */
+
+/* Page meta strip — extra dots beside the existing updated meta. */
+.dash-page__meta > .dash-page__meta-sep { color: var(--text-default-minimal); padding: 0 var(--space-tier-7); }
+.dash-page__meta > .dash-page__meta-key { color: var(--text-default-subtle); }
+
+/* CTA cluster (alias to existing editor cluster — same rules). */
+.dash-test-profile__cta-cluster {
+    display: flex;
+    align-items: center;
+    gap: var(--space-tier-6);
+    flex-wrap: wrap;
+}
+
+/* -------- Hero ------------------------------------------- */
+.dash-test-profile__hero {
+    display: grid;
+    grid-template-columns: 160px 1fr 220px;
+    gap: var(--space-tier-3);
+    align-items: stretch;
+    padding: var(--space-tier-3);
+}
+.dash-test-profile__hero-photo {
+    margin: 0;
+    width: 160px;
+    height: 160px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--background-default-subtle);
+    border: 1px solid var(--border-default);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.dash-test-profile__hero-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.dash-test-profile__hero-photo--empty .dash-test-profile__hero-photo-icon {
+    width: 40%;
+    height: 40%;
+    color: var(--icon-default-subtle);
+}
+.dash-test-profile__hero-photo-cap {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    padding: var(--space-tier-7) var(--space-tier-6);
+    background: linear-gradient(0deg, color-mix(in srgb, var(--background-default) 90%, transparent), transparent);
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--text-default-subtle);
+}
+.dash-test-profile__hero-body { display: flex; flex-direction: column; gap: var(--space-tier-5); min-width: 0; }
+.dash-test-profile__hero-title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--text-h3);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: -0.01em;
+    color: var(--text-default);
+}
+.dash-test-profile__hero-title-input {
+    width: 100%;
+    font-size: var(--text-h3);
+    font-weight: var(--font-weight-semibold);
+}
+.dash-test-profile__hero-chips {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-tier-7);
+}
+.dash-test-profile__hero-meta {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-tier-5) var(--space-tier-3);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    color: var(--text-default-subtle);
+}
+.dash-test-profile__hero-meta > div { display: flex; gap: var(--space-tier-7); align-items: baseline; }
+.dash-test-profile__hero-meta dt { color: var(--text-default-minimal); }
+.dash-test-profile__hero-meta dd { margin: 0; color: var(--text-default); }
+.dash-test-profile__hero-meta-mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+/* -------- Score ring ------------------------------------- */
+.dash-test-profile__hero-score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-tier-7);
+    padding-top: var(--space-tier-7);
+    border-left: 1px dashed var(--border-default-subtle);
+    padding-left: var(--space-tier-5);
+}
+.dash-test-profile__score-ring {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background:
+        conic-gradient(
+            var(--accent-500) 0 calc(var(--p, 0) * 1%),
+            var(--background-default-subtle) calc(var(--p, 0) * 1%) 100%
+        );
+    display: grid;
+    place-items: center;
+    box-shadow: var(--glass-shadow-raised), 0 0 0 1px var(--border-default-subtle);
+}
+.dash-test-profile__score-ring-inner {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: var(--background-default);
+    display: grid;
+    grid-auto-flow: column;
+    place-items: baseline center;
+    gap: 1px;
+}
+.dash-test-profile__score-num {
+    font-family: var(--font-sans);
+    font-size: var(--text-h3);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-default);
+}
+.dash-test-profile__score-unit {
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    color: var(--text-default-subtle);
+}
+.dash-test-profile__score-label {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    color: var(--text-default);
+}
+.dash-test-profile__score-hint {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    color: var(--text-default-subtle);
+    text-align: center;
+    max-width: 160px;
+}
+
+/* -------- Main + rail grid ------------------------------- */
+.dash-test-profile__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: var(--space-tier-3);
+    align-items: start;
+    margin-top: var(--space-tier-3);
+}
+.dash-test-profile__main { min-width: 0; }
+.dash-test-profile__rail {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tier-4);
+    position: sticky;
+    top: var(--space-tier-3);
+}
+
+/* -------- Rail card ------------------------------------- */
+.dash-test-profile__rail-card { padding: var(--space-tier-4); }
+.dash-test-profile__rail-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-tier-6);
+    margin-bottom: var(--space-tier-5);
+}
+.dash-test-profile__rail-title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-default);
+}
+.dash-test-profile__rail-more { margin-top: var(--space-tier-5); }
+
+/* -------- Usage rows ----------------------------------- */
+.dash-test-profile__usage-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+.dash-test-profile__usage-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-tier-6);
+    padding: var(--space-tier-6) 0;
+    border-bottom: 1px dashed var(--border-default-subtle);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+}
+.dash-test-profile__usage-row:last-child { border-bottom: 0; }
+.dash-test-profile__usage-key { color: var(--text-default); min-width: 0; }
+.dash-test-profile__usage-meta {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--text-default-subtle);
+}
+
+/* -------- System head dot ------------------------------ */
+.dash-test-profile__system-head { display: flex; flex-direction: row; align-items: center; gap: var(--space-tier-6); }
+.dash-test-profile__field--observed .field__label { display: inline-flex; align-items: center; gap: var(--space-tier-7); }
+
+/* -------- Hint card body -------------------------------- */
+.dash-test-profile__hint {
+    margin: 0;
+    padding-left: var(--space-tier-5);
+    border-left: 2px solid var(--border-accent-subtle);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    color: var(--text-default);
+    font-style: italic;
+}
+
+/* -------- Responsive collapse -------------------------- */
+@media (max-width: 1100px) {
+    .dash-test-profile__grid { grid-template-columns: 1fr; }
+    .dash-test-profile__rail { position: static; }
+    .dash-test-profile__hero {
+        grid-template-columns: 120px 1fr;
+        grid-template-areas:
+            "photo body"
+            "score score";
+    }
+    .dash-test-profile__hero-photo  { grid-area: photo; width: 120px; height: 120px; }
+    .dash-test-profile__hero-body   { grid-area: body; }
+    .dash-test-profile__hero-score  { grid-area: score; flex-direction: row; border-left: 0; border-top: 1px dashed var(--border-default-subtle); padding: var(--space-tier-5) 0 0; gap: var(--space-tier-4); }
+}
+
 /* ----- Disease catalogue (unused on this page) ---------- */
 .dash-catalogue.card {
     padding: 0;
@@ -8098,24 +8338,75 @@ body.has-modal-open { overflow: hidden; }
     </header>
 
     <!-- Page header -->
-    <header class="dash-page dash-test-editor__page">
+    <header class="dash-page dash-test-profile__page">
       <div class="dash-page__text">
         <h1>SP-002.</h1>
         <p class="dash-page__meta">
           <span>Updated <span class="dash-page__meta-val">2 h ago</span></span>
+          <span class="dash-page__meta-sep" aria-hidden="true">·</span>
+          <span>by <span class="dash-page__meta-val">Mai</span></span>
+          <span class="dash-page__meta-sep" aria-hidden="true">·</span>
+          <span class="dash-page__meta-key">v</span>
+          <span class="dash-page__meta-val">7</span>
         </p>
       </div>
-      <div class="dash-test-editor__cta-cluster">
-        <a href="admin-test-profile-editor-earthsky.html" class="btn btn--md btn--ghost" aria-pressed="false">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M12 20h9"/>
-            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
-          </svg>
+      <div class="dash-test-profile__cta-cluster">
+        <button type="button" class="btn btn--md btn--ghost"><span class="btn__label">Duplicate</span></button>
+        <button type="button" class="btn btn--md btn--ghost"><span class="btn__label">Run in suite</span></button>
+        <a href="admin-test-profile-editor-earthsky.html" class="btn btn--md btn--cta">
+          <span class="btn__leading" aria-hidden="true">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          </span>
           <span class="btn__label">Edit</span>
         </a>
       </div>
     </header>
 
+    <!-- Hero -->
+    <section class="card card--glass dash-test-profile__hero" aria-label="Profile summary">
+
+      <figure class="dash-test-profile__hero-photo dash-test-profile__hero-photo--empty">
+        <svg class="dash-test-profile__hero-photo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <polyline points="21 15 16 10 5 21"/>
+        </svg>
+        <figcaption class="dash-test-profile__hero-photo-cap">No photo</figcaption>
+      </figure>
+
+      <div class="dash-test-profile__hero-body">
+        <h2 class="dash-test-profile__hero-title">Subtropical CSF outbreak — 300-head, mixed ages</h2>
+        <ul class="dash-test-profile__hero-chips" aria-label="Profile tags">
+          <li><span class="badge badge--solid is-critical">CSF</span></li>
+          <li><span class="chip"><span class="chip__label">300 pigs</span></span></li>
+          <li><span class="chip"><span class="chip__label">Subtropical</span></span></li>
+          <li><span class="chip"><span class="chip__label">Weaners · Growers · Finishers</span></span></li>
+          <li><span class="chip"><span class="chip__label">Difficulty: medium</span></span></li>
+        </ul>
+        <dl class="dash-test-profile__hero-meta">
+          <div><dt>ID</dt><dd class="dash-test-profile__hero-meta-mono">SP-002</dd></div>
+          <div><dt>Created</dt><dd>04 May 2026</dd></div>
+          <div><dt>Updated</dt><dd>2 h ago</dd></div>
+          <div><dt>Version</dt><dd>v7</dd></div>
+        </dl>
+      </div>
+
+      <div class="dash-test-profile__hero-score" aria-label="Profile completeness">
+        <div class="dash-test-profile__score-ring" role="img" aria-label="85 percent complete" style="--p: 85;">
+          <div class="dash-test-profile__score-ring-inner">
+            <span class="dash-test-profile__score-num">85</span>
+            <span class="dash-test-profile__score-unit">%</span>
+          </div>
+        </div>
+        <p class="dash-test-profile__score-label">Completeness</p>
+        <p class="dash-test-profile__score-hint">Photo, label, and 3 of 6 systems filled.</p>
+      </div>
+    </section>
+
+    <!-- TODO: LLM preview tab — see SP_PREVIEW_SPEC.md (future) -->
+    <div class="dash-test-profile__grid">
+
+    <div class="dash-test-profile__main">
     <!-- Profile data — top-level section stack -->
     <div class="dash-test-editor__sections">
 
@@ -8146,7 +8437,8 @@ body.has-modal-open { overflow: hidden; }
         <div class="dash-test-editor__card-row">
 
           <section class="card card--glass dash-test-editor__pane" aria-labelledby="pane-general">
-            <header class="dash-test-editor__pane-head">
+            <header class="dash-test-editor__pane-head dash-test-profile__system-head">
+              <span class="badge badge--dot-only is-safe" aria-hidden="true"></span>
               <h3 id="pane-general" class="dash-test-editor__pane-title">General</h3>
             </header>
             <div class="dash-test-editor__field-grid dash-test-editor__field-grid--2col">
@@ -8175,7 +8467,8 @@ body.has-modal-open { overflow: hidden; }
           </section>
 
           <section class="card card--glass dash-test-editor__pane" aria-labelledby="pane-clinical">
-            <header class="dash-test-editor__pane-head">
+            <header class="dash-test-editor__pane-head dash-test-profile__system-head">
+              <span class="badge badge--dot-only is-safe" aria-hidden="true"></span>
               <h3 id="pane-clinical" class="dash-test-editor__pane-title">Clinical</h3>
             </header>
             <div class="dash-test-editor__field-grid">
@@ -8195,8 +8488,11 @@ body.has-modal-open { overflow: hidden; }
                 <dd class="field__value">Some pigs have wobbly gait, hind limb paralysis</dd>
               </dl>
 
-              <dl class="field">
-                <dt class="field__label">Reproductive</dt>
+              <dl class="field dash-test-profile__field--observed">
+                <dt class="field__label">
+                  <span class="badge badge--dot-only" aria-hidden="true"></span>
+                  Reproductive
+                </dt>
                 <dd class="field__value field__value--empty">Not observed</dd>
               </dl>
 
@@ -8249,6 +8545,50 @@ body.has-modal-open { overflow: hidden; }
           <p class="dash-test-editor__pane-prose">CSF — Classical Swine Fever</p>
         </div>
       </section>
+
+    </div>
+    </div>
+
+    <aside class="dash-test-profile__rail" aria-label="Profile usage and activity">
+
+      <section class="card card--glass dash-test-profile__rail-card" aria-labelledby="rail-used">
+        <header class="dash-test-profile__rail-head">
+          <h3 id="rail-used" class="dash-test-profile__rail-title">Used in</h3>
+          <span class="badge badge--ghost is-neutral badge--sm"><span class="badge__label">4 suites</span></span>
+        </header>
+        <ul class="dash-test-profile__usage-list">
+          <li class="dash-test-profile__usage-row"><span class="dash-test-profile__usage-key">TS-014 · GPT-4o sweep</span><span class="badge badge--ghost is-neutral badge--sm"><span class="badge__label">8 runs</span></span></li>
+          <li class="dash-test-profile__usage-row"><span class="dash-test-profile__usage-key">TS-009 · Claude-haiku</span><span class="badge badge--ghost is-neutral badge--sm"><span class="badge__label">3 runs</span></span></li>
+          <li class="dash-test-profile__usage-row"><span class="dash-test-profile__usage-key">TS-007 · llama-3 baseline</span><span class="badge badge--ghost is-neutral badge--sm"><span class="badge__label">12 runs</span></span></li>
+          <li class="dash-test-profile__usage-row"><span class="dash-test-profile__usage-key">TS-003 · regression</span><span class="badge badge--ghost is-neutral badge--sm"><span class="badge__label">22 runs</span></span></li>
+        </ul>
+        <a href="admin-test-suites-earthsky.html" class="btn btn--ghost btn--sm dash-test-profile__rail-more"><span class="btn__label">See all 4 suites →</span></a>
+      </section>
+
+      <section class="card card--glass dash-test-profile__rail-card" aria-labelledby="rail-runs">
+        <header class="dash-test-profile__rail-head">
+          <h3 id="rail-runs" class="dash-test-profile__rail-title">Recent runs</h3>
+        </header>
+        <ul class="dash-test-profile__usage-list">
+          <li class="dash-test-profile__usage-row"><span class="dash-test-profile__usage-key">R-1042 · 2 h ago</span><span class="badge badge--solid is-safe badge--sm"><span class="badge__label">acc 0.91</span></span></li>
+          <li class="dash-test-profile__usage-row"><span class="dash-test-profile__usage-key">R-1031 · 1 d ago</span><span class="badge badge--ghost is-neutral badge--sm"><span class="badge__label">acc 0.74</span></span></li>
+          <li class="dash-test-profile__usage-row"><span class="dash-test-profile__usage-key">R-0998 · 3 d ago</span><span class="badge badge--solid is-critical badge--sm"><span class="badge__label">acc 0.43</span></span></li>
+          <li class="dash-test-profile__usage-row"><span class="dash-test-profile__usage-key">R-0987 · 4 d ago</span><span class="badge badge--ghost is-neutral badge--sm"><span class="badge__label">acc 0.80</span></span></li>
+        </ul>
+      </section>
+
+      <section class="card card--glass dash-test-profile__rail-card" aria-labelledby="rail-activity">
+        <header class="dash-test-profile__rail-head">
+          <h3 id="rail-activity" class="dash-test-profile__rail-title">Activity</h3>
+        </header>
+        <ul class="dash-test-profile__usage-list">
+          <li class="dash-test-profile__usage-row"><span class="dash-test-profile__usage-key">Mai edited &ldquo;Fever&rdquo;</span><span class="dash-test-profile__usage-meta">2 h</span></li>
+          <li class="dash-test-profile__usage-row"><span class="dash-test-profile__usage-key">Tien added photo</span><span class="dash-test-profile__usage-meta">1 d</span></li>
+          <li class="dash-test-profile__usage-row"><span class="dash-test-profile__usage-key">System auto-saved v6</span><span class="dash-test-profile__usage-meta">1 d</span></li>
+        </ul>
+      </section>
+
+    </aside>
 
     </div>
 

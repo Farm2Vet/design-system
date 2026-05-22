@@ -7751,6 +7751,129 @@ button.card.card--inverted:hover {
     font-size: var(--text-body-sm);
 }
 
+/* ===== REFERENCE-ENRICHMENT PATTERNS =====
+   Page-scoped helpers added by TESTING_REF_DESIGN_ENRICHMENT_SPEC.
+   Status dot, accuracy donut, filter chip row.
+   ========================================================= */
+
+/* --- A. Status dot --- */
+.dash-test-status {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--neutral-300);
+  flex: 0 0 auto;
+  box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 12%, transparent);
+}
+.dash-test-status--safe     { background: var(--safe-500); }
+.dash-test-status--warning  { background: var(--warning-500); }
+.dash-test-status--critical { background: var(--critical-500); }
+.dash-test-status--info     { background: var(--info-500); }
+.dash-test-status--neutral  { background: var(--neutral-400); }
+.dash-test-status--lg { width: 14px; height: 14px; }
+
+/* --- B. Accuracy donut --- */
+.dash-test-donut {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 32px; height: 32px;
+  flex: 0 0 auto;
+}
+.dash-test-donut__track { stroke: var(--border-default); }
+.dash-test-donut__arc   { stroke: var(--neutral-500); transition: stroke .2s ease; }
+.dash-test-donut__value {
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  font: 500 10px/1 var(--font-mono);
+  color: var(--text-default);
+  letter-spacing: -0.01em;
+}
+.dash-test-donut--safe     .dash-test-donut__arc { stroke: var(--safe-500); }
+.dash-test-donut--warning  .dash-test-donut__arc { stroke: var(--warning-500); }
+.dash-test-donut--critical .dash-test-donut__arc { stroke: var(--critical-500); }
+.dash-test-donut--info     .dash-test-donut__arc { stroke: var(--info-500); }
+.dash-test-donut--lg { width: 56px; height: 56px; }
+.dash-test-donut--lg .dash-test-donut__value { font-size: 14px; }
+.dash-test-donut--lg svg { width: 56px; height: 56px; }
+
+/* --- C. Filter chip row --- */
+.dash-test-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2x);
+  align-items: center;
+  padding: var(--spacing-3x) var(--spacing-4x);
+  border-top: 1px solid var(--border-default-subtle);
+}
+.chip--filter {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1x);
+  padding-right: var(--spacing-2x);
+  background: var(--background-default-subtle);
+  border-color: var(--border-default);
+  cursor: default;        /* the chip itself isn't toggleable; X is */
+}
+.chip--filter .chip__label-pre {
+  color: var(--text-default-subtle);
+  font-weight: var(--font-weight-medium);
+  margin-right: 4px;
+}
+.chip--filter .chip__count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 18px; height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: var(--neutral-100);
+  color: var(--text-default-subtle);
+  font: 500 11px/1 var(--font-mono);
+  margin-left: 4px;
+}
+.chip__dismiss {
+  display: inline-grid; place-items: center;
+  width: 18px; height: 18px;
+  margin-left: 4px;
+  border: 0; background: transparent;
+  color: var(--text-default-subtle);
+  border-radius: 50%;
+  cursor: pointer;
+}
+.chip__dismiss:hover { background: var(--neutral-100); color: var(--text-default); }
+.dash-test-filter-row__add {
+  display: inline-flex; align-items: center; gap: 4px;
+  height: var(--chip-height);
+  padding: 0 var(--spacing-3x);
+  border: 1px dashed var(--border-default);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--text-default-subtle);
+  font: 500 13px/1 var(--font-sans);
+  cursor: pointer;
+}
+.dash-test-filter-row__add:hover {
+  color: var(--text-default);
+  border-color: var(--border-default-strong);
+}
+
+/* --- Page-specific: status column + last-run cell --- */
+.dash-test-table__status-col { width: 28px; padding-right: 0; }
+.dash-test-table__status-col + th,
+.dash-test-table__status-col + td { padding-left: var(--spacing-2x); }
+.dash-test-table__last-run {
+  display: inline-flex; align-items: center; gap: var(--spacing-2x);
+}
+.dash-test-table__last-run-meta {
+  display: inline-flex; flex-direction: column; gap: 2px;
+  line-height: 1.2;
+}
+.dash-test-table__last-run-count {
+  font: 500 12px/1 var(--font-mono);
+  color: var(--text-default);
+}
+
 </style>
 </head>
 <body>
@@ -7931,15 +8054,6 @@ button.card.card--inverted:hover {
           </button>
         </label>
 
-        <div class="dash-test-toolbar__filters" role="group" aria-label="Filters">
-          <button type="button" class="chip" aria-pressed="true">
-            <span class="chip__label">Model: claude-*</span>
-            <span class="dash-test-toolbar__chip-close" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
-            </span>
-          </button>
-        </div>
-
         <div class="dash-test-toolbar__sort" role="group" aria-label="Sort">
           <div class="dash-test-toolbar__sort-by-wrap">
             <button type="button" class="dash-test-toolbar__sort-by" aria-haspopup="menu" aria-expanded="false">
@@ -7960,11 +8074,54 @@ button.card.card--inverted:hover {
 
       </header>
 
+      <div class="dash-test-filter-row" role="group" aria-label="Active filters">
+
+        <span class="chip chip--filter" data-filter="model">
+          <span class="chip__label-pre">Model:</span>
+          <span class="chip__label">claude-sonnet-4-6, claude-haiku-4-5</span>
+          <button type="button" class="chip__dismiss" aria-label="Remove model filter">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
+        </span>
+
+        <span class="chip chip--filter" data-filter="mode">
+          <span class="chip__label-pre">Mode:</span>
+          <span class="chip__label">Question-by-question</span>
+          <button type="button" class="chip__dismiss" aria-label="Remove mode filter">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
+        </span>
+
+        <span class="chip chip--filter" data-filter="disease">
+          <span class="chip__label-pre">Disease:</span>
+          <span class="chip__label">ASF, PRRS, TGE</span>
+          <span class="chip__count">3</span>
+          <button type="button" class="chip__dismiss" aria-label="Remove disease filter">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
+        </span>
+
+        <span class="chip chip--filter" data-filter="last-run">
+          <span class="chip__label-pre">Last run:</span>
+          <span class="chip__label">within 7 days</span>
+          <button type="button" class="chip__dismiss" aria-label="Remove last run filter">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
+        </span>
+
+        <button type="button" class="dash-test-filter-row__add" aria-haspopup="menu" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M12 5v14M5 12h14"/></svg>
+          <span>Add filter</span>
+        </button>
+
+      </div>
+
       <div class="dash-test-table-wrap">
         <table class="dash-test-table">
           <thead>
             <tr>
               <th class="dash-test-table__check-col"><input type="checkbox" class="checkbox" aria-label="Select all suites" /></th>
+              <th class="dash-test-table__status-col" aria-label="Status"></th>
               <th>Suite name</th>
               <th>Model</th>
               <th>Mode</th>
@@ -7977,6 +8134,7 @@ button.card.card--inverted:hover {
           <tbody>
             <tr>
               <td><input type="checkbox" class="checkbox" aria-label="Select PRRS regression — EN" /></td>
+              <td><span class="dash-test-status dash-test-status--safe"></span></td>
               <td><a class="dash-test-table__suite-name" href="admin-test-suite-earthsky.html">PRRS regression — EN</a></td>
               <td class="dash-test-table__model">claude-sonnet-4-6</td>
               <td class="dash-test-table__mode">Question-by-question</td>
@@ -7984,14 +8142,26 @@ button.card.card--inverted:hover {
               <td class="dash-test-table__num">4</td>
               <td>
                 <span class="dash-test-table__last-run">
-                  <span class="badge badge--safe">42 / 45 passed</span>
-                  <span class="dash-test-table__last-run-time">2 h ago</span>
+                  <span class="dash-test-donut dash-test-donut--safe" role="img" aria-label="Accuracy 93%">
+                    <svg viewBox="0 0 36 36" width="32" height="32" aria-hidden="true">
+                      <circle class="dash-test-donut__track" cx="18" cy="18" r="14" fill="none" stroke-width="4"/>
+                      <circle class="dash-test-donut__arc"   cx="18" cy="18" r="14" fill="none" stroke-width="4"
+                              stroke-dasharray="93 100" pathLength="100"
+                              transform="rotate(-90 18 18)" stroke-linecap="round"/>
+                    </svg>
+                    <span class="dash-test-donut__value">93</span>
+                  </span>
+                  <span class="dash-test-table__last-run-meta">
+                    <span class="dash-test-table__last-run-count">42 / 45</span>
+                    <span class="dash-test-table__last-run-time">2 h ago</span>
+                  </span>
                 </span>
               </td>
               <td class="dash-test-table__row-action-col"><button type="button" class="dash-test-table__row-action" aria-label="Row actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
             </tr>
             <tr>
               <td><input type="checkbox" class="checkbox" aria-label="Select ASF screening — VI" /></td>
+              <td><span class="dash-test-status dash-test-status--warning"></span></td>
               <td><a class="dash-test-table__suite-name" href="admin-test-suite-earthsky.html">ASF screening — VI</a></td>
               <td class="dash-test-table__model">claude-haiku-4-5</td>
               <td class="dash-test-table__mode">Free-form</td>
@@ -7999,14 +8169,26 @@ button.card.card--inverted:hover {
               <td class="dash-test-table__num">4</td>
               <td>
                 <span class="dash-test-table__last-run">
-                  <span class="badge badge--warning">38 / 45 passed</span>
-                  <span class="dash-test-table__last-run-time">6 h ago</span>
+                  <span class="dash-test-donut dash-test-donut--warning" role="img" aria-label="Accuracy 84%">
+                    <svg viewBox="0 0 36 36" width="32" height="32" aria-hidden="true">
+                      <circle class="dash-test-donut__track" cx="18" cy="18" r="14" fill="none" stroke-width="4"/>
+                      <circle class="dash-test-donut__arc"   cx="18" cy="18" r="14" fill="none" stroke-width="4"
+                              stroke-dasharray="84 100" pathLength="100"
+                              transform="rotate(-90 18 18)" stroke-linecap="round"/>
+                    </svg>
+                    <span class="dash-test-donut__value">84</span>
+                  </span>
+                  <span class="dash-test-table__last-run-meta">
+                    <span class="dash-test-table__last-run-count">38 / 45</span>
+                    <span class="dash-test-table__last-run-time">6 h ago</span>
+                  </span>
                 </span>
               </td>
               <td class="dash-test-table__row-action-col"><button type="button" class="dash-test-table__row-action" aria-label="Row actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
             </tr>
             <tr>
               <td><input type="checkbox" class="checkbox" aria-label="Select TGE smoke — EN" /></td>
+              <td><span class="dash-test-status dash-test-status--critical"></span></td>
               <td><a class="dash-test-table__suite-name" href="admin-test-suite-earthsky.html">TGE smoke — EN</a></td>
               <td class="dash-test-table__model">claude-opus-4-7</td>
               <td class="dash-test-table__mode">Question-by-question</td>
@@ -8014,14 +8196,23 @@ button.card.card--inverted:hover {
               <td class="dash-test-table__num">2</td>
               <td>
                 <span class="dash-test-table__last-run">
-                  <span class="badge badge--critical">errored</span>
-                  <span class="dash-test-table__last-run-time">yesterday</span>
+                  <span class="dash-test-donut dash-test-donut--critical" role="img" aria-label="Run errored">
+                    <svg viewBox="0 0 36 36" width="32" height="32" aria-hidden="true">
+                      <circle class="dash-test-donut__track" cx="18" cy="18" r="14" fill="none" stroke-width="4"/>
+                    </svg>
+                    <span class="dash-test-donut__value">—</span>
+                  </span>
+                  <span class="dash-test-table__last-run-meta">
+                    <span class="dash-test-table__last-run-count">errored</span>
+                    <span class="dash-test-table__last-run-time">yesterday</span>
+                  </span>
                 </span>
               </td>
               <td class="dash-test-table__row-action-col"><button type="button" class="dash-test-table__row-action" aria-label="Row actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
             </tr>
             <tr>
               <td><input type="checkbox" class="checkbox" aria-label="Select Erysipelas baseline — EN" /></td>
+              <td><span class="dash-test-status dash-test-status--safe"></span></td>
               <td><a class="dash-test-table__suite-name" href="admin-test-suite-earthsky.html">Erysipelas baseline — EN</a></td>
               <td class="dash-test-table__model">claude-sonnet-4-6</td>
               <td class="dash-test-table__mode">Free-form</td>
@@ -8029,14 +8220,26 @@ button.card.card--inverted:hover {
               <td class="dash-test-table__num">2</td>
               <td>
                 <span class="dash-test-table__last-run">
-                  <span class="badge badge--safe">40 / 40 passed</span>
-                  <span class="dash-test-table__last-run-time">3 d ago</span>
+                  <span class="dash-test-donut dash-test-donut--safe" role="img" aria-label="Accuracy 100%">
+                    <svg viewBox="0 0 36 36" width="32" height="32" aria-hidden="true">
+                      <circle class="dash-test-donut__track" cx="18" cy="18" r="14" fill="none" stroke-width="4"/>
+                      <circle class="dash-test-donut__arc"   cx="18" cy="18" r="14" fill="none" stroke-width="4"
+                              stroke-dasharray="100 100" pathLength="100"
+                              transform="rotate(-90 18 18)" stroke-linecap="round"/>
+                    </svg>
+                    <span class="dash-test-donut__value">100</span>
+                  </span>
+                  <span class="dash-test-table__last-run-meta">
+                    <span class="dash-test-table__last-run-count">40 / 40</span>
+                    <span class="dash-test-table__last-run-time">3 d ago</span>
+                  </span>
                 </span>
               </td>
               <td class="dash-test-table__row-action-col"><button type="button" class="dash-test-table__row-action" aria-label="Row actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
             </tr>
             <tr>
               <td><input type="checkbox" class="checkbox" aria-label="Select APP differential — VI" /></td>
+              <td><span class="dash-test-status dash-test-status--safe"></span></td>
               <td><a class="dash-test-table__suite-name" href="admin-test-suite-earthsky.html">APP differential — VI</a></td>
               <td class="dash-test-table__model">claude-sonnet-4-6</td>
               <td class="dash-test-table__mode">Question-by-question</td>
@@ -8044,14 +8247,26 @@ button.card.card--inverted:hover {
               <td class="dash-test-table__num">4</td>
               <td>
                 <span class="dash-test-table__last-run">
-                  <span class="badge badge--safe">41 / 42 passed</span>
-                  <span class="dash-test-table__last-run-time">5 d ago</span>
+                  <span class="dash-test-donut dash-test-donut--safe" role="img" aria-label="Accuracy 98%">
+                    <svg viewBox="0 0 36 36" width="32" height="32" aria-hidden="true">
+                      <circle class="dash-test-donut__track" cx="18" cy="18" r="14" fill="none" stroke-width="4"/>
+                      <circle class="dash-test-donut__arc"   cx="18" cy="18" r="14" fill="none" stroke-width="4"
+                              stroke-dasharray="98 100" pathLength="100"
+                              transform="rotate(-90 18 18)" stroke-linecap="round"/>
+                    </svg>
+                    <span class="dash-test-donut__value">98</span>
+                  </span>
+                  <span class="dash-test-table__last-run-meta">
+                    <span class="dash-test-table__last-run-count">41 / 42</span>
+                    <span class="dash-test-table__last-run-time">5 d ago</span>
+                  </span>
                 </span>
               </td>
               <td class="dash-test-table__row-action-col"><button type="button" class="dash-test-table__row-action" aria-label="Row actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
             </tr>
             <tr>
               <td><input type="checkbox" class="checkbox" aria-label="Select Vaccine refusal cases — EN" /></td>
+              <td><span class="dash-test-status dash-test-status--neutral"></span></td>
               <td><a class="dash-test-table__suite-name" href="admin-test-suite-earthsky.html">Vaccine refusal cases — EN</a></td>
               <td class="dash-test-table__model">claude-sonnet-4-6</td>
               <td class="dash-test-table__mode">Free-form</td>
@@ -8059,7 +8274,15 @@ button.card.card--inverted:hover {
               <td class="dash-test-table__num">2</td>
               <td>
                 <span class="dash-test-table__last-run">
-                  <span class="badge badge--neutral">never run</span>
+                  <span class="dash-test-donut" role="img" aria-label="Never run">
+                    <svg viewBox="0 0 36 36" width="32" height="32" aria-hidden="true">
+                      <circle class="dash-test-donut__track" cx="18" cy="18" r="14" fill="none" stroke-width="4"/>
+                    </svg>
+                    <span class="dash-test-donut__value">—</span>
+                  </span>
+                  <span class="dash-test-table__last-run-meta">
+                    <span class="dash-test-table__last-run-time">never run</span>
+                  </span>
                 </span>
               </td>
               <td class="dash-test-table__row-action-col"><button type="button" class="dash-test-table__row-action" aria-label="Row actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
@@ -8176,6 +8399,14 @@ button.card.card--inverted:hover {
         isDesc ? 'Sort direction: ascending' : 'Sort direction: descending');
     });
   }
+
+  // ----- Filter chip dismiss (reference-enrichment) -----
+  document.querySelectorAll('.dash-test-filter-row .chip__dismiss').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var chip = btn.closest('.chip--filter');
+      if (chip) chip.remove();
+    });
+  });
 </script>
 
 </body>
