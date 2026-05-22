@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Admin · Automated testing — suites (Earth + Sky) — Farm2Vet</title>
+<title>Admin · Automated testing — profiles (Earth + Sky) — Farm2Vet</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -6072,6 +6072,182 @@ button.card.card--inverted:hover {
 }
 
 
+/* ===== styles/modal.css ===== */
+:root {
+    --modal-font-family:      var(--font-sans);
+    --modal-radius:           var(--radius-lg);
+    --modal-radius-sheet:     var(--radius-lg);
+    --modal-border-width:     var(--border-width-base);
+    --modal-shadow:           var(--shadow-lg);
+    --modal-gap:              var(--space-gap-default);
+    --modal-gap-tight:        var(--space-gap-snug);
+    --modal-z-backdrop:       80;
+    --modal-z-surface:        81;
+    --modal-transition:       background-color .18s ease, color .18s ease,
+                              border-color .18s ease, box-shadow .18s ease,
+                              opacity .22s ease, transform .26s cubic-bezier(.2,.8,.2,1);
+    --modal-xs-width:         320px;
+    --modal-xs-padding-x:     var(--space-container-x-sm);
+    --modal-xs-padding-y:     var(--space-container-y-sm);
+    --modal-sm-width:         440px;
+    --modal-sm-padding-x:     var(--space-container-x);
+    --modal-sm-padding-y:     var(--space-container-y);
+    --modal-md-width:         560px;
+    --modal-md-padding-x:     var(--space-container-x);
+    --modal-md-padding-y:     var(--space-container-y);
+    --modal-lg-width:         720px;
+    --modal-lg-padding-x:     var(--space-container-x-lg);
+    --modal-lg-padding-y:     var(--space-container-y);
+    --modal-xl-width:         960px;
+    --modal-xl-padding-x:     var(--space-container-x-lg);
+    --modal-xl-padding-y:     var(--space-container-y-lg);
+    --modal-max-height:       min(86vh, 720px);
+    --modal-bg:               var(--background-default);
+    --modal-fg:               var(--text-default);
+    --modal-fg-subtle:        var(--text-default-subtle);
+    --modal-border:           var(--border-default);
+    --modal-divider:          var(--border-default-subtle);
+    --modal-glass-bg:     var(--glass-light-thick-bg);
+    --modal-glass-border: var(--glass-light-thick-border);
+    --modal-glass-blur:   var(--glass-light-thick-blur);
+    --modal-glass-shadow: var(--glass-shadow-overlay);
+    --modal-glass-inset:  var(--glass-inset-light-strong);
+    --modal-backdrop:         var(--glass-scrim);
+    --modal-backdrop-blur:    var(--glass-scrim-blur);
+    --modal-header-padding-y: var(--space-container-y);
+    --modal-body-padding-y:   var(--space-container-y);
+    --modal-header-gap:       var(--space-tier-5);
+    --modal-title-font:       var(--text-h6);
+    --modal-title-weight:     var(--font-weight-semibold);
+    --modal-title-line:       var(--line-height-h6);
+    --modal-eyebrow-fg:       var(--text-default-minimal);
+    --modal-description-fg:   var(--text-default-subtle);
+    --modal-body-line:        var(--line-height-body);
+    --modal-body-gap:         var(--space-tier-5);
+    --modal-footer-gap:       var(--space-tier-5);
+    --modal-footer-padding-y: var(--space-tier-4);
+    --modal-footer-bg:        var(--background-default-subtle);
+    --modal-footer-border:    var(--border-default-subtle);
+    --modal-close-size:       32px;
+    --modal-close-radius:     var(--radius-sm);
+    --modal-close-fg:         var(--icon-default);
+    --modal-close-fg-hover:   var(--text-default);
+    --modal-close-bg-hover:   var(--background-default-hover);
+    --modal-drawer-width:     420px;
+    --modal-drawer-width-lg:  560px;
+    --modal-sheet-height:     min(72vh, 640px);
+    --modal-anim-duration:    260ms;
+    --modal-anim-easing:      cubic-bezier(.2, .8, .2, 1);
+    --modal-anim-translate:   12px;
+    --modal-focus-outline:        var(--outline-focus);
+    --modal-focus-outline-width:  2px;
+    --modal-focus-outline-offset: 2px;
+}
+body.has-modal-open { overflow: hidden; }
+.modal {
+    position: fixed; inset: 0;
+    z-index: var(--modal-z-backdrop);
+    display: flex; align-items: center; justify-content: center;
+    padding: var(--space-container-y) var(--space-container-x);
+    background: var(--modal-backdrop);
+    backdrop-filter: var(--modal-backdrop-blur);
+    -webkit-backdrop-filter: var(--modal-backdrop-blur);
+    opacity: 0; pointer-events: none;
+    transition: opacity var(--modal-anim-duration) var(--modal-anim-easing);
+}
+.modal.is-open { opacity: 1; pointer-events: auto; }
+.modal__surface {
+    position: relative;
+    z-index: var(--modal-z-surface);
+    display: flex; flex-direction: column;
+    width: 100%; max-width: var(--modal-md-width);
+    max-height: var(--modal-max-height);
+    background: var(--modal-bg); color: var(--modal-fg);
+    border-radius: var(--modal-radius);
+    border: var(--modal-border-width) solid var(--modal-border);
+    box-shadow: var(--modal-shadow);
+    overflow: hidden;
+    font-family: var(--modal-font-family);
+    transform: translateY(var(--modal-anim-translate)) scale(.98);
+    transition: transform var(--modal-anim-duration) var(--modal-anim-easing),
+                opacity var(--modal-anim-duration) var(--modal-anim-easing);
+    opacity: 0;
+}
+.modal.is-open .modal__surface { transform: translateY(0) scale(1); opacity: 1; }
+.modal--xs .modal__surface { max-width: var(--modal-xs-width); }
+.modal--sm .modal__surface { max-width: var(--modal-sm-width); }
+.modal--md .modal__surface { max-width: var(--modal-md-width); }
+.modal--lg .modal__surface { max-width: var(--modal-lg-width); }
+.modal--xl .modal__surface { max-width: var(--modal-xl-width); }
+.modal__header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    column-gap: var(--modal-header-gap);
+    align-items: start;
+    padding: var(--modal-header-padding-y) var(--modal-md-padding-x);
+    border-bottom: var(--modal-border-width) solid transparent;
+}
+.modal__heading { display: flex; flex-direction: column; gap: var(--spacing-1x); min-width: 0; }
+.modal__title {
+    font-family: var(--font-sans);
+    font-size: var(--modal-title-font);
+    font-weight: var(--modal-title-weight);
+    line-height: var(--modal-title-line);
+    color: var(--modal-fg);
+    margin: 0;
+}
+.modal__description {
+    font-family: var(--font-sans); font-size: var(--text-sm);
+    line-height: var(--modal-body-line);
+    color: var(--modal-description-fg);
+    margin: var(--space-tier-7) 0 0 0;
+}
+.modal__close {
+    width: var(--modal-close-size); height: var(--modal-close-size);
+    border-radius: var(--modal-close-radius);
+    background: transparent; border: 0;
+    color: var(--modal-close-fg);
+    display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: background-color .15s ease, color .15s ease;
+}
+.modal__close:hover { background: var(--modal-close-bg-hover); color: var(--modal-close-fg-hover); }
+.modal__close svg { width: 18px; height: 18px; }
+.modal__body {
+    padding: 0 var(--modal-md-padding-x) var(--modal-body-padding-y);
+    overflow-y: auto; flex: 1 1 auto;
+    color: var(--modal-fg);
+    font-size: var(--text-base);
+    line-height: var(--modal-body-line);
+    display: flex; flex-direction: column;
+    gap: var(--modal-body-gap);
+}
+.modal__body p { margin: 0; }
+.modal__body ul { margin: 0; padding-left: var(--space-tier-3); }
+.modal__surface > .modal__body:first-child { padding-top: var(--modal-body-padding-y); }
+.modal__footer {
+    display: flex; align-items: center; justify-content: flex-end;
+    gap: var(--modal-footer-gap);
+    padding: var(--modal-footer-padding-y) var(--modal-md-padding-x);
+    border-top: var(--modal-border-width) solid var(--modal-footer-border);
+    background: var(--modal-footer-bg);
+}
+.modal--xs .modal__header,
+.modal--xs .modal__body,
+.modal--xs .modal__footer { padding-left: var(--modal-xs-padding-x); padding-right: var(--modal-xs-padding-x); }
+.modal--xs .modal__header,
+.modal--xs .modal__body { padding-top: var(--modal-xs-padding-y); padding-bottom: var(--modal-xs-padding-y); }
+.modal--xs .modal__footer { padding-top: var(--modal-footer-padding-y); padding-bottom: var(--modal-footer-padding-y); }
+@media (prefers-reduced-motion: reduce) {
+    .modal, .modal__surface { transition: opacity .15s ease; }
+    .modal__surface { transform: none; }
+}
+@media (max-width: 600px) {
+    .modal { align-items: flex-end; padding: 0; }
+    .modal .modal__surface { max-width: 100%; width: 100%; border-bottom-left-radius: 0; border-bottom-right-radius: 0; max-height: var(--modal-sheet-height); }
+}
+
+
 /* ===== styles/global-nav.css ===== */
 /* =========================================================
    FARM2VET DESIGN SYSTEM — GLOBAL NAV
@@ -6970,11 +7146,9 @@ button.card.card--inverted:hover {
 }
 
 /* =========================================================
-   ADMIN · AUTOMATED TESTING — SUITES LIST (FR-384)
-   Toolbar (search · filter chip · sort) + table + pager.
-   Reuses the same .dash-test-* scaffolding as the profiles
-   list — toolbar, table, pager — duplicated here so the
-   page stays self-contained.
+   ADMIN · AUTOMATED TESTING — PROFILES LIST (FR-381)
+   Toolbar (search · filter chips · sort) + bulk bar +
+   data table + pager + delete-confirm modal.
    ========================================================= */
 
 /* ----- Shared automated-testing card layout ------------- */
@@ -6996,15 +7170,26 @@ button.card.card--inverted:hover {
     border-bottom: var(--border-width-base) solid var(--border-default-subtle);
     flex-wrap: wrap;
 }
+.dash-test-toolbar.is-hidden { display: none; }
 .dash-test-toolbar__search {
     flex: 1 1 280px;
     min-width: 200px;
 }
+
 .dash-test-toolbar__filters {
     display: inline-flex;
     align-items: center;
     gap: var(--space-tier-7);
     flex-wrap: wrap;
+}
+.dash-test-toolbar__filter-dashed {
+    border-style: dashed;
+    color: var(--text-default-subtle);
+    background: transparent;
+}
+.dash-test-toolbar__filter-dashed:hover {
+    color: var(--text-default);
+    border-color: var(--border-default-strong);
 }
 .dash-test-toolbar__chip-close {
     display: inline-flex;
@@ -7013,9 +7198,12 @@ button.card.card--inverted:hover {
     width: 14px;
     height: 14px;
     margin-left: var(--space-tier-7);
+    color: currentColor;
     opacity: 0.7;
 }
 
+/* Sort group — verbatim from .dash-catalogue__sort, renamed
+   to .dash-test-toolbar__sort per AUTOMATED_TESTING_SPEC.md. */
 .dash-test-toolbar__sort {
     display: inline-flex;
     align-items: center;
@@ -7035,6 +7223,7 @@ button.card.card--inverted:hover {
     font-size: var(--text-body-sm);
     color: var(--text-default);
     cursor: pointer;
+    transition: background-color .15s ease, border-color .15s ease;
 }
 .dash-test-toolbar__sort-by:hover {
     background: var(--background-default-hover);
@@ -7068,6 +7257,7 @@ button.card.card--inverted:hover {
     color: var(--text-default);
     border-radius: var(--radius-sm);
     cursor: pointer;
+    transition: background-color .15s ease, color .15s ease;
 }
 .dash-test-toolbar__sort-menu button:hover { background: var(--background-default-hover); }
 .dash-test-toolbar__sort-menu button[aria-selected="true"] {
@@ -7086,9 +7276,38 @@ button.card.card--inverted:hover {
     border: var(--border-width-base) solid var(--border-default);
     color: var(--text-default-subtle);
     cursor: pointer;
+    transition: background-color .15s ease, border-color .15s ease, color .15s ease;
+}
+.dash-test-toolbar__sort-dir:hover {
+    background: var(--background-default-hover);
+    border-color: var(--border-default-strong);
+    color: var(--text-default);
 }
 .dash-test-toolbar__sort-dir svg { width: 14px; height: 14px; transition: transform .18s ease; }
 .dash-test-toolbar__sort-dir[aria-pressed="false"] svg { transform: rotate(180deg); }
+
+/* ----- Bulk-action bar --------------------------------- */
+.dash-test-bulkbar {
+    display: none;
+    align-items: center;
+    gap: var(--space-tier-5);
+    padding: var(--space-tier-5);
+    background: color-mix(in srgb, var(--primary-500) 12%, var(--white-base));
+    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
+}
+.dash-test-bulkbar.is-visible { display: flex; }
+.dash-test-bulkbar__count {
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-default);
+    margin-right: auto;
+}
+.dash-test-bulkbar__actions {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-tier-7);
+}
 
 /* ----- Data table -------------------------------------- */
 .dash-test-table-wrap { overflow-x: auto; }
@@ -7114,34 +7333,40 @@ button.card.card--inverted:hover {
     border-bottom: var(--border-width-base) solid var(--border-default-subtle);
     vertical-align: middle;
 }
-.dash-test-table tbody tr { transition: background-color .15s ease; }
+.dash-test-table tbody tr {
+    transition: background-color .15s ease;
+}
 .dash-test-table tbody tr:hover {
     background: color-mix(in srgb, var(--primary-500) 8%, transparent);
 }
-.dash-test-table__check-col { width: 36px; }
-.dash-test-table__suite-name {
-    color: var(--text-default);
-    font-weight: var(--font-weight-medium);
+.dash-test-table tbody tr.is-selected {
+    background: color-mix(in srgb, var(--primary-500) 14%, transparent);
+    box-shadow: inset 3px 0 0 var(--primary-500);
 }
-.dash-test-table__model,
-.dash-test-table__mode {
+.dash-test-table__check-col { width: 36px; }
+.dash-test-table__id {
+    /* font-family, font-size, color moved to .dash-test-table__id-link */
+}
+.dash-test-table__id-link {
+    color: var(--text-default);
     font-family: var(--font-mono);
     font-size: var(--text-body-sm);
-    color: var(--text-default-subtle);
+    letter-spacing: var(--letter-spacing-mono);
+    text-decoration: none;
+    transition: color .15s ease;
+    border-radius: var(--radius-sm);
 }
-.dash-test-table__num {
-    text-align: right;
-    font-variant-numeric: tabular-nums;
-    color: var(--text-default);
+.dash-test-table__id-link:hover {
+    color: var(--text-accent);
 }
-.dash-test-table__last-run {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-tier-7);
-    white-space: nowrap;
+.dash-test-table__id-link:focus-visible {
+    color: var(--text-accent);
+    outline: 2px solid var(--primary-500);
+    outline-offset: 2px;
 }
-.dash-test-table__last-run-time {
+.dash-test-table__updated {
     color: var(--text-default-minimal);
+    white-space: nowrap;
 }
 .dash-test-table__row-action-col { width: 40px; text-align: right; }
 .dash-test-table__row-action {
@@ -7157,7 +7382,15 @@ button.card.card--inverted:hover {
     color: var(--text-default);
 }
 
-/* ----- Pager ------------------------------------------- */
+/* Disease-label pills — neutral badge with inline accent hue */
+.dash-test-label--prrs { background: color-mix(in srgb, var(--primary-500) 18%, var(--white-base)); color: var(--primary-900); border-color: color-mix(in srgb, var(--primary-500) 30%, transparent); }
+.dash-test-label--asf { background: color-mix(in srgb, var(--secondary-500) 16%, var(--white-base)); color: var(--secondary-900); border-color: color-mix(in srgb, var(--secondary-500) 30%, transparent); }
+.dash-test-label--tge { background: color-mix(in srgb, var(--secondary-300) 18%, var(--white-base)); color: var(--secondary-900); border-color: color-mix(in srgb, var(--secondary-300) 35%, transparent); }
+.dash-test-label--ery { background: color-mix(in srgb, var(--accent-500) 16%, var(--white-base)); color: var(--accent-900); border-color: color-mix(in srgb, var(--accent-500) 30%, transparent); }
+.dash-test-label--app { background: color-mix(in srgb, var(--info-500, var(--primary-700)) 16%, var(--white-base)); color: var(--text-default); border-color: color-mix(in srgb, var(--primary-700) 30%, transparent); }
+.dash-test-label--csf { background: color-mix(in srgb, var(--warning-500) 16%, var(--white-base)); color: var(--warning-700); border-color: color-mix(in srgb, var(--warning-500) 30%, transparent); }
+
+/* ----- Pager (matches catalogue pager visually) -------- */
 .dash-test-pager {
     display: flex;
     align-items: center;
@@ -7188,6 +7421,7 @@ button.card.card--inverted:hover {
     border: var(--border-width-base) solid var(--border-default);
     color: var(--text-default-subtle);
     cursor: pointer;
+    transition: background-color .15s ease, color .15s ease, border-color .15s ease;
 }
 .dash-test-pager__btn:hover {
     background: var(--background-default-hover);
@@ -7210,6 +7444,15 @@ button.card.card--inverted:hover {
     text-align: center;
     padding: 4px var(--space-tier-7);
     font-family: var(--font-sans);
+}
+
+/* ----- Below-card usage note --------------------------- */
+.dash-test__note {
+    margin: var(--space-tier-5) 0 0 0;
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    color: var(--text-default-subtle);
+    max-width: 70ch;
 }
 
 /* ----- Responsive --------------------------------------- */
@@ -7762,7 +8005,7 @@ button.card.card--inverted:hover {
     <aside class="sidebar" aria-label="Admin primary navigation">
 
       <header class="sidebar__header">
-        <a href="admin-dashboard.html" class="sidebar__brand">
+        <a href="../admin-dashboard.html" class="sidebar__brand">
           <img class="sidebar__brand-mark" src="../logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
           <span class="sidebar__brand-text">Farm2Vet</span>
         </a>
@@ -7775,7 +8018,7 @@ button.card.card--inverted:hover {
         <ul class="sidebar__list">
 
           <li class="sidebar__item">
-            <a class="sidebar__link" href="admin-dashboard.html">
+            <a class="sidebar__link" href="../admin-dashboard.html">
               <span class="sidebar__icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
               </span>
@@ -7794,7 +8037,7 @@ button.card.card--inverted:hover {
               </span>
             </button>
             <ul class="sidebar__sublist">
-              <li class="sidebar__item"><a class="sidebar__link" href="admin-disease-earthsky.html"><span class="sidebar__label">Disease</span><span class="sidebar__trailing"><span class="sidebar__badge">142</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="../admin-disease-earthsky.html"><span class="sidebar__label">Disease</span><span class="sidebar__trailing"><span class="sidebar__badge">142</span></span></a></li>
               <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Question</span><span class="sidebar__trailing"><span class="sidebar__badge">318</span></span></a></li>
               <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Conversation</span><span class="sidebar__trailing"><span class="sidebar__badge">47</span></span></a></li>
               <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Image</span></a></li>
@@ -7815,8 +8058,8 @@ button.card.card--inverted:hover {
             </button>
             <ul class="sidebar__sublist">
               <li class="sidebar__item"><a class="sidebar__link" href="admin-test-console-earthsky.html"><span class="sidebar__label">Console</span></a></li>
-              <li class="sidebar__item"><a class="sidebar__link" href="admin-test-profiles-earthsky.html"><span class="sidebar__label">Profiles</span><span class="sidebar__trailing"><span class="sidebar__badge">142</span></span></a></li>
-              <li class="sidebar__item"><a class="sidebar__link is-current" href="admin-test-suites-earthsky.html" aria-current="page"><span class="sidebar__label">Suites</span><span class="sidebar__trailing"><span class="sidebar__badge">12</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link is-current" href="admin-test-profiles-earthsky.html" aria-current="page"><span class="sidebar__label">Profiles</span><span class="sidebar__trailing"><span class="sidebar__badge">142</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="admin-test-suites-earthsky.html"><span class="sidebar__label">Suites</span><span class="sidebar__trailing"><span class="sidebar__badge">12</span></span></a></li>
               <li class="sidebar__item"><a class="sidebar__link" href="admin-test-run-earthsky.html"><span class="sidebar__label">Runs</span><span class="sidebar__trailing"><span class="sidebar__badge sidebar__badge--warning">3</span></span></a></li>
             </ul>
           </li>
@@ -7863,11 +8106,11 @@ button.card.card--inverted:hover {
       <div class="global-nav__inner">
 
         <nav class="dash-topbar__crumbs" aria-label="Breadcrumb">
-          <a href="admin-dashboard-earthsky.html">Admin</a>
+          <a href="../admin-dashboard-earthsky.html">Admin</a>
           <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
           <a href="admin-test-console-earthsky.html">Automated testing</a>
           <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
-          <span class="dash-topbar__crumb-tail" aria-current="page">Suites</span>
+          <span class="dash-topbar__crumb-tail" aria-current="page">Profiles</span>
         </nav>
 
         <ul class="global-nav__list dash-topbar__cluster">
@@ -7905,27 +8148,27 @@ button.card.card--inverted:hover {
     <!-- Page header -->
     <header class="dash-page">
       <div class="dash-page__text">
-        <h1>Test suites.</h1>
+        <h1>Synthetic profiles.</h1>
       </div>
-      <a class="btn btn--cta dash-page__cta" href="admin-test-suite-earthsky.html">
+      <a class="btn btn--cta dash-page__cta" href="admin-test-profile-new-earthsky.html">
         <span class="btn__leading" aria-hidden="true">
           <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
         </span>
-        <span class="btn__label">New suite</span>
+        <span class="btn__label">New profile</span>
       </a>
     </header>
 
-    <!-- Suites list card — toolbar + table + pager, all bleeding
-         to the card edges. -->
-    <section class="card card--glass dash-test-card" aria-label="Test suites">
+    <!-- Profiles list card — toolbar + (bulk bar) + table + pager,
+         all bleeding to the card edges. -->
+    <section class="card card--glass dash-test-card" aria-label="Synthetic profiles">
 
-      <header class="dash-test-toolbar" role="toolbar" aria-label="Search, filter, and sort suites">
+      <header class="dash-test-toolbar" role="toolbar" aria-label="Search, filter, and sort profiles">
 
         <label class="search-field dash-test-toolbar__search">
           <span class="search-field__icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
           </span>
-          <input type="search" class="input input--sm search-field__input" placeholder="Search by suite name…" />
+          <input type="search" class="input input--sm search-field__input" placeholder="Search by name or ID…" />
           <button type="button" class="search-field__clear" aria-label="Clear search">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
           </button>
@@ -7933,10 +8176,13 @@ button.card.card--inverted:hover {
 
         <div class="dash-test-toolbar__filters" role="group" aria-label="Filters">
           <button type="button" class="chip" aria-pressed="true">
-            <span class="chip__label">Model: claude-*</span>
+            <span class="chip__label">Label: PRRS</span>
             <span class="dash-test-toolbar__chip-close" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
             </span>
+          </button>
+          <button type="button" class="chip dash-test-toolbar__filter-dashed" aria-pressed="false">
+            <span class="chip__label">+ Add filter</span>
           </button>
         </div>
 
@@ -7944,13 +8190,14 @@ button.card.card--inverted:hover {
           <div class="dash-test-toolbar__sort-by-wrap">
             <button type="button" class="dash-test-toolbar__sort-by" aria-haspopup="menu" aria-expanded="false">
               <span class="dash-test-toolbar__sort-by-label">Sort by:</span>
-              <span class="dash-test-toolbar__sort-by-value">Last run</span>
+              <span class="dash-test-toolbar__sort-by-value">Name</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
             <div class="dash-test-toolbar__sort-menu" role="menu" aria-label="Sort options">
-              <button type="button" role="menuitem">Suite name</button>
-              <button type="button" role="menuitem">Model</button>
-              <button type="button" role="menuitem" aria-selected="true">Last run</button>
+              <button type="button" role="menuitem" aria-selected="true">Name</button>
+              <button type="button" role="menuitem">ID</button>
+              <button type="button" role="menuitem">Label</button>
+              <button type="button" role="menuitem">Updated</button>
             </div>
           </div>
           <button type="button" class="dash-test-toolbar__sort-dir" aria-label="Sort direction: descending" aria-pressed="true">
@@ -7960,108 +8207,84 @@ button.card.card--inverted:hover {
 
       </header>
 
+      <!-- Bulk-action bar — appears (is-visible) when ≥1 row is selected;
+           the toolbar above gets .is-hidden when active. Three rows are
+           pre-selected in this static preview so the bar shows by default. -->
+      <div class="dash-test-bulkbar is-visible" role="region" aria-label="Bulk actions">
+        <span class="dash-test-bulkbar__count">3 profiles selected</span>
+        <div class="dash-test-bulkbar__actions">
+          <button type="button" class="btn btn--ghost btn--sm"><span class="btn__label">Export</span></button>
+          <button type="button" class="btn btn--ghost btn--sm"><span class="btn__label">Duplicate</span></button>
+          <button type="button" class="btn btn--sm" style="background: var(--critical-500); border-color: var(--critical-500); color: var(--text-inverted);"><span class="btn__label">Delete</span></button>
+        </div>
+      </div>
+
       <div class="dash-test-table-wrap">
         <table class="dash-test-table">
           <thead>
             <tr>
-              <th class="dash-test-table__check-col"><input type="checkbox" class="checkbox" aria-label="Select all suites" /></th>
-              <th>Suite name</th>
-              <th>Model</th>
-              <th>Mode</th>
-              <th class="dash-test-table__num">Profiles</th>
-              <th class="dash-test-table__num">Workers</th>
-              <th>Last run</th>
+              <th class="dash-test-table__check-col"><input type="checkbox" class="checkbox" aria-label="Select all profiles" /></th>
+              <th>Profile</th>
+              <th>Label</th>
+              <th>Updated</th>
               <th class="dash-test-table__row-action-col" aria-label="Row actions"></th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td><input type="checkbox" class="checkbox" aria-label="Select PRRS regression — EN" /></td>
-              <td><a class="dash-test-table__suite-name" href="admin-test-suite-earthsky.html">PRRS regression — EN</a></td>
-              <td class="dash-test-table__model">claude-sonnet-4-6</td>
-              <td class="dash-test-table__mode">Question-by-question</td>
-              <td class="dash-test-table__num">15</td>
-              <td class="dash-test-table__num">4</td>
-              <td>
-                <span class="dash-test-table__last-run">
-                  <span class="badge badge--safe">42 / 45 passed</span>
-                  <span class="dash-test-table__last-run-time">2 h ago</span>
-                </span>
-              </td>
+            <tr class="is-selected">
+              <td><input type="checkbox" class="checkbox" aria-label="Select SP-008" checked /></td>
+              <td class="dash-test-table__id"><a class="dash-test-table__id-link" href="admin-test-profile-view-earthsky.html">SP-008</a></td>
+              <td><span class="badge badge--neutral dash-test-label--csf">CSF</span></td>
+              <td class="dash-test-table__updated">2 h ago</td>
+              <td class="dash-test-table__row-action-col"><button type="button" class="dash-test-table__row-action" aria-label="Row actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
+            </tr>
+            <tr class="is-selected">
+              <td><input type="checkbox" class="checkbox" aria-label="Select SP-007" checked /></td>
+              <td class="dash-test-table__id"><a class="dash-test-table__id-link" href="admin-test-profile-view-earthsky.html">SP-007</a></td>
+              <td><span class="badge badge--neutral dash-test-label--prrs">PRRS</span></td>
+              <td class="dash-test-table__updated">5 h ago</td>
+              <td class="dash-test-table__row-action-col"><button type="button" class="dash-test-table__row-action" aria-label="Row actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
+            </tr>
+            <tr class="is-selected">
+              <td><input type="checkbox" class="checkbox" aria-label="Select SP-006" checked /></td>
+              <td class="dash-test-table__id"><a class="dash-test-table__id-link" href="admin-test-profile-view-earthsky.html">SP-006</a></td>
+              <td><span class="badge badge--neutral dash-test-label--asf">ASF</span></td>
+              <td class="dash-test-table__updated">1 d ago</td>
               <td class="dash-test-table__row-action-col"><button type="button" class="dash-test-table__row-action" aria-label="Row actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
             </tr>
             <tr>
-              <td><input type="checkbox" class="checkbox" aria-label="Select ASF screening — VI" /></td>
-              <td><a class="dash-test-table__suite-name" href="admin-test-suite-earthsky.html">ASF screening — VI</a></td>
-              <td class="dash-test-table__model">claude-haiku-4-5</td>
-              <td class="dash-test-table__mode">Free-form</td>
-              <td class="dash-test-table__num">12</td>
-              <td class="dash-test-table__num">4</td>
-              <td>
-                <span class="dash-test-table__last-run">
-                  <span class="badge badge--warning">38 / 45 passed</span>
-                  <span class="dash-test-table__last-run-time">6 h ago</span>
-                </span>
-              </td>
+              <td><input type="checkbox" class="checkbox" aria-label="Select SP-005" /></td>
+              <td class="dash-test-table__id"><a class="dash-test-table__id-link" href="admin-test-profile-view-earthsky.html">SP-005</a></td>
+              <td><span class="badge badge--neutral dash-test-label--tge">TGE</span></td>
+              <td class="dash-test-table__updated">2 d ago</td>
               <td class="dash-test-table__row-action-col"><button type="button" class="dash-test-table__row-action" aria-label="Row actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
             </tr>
             <tr>
-              <td><input type="checkbox" class="checkbox" aria-label="Select TGE smoke — EN" /></td>
-              <td><a class="dash-test-table__suite-name" href="admin-test-suite-earthsky.html">TGE smoke — EN</a></td>
-              <td class="dash-test-table__model">claude-opus-4-7</td>
-              <td class="dash-test-table__mode">Question-by-question</td>
-              <td class="dash-test-table__num">8</td>
-              <td class="dash-test-table__num">2</td>
-              <td>
-                <span class="dash-test-table__last-run">
-                  <span class="badge badge--critical">errored</span>
-                  <span class="dash-test-table__last-run-time">yesterday</span>
-                </span>
-              </td>
+              <td><input type="checkbox" class="checkbox" aria-label="Select SP-004" /></td>
+              <td class="dash-test-table__id"><a class="dash-test-table__id-link" href="admin-test-profile-view-earthsky.html">SP-004</a></td>
+              <td><span class="badge badge--neutral dash-test-label--ery">ERY</span></td>
+              <td class="dash-test-table__updated">3 d ago</td>
               <td class="dash-test-table__row-action-col"><button type="button" class="dash-test-table__row-action" aria-label="Row actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
             </tr>
             <tr>
-              <td><input type="checkbox" class="checkbox" aria-label="Select Erysipelas baseline — EN" /></td>
-              <td><a class="dash-test-table__suite-name" href="admin-test-suite-earthsky.html">Erysipelas baseline — EN</a></td>
-              <td class="dash-test-table__model">claude-sonnet-4-6</td>
-              <td class="dash-test-table__mode">Free-form</td>
-              <td class="dash-test-table__num">10</td>
-              <td class="dash-test-table__num">2</td>
-              <td>
-                <span class="dash-test-table__last-run">
-                  <span class="badge badge--safe">40 / 40 passed</span>
-                  <span class="dash-test-table__last-run-time">3 d ago</span>
-                </span>
-              </td>
+              <td><input type="checkbox" class="checkbox" aria-label="Select SP-003" /></td>
+              <td class="dash-test-table__id"><a class="dash-test-table__id-link" href="admin-test-profile-view-earthsky.html">SP-003</a></td>
+              <td><span class="badge badge--neutral dash-test-label--app">APP</span></td>
+              <td class="dash-test-table__updated">5 d ago</td>
               <td class="dash-test-table__row-action-col"><button type="button" class="dash-test-table__row-action" aria-label="Row actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
             </tr>
             <tr>
-              <td><input type="checkbox" class="checkbox" aria-label="Select APP differential — VI" /></td>
-              <td><a class="dash-test-table__suite-name" href="admin-test-suite-earthsky.html">APP differential — VI</a></td>
-              <td class="dash-test-table__model">claude-sonnet-4-6</td>
-              <td class="dash-test-table__mode">Question-by-question</td>
-              <td class="dash-test-table__num">14</td>
-              <td class="dash-test-table__num">4</td>
-              <td>
-                <span class="dash-test-table__last-run">
-                  <span class="badge badge--safe">41 / 42 passed</span>
-                  <span class="dash-test-table__last-run-time">5 d ago</span>
-                </span>
-              </td>
+              <td><input type="checkbox" class="checkbox" aria-label="Select SP-002" /></td>
+              <td class="dash-test-table__id"><a class="dash-test-table__id-link" href="admin-test-profile-view-earthsky.html">SP-002</a></td>
+              <td><span class="badge badge--neutral dash-test-label--csf">CSF</span></td>
+              <td class="dash-test-table__updated">1 w ago</td>
               <td class="dash-test-table__row-action-col"><button type="button" class="dash-test-table__row-action" aria-label="Row actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
             </tr>
             <tr>
-              <td><input type="checkbox" class="checkbox" aria-label="Select Vaccine refusal cases — EN" /></td>
-              <td><a class="dash-test-table__suite-name" href="admin-test-suite-earthsky.html">Vaccine refusal cases — EN</a></td>
-              <td class="dash-test-table__model">claude-sonnet-4-6</td>
-              <td class="dash-test-table__mode">Free-form</td>
-              <td class="dash-test-table__num">6</td>
-              <td class="dash-test-table__num">2</td>
-              <td>
-                <span class="dash-test-table__last-run">
-                  <span class="badge badge--neutral">never run</span>
-                </span>
-              </td>
+              <td><input type="checkbox" class="checkbox" aria-label="Select SP-001" /></td>
+              <td class="dash-test-table__id"><a class="dash-test-table__id-link" href="admin-test-profile-view-earthsky.html">SP-001</a></td>
+              <td><span class="badge badge--neutral dash-test-label--prrs">PRRS</span></td>
+              <td class="dash-test-table__updated">2 w ago</td>
               <td class="dash-test-table__row-action-col"><button type="button" class="dash-test-table__row-action" aria-label="Row actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
             </tr>
           </tbody>
@@ -8069,7 +8292,7 @@ button.card.card--inverted:hover {
       </div>
 
       <footer class="dash-test-pager" role="navigation" aria-label="Pagination">
-        <span class="dash-test-pager__meta">Showing 1–6 of 12</span>
+        <span class="dash-test-pager__meta">Showing 1–8 of 142</span>
         <div class="dash-test-pager__controls">
           <button type="button" class="dash-test-pager__btn" aria-label="First page" disabled>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="11 17 6 12 11 7"/><polyline points="18 17 13 12 18 7"/></svg>
@@ -8079,7 +8302,7 @@ button.card.card--inverted:hover {
           </button>
           <span class="dash-test-pager__page">
             <input type="text" class="input input--sm" value="1" aria-label="Current page" />
-            <span>/ 2</span>
+            <span>/ 18</span>
           </span>
           <button type="button" class="dash-test-pager__btn" aria-label="Next page">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
@@ -8091,6 +8314,11 @@ button.card.card--inverted:hover {
       </footer>
 
     </section>
+
+    <!-- Usage note appears BELOW the card, not inside, per spec. -->
+    <p class="dash-test__note">
+      Selecting one or more rows replaces the search-and-sort toolbar with a bulk-action bar (Export · Duplicate · Delete) until the selection is cleared.
+    </p>
 
 
   </main>
@@ -8137,7 +8365,7 @@ button.card.card--inverted:hover {
     });
   });
 
-  // ----- Sort-by dropdown (renamed from .dash-catalogue__sort) -----
+  // ----- Sort-by dropdown (copied verbatim from .dash-catalogue__sort, renamed) -----
   var sortBtn   = document.querySelector('.dash-test-toolbar__sort-by');
   var sortMenu  = document.querySelector('.dash-test-toolbar__sort-menu');
   var sortValue = document.querySelector('.dash-test-toolbar__sort-by-value');
@@ -8176,6 +8404,117 @@ button.card.card--inverted:hover {
         isDesc ? 'Sort direction: ascending' : 'Sort direction: descending');
     });
   }
+
+  // ----- Bulk bar visibility -----
+  // When ≥1 row checkbox is checked, the toolbar gets .is-hidden and the
+  // bulk bar gets .is-visible. Also mirrors the row's .is-selected class.
+  (function () {
+    var toolbar = document.querySelector('.dash-test-toolbar');
+    var bulkbar = document.querySelector('.dash-test-bulkbar');
+    var count   = document.querySelector('.dash-test-bulkbar__count');
+    var rowChecks = document.querySelectorAll('.dash-test-table tbody input[type="checkbox"]');
+    if (!toolbar || !bulkbar || !count || rowChecks.length === 0) return;
+
+    function refresh() {
+      var checked = 0;
+      rowChecks.forEach(function (cb) {
+        var row = cb.closest('tr');
+        if (cb.checked) {
+          checked += 1;
+          if (row) row.classList.add('is-selected');
+        } else if (row) {
+          row.classList.remove('is-selected');
+        }
+      });
+      if (checked > 0) {
+        toolbar.classList.add('is-hidden');
+        bulkbar.classList.add('is-visible');
+        count.textContent = checked + (checked === 1 ? ' profile selected' : ' profiles selected');
+      } else {
+        toolbar.classList.remove('is-hidden');
+        bulkbar.classList.remove('is-visible');
+      }
+    }
+    rowChecks.forEach(function (cb) { cb.addEventListener('change', refresh); });
+
+    // Select-all (header checkbox) — toggles every row check, then refreshes.
+    var selectAll = document.querySelector('.dash-test-table thead input[type="checkbox"]');
+    if (selectAll) {
+      selectAll.addEventListener('change', function () {
+        rowChecks.forEach(function (cb) { cb.checked = selectAll.checked; });
+        refresh();
+      });
+    }
+  })();
+
+  // ----- Delete confirmation modal (JS-injected) -----
+  // No .modal markup exists at rest. When the bulk-bar Delete (or a row
+  // kebab Delete) is pressed, build a .modal--xs from scratch, insert it
+  // into <body>, and open it. Closing/confirming removes the markup.
+  (function () {
+    function openDeleteModal(selectedRows) {
+      var names = selectedRows.map(function (row) {
+        var a = row.querySelector('.dash-test-table__id-link');
+        return (a ? a.textContent : '').trim();
+      });
+      var modal = document.createElement('div');
+      modal.className = 'modal modal--xs';
+      modal.setAttribute('role', 'dialog');
+      modal.setAttribute('aria-modal', 'true');
+      modal.setAttribute('aria-labelledby', 'dash-test-delete-h');
+      var n = selectedRows.length;
+      var listMarkup = names.map(function (s) { return '<li>' + s + '</li>'; }).join('');
+      modal.innerHTML =
+        '<div class="modal__surface">'
+        + '<header class="modal__header">'
+        + '<div class="modal__heading">'
+        + '<h2 id="dash-test-delete-h" class="modal__title">Delete ' + n + ' ' + (n === 1 ? 'profile' : 'profiles') + '?</h2>'
+        + '</div>'
+        + '<button type="button" class="modal__close" aria-label="Close">'
+        + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>'
+        + '</button>'
+        + '</header>'
+        + '<div class="modal__body">'
+        + '<p>This action can&rsquo;t be undone.</p>'
+        + '<ul>' + listMarkup + '</ul>'
+        + '</div>'
+        + '<footer class="modal__footer">'
+        + '<button type="button" class="btn btn--ghost" data-modal-cancel><span class="btn__label">Cancel</span></button>'
+        + '<button type="button" class="btn" data-modal-confirm style="background: var(--critical-500); border-color: var(--critical-500); color: var(--text-inverted);"><span class="btn__label">Delete</span></button>'
+        + '</footer>'
+        + '</div>';
+      document.body.appendChild(modal);
+      document.body.classList.add('has-modal-open');
+      // Force a layout flush, then flip is-open on the next frame so the
+      // opacity/transform transition registers.
+      void modal.offsetWidth;
+      setTimeout(function () { modal.classList.add('is-open'); }, 16);
+
+      function close() {
+        modal.classList.remove('is-open');
+        setTimeout(function () {
+          if (modal.parentNode) modal.parentNode.removeChild(modal);
+          document.body.classList.remove('has-modal-open');
+        }, 260);
+      }
+      modal.querySelector('[data-modal-cancel]').addEventListener('click', close);
+      modal.querySelector('[data-modal-confirm]').addEventListener('click', close);
+      modal.querySelector('.modal__close').addEventListener('click', close);
+      modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
+      document.addEventListener('keydown', function escHandler(e) {
+        if (e.key === 'Escape') { close(); document.removeEventListener('keydown', escHandler); }
+      });
+    }
+
+    var bulkDelete = document.querySelector('.dash-test-bulkbar__actions button:last-child');
+    if (bulkDelete) {
+      bulkDelete.addEventListener('click', function () {
+        var rows = Array.prototype.slice.call(document.querySelectorAll('.dash-test-table tbody tr.is-selected'));
+        if (rows.length === 0) return;
+        openDeleteModal(rows);
+      });
+    }
+  })();
 </script>
 
 </body>

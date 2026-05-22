@@ -1,0 +1,296 @@
+/* =========================================================
+   CHIP PICKER — multi-select tag input
+   Three-row layout: selected chips · search input · dropdown.
+   Vocabulary-agnostic; instances bind a vocab via data-vocab.
+
+   This component is LAYOUT GLUE only. Chip colors come from
+   .badge tones (badge.css). Option rows are .checkbox /
+   .checkbox-list (form.css). No new chip or checkbox styling
+   lives here.
+   Depends on: tokens.css, badge.css, form.css.
+   See outputs/V04_SYMPTOM_INPUT_SPEC.md.
+   ========================================================= */
+
+.chip-picker {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2x);
+    position: relative;
+}
+
+/* ────────────── Row 1 · chips ────────────── */
+/* The <li>.chip-picker__chip element IS a .badge (badge--sm + tone).
+   We only add the inline-flex layout for label + remove button,
+   and a small extra trailing padding to balance the X button. */
+.chip-picker__chips {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-1x);
+}
+.chip-picker__chips:empty {
+    display: none;
+}
+.chip-picker__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-1x);
+    /* override .badge default padding so the X has visual breathing room */
+    padding-right: var(--spacing-1x);
+}
+.chip-picker__chip-remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: currentColor;
+    opacity: 0.7;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.chip-picker__chip-remove:hover {
+    opacity: 1;
+}
+.chip-picker__chip-remove .icon {
+    width: 12px;
+    height: 12px;
+}
+
+/* ────────────── Row 2 · search input ────────────── */
+.chip-picker__search {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2x);
+    padding: var(--form-md-padding-y) var(--form-md-padding-x);
+    border: var(--border-width-base) solid var(--border-default);
+    border-radius: var(--radius-md);
+    background: var(--background-default);
+    cursor: text;
+    transition: border-color .15s ease;
+}
+.chip-picker.is-open .chip-picker__search,
+.chip-picker__search:focus-within {
+    border-color: var(--border-default-strong);
+}
+.chip-picker__search-icon {
+    display: inline-flex;
+    color: var(--text-default-minimal);
+}
+.chip-picker__search-icon .icon {
+    width: 14px;
+    height: 14px;
+}
+.chip-picker__input {
+    flex: 1;
+    /* flex children default to min-width:auto — without this a long
+       placeholder would force the search row past its container. */
+    min-width: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    color: var(--text-default);
+}
+.chip-picker__input::placeholder {
+    color: var(--text-default-minimal);
+}
+.chip-picker__toggle {
+    display: inline-flex;
+    align-items: center;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--text-default-minimal);
+    cursor: pointer;
+    transition: transform .15s ease;
+}
+.chip-picker__toggle .icon {
+    width: 14px;
+    height: 14px;
+}
+.chip-picker.is-open .chip-picker__toggle {
+    transform: rotate(180deg);
+}
+
+/* ────────────── Row 3 · dropdown menu ────────────── */
+/* The menu IS the panel: outer border, radius, shadow. Its only
+   child is the .checkbox-list, which carries the vocab rows AND
+   the add-row last. We shed the list's own frame (border, radius,
+   background) inside the menu so the menu is the only chrome the
+   user sees, and we hand scroll-ownership to the list so the
+   menu can stay overflow:hidden and clip cleanly on its rounded
+   corners. */
+.chip-picker__menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: var(--spacing-1x);
+    background: var(--background-default);
+    border: var(--border-width-base) solid var(--border-default);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    z-index: 30;
+    max-height: 320px;
+    overflow: hidden;
+    transform-origin: top center;
+
+    /* Resting (closed) state. We never use [hidden] / display:none
+       on the menu anymore — both block CSS transitions. Instead the
+       menu is always in the layout but visually + interactively
+       suppressed when closed; .is-open on the parent reveals it. */
+    opacity: 0;
+    transform: translateY(-4px) scaleY(.98);
+    pointer-events: none;
+    visibility: hidden;
+    transition:
+        opacity   .16s ease,
+        transform .18s cubic-bezier(.2, .8, .2, 1),
+        visibility 0s linear .18s;   /* delay visibility flip until fade-out finishes */
+}
+.chip-picker.is-open .chip-picker__menu {
+    opacity: 1;
+    transform: translateY(0) scaleY(1);
+    pointer-events: auto;
+    visibility: visible;
+    transition:
+        opacity   .16s ease,
+        transform .18s cubic-bezier(.2, .8, .2, 1),
+        visibility 0s linear 0s;     /* show immediately when opening */
+}
+
+/* Shed the .checkbox-list's own frame inside the menu — the menu
+   already owns the outer border, radius, and background. The list
+   keeps its row layout, dividers, and row states; only the panel
+   chrome is dropped. The list also owns the scroll now that the
+   menu is overflow:hidden. */
+.chip-picker__menu .checkbox-list {
+    height: 100%;
+    overflow-y: auto;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+}
+
+/* Inside the menu the .checkbox-list owns its own padding and row
+   dividers. We don't restyle .checkbox-list__row here — only the
+   two row states the chip-picker adds on top: .is-checked gives a
+   checked option the subtle row tint called for in §1, and
+   .is-active marks the keyboard-navigation cursor (§7e / §8). The
+   base .checkbox-list (form.css) styles neither. Both are scoped
+   under .chip-picker so the global component is untouched;
+   .is-active follows .is-checked so the cursor stays visible on an
+   already-checked row. */
+
+/* Quiet rows: no zebra stripe inside the chip-picker. Only
+   :hover and .is-checked tint rows; everything else is plain.
+   The stripe is correct for standalone lists, just not for this
+   dropdown where the checked tint needs to be the only colored
+   row. Same specificity as form.css's :nth-child(even) rule
+   (0,2,0); we win on source order. */
+.chip-picker .checkbox-list__row {
+    background: transparent;
+}
+.chip-picker .checkbox-list__row:hover {
+    background: var(--form-list-bg-hover);
+}
+.chip-picker .checkbox-list__row.is-checked {
+    background: var(--background-default-selected);
+}
+.chip-picker .checkbox-list__row.is-checked:hover {
+    /* keep the selected tint visible on hover instead of letting
+       the hover wash flatten it back to a neutral shade */
+    background: color-mix(in srgb,
+        var(--background-default-selected) 70%,
+        var(--form-list-bg-hover));
+}
+.chip-picker .checkbox-list__row.is-active {
+    background: var(--form-list-bg-hover);
+}
+
+/* ────────────── Last-row · add-to-vocabulary ────────────── */
+/* This is a regular .checkbox-list__row in layout — same padding,
+   same gap, same hover wash — but with no checkbox and with the
+   accent text colour so it reads as an action affordance rather
+   than another option. Sits as the LAST child of the list, so
+   form.css's :last-child rule strips its bottom border for us.
+
+   Text size matches the surrounding list's size variant: the V-04
+   chip-picker uses .checkbox-list--sm, so its rows are typed at
+   --form-sm-font-size via the .checkbox--sm rule (form.css line
+   485). The <button> element does NOT inherit that — buttons
+   default to the browser's font-size and a slightly heavier
+   weight — so we restate both explicitly. If the picker ever
+   adopts a non-sm list variant, this rule grows a matching block
+   per size; until then sm is the only one in play. */
+.chip-picker__add-row {
+    /* reset the <button> defaults so the row inherits list layout */
+    border: none;
+    background: transparent;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+
+    /* typography — match the .checkbox--sm rows above */
+    font-family: var(--font-sans);
+    font-size: var(--form-sm-font-size);
+    font-weight: 400;
+    line-height: inherit;
+    color: var(--text-accent-strong);
+}
+.chip-picker__add-row:hover {
+    /* hover wash comes from .checkbox-list__row:hover in §2;
+       this rule only deepens the text colour on hover */
+    color: var(--text-accent);
+}
+.chip-picker__add-row .icon {
+    width: 14px;
+    height: 14px;
+    color: currentColor;
+    flex-shrink: 0;
+}
+
+/* ────────────── Variant · areas ────────────── */
+/* The --areas modifier doesn't change layout — it only tells
+   the markup author to put .badge is-safe (instead of is-info)
+   on the chip <li>s. The rule below is a safety net that
+   re-tones any chip in this variant in case the markup forgets. */
+.chip-picker--areas .chip-picker__chip.badge.is-info {
+    background: var(--badge-safe-soft-bg);
+    color: var(--badge-safe-soft-fg);
+}
+
+/* ────────────── Reduced motion ────────────── */
+@media (prefers-reduced-motion: reduce) {
+    .chip-picker__search,
+    .chip-picker__toggle,
+    .chip-picker__menu { transition: none; }
+    .chip-picker__menu {
+        transform: none;
+    }
+    .chip-picker:not(.is-open) .chip-picker__menu {
+        /* honour reduced-motion: no slide, just an instant on/off */
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+/* ────────────── Stacking lift for glass-card hosts ──────────────
+   .card--glass-frost (and the other glass tones) apply backdrop-filter,
+   which creates a stacking context. A later sibling card with the same
+   treatment will paint over our open menu even though the menu sits at
+   z-index 20 — z-index is scoped to the host card's context, not the
+   page. Lift the host card while a picker inside it is open so the
+   menu reaches across sibling cards as the user expects. */
+.card:has(.chip-picker.is-open),
+.disease-edit__card:has(.chip-picker.is-open) {
+    position: relative;
+    z-index: 30;
+}

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Admin · Automated testing — case conversation (Earth + Sky) — Farm2Vet</title>
+<title>Admin · Automated testing — new profile (Earth + Sky) — Farm2Vet</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -6970,267 +6970,161 @@ button.card.card--inverted:hover {
 }
 
 /* =========================================================
-   ADMIN · AUTOMATED TESTING — CASE CONVERSATION (FR-386)
-   Two-column split (1.1fr / 1fr):
-     LEFT  — Chat history bubble thread
-     RIGHT — Tabs card (Hypothesis · Reasoning · Latency)
-             + Scores card + Latency breakdown card
+   ADMIN · AUTOMATED TESTING — PROFILE EDITOR (FR-381)
+   Two-column form (1.4fr / 1fr) inside a single glass card.
    ========================================================= */
 
-.dash-test-case__page .dash-test-case__eyebrow {
-    display: inline-block;
-    margin-bottom: var(--space-tier-7);
-    padding: 2px var(--space-tier-7);
-    background: color-mix(in srgb, var(--secondary-500) 14%, transparent);
-    color: var(--secondary-900);
-    border-radius: var(--radius-sm);
-    font-family: var(--font-sans);
-    font-size: var(--text-body-sm);
-    font-weight: var(--font-weight-medium);
-}
-.dash-test-case__sp-id { font-family: var(--font-mono); }
-.dash-test-case__meta-row {
-    margin-top: var(--space-tier-7);
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-tier-7);
-    flex-wrap: wrap;
-}
-.dash-test-case__cta-cluster {
+.dash-test-editor__page .dash-test-editor__cta-cluster {
     display: inline-flex;
     align-items: center;
     gap: var(--space-tier-7);
     flex-shrink: 0;
 }
+.dash-test-editor__delete-btn {
+    color: var(--text-critical);
+}
+.dash-test-editor__delete-btn:hover {
+    color: var(--critical-700);
+    background: color-mix(in srgb, var(--critical-500) 10%, transparent);
+}
 
-.dash-test-case__split {
+.dash-test-editor__card.card {
+    padding: var(--space-tier-3);
+}
+.dash-test-editor__grid {
     display: grid;
-    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
     gap: var(--space-tier-3);
     align-items: start;
 }
-.dash-test-case__right-stack {
+.dash-test-editor__form-stack {
     display: flex;
     flex-direction: column;
     gap: var(--space-tier-5);
 }
-
-/* ----- Card scaffold ----------------------------------- */
-.dash-test-case__card.card {
-    padding: var(--space-tier-3);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-tier-5);
-}
-.dash-test-case__card-head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--space-tier-5);
-}
-.dash-test-case__card-side {
-    margin: 0;
-}
-
-/* ----- Chat history bubble thread ---------------------- */
-.dash-test-case__thread {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-tier-5);
-}
-.dash-test-case__turn {
-    display: flex;
-    gap: var(--space-tier-6);
-    max-width: 88%;
-}
-.dash-test-case__turn--bot {
-    margin-left: auto;
-    flex-direction: row-reverse;
-}
-.dash-test-case__avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: var(--radius-pill);
+/* ---- ID badge (top of form-stack) ---- */
+.dash-test-editor__id-row {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    font-family: var(--font-sans);
-    font-size: var(--text-body-sm);
-    font-weight: var(--font-weight-semibold);
-    color: var(--text-inverted);
-    flex-shrink: 0;
-}
-.dash-test-case__avatar--sp {
-    background: var(--secondary-500);
-}
-.dash-test-case__avatar--bot {
-    background: var(--primary-600);
-}
-.dash-test-case__bubble {
-    padding: var(--space-tier-6) var(--space-tier-5);
-    background: color-mix(in srgb, var(--white-base) 55%, transparent);
+    gap: var(--space-tier-6);
+    align-self: start;
+    padding: var(--space-tier-7) var(--space-tier-5);
+    background: color-mix(in srgb, var(--white-base) 35%, transparent);
     border: var(--border-width-base) solid var(--border-default-subtle);
     border-radius: var(--radius-md);
     font-family: var(--font-sans);
     font-size: var(--text-body-sm);
+}
+.dash-test-editor__id-key { color: var(--text-default-subtle); }
+.dash-test-editor__id-val {
     color: var(--text-default);
-    line-height: 1.5;
+    font-family: var(--font-mono);
+    letter-spacing: var(--letter-spacing-mono);
 }
-.dash-test-case__bubble--bot {
-    background: color-mix(in srgb, var(--primary-500) 14%, var(--white-base));
-    border-color: color-mix(in srgb, var(--primary-500) 25%, transparent);
+
+/* ---- Grouped section (farm_background / observed_evidences) ---- */
+.dash-test-editor__group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tier-5);
 }
-.dash-test-case__divider {
-    margin: var(--space-tier-6) 0;
-    text-align: center;
+.dash-test-editor__group-head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tier-7);
+    padding-bottom: var(--space-tier-6);
+    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
+}
+.dash-test-editor__group-eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+}
+.dash-test-editor__group-title {
+    font-family: var(--font-sans);
+    font-size: var(--text-h5);
+    font-weight: 600;
+    color: var(--text-default);
+    margin: 0;
+    letter-spacing: -0.01em;
+}
+
+/* ---- Field grid (used inside a group) ---- */
+.dash-test-editor__field-grid {
+    display: grid;
+    gap: var(--space-tier-5);
+}
+.dash-test-editor__field-grid--2col {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@media (max-width: 720px) {
+    .dash-test-editor__field-grid--2col { grid-template-columns: 1fr; }
+}
+
+.dash-test-editor__hint {
     font-family: var(--font-sans);
     font-size: var(--text-body-sm);
     color: var(--text-default-minimal);
 }
 
-/* ----- Tabs (canonical-ish .tabs scaffolding) ----------
-   Using .tabs / .tabs__list / .tabs__tab / .tabs__panel BEM
-   names per the canonical tabs component. The full
-   tabs.css is not inlined to keep page size manageable;
-   what's here matches the public surface and is enough to
-   render the active panel and the underline cue. */
-.tabs {
+/* Right column: picture upload tile + read-only metadata card */
+.dash-test-editor__right {
     display: flex;
     flex-direction: column;
     gap: var(--space-tier-5);
 }
-.tabs__list {
-    display: inline-flex;
-    gap: var(--space-tier-5);
-    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
-    padding: 0;
-    margin: 0;
-}
-.tabs__tab {
-    background: transparent;
-    border: none;
-    padding: var(--space-tier-6) var(--space-tier-7);
+.dash-test-editor__upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-tier-6);
+    padding: var(--space-tier-3);
+    min-height: 200px;
+    background: color-mix(in srgb, var(--white-base) 30%, transparent);
+    border: 2px dashed color-mix(in srgb, var(--neutral-500) 35%, transparent);
+    border-radius: var(--radius-lg);
+    text-align: center;
+    color: var(--text-default-subtle);
     font-family: var(--font-sans);
     font-size: var(--text-body-sm);
-    font-weight: var(--font-weight-medium);
-    color: var(--text-default-subtle);
     cursor: pointer;
-    border-bottom: 2px solid transparent;
-    margin-bottom: -1px;
-    transition: color .15s ease, border-color .15s ease;
+    transition: border-color .15s ease, background-color .15s ease;
 }
-.tabs__tab:hover { color: var(--text-default); }
-.tabs__tab[aria-selected="true"] {
-    color: var(--text-primary-strong);
-    border-bottom-color: var(--primary-500);
+.dash-test-editor__upload:hover {
+    border-color: var(--primary-500);
+    background: color-mix(in srgb, var(--primary-500) 6%, var(--white-base));
 }
-.tabs__panel { display: none; }
-.tabs__panel.is-active { display: block; }
-
-/* ----- Hypothesis / Reasoning step rows ---------------- */
-.dash-test-case__steps {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+.dash-test-editor__upload-icon {
+    width: 36px;
+    height: 36px;
+    color: var(--icon-default-subtle);
+}
+.dash-test-editor__meta {
+    padding: var(--space-tier-5);
+    background: color-mix(in srgb, var(--white-base) 35%, transparent);
+    border: var(--border-width-base) solid var(--border-default-subtle);
+    border-radius: var(--radius-md);
     display: flex;
     flex-direction: column;
     gap: var(--space-tier-6);
-}
-.dash-test-case__step {
-    display: grid;
-    grid-template-columns: 32px minmax(0, 1fr) auto;
-    align-items: baseline;
-    gap: var(--space-tier-5);
-    padding: var(--space-tier-6) 0;
-    border-bottom: var(--border-width-base) dashed var(--border-default-subtle);
-}
-.dash-test-case__step:last-child { border-bottom: none; }
-.dash-test-case__step-num {
-    font-family: var(--font-mono);
-    font-size: var(--text-body-sm);
-    color: var(--text-default-subtle);
-}
-.dash-test-case__step-label {
-    font-family: var(--font-sans);
-    font-size: var(--text-body);
-    font-weight: var(--font-weight-medium);
-    color: var(--text-default);
-}
-.dash-test-case__step-prob {
-    font-family: var(--font-mono);
-    font-size: var(--text-body-sm);
-    color: var(--text-default-subtle);
-    white-space: nowrap;
-}
-.dash-test-case__step-reason {
-    grid-column: 2 / 4;
     font-family: var(--font-sans);
     font-size: var(--text-body-sm);
-    color: var(--text-default-subtle);
-    margin-top: var(--space-tier-7);
-    line-height: 1.5;
 }
-.dash-test-case__anomaly-inline {
-    color: var(--warning-700);
-    font-style: italic;
+.dash-test-editor__meta-row {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-tier-6);
 }
-
-.dash-test-case__latency-summary {
-    font-family: var(--font-sans);
-    font-size: var(--text-body);
-    color: var(--text-default);
-}
-.dash-test-case__latency-summary strong {
-    font-weight: var(--font-weight-semibold);
-}
-
-/* ----- Scores card — canonical .card__metric inside a
-   4-column .dash-kpis grid. The wrapper sizes each
-   .card__metric-value to --text-h2 (39.81px). */
-.dash-kpis {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: var(--space-gap-default);
-}
-.dash-kpis .card {
-    padding: var(--space-container-y) var(--space-container-x);
-}
-.dash-kpis .card__metric-value { font-size: var(--text-h2); }
-.dash-test-case__score-value--warn { color: var(--warning-700); }
-
-/* ----- Latency breakdown table ------------------------- */
-.dash-test-case__latency-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-family: var(--font-sans);
-    font-size: var(--text-body-sm);
-    color: var(--text-default);
-}
-.dash-test-case__latency-table thead th {
-    text-align: left;
-    padding: var(--space-tier-7) var(--space-tier-5);
-    font-weight: var(--font-weight-semibold);
-    color: var(--text-default-subtle);
-    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
-}
-.dash-test-case__latency-table thead th.is-num { text-align: right; }
-.dash-test-case__latency-table tbody td {
-    padding: var(--space-tier-7) var(--space-tier-5);
-    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
-}
-.dash-test-case__latency-table tbody td.is-num {
-    text-align: right;
-    font-variant-numeric: tabular-nums;
-}
-.dash-test-case__latency-table tbody td.is-mono {
-    font-family: var(--font-mono);
-    color: var(--text-default-subtle);
-    text-align: right;
-}
+.dash-test-editor__meta-key { color: var(--text-default-subtle); }
+.dash-test-editor__meta-val { color: var(--text-default); }
+.dash-test-editor__meta-val--mono { font-family: var(--font-mono); }
 
 /* ----- Responsive --------------------------------------- */
 @media (max-width: 900px) {
-    .dash-test-case__split { grid-template-columns: 1fr; }
+    .dash-test-editor__grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 720px) {
     .dash {
@@ -7240,8 +7134,8 @@ button.card.card--inverted:hover {
     .dash__side { position: static; }
     .dash__side .sidebar { height: auto; }
     .dash-page { flex-direction: column; align-items: stretch; }
-    .dash-test-case__cta-cluster { justify-content: flex-end; }
-    .dash-test-case__scores { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .dash-page__cta { width: 100%; }
+    .dash-test-editor__cta-cluster { flex-wrap: wrap; justify-content: flex-end; }
 }
 
 /* ----- Disease catalogue (unused on this page) ---------- */
@@ -7780,7 +7674,7 @@ button.card.card--inverted:hover {
     <aside class="sidebar" aria-label="Admin primary navigation">
 
       <header class="sidebar__header">
-        <a href="admin-dashboard.html" class="sidebar__brand">
+        <a href="../admin-dashboard.html" class="sidebar__brand">
           <img class="sidebar__brand-mark" src="../logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
           <span class="sidebar__brand-text">Farm2Vet</span>
         </a>
@@ -7793,7 +7687,7 @@ button.card.card--inverted:hover {
         <ul class="sidebar__list">
 
           <li class="sidebar__item">
-            <a class="sidebar__link" href="admin-dashboard.html">
+            <a class="sidebar__link" href="../admin-dashboard.html">
               <span class="sidebar__icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
               </span>
@@ -7812,7 +7706,7 @@ button.card.card--inverted:hover {
               </span>
             </button>
             <ul class="sidebar__sublist">
-              <li class="sidebar__item"><a class="sidebar__link" href="admin-disease-earthsky.html"><span class="sidebar__label">Disease</span><span class="sidebar__trailing"><span class="sidebar__badge">142</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="../admin-disease-earthsky.html"><span class="sidebar__label">Disease</span><span class="sidebar__trailing"><span class="sidebar__badge">142</span></span></a></li>
               <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Question</span><span class="sidebar__trailing"><span class="sidebar__badge">318</span></span></a></li>
               <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Conversation</span><span class="sidebar__trailing"><span class="sidebar__badge">47</span></span></a></li>
               <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Image</span></a></li>
@@ -7833,9 +7727,9 @@ button.card.card--inverted:hover {
             </button>
             <ul class="sidebar__sublist">
               <li class="sidebar__item"><a class="sidebar__link" href="admin-test-console-earthsky.html"><span class="sidebar__label">Console</span></a></li>
-              <li class="sidebar__item"><a class="sidebar__link" href="admin-test-profiles-earthsky.html"><span class="sidebar__label">Profiles</span><span class="sidebar__trailing"><span class="sidebar__badge">142</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link is-current" href="admin-test-profiles-earthsky.html" aria-current="page"><span class="sidebar__label">Profiles</span><span class="sidebar__trailing"><span class="sidebar__badge">142</span></span></a></li>
               <li class="sidebar__item"><a class="sidebar__link" href="admin-test-suites-earthsky.html"><span class="sidebar__label">Suites</span><span class="sidebar__trailing"><span class="sidebar__badge">12</span></span></a></li>
-              <li class="sidebar__item"><a class="sidebar__link is-current" href="admin-test-run-earthsky.html" aria-current="page"><span class="sidebar__label">Runs</span><span class="sidebar__trailing"><span class="sidebar__badge sidebar__badge--warning">3</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="admin-test-run-earthsky.html"><span class="sidebar__label">Runs</span><span class="sidebar__trailing"><span class="sidebar__badge sidebar__badge--warning">3</span></span></a></li>
             </ul>
           </li>
 
@@ -7881,13 +7775,13 @@ button.card.card--inverted:hover {
       <div class="global-nav__inner">
 
         <nav class="dash-topbar__crumbs" aria-label="Breadcrumb">
-          <a href="admin-dashboard-earthsky.html">Admin</a>
+          <a href="../admin-dashboard-earthsky.html">Admin</a>
           <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
           <a href="admin-test-console-earthsky.html">Automated testing</a>
           <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
-          <a href="admin-test-run-earthsky.html">Run</a>
+          <a href="admin-test-profiles-earthsky.html">Profiles</a>
           <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
-          <span class="dash-topbar__crumb-tail" aria-current="page">Case</span>
+          <span class="dash-topbar__crumb-tail" aria-current="page">New profile</span>
         </nav>
 
         <ul class="global-nav__list dash-topbar__cluster">
@@ -7923,217 +7817,147 @@ button.card.card--inverted:hover {
     </header>
 
     <!-- Page header -->
-    <header class="dash-page dash-test-case__page">
+    <header class="dash-page dash-test-editor__page">
       <div class="dash-page__text">
-        <span class="dash-test-case__eyebrow">Case · <span class="dash-test-case__sp-id">SP_0138</span> · ASF · rep 2/3</span>
-        <h1>Piglet 3wk — sudden death cluster.</h1>
-        <div class="dash-test-case__meta-row">
-          <span class="badge badge--warning">Anomaly flagged</span>
-          <span class="badge badge--neutral">7 turns · 4.7s avg</span>
-        </div>
+        <h1>New profile.</h1>
       </div>
-      <div class="dash-test-case__cta-cluster">
-        <button type="button" class="btn btn--ghost btn--sm"><span class="btn__label">.md</span></button>
-        <button type="button" class="btn btn--ghost btn--sm"><span class="btn__label">.json</span></button>
+      <div class="dash-test-editor__cta-cluster">
+        <button type="button" class="btn btn--md btn--ghost"><span class="btn__label">Cancel</span></button>
+        <button type="button" class="btn btn--md btn--cta dash-page__cta" disabled aria-disabled="true"><span class="btn__label">Create profile</span></button>
       </div>
     </header>
 
-    <!-- Two-column case body: chat thread left, evaluation cards right -->
-    <div class="dash-test-case__split">
+    <!-- Profile editor — single glass card with a two-column form -->
+    <section class="card card--glass dash-test-editor__card" aria-label="Profile editor">
+      <div class="dash-test-editor__grid">
 
-      <!-- LEFT — Chat history -->
-      <section class="card card--glass dash-test-case__card" aria-labelledby="dash-test-case-thread-h">
-        <header class="dash-test-case__card-head">
-          <h3 id="dash-test-case-thread-h" class="card__title">Chat history</h3>
-          <p class="card__eyebrow dash-test-case__card-side">SP ↔ Chatbot</p>
-        </header>
+        <div class="dash-test-editor__form-stack">
 
-        <div class="dash-test-case__thread">
-
-          <div class="dash-test-case__turn">
-            <span class="dash-test-case__avatar dash-test-case__avatar--sp" aria-hidden="true">SP</span>
-            <div class="dash-test-case__bubble">
-              I have a litter of 3-week-old piglets, 4 of them died suddenly overnight with no warning. The sow seems normal. Help?
-            </div>
+          <div class="dash-test-editor__id-row">
+            <span class="dash-test-editor__id-key">Profile ID</span>
+            <span class="dash-test-editor__id-val">SP-003</span>
           </div>
 
-          <div class="dash-test-case__turn dash-test-case__turn--bot">
-            <span class="dash-test-case__avatar dash-test-case__avatar--bot" aria-hidden="true">F2V</span>
-            <div class="dash-test-case__bubble dash-test-case__bubble--bot">
-              I&rsquo;m sorry to hear that. Sudden death in young piglets can be heat-related, gut torsion, or an acute infection. To narrow it down — what was the ambient temperature in the farrowing pen last night, and were any of the piglets showing skin discolouration before death?
-            </div>
-          </div>
+          <section class="dash-test-editor__group" aria-labelledby="grp-farm">
+            <header class="dash-test-editor__group-head">
+              <span class="dash-test-editor__group-eyebrow">farm_background</span>
+              <h2 id="grp-farm" class="dash-test-editor__group-title">Farm background</h2>
+            </header>
+            <div class="dash-test-editor__field-grid dash-test-editor__field-grid--2col">
 
-          <div class="dash-test-case__turn">
-            <span class="dash-test-case__avatar dash-test-case__avatar--sp" aria-hidden="true">SP</span>
-            <div class="dash-test-case__bubble">
-              Temperature was normal, around 28°C. I noticed the dead piglets had purple-blue ears and bellies. Two more in the same litter look weak this morning.
-            </div>
-          </div>
+              <div class="field">
+                <label class="field__label" for="profile-farm-size">Farm size</label>
+                <input type="text" id="profile-farm-size" class="input input--sm" placeholder="e.g. 300 pigs" />
+              </div>
 
-          <div class="dash-test-case__turn dash-test-case__turn--bot">
-            <span class="dash-test-case__avatar dash-test-case__avatar--bot" aria-hidden="true">F2V</span>
-            <div class="dash-test-case__bubble dash-test-case__bubble--bot">
-              Cyanotic ears and abdomen with sudden death in young piglets is a strong septicaemic sign. That rules out heat stroke and shifts toward an acute bacterial or viral septicaemia. Have you introduced any new animals to the farm in the last 30 days, and is there any history of vaccination against Classical Swine Fever (CSF) or ASF in your area?
-            </div>
-          </div>
+              <div class="field">
+                <label class="field__label" for="profile-pig-types">Pig types</label>
+                <input type="text" id="profile-pig-types" class="input input--sm" placeholder="e.g. weaners, growers, finishers" />
+              </div>
 
-          <div class="dash-test-case__turn">
-            <span class="dash-test-case__avatar dash-test-case__avatar--sp" aria-hidden="true">SP</span>
-            <div class="dash-test-case__bubble">
-              No new animals. CSF vaccination was done at weaning for the adults. No ASF cases reported nearby, but there were 2 farms about 15km away that lost pigs last week.
-            </div>
-          </div>
+              <div class="field">
+                <label class="field__label" for="profile-location-climate">Location &amp; climate</label>
+                <input type="text" id="profile-location-climate" class="input input--sm" placeholder="e.g. subtropical" />
+              </div>
 
-          <div class="dash-test-case__turn dash-test-case__turn--bot">
-            <span class="dash-test-case__avatar dash-test-case__avatar--bot" aria-hidden="true">F2V</span>
-            <div class="dash-test-case__bubble dash-test-case__bubble--bot">
-              Two nearby farms losing pigs is concerning. Given the sudden death pattern + cyanosis + regional context, my leading concern is Classical Swine Fever (CSF) despite the vaccination — please isolate the affected litter immediately and contact your local veterinary authority for confirmatory PCR. ASF would also fit the clinical picture and would require the same containment.
             </div>
-          </div>
+          </section>
 
-          <div class="dash-test-case__divider">— 3 more turns —</div>
+          <section class="dash-test-editor__group" aria-labelledby="grp-obs">
+            <header class="dash-test-editor__group-head">
+              <span class="dash-test-editor__group-eyebrow">observed_evidences</span>
+              <h2 id="grp-obs" class="dash-test-editor__group-title">Observed evidences</h2>
+            </header>
+            <div class="dash-test-editor__field-grid dash-test-editor__field-grid--2col">
+
+              <div class="field">
+                <label class="field__label" for="profile-affected">Affected pig types</label>
+                <input type="text" id="profile-affected" class="input input--sm" placeholder="e.g. mostly growers and finishers" />
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="profile-total-affected">Total affected</label>
+                <input type="text" id="profile-total-affected" class="input input--sm" placeholder="e.g. about 180 out of 300" />
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="profile-mortality">Mortality</label>
+                <textarea id="profile-mortality" class="input input--sm textarea" rows="2" placeholder="e.g. high, many pigs dying"></textarea>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="profile-fever">Fever</label>
+                <textarea id="profile-fever" class="input input--sm textarea" rows="2" placeholder="e.g. high fever"></textarea>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="profile-sym-digestive">Digestive symptoms</label>
+                <textarea id="profile-sym-digestive" class="input input--sm textarea" rows="3" placeholder="e.g. lost appetite, bloody diarrhea"></textarea>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="profile-sym-respiratory">Respiratory symptoms</label>
+                <textarea id="profile-sym-respiratory" class="input input--sm textarea" rows="3" placeholder="e.g. coughing, nasal discharge"></textarea>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="profile-sym-neurological">Neurological symptoms</label>
+                <textarea id="profile-sym-neurological" class="input input--sm textarea" rows="3" placeholder="e.g. wobbly gait, hind limb paralysis"></textarea>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="profile-sym-dermatology">Dermatological symptoms</label>
+                <textarea id="profile-sym-dermatology" class="input input--sm textarea" rows="3" placeholder="e.g. blue-purple discoloration on ears"></textarea>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="profile-sym-reproductive">Reproductive symptoms</label>
+                <textarea id="profile-sym-reproductive" class="input input--sm textarea" rows="3" placeholder="e.g. abortions, weak piglets"></textarea>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="profile-vaccination">Vaccination history</label>
+                <textarea id="profile-vaccination" class="input input--sm textarea" rows="3" placeholder="e.g. CSF 6 months ago, coverage unclear"></textarea>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="profile-treatment">Treatment history</label>
+                <textarea id="profile-treatment" class="input input--sm textarea" rows="2" placeholder="e.g. none yet"></textarea>
+              </div>
+
+            </div>
+          </section>
+
+          <div class="field">
+            <label class="field__label" for="profile-disease">Disease label</label>
+            <select id="profile-disease" class="input input--sm">
+              <option value="" selected disabled>Pick a disease…</option>
+              <option value="PRRS">PRRS — Porcine Reproductive and Respiratory Syndrome</option>
+              <option value="ASF">ASF — African Swine Fever</option>
+              <option value="TGE">TGE — Transmissible Gastroenteritis</option>
+              <option value="ERY">ERY — Erysipelas</option>
+              <option value="APP">APP — Actinobacillus pleuropneumoniae</option>
+              <option value="CSF">CSF — Classical Swine Fever</option>
+            </select>
+          </div>
 
         </div>
-      </section>
 
-      <!-- RIGHT — Evaluation stack -->
-      <div class="dash-test-case__right-stack">
+        <div class="dash-test-editor__right">
 
-        <!-- Card 1: Tabs (Hypothesis · Reasoning · Latency summary) -->
-        <section class="card card--glass dash-test-case__card" aria-label="Hypothesis, reasoning, and latency">
-          <div class="tabs">
-            <div class="tabs__list" role="tablist" aria-label="Evaluation views">
-              <button type="button" class="tabs__tab" role="tab" id="tab-hyp" aria-selected="true" aria-controls="panel-hyp">Hypothesis</button>
-              <button type="button" class="tabs__tab" role="tab" id="tab-reason" aria-selected="false" aria-controls="panel-reason">Reasoning</button>
-              <button type="button" class="tabs__tab" role="tab" id="tab-lat" aria-selected="false" aria-controls="panel-lat">Latency-summary</button>
-            </div>
-
-            <div class="tabs__panel is-active" role="tabpanel" id="panel-hyp" aria-labelledby="tab-hyp">
-              <ol class="dash-test-case__steps">
-                <li class="dash-test-case__step">
-                  <span class="dash-test-case__step-num">1</span>
-                  <span class="dash-test-case__step-label">Heat stroke</span>
-                  <span class="dash-test-case__step-prob">42%</span>
-                </li>
-                <li class="dash-test-case__step">
-                  <span class="dash-test-case__step-num">2</span>
-                  <span class="dash-test-case__step-label">Classical Swine Fever (CSF)</span>
-                  <span class="dash-test-case__step-prob">61%</span>
-                </li>
-                <li class="dash-test-case__step">
-                  <span class="dash-test-case__step-num">3</span>
-                  <span class="dash-test-case__step-label">Classical Swine Fever (CSF) <span class="dash-test-case__anomaly-inline">(label: ASF — mismatch)</span></span>
-                  <span class="dash-test-case__step-prob">71% · final</span>
-                </li>
-              </ol>
-            </div>
-
-            <div class="tabs__panel" role="tabpanel" id="panel-reason" aria-labelledby="tab-reason" hidden>
-              <ol class="dash-test-case__steps">
-                <li class="dash-test-case__step">
-                  <span class="dash-test-case__step-num">1</span>
-                  <span class="dash-test-case__step-label">Heat stroke</span>
-                  <span class="dash-test-case__step-prob">42%</span>
-                  <span class="dash-test-case__step-reason">Sudden death in young piglets is most commonly environmental — heat or piling — when no other history is given.</span>
-                </li>
-                <li class="dash-test-case__step">
-                  <span class="dash-test-case__step-num">2</span>
-                  <span class="dash-test-case__step-label">CSF</span>
-                  <span class="dash-test-case__step-prob">61%</span>
-                  <span class="dash-test-case__step-reason">Cyanotic ears and abdomen with sudden death points to acute septicaemia. CSF is endemic in the region and fits the picture.</span>
-                </li>
-                <li class="dash-test-case__step">
-                  <span class="dash-test-case__step-num">3</span>
-                  <span class="dash-test-case__step-label">CSF</span>
-                  <span class="dash-test-case__step-prob">71%</span>
-                  <span class="dash-test-case__step-reason">Nearby farms losing pigs reinforces an outbreak hypothesis. Despite vaccination, CSF remains the leading guess; ASF stays on the differential.</span>
-                </li>
-              </ol>
-            </div>
-
-            <div class="tabs__panel" role="tabpanel" id="panel-lat" aria-labelledby="tab-lat" hidden>
-              <p class="dash-test-case__latency-summary">
-                <strong>Total</strong> · 4.7s
-              </p>
-            </div>
+          <div class="dash-test-editor__upload" tabindex="0" role="button" aria-label="Upload a picture for this profile">
+            <svg class="dash-test-editor__upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+            <span>Drag a picture here or click to browse · optional</span>
           </div>
-        </section>
 
-        <!-- Card 2: Scores -->
-        <section class="card card--glass dash-test-case__card" aria-labelledby="dash-test-case-scores-h">
-          <header class="dash-test-case__card-head">
-            <h3 id="dash-test-case-scores-h" class="card__title">Scores</h3>
-          </header>
-          <div class="dash-test-case__scores dash-kpis">
-            <article class="card card--glass">
-              <div class="card__metric">
-                <span class="card__metric-label">Accuracy</span>
-                <span class="card__metric-value dash-test-case__score-value--warn">0.61</span>
-              </div>
-            </article>
-            <article class="card card--glass">
-              <div class="card__metric">
-                <span class="card__metric-label">Fluency</span>
-                <span class="card__metric-value">0.72</span>
-              </div>
-            </article>
-            <article class="card card--glass">
-              <div class="card__metric">
-                <span class="card__metric-label">Efficiency</span>
-                <span class="card__metric-value">0.65</span>
-              </div>
-            </article>
-            <article class="card card--glass">
-              <div class="card__metric">
-                <span class="card__metric-label">Cost</span>
-                <span class="card__metric-value">$0.018</span>
-              </div>
-            </article>
-          </div>
-        </section>
-
-        <!-- Card 3: Latency breakdown -->
-        <section class="card card--glass dash-test-case__card" aria-labelledby="dash-test-case-lat-h">
-          <header class="dash-test-case__card-head">
-            <h3 id="dash-test-case-lat-h" class="card__title">Latency breakdown</h3>
-          </header>
-          <table class="dash-test-case__latency-table">
-            <thead>
-              <tr>
-                <th>Step</th>
-                <th class="is-num">Duration</th>
-                <th class="is-num">% of total</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>LLM call</td>
-                <td class="is-mono">3.10s</td>
-                <td class="is-num">66%</td>
-              </tr>
-              <tr>
-                <td>Dictionary RAG</td>
-                <td class="is-mono">0.82s</td>
-                <td class="is-num">17%</td>
-              </tr>
-              <tr>
-                <td>Embedding</td>
-                <td class="is-mono">0.55s</td>
-                <td class="is-num">12%</td>
-              </tr>
-              <tr>
-                <td>Network</td>
-                <td class="is-mono">0.23s</td>
-                <td class="is-num">5%</td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
+        </div>
 
       </div>
-
-    </div>
+    </section>
 
 
   </main>
@@ -8172,25 +7996,6 @@ button.card.card--inverted:hover {
     });
   });
 
-  // ----- Tabs (canonical pattern: click [role="tab"], swap
-  // aria-selected, swap .is-active on matching [role="tabpanel"]) -----
-  document.querySelectorAll('.tabs__list').forEach(function (list) {
-    var tabs = list.querySelectorAll('[role="tab"]');
-    tabs.forEach(function (tab) {
-      tab.addEventListener('click', function () {
-        var panelId = tab.getAttribute('aria-controls');
-        tabs.forEach(function (t) { t.setAttribute('aria-selected', t === tab ? 'true' : 'false'); });
-        var card = list.closest('.tabs');
-        if (!card) return;
-        card.querySelectorAll('[role="tabpanel"]').forEach(function (panel) {
-          var isActive = panel.id === panelId;
-          panel.classList.toggle('is-active', isActive);
-          if (isActive) { panel.removeAttribute('hidden'); }
-          else { panel.setAttribute('hidden', ''); }
-        });
-      });
-    });
-  });
 </script>
 
 </body>

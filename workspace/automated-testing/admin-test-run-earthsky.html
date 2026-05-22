@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Admin · Automated testing — profiles (Earth + Sky) — Farm2Vet</title>
+<title>Admin · Automated testing — run results (Earth + Sky) — Farm2Vet</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -6072,182 +6072,6 @@ button.card.card--inverted:hover {
 }
 
 
-/* ===== styles/modal.css ===== */
-:root {
-    --modal-font-family:      var(--font-sans);
-    --modal-radius:           var(--radius-lg);
-    --modal-radius-sheet:     var(--radius-lg);
-    --modal-border-width:     var(--border-width-base);
-    --modal-shadow:           var(--shadow-lg);
-    --modal-gap:              var(--space-gap-default);
-    --modal-gap-tight:        var(--space-gap-snug);
-    --modal-z-backdrop:       80;
-    --modal-z-surface:        81;
-    --modal-transition:       background-color .18s ease, color .18s ease,
-                              border-color .18s ease, box-shadow .18s ease,
-                              opacity .22s ease, transform .26s cubic-bezier(.2,.8,.2,1);
-    --modal-xs-width:         320px;
-    --modal-xs-padding-x:     var(--space-container-x-sm);
-    --modal-xs-padding-y:     var(--space-container-y-sm);
-    --modal-sm-width:         440px;
-    --modal-sm-padding-x:     var(--space-container-x);
-    --modal-sm-padding-y:     var(--space-container-y);
-    --modal-md-width:         560px;
-    --modal-md-padding-x:     var(--space-container-x);
-    --modal-md-padding-y:     var(--space-container-y);
-    --modal-lg-width:         720px;
-    --modal-lg-padding-x:     var(--space-container-x-lg);
-    --modal-lg-padding-y:     var(--space-container-y);
-    --modal-xl-width:         960px;
-    --modal-xl-padding-x:     var(--space-container-x-lg);
-    --modal-xl-padding-y:     var(--space-container-y-lg);
-    --modal-max-height:       min(86vh, 720px);
-    --modal-bg:               var(--background-default);
-    --modal-fg:               var(--text-default);
-    --modal-fg-subtle:        var(--text-default-subtle);
-    --modal-border:           var(--border-default);
-    --modal-divider:          var(--border-default-subtle);
-    --modal-glass-bg:     var(--glass-light-thick-bg);
-    --modal-glass-border: var(--glass-light-thick-border);
-    --modal-glass-blur:   var(--glass-light-thick-blur);
-    --modal-glass-shadow: var(--glass-shadow-overlay);
-    --modal-glass-inset:  var(--glass-inset-light-strong);
-    --modal-backdrop:         var(--glass-scrim);
-    --modal-backdrop-blur:    var(--glass-scrim-blur);
-    --modal-header-padding-y: var(--space-container-y);
-    --modal-body-padding-y:   var(--space-container-y);
-    --modal-header-gap:       var(--space-tier-5);
-    --modal-title-font:       var(--text-h6);
-    --modal-title-weight:     var(--font-weight-semibold);
-    --modal-title-line:       var(--line-height-h6);
-    --modal-eyebrow-fg:       var(--text-default-minimal);
-    --modal-description-fg:   var(--text-default-subtle);
-    --modal-body-line:        var(--line-height-body);
-    --modal-body-gap:         var(--space-tier-5);
-    --modal-footer-gap:       var(--space-tier-5);
-    --modal-footer-padding-y: var(--space-tier-4);
-    --modal-footer-bg:        var(--background-default-subtle);
-    --modal-footer-border:    var(--border-default-subtle);
-    --modal-close-size:       32px;
-    --modal-close-radius:     var(--radius-sm);
-    --modal-close-fg:         var(--icon-default);
-    --modal-close-fg-hover:   var(--text-default);
-    --modal-close-bg-hover:   var(--background-default-hover);
-    --modal-drawer-width:     420px;
-    --modal-drawer-width-lg:  560px;
-    --modal-sheet-height:     min(72vh, 640px);
-    --modal-anim-duration:    260ms;
-    --modal-anim-easing:      cubic-bezier(.2, .8, .2, 1);
-    --modal-anim-translate:   12px;
-    --modal-focus-outline:        var(--outline-focus);
-    --modal-focus-outline-width:  2px;
-    --modal-focus-outline-offset: 2px;
-}
-body.has-modal-open { overflow: hidden; }
-.modal {
-    position: fixed; inset: 0;
-    z-index: var(--modal-z-backdrop);
-    display: flex; align-items: center; justify-content: center;
-    padding: var(--space-container-y) var(--space-container-x);
-    background: var(--modal-backdrop);
-    backdrop-filter: var(--modal-backdrop-blur);
-    -webkit-backdrop-filter: var(--modal-backdrop-blur);
-    opacity: 0; pointer-events: none;
-    transition: opacity var(--modal-anim-duration) var(--modal-anim-easing);
-}
-.modal.is-open { opacity: 1; pointer-events: auto; }
-.modal__surface {
-    position: relative;
-    z-index: var(--modal-z-surface);
-    display: flex; flex-direction: column;
-    width: 100%; max-width: var(--modal-md-width);
-    max-height: var(--modal-max-height);
-    background: var(--modal-bg); color: var(--modal-fg);
-    border-radius: var(--modal-radius);
-    border: var(--modal-border-width) solid var(--modal-border);
-    box-shadow: var(--modal-shadow);
-    overflow: hidden;
-    font-family: var(--modal-font-family);
-    transform: translateY(var(--modal-anim-translate)) scale(.98);
-    transition: transform var(--modal-anim-duration) var(--modal-anim-easing),
-                opacity var(--modal-anim-duration) var(--modal-anim-easing);
-    opacity: 0;
-}
-.modal.is-open .modal__surface { transform: translateY(0) scale(1); opacity: 1; }
-.modal--xs .modal__surface { max-width: var(--modal-xs-width); }
-.modal--sm .modal__surface { max-width: var(--modal-sm-width); }
-.modal--md .modal__surface { max-width: var(--modal-md-width); }
-.modal--lg .modal__surface { max-width: var(--modal-lg-width); }
-.modal--xl .modal__surface { max-width: var(--modal-xl-width); }
-.modal__header {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    column-gap: var(--modal-header-gap);
-    align-items: start;
-    padding: var(--modal-header-padding-y) var(--modal-md-padding-x);
-    border-bottom: var(--modal-border-width) solid transparent;
-}
-.modal__heading { display: flex; flex-direction: column; gap: var(--spacing-1x); min-width: 0; }
-.modal__title {
-    font-family: var(--font-sans);
-    font-size: var(--modal-title-font);
-    font-weight: var(--modal-title-weight);
-    line-height: var(--modal-title-line);
-    color: var(--modal-fg);
-    margin: 0;
-}
-.modal__description {
-    font-family: var(--font-sans); font-size: var(--text-sm);
-    line-height: var(--modal-body-line);
-    color: var(--modal-description-fg);
-    margin: var(--space-tier-7) 0 0 0;
-}
-.modal__close {
-    width: var(--modal-close-size); height: var(--modal-close-size);
-    border-radius: var(--modal-close-radius);
-    background: transparent; border: 0;
-    color: var(--modal-close-fg);
-    display: inline-flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    transition: background-color .15s ease, color .15s ease;
-}
-.modal__close:hover { background: var(--modal-close-bg-hover); color: var(--modal-close-fg-hover); }
-.modal__close svg { width: 18px; height: 18px; }
-.modal__body {
-    padding: 0 var(--modal-md-padding-x) var(--modal-body-padding-y);
-    overflow-y: auto; flex: 1 1 auto;
-    color: var(--modal-fg);
-    font-size: var(--text-base);
-    line-height: var(--modal-body-line);
-    display: flex; flex-direction: column;
-    gap: var(--modal-body-gap);
-}
-.modal__body p { margin: 0; }
-.modal__body ul { margin: 0; padding-left: var(--space-tier-3); }
-.modal__surface > .modal__body:first-child { padding-top: var(--modal-body-padding-y); }
-.modal__footer {
-    display: flex; align-items: center; justify-content: flex-end;
-    gap: var(--modal-footer-gap);
-    padding: var(--modal-footer-padding-y) var(--modal-md-padding-x);
-    border-top: var(--modal-border-width) solid var(--modal-footer-border);
-    background: var(--modal-footer-bg);
-}
-.modal--xs .modal__header,
-.modal--xs .modal__body,
-.modal--xs .modal__footer { padding-left: var(--modal-xs-padding-x); padding-right: var(--modal-xs-padding-x); }
-.modal--xs .modal__header,
-.modal--xs .modal__body { padding-top: var(--modal-xs-padding-y); padding-bottom: var(--modal-xs-padding-y); }
-.modal--xs .modal__footer { padding-top: var(--modal-footer-padding-y); padding-bottom: var(--modal-footer-padding-y); }
-@media (prefers-reduced-motion: reduce) {
-    .modal, .modal__surface { transition: opacity .15s ease; }
-    .modal__surface { transform: none; }
-}
-@media (max-width: 600px) {
-    .modal { align-items: flex-end; padding: 0; }
-    .modal .modal__surface { max-width: 100%; width: 100%; border-bottom-left-radius: 0; border-bottom-right-radius: 0; max-height: var(--modal-sheet-height); }
-}
-
-
 /* ===== styles/global-nav.css ===== */
 /* =========================================================
    FARM2VET DESIGN SYSTEM — GLOBAL NAV
@@ -7146,12 +6970,106 @@ body.has-modal-open { overflow: hidden; }
 }
 
 /* =========================================================
-   ADMIN · AUTOMATED TESTING — PROFILES LIST (FR-381)
-   Toolbar (search · filter chips · sort) + bulk bar +
-   data table + pager + delete-confirm modal.
+   ADMIN · AUTOMATED TESTING — RUN RESULTS
+   (FR-385 scoreboard + cases table, FR-387 download menu)
+   Sections (top to bottom):
+     1. Scoreboard — 6 glass tiles (each is its own card)
+     2. Anomaly callout (warning alert)
+     3. Cases table card
    ========================================================= */
 
-/* ----- Shared automated-testing card layout ------------- */
+.dash-test-run__page .dash-test-run__eyebrow {
+    display: inline-block;
+    margin-bottom: var(--space-tier-7);
+    padding: 2px var(--space-tier-7);
+    background: color-mix(in srgb, var(--info-500, var(--primary-700)) 12%, transparent);
+    color: var(--text-primary-strong);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-medium);
+}
+.dash-test-run__id {
+    font-family: var(--font-mono);
+    color: var(--text-default);
+    font-weight: var(--font-weight-medium);
+}
+.dash-test-run__cta-cluster {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-tier-7);
+    flex-shrink: 0;
+}
+
+/* Reuse the .dash-catalogue__sort menu pattern (renamed) for
+   the Download dropdown — same shape, same anchor. */
+.dash-test-run__download-wrap { position: relative; }
+.dash-test-run__download-trigger {
+    /* btn--ghost size already provides padding; we just add
+       a small gap before the chevron. */
+    gap: var(--space-tier-7);
+}
+.dash-test-run__download-menu {
+    /* extends .dash-test-toolbar__sort-menu */
+    right: 0;
+    top: calc(100% + 4px);
+    min-width: 200px;
+}
+
+/* ----- Scoreboard — canonical .card__metric tiles inside a
+   6-column .dash-kpis grid. Each tile is its own
+   .card.card--glass so the glass shadow + rim rail applies. */
+.dash-kpis {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: var(--space-gap-default);
+}
+.dash-kpis .card {
+    padding: var(--space-container-y) var(--space-container-x);
+}
+.dash-kpis .card__metric-value { font-size: var(--text-h2); }
+.dash-kpis .card__metric-delta {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-mono);
+    color: var(--text-default-minimal);
+}
+
+/* ----- Anomaly alert (.alert.alert--warning, lightly
+   re-themed since the canonical alert.css is not inlined
+   on this page — the visual mark is the same: warning
+   amber stripe + title + body + action) -------------- */
+.alert.dash-test-run__anomaly {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-tier-5);
+    padding: var(--space-tier-5);
+    background: color-mix(in srgb, var(--warning-500) 10%, var(--white-base));
+    border: var(--border-width-base) solid color-mix(in srgb, var(--warning-500) 40%, transparent);
+    border-left: 4px solid var(--warning-500);
+    border-radius: var(--radius-md);
+}
+.alert.dash-test-run__anomaly .alert__icon {
+    color: var(--warning-700);
+    flex-shrink: 0;
+}
+.alert.dash-test-run__anomaly .alert__body { flex: 1; min-width: 0; }
+.alert.dash-test-run__anomaly .alert__title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    font-weight: var(--font-weight-semibold);
+    color: var(--warning-700);
+}
+.alert.dash-test-run__anomaly .alert__desc {
+    margin: var(--space-tier-7) 0 0 0;
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    color: var(--text-default);
+}
+.alert.dash-test-run__anomaly .alert__action { flex-shrink: 0; }
+
+/* ----- Cases table card -------------------------------- */
 .dash-test-card.card {
     padding: 0;
     overflow: hidden;
@@ -7159,83 +7077,112 @@ body.has-modal-open { overflow: hidden; }
     flex-direction: column;
     gap: 0;
 }
-
-/* ----- Toolbar ----------------------------------------- */
-.dash-test-toolbar {
+.dash-test-run__cases-head {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: var(--space-tier-5);
     padding: var(--space-tier-5);
     background: color-mix(in srgb, var(--white-base) 25%, transparent);
     border-bottom: var(--border-width-base) solid var(--border-default-subtle);
-    flex-wrap: wrap;
 }
-.dash-test-toolbar.is-hidden { display: none; }
-.dash-test-toolbar__search {
-    flex: 1 1 280px;
-    min-width: 200px;
+.dash-test-run__cases-summary {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-tier-7);
 }
 
-.dash-test-toolbar__filters {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-tier-7);
-    flex-wrap: wrap;
-}
-.dash-test-toolbar__filter-dashed {
-    border-style: dashed;
-    color: var(--text-default-subtle);
-    background: transparent;
-}
-.dash-test-toolbar__filter-dashed:hover {
-    color: var(--text-default);
-    border-color: var(--border-default-strong);
-}
-.dash-test-toolbar__chip-close {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 14px;
-    height: 14px;
-    margin-left: var(--space-tier-7);
-    color: currentColor;
-    opacity: 0.7;
-}
-
-/* Sort group — verbatim from .dash-catalogue__sort, renamed
-   to .dash-test-toolbar__sort per AUTOMATED_TESTING_SPEC.md. */
-.dash-test-toolbar__sort {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-tier-7);
-    margin-left: auto;
-}
-.dash-test-toolbar__sort-by-wrap { position: relative; }
-.dash-test-toolbar__sort-by {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-tier-7);
-    padding: var(--space-tier-7) var(--space-tier-5);
-    background: var(--background-default);
-    border: var(--border-width-base) solid var(--border-default);
-    border-radius: var(--radius-md);
+.dash-test-run__table-wrap { overflow-x: auto; }
+.dash-test-run__table {
+    width: 100%;
+    border-collapse: collapse;
     font-family: var(--font-sans);
     font-size: var(--text-body-sm);
     color: var(--text-default);
-    cursor: pointer;
-    transition: background-color .15s ease, border-color .15s ease;
 }
-.dash-test-toolbar__sort-by:hover {
-    background: var(--background-default-hover);
-    border-color: var(--border-default-strong);
+.dash-test-run__table thead th {
+    text-align: left;
+    padding: var(--space-tier-6) var(--space-tier-5);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--text-body-sm);
+    color: var(--text-default-subtle);
+    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
+    background: color-mix(in srgb, var(--white-base) 15%, transparent);
+    white-space: nowrap;
 }
-.dash-test-toolbar__sort-by-label { color: var(--text-default-subtle); }
-.dash-test-toolbar__sort-by svg { width: 12px; height: 12px; color: var(--icon-default-subtle); }
+.dash-test-run__table thead th.is-num { text-align: right; }
+.dash-test-run__table tbody td {
+    padding: var(--space-tier-6) var(--space-tier-5);
+    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
+    vertical-align: middle;
+}
+.dash-test-run__table tbody td.is-num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+.dash-test-run__table tbody tr { transition: background-color .15s ease; }
+.dash-test-run__table tbody tr:hover {
+    background: color-mix(in srgb, var(--primary-500) 8%, transparent);
+}
+.dash-test-run__row--anomaly {
+    background: color-mix(in srgb, var(--warning-500) 8%, transparent);
+}
+.dash-test-run__row--anomaly:hover {
+    background: color-mix(in srgb, var(--warning-500) 14%, transparent);
+}
+.dash-test-run__disease-cell {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-tier-7);
+}
+.dash-test-run__sp-id {
+    font-family: var(--font-mono);
+    color: var(--text-default-subtle);
+}
+.dash-test-run__anomaly-icon {
+    color: var(--warning-700);
+    flex-shrink: 0;
+}
+.dash-test-run__acc--safe { color: var(--text-safe); font-weight: var(--font-weight-semibold); }
+.dash-test-run__acc--default { color: var(--text-default); }
+.dash-test-run__acc--critical { color: var(--text-critical); font-weight: var(--font-weight-semibold); }
+.dash-test-run__view-link {
+    color: var(--text-primary-strong);
+    text-decoration: none;
+    font-weight: var(--font-weight-medium);
+    white-space: nowrap;
+}
+.dash-test-run__view-link:hover { text-decoration: underline; }
+
+/* Disease label pill — neutral badge + accent hue per family */
+.dash-test-label--prrs { background: color-mix(in srgb, var(--primary-500) 18%, var(--white-base)); color: var(--primary-900); border-color: color-mix(in srgb, var(--primary-500) 30%, transparent); }
+.dash-test-label--asf { background: color-mix(in srgb, var(--secondary-500) 16%, var(--white-base)); color: var(--secondary-900); border-color: color-mix(in srgb, var(--secondary-500) 30%, transparent); }
+.dash-test-label--tge { background: color-mix(in srgb, var(--secondary-300) 18%, var(--white-base)); color: var(--secondary-900); border-color: color-mix(in srgb, var(--secondary-300) 35%, transparent); }
+.dash-test-label--ery { background: color-mix(in srgb, var(--accent-500) 16%, var(--white-base)); color: var(--accent-900); border-color: color-mix(in srgb, var(--accent-500) 30%, transparent); }
+.dash-test-label--app { background: color-mix(in srgb, var(--info-500, var(--primary-700)) 16%, var(--white-base)); color: var(--text-default); border-color: color-mix(in srgb, var(--primary-700) 30%, transparent); }
+
+/* ----- Responsive --------------------------------------- */
+@media (max-width: 1100px) {
+    .dash-kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 720px) {
+    .dash {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+    .dash__side { position: static; }
+    .dash__side .sidebar { height: auto; }
+    .dash-page { flex-direction: column; align-items: stretch; }
+    .dash-page__cta { width: 100%; }
+    .dash-test-run__cta-cluster { width: 100%; flex-wrap: wrap; }
+    .dash-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* Shared sort-menu base — copied verbatim from suites/profiles
+   pages so the .dash-test-run__download-menu inherits the same
+   open/closed display rules. */
 .dash-test-toolbar__sort-menu {
     position: absolute;
-    top: calc(100% + 4px);
-    right: 0;
-    min-width: 180px;
     background: var(--background-default);
     border: var(--border-width-base) solid var(--border-default);
     border-radius: var(--radius-md);
@@ -7257,217 +7204,8 @@ body.has-modal-open { overflow: hidden; }
     color: var(--text-default);
     border-radius: var(--radius-sm);
     cursor: pointer;
-    transition: background-color .15s ease, color .15s ease;
 }
 .dash-test-toolbar__sort-menu button:hover { background: var(--background-default-hover); }
-.dash-test-toolbar__sort-menu button[aria-selected="true"] {
-    background: var(--background-primary-subtle);
-    color: var(--text-primary-strong);
-    font-weight: var(--font-weight-medium);
-}
-.dash-test-toolbar__sort-dir {
-    width: 32px;
-    height: 32px;
-    border-radius: var(--radius-md);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--background-default);
-    border: var(--border-width-base) solid var(--border-default);
-    color: var(--text-default-subtle);
-    cursor: pointer;
-    transition: background-color .15s ease, border-color .15s ease, color .15s ease;
-}
-.dash-test-toolbar__sort-dir:hover {
-    background: var(--background-default-hover);
-    border-color: var(--border-default-strong);
-    color: var(--text-default);
-}
-.dash-test-toolbar__sort-dir svg { width: 14px; height: 14px; transition: transform .18s ease; }
-.dash-test-toolbar__sort-dir[aria-pressed="false"] svg { transform: rotate(180deg); }
-
-/* ----- Bulk-action bar --------------------------------- */
-.dash-test-bulkbar {
-    display: none;
-    align-items: center;
-    gap: var(--space-tier-5);
-    padding: var(--space-tier-5);
-    background: color-mix(in srgb, var(--primary-500) 12%, var(--white-base));
-    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
-}
-.dash-test-bulkbar.is-visible { display: flex; }
-.dash-test-bulkbar__count {
-    font-family: var(--font-sans);
-    font-size: var(--text-body-sm);
-    font-weight: var(--font-weight-medium);
-    color: var(--text-default);
-    margin-right: auto;
-}
-.dash-test-bulkbar__actions {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-tier-7);
-}
-
-/* ----- Data table -------------------------------------- */
-.dash-test-table-wrap { overflow-x: auto; }
-.dash-test-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-family: var(--font-sans);
-    font-size: var(--text-body-sm);
-    color: var(--text-default);
-}
-.dash-test-table thead th {
-    text-align: left;
-    padding: var(--space-tier-6) var(--space-tier-5);
-    font-weight: var(--font-weight-semibold);
-    font-size: var(--text-body-sm);
-    color: var(--text-default-subtle);
-    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
-    background: color-mix(in srgb, var(--white-base) 15%, transparent);
-    white-space: nowrap;
-}
-.dash-test-table tbody td {
-    padding: var(--space-tier-6) var(--space-tier-5);
-    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
-    vertical-align: middle;
-}
-.dash-test-table tbody tr {
-    transition: background-color .15s ease;
-}
-.dash-test-table tbody tr:hover {
-    background: color-mix(in srgb, var(--primary-500) 8%, transparent);
-}
-.dash-test-table tbody tr.is-selected {
-    background: color-mix(in srgb, var(--primary-500) 14%, transparent);
-    box-shadow: inset 3px 0 0 var(--primary-500);
-}
-.dash-test-table__check-col { width: 36px; }
-.dash-test-table__id {
-    /* font-family, font-size, color moved to .dash-test-table__id-link */
-}
-.dash-test-table__id-link {
-    color: var(--text-default);
-    font-family: var(--font-mono);
-    font-size: var(--text-body-sm);
-    letter-spacing: var(--letter-spacing-mono);
-    text-decoration: none;
-    transition: color .15s ease;
-    border-radius: var(--radius-sm);
-}
-.dash-test-table__id-link:hover {
-    color: var(--text-accent);
-}
-.dash-test-table__id-link:focus-visible {
-    color: var(--text-accent);
-    outline: 2px solid var(--primary-500);
-    outline-offset: 2px;
-}
-.dash-test-table__updated {
-    color: var(--text-default-minimal);
-    white-space: nowrap;
-}
-.dash-test-table__row-action-col { width: 40px; text-align: right; }
-.dash-test-table__row-action {
-    background: transparent;
-    border: none;
-    color: var(--icon-default-subtle);
-    padding: var(--space-tier-7);
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-}
-.dash-test-table__row-action:hover {
-    background: var(--background-default-hover);
-    color: var(--text-default);
-}
-
-/* Disease-label pills — neutral badge with inline accent hue */
-.dash-test-label--prrs { background: color-mix(in srgb, var(--primary-500) 18%, var(--white-base)); color: var(--primary-900); border-color: color-mix(in srgb, var(--primary-500) 30%, transparent); }
-.dash-test-label--asf { background: color-mix(in srgb, var(--secondary-500) 16%, var(--white-base)); color: var(--secondary-900); border-color: color-mix(in srgb, var(--secondary-500) 30%, transparent); }
-.dash-test-label--tge { background: color-mix(in srgb, var(--secondary-300) 18%, var(--white-base)); color: var(--secondary-900); border-color: color-mix(in srgb, var(--secondary-300) 35%, transparent); }
-.dash-test-label--ery { background: color-mix(in srgb, var(--accent-500) 16%, var(--white-base)); color: var(--accent-900); border-color: color-mix(in srgb, var(--accent-500) 30%, transparent); }
-.dash-test-label--app { background: color-mix(in srgb, var(--info-500, var(--primary-700)) 16%, var(--white-base)); color: var(--text-default); border-color: color-mix(in srgb, var(--primary-700) 30%, transparent); }
-.dash-test-label--csf { background: color-mix(in srgb, var(--warning-500) 16%, var(--white-base)); color: var(--warning-700); border-color: color-mix(in srgb, var(--warning-500) 30%, transparent); }
-
-/* ----- Pager (matches catalogue pager visually) -------- */
-.dash-test-pager {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-tier-3);
-    padding: var(--space-tier-5);
-    background: color-mix(in srgb, var(--white-base) 25%, transparent);
-    border-top: var(--border-width-base) solid var(--border-default-subtle);
-}
-.dash-test-pager__meta {
-    font-family: var(--font-sans);
-    font-size: var(--text-body-sm);
-    color: var(--text-default-minimal);
-}
-.dash-test-pager__controls {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-tier-7);
-}
-.dash-test-pager__btn {
-    width: 32px;
-    height: 32px;
-    border-radius: var(--radius-md);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--background-default);
-    border: var(--border-width-base) solid var(--border-default);
-    color: var(--text-default-subtle);
-    cursor: pointer;
-    transition: background-color .15s ease, color .15s ease, border-color .15s ease;
-}
-.dash-test-pager__btn:hover {
-    background: var(--background-default-hover);
-    border-color: var(--border-default-strong);
-    color: var(--text-default);
-}
-.dash-test-pager__btn[disabled] { opacity: 0.4; pointer-events: none; }
-.dash-test-pager__btn svg { width: 14px; height: 14px; }
-.dash-test-pager__page {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-tier-7);
-    margin: 0 var(--space-tier-6);
-    font-family: var(--font-sans);
-    font-size: var(--text-body-sm);
-    color: var(--text-default-subtle);
-}
-.dash-test-pager__page .input {
-    width: 48px;
-    text-align: center;
-    padding: 4px var(--space-tier-7);
-    font-family: var(--font-sans);
-}
-
-/* ----- Below-card usage note --------------------------- */
-.dash-test__note {
-    margin: var(--space-tier-5) 0 0 0;
-    font-family: var(--font-sans);
-    font-size: var(--text-body-sm);
-    color: var(--text-default-subtle);
-    max-width: 70ch;
-}
-
-/* ----- Responsive --------------------------------------- */
-@media (max-width: 720px) {
-    .dash {
-        grid-template-columns: 1fr;
-        height: auto;
-    }
-    .dash__side { position: static; }
-    .dash__side .sidebar { height: auto; }
-    .dash-page { flex-direction: column; align-items: stretch; }
-    .dash-page__cta { width: 100%; }
-    .dash-test-pager { flex-direction: column; align-items: stretch; gap: var(--space-tier-5); }
-    .dash-test-toolbar__sort { margin-left: 0; }
-}
 
 /* ----- Disease catalogue (unused on this page) ---------- */
 .dash-catalogue.card {
@@ -8005,7 +7743,7 @@ body.has-modal-open { overflow: hidden; }
     <aside class="sidebar" aria-label="Admin primary navigation">
 
       <header class="sidebar__header">
-        <a href="admin-dashboard.html" class="sidebar__brand">
+        <a href="../admin-dashboard.html" class="sidebar__brand">
           <img class="sidebar__brand-mark" src="../logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
           <span class="sidebar__brand-text">Farm2Vet</span>
         </a>
@@ -8018,7 +7756,7 @@ body.has-modal-open { overflow: hidden; }
         <ul class="sidebar__list">
 
           <li class="sidebar__item">
-            <a class="sidebar__link" href="admin-dashboard.html">
+            <a class="sidebar__link" href="../admin-dashboard.html">
               <span class="sidebar__icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
               </span>
@@ -8037,7 +7775,7 @@ body.has-modal-open { overflow: hidden; }
               </span>
             </button>
             <ul class="sidebar__sublist">
-              <li class="sidebar__item"><a class="sidebar__link" href="admin-disease-earthsky.html"><span class="sidebar__label">Disease</span><span class="sidebar__trailing"><span class="sidebar__badge">142</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="../admin-disease-earthsky.html"><span class="sidebar__label">Disease</span><span class="sidebar__trailing"><span class="sidebar__badge">142</span></span></a></li>
               <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Question</span><span class="sidebar__trailing"><span class="sidebar__badge">318</span></span></a></li>
               <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Conversation</span><span class="sidebar__trailing"><span class="sidebar__badge">47</span></span></a></li>
               <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Image</span></a></li>
@@ -8058,9 +7796,9 @@ body.has-modal-open { overflow: hidden; }
             </button>
             <ul class="sidebar__sublist">
               <li class="sidebar__item"><a class="sidebar__link" href="admin-test-console-earthsky.html"><span class="sidebar__label">Console</span></a></li>
-              <li class="sidebar__item"><a class="sidebar__link is-current" href="admin-test-profiles-earthsky.html" aria-current="page"><span class="sidebar__label">Profiles</span><span class="sidebar__trailing"><span class="sidebar__badge">142</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="admin-test-profiles-earthsky.html"><span class="sidebar__label">Profiles</span><span class="sidebar__trailing"><span class="sidebar__badge">142</span></span></a></li>
               <li class="sidebar__item"><a class="sidebar__link" href="admin-test-suites-earthsky.html"><span class="sidebar__label">Suites</span><span class="sidebar__trailing"><span class="sidebar__badge">12</span></span></a></li>
-              <li class="sidebar__item"><a class="sidebar__link" href="admin-test-run-earthsky.html"><span class="sidebar__label">Runs</span><span class="sidebar__trailing"><span class="sidebar__badge sidebar__badge--warning">3</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link is-current" href="admin-test-run-earthsky.html" aria-current="page"><span class="sidebar__label">Runs</span><span class="sidebar__trailing"><span class="sidebar__badge sidebar__badge--warning">3</span></span></a></li>
             </ul>
           </li>
 
@@ -8106,11 +7844,15 @@ body.has-modal-open { overflow: hidden; }
       <div class="global-nav__inner">
 
         <nav class="dash-topbar__crumbs" aria-label="Breadcrumb">
-          <a href="admin-dashboard-earthsky.html">Admin</a>
+          <a href="../admin-dashboard-earthsky.html">Admin</a>
           <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
           <a href="admin-test-console-earthsky.html">Automated testing</a>
           <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
-          <span class="dash-topbar__crumb-tail" aria-current="page">Profiles</span>
+          <a href="admin-test-suites-earthsky.html">Suites</a>
+          <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
+          <a href="admin-test-suite-earthsky.html">PRRS regression — EN</a>
+          <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
+          <span class="dash-topbar__crumb-tail" aria-current="page">Run</span>
         </nav>
 
         <ul class="global-nav__list dash-topbar__cluster">
@@ -8146,179 +7888,229 @@ body.has-modal-open { overflow: hidden; }
     </header>
 
     <!-- Page header -->
-    <header class="dash-page">
+    <header class="dash-page dash-test-run__page">
       <div class="dash-page__text">
-        <h1>Synthetic profiles.</h1>
+        <span class="dash-test-run__eyebrow">Run · PRRS regression — EN</span>
+        <h1>Run results.</h1>
+        <p class="dash-page__lede dash-test-run__subline">
+          <span class="dash-test-run__id">run_2026-05-18_14:02</span> · finished 12 min ago · 45 cases · 3 reps
+        </p>
       </div>
-      <a class="btn btn--cta dash-page__cta" href="admin-test-profile-new-earthsky.html">
-        <span class="btn__leading" aria-hidden="true">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-        </span>
-        <span class="btn__label">New profile</span>
-      </a>
+      <div class="dash-test-run__cta-cluster">
+        <div class="dash-test-toolbar__sort-by-wrap dash-test-run__download-wrap">
+          <button type="button" class="btn btn--ghost dash-test-run__download-trigger" aria-haspopup="menu" aria-expanded="false">
+            <span class="btn__label">Download</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="dash-test-toolbar__sort-menu dash-test-run__download-menu" role="menu" aria-label="Download options">
+            <button type="button" role="menuitem">Report (.md)</button>
+            <button type="button" role="menuitem">Raw data (.json)</button>
+            <button type="button" role="menuitem">Summary report (.md)</button>
+            <button type="button" role="menuitem">Summary data (.json)</button>
+          </div>
+        </div>
+        <button type="button" class="btn btn--cta dash-page__cta">
+          <span class="btn__leading" aria-hidden="true">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          </span>
+          <span class="btn__label">Re-run</span>
+        </button>
+      </div>
     </header>
 
-    <!-- Profiles list card — toolbar + (bulk bar) + table + pager,
-         all bleeding to the card edges. -->
-    <section class="card card--glass dash-test-card" aria-label="Synthetic profiles">
-
-      <header class="dash-test-toolbar" role="toolbar" aria-label="Search, filter, and sort profiles">
-
-        <label class="search-field dash-test-toolbar__search">
-          <span class="search-field__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-          </span>
-          <input type="search" class="input input--sm search-field__input" placeholder="Search by name or ID…" />
-          <button type="button" class="search-field__clear" aria-label="Clear search">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
-          </button>
-        </label>
-
-        <div class="dash-test-toolbar__filters" role="group" aria-label="Filters">
-          <button type="button" class="chip" aria-pressed="true">
-            <span class="chip__label">Label: PRRS</span>
-            <span class="dash-test-toolbar__chip-close" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
-            </span>
-          </button>
-          <button type="button" class="chip dash-test-toolbar__filter-dashed" aria-pressed="false">
-            <span class="chip__label">+ Add filter</span>
-          </button>
+    <!-- ============================ Scoreboard ============================
+         Six glass tiles. Each is its own .card.card--glass so the canonical
+         shadow + rim-light rail applies per tile (memory: glass always
+         carries shadow). -->
+    <section class="dash-test-run__scoreboard dash-kpis" aria-label="Run scoreboard">
+      <article class="card card--glass">
+        <div class="card__metric">
+          <span class="card__metric-label">Accuracy</span>
+          <span class="card__metric-value">91<small>%</small></span>
+          <span class="card__metric-delta is-up">+3pp vs prev</span>
         </div>
-
-        <div class="dash-test-toolbar__sort" role="group" aria-label="Sort">
-          <div class="dash-test-toolbar__sort-by-wrap">
-            <button type="button" class="dash-test-toolbar__sort-by" aria-haspopup="menu" aria-expanded="false">
-              <span class="dash-test-toolbar__sort-by-label">Sort by:</span>
-              <span class="dash-test-toolbar__sort-by-value">Name</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div class="dash-test-toolbar__sort-menu" role="menu" aria-label="Sort options">
-              <button type="button" role="menuitem" aria-selected="true">Name</button>
-              <button type="button" role="menuitem">ID</button>
-              <button type="button" role="menuitem">Label</button>
-              <button type="button" role="menuitem">Updated</button>
-            </div>
-          </div>
-          <button type="button" class="dash-test-toolbar__sort-dir" aria-label="Sort direction: descending" aria-pressed="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
-          </button>
+      </article>
+      <article class="card card--glass">
+        <div class="card__metric">
+          <span class="card__metric-label">Fluency</span>
+          <span class="card__metric-value">87<small>%</small></span>
+          <span class="card__metric-delta is-up">+2pp</span>
         </div>
+      </article>
+      <article class="card card--glass">
+        <div class="card__metric">
+          <span class="card__metric-label">Efficiency</span>
+          <span class="card__metric-value">0.78</span>
+          <span class="card__metric-delta">flat</span>
+        </div>
+      </article>
+      <article class="card card--glass">
+        <div class="card__metric">
+          <span class="card__metric-label">Latency</span>
+          <span class="card__metric-value">3.2<small>s</small></span>
+          <span class="card__metric-delta is-up">−0.2s</span>
+        </div>
+      </article>
+      <article class="card card--glass">
+        <div class="card__metric">
+          <span class="card__metric-label">Turns</span>
+          <span class="card__metric-value">5.4</span>
+          <span class="card__metric-delta">+0.1</span>
+        </div>
+      </article>
+      <article class="card card--glass">
+        <div class="card__metric">
+          <span class="card__metric-label">Cost</span>
+          <span class="card__metric-value">$0.42</span>
+          <span class="card__metric-delta is-down">+$0.06</span>
+        </div>
+      </article>
+    </section>
 
+    <!-- ============================ Anomaly callout ============================ -->
+    <div class="alert dash-test-run__anomaly" role="alert">
+      <svg class="alert__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" aria-hidden="true">
+        <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+        <line x1="12" y1="9" x2="12" y2="13"/>
+        <line x1="12" y1="17" x2="12.01" y2="17"/>
+      </svg>
+      <div class="alert__body">
+        <p class="alert__title">3 anomalies flagged</p>
+        <p class="alert__desc">
+          SP_0138, SP_0140, SP_0144 — chatbot diagnosis didn&rsquo;t match the profile label after 3 reps (rule: <code>diagnosis-mismatch ≥ 2/3</code>).
+        </p>
+      </div>
+      <a href="#cases" class="btn btn--ghost btn--sm alert__action"><span class="btn__label">View anomalies</span></a>
+    </div>
+
+    <!-- ============================ Cases table ============================ -->
+    <section class="card card--glass dash-test-card" aria-labelledby="dash-test-run-cases-h" id="cases">
+
+      <header class="dash-test-run__cases-head">
+        <h3 id="dash-test-run-cases-h" class="card__title">Test cases</h3>
+        <div class="dash-test-run__cases-summary">
+          <span class="badge badge--safe">42 passed</span>
+          <span class="badge badge--warning">3 anomalies</span>
+        </div>
       </header>
 
-      <!-- Bulk-action bar — appears (is-visible) when ≥1 row is selected;
-           the toolbar above gets .is-hidden when active. Three rows are
-           pre-selected in this static preview so the bar shows by default. -->
-      <div class="dash-test-bulkbar is-visible" role="region" aria-label="Bulk actions">
-        <span class="dash-test-bulkbar__count">3 profiles selected</span>
-        <div class="dash-test-bulkbar__actions">
-          <button type="button" class="btn btn--ghost btn--sm"><span class="btn__label">Export</span></button>
-          <button type="button" class="btn btn--ghost btn--sm"><span class="btn__label">Duplicate</span></button>
-          <button type="button" class="btn btn--sm" style="background: var(--critical-500); border-color: var(--critical-500); color: var(--text-inverted);"><span class="btn__label">Delete</span></button>
-        </div>
-      </div>
-
-      <div class="dash-test-table-wrap">
-        <table class="dash-test-table">
+      <div class="dash-test-run__table-wrap">
+        <table class="dash-test-run__table">
           <thead>
             <tr>
-              <th class="dash-test-table__check-col"><input type="checkbox" class="checkbox" aria-label="Select all profiles" /></th>
-              <th>Profile</th>
-              <th>Label</th>
-              <th>Updated</th>
-              <th class="dash-test-table__row-action-col" aria-label="Row actions"></th>
+              <th>Disease</th>
+              <th class="is-num">Flu</th>
+              <th class="is-num">Eff</th>
+              <th class="is-num">Lat</th>
+              <th class="is-num">Turns</th>
+              <th class="is-num">Acc</th>
+              <th class="is-num">Cost</th>
+              <th>Step</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
-            <tr class="is-selected">
-              <td><input type="checkbox" class="checkbox" aria-label="Select SP-008" checked /></td>
-              <td class="dash-test-table__id"><a class="dash-test-table__id-link" href="admin-test-profile-view-earthsky.html">SP-008</a></td>
-              <td><span class="badge badge--neutral dash-test-label--csf">CSF</span></td>
-              <td class="dash-test-table__updated">2 h ago</td>
-              <td class="dash-test-table__row-action-col"><button type="button" class="dash-test-table__row-action" aria-label="Row actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
-            </tr>
-            <tr class="is-selected">
-              <td><input type="checkbox" class="checkbox" aria-label="Select SP-007" checked /></td>
-              <td class="dash-test-table__id"><a class="dash-test-table__id-link" href="admin-test-profile-view-earthsky.html">SP-007</a></td>
-              <td><span class="badge badge--neutral dash-test-label--prrs">PRRS</span></td>
-              <td class="dash-test-table__updated">5 h ago</td>
-              <td class="dash-test-table__row-action-col"><button type="button" class="dash-test-table__row-action" aria-label="Row actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
-            </tr>
-            <tr class="is-selected">
-              <td><input type="checkbox" class="checkbox" aria-label="Select SP-006" checked /></td>
-              <td class="dash-test-table__id"><a class="dash-test-table__id-link" href="admin-test-profile-view-earthsky.html">SP-006</a></td>
-              <td><span class="badge badge--neutral dash-test-label--asf">ASF</span></td>
-              <td class="dash-test-table__updated">1 d ago</td>
-              <td class="dash-test-table__row-action-col"><button type="button" class="dash-test-table__row-action" aria-label="Row actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
+            <tr>
+              <td>
+                <span class="dash-test-run__disease-cell">
+                  <span class="badge badge--neutral dash-test-label--prrs">PRRS</span>
+                  <span class="dash-test-run__sp-id">SP_0142</span>
+                </span>
+              </td>
+              <td class="is-num">0.88</td>
+              <td class="is-num">0.81</td>
+              <td class="is-num">3.1s</td>
+              <td class="is-num">5</td>
+              <td class="is-num dash-test-run__acc--safe">0.93</td>
+              <td class="is-num">$0.011</td>
+              <td>final</td>
+              <td><a href="admin-test-case-earthsky.html" class="dash-test-run__view-link">View →</a></td>
             </tr>
             <tr>
-              <td><input type="checkbox" class="checkbox" aria-label="Select SP-005" /></td>
-              <td class="dash-test-table__id"><a class="dash-test-table__id-link" href="admin-test-profile-view-earthsky.html">SP-005</a></td>
-              <td><span class="badge badge--neutral dash-test-label--tge">TGE</span></td>
-              <td class="dash-test-table__updated">2 d ago</td>
-              <td class="dash-test-table__row-action-col"><button type="button" class="dash-test-table__row-action" aria-label="Row actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
+              <td>
+                <span class="dash-test-run__disease-cell">
+                  <span class="badge badge--neutral dash-test-label--prrs">PRRS</span>
+                  <span class="dash-test-run__sp-id">SP_0141</span>
+                </span>
+              </td>
+              <td class="is-num">0.85</td>
+              <td class="is-num">0.78</td>
+              <td class="is-num">3.4s</td>
+              <td class="is-num">6</td>
+              <td class="is-num dash-test-run__acc--safe">0.89</td>
+              <td class="is-num">$0.013</td>
+              <td>final</td>
+              <td><a href="admin-test-case-earthsky.html" class="dash-test-run__view-link">View →</a></td>
+            </tr>
+            <tr class="dash-test-run__row--anomaly">
+              <td>
+                <span class="dash-test-run__disease-cell">
+                  <span class="badge badge--neutral dash-test-label--asf">ASF</span>
+                  <span class="dash-test-run__sp-id">SP_0138</span>
+                  <svg class="dash-test-run__anomaly-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-label="Anomaly flagged"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                </span>
+              </td>
+              <td class="is-num">0.72</td>
+              <td class="is-num">0.65</td>
+              <td class="is-num">4.7s</td>
+              <td class="is-num">7</td>
+              <td class="is-num dash-test-run__acc--critical">0.61</td>
+              <td class="is-num">$0.018</td>
+              <td>final</td>
+              <td><a href="admin-test-case-earthsky.html" class="dash-test-run__view-link">View →</a></td>
             </tr>
             <tr>
-              <td><input type="checkbox" class="checkbox" aria-label="Select SP-004" /></td>
-              <td class="dash-test-table__id"><a class="dash-test-table__id-link" href="admin-test-profile-view-earthsky.html">SP-004</a></td>
-              <td><span class="badge badge--neutral dash-test-label--ery">ERY</span></td>
-              <td class="dash-test-table__updated">3 d ago</td>
-              <td class="dash-test-table__row-action-col"><button type="button" class="dash-test-table__row-action" aria-label="Row actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
+              <td>
+                <span class="dash-test-run__disease-cell">
+                  <span class="badge badge--neutral dash-test-label--tge">TGE</span>
+                  <span class="dash-test-run__sp-id">SP_0136</span>
+                </span>
+              </td>
+              <td class="is-num">0.83</td>
+              <td class="is-num">0.74</td>
+              <td class="is-num">3.0s</td>
+              <td class="is-num">4</td>
+              <td class="is-num dash-test-run__acc--safe">0.87</td>
+              <td class="is-num">$0.009</td>
+              <td>final</td>
+              <td><a href="admin-test-case-earthsky.html" class="dash-test-run__view-link">View →</a></td>
             </tr>
             <tr>
-              <td><input type="checkbox" class="checkbox" aria-label="Select SP-003" /></td>
-              <td class="dash-test-table__id"><a class="dash-test-table__id-link" href="admin-test-profile-view-earthsky.html">SP-003</a></td>
-              <td><span class="badge badge--neutral dash-test-label--app">APP</span></td>
-              <td class="dash-test-table__updated">5 d ago</td>
-              <td class="dash-test-table__row-action-col"><button type="button" class="dash-test-table__row-action" aria-label="Row actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
+              <td>
+                <span class="dash-test-run__disease-cell">
+                  <span class="badge badge--neutral dash-test-label--ery">ERY</span>
+                  <span class="dash-test-run__sp-id">SP_0134</span>
+                </span>
+              </td>
+              <td class="is-num">0.79</td>
+              <td class="is-num">0.72</td>
+              <td class="is-num">3.6s</td>
+              <td class="is-num">6</td>
+              <td class="is-num dash-test-run__acc--default">0.78</td>
+              <td class="is-num">$0.014</td>
+              <td>final</td>
+              <td><a href="admin-test-case-earthsky.html" class="dash-test-run__view-link">View →</a></td>
             </tr>
             <tr>
-              <td><input type="checkbox" class="checkbox" aria-label="Select SP-002" /></td>
-              <td class="dash-test-table__id"><a class="dash-test-table__id-link" href="admin-test-profile-view-earthsky.html">SP-002</a></td>
-              <td><span class="badge badge--neutral dash-test-label--csf">CSF</span></td>
-              <td class="dash-test-table__updated">1 w ago</td>
-              <td class="dash-test-table__row-action-col"><button type="button" class="dash-test-table__row-action" aria-label="Row actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
-            </tr>
-            <tr>
-              <td><input type="checkbox" class="checkbox" aria-label="Select SP-001" /></td>
-              <td class="dash-test-table__id"><a class="dash-test-table__id-link" href="admin-test-profile-view-earthsky.html">SP-001</a></td>
-              <td><span class="badge badge--neutral dash-test-label--prrs">PRRS</span></td>
-              <td class="dash-test-table__updated">2 w ago</td>
-              <td class="dash-test-table__row-action-col"><button type="button" class="dash-test-table__row-action" aria-label="Row actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
+              <td>
+                <span class="dash-test-run__disease-cell">
+                  <span class="badge badge--neutral dash-test-label--app">APP</span>
+                  <span class="dash-test-run__sp-id">SP_0132</span>
+                </span>
+              </td>
+              <td class="is-num">0.91</td>
+              <td class="is-num">0.84</td>
+              <td class="is-num">2.9s</td>
+              <td class="is-num">5</td>
+              <td class="is-num dash-test-run__acc--safe">0.95</td>
+              <td class="is-num">$0.010</td>
+              <td>final</td>
+              <td><a href="admin-test-case-earthsky.html" class="dash-test-run__view-link">View →</a></td>
             </tr>
           </tbody>
         </table>
       </div>
-
-      <footer class="dash-test-pager" role="navigation" aria-label="Pagination">
-        <span class="dash-test-pager__meta">Showing 1–8 of 142</span>
-        <div class="dash-test-pager__controls">
-          <button type="button" class="dash-test-pager__btn" aria-label="First page" disabled>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="11 17 6 12 11 7"/><polyline points="18 17 13 12 18 7"/></svg>
-          </button>
-          <button type="button" class="dash-test-pager__btn" aria-label="Previous page" disabled>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-          </button>
-          <span class="dash-test-pager__page">
-            <input type="text" class="input input--sm" value="1" aria-label="Current page" />
-            <span>/ 18</span>
-          </span>
-          <button type="button" class="dash-test-pager__btn" aria-label="Next page">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-          </button>
-          <button type="button" class="dash-test-pager__btn" aria-label="Last page">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>
-          </button>
-        </div>
-      </footer>
-
     </section>
-
-    <!-- Usage note appears BELOW the card, not inside, per spec. -->
-    <p class="dash-test__note">
-      Selecting one or more rows replaces the search-and-sort toolbar with a bulk-action bar (Export · Duplicate · Delete) until the selection is cleared.
-    </p>
 
 
   </main>
@@ -8357,163 +8149,32 @@ body.has-modal-open { overflow: hidden; }
     });
   });
 
-  // ----- Filter chip toggle -----
-  document.querySelectorAll('.dash-test-toolbar__filters .chip').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var pressed = btn.getAttribute('aria-pressed') === 'true';
-      btn.setAttribute('aria-pressed', pressed ? 'false' : 'true');
-    });
-  });
-
-  // ----- Sort-by dropdown (copied verbatim from .dash-catalogue__sort, renamed) -----
-  var sortBtn   = document.querySelector('.dash-test-toolbar__sort-by');
-  var sortMenu  = document.querySelector('.dash-test-toolbar__sort-menu');
-  var sortValue = document.querySelector('.dash-test-toolbar__sort-by-value');
-
-  if (sortBtn && sortMenu && sortValue) {
-    sortBtn.addEventListener('click', function (e) {
+  // ----- Download dropdown (FR-387) -----
+  // Same open/close + click-outside pattern as the sort dropdown on the
+  // profiles/suites pages — reuses .dash-test-toolbar__sort-menu styling
+  // under a download-specific trigger.
+  (function () {
+    var trigger = document.querySelector('.dash-test-run__download-trigger');
+    var menu    = document.querySelector('.dash-test-run__download-menu');
+    if (!trigger || !menu) return;
+    trigger.addEventListener('click', function (e) {
       e.stopPropagation();
-      var open = sortMenu.classList.toggle('is-open');
-      sortBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      var open = menu.classList.toggle('is-open');
+      trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
-    sortMenu.querySelectorAll('button').forEach(function (option) {
-      option.addEventListener('click', function (e) {
+    menu.querySelectorAll('button').forEach(function (opt) {
+      opt.addEventListener('click', function (e) {
         e.stopPropagation();
-        sortMenu.querySelectorAll('button').forEach(function (b) { b.removeAttribute('aria-selected'); });
-        option.setAttribute('aria-selected', 'true');
-        sortValue.textContent = option.textContent.trim();
-        sortMenu.classList.remove('is-open');
-        sortBtn.setAttribute('aria-expanded', 'false');
+        menu.classList.remove('is-open');
+        trigger.setAttribute('aria-expanded', 'false');
       });
     });
     document.addEventListener('click', function () {
-      if (sortMenu.classList.contains('is-open')) {
-        sortMenu.classList.remove('is-open');
-        sortBtn.setAttribute('aria-expanded', 'false');
+      if (menu.classList.contains('is-open')) {
+        menu.classList.remove('is-open');
+        trigger.setAttribute('aria-expanded', 'false');
       }
     });
-  }
-
-  // ----- Sort direction toggle -----
-  var sortDir = document.querySelector('.dash-test-toolbar__sort-dir');
-  if (sortDir) {
-    sortDir.addEventListener('click', function () {
-      var isDesc = sortDir.getAttribute('aria-pressed') === 'true';
-      sortDir.setAttribute('aria-pressed', isDesc ? 'false' : 'true');
-      sortDir.setAttribute('aria-label',
-        isDesc ? 'Sort direction: ascending' : 'Sort direction: descending');
-    });
-  }
-
-  // ----- Bulk bar visibility -----
-  // When ≥1 row checkbox is checked, the toolbar gets .is-hidden and the
-  // bulk bar gets .is-visible. Also mirrors the row's .is-selected class.
-  (function () {
-    var toolbar = document.querySelector('.dash-test-toolbar');
-    var bulkbar = document.querySelector('.dash-test-bulkbar');
-    var count   = document.querySelector('.dash-test-bulkbar__count');
-    var rowChecks = document.querySelectorAll('.dash-test-table tbody input[type="checkbox"]');
-    if (!toolbar || !bulkbar || !count || rowChecks.length === 0) return;
-
-    function refresh() {
-      var checked = 0;
-      rowChecks.forEach(function (cb) {
-        var row = cb.closest('tr');
-        if (cb.checked) {
-          checked += 1;
-          if (row) row.classList.add('is-selected');
-        } else if (row) {
-          row.classList.remove('is-selected');
-        }
-      });
-      if (checked > 0) {
-        toolbar.classList.add('is-hidden');
-        bulkbar.classList.add('is-visible');
-        count.textContent = checked + (checked === 1 ? ' profile selected' : ' profiles selected');
-      } else {
-        toolbar.classList.remove('is-hidden');
-        bulkbar.classList.remove('is-visible');
-      }
-    }
-    rowChecks.forEach(function (cb) { cb.addEventListener('change', refresh); });
-
-    // Select-all (header checkbox) — toggles every row check, then refreshes.
-    var selectAll = document.querySelector('.dash-test-table thead input[type="checkbox"]');
-    if (selectAll) {
-      selectAll.addEventListener('change', function () {
-        rowChecks.forEach(function (cb) { cb.checked = selectAll.checked; });
-        refresh();
-      });
-    }
-  })();
-
-  // ----- Delete confirmation modal (JS-injected) -----
-  // No .modal markup exists at rest. When the bulk-bar Delete (or a row
-  // kebab Delete) is pressed, build a .modal--xs from scratch, insert it
-  // into <body>, and open it. Closing/confirming removes the markup.
-  (function () {
-    function openDeleteModal(selectedRows) {
-      var names = selectedRows.map(function (row) {
-        var a = row.querySelector('.dash-test-table__id-link');
-        return (a ? a.textContent : '').trim();
-      });
-      var modal = document.createElement('div');
-      modal.className = 'modal modal--xs';
-      modal.setAttribute('role', 'dialog');
-      modal.setAttribute('aria-modal', 'true');
-      modal.setAttribute('aria-labelledby', 'dash-test-delete-h');
-      var n = selectedRows.length;
-      var listMarkup = names.map(function (s) { return '<li>' + s + '</li>'; }).join('');
-      modal.innerHTML =
-        '<div class="modal__surface">'
-        + '<header class="modal__header">'
-        + '<div class="modal__heading">'
-        + '<h2 id="dash-test-delete-h" class="modal__title">Delete ' + n + ' ' + (n === 1 ? 'profile' : 'profiles') + '?</h2>'
-        + '</div>'
-        + '<button type="button" class="modal__close" aria-label="Close">'
-        + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>'
-        + '</button>'
-        + '</header>'
-        + '<div class="modal__body">'
-        + '<p>This action can&rsquo;t be undone.</p>'
-        + '<ul>' + listMarkup + '</ul>'
-        + '</div>'
-        + '<footer class="modal__footer">'
-        + '<button type="button" class="btn btn--ghost" data-modal-cancel><span class="btn__label">Cancel</span></button>'
-        + '<button type="button" class="btn" data-modal-confirm style="background: var(--critical-500); border-color: var(--critical-500); color: var(--text-inverted);"><span class="btn__label">Delete</span></button>'
-        + '</footer>'
-        + '</div>';
-      document.body.appendChild(modal);
-      document.body.classList.add('has-modal-open');
-      // Force a layout flush, then flip is-open on the next frame so the
-      // opacity/transform transition registers.
-      void modal.offsetWidth;
-      setTimeout(function () { modal.classList.add('is-open'); }, 16);
-
-      function close() {
-        modal.classList.remove('is-open');
-        setTimeout(function () {
-          if (modal.parentNode) modal.parentNode.removeChild(modal);
-          document.body.classList.remove('has-modal-open');
-        }, 260);
-      }
-      modal.querySelector('[data-modal-cancel]').addEventListener('click', close);
-      modal.querySelector('[data-modal-confirm]').addEventListener('click', close);
-      modal.querySelector('.modal__close').addEventListener('click', close);
-      modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
-      document.addEventListener('keydown', function escHandler(e) {
-        if (e.key === 'Escape') { close(); document.removeEventListener('keydown', escHandler); }
-      });
-    }
-
-    var bulkDelete = document.querySelector('.dash-test-bulkbar__actions button:last-child');
-    if (bulkDelete) {
-      bulkDelete.addEventListener('click', function () {
-        var rows = Array.prototype.slice.call(document.querySelectorAll('.dash-test-table tbody tr.is-selected'));
-        if (rows.length === 0) return;
-        openDeleteModal(rows);
-      });
-    }
   })();
 </script>
 

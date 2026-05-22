@@ -426,6 +426,18 @@
 .radio    input { border-radius: 50%; }
 .checkbox input { border-radius: var(--radius-sm); }
 
+/* Checkbox indicator radius — tied to the control size, not the
+   generic --radius-sm rail. At sm/md sizes a --radius-sm corner is
+   large enough relative to the 14–16px box that the indicator reads
+   as a circle. Use a smaller fixed value so a checkbox always reads
+   as a square box at every size. */
+.checkbox input            { border-radius: 4px; }
+.checkbox--sm  input,
+.checkbox--md  input       { border-radius: 3px; }
+.checkbox--lg  input,
+.checkbox--xl  input,
+.checkbox--2xl input       { border-radius: 4px; }
+
 /* Subtle pressed feedback on the radio circle — a tiny squish on
    mousedown, then a soft overshoot release. Felt rather than seen. */
 .radio input:not([disabled]):active {

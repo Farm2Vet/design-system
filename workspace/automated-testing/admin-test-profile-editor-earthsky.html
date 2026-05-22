@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Admin · Automated testing — run results (Earth + Sky) — Farm2Vet</title>
+<title>Admin · Profile SP-002 · edit (Earth + Sky) — Farm2Vet</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -6072,6 +6072,137 @@ button.card.card--inverted:hover {
 }
 
 
+/* ===== styles/modal.css ===== */
+:root {
+    --modal-font-family:      var(--font-sans);
+    --modal-radius:           var(--radius-lg);
+    --modal-border-width:     var(--border-width-base);
+    --modal-shadow:           var(--shadow-lg);
+    --modal-z-backdrop:       80;
+    --modal-z-surface:        81;
+    --modal-xs-width:         320px;
+    --modal-xs-padding-x:     var(--space-container-x-sm);
+    --modal-xs-padding-y:     var(--space-container-y-sm);
+    --modal-md-width:         560px;
+    --modal-md-padding-x:     var(--space-container-x);
+    --modal-md-padding-y:     var(--space-container-y);
+    --modal-max-height:       min(86vh, 720px);
+    --modal-bg:               var(--background-default);
+    --modal-fg:               var(--text-default);
+    --modal-fg-subtle:        var(--text-default-subtle);
+    --modal-border:           var(--border-default);
+    --modal-backdrop:         var(--glass-scrim);
+    --modal-backdrop-blur:    var(--glass-scrim-blur);
+    --modal-header-padding-y: var(--space-container-y);
+    --modal-body-padding-y:   var(--space-container-y);
+    --modal-header-gap:       var(--space-tier-5);
+    --modal-title-font:       var(--text-h6);
+    --modal-title-weight:     var(--font-weight-semibold);
+    --modal-title-line:       var(--line-height-h6);
+    --modal-body-line:        var(--line-height-body);
+    --modal-body-gap:         var(--space-tier-5);
+    --modal-footer-gap:       var(--space-tier-5);
+    --modal-footer-padding-y: var(--space-tier-4);
+    --modal-footer-bg:        var(--background-default-subtle);
+    --modal-footer-border:    var(--border-default-subtle);
+    --modal-close-size:       32px;
+    --modal-close-radius:     var(--radius-sm);
+    --modal-close-fg:         var(--icon-default);
+    --modal-close-fg-hover:   var(--text-default);
+    --modal-close-bg-hover:   var(--background-default-hover);
+    --modal-anim-duration:    260ms;
+    --modal-anim-easing:      cubic-bezier(.2, .8, .2, 1);
+    --modal-anim-translate:   12px;
+}
+body.has-modal-open { overflow: hidden; }
+.modal {
+    position: fixed; inset: 0;
+    z-index: var(--modal-z-backdrop);
+    display: flex; align-items: center; justify-content: center;
+    padding: var(--space-container-y) var(--space-container-x);
+    background: var(--modal-backdrop);
+    backdrop-filter: var(--modal-backdrop-blur);
+    -webkit-backdrop-filter: var(--modal-backdrop-blur);
+    opacity: 0; pointer-events: none;
+    transition: opacity var(--modal-anim-duration) var(--modal-anim-easing);
+}
+.modal.is-open { opacity: 1; pointer-events: auto; }
+.modal__surface {
+    position: relative;
+    z-index: var(--modal-z-surface);
+    display: flex; flex-direction: column;
+    width: 100%; max-width: var(--modal-md-width);
+    max-height: var(--modal-max-height);
+    background: var(--modal-bg); color: var(--modal-fg);
+    border-radius: var(--modal-radius);
+    border: var(--modal-border-width) solid var(--modal-border);
+    box-shadow: var(--modal-shadow);
+    overflow: hidden;
+    font-family: var(--font-sans);
+    transform: translateY(var(--modal-anim-translate)) scale(.98);
+    transition: transform var(--modal-anim-duration) var(--modal-anim-easing),
+                opacity var(--modal-anim-duration) var(--modal-anim-easing);
+    opacity: 0;
+}
+.modal.is-open .modal__surface { transform: translateY(0) scale(1); opacity: 1; }
+.modal--xs .modal__surface { max-width: var(--modal-xs-width); }
+.modal__header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    column-gap: var(--modal-header-gap);
+    align-items: start;
+    padding: var(--modal-header-padding-y) var(--modal-md-padding-x);
+    border-bottom: var(--modal-border-width) solid transparent;
+}
+.modal__heading { display: flex; flex-direction: column; min-width: 0; }
+.modal__title {
+    font-family: var(--font-sans);
+    font-size: var(--modal-title-font);
+    font-weight: var(--modal-title-weight);
+    line-height: var(--modal-title-line);
+    color: var(--modal-fg);
+    margin: 0;
+}
+.modal__close {
+    width: var(--modal-close-size); height: var(--modal-close-size);
+    border-radius: var(--modal-close-radius);
+    background: transparent; border: 0;
+    color: var(--modal-close-fg);
+    display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: background-color .15s ease, color .15s ease;
+}
+.modal__close:hover { background: var(--modal-close-bg-hover); color: var(--modal-close-fg-hover); }
+.modal__close svg { width: 18px; height: 18px; }
+.modal__body {
+    padding: 0 var(--modal-md-padding-x) var(--modal-body-padding-y);
+    overflow-y: auto; flex: 1 1 auto;
+    color: var(--modal-fg);
+    font-size: var(--text-base);
+    line-height: var(--modal-body-line);
+    display: flex; flex-direction: column;
+    gap: var(--modal-body-gap);
+}
+.modal__body p { margin: 0; }
+.modal__footer {
+    display: flex; align-items: center; justify-content: flex-end;
+    gap: var(--modal-footer-gap);
+    padding: var(--modal-footer-padding-y) var(--modal-md-padding-x);
+    border-top: var(--modal-border-width) solid var(--modal-footer-border);
+    background: var(--modal-footer-bg);
+}
+.modal--xs .modal__header,
+.modal--xs .modal__body,
+.modal--xs .modal__footer { padding-left: var(--modal-xs-padding-x); padding-right: var(--modal-xs-padding-x); }
+.modal--xs .modal__header,
+.modal--xs .modal__body { padding-top: var(--modal-xs-padding-y); padding-bottom: var(--modal-xs-padding-y); }
+.modal--xs .modal__footer { padding-top: var(--modal-footer-padding-y); padding-bottom: var(--modal-footer-padding-y); }
+@media (prefers-reduced-motion: reduce) {
+    .modal, .modal__surface { transition: opacity .15s ease; }
+    .modal__surface { transform: none; }
+}
+
+
 /* ===== styles/global-nav.css ===== */
 /* =========================================================
    FARM2VET DESIGN SYSTEM — GLOBAL NAV
@@ -6970,200 +7101,161 @@ button.card.card--inverted:hover {
 }
 
 /* =========================================================
-   ADMIN · AUTOMATED TESTING — RUN RESULTS
-   (FR-385 scoreboard + cases table, FR-387 download menu)
-   Sections (top to bottom):
-     1. Scoreboard — 6 glass tiles (each is its own card)
-     2. Anomaly callout (warning alert)
-     3. Cases table card
+   ADMIN · AUTOMATED TESTING — PROFILE EDITOR (FR-381)
+   Two-column form (1.4fr / 1fr) inside a single glass card.
    ========================================================= */
 
-.dash-test-run__page .dash-test-run__eyebrow {
-    display: inline-block;
-    margin-bottom: var(--space-tier-7);
-    padding: 2px var(--space-tier-7);
-    background: color-mix(in srgb, var(--info-500, var(--primary-700)) 12%, transparent);
-    color: var(--text-primary-strong);
-    border-radius: var(--radius-sm);
-    font-family: var(--font-sans);
-    font-size: var(--text-body-sm);
-    font-weight: var(--font-weight-medium);
-}
-.dash-test-run__id {
-    font-family: var(--font-mono);
-    color: var(--text-default);
-    font-weight: var(--font-weight-medium);
-}
-.dash-test-run__cta-cluster {
+.dash-test-editor__page .dash-test-editor__cta-cluster {
     display: inline-flex;
     align-items: center;
     gap: var(--space-tier-7);
     flex-shrink: 0;
 }
-
-/* Reuse the .dash-catalogue__sort menu pattern (renamed) for
-   the Download dropdown — same shape, same anchor. */
-.dash-test-run__download-wrap { position: relative; }
-.dash-test-run__download-trigger {
-    /* btn--ghost size already provides padding; we just add
-       a small gap before the chevron. */
-    gap: var(--space-tier-7);
+.dash-test-editor__delete-btn {
+    color: var(--text-critical);
 }
-.dash-test-run__download-menu {
-    /* extends .dash-test-toolbar__sort-menu */
-    right: 0;
-    top: calc(100% + 4px);
-    min-width: 200px;
+.dash-test-editor__delete-btn:hover {
+    color: var(--critical-700);
+    background: color-mix(in srgb, var(--critical-500) 10%, transparent);
 }
 
-/* ----- Scoreboard — canonical .card__metric tiles inside a
-   6-column .dash-kpis grid. Each tile is its own
-   .card.card--glass so the glass shadow + rim rail applies. */
-.dash-kpis {
+.dash-test-editor__card.card {
+    padding: var(--space-tier-3);
+}
+.dash-test-editor__grid {
     display: grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-    gap: var(--space-gap-default);
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: var(--space-tier-3);
+    align-items: start;
 }
-.dash-kpis .card {
-    padding: var(--space-container-y) var(--space-container-x);
+.dash-test-editor__form-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tier-5);
 }
-.dash-kpis .card__metric-value { font-size: var(--text-h2); }
-.dash-kpis .card__metric-delta {
+/* ---- ID badge (top of form-stack) ---- */
+.dash-test-editor__id-row {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-tier-6);
+    align-self: start;
+    padding: var(--space-tier-7) var(--space-tier-5);
+    background: color-mix(in srgb, var(--white-base) 35%, transparent);
+    border: var(--border-width-base) solid var(--border-default-subtle);
+    border-radius: var(--radius-md);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+}
+.dash-test-editor__id-key { color: var(--text-default-subtle); }
+.dash-test-editor__id-val {
+    color: var(--text-default);
+    font-family: var(--font-mono);
+    letter-spacing: var(--letter-spacing-mono);
+}
+
+/* ---- Grouped section (farm_background / observed_evidences) ---- */
+.dash-test-editor__group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tier-5);
+}
+.dash-test-editor__group-head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tier-7);
+    padding-bottom: var(--space-tier-6);
+    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
+}
+.dash-test-editor__group-eyebrow {
     font-family: var(--font-mono);
     font-size: var(--text-eyebrow);
-    letter-spacing: var(--letter-spacing-mono);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+}
+.dash-test-editor__group-title {
+    font-family: var(--font-sans);
+    font-size: var(--text-h5);
+    font-weight: 600;
+    color: var(--text-default);
+    margin: 0;
+    letter-spacing: -0.01em;
+}
+
+/* ---- Field grid (used inside a group) ---- */
+.dash-test-editor__field-grid {
+    display: grid;
+    gap: var(--space-tier-5);
+}
+.dash-test-editor__field-grid--2col {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@media (max-width: 720px) {
+    .dash-test-editor__field-grid--2col { grid-template-columns: 1fr; }
+}
+
+.dash-test-editor__hint {
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
     color: var(--text-default-minimal);
 }
 
-/* ----- Anomaly alert (.alert.alert--warning, lightly
-   re-themed since the canonical alert.css is not inlined
-   on this page — the visual mark is the same: warning
-   amber stripe + title + body + action) -------------- */
-.alert.dash-test-run__anomaly {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--space-tier-5);
-    padding: var(--space-tier-5);
-    background: color-mix(in srgb, var(--warning-500) 10%, var(--white-base));
-    border: var(--border-width-base) solid color-mix(in srgb, var(--warning-500) 40%, transparent);
-    border-left: 4px solid var(--warning-500);
-    border-radius: var(--radius-md);
-}
-.alert.dash-test-run__anomaly .alert__icon {
-    color: var(--warning-700);
-    flex-shrink: 0;
-}
-.alert.dash-test-run__anomaly .alert__body { flex: 1; min-width: 0; }
-.alert.dash-test-run__anomaly .alert__title {
-    margin: 0;
-    font-family: var(--font-sans);
-    font-size: var(--text-body);
-    font-weight: var(--font-weight-semibold);
-    color: var(--warning-700);
-}
-.alert.dash-test-run__anomaly .alert__desc {
-    margin: var(--space-tier-7) 0 0 0;
-    font-family: var(--font-sans);
-    font-size: var(--text-body-sm);
-    color: var(--text-default);
-}
-.alert.dash-test-run__anomaly .alert__action { flex-shrink: 0; }
-
-/* ----- Cases table card -------------------------------- */
-.dash-test-card.card {
-    padding: 0;
-    overflow: hidden;
+/* Right column: picture upload tile + read-only metadata card */
+.dash-test-editor__right {
     display: flex;
     flex-direction: column;
-    gap: 0;
-}
-.dash-test-run__cases-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     gap: var(--space-tier-5);
-    padding: var(--space-tier-5);
-    background: color-mix(in srgb, var(--white-base) 25%, transparent);
-    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
 }
-.dash-test-run__cases-summary {
-    display: inline-flex;
+.dash-test-editor__upload {
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: var(--space-tier-7);
-}
-
-.dash-test-run__table-wrap { overflow-x: auto; }
-.dash-test-run__table {
-    width: 100%;
-    border-collapse: collapse;
+    justify-content: center;
+    gap: var(--space-tier-6);
+    padding: var(--space-tier-3);
+    min-height: 200px;
+    background: color-mix(in srgb, var(--white-base) 30%, transparent);
+    border: 2px dashed color-mix(in srgb, var(--neutral-500) 35%, transparent);
+    border-radius: var(--radius-lg);
+    text-align: center;
+    color: var(--text-default-subtle);
     font-family: var(--font-sans);
     font-size: var(--text-body-sm);
-    color: var(--text-default);
+    cursor: pointer;
+    transition: border-color .15s ease, background-color .15s ease;
 }
-.dash-test-run__table thead th {
-    text-align: left;
-    padding: var(--space-tier-6) var(--space-tier-5);
-    font-weight: var(--font-weight-semibold);
+.dash-test-editor__upload:hover {
+    border-color: var(--primary-500);
+    background: color-mix(in srgb, var(--primary-500) 6%, var(--white-base));
+}
+.dash-test-editor__upload-icon {
+    width: 36px;
+    height: 36px;
+    color: var(--icon-default-subtle);
+}
+.dash-test-editor__meta {
+    padding: var(--space-tier-5);
+    background: color-mix(in srgb, var(--white-base) 35%, transparent);
+    border: var(--border-width-base) solid var(--border-default-subtle);
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tier-6);
+    font-family: var(--font-sans);
     font-size: var(--text-body-sm);
-    color: var(--text-default-subtle);
-    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
-    background: color-mix(in srgb, var(--white-base) 15%, transparent);
-    white-space: nowrap;
 }
-.dash-test-run__table thead th.is-num { text-align: right; }
-.dash-test-run__table tbody td {
-    padding: var(--space-tier-6) var(--space-tier-5);
-    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
-    vertical-align: middle;
+.dash-test-editor__meta-row {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-tier-6);
 }
-.dash-test-run__table tbody td.is-num {
-    text-align: right;
-    font-variant-numeric: tabular-nums;
-}
-.dash-test-run__table tbody tr { transition: background-color .15s ease; }
-.dash-test-run__table tbody tr:hover {
-    background: color-mix(in srgb, var(--primary-500) 8%, transparent);
-}
-.dash-test-run__row--anomaly {
-    background: color-mix(in srgb, var(--warning-500) 8%, transparent);
-}
-.dash-test-run__row--anomaly:hover {
-    background: color-mix(in srgb, var(--warning-500) 14%, transparent);
-}
-.dash-test-run__disease-cell {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-tier-7);
-}
-.dash-test-run__sp-id {
-    font-family: var(--font-mono);
-    color: var(--text-default-subtle);
-}
-.dash-test-run__anomaly-icon {
-    color: var(--warning-700);
-    flex-shrink: 0;
-}
-.dash-test-run__acc--safe { color: var(--text-safe); font-weight: var(--font-weight-semibold); }
-.dash-test-run__acc--default { color: var(--text-default); }
-.dash-test-run__acc--critical { color: var(--text-critical); font-weight: var(--font-weight-semibold); }
-.dash-test-run__view-link {
-    color: var(--text-primary-strong);
-    text-decoration: none;
-    font-weight: var(--font-weight-medium);
-    white-space: nowrap;
-}
-.dash-test-run__view-link:hover { text-decoration: underline; }
-
-/* Disease label pill — neutral badge + accent hue per family */
-.dash-test-label--prrs { background: color-mix(in srgb, var(--primary-500) 18%, var(--white-base)); color: var(--primary-900); border-color: color-mix(in srgb, var(--primary-500) 30%, transparent); }
-.dash-test-label--asf { background: color-mix(in srgb, var(--secondary-500) 16%, var(--white-base)); color: var(--secondary-900); border-color: color-mix(in srgb, var(--secondary-500) 30%, transparent); }
-.dash-test-label--tge { background: color-mix(in srgb, var(--secondary-300) 18%, var(--white-base)); color: var(--secondary-900); border-color: color-mix(in srgb, var(--secondary-300) 35%, transparent); }
-.dash-test-label--ery { background: color-mix(in srgb, var(--accent-500) 16%, var(--white-base)); color: var(--accent-900); border-color: color-mix(in srgb, var(--accent-500) 30%, transparent); }
-.dash-test-label--app { background: color-mix(in srgb, var(--info-500, var(--primary-700)) 16%, var(--white-base)); color: var(--text-default); border-color: color-mix(in srgb, var(--primary-700) 30%, transparent); }
+.dash-test-editor__meta-key { color: var(--text-default-subtle); }
+.dash-test-editor__meta-val { color: var(--text-default); }
+.dash-test-editor__meta-val--mono { font-family: var(--font-mono); }
 
 /* ----- Responsive --------------------------------------- */
-@media (max-width: 1100px) {
-    .dash-kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 900px) {
+    .dash-test-editor__grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 720px) {
     .dash {
@@ -7174,38 +7266,8 @@ button.card.card--inverted:hover {
     .dash__side .sidebar { height: auto; }
     .dash-page { flex-direction: column; align-items: stretch; }
     .dash-page__cta { width: 100%; }
-    .dash-test-run__cta-cluster { width: 100%; flex-wrap: wrap; }
-    .dash-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .dash-test-editor__cta-cluster { flex-wrap: wrap; justify-content: flex-end; }
 }
-
-/* Shared sort-menu base — copied verbatim from suites/profiles
-   pages so the .dash-test-run__download-menu inherits the same
-   open/closed display rules. */
-.dash-test-toolbar__sort-menu {
-    position: absolute;
-    background: var(--background-default);
-    border: var(--border-width-base) solid var(--border-default);
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-md);
-    padding: var(--space-tier-7);
-    display: none;
-    flex-direction: column;
-    gap: 2px;
-    z-index: 10;
-}
-.dash-test-toolbar__sort-menu.is-open { display: flex; }
-.dash-test-toolbar__sort-menu button {
-    border: none;
-    background: transparent;
-    padding: var(--space-tier-6) var(--space-tier-5);
-    text-align: left;
-    font-family: var(--font-sans);
-    font-size: var(--text-body-sm);
-    color: var(--text-default);
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-}
-.dash-test-toolbar__sort-menu button:hover { background: var(--background-default-hover); }
 
 /* ----- Disease catalogue (unused on this page) ---------- */
 .dash-catalogue.card {
@@ -7743,7 +7805,7 @@ button.card.card--inverted:hover {
     <aside class="sidebar" aria-label="Admin primary navigation">
 
       <header class="sidebar__header">
-        <a href="admin-dashboard.html" class="sidebar__brand">
+        <a href="../admin-dashboard.html" class="sidebar__brand">
           <img class="sidebar__brand-mark" src="../logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
           <span class="sidebar__brand-text">Farm2Vet</span>
         </a>
@@ -7756,7 +7818,7 @@ button.card.card--inverted:hover {
         <ul class="sidebar__list">
 
           <li class="sidebar__item">
-            <a class="sidebar__link" href="admin-dashboard.html">
+            <a class="sidebar__link" href="../admin-dashboard.html">
               <span class="sidebar__icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
               </span>
@@ -7775,7 +7837,7 @@ button.card.card--inverted:hover {
               </span>
             </button>
             <ul class="sidebar__sublist">
-              <li class="sidebar__item"><a class="sidebar__link" href="admin-disease-earthsky.html"><span class="sidebar__label">Disease</span><span class="sidebar__trailing"><span class="sidebar__badge">142</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="../admin-disease-earthsky.html"><span class="sidebar__label">Disease</span><span class="sidebar__trailing"><span class="sidebar__badge">142</span></span></a></li>
               <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Question</span><span class="sidebar__trailing"><span class="sidebar__badge">318</span></span></a></li>
               <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Conversation</span><span class="sidebar__trailing"><span class="sidebar__badge">47</span></span></a></li>
               <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Image</span></a></li>
@@ -7796,9 +7858,9 @@ button.card.card--inverted:hover {
             </button>
             <ul class="sidebar__sublist">
               <li class="sidebar__item"><a class="sidebar__link" href="admin-test-console-earthsky.html"><span class="sidebar__label">Console</span></a></li>
-              <li class="sidebar__item"><a class="sidebar__link" href="admin-test-profiles-earthsky.html"><span class="sidebar__label">Profiles</span><span class="sidebar__trailing"><span class="sidebar__badge">142</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link is-current" href="admin-test-profiles-earthsky.html" aria-current="page"><span class="sidebar__label">Profiles</span><span class="sidebar__trailing"><span class="sidebar__badge">142</span></span></a></li>
               <li class="sidebar__item"><a class="sidebar__link" href="admin-test-suites-earthsky.html"><span class="sidebar__label">Suites</span><span class="sidebar__trailing"><span class="sidebar__badge">12</span></span></a></li>
-              <li class="sidebar__item"><a class="sidebar__link is-current" href="admin-test-run-earthsky.html" aria-current="page"><span class="sidebar__label">Runs</span><span class="sidebar__trailing"><span class="sidebar__badge sidebar__badge--warning">3</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="admin-test-run-earthsky.html"><span class="sidebar__label">Runs</span><span class="sidebar__trailing"><span class="sidebar__badge sidebar__badge--warning">3</span></span></a></li>
             </ul>
           </li>
 
@@ -7844,15 +7906,13 @@ button.card.card--inverted:hover {
       <div class="global-nav__inner">
 
         <nav class="dash-topbar__crumbs" aria-label="Breadcrumb">
-          <a href="admin-dashboard-earthsky.html">Admin</a>
+          <a href="../admin-dashboard-earthsky.html">Admin</a>
           <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
           <a href="admin-test-console-earthsky.html">Automated testing</a>
           <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
-          <a href="admin-test-suites-earthsky.html">Suites</a>
+          <a href="admin-test-profiles-earthsky.html">Profiles</a>
           <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
-          <a href="admin-test-suite-earthsky.html">PRRS regression — EN</a>
-          <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
-          <span class="dash-topbar__crumb-tail" aria-current="page">Run</span>
+          <span class="dash-topbar__crumb-tail" aria-current="page">SP-002 · edit</span>
         </nav>
 
         <ul class="global-nav__list dash-topbar__cluster">
@@ -7888,227 +7948,161 @@ button.card.card--inverted:hover {
     </header>
 
     <!-- Page header -->
-    <header class="dash-page dash-test-run__page">
+    <header class="dash-page dash-test-editor__page">
       <div class="dash-page__text">
-        <span class="dash-test-run__eyebrow">Run · PRRS regression — EN</span>
-        <h1>Run results.</h1>
-        <p class="dash-page__lede dash-test-run__subline">
-          <span class="dash-test-run__id">run_2026-05-18_14:02</span> · finished 12 min ago · 45 cases · 3 reps
-        </p>
+        <h1>SP-002.</h1>
       </div>
-      <div class="dash-test-run__cta-cluster">
-        <div class="dash-test-toolbar__sort-by-wrap dash-test-run__download-wrap">
-          <button type="button" class="btn btn--ghost dash-test-run__download-trigger" aria-haspopup="menu" aria-expanded="false">
-            <span class="btn__label">Download</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
-          </button>
-          <div class="dash-test-toolbar__sort-menu dash-test-run__download-menu" role="menu" aria-label="Download options">
-            <button type="button" role="menuitem">Report (.md)</button>
-            <button type="button" role="menuitem">Raw data (.json)</button>
-            <button type="button" role="menuitem">Summary report (.md)</button>
-            <button type="button" role="menuitem">Summary data (.json)</button>
-          </div>
-        </div>
-        <button type="button" class="btn btn--cta dash-page__cta">
-          <span class="btn__leading" aria-hidden="true">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-          </span>
-          <span class="btn__label">Re-run</span>
-        </button>
+      <div class="dash-test-editor__cta-cluster">
+        <button type="button" class="btn btn--md btn--ghost"><span class="btn__label">Discard changes</span></button>
+        <button type="button" class="btn btn--md btn--ghost dash-test-editor__delete-btn"><span class="btn__label">Delete</span></button>
+        <button type="button" class="btn btn--md btn--cta dash-page__cta"><span class="btn__label">Save changes</span></button>
       </div>
     </header>
 
-    <!-- ============================ Scoreboard ============================
-         Six glass tiles. Each is its own .card.card--glass so the canonical
-         shadow + rim-light rail applies per tile (memory: glass always
-         carries shadow). -->
-    <section class="dash-test-run__scoreboard dash-kpis" aria-label="Run scoreboard">
-      <article class="card card--glass">
-        <div class="card__metric">
-          <span class="card__metric-label">Accuracy</span>
-          <span class="card__metric-value">91<small>%</small></span>
-          <span class="card__metric-delta is-up">+3pp vs prev</span>
-        </div>
-      </article>
-      <article class="card card--glass">
-        <div class="card__metric">
-          <span class="card__metric-label">Fluency</span>
-          <span class="card__metric-value">87<small>%</small></span>
-          <span class="card__metric-delta is-up">+2pp</span>
-        </div>
-      </article>
-      <article class="card card--glass">
-        <div class="card__metric">
-          <span class="card__metric-label">Efficiency</span>
-          <span class="card__metric-value">0.78</span>
-          <span class="card__metric-delta">flat</span>
-        </div>
-      </article>
-      <article class="card card--glass">
-        <div class="card__metric">
-          <span class="card__metric-label">Latency</span>
-          <span class="card__metric-value">3.2<small>s</small></span>
-          <span class="card__metric-delta is-up">−0.2s</span>
-        </div>
-      </article>
-      <article class="card card--glass">
-        <div class="card__metric">
-          <span class="card__metric-label">Turns</span>
-          <span class="card__metric-value">5.4</span>
-          <span class="card__metric-delta">+0.1</span>
-        </div>
-      </article>
-      <article class="card card--glass">
-        <div class="card__metric">
-          <span class="card__metric-label">Cost</span>
-          <span class="card__metric-value">$0.42</span>
-          <span class="card__metric-delta is-down">+$0.06</span>
-        </div>
-      </article>
-    </section>
+    <!-- Profile editor — single glass card with a two-column form -->
+    <section class="card card--glass dash-test-editor__card" aria-label="Profile editor">
+      <div class="dash-test-editor__grid">
 
-    <!-- ============================ Anomaly callout ============================ -->
-    <div class="alert dash-test-run__anomaly" role="alert">
-      <svg class="alert__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" aria-hidden="true">
-        <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-        <line x1="12" y1="9" x2="12" y2="13"/>
-        <line x1="12" y1="17" x2="12.01" y2="17"/>
-      </svg>
-      <div class="alert__body">
-        <p class="alert__title">3 anomalies flagged</p>
-        <p class="alert__desc">
-          SP_0138, SP_0140, SP_0144 — chatbot diagnosis didn&rsquo;t match the profile label after 3 reps (rule: <code>diagnosis-mismatch ≥ 2/3</code>).
-        </p>
-      </div>
-      <a href="#cases" class="btn btn--ghost btn--sm alert__action"><span class="btn__label">View anomalies</span></a>
-    </div>
+        <div class="dash-test-editor__form-stack">
 
-    <!-- ============================ Cases table ============================ -->
-    <section class="card card--glass dash-test-card" aria-labelledby="dash-test-run-cases-h" id="cases">
+          <div class="dash-test-editor__id-row">
+            <span class="dash-test-editor__id-key">Profile ID</span>
+            <span class="dash-test-editor__id-val">SP-002</span>
+          </div>
 
-      <header class="dash-test-run__cases-head">
-        <h3 id="dash-test-run-cases-h" class="card__title">Test cases</h3>
-        <div class="dash-test-run__cases-summary">
-          <span class="badge badge--safe">42 passed</span>
-          <span class="badge badge--warning">3 anomalies</span>
+          <section class="dash-test-editor__group" aria-labelledby="grp-farm">
+            <header class="dash-test-editor__group-head">
+              <span class="dash-test-editor__group-eyebrow">farm_background</span>
+              <h2 id="grp-farm" class="dash-test-editor__group-title">Farm background</h2>
+            </header>
+            <div class="dash-test-editor__field-grid dash-test-editor__field-grid--2col">
+
+              <div class="field">
+                <label class="field__label" for="profile-farm-size">Farm size</label>
+                <input type="text" id="profile-farm-size" class="input input--sm" value="300 pigs" />
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="profile-pig-types">Pig types</label>
+                <input type="text" id="profile-pig-types" class="input input--sm" value="weaners, growers, finishers" />
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="profile-location-climate">Location &amp; climate</label>
+                <input type="text" id="profile-location-climate" class="input input--sm" value="subtropical" />
+              </div>
+
+            </div>
+          </section>
+
+          <section class="dash-test-editor__group" aria-labelledby="grp-obs">
+            <header class="dash-test-editor__group-head">
+              <span class="dash-test-editor__group-eyebrow">observed_evidences</span>
+              <h2 id="grp-obs" class="dash-test-editor__group-title">Observed evidences</h2>
+            </header>
+            <div class="dash-test-editor__field-grid dash-test-editor__field-grid--2col">
+
+              <div class="field">
+                <label class="field__label" for="profile-affected">Affected pig types</label>
+                <input type="text" id="profile-affected" class="input input--sm" value="Mostly growers and finishers" />
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="profile-total-affected">Total affected</label>
+                <input type="text" id="profile-total-affected" class="input input--sm" value="About 180 out of 300" />
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="profile-mortality">Mortality</label>
+                <textarea id="profile-mortality" class="input input--sm textarea" rows="2">High, many pigs dying</textarea>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="profile-fever">Fever</label>
+                <textarea id="profile-fever" class="input input--sm textarea" rows="2">High fever</textarea>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="profile-sym-digestive">Digestive symptoms</label>
+                <textarea id="profile-sym-digestive" class="input input--sm textarea" rows="3">Lost appetite, bloody diarrhea</textarea>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="profile-sym-respiratory">Respiratory symptoms</label>
+                <textarea id="profile-sym-respiratory" class="input input--sm textarea" rows="3">Coughing, nasal discharge</textarea>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="profile-sym-neurological">Neurological symptoms</label>
+                <textarea id="profile-sym-neurological" class="input input--sm textarea" rows="3">Some pigs have wobbly gait, hind limb paralysis</textarea>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="profile-sym-dermatology">Dermatological symptoms</label>
+                <textarea id="profile-sym-dermatology" class="input input--sm textarea" rows="3">Blue-purple discoloration on ears and belly</textarea>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="profile-sym-reproductive">Reproductive symptoms</label>
+                <textarea id="profile-sym-reproductive" class="input input--sm textarea" rows="3"></textarea>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="profile-vaccination">Vaccination history</label>
+                <textarea id="profile-vaccination" class="input input--sm textarea" rows="3">Vaccinated against CSF 6 months ago but unsure if all pigs covered</textarea>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="profile-treatment">Treatment history</label>
+                <textarea id="profile-treatment" class="input input--sm textarea" rows="2">None yet</textarea>
+              </div>
+
+            </div>
+          </section>
+
+          <div class="field">
+            <label class="field__label" for="profile-disease">Disease label</label>
+            <select id="profile-disease" class="input input--sm">
+              <option value="" disabled>Pick a disease…</option>
+              <option value="PRRS">PRRS — Porcine Reproductive and Respiratory Syndrome</option>
+              <option value="ASF">ASF — African Swine Fever</option>
+              <option value="TGE">TGE — Transmissible Gastroenteritis</option>
+              <option value="ERY">ERY — Erysipelas</option>
+              <option value="APP">APP — Actinobacillus pleuropneumoniae</option>
+              <option value="CSF" selected>CSF — Classical Swine Fever</option>
+            </select>
+          </div>
+
         </div>
-      </header>
 
-      <div class="dash-test-run__table-wrap">
-        <table class="dash-test-run__table">
-          <thead>
-            <tr>
-              <th>Disease</th>
-              <th class="is-num">Flu</th>
-              <th class="is-num">Eff</th>
-              <th class="is-num">Lat</th>
-              <th class="is-num">Turns</th>
-              <th class="is-num">Acc</th>
-              <th class="is-num">Cost</th>
-              <th>Step</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <span class="dash-test-run__disease-cell">
-                  <span class="badge badge--neutral dash-test-label--prrs">PRRS</span>
-                  <span class="dash-test-run__sp-id">SP_0142</span>
-                </span>
-              </td>
-              <td class="is-num">0.88</td>
-              <td class="is-num">0.81</td>
-              <td class="is-num">3.1s</td>
-              <td class="is-num">5</td>
-              <td class="is-num dash-test-run__acc--safe">0.93</td>
-              <td class="is-num">$0.011</td>
-              <td>final</td>
-              <td><a href="admin-test-case-earthsky.html" class="dash-test-run__view-link">View →</a></td>
-            </tr>
-            <tr>
-              <td>
-                <span class="dash-test-run__disease-cell">
-                  <span class="badge badge--neutral dash-test-label--prrs">PRRS</span>
-                  <span class="dash-test-run__sp-id">SP_0141</span>
-                </span>
-              </td>
-              <td class="is-num">0.85</td>
-              <td class="is-num">0.78</td>
-              <td class="is-num">3.4s</td>
-              <td class="is-num">6</td>
-              <td class="is-num dash-test-run__acc--safe">0.89</td>
-              <td class="is-num">$0.013</td>
-              <td>final</td>
-              <td><a href="admin-test-case-earthsky.html" class="dash-test-run__view-link">View →</a></td>
-            </tr>
-            <tr class="dash-test-run__row--anomaly">
-              <td>
-                <span class="dash-test-run__disease-cell">
-                  <span class="badge badge--neutral dash-test-label--asf">ASF</span>
-                  <span class="dash-test-run__sp-id">SP_0138</span>
-                  <svg class="dash-test-run__anomaly-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-label="Anomaly flagged"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                </span>
-              </td>
-              <td class="is-num">0.72</td>
-              <td class="is-num">0.65</td>
-              <td class="is-num">4.7s</td>
-              <td class="is-num">7</td>
-              <td class="is-num dash-test-run__acc--critical">0.61</td>
-              <td class="is-num">$0.018</td>
-              <td>final</td>
-              <td><a href="admin-test-case-earthsky.html" class="dash-test-run__view-link">View →</a></td>
-            </tr>
-            <tr>
-              <td>
-                <span class="dash-test-run__disease-cell">
-                  <span class="badge badge--neutral dash-test-label--tge">TGE</span>
-                  <span class="dash-test-run__sp-id">SP_0136</span>
-                </span>
-              </td>
-              <td class="is-num">0.83</td>
-              <td class="is-num">0.74</td>
-              <td class="is-num">3.0s</td>
-              <td class="is-num">4</td>
-              <td class="is-num dash-test-run__acc--safe">0.87</td>
-              <td class="is-num">$0.009</td>
-              <td>final</td>
-              <td><a href="admin-test-case-earthsky.html" class="dash-test-run__view-link">View →</a></td>
-            </tr>
-            <tr>
-              <td>
-                <span class="dash-test-run__disease-cell">
-                  <span class="badge badge--neutral dash-test-label--ery">ERY</span>
-                  <span class="dash-test-run__sp-id">SP_0134</span>
-                </span>
-              </td>
-              <td class="is-num">0.79</td>
-              <td class="is-num">0.72</td>
-              <td class="is-num">3.6s</td>
-              <td class="is-num">6</td>
-              <td class="is-num dash-test-run__acc--default">0.78</td>
-              <td class="is-num">$0.014</td>
-              <td>final</td>
-              <td><a href="admin-test-case-earthsky.html" class="dash-test-run__view-link">View →</a></td>
-            </tr>
-            <tr>
-              <td>
-                <span class="dash-test-run__disease-cell">
-                  <span class="badge badge--neutral dash-test-label--app">APP</span>
-                  <span class="dash-test-run__sp-id">SP_0132</span>
-                </span>
-              </td>
-              <td class="is-num">0.91</td>
-              <td class="is-num">0.84</td>
-              <td class="is-num">2.9s</td>
-              <td class="is-num">5</td>
-              <td class="is-num dash-test-run__acc--safe">0.95</td>
-              <td class="is-num">$0.010</td>
-              <td>final</td>
-              <td><a href="admin-test-case-earthsky.html" class="dash-test-run__view-link">View →</a></td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="dash-test-editor__right">
+
+          <div class="dash-test-editor__upload" tabindex="0" role="button" aria-label="Upload a picture for this profile">
+            <svg class="dash-test-editor__upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+            <span>Drag a picture here or click to browse · Replace</span>
+          </div>
+
+          <dl class="dash-test-editor__meta">
+            <div class="dash-test-editor__meta-row">
+              <span class="dash-test-editor__meta-key">ID</span>
+              <span class="dash-test-editor__meta-val dash-test-editor__meta-val--mono">SP-002</span>
+            </div>
+            <div class="dash-test-editor__meta-row">
+              <span class="dash-test-editor__meta-key">Created</span>
+              <span class="dash-test-editor__meta-val">2026-04-12</span>
+            </div>
+            <div class="dash-test-editor__meta-row">
+              <span class="dash-test-editor__meta-key">Updated</span>
+              <span class="dash-test-editor__meta-val">2 h ago</span>
+            </div>
+          </dl>
+
+        </div>
+
       </div>
     </section>
 
@@ -8149,33 +8143,62 @@ button.card.card--inverted:hover {
     });
   });
 
-  // ----- Download dropdown (FR-387) -----
-  // Same open/close + click-outside pattern as the sort dropdown on the
-  // profiles/suites pages — reuses .dash-test-toolbar__sort-menu styling
-  // under a download-specific trigger.
+  // ----- Delete confirmation modal (JS-injected) -----
+  // No .modal markup exists at rest. Clicking the Delete button in the
+  // editor CTA cluster injects a .modal--xs into <body> and opens it.
+  // Closing or confirming removes the markup entirely.
   (function () {
-    var trigger = document.querySelector('.dash-test-run__download-trigger');
-    var menu    = document.querySelector('.dash-test-run__download-menu');
-    if (!trigger || !menu) return;
-    trigger.addEventListener('click', function (e) {
-      e.stopPropagation();
-      var open = menu.classList.toggle('is-open');
-      trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
-    });
-    menu.querySelectorAll('button').forEach(function (opt) {
-      opt.addEventListener('click', function (e) {
-        e.stopPropagation();
-        menu.classList.remove('is-open');
-        trigger.setAttribute('aria-expanded', 'false');
+    var deleteBtn = document.querySelector('.dash-test-editor__delete-btn');
+    if (!deleteBtn) return;
+    deleteBtn.addEventListener('click', function () {
+      var nameInput = document.getElementById('profile-name');
+      var idLabel = document.querySelector('.dash-test-editor__meta-val--mono');
+      var name = nameInput ? nameInput.value : '';
+      var id   = idLabel ? idLabel.textContent : '';
+      var modal = document.createElement('div');
+      modal.className = 'modal modal--xs';
+      modal.setAttribute('role', 'dialog');
+      modal.setAttribute('aria-modal', 'true');
+      modal.setAttribute('aria-labelledby', 'dash-test-delete-h');
+      modal.innerHTML =
+        '<div class="modal__surface">'
+        + '<header class="modal__header">'
+        + '<div class="modal__heading"><h2 id="dash-test-delete-h" class="modal__title">Delete profile?</h2></div>'
+        + '<button type="button" class="modal__close" aria-label="Close">'
+        + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>'
+        + '</button>'
+        + '</header>'
+        + '<div class="modal__body">'
+        + '<p>This action can&rsquo;t be undone.</p>'
+        + '<ul><li>' + id + ' · ' + name + '</li></ul>'
+        + '</div>'
+        + '<footer class="modal__footer">'
+        + '<button type="button" class="btn btn--ghost" data-modal-cancel><span class="btn__label">Cancel</span></button>'
+        + '<button type="button" class="btn" data-modal-confirm style="background: var(--critical-500); border-color: var(--critical-500); color: var(--text-inverted);"><span class="btn__label">Delete</span></button>'
+        + '</footer>'
+        + '</div>';
+      document.body.appendChild(modal);
+      document.body.classList.add('has-modal-open');
+      void modal.offsetWidth;
+      setTimeout(function () { modal.classList.add('is-open'); }, 16);
+
+      function close() {
+        modal.classList.remove('is-open');
+        setTimeout(function () {
+          if (modal.parentNode) modal.parentNode.removeChild(modal);
+          document.body.classList.remove('has-modal-open');
+        }, 260);
+      }
+      modal.querySelector('[data-modal-cancel]').addEventListener('click', close);
+      modal.querySelector('[data-modal-confirm]').addEventListener('click', close);
+      modal.querySelector('.modal__close').addEventListener('click', close);
+      modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
+      document.addEventListener('keydown', function escHandler(e) {
+        if (e.key === 'Escape') { close(); document.removeEventListener('keydown', escHandler); }
       });
     });
-    document.addEventListener('click', function () {
-      if (menu.classList.contains('is-open')) {
-        menu.classList.remove('is-open');
-        trigger.setAttribute('aria-expanded', 'false');
-      }
-    });
   })();
+
 </script>
 
 </body>

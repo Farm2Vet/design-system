@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Admin · Profile SP-002 · view (Earth + Sky) — Farm2Vet</title>
+<title>Admin · Automated testing — suites (Earth + Sky) — Farm2Vet</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -4772,36 +4772,6 @@ button.card.card--inverted:hover {
 }
 
 /* =========================================================
-   FIELD VALUE — view-mode readout
-   Sibling of .field__label inside a <dl class="field">.
-   The wrapper is <div class="field"> on edit pages and
-   <dl class="field"> on view pages — both share .field
-   typography and layout. The view-mode label override
-   below only applies when the wrapper is a <dl>.
-   ========================================================= */
-dl.field { margin: 0; }
-
-.field__value {
-    margin: 0;                                    /* nukes <dd>'s default margin-inline-start: 40px */
-    font-family: var(--font-sans);
-    font-size: var(--text-lg);                    /* 19.20px — value reads as the content, clear step over label */
-    line-height: var(--line-height-body);
-    color: var(--text-default);
-    font-weight: var(--font-weight-regular);
-}
-.field__value--empty {
-    color: var(--text-default-minimal);
-    font-style: italic;
-}
-
-/* In view mode (.field wrapper is a <dl>), the label recedes
-   so the value leads. Edit-mode .field__label is unaffected. */
-dl.field > .field__label {
-    color: var(--text-default-subtle);
-    font-weight: var(--font-weight-regular);
-}
-
-/* =========================================================
    INPUT — base for text input, textarea, date input
    Defaults to LG (the canonical focus size).
    ========================================================= */
@@ -6102,137 +6072,6 @@ dl.field > .field__label {
 }
 
 
-/* ===== styles/modal.css ===== */
-:root {
-    --modal-font-family:      var(--font-sans);
-    --modal-radius:           var(--radius-lg);
-    --modal-border-width:     var(--border-width-base);
-    --modal-shadow:           var(--shadow-lg);
-    --modal-z-backdrop:       80;
-    --modal-z-surface:        81;
-    --modal-xs-width:         320px;
-    --modal-xs-padding-x:     var(--space-container-x-sm);
-    --modal-xs-padding-y:     var(--space-container-y-sm);
-    --modal-md-width:         560px;
-    --modal-md-padding-x:     var(--space-container-x);
-    --modal-md-padding-y:     var(--space-container-y);
-    --modal-max-height:       min(86vh, 720px);
-    --modal-bg:               var(--background-default);
-    --modal-fg:               var(--text-default);
-    --modal-fg-subtle:        var(--text-default-subtle);
-    --modal-border:           var(--border-default);
-    --modal-backdrop:         var(--glass-scrim);
-    --modal-backdrop-blur:    var(--glass-scrim-blur);
-    --modal-header-padding-y: var(--space-container-y);
-    --modal-body-padding-y:   var(--space-container-y);
-    --modal-header-gap:       var(--space-tier-5);
-    --modal-title-font:       var(--text-h6);
-    --modal-title-weight:     var(--font-weight-semibold);
-    --modal-title-line:       var(--line-height-h6);
-    --modal-body-line:        var(--line-height-body);
-    --modal-body-gap:         var(--space-tier-5);
-    --modal-footer-gap:       var(--space-tier-5);
-    --modal-footer-padding-y: var(--space-tier-4);
-    --modal-footer-bg:        var(--background-default-subtle);
-    --modal-footer-border:    var(--border-default-subtle);
-    --modal-close-size:       32px;
-    --modal-close-radius:     var(--radius-sm);
-    --modal-close-fg:         var(--icon-default);
-    --modal-close-fg-hover:   var(--text-default);
-    --modal-close-bg-hover:   var(--background-default-hover);
-    --modal-anim-duration:    260ms;
-    --modal-anim-easing:      cubic-bezier(.2, .8, .2, 1);
-    --modal-anim-translate:   12px;
-}
-body.has-modal-open { overflow: hidden; }
-.modal {
-    position: fixed; inset: 0;
-    z-index: var(--modal-z-backdrop);
-    display: flex; align-items: center; justify-content: center;
-    padding: var(--space-container-y) var(--space-container-x);
-    background: var(--modal-backdrop);
-    backdrop-filter: var(--modal-backdrop-blur);
-    -webkit-backdrop-filter: var(--modal-backdrop-blur);
-    opacity: 0; pointer-events: none;
-    transition: opacity var(--modal-anim-duration) var(--modal-anim-easing);
-}
-.modal.is-open { opacity: 1; pointer-events: auto; }
-.modal__surface {
-    position: relative;
-    z-index: var(--modal-z-surface);
-    display: flex; flex-direction: column;
-    width: 100%; max-width: var(--modal-md-width);
-    max-height: var(--modal-max-height);
-    background: var(--modal-bg); color: var(--modal-fg);
-    border-radius: var(--modal-radius);
-    border: var(--modal-border-width) solid var(--modal-border);
-    box-shadow: var(--modal-shadow);
-    overflow: hidden;
-    font-family: var(--font-sans);
-    transform: translateY(var(--modal-anim-translate)) scale(.98);
-    transition: transform var(--modal-anim-duration) var(--modal-anim-easing),
-                opacity var(--modal-anim-duration) var(--modal-anim-easing);
-    opacity: 0;
-}
-.modal.is-open .modal__surface { transform: translateY(0) scale(1); opacity: 1; }
-.modal--xs .modal__surface { max-width: var(--modal-xs-width); }
-.modal__header {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    column-gap: var(--modal-header-gap);
-    align-items: start;
-    padding: var(--modal-header-padding-y) var(--modal-md-padding-x);
-    border-bottom: var(--modal-border-width) solid transparent;
-}
-.modal__heading { display: flex; flex-direction: column; min-width: 0; }
-.modal__title {
-    font-family: var(--font-sans);
-    font-size: var(--modal-title-font);
-    font-weight: var(--modal-title-weight);
-    line-height: var(--modal-title-line);
-    color: var(--modal-fg);
-    margin: 0;
-}
-.modal__close {
-    width: var(--modal-close-size); height: var(--modal-close-size);
-    border-radius: var(--modal-close-radius);
-    background: transparent; border: 0;
-    color: var(--modal-close-fg);
-    display: inline-flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    transition: background-color .15s ease, color .15s ease;
-}
-.modal__close:hover { background: var(--modal-close-bg-hover); color: var(--modal-close-fg-hover); }
-.modal__close svg { width: 18px; height: 18px; }
-.modal__body {
-    padding: 0 var(--modal-md-padding-x) var(--modal-body-padding-y);
-    overflow-y: auto; flex: 1 1 auto;
-    color: var(--modal-fg);
-    font-size: var(--text-base);
-    line-height: var(--modal-body-line);
-    display: flex; flex-direction: column;
-    gap: var(--modal-body-gap);
-}
-.modal__body p { margin: 0; }
-.modal__footer {
-    display: flex; align-items: center; justify-content: flex-end;
-    gap: var(--modal-footer-gap);
-    padding: var(--modal-footer-padding-y) var(--modal-md-padding-x);
-    border-top: var(--modal-border-width) solid var(--modal-footer-border);
-    background: var(--modal-footer-bg);
-}
-.modal--xs .modal__header,
-.modal--xs .modal__body,
-.modal--xs .modal__footer { padding-left: var(--modal-xs-padding-x); padding-right: var(--modal-xs-padding-x); }
-.modal--xs .modal__header,
-.modal--xs .modal__body { padding-top: var(--modal-xs-padding-y); padding-bottom: var(--modal-xs-padding-y); }
-.modal--xs .modal__footer { padding-top: var(--modal-footer-padding-y); padding-bottom: var(--modal-footer-padding-y); }
-@media (prefers-reduced-motion: reduce) {
-    .modal, .modal__surface { transition: opacity .15s ease; }
-    .modal__surface { transform: none; }
-}
-
-
 /* ===== styles/global-nav.css ===== */
 /* =========================================================
    FARM2VET DESIGN SYSTEM — GLOBAL NAV
@@ -7113,26 +6952,6 @@ body.has-modal-open { overflow: hidden; }
     color: var(--text-default-subtle);
 }
 
-/* Subtle meta line shown under the H1 on detail pages
-   (e.g. "Created 2026-04-12 · Updated 2 h ago"). */
-.dash-page__meta {
-    margin: 0;
-    margin-top: var(--space-tier-6);
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-tier-6);
-    font-family: var(--font-sans);
-    font-size: var(--text-body-sm);
-    color: var(--text-default-subtle);
-}
-.dash-page__meta-val {
-    color: var(--text-default);
-    font-variant-numeric: tabular-nums;
-}
-.dash-page__meta-sep {
-    color: var(--text-default-minimal);
-}
-
 /* Primary CTA — primary-700 → primary-500 gradient (same
    as the Sync button on the dashboard hero). */
 .dash-page__cta.btn--cta {
@@ -7151,162 +6970,249 @@ body.has-modal-open { overflow: hidden; }
 }
 
 /* =========================================================
-   ADMIN · AUTOMATED TESTING — PROFILE EDITOR (FR-381)
-   Two-column form (1.4fr / 1fr) inside a single glass card.
+   ADMIN · AUTOMATED TESTING — SUITES LIST (FR-384)
+   Toolbar (search · filter chip · sort) + table + pager.
+   Reuses the same .dash-test-* scaffolding as the profiles
+   list — toolbar, table, pager — duplicated here so the
+   page stays self-contained.
    ========================================================= */
 
-.dash-test-editor__page .dash-test-editor__cta-cluster {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-tier-7);
-    flex-shrink: 0;
-}
-.dash-test-editor__delete-btn {
-    color: var(--text-critical);
-}
-.dash-test-editor__delete-btn:hover {
-    color: var(--critical-700);
-    background: color-mix(in srgb, var(--critical-500) 10%, transparent);
+/* ----- Shared automated-testing card layout ------------- */
+.dash-test-card.card {
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
 }
 
-.dash-test-editor__card.card {
-    padding: var(--space-tier-3);
-}
-.dash-test-editor__grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-    gap: var(--space-tier-3);
-    align-items: start;
-}
-.dash-test-editor__form-stack {
+/* ----- Toolbar ----------------------------------------- */
+.dash-test-toolbar {
     display: flex;
-    flex-direction: column;
-    gap: var(--space-tier-5);
-}
-/* ---- ID badge (top of form-stack) ---- */
-.dash-test-editor__id-row {
-    display: inline-flex;
     align-items: center;
-    gap: var(--space-tier-6);
-    align-self: start;
-    padding: var(--space-tier-7) var(--space-tier-5);
-    background: color-mix(in srgb, var(--white-base) 35%, transparent);
-    border: var(--border-width-base) solid var(--border-default-subtle);
-    border-radius: var(--radius-md);
-    font-family: var(--font-sans);
-    font-size: var(--text-body-sm);
-}
-.dash-test-editor__id-key { color: var(--text-default-subtle); }
-.dash-test-editor__id-val {
-    color: var(--text-default);
-    font-family: var(--font-mono);
-    letter-spacing: var(--letter-spacing-mono);
-}
-
-/* ---- Grouped section (farm_background / observed_evidences) ---- */
-.dash-test-editor__group {
-    display: flex;
-    flex-direction: column;
     gap: var(--space-tier-5);
-}
-.dash-test-editor__group-head {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-tier-7);
-    padding-bottom: var(--space-tier-6);
+    padding: var(--space-tier-5);
+    background: color-mix(in srgb, var(--white-base) 25%, transparent);
     border-bottom: var(--border-width-base) solid var(--border-default-subtle);
+    flex-wrap: wrap;
 }
-.dash-test-editor__group-eyebrow {
-    font-family: var(--font-mono);
-    font-size: var(--text-eyebrow);
-    letter-spacing: var(--letter-spacing-eyebrow);
-    text-transform: uppercase;
-    color: var(--text-default-minimal);
+.dash-test-toolbar__search {
+    flex: 1 1 280px;
+    min-width: 200px;
 }
-.dash-test-editor__group-title {
-    font-family: var(--font-sans);
-    font-size: var(--text-h5);
-    font-weight: 600;
-    color: var(--text-default);
-    margin: 0;
-    letter-spacing: -0.01em;
+.dash-test-toolbar__filters {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-tier-7);
+    flex-wrap: wrap;
 }
-
-/* ---- Field grid (used inside a group) ---- */
-.dash-test-editor__field-grid {
-    display: grid;
-    gap: var(--space-tier-5);
-}
-.dash-test-editor__field-grid--2col {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-@media (max-width: 720px) {
-    .dash-test-editor__field-grid--2col { grid-template-columns: 1fr; }
-}
-
-.dash-test-editor__hint {
-    font-family: var(--font-sans);
-    font-size: var(--text-body-sm);
-    color: var(--text-default-minimal);
-}
-
-/* Right column: picture upload tile + read-only metadata card */
-.dash-test-editor__right {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-tier-5);
-}
-.dash-test-editor__upload {
-    display: flex;
-    flex-direction: column;
+.dash-test-toolbar__chip-close {
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: var(--space-tier-6);
-    padding: var(--space-tier-3);
-    min-height: 200px;
-    background: color-mix(in srgb, var(--white-base) 30%, transparent);
-    border: 2px dashed color-mix(in srgb, var(--neutral-500) 35%, transparent);
-    border-radius: var(--radius-lg);
-    text-align: center;
-    color: var(--text-default-subtle);
-    font-family: var(--font-sans);
-    font-size: var(--text-body-sm);
-    cursor: pointer;
-    transition: border-color .15s ease, background-color .15s ease;
+    width: 14px;
+    height: 14px;
+    margin-left: var(--space-tier-7);
+    opacity: 0.7;
 }
-.dash-test-editor__upload:hover {
-    border-color: var(--primary-500);
-    background: color-mix(in srgb, var(--primary-500) 6%, var(--white-base));
+
+.dash-test-toolbar__sort {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-tier-7);
+    margin-left: auto;
 }
-.dash-test-editor__upload-icon {
-    width: 36px;
-    height: 36px;
-    color: var(--icon-default-subtle);
-}
-.dash-test-editor__meta {
-    padding: var(--space-tier-5);
-    background: color-mix(in srgb, var(--white-base) 35%, transparent);
-    border: var(--border-width-base) solid var(--border-default-subtle);
+.dash-test-toolbar__sort-by-wrap { position: relative; }
+.dash-test-toolbar__sort-by {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-tier-7);
+    padding: var(--space-tier-7) var(--space-tier-5);
+    background: var(--background-default);
+    border: var(--border-width-base) solid var(--border-default);
     border-radius: var(--radius-md);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-tier-6);
     font-family: var(--font-sans);
     font-size: var(--text-body-sm);
+    color: var(--text-default);
+    cursor: pointer;
 }
-.dash-test-editor__meta-row {
+.dash-test-toolbar__sort-by:hover {
+    background: var(--background-default-hover);
+    border-color: var(--border-default-strong);
+}
+.dash-test-toolbar__sort-by-label { color: var(--text-default-subtle); }
+.dash-test-toolbar__sort-by svg { width: 12px; height: 12px; color: var(--icon-default-subtle); }
+.dash-test-toolbar__sort-menu {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    min-width: 180px;
+    background: var(--background-default);
+    border: var(--border-width-base) solid var(--border-default);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    padding: var(--space-tier-7);
+    display: none;
+    flex-direction: column;
+    gap: 2px;
+    z-index: 10;
+}
+.dash-test-toolbar__sort-menu.is-open { display: flex; }
+.dash-test-toolbar__sort-menu button {
+    border: none;
+    background: transparent;
+    padding: var(--space-tier-6) var(--space-tier-5);
+    text-align: left;
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    color: var(--text-default);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+.dash-test-toolbar__sort-menu button:hover { background: var(--background-default-hover); }
+.dash-test-toolbar__sort-menu button[aria-selected="true"] {
+    background: var(--background-primary-subtle);
+    color: var(--text-primary-strong);
+    font-weight: var(--font-weight-medium);
+}
+.dash-test-toolbar__sort-dir {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-md);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--background-default);
+    border: var(--border-width-base) solid var(--border-default);
+    color: var(--text-default-subtle);
+    cursor: pointer;
+}
+.dash-test-toolbar__sort-dir svg { width: 14px; height: 14px; transition: transform .18s ease; }
+.dash-test-toolbar__sort-dir[aria-pressed="false"] svg { transform: rotate(180deg); }
+
+/* ----- Data table -------------------------------------- */
+.dash-test-table-wrap { overflow-x: auto; }
+.dash-test-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    color: var(--text-default);
+}
+.dash-test-table thead th {
+    text-align: left;
+    padding: var(--space-tier-6) var(--space-tier-5);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--text-body-sm);
+    color: var(--text-default-subtle);
+    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
+    background: color-mix(in srgb, var(--white-base) 15%, transparent);
+    white-space: nowrap;
+}
+.dash-test-table tbody td {
+    padding: var(--space-tier-6) var(--space-tier-5);
+    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
+    vertical-align: middle;
+}
+.dash-test-table tbody tr { transition: background-color .15s ease; }
+.dash-test-table tbody tr:hover {
+    background: color-mix(in srgb, var(--primary-500) 8%, transparent);
+}
+.dash-test-table__check-col { width: 36px; }
+.dash-test-table__suite-name {
+    color: var(--text-default);
+    font-weight: var(--font-weight-medium);
+}
+.dash-test-table__model,
+.dash-test-table__mode {
+    font-family: var(--font-mono);
+    font-size: var(--text-body-sm);
+    color: var(--text-default-subtle);
+}
+.dash-test-table__num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-default);
+}
+.dash-test-table__last-run {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-tier-7);
+    white-space: nowrap;
+}
+.dash-test-table__last-run-time {
+    color: var(--text-default-minimal);
+}
+.dash-test-table__row-action-col { width: 40px; text-align: right; }
+.dash-test-table__row-action {
+    background: transparent;
+    border: none;
+    color: var(--icon-default-subtle);
+    padding: var(--space-tier-7);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+.dash-test-table__row-action:hover {
+    background: var(--background-default-hover);
+    color: var(--text-default);
+}
+
+/* ----- Pager ------------------------------------------- */
+.dash-test-pager {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    gap: var(--space-tier-6);
+    gap: var(--space-tier-3);
+    padding: var(--space-tier-5);
+    background: color-mix(in srgb, var(--white-base) 25%, transparent);
+    border-top: var(--border-width-base) solid var(--border-default-subtle);
 }
-.dash-test-editor__meta-key { color: var(--text-default-subtle); }
-.dash-test-editor__meta-val { color: var(--text-default); }
-.dash-test-editor__meta-val--mono { font-family: var(--font-mono); }
+.dash-test-pager__meta {
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    color: var(--text-default-minimal);
+}
+.dash-test-pager__controls {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-tier-7);
+}
+.dash-test-pager__btn {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-md);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--background-default);
+    border: var(--border-width-base) solid var(--border-default);
+    color: var(--text-default-subtle);
+    cursor: pointer;
+}
+.dash-test-pager__btn:hover {
+    background: var(--background-default-hover);
+    border-color: var(--border-default-strong);
+    color: var(--text-default);
+}
+.dash-test-pager__btn[disabled] { opacity: 0.4; pointer-events: none; }
+.dash-test-pager__btn svg { width: 14px; height: 14px; }
+.dash-test-pager__page {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-tier-7);
+    margin: 0 var(--space-tier-6);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    color: var(--text-default-subtle);
+}
+.dash-test-pager__page .input {
+    width: 48px;
+    text-align: center;
+    padding: 4px var(--space-tier-7);
+    font-family: var(--font-sans);
+}
 
 /* ----- Responsive --------------------------------------- */
-@media (max-width: 900px) {
-    .dash-test-editor__grid { grid-template-columns: 1fr; }
-}
 @media (max-width: 720px) {
     .dash {
         grid-template-columns: 1fr;
@@ -7316,7 +7222,8 @@ body.has-modal-open { overflow: hidden; }
     .dash__side .sidebar { height: auto; }
     .dash-page { flex-direction: column; align-items: stretch; }
     .dash-page__cta { width: 100%; }
-    .dash-test-editor__cta-cluster { flex-wrap: wrap; justify-content: flex-end; }
+    .dash-test-pager { flex-direction: column; align-items: stretch; gap: var(--space-tier-5); }
+    .dash-test-toolbar__sort { margin-left: 0; }
 }
 
 /* ----- Disease catalogue (unused on this page) ---------- */
@@ -7855,7 +7762,7 @@ body.has-modal-open { overflow: hidden; }
     <aside class="sidebar" aria-label="Admin primary navigation">
 
       <header class="sidebar__header">
-        <a href="admin-dashboard.html" class="sidebar__brand">
+        <a href="../admin-dashboard.html" class="sidebar__brand">
           <img class="sidebar__brand-mark" src="../logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
           <span class="sidebar__brand-text">Farm2Vet</span>
         </a>
@@ -7868,7 +7775,7 @@ body.has-modal-open { overflow: hidden; }
         <ul class="sidebar__list">
 
           <li class="sidebar__item">
-            <a class="sidebar__link" href="admin-dashboard.html">
+            <a class="sidebar__link" href="../admin-dashboard.html">
               <span class="sidebar__icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
               </span>
@@ -7887,7 +7794,7 @@ body.has-modal-open { overflow: hidden; }
               </span>
             </button>
             <ul class="sidebar__sublist">
-              <li class="sidebar__item"><a class="sidebar__link" href="admin-disease-earthsky.html"><span class="sidebar__label">Disease</span><span class="sidebar__trailing"><span class="sidebar__badge">142</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="../admin-disease-earthsky.html"><span class="sidebar__label">Disease</span><span class="sidebar__trailing"><span class="sidebar__badge">142</span></span></a></li>
               <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Question</span><span class="sidebar__trailing"><span class="sidebar__badge">318</span></span></a></li>
               <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Conversation</span><span class="sidebar__trailing"><span class="sidebar__badge">47</span></span></a></li>
               <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Image</span></a></li>
@@ -7908,8 +7815,8 @@ body.has-modal-open { overflow: hidden; }
             </button>
             <ul class="sidebar__sublist">
               <li class="sidebar__item"><a class="sidebar__link" href="admin-test-console-earthsky.html"><span class="sidebar__label">Console</span></a></li>
-              <li class="sidebar__item"><a class="sidebar__link is-current" href="admin-test-profiles-earthsky.html" aria-current="page"><span class="sidebar__label">Profiles</span><span class="sidebar__trailing"><span class="sidebar__badge">142</span></span></a></li>
-              <li class="sidebar__item"><a class="sidebar__link" href="admin-test-suites-earthsky.html"><span class="sidebar__label">Suites</span><span class="sidebar__trailing"><span class="sidebar__badge">12</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="admin-test-profiles-earthsky.html"><span class="sidebar__label">Profiles</span><span class="sidebar__trailing"><span class="sidebar__badge">142</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link is-current" href="admin-test-suites-earthsky.html" aria-current="page"><span class="sidebar__label">Suites</span><span class="sidebar__trailing"><span class="sidebar__badge">12</span></span></a></li>
               <li class="sidebar__item"><a class="sidebar__link" href="admin-test-run-earthsky.html"><span class="sidebar__label">Runs</span><span class="sidebar__trailing"><span class="sidebar__badge sidebar__badge--warning">3</span></span></a></li>
             </ul>
           </li>
@@ -7956,13 +7863,11 @@ body.has-modal-open { overflow: hidden; }
       <div class="global-nav__inner">
 
         <nav class="dash-topbar__crumbs" aria-label="Breadcrumb">
-          <a href="admin-dashboard-earthsky.html">Admin</a>
+          <a href="../admin-dashboard-earthsky.html">Admin</a>
           <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
           <a href="admin-test-console-earthsky.html">Automated testing</a>
           <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
-          <a href="admin-test-profiles-earthsky.html">Profiles</a>
-          <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
-          <span class="dash-topbar__crumb-tail" aria-current="page">SP-002</span>
+          <span class="dash-topbar__crumb-tail" aria-current="page">Suites</span>
         </nav>
 
         <ul class="global-nav__list dash-topbar__cluster">
@@ -7998,132 +7903,193 @@ body.has-modal-open { overflow: hidden; }
     </header>
 
     <!-- Page header -->
-    <header class="dash-page dash-test-editor__page">
+    <header class="dash-page">
       <div class="dash-page__text">
-        <h1>SP-002.</h1>
-        <p class="dash-page__meta">
-          <span>Created <span class="dash-page__meta-val">2026-04-12</span></span>
-          <span class="dash-page__meta-sep" aria-hidden="true">·</span>
-          <span>Updated <span class="dash-page__meta-val">2 h ago</span></span>
-        </p>
+        <h1>Test suites.</h1>
       </div>
-      <div class="dash-test-editor__cta-cluster">
-        <a href="admin-test-profile-editor-earthsky.html" class="btn btn--md btn--ghost" aria-pressed="false">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M12 20h9"/>
-            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
-          </svg>
-          <span class="btn__label">Edit</span>
-        </a>
-      </div>
+      <a class="btn btn--cta dash-page__cta" href="admin-test-suite-earthsky.html">
+        <span class="btn__leading" aria-hidden="true">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        </span>
+        <span class="btn__label">New suite</span>
+      </a>
     </header>
 
-    <!-- Profile data — single glass card, single-column form -->
-    <section class="card card--glass dash-test-editor__card" aria-label="Profile data">
-      <div class="dash-test-editor__form-stack">
+    <!-- Suites list card — toolbar + table + pager, all bleeding
+         to the card edges. -->
+    <section class="card card--glass dash-test-card" aria-label="Test suites">
 
-        <section class="dash-test-editor__group" aria-labelledby="grp-farm">
-          <header class="dash-test-editor__group-head">
-            <span class="dash-test-editor__group-eyebrow">farm_background</span>
-            <h2 id="grp-farm" class="dash-test-editor__group-title">Farm background</h2>
-          </header>
-          <div class="dash-test-editor__field-grid dash-test-editor__field-grid--2col">
+      <header class="dash-test-toolbar" role="toolbar" aria-label="Search, filter, and sort suites">
 
-            <dl class="field">
-              <dt class="field__label">Farm size</dt>
-              <dd class="field__value">300 pigs</dd>
-            </dl>
+        <label class="search-field dash-test-toolbar__search">
+          <span class="search-field__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          </span>
+          <input type="search" class="input input--sm search-field__input" placeholder="Search by suite name…" />
+          <button type="button" class="search-field__clear" aria-label="Clear search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
+        </label>
 
-            <dl class="field">
-              <dt class="field__label">Pig types</dt>
-              <dd class="field__value">weaners, growers, finishers</dd>
-            </dl>
+        <div class="dash-test-toolbar__filters" role="group" aria-label="Filters">
+          <button type="button" class="chip" aria-pressed="true">
+            <span class="chip__label">Model: claude-*</span>
+            <span class="dash-test-toolbar__chip-close" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </span>
+          </button>
+        </div>
 
-            <dl class="field">
-              <dt class="field__label">Location &amp; climate</dt>
-              <dd class="field__value">subtropical</dd>
-            </dl>
-
+        <div class="dash-test-toolbar__sort" role="group" aria-label="Sort">
+          <div class="dash-test-toolbar__sort-by-wrap">
+            <button type="button" class="dash-test-toolbar__sort-by" aria-haspopup="menu" aria-expanded="false">
+              <span class="dash-test-toolbar__sort-by-label">Sort by:</span>
+              <span class="dash-test-toolbar__sort-by-value">Last run</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="dash-test-toolbar__sort-menu" role="menu" aria-label="Sort options">
+              <button type="button" role="menuitem">Suite name</button>
+              <button type="button" role="menuitem">Model</button>
+              <button type="button" role="menuitem" aria-selected="true">Last run</button>
+            </div>
           </div>
-        </section>
+          <button type="button" class="dash-test-toolbar__sort-dir" aria-label="Sort direction: descending" aria-pressed="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+          </button>
+        </div>
 
-        <section class="dash-test-editor__group" aria-labelledby="grp-obs">
-          <header class="dash-test-editor__group-head">
-            <span class="dash-test-editor__group-eyebrow">observed_evidences</span>
-            <h2 id="grp-obs" class="dash-test-editor__group-title">Observed evidences</h2>
-          </header>
-          <div class="dash-test-editor__field-grid dash-test-editor__field-grid--2col">
+      </header>
 
-            <dl class="field">
-              <dt class="field__label">Affected pig types</dt>
-              <dd class="field__value">Mostly growers and finishers</dd>
-            </dl>
-
-            <dl class="field">
-              <dt class="field__label">Total affected</dt>
-              <dd class="field__value">About 180 out of 300</dd>
-            </dl>
-
-            <dl class="field">
-              <dt class="field__label">Mortality</dt>
-              <dd class="field__value">High, many pigs dying</dd>
-            </dl>
-
-            <dl class="field">
-              <dt class="field__label">Fever</dt>
-              <dd class="field__value">High fever</dd>
-            </dl>
-
-            <dl class="field">
-              <dt class="field__label">Digestive symptoms</dt>
-              <dd class="field__value">Lost appetite, bloody diarrhea</dd>
-            </dl>
-
-            <dl class="field">
-              <dt class="field__label">Respiratory symptoms</dt>
-              <dd class="field__value">Coughing, nasal discharge</dd>
-            </dl>
-
-            <dl class="field">
-              <dt class="field__label">Neurological symptoms</dt>
-              <dd class="field__value">Some pigs have wobbly gait, hind limb paralysis</dd>
-            </dl>
-
-            <dl class="field">
-              <dt class="field__label">Dermatological symptoms</dt>
-              <dd class="field__value">Blue-purple discoloration on ears and belly</dd>
-            </dl>
-
-            <dl class="field">
-              <dt class="field__label">Reproductive symptoms</dt>
-              <dd class="field__value field__value--empty">Not observed</dd>
-            </dl>
-
-            <dl class="field">
-              <dt class="field__label">Vaccination history</dt>
-              <dd class="field__value">Vaccinated against CSF 6 months ago but unsure if all pigs covered</dd>
-            </dl>
-
-            <dl class="field">
-              <dt class="field__label">Treatment history</dt>
-              <dd class="field__value">None yet</dd>
-            </dl>
-
-          </div>
-        </section>
-
-        <section class="dash-test-editor__group" aria-labelledby="grp-label">
-          <header class="dash-test-editor__group-head">
-            <span class="dash-test-editor__group-eyebrow">label</span>
-            <h2 id="grp-label" class="dash-test-editor__group-title">Disease label</h2>
-          </header>
-          <dl class="field">
-            <dt class="field__label">Diagnosis</dt>
-            <dd class="field__value">CSF — Classical Swine Fever</dd>
-          </dl>
-        </section>
-
+      <div class="dash-test-table-wrap">
+        <table class="dash-test-table">
+          <thead>
+            <tr>
+              <th class="dash-test-table__check-col"><input type="checkbox" class="checkbox" aria-label="Select all suites" /></th>
+              <th>Suite name</th>
+              <th>Model</th>
+              <th>Mode</th>
+              <th class="dash-test-table__num">Profiles</th>
+              <th class="dash-test-table__num">Workers</th>
+              <th>Last run</th>
+              <th class="dash-test-table__row-action-col" aria-label="Row actions"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="checkbox" class="checkbox" aria-label="Select PRRS regression — EN" /></td>
+              <td><a class="dash-test-table__suite-name" href="admin-test-suite-earthsky.html">PRRS regression — EN</a></td>
+              <td class="dash-test-table__model">claude-sonnet-4-6</td>
+              <td class="dash-test-table__mode">Question-by-question</td>
+              <td class="dash-test-table__num">15</td>
+              <td class="dash-test-table__num">4</td>
+              <td>
+                <span class="dash-test-table__last-run">
+                  <span class="badge badge--safe">42 / 45 passed</span>
+                  <span class="dash-test-table__last-run-time">2 h ago</span>
+                </span>
+              </td>
+              <td class="dash-test-table__row-action-col"><button type="button" class="dash-test-table__row-action" aria-label="Row actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="checkbox" aria-label="Select ASF screening — VI" /></td>
+              <td><a class="dash-test-table__suite-name" href="admin-test-suite-earthsky.html">ASF screening — VI</a></td>
+              <td class="dash-test-table__model">claude-haiku-4-5</td>
+              <td class="dash-test-table__mode">Free-form</td>
+              <td class="dash-test-table__num">12</td>
+              <td class="dash-test-table__num">4</td>
+              <td>
+                <span class="dash-test-table__last-run">
+                  <span class="badge badge--warning">38 / 45 passed</span>
+                  <span class="dash-test-table__last-run-time">6 h ago</span>
+                </span>
+              </td>
+              <td class="dash-test-table__row-action-col"><button type="button" class="dash-test-table__row-action" aria-label="Row actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="checkbox" aria-label="Select TGE smoke — EN" /></td>
+              <td><a class="dash-test-table__suite-name" href="admin-test-suite-earthsky.html">TGE smoke — EN</a></td>
+              <td class="dash-test-table__model">claude-opus-4-7</td>
+              <td class="dash-test-table__mode">Question-by-question</td>
+              <td class="dash-test-table__num">8</td>
+              <td class="dash-test-table__num">2</td>
+              <td>
+                <span class="dash-test-table__last-run">
+                  <span class="badge badge--critical">errored</span>
+                  <span class="dash-test-table__last-run-time">yesterday</span>
+                </span>
+              </td>
+              <td class="dash-test-table__row-action-col"><button type="button" class="dash-test-table__row-action" aria-label="Row actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="checkbox" aria-label="Select Erysipelas baseline — EN" /></td>
+              <td><a class="dash-test-table__suite-name" href="admin-test-suite-earthsky.html">Erysipelas baseline — EN</a></td>
+              <td class="dash-test-table__model">claude-sonnet-4-6</td>
+              <td class="dash-test-table__mode">Free-form</td>
+              <td class="dash-test-table__num">10</td>
+              <td class="dash-test-table__num">2</td>
+              <td>
+                <span class="dash-test-table__last-run">
+                  <span class="badge badge--safe">40 / 40 passed</span>
+                  <span class="dash-test-table__last-run-time">3 d ago</span>
+                </span>
+              </td>
+              <td class="dash-test-table__row-action-col"><button type="button" class="dash-test-table__row-action" aria-label="Row actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="checkbox" aria-label="Select APP differential — VI" /></td>
+              <td><a class="dash-test-table__suite-name" href="admin-test-suite-earthsky.html">APP differential — VI</a></td>
+              <td class="dash-test-table__model">claude-sonnet-4-6</td>
+              <td class="dash-test-table__mode">Question-by-question</td>
+              <td class="dash-test-table__num">14</td>
+              <td class="dash-test-table__num">4</td>
+              <td>
+                <span class="dash-test-table__last-run">
+                  <span class="badge badge--safe">41 / 42 passed</span>
+                  <span class="dash-test-table__last-run-time">5 d ago</span>
+                </span>
+              </td>
+              <td class="dash-test-table__row-action-col"><button type="button" class="dash-test-table__row-action" aria-label="Row actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="checkbox" aria-label="Select Vaccine refusal cases — EN" /></td>
+              <td><a class="dash-test-table__suite-name" href="admin-test-suite-earthsky.html">Vaccine refusal cases — EN</a></td>
+              <td class="dash-test-table__model">claude-sonnet-4-6</td>
+              <td class="dash-test-table__mode">Free-form</td>
+              <td class="dash-test-table__num">6</td>
+              <td class="dash-test-table__num">2</td>
+              <td>
+                <span class="dash-test-table__last-run">
+                  <span class="badge badge--neutral">never run</span>
+                </span>
+              </td>
+              <td class="dash-test-table__row-action-col"><button type="button" class="dash-test-table__row-action" aria-label="Row actions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
+
+      <footer class="dash-test-pager" role="navigation" aria-label="Pagination">
+        <span class="dash-test-pager__meta">Showing 1–6 of 12</span>
+        <div class="dash-test-pager__controls">
+          <button type="button" class="dash-test-pager__btn" aria-label="First page" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="11 17 6 12 11 7"/><polyline points="18 17 13 12 18 7"/></svg>
+          </button>
+          <button type="button" class="dash-test-pager__btn" aria-label="Previous page" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <span class="dash-test-pager__page">
+            <input type="text" class="input input--sm" value="1" aria-label="Current page" />
+            <span>/ 2</span>
+          </span>
+          <button type="button" class="dash-test-pager__btn" aria-label="Next page">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+          <button type="button" class="dash-test-pager__btn" aria-label="Last page">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>
+          </button>
+        </div>
+      </footer>
+
     </section>
 
 
@@ -8163,62 +8129,53 @@ body.has-modal-open { overflow: hidden; }
     });
   });
 
-  // ----- Delete confirmation modal (JS-injected) -----
-  // No .modal markup exists at rest. Clicking the Delete button in the
-  // editor CTA cluster injects a .modal--xs into <body> and opens it.
-  // Closing or confirming removes the markup entirely.
-  (function () {
-    var deleteBtn = document.querySelector('.dash-test-editor__delete-btn');
-    if (!deleteBtn) return;
-    deleteBtn.addEventListener('click', function () {
-      var nameInput = document.getElementById('profile-name');
-      var idLabel = document.querySelector('.dash-test-editor__meta-val--mono');
-      var name = nameInput ? nameInput.value : '';
-      var id   = idLabel ? idLabel.textContent : '';
-      var modal = document.createElement('div');
-      modal.className = 'modal modal--xs';
-      modal.setAttribute('role', 'dialog');
-      modal.setAttribute('aria-modal', 'true');
-      modal.setAttribute('aria-labelledby', 'dash-test-delete-h');
-      modal.innerHTML =
-        '<div class="modal__surface">'
-        + '<header class="modal__header">'
-        + '<div class="modal__heading"><h2 id="dash-test-delete-h" class="modal__title">Delete profile?</h2></div>'
-        + '<button type="button" class="modal__close" aria-label="Close">'
-        + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>'
-        + '</button>'
-        + '</header>'
-        + '<div class="modal__body">'
-        + '<p>This action can&rsquo;t be undone.</p>'
-        + '<ul><li>' + id + ' · ' + name + '</li></ul>'
-        + '</div>'
-        + '<footer class="modal__footer">'
-        + '<button type="button" class="btn btn--ghost" data-modal-cancel><span class="btn__label">Cancel</span></button>'
-        + '<button type="button" class="btn" data-modal-confirm style="background: var(--critical-500); border-color: var(--critical-500); color: var(--text-inverted);"><span class="btn__label">Delete</span></button>'
-        + '</footer>'
-        + '</div>';
-      document.body.appendChild(modal);
-      document.body.classList.add('has-modal-open');
-      void modal.offsetWidth;
-      setTimeout(function () { modal.classList.add('is-open'); }, 16);
+  // ----- Filter chip toggle -----
+  document.querySelectorAll('.dash-test-toolbar__filters .chip').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var pressed = btn.getAttribute('aria-pressed') === 'true';
+      btn.setAttribute('aria-pressed', pressed ? 'false' : 'true');
+    });
+  });
 
-      function close() {
-        modal.classList.remove('is-open');
-        setTimeout(function () {
-          if (modal.parentNode) modal.parentNode.removeChild(modal);
-          document.body.classList.remove('has-modal-open');
-        }, 260);
-      }
-      modal.querySelector('[data-modal-cancel]').addEventListener('click', close);
-      modal.querySelector('[data-modal-confirm]').addEventListener('click', close);
-      modal.querySelector('.modal__close').addEventListener('click', close);
-      modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
-      document.addEventListener('keydown', function escHandler(e) {
-        if (e.key === 'Escape') { close(); document.removeEventListener('keydown', escHandler); }
+  // ----- Sort-by dropdown (renamed from .dash-catalogue__sort) -----
+  var sortBtn   = document.querySelector('.dash-test-toolbar__sort-by');
+  var sortMenu  = document.querySelector('.dash-test-toolbar__sort-menu');
+  var sortValue = document.querySelector('.dash-test-toolbar__sort-by-value');
+
+  if (sortBtn && sortMenu && sortValue) {
+    sortBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var open = sortMenu.classList.toggle('is-open');
+      sortBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    sortMenu.querySelectorAll('button').forEach(function (option) {
+      option.addEventListener('click', function (e) {
+        e.stopPropagation();
+        sortMenu.querySelectorAll('button').forEach(function (b) { b.removeAttribute('aria-selected'); });
+        option.setAttribute('aria-selected', 'true');
+        sortValue.textContent = option.textContent.trim();
+        sortMenu.classList.remove('is-open');
+        sortBtn.setAttribute('aria-expanded', 'false');
       });
     });
-  })();
+    document.addEventListener('click', function () {
+      if (sortMenu.classList.contains('is-open')) {
+        sortMenu.classList.remove('is-open');
+        sortBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
 
+  // ----- Sort direction toggle -----
+  var sortDir = document.querySelector('.dash-test-toolbar__sort-dir');
+  if (sortDir) {
+    sortDir.addEventListener('click', function () {
+      var isDesc = sortDir.getAttribute('aria-pressed') === 'true';
+      sortDir.setAttribute('aria-pressed', isDesc ? 'false' : 'true');
+      sortDir.setAttribute('aria-label',
+        isDesc ? 'Sort direction: ascending' : 'Sort direction: descending');
+    });
+  }
 </script>
 
 </body>
