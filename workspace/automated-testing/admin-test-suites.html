@@ -31,7 +31,7 @@
 /* ---------- Two-panel master-detail layout ---------- */
 .suites-layout {
     display: grid;
-    grid-template-columns: 360px minmax(0, 1fr);
+    grid-template-columns: 380px minmax(0, 1fr);
     gap: var(--spacing-6x);
     align-items: stretch;
 }
@@ -116,11 +116,14 @@
     gap: var(--spacing-2x);
     min-width: 0;
 }
+/* ID is reference metadata only — softer tone and regular weight
+   keep the suite name unambiguously primary. */
 .suite-item__id {
     font-family: var(--font-mono);
     font-size: var(--text-eyebrow);
     letter-spacing: var(--letter-spacing-mono);
-    color: var(--text-default-subtle);
+    color: var(--text-default-minimal);
+    font-weight: var(--font-weight-regular);
     flex: 0 0 auto;
 }
 .suite-item__name {
@@ -131,12 +134,77 @@
     white-space: nowrap;
     min-width: 0;
 }
+/* Two-row meta: timing on top, pass/fail rates below.
+   `gap` between rows is smaller than the head→meta gap so the two
+   meta rows read as one block. */
 .suite-item__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: var(--text-body-sm);
+    color: var(--text-default-subtle);
+}
+.suite-item__timing,
+.suite-item__rates {
     display: flex;
     align-items: center;
     gap: var(--spacing-2x);
-    font-size: var(--text-body-sm);
-    color: var(--text-default-subtle);
+    min-width: 0;
+}
+.suite-item__timing { flex-wrap: wrap; row-gap: 2px; }
+.suite-item__timing-range,
+.suite-item__timing-dur,
+.suite-item__timing-eta {
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+.suite-item__timing-dur,
+.suite-item__timing-eta {
+    color: var(--text-default-minimal);
+}
+/* State chip inside the timing row (Running / Errored). */
+.suite-item__timing-state {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-1x);
+    font-weight: var(--font-weight-medium);
+}
+.suite-item__timing-state--running { color: var(--text-warning); }
+.suite-item__timing-state--errored { color: var(--text-critical); }
+.suite-item__timing-state .suite-item__timing-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 0 0 color-mix(in srgb, currentColor 50%, transparent);
+    animation: suite-item-pulse 1.6s cubic-bezier(.4, 0, .6, 1) infinite;
+}
+@keyframes suite-item-pulse {
+    0%   { box-shadow: 0 0 0 0   color-mix(in srgb, currentColor 50%, transparent); }
+    70%  { box-shadow: 0 0 0 5px color-mix(in srgb, currentColor  0%, transparent); }
+    100% { box-shadow: 0 0 0 0   color-mix(in srgb, currentColor  0%, transparent); }
+}
+
+/* Running icon — 14 px filled warning circle, mirrors .suite-item__rate-icon
+   anatomy so pass / fail / running share one footprint. The white inner dot
+   pings outward to convey ongoing aggregation. */
+.suite-item__timing-icon {
+    display: inline-flex;
+    width: 14px;
+    height: 14px;
+    flex: 0 0 auto;
+}
+.suite-item__timing-icon svg { width: 100%; height: 100%; display: block; }
+
+.suite-item__timing-state--running .suite-item__timing-ping {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: suite-item-ping 1.4s ease-in-out infinite;
+}
+@keyframes suite-item-ping {
+    0%, 100% { transform: scale(1);   opacity: 1;   }
+    50%      { transform: scale(1.6); opacity: 0.45; }
 }
 .suite-item__sep { color: var(--text-default-minimal); }
 .suite-item__rate {
@@ -181,28 +249,46 @@
 }
 .suite-item--errored .suite-item__progress-fill { background: var(--critical-500); }
 
-/* Result link on each suite card. Resting = 32px square with the
-   check icon. Hover = pill widens, icon swaps to the doc/report
-   glyph, label "See detail report" reveals inline.
+/* Progress is an in-flight signal only — completed and errored
+   cards don't need a bar. */
+.suite-item:not(.suite-item--running) .suite-item__progress {
+    display: none;
+}
+
+/* Result control on each suite card. A 32 px primary-green circle
+   with a white check at rest. Hovering or focusing the button
+   itself (not the row) swaps the check for a document/report glyph
+   and darkens the circle one step. There is no inline label and no
+   row-hover-expands pattern — the button's footprint never changes,
+   so the card layout doesn't shift.
    Behaviour: a real <a> that navigates to admin-test-run.html. */
 .suite-item__result {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: var(--spacing-2x);
-    min-width: 32px;
+    width: 32px;
     height: 32px;
-    padding: 0 var(--spacing-2x);
-    border-radius: var(--radius-sm);
-    color: var(--icon-default-subtle);
+    padding: 0;
+    border-radius: 50%;
+    background: var(--primary-500);
+    color: #fff;
     text-decoration: none;
     flex: 0 0 auto;
-    transition: background-color .15s ease, color .15s ease, padding .15s ease;
+    transition: background-color .15s ease, transform .15s ease;
 }
+.suite-item__result:hover,
+.suite-item__result:focus-visible {
+    background: var(--primary-600);
+}
+.suite-item__result:focus-visible {
+    outline: 2px solid var(--accent-500);
+    outline-offset: 2px;
+}
+
 .suite-item__result-icon {
     display: inline-flex;
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     flex: 0 0 auto;
 }
 .suite-item__result-icon svg {
@@ -210,47 +296,60 @@
     height: 100%;
     fill: none;
     stroke: currentColor;
-    stroke-width: 2;
+    stroke-width: 2.25;
     stroke-linecap: round;
     stroke-linejoin: round;
 }
 
-/* Inline label is hidden at rest — revealed on row hover.
-   Sized to match the meta row's body-sm rhythm. */
-.suite-item__result-label {
-    display: none;
-    font-size: var(--text-body-sm);
-    font-weight: var(--font-weight-medium);
-    color: inherit;
-    white-space: nowrap;
-}
-
-/* Default icon-swap remains: rest visible, hover hidden. */
+/* Icon swap — scoped to the button, NOT the row. */
 .suite-item__result-icon--hover { display: none; }
-
-/* Row hover (or direct focus on the link) swaps icon + reveals label. */
-.suite-item:hover .suite-item__result,
-.suite-item__result:focus-visible {
-    background: var(--background-default-hover);
-    color: var(--text-default);
-}
-.suite-item:hover .suite-item__result-icon--rest,
+.suite-item__result:hover .suite-item__result-icon--rest,
 .suite-item__result:focus-visible .suite-item__result-icon--rest {
     display: none;
 }
-.suite-item:hover .suite-item__result-icon--hover,
+.suite-item__result:hover .suite-item__result-icon--hover,
 .suite-item__result:focus-visible .suite-item__result-icon--hover {
     display: inline-flex;
 }
-.suite-item:hover .suite-item__result-label,
-.suite-item__result:focus-visible .suite-item__result-label {
-    display: inline;
-}
 
-/* Running suites still hide the result link — same rule as before. */
+/* Running suites still hide the result control. */
 .suite-item--running .suite-item__result { display: none; }
 .suite-item--errored .suite-item__rate--pass,
 .suite-item--errored .suite-item__rate--fail { display: none; }
+
+/* Errored cards swap the "see report" check for a rerun affordance.
+   Same 32 px circle so the card layout never shifts between states,
+   but the tone is critical-tinted, not primary-green. */
+.suite-item__action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--critical-500) 12%, transparent);
+    color: var(--critical-500);
+    cursor: pointer;
+    flex: 0 0 auto;
+    transition: background-color .15s ease, color .15s ease;
+}
+.suite-item__action:hover,
+.suite-item__action:focus-visible {
+    background: var(--critical-500);
+    color: #fff;
+}
+.suite-item__action:focus-visible {
+    outline: 2px solid var(--accent-500);
+    outline-offset: 2px;
+}
+.suite-item__action svg { width: 16px; height: 16px; }
+
+/* Errored is terminal, not in-flight — kill the timing-dot pulse. */
+.suite-item__timing-state--errored .suite-item__timing-dot {
+    animation: none;
+}
 
 /* ---------- Right pane: SP run results ---------- */
 .suites-detail__head {
@@ -279,36 +378,69 @@
 }
 
 .sp-table-wrap { overflow-x: auto; }
-.sp-table .sp-status-icon {
-    display: inline-flex;
-    align-items: center;
-    width: 12px;
-    height: 12px;
-}
-.sp-table .sp-status-icon svg {
-    width: 100%;
-    height: 100%;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 2.5;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+
+/* ---------- SP-table status indicator ----------
+   Filled-circle status atom, sized to read at small table density.
+   Tone comes from the modifier (--pass/--fail/--running/--idle) and
+   the SVG paints its background from `currentColor`. */
+
+/* Status is a fixed-width gutter — narrow enough that the glyph
+   centres optically and doesn't push neighbouring columns out. */
+.sp-table .table__head-cell:first-child,
+.sp-table .table__cell--state {
+    width: 56px;
+    text-align: center;
 }
 
-/* Animated pulse dot for "running" badges */
-.sp-pulse-dot {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--warning-500);
-    box-shadow: 0 0 0 0 color-mix(in srgb, var(--warning-500) 50%, transparent);
-    animation: sp-pulse 1.6s cubic-bezier(.4, 0, .6, 1) infinite;
+.sp-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    flex: 0 0 auto;
 }
-@keyframes sp-pulse {
-    0%   { box-shadow: 0 0 0 0   color-mix(in srgb, var(--warning-500) 50%, transparent); }
-    70%  { box-shadow: 0 0 0 6px color-mix(in srgb, var(--warning-500)  0%, transparent); }
-    100% { box-shadow: 0 0 0 0   color-mix(in srgb, var(--warning-500)  0%, transparent); }
+.sp-status svg { width: 100%; height: 100%; display: block; }
+
+.sp-status--pass    { color: var(--safe-500); }
+.sp-status--fail    { color: var(--critical-500); }
+.sp-status--idle    { color: var(--icon-default-subtle); }
+.sp-status--running { color: var(--warning-500); }
+
+/* Running variant: SVG mirrors pass / fail anatomy (20 px filled
+   warning circle), and the inner white dot pings outward to signal
+   ongoing work. */
+.sp-status--running .sp-status__ping {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: sp-status-ping 1.4s ease-in-out infinite;
+}
+@keyframes sp-status-ping {
+    0%, 100% { transform: scale(1);   opacity: 1;   }
+    50%      { transform: scale(1.6); opacity: 0.45; }
+}
+
+/* Queued / idle row hint — paired with .sp-status--idle in the
+   status cell. Sits inline after the disease chip so the row's
+   intent reads at a glance, instead of the em-dashes scanning as
+   missing data. */
+.sp-queued-hint {
+    display: inline-block;
+    margin-left: var(--spacing-2x);
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-mono);
+    color: var(--text-default-minimal);
+    vertical-align: middle;
+}
+
+/* Right-aligned sort headers: reverse the button's flex direction
+   so the arrow sits on the left of the label and the label itself
+   ends flush with the right edge of the cell — aligned over the
+   right-aligned numeric cells below. The non-sortable last column
+   has no .table__sort inside, so this selector doesn't touch it. */
+.sp-table .table__head-cell[style*="text-align: right"] .table__sort {
+    flex-direction: row-reverse;
 }
 
 /* Mono ID link inside a table cell (drift fix from §7) */
@@ -317,6 +449,82 @@
     text-decoration: none;
 }
 .cell-link:hover { color: var(--text-default); }
+
+/* ---------- Right-panel KPI strip ----------
+   Sits between the panel head and the per-case table. Six equal
+   columns separated by hairline dividers, no card chrome. Values are
+   tabular for clean vertical alignment between metrics. */
+.suite-summary {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 0;
+    padding: var(--spacing-5x) var(--spacing-6x);
+    border-bottom: 1px solid var(--border-default-subtle);
+}
+.suite-summary__metric {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1x);
+    padding: 0 var(--spacing-4x);
+    border-left: 1px solid var(--border-default-subtle);
+    min-width: 0;
+}
+.suite-summary__metric:first-child {
+    border-left: none;
+    padding-left: 0;
+}
+.suite-summary__metric:last-child {
+    padding-right: 0;
+}
+.suite-summary__metric-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-subtle);
+}
+.suite-summary__metric-value {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--text-h4);
+    line-height: var(--line-height-heading);
+    color: var(--text-default);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+}
+.suite-summary__metric-unit {
+    font-weight: var(--font-weight-medium);
+    font-size: 0.6em;
+    color: var(--text-default-subtle);
+    margin-left: 2px;
+    vertical-align: baseline;
+}
+.suite-summary__metric-delta {
+    font-size: var(--text-body-sm);
+    font-variant-numeric: tabular-nums;
+    color: var(--text-default-subtle);
+}
+.suite-summary__metric-delta--better   { color: var(--text-safe); }
+.suite-summary__metric-delta--worse    { color: var(--text-critical); }
+.suite-summary__metric-delta--neutral  { color: var(--text-default-minimal); }
+
+/* Live state — value pulses subtly to indicate ongoing aggregation. */
+.suite-summary--running .suite-summary__metric-value {
+    animation: suite-summary-live 2.4s ease-in-out infinite;
+}
+@keyframes suite-summary-live {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.7; }
+}
+
+@media (max-width: 1200px) {
+    .suite-summary { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .suite-summary__metric:nth-child(4) { border-left: none; }
+}
+@media (max-width: 720px) {
+    .suite-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .suite-summary__metric:nth-child(odd) { border-left: none; }
+}
 
 /* ---------- Legacy rules kept (still referenced by future iterations) ---------- */
 .suites-name {
@@ -346,15 +554,158 @@
     .suites-layout { grid-template-columns: 1fr; }
     .suites-list { max-height: none; }
 }
+
+/* ───────────────────────────────────────────────────────────
+   GLASS OPT-IN — overrides _shared.css's defensive
+   ".dash .card--glass { neutralised }" rule. Re-applies the
+   canonical .card--glass-frost surface (bg + blur + saturation
+   + rim light + outer shadow) on the two suite panes.
+   ─────────────────────────────────────────────────────────── */
+.dash .workspace-card.card--glass-frost {
+    background:               var(--glass-light-light-bg);
+    border-color:             var(--glass-light-light-border);
+    backdrop-filter:          var(--glass-light-light-blur) var(--glass-saturate);
+    -webkit-backdrop-filter:  var(--glass-light-light-blur) var(--glass-saturate);
+    box-shadow:               var(--glass-shadow-raised), var(--glass-inset-light-soft);
+}
+.dash .workspace-card.card--glass-frost:hover {
+    background:               var(--glass-light-light-bg-hover);
+    border-color:             var(--glass-light-light-border-hover);
+    box-shadow:               var(--glass-shadow-raised-hover), var(--glass-inset-light-soft);
+}
+
+/* ───────────────────────────────────────────────────────────
+   TOPBAR ISLANDS — override _shared.css's flat .dash-topbar.
+   Shell goes transparent; the breadcrumb becomes a floating
+   glass pill. Pattern mirrors admin-test-profile-editor.html.
+   ─────────────────────────────────────────────────────────── */
+.dash > .dash__main > .dash-topbar {
+    background:    transparent;
+    border:        none;
+    border-radius: 0;
+    padding:       0;
+    min-height:    0;
+    gap:           var(--spacing-3x);
+}
+.dash > .dash__main > .dash-topbar > .dash-topbar__crumbs {
+    display:        inline-flex;
+    align-items:    center;
+    gap:            var(--spacing-2x);
+    padding:        var(--spacing-2x) var(--spacing-4x);
+    background:     var(--glass-light-light-bg);
+    -webkit-backdrop-filter: var(--glass-light-light-blur) var(--glass-saturate);
+            backdrop-filter: var(--glass-light-light-blur) var(--glass-saturate);
+    border:         var(--border-width-base) solid var(--glass-light-light-border);
+    border-radius:  var(--radius-pill);
+    box-shadow:     var(--glass-shadow-raised), var(--glass-inset-light-soft);
+    font-size:      var(--text-body-sm);
+    color:          var(--text-default-subtle);
+    white-space:    nowrap;
+}
+
+/* ───────────────────────────────────────────────────────────
+   PULSE-GRID BACKDROP — fixed, decorative.
+   Recreated from outputs/B _ Pulse grid lab.html.
+   ─────────────────────────────────────────────────────────── */
+.f2v-bg.f2v-bg--pulse {
+    position:       fixed;
+    inset:          0;
+    z-index:        0;
+    pointer-events: none;
+    overflow:       hidden;
+    background-image: linear-gradient(
+        to bottom,
+        var(--primary-50) 0%,
+        var(--primary-100) 100%
+    );
+}
+.f2v-bg__grid {
+    position: absolute;
+    inset:    0;
+    background-image:
+        linear-gradient(
+            to right,
+            color-mix(in srgb, var(--accent-900) 10%, transparent) 1px,
+            transparent 1px),
+        linear-gradient(
+            color-mix(in srgb, var(--accent-900) 10%, transparent) 1px,
+            transparent 1px);
+    background-size: 48px 48px, 48px 48px;
+    -webkit-mask-image: radial-gradient(
+        80% 70% at 50% 55%,
+        black 35%,
+        transparent 90%);
+            mask-image: radial-gradient(
+        80% 70% at 50% 55%,
+        black 35%,
+        transparent 90%);
+}
+.f2v-bg__sun {
+    position: absolute;
+    top:      -80px;
+    right:    -80px;
+    width:    300px;
+    height:   300px;
+    background-image: radial-gradient(
+        circle,
+        color-mix(in srgb, var(--primary-500) 32%, transparent),
+        transparent 65%);
+}
+.f2v-bg__pulse {
+    position: absolute;
+    top:      38%;
+    left:     0;
+    right:    0;
+    width:    100%;
+    height:   110px;
+    color:    var(--accent-500);
+    opacity:  0.6;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+    .f2v-bg.f2v-bg--pulse { display: none; }
+}
+
+/* Page shell is transparent on this page so the .f2v-bg--pulse
+   backdrop shows through. Stacking: backdrop at z:0, .dash at
+   z:1 so every nested element paints above the backdrop. */
+.dash {
+    background:        transparent;
+    position:          relative;
+    z-index:           1;
+}
+
+/* prefers-reduced-transparency fallback — backdrop is hidden by
+   the @media rule above, so paint the cream surface back onto
+   .dash so the page still reads on a stable field. */
+@media (prefers-reduced-transparency: reduce) {
+    .dash { background: var(--background-default-subtle); }
+}
 </style>
 </head>
 <body>
+
+<!-- ============================================================
+     PULSE-GRID BACKDROP — fixed, decorative, aria-hidden.
+     Four layers: gradient field → hairline grid (vignette-masked)
+     → corner sun glow → single EKG pulse-line. Mirrors
+     admin-test-profile-editor.html.
+     ============================================================ -->
+<div class="f2v-bg f2v-bg--pulse" aria-hidden="true">
+  <div class="f2v-bg__grid"></div>
+  <div class="f2v-bg__sun"></div>
+  <svg class="f2v-bg__pulse" viewBox="0 0 1200 240" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 120 L160 120 L195 120 L220 80 L250 170 L280 120 L420 120 L460 120 L490 60 L520 180 L550 120 L760 120 L800 120 L832 70 L865 170 L898 120 L1060 120 L1100 120 L1130 90 L1160 150 L1190 120 L1200 120"
+          fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</div>
 
 <div class="dash">
 
   <!-- SIDEBAR -->
   <aside class="dash__side">
-    <aside class="sidebar" aria-label="Admin primary navigation">
+    <aside class="sidebar sidebar--active-solid" aria-label="Admin primary navigation">
       <header class="sidebar__header">
         <a href="../admin-dashboard.html" class="sidebar__brand">
           <img class="sidebar__brand-mark" src="../../logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
@@ -450,18 +801,23 @@
         <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
         <span class="dash-topbar__crumb-tail" aria-current="page">Suites</span>
       </nav>
-      <ul class="dash-topbar__cluster">
-        <li class="dash-topbar__cluster-item"><span class="dash-topbar__version">v1.4.2</span></li>
-      </ul>
     </header>
 
     <header class="dash-page">
       <div class="dash-page__text">
+        <span class="dash-page__eyebrow">Automated testing / Suites</span>
         <h1>Test suites.</h1>
-        <p class="dash-page__lede">Each suite bundles a group of profiles, a model, and a scoring mode. Run a suite to compare model responses across a fixed reference set.</p>
+        <p class="dash-page__meta">
+          <span class="dash-page__meta-val">7</span> total
+          <span class="dash-page__meta-sep" aria-hidden="true">·</span>
+          <span class="dash-page__meta-val">1</span> running
+          <span class="dash-page__meta-sep" aria-hidden="true">·</span>
+          last finished
+          <span class="dash-page__meta-val">22 Nov</span>
+        </p>
       </div>
       <div class="dash-page__cta">
-        <a href="admin-test-suite.html" class="btn btn--cta">
+        <a href="admin-test-suite.html" class="btn btn--cta btn--sm">
           <span class="btn__leading" aria-hidden="true">
             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
           </span>
@@ -473,7 +829,7 @@
     <section class="suites-layout" aria-label="Test suites and results">
 
       <!-- LEFT: suite list -->
-      <article class="workspace-card workspace-card--flush suites-pane suites-pane--list"
+      <article class="workspace-card workspace-card--flush card--glass-frost suites-pane suites-pane--list"
                aria-labelledby="suites-list-h">
         <h2 id="suites-list-h" class="sr-only" hidden>Suites</h2>
         <header class="workspace-card__head suites-pane__head">
@@ -485,12 +841,6 @@
               </span>
               <input type="search" class="input input--sm search-field__input" placeholder="Search suites…" />
             </label>
-            <button type="button" class="btn btn--ghost btn--sm">
-              <span class="btn__leading" aria-hidden="true">
-                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="10" y1="18" x2="14" y2="18"/></svg>
-              </span>
-              <span class="btn__label">Filter</span>
-            </button>
           </div>
 
           <!-- Row B — filter tabs.
@@ -540,43 +890,58 @@
                 <span class="suite-item__name">UAT — CRM System v 2.1.2</span>
               </div>
               <div class="suite-item__meta">
-                <span class="suite-item__date">30 Oct — 15 Nov</span>
-                <span class="suite-item__sep" aria-hidden="true">·</span>
-                <span class="suite-item__rate suite-item__rate--pass">
-                  <span class="suite-item__rate-icon suite-item__rate-icon--pass" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                      <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
-                      <polyline points="7 12.5 10.5 16 17 9" stroke="#fff"/>
-                    </svg>
+                <div class="suite-item__timing">
+                  <span class="suite-item__timing-state suite-item__timing-state--running"
+                        aria-label="Running">
+                    <span class="suite-item__timing-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke-width="3"
+                           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
+                        <circle class="suite-item__timing-ping" cx="12" cy="12" r="3.5" fill="#fff"/>
+                      </svg>
+                    </span>
                   </span>
-                  87%
-                </span>
-                <span class="suite-item__rate suite-item__rate--fail">
-                  <span class="suite-item__rate-icon suite-item__rate-icon--fail" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                      <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
-                      <line x1="8" y1="8" x2="16" y2="16" stroke="#fff"/>
-                      <line x1="16" y1="8" x2="8" y2="16" stroke="#fff"/>
-                    </svg>
+                  <span class="suite-item__timing-range">started 30 Oct</span>
+                  <span class="suite-item__sep" aria-hidden="true">·</span>
+                  <span class="suite-item__timing-eta">~3d 6h left</span>
+                </div>
+                <div class="suite-item__rates">
+                  <span class="suite-item__rate suite-item__rate--pass">
+                    <span class="suite-item__rate-icon suite-item__rate-icon--pass" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
+                        <polyline points="7 12.5 10.5 16 17 9" stroke="#fff"/>
+                      </svg>
+                    </span>
+                    62%
                   </span>
-                  6%
-                </span>
+                  <span class="suite-item__rate suite-item__rate--fail">
+                    <span class="suite-item__rate-icon suite-item__rate-icon--fail" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
+                        <line x1="8" y1="8" x2="16" y2="16" stroke="#fff"/>
+                        <line x1="16" y1="8" x2="8" y2="16" stroke="#fff"/>
+                      </svg>
+                    </span>
+                    4%
+                  </span>
+                </div>
               </div>
               <div class="suite-item__progress" role="progressbar"
-                   aria-valuemin="0" aria-valuemax="100" aria-valuenow="87">
-                <span class="suite-item__progress-fill" style="--pct: 87%;"></span>
+                   aria-valuemin="0" aria-valuemax="100" aria-valuenow="66">
+                <span class="suite-item__progress-fill" style="--pct: 66%;"></span>
               </div>
             </div>
             <a href="admin-test-run.html"
                class="suite-item__result"
-               aria-label="See detail report">
+               aria-label="See detail report"
+               title="See detail report">
               <span class="suite-item__result-icon suite-item__result-icon--rest" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
               </span>
               <span class="suite-item__result-icon suite-item__result-icon--hover" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
               </span>
-              <span class="suite-item__result-label">See detail report</span>
             </a>
           </div>
 
@@ -592,43 +957,48 @@
                 <span class="suite-item__name">Production — Smoke test 1.8.3</span>
               </div>
               <div class="suite-item__meta">
-                <span class="suite-item__date">22 Nov 2023</span>
-                <span class="suite-item__sep" aria-hidden="true">·</span>
-                <span class="suite-item__rate suite-item__rate--pass">
-                  <span class="suite-item__rate-icon suite-item__rate-icon--pass" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                      <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
-                      <polyline points="7 12.5 10.5 16 17 9" stroke="#fff"/>
-                    </svg>
+                <div class="suite-item__timing">
+                  <span class="suite-item__timing-range">22 Nov</span>
+                  <span class="suite-item__sep" aria-hidden="true">·</span>
+                  <span class="suite-item__timing-dur">8h 28m</span>
+                </div>
+                <div class="suite-item__rates">
+                  <span class="suite-item__rate suite-item__rate--pass">
+                    <span class="suite-item__rate-icon suite-item__rate-icon--pass" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
+                        <polyline points="7 12.5 10.5 16 17 9" stroke="#fff"/>
+                      </svg>
+                    </span>
+                    94%
                   </span>
-                  87%
-                </span>
-                <span class="suite-item__rate suite-item__rate--fail">
-                  <span class="suite-item__rate-icon suite-item__rate-icon--fail" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                      <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
-                      <line x1="8" y1="8" x2="16" y2="16" stroke="#fff"/>
-                      <line x1="16" y1="8" x2="8" y2="16" stroke="#fff"/>
-                    </svg>
+                  <span class="suite-item__rate suite-item__rate--fail">
+                    <span class="suite-item__rate-icon suite-item__rate-icon--fail" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
+                        <line x1="8" y1="8" x2="16" y2="16" stroke="#fff"/>
+                        <line x1="16" y1="8" x2="8" y2="16" stroke="#fff"/>
+                      </svg>
+                    </span>
+                    3%
                   </span>
-                  6%
-                </span>
+                </div>
               </div>
               <div class="suite-item__progress" role="progressbar"
-                   aria-valuemin="0" aria-valuemax="100" aria-valuenow="87">
-                <span class="suite-item__progress-fill" style="--pct: 87%;"></span>
+                   aria-valuemin="0" aria-valuemax="100" aria-valuenow="97">
+                <span class="suite-item__progress-fill" style="--pct: 97%;"></span>
               </div>
             </div>
             <a href="admin-test-run.html"
                class="suite-item__result"
-               aria-label="See detail report">
+               aria-label="See detail report"
+               title="See detail report">
               <span class="suite-item__result-icon suite-item__result-icon--rest" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
               </span>
               <span class="suite-item__result-icon suite-item__result-icon--hover" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
               </span>
-              <span class="suite-item__result-label">See detail report</span>
             </a>
           </div>
 
@@ -644,43 +1014,48 @@
                 <span class="suite-item__name">Production — Regress tests 1.8.3</span>
               </div>
               <div class="suite-item__meta">
-                <span class="suite-item__date">22 Nov 2023</span>
-                <span class="suite-item__sep" aria-hidden="true">·</span>
-                <span class="suite-item__rate suite-item__rate--pass">
-                  <span class="suite-item__rate-icon suite-item__rate-icon--pass" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                      <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
-                      <polyline points="7 12.5 10.5 16 17 9" stroke="#fff"/>
-                    </svg>
+                <div class="suite-item__timing">
+                  <span class="suite-item__timing-range">22 Nov</span>
+                  <span class="suite-item__sep" aria-hidden="true">·</span>
+                  <span class="suite-item__timing-dur">1d 4h</span>
+                </div>
+                <div class="suite-item__rates">
+                  <span class="suite-item__rate suite-item__rate--pass">
+                    <span class="suite-item__rate-icon suite-item__rate-icon--pass" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
+                        <polyline points="7 12.5 10.5 16 17 9" stroke="#fff"/>
+                      </svg>
+                    </span>
+                    88%
                   </span>
-                  87%
-                </span>
-                <span class="suite-item__rate suite-item__rate--fail">
-                  <span class="suite-item__rate-icon suite-item__rate-icon--fail" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                      <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
-                      <line x1="8" y1="8" x2="16" y2="16" stroke="#fff"/>
-                      <line x1="16" y1="8" x2="8" y2="16" stroke="#fff"/>
-                    </svg>
+                  <span class="suite-item__rate suite-item__rate--fail">
+                    <span class="suite-item__rate-icon suite-item__rate-icon--fail" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
+                        <line x1="8" y1="8" x2="16" y2="16" stroke="#fff"/>
+                        <line x1="16" y1="8" x2="8" y2="16" stroke="#fff"/>
+                      </svg>
+                    </span>
+                    7%
                   </span>
-                  6%
-                </span>
+                </div>
               </div>
               <div class="suite-item__progress" role="progressbar"
-                   aria-valuemin="0" aria-valuemax="100" aria-valuenow="87">
-                <span class="suite-item__progress-fill" style="--pct: 87%;"></span>
+                   aria-valuemin="0" aria-valuemax="100" aria-valuenow="95">
+                <span class="suite-item__progress-fill" style="--pct: 95%;"></span>
               </div>
             </div>
             <a href="admin-test-run.html"
                class="suite-item__result"
-               aria-label="See detail report">
+               aria-label="See detail report"
+               title="See detail report">
               <span class="suite-item__result-icon suite-item__result-icon--rest" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
               </span>
               <span class="suite-item__result-icon suite-item__result-icon--hover" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
               </span>
-              <span class="suite-item__result-label">See detail report</span>
             </a>
           </div>
 
@@ -696,43 +1071,48 @@
                 <span class="suite-item__name">Sprint 1.8.3</span>
               </div>
               <div class="suite-item__meta">
-                <span class="suite-item__date">18 Nov 2023</span>
-                <span class="suite-item__sep" aria-hidden="true">·</span>
-                <span class="suite-item__rate suite-item__rate--pass">
-                  <span class="suite-item__rate-icon suite-item__rate-icon--pass" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                      <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
-                      <polyline points="7 12.5 10.5 16 17 9" stroke="#fff"/>
-                    </svg>
+                <div class="suite-item__timing">
+                  <span class="suite-item__timing-range">18 Nov</span>
+                  <span class="suite-item__sep" aria-hidden="true">·</span>
+                  <span class="suite-item__timing-dur">6h 46m</span>
+                </div>
+                <div class="suite-item__rates">
+                  <span class="suite-item__rate suite-item__rate--pass">
+                    <span class="suite-item__rate-icon suite-item__rate-icon--pass" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
+                        <polyline points="7 12.5 10.5 16 17 9" stroke="#fff"/>
+                      </svg>
+                    </span>
+                    91%
                   </span>
-                  87%
-                </span>
-                <span class="suite-item__rate suite-item__rate--fail">
-                  <span class="suite-item__rate-icon suite-item__rate-icon--fail" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                      <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
-                      <line x1="8" y1="8" x2="16" y2="16" stroke="#fff"/>
-                      <line x1="16" y1="8" x2="8" y2="16" stroke="#fff"/>
-                    </svg>
+                  <span class="suite-item__rate suite-item__rate--fail">
+                    <span class="suite-item__rate-icon suite-item__rate-icon--fail" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
+                        <line x1="8" y1="8" x2="16" y2="16" stroke="#fff"/>
+                        <line x1="16" y1="8" x2="8" y2="16" stroke="#fff"/>
+                      </svg>
+                    </span>
+                    5%
                   </span>
-                  6%
-                </span>
+                </div>
               </div>
               <div class="suite-item__progress" role="progressbar"
-                   aria-valuemin="0" aria-valuemax="100" aria-valuenow="87">
-                <span class="suite-item__progress-fill" style="--pct: 87%;"></span>
+                   aria-valuemin="0" aria-valuemax="100" aria-valuenow="96">
+                <span class="suite-item__progress-fill" style="--pct: 96%;"></span>
               </div>
             </div>
             <a href="admin-test-run.html"
                class="suite-item__result"
-               aria-label="See detail report">
+               aria-label="See detail report"
+               title="See detail report">
               <span class="suite-item__result-icon suite-item__result-icon--rest" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
               </span>
               <span class="suite-item__result-icon suite-item__result-icon--hover" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
               </span>
-              <span class="suite-item__result-label">See detail report</span>
             </a>
           </div>
 
@@ -748,43 +1128,48 @@
                 <span class="suite-item__name">Production — Smoke test 1.8.2</span>
               </div>
               <div class="suite-item__meta">
-                <span class="suite-item__date">12 Nov 2023</span>
-                <span class="suite-item__sep" aria-hidden="true">·</span>
-                <span class="suite-item__rate suite-item__rate--pass">
-                  <span class="suite-item__rate-icon suite-item__rate-icon--pass" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                      <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
-                      <polyline points="7 12.5 10.5 16 17 9" stroke="#fff"/>
-                    </svg>
+                <div class="suite-item__timing">
+                  <span class="suite-item__timing-range">12 Nov</span>
+                  <span class="suite-item__sep" aria-hidden="true">·</span>
+                  <span class="suite-item__timing-dur">6h 25m</span>
+                </div>
+                <div class="suite-item__rates">
+                  <span class="suite-item__rate suite-item__rate--pass">
+                    <span class="suite-item__rate-icon suite-item__rate-icon--pass" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
+                        <polyline points="7 12.5 10.5 16 17 9" stroke="#fff"/>
+                      </svg>
+                    </span>
+                    96%
                   </span>
-                  87%
-                </span>
-                <span class="suite-item__rate suite-item__rate--fail">
-                  <span class="suite-item__rate-icon suite-item__rate-icon--fail" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                      <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
-                      <line x1="8" y1="8" x2="16" y2="16" stroke="#fff"/>
-                      <line x1="16" y1="8" x2="8" y2="16" stroke="#fff"/>
-                    </svg>
+                  <span class="suite-item__rate suite-item__rate--fail">
+                    <span class="suite-item__rate-icon suite-item__rate-icon--fail" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
+                        <line x1="8" y1="8" x2="16" y2="16" stroke="#fff"/>
+                        <line x1="16" y1="8" x2="8" y2="16" stroke="#fff"/>
+                      </svg>
+                    </span>
+                    2%
                   </span>
-                  6%
-                </span>
+                </div>
               </div>
               <div class="suite-item__progress" role="progressbar"
-                   aria-valuemin="0" aria-valuemax="100" aria-valuenow="87">
-                <span class="suite-item__progress-fill" style="--pct: 87%;"></span>
+                   aria-valuemin="0" aria-valuemax="100" aria-valuenow="98">
+                <span class="suite-item__progress-fill" style="--pct: 98%;"></span>
               </div>
             </div>
             <a href="admin-test-run.html"
                class="suite-item__result"
-               aria-label="See detail report">
+               aria-label="See detail report"
+               title="See detail report">
               <span class="suite-item__result-icon suite-item__result-icon--rest" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
               </span>
               <span class="suite-item__result-icon suite-item__result-icon--hover" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
               </span>
-              <span class="suite-item__result-label">See detail report</span>
             </a>
           </div>
 
@@ -796,31 +1181,35 @@
                   data-state="failed">
             <div class="suite-item__body">
               <div class="suite-item__head">
-                <span class="dash-status-dot dash-status-dot--critical" aria-hidden="true"></span>
                 <span class="suite-item__id">#2415</span>
                 <span class="suite-item__name">Production — Regress tests 1.8.2</span>
               </div>
               <div class="suite-item__meta">
-                <span class="suite-item__date">12 Nov 2023</span>
-                <span class="suite-item__sep" aria-hidden="true">·</span>
-                <span class="suite-item__rate suite-item__rate--errored">errored</span>
+                <div class="suite-item__timing">
+                  <span class="suite-item__timing-state suite-item__timing-state--errored"
+                        aria-label="Errored">
+                    <span class="suite-item__timing-dot" aria-hidden="true"></span>
+                  </span>
+                  <span class="suite-item__timing-range">12 Nov</span>
+                  <span class="suite-item__sep" aria-hidden="true">·</span>
+                  <span class="suite-item__timing-dur">ran 2h 14m</span>
+                </div>
               </div>
               <div class="suite-item__progress" role="progressbar"
                    aria-valuemin="0" aria-valuemax="100" aria-valuenow="42">
                 <span class="suite-item__progress-fill" style="--pct: 42%;"></span>
               </div>
             </div>
-            <a href="admin-test-run.html"
-               class="suite-item__result"
-               aria-label="See detail report">
-              <span class="suite-item__result-icon suite-item__result-icon--rest" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-              </span>
-              <span class="suite-item__result-icon suite-item__result-icon--hover" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
-              </span>
-              <span class="suite-item__result-label">See detail report</span>
-            </a>
+            <button type="button"
+                    class="suite-item__action suite-item__action--rerun"
+                    aria-label="Rerun suite">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"
+                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="23 4 23 10 17 10"/>
+                <polyline points="1 20 1 14 7 14"/>
+                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+              </svg>
+            </button>
           </div>
 
           <!-- Completed -->
@@ -835,43 +1224,48 @@
                 <span class="suite-item__name">Sprint 1.8.2</span>
               </div>
               <div class="suite-item__meta">
-                <span class="suite-item__date">8 Nov 2023</span>
-                <span class="suite-item__sep" aria-hidden="true">·</span>
-                <span class="suite-item__rate suite-item__rate--pass">
-                  <span class="suite-item__rate-icon suite-item__rate-icon--pass" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                      <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
-                      <polyline points="7 12.5 10.5 16 17 9" stroke="#fff"/>
-                    </svg>
+                <div class="suite-item__timing">
+                  <span class="suite-item__timing-range">8 Nov</span>
+                  <span class="suite-item__sep" aria-hidden="true">·</span>
+                  <span class="suite-item__timing-dur">6h 12m</span>
+                </div>
+                <div class="suite-item__rates">
+                  <span class="suite-item__rate suite-item__rate--pass">
+                    <span class="suite-item__rate-icon suite-item__rate-icon--pass" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
+                        <polyline points="7 12.5 10.5 16 17 9" stroke="#fff"/>
+                      </svg>
+                    </span>
+                    89%
                   </span>
-                  87%
-                </span>
-                <span class="suite-item__rate suite-item__rate--fail">
-                  <span class="suite-item__rate-icon suite-item__rate-icon--fail" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                      <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
-                      <line x1="8" y1="8" x2="16" y2="16" stroke="#fff"/>
-                      <line x1="16" y1="8" x2="8" y2="16" stroke="#fff"/>
-                    </svg>
+                  <span class="suite-item__rate suite-item__rate--fail">
+                    <span class="suite-item__rate-icon suite-item__rate-icon--fail" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
+                        <line x1="8" y1="8" x2="16" y2="16" stroke="#fff"/>
+                        <line x1="16" y1="8" x2="8" y2="16" stroke="#fff"/>
+                      </svg>
+                    </span>
+                    6%
                   </span>
-                  6%
-                </span>
+                </div>
               </div>
               <div class="suite-item__progress" role="progressbar"
-                   aria-valuemin="0" aria-valuemax="100" aria-valuenow="87">
-                <span class="suite-item__progress-fill" style="--pct: 87%;"></span>
+                   aria-valuemin="0" aria-valuemax="100" aria-valuenow="95">
+                <span class="suite-item__progress-fill" style="--pct: 95%;"></span>
               </div>
             </div>
             <a href="admin-test-run.html"
                class="suite-item__result"
-               aria-label="See detail report">
+               aria-label="See detail report"
+               title="See detail report">
               <span class="suite-item__result-icon suite-item__result-icon--rest" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
               </span>
               <span class="suite-item__result-icon suite-item__result-icon--hover" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
               </span>
-              <span class="suite-item__result-label">See detail report</span>
             </a>
           </div>
 
@@ -879,7 +1273,7 @@
       </article>
 
       <!-- RIGHT: selected suite's SP run results -->
-      <article class="workspace-card workspace-card--flush suites-pane suites-pane--detail"
+      <article class="workspace-card workspace-card--flush card--glass-frost suites-pane suites-pane--detail"
                aria-labelledby="suite-detail-h">
         <header class="workspace-card__head suites-pane__head suites-detail__head">
           <h2 id="suite-detail-h" class="suites-detail__title">UAT — CRM System v 2.1.2</h2>
@@ -890,14 +1284,44 @@
             <button type="button" class="dash-topbar__icon-btn" aria-label="Copy share link">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5"/></svg>
             </button>
-            <button type="button" class="dash-topbar__icon-btn" aria-label="Sort options">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4v16"/><polyline points="3 8 7 4 11 8"/><path d="M17 20V4"/><polyline points="13 16 17 20 21 16"/></svg>
-            </button>
             <button type="button" class="dash-topbar__icon-btn" aria-label="More actions">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
             </button>
           </div>
         </header>
+
+        <section class="suite-summary suite-summary--running" aria-label="Run summary">
+          <div class="suite-summary__metric">
+            <span class="suite-summary__metric-label">Acc</span>
+            <span class="suite-summary__metric-value">84</span>
+            <span class="suite-summary__metric-delta suite-summary__metric-delta--better">+2 vs prev</span>
+          </div>
+          <div class="suite-summary__metric">
+            <span class="suite-summary__metric-label">Flu</span>
+            <span class="suite-summary__metric-value">81</span>
+            <span class="suite-summary__metric-delta suite-summary__metric-delta--worse">−3 vs prev</span>
+          </div>
+          <div class="suite-summary__metric">
+            <span class="suite-summary__metric-label">Eff</span>
+            <span class="suite-summary__metric-value">82</span>
+            <span class="suite-summary__metric-delta suite-summary__metric-delta--better">+1 vs prev</span>
+          </div>
+          <div class="suite-summary__metric">
+            <span class="suite-summary__metric-label">Lat</span>
+            <span class="suite-summary__metric-value">1.4<span class="suite-summary__metric-unit">s</span></span>
+            <span class="suite-summary__metric-delta suite-summary__metric-delta--better">−0.1s vs prev</span>
+          </div>
+          <div class="suite-summary__metric">
+            <span class="suite-summary__metric-label">Cost</span>
+            <span class="suite-summary__metric-value">$0.141</span>
+            <span class="suite-summary__metric-delta suite-summary__metric-delta--neutral">running tally</span>
+          </div>
+          <div class="suite-summary__metric suite-summary__metric--live">
+            <span class="suite-summary__metric-label">ETA</span>
+            <span class="suite-summary__metric-value">~3d 6h</span>
+            <span class="suite-summary__metric-delta suite-summary__metric-delta--neutral">started 30 Oct</span>
+          </div>
+        </section>
 
         <div class="sp-table-wrap">
           <table class="table table--sm sp-table">
@@ -965,21 +1389,23 @@
 
               <tr class="table__row is-selected">
                 <td class="table__cell table__cell--state">
-                  <span class="badge is-safe" aria-label="pass">
-                    <span class="badge__icon" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                    </span>
+                  <span class="sp-status sp-status--pass" aria-label="pass">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="3"
+                         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
+                      <polyline points="7 12.5 10.5 16 17 9" stroke="#fff"/>
+                    </svg>
                   </span>
                 </td>
-                <td class="table__cell table__cell--mono" data-sort="2154"><a class="cell-link" href="admin-test-case.html">#2154</a></td>
-                <td class="table__cell" data-sort="prrs"><span class="badge badge--sm is-info"><span class="badge__label">PRRS</span></span></td>
+                <td class="table__cell table__cell--mono" data-sort="001"><a class="cell-link" href="admin-test-case.html">SP-001</a></td>
+                <td class="table__cell" data-sort="prrs"><span class="badge badge--sm is-neutral"><span class="badge__label">PRRS</span></span></td>
                 <td class="table__cell table__cell--num" data-sort="87">87</td>
                 <td class="table__cell table__cell--num" data-sort="92">92</td>
                 <td class="table__cell table__cell--num" data-sort="1.2">1.2 s</td>
                 <td class="table__cell table__cell--num" data-sort="4">4</td>
                 <td class="table__cell table__cell--num" data-sort="100">100</td>
                 <td class="table__cell table__cell--num" data-sort="0.024">$0.024</td>
-                <td class="table__cell table__cell--num" data-sort="4">4/8</td>
+                <td class="table__cell table__cell--num" data-sort="8">8</td>
                 <td class="table__cell" style="text-align: right;">
                   <button type="button" class="dash-topbar__icon-btn" aria-label="Row actions">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
@@ -989,21 +1415,23 @@
 
               <tr class="table__row">
                 <td class="table__cell table__cell--state">
-                  <span class="badge is-safe" aria-label="pass">
-                    <span class="badge__icon" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                    </span>
+                  <span class="sp-status sp-status--pass" aria-label="pass">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="3"
+                         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
+                      <polyline points="7 12.5 10.5 16 17 9" stroke="#fff"/>
+                    </svg>
                   </span>
                 </td>
-                <td class="table__cell table__cell--mono" data-sort="2155"><a class="cell-link" href="admin-test-case.html">#2155</a></td>
-                <td class="table__cell" data-sort="asf"><span class="badge badge--sm is-critical"><span class="badge__label">ASF</span></span></td>
+                <td class="table__cell table__cell--mono" data-sort="002"><a class="cell-link" href="admin-test-case.html">SP-002</a></td>
+                <td class="table__cell" data-sort="asf"><span class="badge badge--sm is-neutral"><span class="badge__label">ASF</span></span></td>
                 <td class="table__cell table__cell--num" data-sort="91">91</td>
                 <td class="table__cell table__cell--num" data-sort="88">88</td>
                 <td class="table__cell table__cell--num" data-sort="0.9">0.9 s</td>
                 <td class="table__cell table__cell--num" data-sort="3">3</td>
                 <td class="table__cell table__cell--num" data-sort="100">100</td>
                 <td class="table__cell table__cell--num" data-sort="0.019">$0.019</td>
-                <td class="table__cell table__cell--num" data-sort="8">8/8</td>
+                <td class="table__cell table__cell--num" data-sort="8">8</td>
                 <td class="table__cell" style="text-align: right;">
                   <button type="button" class="dash-topbar__icon-btn" aria-label="Row actions">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
@@ -1013,21 +1441,23 @@
 
               <tr class="table__row">
                 <td class="table__cell table__cell--state">
-                  <span class="badge is-warning" aria-label="running">
-                    <span class="badge__icon" aria-hidden="true">
-                      <span class="sp-pulse-dot"></span>
-                    </span>
+                  <span class="sp-status sp-status--running" aria-label="running">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="3"
+                         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
+                      <circle class="sp-status__ping" cx="12" cy="12" r="3.5" fill="#fff"/>
+                    </svg>
                   </span>
                 </td>
-                <td class="table__cell table__cell--mono" data-sort="2156"><a class="cell-link" href="admin-test-case.html">#2156</a></td>
-                <td class="table__cell" data-sort="tge"><span class="badge badge--sm is-warning"><span class="badge__label">TGE</span></span></td>
+                <td class="table__cell table__cell--mono" data-sort="003"><a class="cell-link" href="admin-test-case.html">SP-003</a></td>
+                <td class="table__cell" data-sort="tge"><span class="badge badge--sm is-neutral"><span class="badge__label">TGE</span></span></td>
                 <td class="table__cell table__cell--num" data-sort="74">74</td>
                 <td class="table__cell table__cell--num" data-sort="81">81</td>
                 <td class="table__cell table__cell--num" data-sort="1.7">1.7 s</td>
                 <td class="table__cell table__cell--num" data-sort="5">5</td>
                 <td class="table__cell table__cell--num" data-sort="92">92</td>
                 <td class="table__cell table__cell--num" data-sort="0.031">$0.031</td>
-                <td class="table__cell table__cell--num" data-sort="2">2/8</td>
+                <td class="table__cell table__cell--num" data-sort="8">8</td>
                 <td class="table__cell" style="text-align: right;">
                   <button type="button" class="dash-topbar__icon-btn" aria-label="Row actions">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
@@ -1037,21 +1467,23 @@
 
               <tr class="table__row">
                 <td class="table__cell table__cell--state">
-                  <span class="badge is-safe" aria-label="pass">
-                    <span class="badge__icon" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                    </span>
+                  <span class="sp-status sp-status--pass" aria-label="pass">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="3"
+                         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
+                      <polyline points="7 12.5 10.5 16 17 9" stroke="#fff"/>
+                    </svg>
                   </span>
                 </td>
-                <td class="table__cell table__cell--mono" data-sort="2157"><a class="cell-link" href="admin-test-case.html">#2157</a></td>
-                <td class="table__cell" data-sort="app"><span class="badge badge--sm is-primary"><span class="badge__label">APP</span></span></td>
+                <td class="table__cell table__cell--mono" data-sort="004"><a class="cell-link" href="admin-test-case.html">SP-004</a></td>
+                <td class="table__cell" data-sort="app"><span class="badge badge--sm is-neutral"><span class="badge__label">APP</span></span></td>
                 <td class="table__cell table__cell--num" data-sort="93">93</td>
                 <td class="table__cell table__cell--num" data-sort="95">95</td>
                 <td class="table__cell table__cell--num" data-sort="1.1">1.1 s</td>
                 <td class="table__cell table__cell--num" data-sort="4">4</td>
                 <td class="table__cell table__cell--num" data-sort="100">100</td>
                 <td class="table__cell table__cell--num" data-sort="0.022">$0.022</td>
-                <td class="table__cell table__cell--num" data-sort="8">8/8</td>
+                <td class="table__cell table__cell--num" data-sort="8">8</td>
                 <td class="table__cell" style="text-align: right;">
                   <button type="button" class="dash-topbar__icon-btn" aria-label="Row actions">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
@@ -1061,21 +1493,24 @@
 
               <tr class="table__row">
                 <td class="table__cell table__cell--state">
-                  <span class="badge is-critical" aria-label="fail">
-                    <span class="badge__icon" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
-                    </span>
+                  <span class="sp-status sp-status--fail" aria-label="fail">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="3"
+                         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
+                      <line x1="8" y1="8"  x2="16" y2="16" stroke="#fff"/>
+                      <line x1="16" y1="8" x2="8"  y2="16" stroke="#fff"/>
+                    </svg>
                   </span>
                 </td>
-                <td class="table__cell table__cell--mono" data-sort="2158"><a class="cell-link" href="admin-test-case.html">#2158</a></td>
-                <td class="table__cell" data-sort="erysipelas"><span class="badge badge--sm is-accent"><span class="badge__label">Erysipelas</span></span></td>
+                <td class="table__cell table__cell--mono" data-sort="005"><a class="cell-link" href="admin-test-case.html">SP-005</a></td>
+                <td class="table__cell" data-sort="erysipelas"><span class="badge badge--sm is-neutral"><span class="badge__label">Erysipelas</span></span></td>
                 <td class="table__cell table__cell--num" data-sort="42">42</td>
                 <td class="table__cell table__cell--num" data-sort="38">38</td>
                 <td class="table__cell table__cell--num" data-sort="2.4">2.4 s</td>
                 <td class="table__cell table__cell--num" data-sort="6">6</td>
                 <td class="table__cell table__cell--num" data-sort="55">55</td>
                 <td class="table__cell table__cell--num" data-sort="0.041">$0.041</td>
-                <td class="table__cell table__cell--num" data-sort="8">8/8</td>
+                <td class="table__cell table__cell--num" data-sort="8">8</td>
                 <td class="table__cell" style="text-align: right;">
                   <button type="button" class="dash-topbar__icon-btn" aria-label="Row actions">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
@@ -1085,21 +1520,23 @@
 
               <tr class="table__row">
                 <td class="table__cell table__cell--state">
-                  <span class="badge is-safe" aria-label="pass">
-                    <span class="badge__icon" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                    </span>
+                  <span class="sp-status sp-status--pass" aria-label="pass">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="3"
+                         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
+                      <polyline points="7 12.5 10.5 16 17 9" stroke="#fff"/>
+                    </svg>
                   </span>
                 </td>
-                <td class="table__cell table__cell--mono" data-sort="2159"><a class="cell-link" href="admin-test-case.html">#2159</a></td>
-                <td class="table__cell" data-sort="ped"><span class="badge badge--sm is-info"><span class="badge__label">PED</span></span></td>
+                <td class="table__cell table__cell--mono" data-sort="006"><a class="cell-link" href="admin-test-case.html">SP-006</a></td>
+                <td class="table__cell" data-sort="ped"><span class="badge badge--sm is-neutral"><span class="badge__label">PED</span></span></td>
                 <td class="table__cell table__cell--num" data-sort="89">89</td>
                 <td class="table__cell table__cell--num" data-sort="90">90</td>
                 <td class="table__cell table__cell--num" data-sort="1.0">1.0 s</td>
                 <td class="table__cell table__cell--num" data-sort="3">3</td>
                 <td class="table__cell table__cell--num" data-sort="100">100</td>
                 <td class="table__cell table__cell--num" data-sort="0.018">$0.018</td>
-                <td class="table__cell table__cell--num" data-sort="8">8/8</td>
+                <td class="table__cell table__cell--num" data-sort="8">8</td>
                 <td class="table__cell" style="text-align: right;">
                   <button type="button" class="dash-topbar__icon-btn" aria-label="Row actions">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
@@ -1109,21 +1546,23 @@
 
               <tr class="table__row">
                 <td class="table__cell table__cell--state">
-                  <span class="badge is-critical" aria-label="fail">
-                    <span class="badge__icon" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
-                    </span>
+                  <span class="sp-status sp-status--pass" aria-label="pass">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="3"
+                         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
+                      <polyline points="7 12.5 10.5 16 17 9" stroke="#fff"/>
+                    </svg>
                   </span>
                 </td>
-                <td class="table__cell table__cell--mono" data-sort="2160"><a class="cell-link" href="admin-test-case.html">#2160</a></td>
-                <td class="table__cell" data-sort="mycoplasma"><span class="badge badge--sm is-warning"><span class="badge__label">Mycoplasma</span></span></td>
-                <td class="table__cell table__cell--num" data-sort="58">58</td>
-                <td class="table__cell table__cell--num" data-sort="61">61</td>
-                <td class="table__cell table__cell--num" data-sort="1.9">1.9 s</td>
-                <td class="table__cell table__cell--num" data-sort="5">5</td>
-                <td class="table__cell table__cell--num" data-sort="72">72</td>
-                <td class="table__cell table__cell--num" data-sort="0.033">$0.033</td>
-                <td class="table__cell table__cell--num" data-sort="8">8/8</td>
+                <td class="table__cell table__cell--mono" data-sort="007"><a class="cell-link" href="admin-test-case.html">SP-007</a></td>
+                <td class="table__cell" data-sort="mycoplasma"><span class="badge badge--sm is-neutral"><span class="badge__label">Mycoplasma</span></span></td>
+                <td class="table__cell table__cell--num" data-sort="86">86</td>
+                <td class="table__cell table__cell--num" data-sort="83">83</td>
+                <td class="table__cell table__cell--num" data-sort="1.4">1.4 s</td>
+                <td class="table__cell table__cell--num" data-sort="4">4</td>
+                <td class="table__cell table__cell--num" data-sort="93">93</td>
+                <td class="table__cell table__cell--num" data-sort="0.027">$0.027</td>
+                <td class="table__cell table__cell--num" data-sort="8">8</td>
                 <td class="table__cell" style="text-align: right;">
                   <button type="button" class="dash-topbar__icon-btn" aria-label="Row actions">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
@@ -1133,21 +1572,23 @@
 
               <tr class="table__row">
                 <td class="table__cell table__cell--state">
-                  <span class="badge is-safe" aria-label="pass">
-                    <span class="badge__icon" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                    </span>
+                  <span class="sp-status sp-status--pass" aria-label="pass">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="3"
+                         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
+                      <polyline points="7 12.5 10.5 16 17 9" stroke="#fff"/>
+                    </svg>
                   </span>
                 </td>
-                <td class="table__cell table__cell--mono" data-sort="2161"><a class="cell-link" href="admin-test-case.html">#2161</a></td>
-                <td class="table__cell" data-sort="csf"><span class="badge badge--sm is-critical"><span class="badge__label">CSF</span></span></td>
+                <td class="table__cell table__cell--mono" data-sort="008"><a class="cell-link" href="admin-test-case.html">SP-008</a></td>
+                <td class="table__cell" data-sort="csf"><span class="badge badge--sm is-neutral"><span class="badge__label">CSF</span></span></td>
                 <td class="table__cell table__cell--num" data-sort="94">94</td>
                 <td class="table__cell table__cell--num" data-sort="93">93</td>
                 <td class="table__cell table__cell--num" data-sort="0.8">0.8 s</td>
                 <td class="table__cell table__cell--num" data-sort="3">3</td>
                 <td class="table__cell table__cell--num" data-sort="100">100</td>
                 <td class="table__cell table__cell--num" data-sort="0.017">$0.017</td>
-                <td class="table__cell table__cell--num" data-sort="8">8/8</td>
+                <td class="table__cell table__cell--num" data-sort="8">8</td>
                 <td class="table__cell" style="text-align: right;">
                   <button type="button" class="dash-topbar__icon-btn" aria-label="Row actions">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
@@ -1157,21 +1598,23 @@
 
               <tr class="table__row">
                 <td class="table__cell table__cell--state">
-                  <span class="badge is-safe" aria-label="pass">
-                    <span class="badge__icon" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                    </span>
+                  <span class="sp-status sp-status--pass" aria-label="pass">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="3"
+                         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
+                      <polyline points="7 12.5 10.5 16 17 9" stroke="#fff"/>
+                    </svg>
                   </span>
                 </td>
-                <td class="table__cell table__cell--mono" data-sort="2162"><a class="cell-link" href="admin-test-case.html">#2162</a></td>
-                <td class="table__cell" data-sort="salmonella"><span class="badge badge--sm is-primary"><span class="badge__label">Salmonella</span></span></td>
+                <td class="table__cell table__cell--mono" data-sort="009"><a class="cell-link" href="admin-test-case.html">SP-009</a></td>
+                <td class="table__cell" data-sort="salmonella"><span class="badge badge--sm is-neutral"><span class="badge__label">Salmonella</span></span></td>
                 <td class="table__cell table__cell--num" data-sort="88">88</td>
                 <td class="table__cell table__cell--num" data-sort="86">86</td>
                 <td class="table__cell table__cell--num" data-sort="1.3">1.3 s</td>
                 <td class="table__cell table__cell--num" data-sort="4">4</td>
                 <td class="table__cell table__cell--num" data-sort="100">100</td>
                 <td class="table__cell table__cell--num" data-sort="0.021">$0.021</td>
-                <td class="table__cell table__cell--num" data-sort="8">8/8</td>
+                <td class="table__cell table__cell--num" data-sort="8">8</td>
                 <td class="table__cell" style="text-align: right;">
                   <button type="button" class="dash-topbar__icon-btn" aria-label="Row actions">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
@@ -1181,14 +1624,18 @@
 
               <tr class="table__row">
                 <td class="table__cell table__cell--state">
-                  <span class="badge is-neutral" aria-label="not run">
-                    <span class="badge__icon" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/></svg>
-                    </span>
+                  <span class="sp-status sp-status--idle" aria-label="not run">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                         aria-hidden="true">
+                      <circle cx="12" cy="12" r="10"/>
+                    </svg>
                   </span>
                 </td>
-                <td class="table__cell table__cell--mono" data-sort="2163"><a class="cell-link" href="admin-test-case.html">#2163</a></td>
-                <td class="table__cell" data-sort="strep suis"><span class="badge badge--sm is-neutral"><span class="badge__label">Strep suis</span></span></td>
+                <td class="table__cell table__cell--mono" data-sort="010"><a class="cell-link" href="admin-test-case.html">SP-010</a></td>
+                <td class="table__cell" data-sort="strep suis">
+                  <span class="badge badge--sm is-neutral"><span class="badge__label">Strep suis</span></span>
+                  <span class="sp-queued-hint">queued · runs after SP-009</span>
+                </td>
                 <td class="table__cell table__cell--num table__cell--meta" data-sort="0">—</td>
                 <td class="table__cell table__cell--num table__cell--meta" data-sort="0">—</td>
                 <td class="table__cell table__cell--num table__cell--meta" data-sort="0">—</td>

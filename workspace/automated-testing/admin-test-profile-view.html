@@ -23,6 +23,102 @@
 <link rel="stylesheet" href="_shared.css" />
 
 <style>
+/* ───────────────────────────────────────────────────────────
+   TOPBAR ISLANDS — sticky chrome row, two glass pills.
+   Island 1 (left): breadcrumb. Island 2 (right): codename +
+   updated-ago caption + Edit. Mirrors the editor twin
+   (admin-test-profile-editor.html) so toggling between view
+   and edit keeps the header still. Pattern source:
+   V-04-disease-input.html.
+   ─────────────────────────────────────────────────────────── */
+.dash > .dash__main > .dash-topbar {
+    position:      sticky;
+    top:           var(--spacing-6x); /* clears the .dash padding */
+    z-index:       50;
+    display:       flex;
+    align-items:   center;
+    gap:           var(--spacing-3x);
+    background:    transparent;
+    border:        none;
+    border-radius: 0;
+    padding:       0;
+    min-height:    0;
+}
+
+/* Island 1 — breadcrumb pill. */
+.dash > .dash__main > .dash-topbar > .dash-topbar__crumbs {
+    display:        inline-flex;
+    align-items:    center;
+    gap:            var(--spacing-2x);
+    padding:        var(--spacing-2x) var(--spacing-4x);
+    background:     var(--glass-light-light-bg);
+    -webkit-backdrop-filter: var(--glass-light-light-blur) var(--glass-saturate);
+            backdrop-filter: var(--glass-light-light-blur) var(--glass-saturate);
+    border:         var(--border-width-base) solid var(--glass-light-light-border);
+    border-radius:  var(--radius-pill);
+    box-shadow:     var(--glass-shadow-raised), var(--glass-inset-light-soft);
+    font-size:      var(--text-body-sm);
+    color:          var(--text-default-subtle);
+    white-space:    nowrap;
+    margin-right:   auto; /* pushes the cluster to the right edge */
+}
+
+/* Island 2 — utility cluster pill. Same glass anatomy as island 1. */
+.dash > .dash__main > .dash-topbar > .dash-topbar__cluster {
+    display:        inline-flex;
+    align-items:    center;
+    gap:            var(--spacing-3x);
+    list-style:     none;
+    margin:         0;
+    padding:        var(--spacing-2x) var(--spacing-2x) var(--spacing-2x) var(--spacing-4x);
+    background:     var(--glass-light-light-bg);
+    -webkit-backdrop-filter: var(--glass-light-light-blur) var(--glass-saturate);
+            backdrop-filter: var(--glass-light-light-blur) var(--glass-saturate);
+    border:         var(--border-width-base) solid var(--glass-light-light-border);
+    border-radius:  var(--radius-pill);
+    box-shadow:     var(--glass-shadow-raised), var(--glass-inset-light-soft);
+    white-space:    nowrap;
+}
+.dash-topbar__cluster > li { display: inline-flex; align-items: center; }
+
+/* Codename — semibold identity slot, sits left of the action group. */
+.dash-topbar__codename {
+    font-family:     var(--font-sans);
+    font-size:       var(--text-body-lg);
+    font-weight:     var(--font-weight-semibold);
+    letter-spacing:  var(--letter-spacing-tight);
+    color:           var(--text-default);
+    padding-right:   var(--spacing-2x);
+}
+
+/* Last-edited caption — muted metadata, not button-shaped. */
+.dash-topbar__last-edited {
+    font-family: var(--font-sans);
+    font-size:   var(--text-body-sm);
+    color:       var(--text-default-minimal);
+    white-space: nowrap;
+}
+
+/* Vertical divider between the metadata cluster and the action. */
+.dash-topbar__divider {
+    width:      var(--border-width-base);
+    height:     22px;
+    background: var(--border-default-subtle);
+    margin:     0 var(--spacing-1x);
+}
+
+/* Reading-width cap — matches the editor twin so toggling between
+   view and edit keeps the content column at the same width. The
+   topbar is intentionally NOT in this list; it spans the full main
+   column so the breadcrumb island sits flush-left, close to the
+   sidebar. */
+.dash > .dash__main > .dash-page,
+.dash > .dash__main > .workspace-card {
+    max-width:     960px;
+    width:         100%;
+    margin-inline: auto;
+}
+
 /* Page-scoped scaffolding for admin-test-profile-view. */
 .profile-hero {
     display: flex;
@@ -97,7 +193,7 @@
 
   <!-- SIDEBAR -->
   <aside class="dash__side">
-    <aside class="sidebar" aria-label="Admin primary navigation">
+    <aside class="sidebar sidebar--active-solid" aria-label="Admin primary navigation">
       <header class="sidebar__header">
         <a href="../admin-dashboard.html" class="sidebar__brand">
           <img class="sidebar__brand-mark" src="../../logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
@@ -186,38 +282,47 @@
   <main class="dash__main">
 
     <header class="dash-topbar" aria-label="Workspace chrome">
+
+      <!-- ISLAND 1 — breadcrumb pill (no trailing SP-002; codename now in island 2) -->
       <nav class="dash-topbar__crumbs" aria-label="Breadcrumb">
         <a href="../admin-dashboard.html">Admin</a>
         <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
         <a href="admin-test-console.html">Automated testing</a>
         <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
         <a href="admin-test-profiles.html">Profiles</a>
-        <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
-        <span class="dash-topbar__crumb-tail" aria-current="page">SP-002</span>
       </nav>
+
+      <!-- ISLAND 2 — utility cluster: codename + freshness + Edit -->
       <ul class="dash-topbar__cluster">
-        <li class="dash-topbar__cluster-item"><span class="dash-topbar__version">v1.4.2</span></li>
+
+        <!-- A · Codename — the noun the action acts on -->
+        <li class="dash-topbar__codename">SP-002</li>
+
+        <!-- B · Updated freshness — muted metadata, always visible -->
+        <li class="dash-topbar__last-edited">Updated 2 h ago</li>
+
+        <!-- C · Divider before the action -->
+        <li aria-hidden="true"><span class="dash-topbar__divider"></span></li>
+
+        <!-- D · Edit — navigates to the editor twin -->
+        <li>
+          <a href="admin-test-profile-editor.html" class="btn btn--sm btn--secondary">
+            <span class="btn__leading" aria-hidden="true">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 20h9"/>
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+              </svg>
+            </span>
+            <span class="btn__label">Edit</span>
+          </a>
+        </li>
+
       </ul>
     </header>
 
     <header class="dash-page">
       <div class="dash-page__text">
         <h1>SP-002.</h1>
-        <p class="dash-page__meta">
-          <span>Updated <span class="dash-page__meta-val">2 h ago</span></span>
-          <span class="dash-page__meta-sep" aria-hidden="true">·</span>
-          <span>by <span class="dash-page__meta-val">Mai</span></span>
-          <span class="dash-page__meta-sep" aria-hidden="true">·</span>
-          <span class="dash-page__meta-val">v7</span>
-        </p>
-      </div>
-      <div class="dash-page__cta">
-        <a href="admin-test-profile-editor.html" class="btn btn--ghost">
-          <span class="btn__leading" aria-hidden="true">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-          </span>
-          <span class="btn__label">Edit</span>
-        </a>
       </div>
     </header>
 

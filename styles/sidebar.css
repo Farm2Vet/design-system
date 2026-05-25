@@ -214,6 +214,33 @@
   --sidebar-shadow-hover: var(--sidebar-shadow);
 }
 
+/* =========================================================
+   ACTIVE-STATE MODIFIER — solid
+   The canonical `.is-current` treatment is a pale primary
+   tint (`--background-primary-subtle` + `--text-primary-strong`)
+   — quiet enough to belong on documentation pages and
+   marketing mockups where the rail is one element among many.
+   Dense product admin surfaces need more prominence; the
+   active row should read as a destination, not a tint.
+
+   `.sidebar--active-solid` re-resolves the three current-state
+   tokens so the selected row paints as a solid primary pill
+   with inverted text + icon. Markup, slots, and every other
+   state (resting, hover, disabled) are untouched.
+
+   Contrast note: lime + white runs ~2.2:1 on Farm2Vet's
+   `--primary-500`, below WCAG AA. The treatment is an explicit
+   designer call for product admin density — apply it only to
+   surfaces that warrant the trade-off (the `/workspace/*`
+   admin family). Documentation pages, marketing mockups, and
+   v1 stay on the canonical default.
+   ========================================================= */
+.sidebar--active-solid {
+  --sidebar-item-bg-current:   var(--primary-500);
+  --sidebar-item-fg-current:   var(--text-inverted);
+  --sidebar-item-icon-current: var(--text-inverted);
+}
+
 /* ---------- Header slot ---------- */
 .sidebar__header {
   display: flex;

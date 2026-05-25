@@ -210,15 +210,15 @@
    + rim light + outer shadow) on every workspace card.
    ─────────────────────────────────────────────────────────── */
 .dash .workspace-card.card--glass-frost {
-    background:               var(--card-glass-frost-bg);
-    border-color:             var(--card-glass-frost-border);
-    backdrop-filter:          var(--card-glass-frost-blur) var(--glass-saturate);
-    -webkit-backdrop-filter:  var(--card-glass-frost-blur) var(--glass-saturate);
+    background:               var(--glass-light-light-bg);
+    border-color:             var(--glass-light-light-border);
+    backdrop-filter:          var(--glass-light-light-blur) var(--glass-saturate);
+    -webkit-backdrop-filter:  var(--glass-light-light-blur) var(--glass-saturate);
     box-shadow:               var(--glass-shadow-raised), var(--glass-inset-light-soft);
 }
 .dash .workspace-card.card--glass-frost:hover {
-    background:               var(--card-glass-frost-bg-hover);
-    border-color:             var(--card-glass-frost-border-hover);
+    background:               var(--glass-light-light-bg-hover);
+    border-color:             var(--glass-light-light-border-hover);
     box-shadow:               var(--glass-shadow-raised-hover), var(--glass-inset-light-soft);
 }
 
@@ -233,19 +233,29 @@
 }
 
 /* ───────────────────────────────────────────────────────────
-   TOPBAR ISLANDS — override _shared.css's flat .dash-topbar.
-   Shell goes transparent; the breadcrumb and the utility
-   cluster each become a floating glass pill. Pattern mirrors
-   V-04-disease-input.html.
+   TOPBAR ISLANDS — sticky chrome row, two glass pills.
+   Island 1 (left): breadcrumb. Island 2 (right): codename +
+   save-status + View / Discard / Save. Pattern mirrors
+   V-04-disease-input.html — see the .disease-edit__topbar
+   block there. When this pattern lands on a third page
+   promote both islands and the cluster rules to a shared
+   stylesheet (styles/topbar.css candidate).
    ─────────────────────────────────────────────────────────── */
 .dash > .dash__main > .dash-topbar {
+    position:      sticky;
+    top:           var(--spacing-6x); /* clears the .dash padding */
+    z-index:       50;
+    display:       flex;
+    align-items:   center;
+    gap:           var(--spacing-3x);
     background:    transparent;
     border:        none;
     border-radius: 0;
     padding:       0;
     min-height:    0;
-    gap:           var(--spacing-3x);
 }
+
+/* Island 1 — breadcrumb pill. */
 .dash > .dash__main > .dash-topbar > .dash-topbar__crumbs {
     display:        inline-flex;
     align-items:    center;
@@ -260,16 +270,77 @@
     font-size:      var(--text-body-sm);
     color:          var(--text-default-subtle);
     white-space:    nowrap;
+    margin-right:   auto; /* pushes the cluster to the right edge */
 }
 
-/* Action bar — glass pill, mirrors the topbar islands. */
-.dash .workspace-actionbar {
+/* Island 2 — utility cluster pill. Carries codename + save-status
+   + the three action buttons. Same glass anatomy as island 1. */
+.dash > .dash__main > .dash-topbar > .dash-topbar__cluster {
+    display:        inline-flex;
+    align-items:    center;
+    gap:            var(--spacing-3x);
+    list-style:     none;
+    margin:         0;
+    padding:        var(--spacing-2x) var(--spacing-2x) var(--spacing-2x) var(--spacing-4x);
     background:     var(--glass-light-light-bg);
     -webkit-backdrop-filter: var(--glass-light-light-blur) var(--glass-saturate);
             backdrop-filter: var(--glass-light-light-blur) var(--glass-saturate);
     border:         var(--border-width-base) solid var(--glass-light-light-border);
     border-radius:  var(--radius-pill);
     box-shadow:     var(--glass-shadow-raised), var(--glass-inset-light-soft);
+    white-space:    nowrap;
+}
+.dash-topbar__cluster > li { display: inline-flex; align-items: center; }
+
+/* Codename — semibold identity slot, sits left of the action group.
+   Reads as the noun the actions act on. */
+.dash-topbar__codename {
+    font-family:     var(--font-sans);
+    font-size:       var(--text-body-lg);
+    font-weight:     var(--font-weight-semibold);
+    letter-spacing:  var(--letter-spacing-tight);
+    color:           var(--text-default);
+    padding-right:   var(--spacing-2x);
+}
+
+/* Save-status caption — swaps the "Saved …" line for an amber dirty
+   indicator via the [data-state] flag the controller sets. Copied
+   verbatim from V-04 so the two pages behave identically; promote to
+   a shared file when the third editor lands. */
+.dash-topbar__save-status {
+    display:      inline-flex;
+    align-items:  center;
+    font-size:    var(--text-body-sm);
+    color:        var(--text-default-minimal);
+    white-space:  nowrap;
+}
+.dash-topbar__save-status[data-state="clean"] .dash-topbar__save-status-dirty,
+.dash-topbar__save-status[data-state="dirty"] .dash-topbar__save-status-clean {
+    display: none;
+}
+.dash-topbar__save-status[data-state="dirty"] {
+    color: var(--text-warning);
+}
+.dash-topbar__save-status[data-state="dirty"] .dash-topbar__save-status-dirty {
+    display:     inline-flex;
+    align-items: center;
+    gap:         var(--spacing-2x);
+}
+.dash-topbar__save-dot {
+    width:         8px;
+    height:        8px;
+    border-radius: 50%;
+    background:    var(--icon-warning);
+    display:       inline-block;
+    flex-shrink:   0;
+}
+
+/* Vertical divider — used between save-status and the action group. */
+.dash-topbar__divider {
+    width:      var(--border-width-base);
+    height:     22px;
+    background: var(--border-default-subtle);
+    margin:     0 var(--spacing-1x);
 }
 
 /* ───────────────────────────────────────────────────────────
@@ -365,10 +436,10 @@
    content — page hero, workspace cards, and the sticky action
    bar — keeps a focused 960px reading-width cap and stays
    centered above the column. The topbar is intentionally NOT
-   in this list. */
-.dash > .dash__main.dash__main--has-actionbar > .dash-page,
-.dash > .dash__main.dash__main--has-actionbar > .workspace-card,
-.dash > .dash__main.dash__main--has-actionbar > .workspace-actionbar {
+   in this list — it spans the full main column so the breadcrumb
+   island sits flush-left, close to the sidebar. */
+.dash > .dash__main > .dash-page,
+.dash > .dash__main > .workspace-card {
     max-width: 960px;
     width: 100%;
     margin-inline: auto;
@@ -415,7 +486,7 @@
 
   <!-- SIDEBAR -->
   <aside class="dash__side">
-    <aside class="sidebar" aria-label="Admin primary navigation">
+    <aside class="sidebar sidebar--active-solid" aria-label="Admin primary navigation">
       <header class="sidebar__header">
         <a href="../admin-dashboard.html" class="sidebar__brand">
           <img class="sidebar__brand-mark" src="../../logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
@@ -501,26 +572,67 @@
   </aside>
 
   <!-- MAIN -->
-  <main class="dash__main dash__main--has-actionbar">
+  <main class="dash__main">
 
     <header class="dash-topbar" aria-label="Workspace chrome">
+
+      <!-- ISLAND 1 — breadcrumb pill -->
       <nav class="dash-topbar__crumbs" aria-label="Breadcrumb">
         <a href="../admin-dashboard.html">Admin</a>
         <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
         <a href="admin-test-console.html">Automated testing</a>
         <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
         <a href="admin-test-profiles.html">Profiles</a>
-        <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
-        <span class="dash-topbar__crumb-tail" aria-current="page">SP-002</span>
       </nav>
+
+      <!-- ISLAND 2 — utility cluster: codename + save-status + actions -->
+      <ul class="dash-topbar__cluster">
+
+        <!-- A · Codename — the noun the actions act on -->
+        <li class="dash-topbar__codename" aria-live="polite">SP-002</li>
+
+        <!-- B · Save status — clean / dirty captions, CSS-driven swap.
+             The controller flips [data-state] on the wrapper. -->
+        <li>
+          <span class="dash-topbar__save-status" data-state="clean">
+            <span class="dash-topbar__save-status-clean">Saved 2 h ago</span>
+            <span class="dash-topbar__save-status-dirty">
+              <span class="dash-topbar__save-dot" aria-hidden="true"></span>
+              <span>Unsaved changes</span>
+            </span>
+          </span>
+        </li>
+
+        <!-- C · Divider before the action group -->
+        <li aria-hidden="true"><span class="dash-topbar__divider"></span></li>
+
+        <!-- D · View — navigates to the read-only twin page -->
+        <li>
+          <a href="admin-test-profile-view.html" class="btn btn--sm btn--secondary">
+            <span class="btn__label">View</span>
+          </a>
+        </li>
+
+        <!-- E · Discard — reverts unsaved edits (mockup: no handler) -->
+        <li>
+          <button type="button" class="btn btn--sm btn--secondary">
+            <span class="btn__label">Discard</span>
+          </button>
+        </li>
+
+        <!-- F · Save — commits edits (mockup: no handler) -->
+        <li>
+          <button type="button" class="btn btn--sm btn--secondary">
+            <span class="btn__label">Save</span>
+          </button>
+        </li>
+
+      </ul>
     </header>
 
     <header class="dash-page">
       <div class="dash-page__text">
         <h1>SP-002.</h1>
-      </div>
-      <div class="dash-page__cta">
-        <a href="admin-test-profile-view.html" class="btn btn--ghost"><span class="btn__label">View</span></a>
       </div>
     </header>
 
@@ -757,14 +869,6 @@
       </div>
     </article>
 
-    <!-- Sticky action bar -->
-    <footer class="workspace-actionbar" role="region" aria-label="Editor actions">
-      <span class="workspace-actionbar__hint">Last saved 2 h ago</span>
-      <div class="workspace-actionbar__spacer"></div>
-      <button type="button" class="btn btn--sm btn--ghost"><span class="btn__label">Discard</span></button>
-      <button type="button" class="btn btn--sm btn--cta"><span class="btn__label">Save</span></button>
-    </footer>
-
   </main>
 </div>
 
@@ -797,8 +901,6 @@
     var deleteBtn = document.querySelector('[data-action="delete-profile"]');
     if (!deleteBtn) return;
     deleteBtn.addEventListener('click', function () {
-      // Profile name field is no longer editable; use the fixture name.
-      var name = 'Subtropical CSF outbreak — 300-head, mixed ages';
       var modal = document.createElement('div');
       modal.className = 'modal modal--xs';
       modal.setAttribute('role', 'dialog');
@@ -807,18 +909,17 @@
       modal.innerHTML =
         '<div class="modal__surface">'
         + '<header class="modal__header">'
-        + '<div class="modal__heading"><h2 id="profile-delete-h" class="modal__title">Delete profile?</h2></div>'
+        + '<div class="modal__heading"><h2 id="profile-delete-h" class="modal__title">Delete SP-002?</h2></div>'
         + '<button type="button" class="modal__close" aria-label="Close">'
         + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>'
         + '</button>'
         + '</header>'
         + '<div class="modal__body">'
-        + '<p>This action can’t be undone.</p>'
-        + '<p><strong>SP-002</strong> · ' + name + '</p>'
+        + '<p>This action can’t be undone. SP-002 will be removed from every suite that references it; past run history is preserved.</p>'
         + '</div>'
         + '<footer class="modal__footer">'
-        + '<button type="button" class="btn btn--ghost" data-modal-cancel><span class="btn__label">Cancel</span></button>'
-        + '<button type="button" class="btn btn--caution" data-modal-confirm><span class="btn__label">Delete</span></button>'
+        + '<button type="button" class="btn btn--sm btn--ghost" data-modal-cancel><span class="btn__label">Cancel</span></button>'
+        + '<button type="button" class="btn btn--sm btn--caution" data-modal-confirm><span class="btn__label">Delete</span></button>'
         + '</footer>'
         + '</div>';
       document.body.appendChild(modal);
