@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin · Profile SP-002 — view — Farm2Vet</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="../../styles/tokens.css" />
+<link rel="stylesheet" href="../../styles/base.css" />
+<link rel="stylesheet" href="../../styles/typography.css" />
+<link rel="stylesheet" href="../../styles/shell.css" />
+<link rel="stylesheet" href="../../styles/sidebar.css" />
+
+<link rel="stylesheet" href="../../styles/button.css" />
+<link rel="stylesheet" href="../../styles/card.css" />
+<link rel="stylesheet" href="../../styles/badge.css" />
+<link rel="stylesheet" href="../../styles/chip.css" />
+
+<link rel="stylesheet" href="_shared.css" />
+
+<style>
+/* Page-scoped scaffolding for admin-test-profile-view. */
+.profile-hero {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3x);
+}
+.profile-hero__row {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3x);
+    flex-wrap: wrap;
+}
+.profile-hero__h2 {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--text-h4);
+    line-height: var(--line-height-h4);
+    color: var(--text-default);
+    margin: 0;
+}
+.profile-hero__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-2x);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Two-column section: prose label + key/value rows. */
+.profile-kv {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: var(--spacing-3x) var(--spacing-5x);
+    margin: 0;
+}
+.profile-kv dt {
+    font-size: var(--text-body-sm);
+    color: var(--text-default-subtle);
+    font-weight: var(--font-weight-medium);
+}
+.profile-kv dd {
+    margin: 0;
+    color: var(--text-default);
+    line-height: var(--line-height-body);
+}
+.profile-kv dd.is-empty {
+    color: var(--text-default-minimal);
+    font-style: italic;
+}
+
+.profile-prose {
+    color: var(--text-default);
+    line-height: var(--line-height-body);
+    margin: 0;
+    max-width: 70ch;
+}
+.profile-prose.is-empty {
+    color: var(--text-default-minimal);
+    font-style: italic;
+}
+
+@media (max-width: 720px) {
+    .profile-kv { grid-template-columns: 1fr; gap: var(--spacing-1x); }
+    .profile-kv dt { color: var(--text-default-subtle); }
+}
+</style>
+</head>
+<body>
+
+<div class="dash">
+
+  <!-- SIDEBAR -->
+  <aside class="dash__side">
+    <aside class="sidebar" aria-label="Admin primary navigation">
+      <header class="sidebar__header">
+        <a href="../admin-dashboard.html" class="sidebar__brand">
+          <img class="sidebar__brand-mark" src="../../logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
+          <span class="sidebar__brand-text">Farm2Vet</span>
+        </a>
+        <button type="button" class="sidebar__collapse" aria-label="Collapse sidebar" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6"/></svg>
+        </button>
+      </header>
+      <nav class="sidebar__nav" aria-label="Admin destinations">
+        <ul class="sidebar__list">
+          <li class="sidebar__item">
+            <a class="sidebar__link" href="../admin-dashboard.html">
+              <span class="sidebar__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+              </span>
+              <span class="sidebar__label">Overview</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <button type="button" class="sidebar__link" aria-expanded="false">
+              <span class="sidebar__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/></svg>
+              </span>
+              <span class="sidebar__label">Data management</span>
+              <span class="sidebar__trailing">
+                <svg class="sidebar__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+              </span>
+            </button>
+            <ul class="sidebar__sublist">
+              <li class="sidebar__item"><a class="sidebar__link" href="../admin-disease-earthsky.html"><span class="sidebar__label">Disease</span><span class="sidebar__trailing"><span class="sidebar__badge">142</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Question</span><span class="sidebar__trailing"><span class="sidebar__badge">318</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Conversation</span><span class="sidebar__trailing"><span class="sidebar__badge">47</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Image</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Resource</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">PDF Input</span></a></li>
+            </ul>
+          </li>
+          <li class="sidebar__item is-open">
+            <button type="button" class="sidebar__link" aria-expanded="true">
+              <span class="sidebar__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
+              </span>
+              <span class="sidebar__label">Automated testing</span>
+              <span class="sidebar__trailing">
+                <svg class="sidebar__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+              </span>
+            </button>
+            <ul class="sidebar__sublist">
+              <li class="sidebar__item"><a class="sidebar__link" href="admin-test-console.html"><span class="sidebar__label">Console</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link is-current" href="admin-test-profiles.html" aria-current="page"><span class="sidebar__label">Profiles</span><span class="sidebar__trailing"><span class="sidebar__badge">142</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="admin-test-suites.html"><span class="sidebar__label">Suites</span><span class="sidebar__trailing"><span class="sidebar__badge">12</span></span></a></li>
+            </ul>
+          </li>
+          <li class="sidebar__item">
+            <a class="sidebar__link" href="#">
+              <span class="sidebar__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              </span>
+              <span class="sidebar__label">Sync database</span>
+              <span class="sidebar__trailing"><span class="sidebar__badge sidebar__badge--warning">6</span></span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <div class="sidebar__footer">
+        <div class="sidebar__profile-wrap">
+          <div class="sidebar__profile">
+            <span class="sidebar__avatar" aria-hidden="true">M</span>
+            <span class="sidebar__profile-text">
+              <span class="sidebar__profile-name">Minh</span>
+              <span class="sidebar__profile-role">Admin</span>
+            </span>
+            <button type="button" class="sidebar__overflow" aria-label="Account menu" aria-haspopup="menu" aria-expanded="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="dash__main">
+
+    <header class="dash-topbar" aria-label="Workspace chrome">
+      <nav class="dash-topbar__crumbs" aria-label="Breadcrumb">
+        <a href="../admin-dashboard.html">Admin</a>
+        <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
+        <a href="admin-test-console.html">Automated testing</a>
+        <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
+        <a href="admin-test-profiles.html">Profiles</a>
+        <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
+        <span class="dash-topbar__crumb-tail" aria-current="page">SP-002</span>
+      </nav>
+      <ul class="dash-topbar__cluster">
+        <li class="dash-topbar__cluster-item"><span class="dash-topbar__version">v1.4.2</span></li>
+      </ul>
+    </header>
+
+    <header class="dash-page">
+      <div class="dash-page__text">
+        <h1>SP-002.</h1>
+        <p class="dash-page__meta">
+          <span>Updated <span class="dash-page__meta-val">2 h ago</span></span>
+          <span class="dash-page__meta-sep" aria-hidden="true">·</span>
+          <span>by <span class="dash-page__meta-val">Mai</span></span>
+          <span class="dash-page__meta-sep" aria-hidden="true">·</span>
+          <span class="dash-page__meta-val">v7</span>
+        </p>
+      </div>
+      <div class="dash-page__cta">
+        <a href="admin-test-profile-editor.html" class="btn btn--ghost">
+          <span class="btn__leading" aria-hidden="true">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          </span>
+          <span class="btn__label">Edit</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Hero card — title + disease badge + chip rail -->
+    <article class="workspace-card">
+      <div class="profile-hero">
+        <div class="profile-hero__row">
+          <span class="badge is-critical badge--solid"><span class="badge__label">CSF</span></span>
+          <h2 class="profile-hero__h2">Subtropical CSF outbreak — 300-head, mixed ages</h2>
+        </div>
+        <ul class="profile-hero__chips" aria-label="Profile tags">
+          <li><span class="chip"><span class="chip__label">300 pigs</span></span></li>
+          <li><span class="chip"><span class="chip__label">Subtropical</span></span></li>
+          <li><span class="chip"><span class="chip__label">Weaners · Growers · Finishers</span></span></li>
+          <li><span class="chip"><span class="chip__label">Difficulty: medium</span></span></li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- Section: Farm background -->
+    <article class="workspace-card">
+      <div class="workspace-section">
+        <header class="workspace-section__head">
+          <h2 class="workspace-section__title">Farm background</h2>
+        </header>
+        <dl class="profile-kv">
+          <dt>Farm size</dt>
+          <dd>300 pigs</dd>
+          <dt>Pig types</dt>
+          <dd>weaners, growers, finishers</dd>
+          <dt>Location &amp; climate</dt>
+          <dd>subtropical</dd>
+        </dl>
+      </div>
+    </article>
+
+    <!-- Section: Observed evidences -->
+    <article class="workspace-card">
+      <div class="workspace-section">
+        <header class="workspace-section__head">
+          <h2 class="workspace-section__title">Observed evidences</h2>
+          <p class="workspace-section__summary">What the farmer reports. Empty rows mean the profile shouldn't volunteer that detail unless asked.</p>
+        </header>
+        <dl class="profile-kv">
+          <dt>Affected pig types</dt>
+          <dd>Mostly growers and finishers</dd>
+          <dt>Total affected</dt>
+          <dd>About 180 out of 300 (≈ 60%)</dd>
+          <dt>Mortality</dt>
+          <dd>≈ 35%, many pigs dying overnight</dd>
+          <dt>Fever</dt>
+          <dd>High fever</dd>
+          <dt>Digestive</dt>
+          <dd>Lost appetite, bloody diarrhea</dd>
+          <dt>Respiratory</dt>
+          <dd>Coughing, nasal discharge</dd>
+          <dt>Neurological</dt>
+          <dd>Some pigs have wobbly gait, hind limb paralysis</dd>
+          <dt>Dermatological</dt>
+          <dd>Blue-purple discoloration on ears and belly</dd>
+          <dt>Reproductive</dt>
+          <dd class="is-empty">Not observed</dd>
+        </dl>
+      </div>
+    </article>
+
+    <!-- Section: Medical history -->
+    <article class="workspace-card">
+      <div class="workspace-section">
+        <header class="workspace-section__head">
+          <h2 class="workspace-section__title">Medical history</h2>
+        </header>
+        <dl class="profile-kv">
+          <dt>Vaccination</dt>
+          <dd>Vaccinated against CSF 6 months ago — coverage unclear, farmer is unsure if all pigs were vaccinated.</dd>
+          <dt>Treatment</dt>
+          <dd class="is-empty">None yet</dd>
+        </dl>
+      </div>
+    </article>
+
+    <!-- Section: Disease label -->
+    <article class="workspace-card">
+      <div class="workspace-section">
+        <header class="workspace-section__head">
+          <h2 class="workspace-section__title">Disease label</h2>
+          <p class="workspace-section__summary">The labeller's ground truth — scored against the model's final answer at run time.</p>
+        </header>
+        <p class="profile-prose"><span class="badge is-critical badge--solid"><span class="badge__label">CSF</span></span> &nbsp; Classical Swine Fever</p>
+      </div>
+    </article>
+
+  </main>
+</div>
+
+<script>
+  (function () {
+    var sidebar = document.querySelector('.dash__side .sidebar');
+    var btn = document.querySelector('.dash__side .sidebar__collapse');
+    if (sidebar && btn) {
+      btn.addEventListener('click', function () {
+        var collapsed = sidebar.classList.toggle('sidebar--collapsed');
+        btn.setAttribute('aria-pressed', collapsed ? 'true' : 'false');
+        btn.setAttribute('aria-label', collapsed ? 'Expand sidebar' : 'Collapse sidebar');
+      });
+    }
+  })();
+  document.querySelectorAll('.dash__side .sidebar__link[aria-expanded]').forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      var item = btn.closest('.sidebar__item');
+      if (!item) return;
+      var open = item.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  });
+</script>
+
+</body>
+</html>

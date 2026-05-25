@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin · Run results — Farm2Vet</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="../../styles/tokens.css" />
+<link rel="stylesheet" href="../../styles/base.css" />
+<link rel="stylesheet" href="../../styles/typography.css" />
+<link rel="stylesheet" href="../../styles/shell.css" />
+<link rel="stylesheet" href="../../styles/sidebar.css" />
+
+<link rel="stylesheet" href="../../styles/button.css" />
+<link rel="stylesheet" href="../../styles/card.css" />
+<link rel="stylesheet" href="../../styles/badge.css" />
+<link rel="stylesheet" href="../../styles/chip.css" />
+<link rel="stylesheet" href="../../styles/dropdown.css" />
+<link rel="stylesheet" href="../../styles/tabs.css" />
+
+<link rel="stylesheet" href="_shared.css" />
+
+<style>
+/* ===========================================================
+   admin-test-run.html — master-detail composition.
+   Caselist on the left, inspector on the right.
+   The flat workspace-card chrome replaces the glass treatment
+   the earthsky version carried.
+   =========================================================== */
+
+/* KPI strip — six tiles in a row, summarising the run. */
+.run-kpis {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: var(--spacing-3x);
+}
+.run-kpi {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1x);
+    padding: var(--spacing-3x) var(--spacing-4x);
+    background: var(--background-default);
+    border: 1px solid var(--border-default-subtle);
+    border-radius: var(--radius-md);
+}
+.run-kpi__label {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-subtle);
+}
+.run-kpi__value {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--text-h5);
+    color: var(--text-default);
+    letter-spacing: var(--letter-spacing-snug);
+}
+.run-kpi__value--safe     { color: var(--text-safe); }
+.run-kpi__value--warning  { color: var(--text-warning); }
+.run-kpi__value--critical { color: var(--text-critical); }
+
+/* Anomaly callout — single-row alert above the cases card. */
+.run-anomaly {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-4x);
+    padding: var(--spacing-3x) var(--spacing-4x);
+    background: var(--warning-50);
+    border: 1px solid var(--border-warning);
+    border-radius: var(--radius-md);
+    color: var(--text-warning);
+}
+.run-anomaly__text { display: inline-flex; align-items: center; gap: var(--spacing-2x); }
+.run-anomaly__text svg { width: 16px; height: 16px; }
+.run-anomaly__cta {
+    color: var(--text-warning);
+    font-weight: var(--font-weight-medium);
+    text-decoration: none;
+}
+.run-anomaly__cta:hover { text-decoration: underline; }
+
+/* ===== RUN MASTER-DETAIL =====
+   Two-pane composition inside the cases card. Caselist (left,
+   320px fixed) is the navigator; inspector (right, fills rest). */
+.run-split {
+    display: grid;
+    grid-template-columns: 320px minmax(0, 1fr);
+    gap: var(--spacing-4x);
+    padding: var(--spacing-4x);
+    align-items: start;
+}
+
+/* Filter chip row above the split. */
+.run-filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--spacing-2x);
+    padding: var(--spacing-3x) var(--spacing-4x);
+    border-bottom: 1px solid var(--border-default-subtle);
+}
+.run-filters__label {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-subtle);
+    margin-right: var(--spacing-1x);
+}
+
+/* Caselist (left). */
+.caselist {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1x);
+    max-height: 640px;
+    overflow-y: auto;
+}
+.caselist__item {
+    display: grid;
+    grid-template-columns: 12px 1fr auto 36px;
+    grid-template-rows: auto auto;
+    grid-template-areas:
+        "dot     disease  anomaly score"
+        "meta    meta     meta    meta";
+    align-items: center;
+    gap: 6px var(--spacing-2x);
+    padding: var(--spacing-3x);
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+    transition: background-color .15s ease, border-color .15s ease;
+}
+.caselist__item:hover {
+    background: var(--background-default-subtle);
+}
+.caselist__item:focus-visible {
+    outline: 2px solid var(--border-primary);
+    outline-offset: 1px;
+}
+.caselist__item.is-selected {
+    background: color-mix(in srgb, var(--accent-500) 6%, transparent);
+    border-color: color-mix(in srgb, var(--accent-500) 30%, transparent);
+}
+.caselist__dot { grid-area: dot; }
+.caselist__disease {
+    grid-area: disease;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2x);
+    min-width: 0;
+}
+.caselist__sp {
+    font-family: var(--font-mono);
+    font-size: var(--text-body-sm);
+    color: var(--text-default-subtle);
+    font-weight: var(--font-weight-medium);
+}
+.caselist__anomaly {
+    grid-area: anomaly;
+    color: var(--warning-500);
+    width: 14px;
+    height: 14px;
+}
+.caselist__score {
+    grid-area: score;
+    font-family: var(--font-mono);
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-semibold);
+    text-align: right;
+}
+.caselist__score--safe     { color: var(--text-safe); }
+.caselist__score--warning  { color: var(--text-warning); }
+.caselist__score--critical { color: var(--text-critical); }
+.caselist__meta {
+    grid-area: meta;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.3;
+    color: var(--text-default-subtle);
+}
+
+/* Inspector (right). */
+.inspector {
+    background: var(--background-default);
+    border: 1px solid var(--border-default-subtle);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-4x);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4x);
+    min-width: 0;
+}
+.inspector__hero {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3x);
+    padding-bottom: var(--spacing-3x);
+    border-bottom: 1px solid var(--border-default-subtle);
+}
+.inspector__titlebar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-3x);
+}
+.inspector__title {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-3x);
+}
+.inspector__h {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-medium);
+    font-size: var(--text-h6);
+    color: var(--text-default);
+}
+.inspector__sp,
+.inspector__disease {
+    font-family: var(--font-mono);
+    color: var(--text-default-subtle);
+    font-weight: var(--font-weight-medium);
+}
+.inspector__metric-strip {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-2x) var(--spacing-4x);
+}
+.inspector__metric-strip li {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--spacing-1x);
+    font-family: var(--font-mono);
+    font-size: var(--text-body-sm);
+}
+.inspector__metric-key {
+    color: var(--text-default-subtle);
+    text-transform: uppercase;
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-mono);
+}
+.inspector__metric-val {
+    color: var(--text-default);
+    font-weight: var(--font-weight-medium);
+}
+
+/* Inspector body — two-column: chat thread + evaluation stack. */
+.inspector__body {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    gap: var(--spacing-4x);
+    align-items: start;
+}
+.case-thread {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3x);
+}
+.case-thread__head {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-subtle);
+    border-bottom: 1px solid var(--border-default-subtle);
+    padding-bottom: var(--spacing-2x);
+}
+.case-turn {
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr);
+    gap: var(--spacing-2x);
+    align-items: flex-start;
+}
+.case-turn--bot {
+    grid-template-columns: minmax(0, 1fr) 28px;
+}
+.case-turn__avatar {
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-inverted);
+    background: var(--neutral-700);
+}
+.case-turn__avatar--bot {
+    background: var(--accent-500);
+}
+.case-turn__bubble {
+    padding: var(--spacing-3x) var(--spacing-4x);
+    border-radius: var(--radius-md);
+    background: var(--background-default-subtle);
+    line-height: var(--line-height-body);
+    color: var(--text-default);
+    border: 1px solid var(--border-default-subtle);
+}
+.case-turn__bubble--bot {
+    background: var(--accent-50);
+    border-color: var(--border-accent-subtle);
+}
+.case-turn--bot .case-turn__avatar { grid-column: 2; grid-row: 1; }
+.case-turn--bot .case-turn__bubble { grid-column: 1; grid-row: 1; }
+.case-thread__divider {
+    text-align: center;
+    color: var(--text-default-minimal);
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    padding: var(--spacing-2x) 0;
+}
+
+/* Evaluation stack — Tabs card, Scores card, Latency card. */
+.case-eval {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4x);
+}
+.case-eval__card {
+    background: var(--background-default);
+    border: 1px solid var(--border-default-subtle);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-4x);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3x);
+}
+.case-eval__title {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--text-body);
+    color: var(--text-default);
+    margin: 0;
+}
+.case-eval__steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2x);
+}
+.case-eval__step {
+    display: grid;
+    grid-template-columns: 24px 1fr auto;
+    gap: var(--spacing-2x);
+    align-items: baseline;
+    padding: var(--spacing-2x);
+    border-bottom: 1px solid var(--border-default-subtle);
+}
+.case-eval__step:last-child { border-bottom: none; }
+.case-eval__step-num {
+    font-family: var(--font-mono);
+    color: var(--text-default-minimal);
+    font-weight: var(--font-weight-medium);
+}
+.case-eval__step-label {
+    color: var(--text-default);
+}
+.case-eval__step-prob {
+    font-family: var(--font-mono);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-default);
+}
+.case-eval__anomaly {
+    color: var(--warning-700);
+    font-size: var(--text-body-sm);
+    margin-left: var(--spacing-1x);
+}
+
+.case-eval__scores {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--spacing-2x);
+}
+.case-eval__score {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: var(--spacing-3x);
+    background: var(--background-default-subtle);
+    border-radius: var(--radius-sm);
+}
+.case-eval__score-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-subtle);
+}
+.case-eval__score-value {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--text-h6);
+    color: var(--text-default);
+}
+.case-eval__score-value--warn { color: var(--text-warning); }
+
+.case-eval__lat-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-body-sm);
+}
+.case-eval__lat-table th,
+.case-eval__lat-table td {
+    padding: var(--spacing-2x) var(--spacing-3x);
+    text-align: left;
+    border-bottom: 1px solid var(--border-default-subtle);
+}
+.case-eval__lat-table th {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-subtle);
+    font-weight: var(--font-weight-medium);
+}
+.case-eval__lat-table .is-num { text-align: right; font-variant-numeric: tabular-nums; }
+.case-eval__lat-table .is-mono { font-family: var(--font-mono); }
+
+/* Narrow viewport — stack the split vertically. */
+@media (max-width: 1180px) {
+    .run-split { grid-template-columns: minmax(0, 1fr); }
+    .caselist {
+        flex-direction: row;
+        overflow-x: auto;
+        max-height: none;
+    }
+    .caselist__item { min-width: 240px; flex: 0 0 auto; }
+    .inspector__body { grid-template-columns: 1fr; }
+}
+@media (max-width: 720px) {
+    .run-kpis { grid-template-columns: repeat(3, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<div class="dash">
+
+  <!-- SIDEBAR -->
+  <aside class="dash__side">
+    <aside class="sidebar" aria-label="Admin primary navigation">
+      <header class="sidebar__header">
+        <a href="../admin-dashboard.html" class="sidebar__brand">
+          <img class="sidebar__brand-mark" src="../../logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
+          <span class="sidebar__brand-text">Farm2Vet</span>
+        </a>
+        <button type="button" class="sidebar__collapse" aria-label="Collapse sidebar" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6"/></svg>
+        </button>
+      </header>
+      <nav class="sidebar__nav" aria-label="Admin destinations">
+        <ul class="sidebar__list">
+          <li class="sidebar__item">
+            <a class="sidebar__link" href="../admin-dashboard.html">
+              <span class="sidebar__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+              </span>
+              <span class="sidebar__label">Overview</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <button type="button" class="sidebar__link" aria-expanded="false">
+              <span class="sidebar__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/></svg>
+              </span>
+              <span class="sidebar__label">Data management</span>
+              <span class="sidebar__trailing">
+                <svg class="sidebar__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+              </span>
+            </button>
+            <ul class="sidebar__sublist">
+              <li class="sidebar__item"><a class="sidebar__link" href="../admin-disease-earthsky.html"><span class="sidebar__label">Disease</span><span class="sidebar__trailing"><span class="sidebar__badge">142</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Question</span><span class="sidebar__trailing"><span class="sidebar__badge">318</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Conversation</span><span class="sidebar__trailing"><span class="sidebar__badge">47</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Image</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Resource</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">PDF Input</span></a></li>
+            </ul>
+          </li>
+          <li class="sidebar__item is-open">
+            <button type="button" class="sidebar__link" aria-expanded="true">
+              <span class="sidebar__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
+              </span>
+              <span class="sidebar__label">Automated testing</span>
+              <span class="sidebar__trailing">
+                <svg class="sidebar__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+              </span>
+            </button>
+            <ul class="sidebar__sublist">
+              <li class="sidebar__item"><a class="sidebar__link" href="admin-test-console.html"><span class="sidebar__label">Console</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="admin-test-profiles.html"><span class="sidebar__label">Profiles</span><span class="sidebar__trailing"><span class="sidebar__badge">142</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="admin-test-suites.html"><span class="sidebar__label">Suites</span><span class="sidebar__trailing"><span class="sidebar__badge">12</span></span></a></li>
+            </ul>
+          </li>
+          <li class="sidebar__item">
+            <a class="sidebar__link" href="#">
+              <span class="sidebar__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              </span>
+              <span class="sidebar__label">Sync database</span>
+              <span class="sidebar__trailing"><span class="sidebar__badge sidebar__badge--warning">6</span></span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <div class="sidebar__footer">
+        <div class="sidebar__profile-wrap">
+          <div class="sidebar__profile">
+            <span class="sidebar__avatar" aria-hidden="true">M</span>
+            <span class="sidebar__profile-text">
+              <span class="sidebar__profile-name">Minh</span>
+              <span class="sidebar__profile-role">Admin</span>
+            </span>
+            <button type="button" class="sidebar__overflow" aria-label="Account menu" aria-haspopup="menu" aria-expanded="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="dash__main">
+
+    <header class="dash-topbar" aria-label="Workspace chrome">
+      <nav class="dash-topbar__crumbs" aria-label="Breadcrumb">
+        <a href="../admin-dashboard.html">Admin</a>
+        <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
+        <a href="admin-test-console.html">Automated testing</a>
+        <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
+        <span class="dash-topbar__crumb-tail" aria-current="page">Run #482</span>
+      </nav>
+      <ul class="dash-topbar__cluster">
+        <li class="dash-topbar__cluster-item"><span class="dash-topbar__version">v1.4.2</span></li>
+      </ul>
+    </header>
+
+    <header class="dash-page">
+      <div class="dash-page__text">
+        <h1>Run results.</h1>
+        <p class="dash-page__meta">
+          <span>Suite <span class="dash-page__meta-val">PRRS regression — EN</span></span>
+          <span class="dash-page__meta-sep" aria-hidden="true">·</span>
+          <span><span class="dash-page__meta-val">12</span> profiles</span>
+          <span class="dash-page__meta-sep" aria-hidden="true">·</span>
+          <span>Started <span class="dash-page__meta-val">14:02</span></span>
+          <span class="dash-page__meta-sep" aria-hidden="true">·</span>
+          <span>Duration <span class="dash-page__meta-val">4 m 12 s</span></span>
+          <span class="dash-page__meta-sep" aria-hidden="true">·</span>
+          <span><span class="dash-page__meta-val">11 ✓ / 1 ✗</span></span>
+        </p>
+      </div>
+      <div class="dash-page__cta">
+        <button type="button" class="btn btn--ghost"><span class="btn__label">Download</span></button>
+        <button type="button" class="btn btn--cta"><span class="btn__label">Re-run</span></button>
+      </div>
+    </header>
+
+    <!-- KPI strip -->
+    <section class="run-kpis" aria-label="Run summary">
+      <div class="run-kpi">
+        <span class="run-kpi__label">Accuracy</span>
+        <span class="run-kpi__value run-kpi__value--safe">0.92</span>
+      </div>
+      <div class="run-kpi">
+        <span class="run-kpi__label">Fluency</span>
+        <span class="run-kpi__value">0.87</span>
+      </div>
+      <div class="run-kpi">
+        <span class="run-kpi__label">Efficiency</span>
+        <span class="run-kpi__value">0.81</span>
+      </div>
+      <div class="run-kpi">
+        <span class="run-kpi__label">Avg latency</span>
+        <span class="run-kpi__value">3.4 s</span>
+      </div>
+      <div class="run-kpi">
+        <span class="run-kpi__label">Avg turns</span>
+        <span class="run-kpi__value">5.4</span>
+      </div>
+      <div class="run-kpi">
+        <span class="run-kpi__label">Total cost</span>
+        <span class="run-kpi__value">$0.18</span>
+      </div>
+    </section>
+
+    <!-- Anomaly callout -->
+    <div class="run-anomaly" role="status">
+      <span class="run-anomaly__text">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <strong>1 anomaly flagged</strong> — the model's final guess disagrees with the labeller for SP_0138.
+      </span>
+      <a class="run-anomaly__cta" href="#" data-action="view-anomalies">View anomaly →</a>
+    </div>
+
+    <!-- Cases card (master-detail) -->
+    <article class="workspace-card workspace-card--flush" aria-labelledby="run-cases-h">
+      <header class="workspace-card__head">
+        <div class="workspace-section">
+          <header class="workspace-section__head">
+            <h2 id="run-cases-h" class="workspace-section__title">Test cases</h2>
+            <p class="workspace-section__summary" style="margin: 0;">11 passed · 1 anomaly</p>
+          </header>
+        </div>
+      </header>
+
+      <!-- Filter chip row -->
+      <div class="run-filters" role="group" aria-label="Filter cases">
+        <span class="run-filters__label">Filter</span>
+        <button type="button" class="chip"><span class="chip__label">Disease: all</span></button>
+        <button type="button" class="chip"><span class="chip__label">Acc band: all</span></button>
+        <button type="button" class="chip chip--removable"><span class="chip__label">Anomalies: flagged only</span><span class="chip__trailing" role="button" tabindex="0" aria-label="Clear"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="10" height="10"><path d="M6 6l12 12M18 6L6 18"/></svg></span></button>
+      </div>
+
+      <!-- Split: caselist + inspector -->
+      <div class="run-split">
+
+        <!-- Caselist -->
+        <ol class="caselist" role="listbox" aria-label="Test cases">
+
+          <li class="caselist__item is-selected"
+              role="option" aria-selected="true" tabindex="0"
+              data-sp="SP_0138" data-disease="ASF"
+              data-band="critical" data-anomaly="true"
+              data-acc="0.61" data-flu="0.72" data-eff="0.65"
+              data-lat="4.7s" data-turns="7" data-cost="$0.018" data-step="final">
+            <span class="dash-status-dot dash-status-dot--critical caselist__dot" aria-hidden="true"></span>
+            <span class="caselist__disease">
+              <span class="badge is-critical"><span class="badge__label">ASF</span></span>
+              <span class="caselist__sp">SP_0138</span>
+            </span>
+            <svg class="caselist__anomaly" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="Anomaly flagged">
+              <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+              <line x1="12" y1="9" x2="12" y2="13"/>
+              <line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+            <span class="caselist__score caselist__score--critical">61</span>
+            <span class="caselist__meta">Acc 0.61 · Lat 4.7s · 7 turns</span>
+          </li>
+
+          <li class="caselist__item"
+              role="option" aria-selected="false" tabindex="0"
+              data-sp="SP_0142" data-disease="PRRS"
+              data-band="safe" data-anomaly="false"
+              data-acc="0.93" data-flu="0.88" data-eff="0.81"
+              data-lat="3.1s" data-turns="5" data-cost="$0.011" data-step="final">
+            <span class="dash-status-dot dash-status-dot--safe caselist__dot" aria-hidden="true"></span>
+            <span class="caselist__disease">
+              <span class="badge is-safe"><span class="badge__label">PRRS</span></span>
+              <span class="caselist__sp">SP_0142</span>
+            </span>
+            <span></span>
+            <span class="caselist__score caselist__score--safe">93</span>
+            <span class="caselist__meta">Acc 0.93 · Lat 3.1s · 5 turns</span>
+          </li>
+
+          <li class="caselist__item"
+              role="option" aria-selected="false" tabindex="0"
+              data-sp="SP_0141" data-disease="PRRS"
+              data-band="safe" data-anomaly="false"
+              data-acc="0.89" data-flu="0.85" data-eff="0.78"
+              data-lat="3.4s" data-turns="6" data-cost="$0.013" data-step="final">
+            <span class="dash-status-dot dash-status-dot--safe caselist__dot" aria-hidden="true"></span>
+            <span class="caselist__disease">
+              <span class="badge is-safe"><span class="badge__label">PRRS</span></span>
+              <span class="caselist__sp">SP_0141</span>
+            </span>
+            <span></span>
+            <span class="caselist__score caselist__score--safe">89</span>
+            <span class="caselist__meta">Acc 0.89 · Lat 3.4s · 6 turns</span>
+          </li>
+
+          <li class="caselist__item"
+              role="option" aria-selected="false" tabindex="0"
+              data-sp="SP_0136" data-disease="TGE"
+              data-band="safe" data-anomaly="false"
+              data-acc="0.87" data-flu="0.83" data-eff="0.74"
+              data-lat="3.0s" data-turns="4" data-cost="$0.009" data-step="final">
+            <span class="dash-status-dot dash-status-dot--safe caselist__dot" aria-hidden="true"></span>
+            <span class="caselist__disease">
+              <span class="badge is-safe"><span class="badge__label">TGE</span></span>
+              <span class="caselist__sp">SP_0136</span>
+            </span>
+            <span></span>
+            <span class="caselist__score caselist__score--safe">87</span>
+            <span class="caselist__meta">Acc 0.87 · Lat 3.0s · 4 turns</span>
+          </li>
+
+          <li class="caselist__item"
+              role="option" aria-selected="false" tabindex="0"
+              data-sp="SP_0134" data-disease="ERY"
+              data-band="warning" data-anomaly="false"
+              data-acc="0.78" data-flu="0.79" data-eff="0.72"
+              data-lat="3.6s" data-turns="6" data-cost="$0.014" data-step="final">
+            <span class="dash-status-dot dash-status-dot--warning caselist__dot" aria-hidden="true"></span>
+            <span class="caselist__disease">
+              <span class="badge is-warning"><span class="badge__label">ERY</span></span>
+              <span class="caselist__sp">SP_0134</span>
+            </span>
+            <span></span>
+            <span class="caselist__score caselist__score--warning">78</span>
+            <span class="caselist__meta">Acc 0.78 · Lat 3.6s · 6 turns</span>
+          </li>
+
+          <li class="caselist__item"
+              role="option" aria-selected="false" tabindex="0"
+              data-sp="SP_0132" data-disease="APP"
+              data-band="safe" data-anomaly="false"
+              data-acc="0.95" data-flu="0.91" data-eff="0.84"
+              data-lat="2.9s" data-turns="5" data-cost="$0.010" data-step="final">
+            <span class="dash-status-dot dash-status-dot--safe caselist__dot" aria-hidden="true"></span>
+            <span class="caselist__disease">
+              <span class="badge is-safe"><span class="badge__label">APP</span></span>
+              <span class="caselist__sp">SP_0132</span>
+            </span>
+            <span></span>
+            <span class="caselist__score caselist__score--safe">95</span>
+            <span class="caselist__meta">Acc 0.95 · Lat 2.9s · 5 turns</span>
+          </li>
+
+        </ol>
+
+        <!-- Inspector -->
+        <article class="inspector" aria-live="polite">
+          <header class="inspector__hero">
+            <div class="inspector__titlebar">
+              <div class="inspector__title">
+                <span class="dash-status-dot dash-status-dot--critical" data-inspector="status" aria-hidden="true" style="width:12px;height:12px;"></span>
+                <h3 class="inspector__h">
+                  Case ·
+                  <span class="inspector__sp" data-inspector="sp">SP_0138</span>
+                  ·
+                  <span class="inspector__disease" data-inspector="disease">ASF</span>
+                </h3>
+              </div>
+              <a class="btn btn--ghost btn--sm" href="admin-test-case.html?case=SP_0138" data-inspector="open-href">
+                <span class="btn__label">Open as full page</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg>
+              </a>
+            </div>
+            <ul class="inspector__metric-strip" aria-label="Case scores">
+              <li><span class="inspector__metric-key">Acc</span><span class="inspector__metric-val" data-inspector="acc">0.61</span></li>
+              <li><span class="inspector__metric-key">Flu</span><span class="inspector__metric-val" data-inspector="flu">0.72</span></li>
+              <li><span class="inspector__metric-key">Eff</span><span class="inspector__metric-val" data-inspector="eff">0.65</span></li>
+              <li><span class="inspector__metric-key">Lat</span><span class="inspector__metric-val" data-inspector="lat">4.7s</span></li>
+              <li><span class="inspector__metric-key">Turns</span><span class="inspector__metric-val" data-inspector="turns">7</span></li>
+              <li><span class="inspector__metric-key">Cost</span><span class="inspector__metric-val" data-inspector="cost">$0.018</span></li>
+              <li><span class="inspector__metric-key">Step</span><span class="inspector__metric-val" data-inspector="step">final</span></li>
+            </ul>
+          </header>
+
+          <div class="inspector__body">
+
+            <!-- Chat thread -->
+            <section class="case-thread" aria-labelledby="inspector-thread-h">
+              <p id="inspector-thread-h" class="case-thread__head">SP ↔ Chatbot</p>
+
+              <div class="case-turn">
+                <span class="case-turn__avatar" aria-hidden="true">SP</span>
+                <div class="case-turn__bubble">I have a litter of 3-week-old piglets, 4 of them died suddenly overnight with no warning. The sow seems normal. Help?</div>
+              </div>
+              <div class="case-turn case-turn--bot">
+                <div class="case-turn__bubble case-turn__bubble--bot">I'm sorry to hear that. Sudden death in young piglets can be heat-related, gut torsion, or an acute infection. What was the ambient temperature in the farrowing pen last night, and were any of the piglets showing skin discolouration before death?</div>
+                <span class="case-turn__avatar case-turn__avatar--bot" aria-hidden="true">F2V</span>
+              </div>
+              <div class="case-turn">
+                <span class="case-turn__avatar" aria-hidden="true">SP</span>
+                <div class="case-turn__bubble">Temperature was normal, around 28°C. The dead piglets had purple-blue ears and bellies. Two more in the same litter look weak this morning.</div>
+              </div>
+              <div class="case-turn case-turn--bot">
+                <div class="case-turn__bubble case-turn__bubble--bot">Cyanotic ears and abdomen with sudden death points to septicaemic disease. Have you introduced any new animals to the farm in the last 30 days, and is there any history of CSF or ASF vaccination in your area?</div>
+                <span class="case-turn__avatar case-turn__avatar--bot" aria-hidden="true">F2V</span>
+              </div>
+              <div class="case-turn">
+                <span class="case-turn__avatar" aria-hidden="true">SP</span>
+                <div class="case-turn__bubble">No new animals. CSF vaccination was done at weaning for the adults. No ASF reported nearby, but 2 farms about 15 km away lost pigs last week.</div>
+              </div>
+              <div class="case-thread__divider">— 3 more turns —</div>
+            </section>
+
+            <!-- Evaluation stack -->
+            <div class="case-eval">
+
+              <section class="case-eval__card">
+                <div class="tabs tabs--sm">
+                  <div class="tabs__list" role="tablist" aria-label="Evaluation views">
+                    <button type="button" class="tabs__tab is-selected" role="tab" aria-selected="true">Hypothesis</button>
+                    <button type="button" class="tabs__tab" role="tab" aria-selected="false">Reasoning</button>
+                    <button type="button" class="tabs__tab" role="tab" aria-selected="false">Latency</button>
+                  </div>
+                  <ol class="case-eval__steps">
+                    <li class="case-eval__step">
+                      <span class="case-eval__step-num">1</span>
+                      <span class="case-eval__step-label">Heat stroke</span>
+                      <span class="case-eval__step-prob">42%</span>
+                    </li>
+                    <li class="case-eval__step">
+                      <span class="case-eval__step-num">2</span>
+                      <span class="case-eval__step-label">Classical Swine Fever (CSF)</span>
+                      <span class="case-eval__step-prob">61%</span>
+                    </li>
+                    <li class="case-eval__step">
+                      <span class="case-eval__step-num">3</span>
+                      <span class="case-eval__step-label">CSF <span class="case-eval__anomaly">(label: ASF — mismatch)</span></span>
+                      <span class="case-eval__step-prob">71% · final</span>
+                    </li>
+                  </ol>
+                </div>
+              </section>
+
+              <section class="case-eval__card">
+                <h4 class="case-eval__title">Scores</h4>
+                <div class="case-eval__scores">
+                  <div class="case-eval__score"><span class="case-eval__score-label">Accuracy</span><span class="case-eval__score-value case-eval__score-value--warn">0.61</span></div>
+                  <div class="case-eval__score"><span class="case-eval__score-label">Fluency</span><span class="case-eval__score-value">0.72</span></div>
+                  <div class="case-eval__score"><span class="case-eval__score-label">Efficiency</span><span class="case-eval__score-value">0.65</span></div>
+                  <div class="case-eval__score"><span class="case-eval__score-label">Cost</span><span class="case-eval__score-value">$0.018</span></div>
+                </div>
+              </section>
+
+              <section class="case-eval__card">
+                <h4 class="case-eval__title">Latency breakdown</h4>
+                <table class="case-eval__lat-table">
+                  <thead>
+                    <tr><th>Step</th><th class="is-num">Duration</th><th class="is-num">% of total</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>LLM call</td><td class="is-mono is-num">3.10s</td><td class="is-num">66%</td></tr>
+                    <tr><td>Dictionary RAG</td><td class="is-mono is-num">0.82s</td><td class="is-num">17%</td></tr>
+                    <tr><td>Embedding</td><td class="is-mono is-num">0.55s</td><td class="is-num">12%</td></tr>
+                    <tr><td>Network</td><td class="is-mono is-num">0.23s</td><td class="is-num">5%</td></tr>
+                  </tbody>
+                </table>
+              </section>
+
+            </div>
+
+          </div>
+        </article>
+
+      </div>
+    </article>
+
+  </main>
+</div>
+
+<script>
+  // Sidebar collapse + group toggle
+  (function () {
+    var sidebar = document.querySelector('.dash__side .sidebar');
+    var btn = document.querySelector('.dash__side .sidebar__collapse');
+    if (sidebar && btn) {
+      btn.addEventListener('click', function () {
+        var collapsed = sidebar.classList.toggle('sidebar--collapsed');
+        btn.setAttribute('aria-pressed', collapsed ? 'true' : 'false');
+        btn.setAttribute('aria-label', collapsed ? 'Expand sidebar' : 'Collapse sidebar');
+      });
+    }
+  })();
+  document.querySelectorAll('.dash__side .sidebar__link[aria-expanded]').forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      var item = btn.closest('.sidebar__item');
+      if (!item) return;
+      var open = item.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  });
+
+  // Caselist selection + inspector hero sync
+  (function () {
+    var list = document.querySelector('.caselist');
+    var inspector = document.querySelector('.inspector');
+    if (!list || !inspector) return;
+
+    function selectItem(item) {
+      if (!item || item.classList.contains('is-selected')) return;
+      list.querySelectorAll('.caselist__item').forEach(function (li) {
+        li.classList.remove('is-selected');
+        li.setAttribute('aria-selected', 'false');
+      });
+      item.classList.add('is-selected');
+      item.setAttribute('aria-selected', 'true');
+
+      var d = item.dataset;
+      var statusDot = inspector.querySelector('[data-inspector="status"]');
+      if (statusDot) {
+        statusDot.className = 'dash-status-dot dash-status-dot--' + (d.band || 'neutral');
+        statusDot.style.width = '12px';
+        statusDot.style.height = '12px';
+      }
+      function setText(key, val) {
+        var el = inspector.querySelector('[data-inspector="' + key + '"]');
+        if (el && val != null) el.textContent = val;
+      }
+      setText('sp', d.sp);
+      setText('disease', d.disease);
+      setText('acc', d.acc);
+      setText('flu', d.flu);
+      setText('eff', d.eff);
+      setText('lat', d.lat);
+      setText('turns', d.turns);
+      setText('cost', d.cost);
+      setText('step', d.step);
+
+      var openBtn = inspector.querySelector('[data-inspector="open-href"]');
+      if (openBtn && d.sp) openBtn.setAttribute('href', 'admin-test-case.html?case=' + d.sp);
+
+      history.replaceState(null, '', '?case=' + d.sp);
+    }
+
+    list.addEventListener('click', function (e) {
+      var item = e.target.closest('.caselist__item');
+      if (item) selectItem(item);
+    });
+    list.addEventListener('keydown', function (e) {
+      if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return;
+      var current = list.querySelector('.caselist__item.is-selected');
+      if (!current) return;
+      var next = e.key === 'ArrowDown' ? current.nextElementSibling : current.previousElementSibling;
+      if (next && next.classList.contains('caselist__item')) {
+        e.preventDefault();
+        selectItem(next);
+        next.focus();
+      }
+    });
+
+    var params = new URLSearchParams(window.location.search);
+    var deep = params.get('case');
+    if (deep) {
+      var target = list.querySelector('.caselist__item[data-sp="' + deep + '"]');
+      if (target) selectItem(target);
+    }
+  })();
+
+  // View anomalies → wiring
+  (function () {
+    var cta = document.querySelector('[data-action="view-anomalies"]');
+    if (!cta) return;
+    cta.addEventListener('click', function (e) {
+      e.preventDefault();
+      var first = document.querySelector('.caselist__item[data-anomaly="true"]');
+      if (first) first.click();
+    });
+  })();
+</script>
+
+</body>
+</html>

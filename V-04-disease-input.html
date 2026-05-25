@@ -39,6 +39,7 @@
 <link rel="stylesheet" href="styles/global-nav.css" />
 
 <!-- Reuse the admin shell scaffolding established by V-01 -->
+<link rel="stylesheet" href="styles/brand-bg.css" />
 <link rel="stylesheet" href="styles/page-V-01.css" />
 
 <script src="scripts/dropdown.js" defer></script>
@@ -82,6 +83,30 @@
      to refract against. Override page-V-01.css's two lines. */
   body { background: var(--background-default); }
   body::before { content: ''; }
+
+  /* Lift V-04's main content above the .f2v-bg slot AND let the
+     slot read through it (Spec E). page-V-01.css paints solid
+     cream on both .app-shell and .app-shell__main because the
+     wiki catalog reads as a flat product surface; on V-04 those
+     two fills sit on top of .f2v-bg and hide the contour rings
+     everywhere except past the bottom of the shell. Reset both
+     backgrounds to transparent here so the fixed brand backdrop
+     refracts through the whole page, not just the gap below the
+     shell.
+
+     .app-shell is the only direct child of <body> (besides the
+     brand-bg slot itself); .disease-edit__topbar already declares
+     position:sticky; z-index:50 so it's already above. Giving
+     .app-shell position:relative; z-index:1 keeps every nested
+     wrapper stacked above the fixed backdrop layer. */
+  .app-shell {
+    position:   relative;
+    z-index:    1;
+    background: transparent;
+  }
+  .app-shell__main {
+    background: transparent;
+  }
 
   /* ────────────── DASH-TOPBAR (page-level chrome) ──────────────
      One sticky row inside the transparent .global-nav shell:
@@ -1417,6 +1442,40 @@
 </head>
 <body class="disease-edit--editor">
 
+<!-- ============== BRAND BACKDROP (Spec E) ==============
+     Decorative motif layer behind the glass UI. First child of
+     <body> so it sits between body bg (cream + ambient radials)
+     and content (z-index:1). aria-hidden — invisible to AT.    -->
+<div class="f2v-bg" aria-hidden="true">
+
+  <!-- Top-left cluster — field contours, deep forest green -->
+  <div class="f2v-bg__cluster f2v-bg__cluster--tl">
+    <svg viewBox="0 0 600 600" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+      <g fill="none" stroke="currentColor" stroke-width="1">
+        <circle cx="300" cy="300" r="80"  />
+        <circle cx="300" cy="300" r="125" />
+        <circle cx="300" cy="300" r="175" />
+        <circle cx="300" cy="300" r="225" />
+        <circle cx="300" cy="300" r="275" />
+      </g>
+    </svg>
+  </div>
+
+  <!-- Bottom-right cluster — data ripples, accent green -->
+  <div class="f2v-bg__cluster f2v-bg__cluster--br">
+    <svg viewBox="0 0 600 600" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+      <g fill="none" stroke="currentColor" stroke-width="1.2">
+        <circle cx="300" cy="300" r="60"  />
+        <circle cx="300" cy="300" r="110" />
+        <circle cx="300" cy="300" r="165" />
+        <circle cx="300" cy="300" r="225" />
+        <circle cx="300" cy="300" r="290" />
+      </g>
+    </svg>
+  </div>
+
+</div>
+
 <!-- ============== APP SHELL ============== -->
 <div class="app-shell">
 
@@ -2636,12 +2695,12 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
             </div>
             <div class="disease-edit__symptom-body">
               <ul class="disease-edit__symptom-chips">
-                <li class="badge badge--sm is-info">Reduced appetite</li>
-                <li class="badge badge--sm is-info">Anorexia</li>
-                <li class="badge badge--sm is-info">Vomiting</li>
-                <li class="badge badge--sm is-info">Constipation</li>
-                <li class="badge badge--sm is-info">Diarrhea</li>
-                <li class="badge badge--sm is-info">Melena</li>
+                <li class="badge is-info">Reduced appetite</li>
+                <li class="badge is-info">Anorexia</li>
+                <li class="badge is-info">Vomiting</li>
+                <li class="badge is-info">Constipation</li>
+                <li class="badge is-info">Diarrhea</li>
+                <li class="badge is-info">Melena</li>
               </ul>
               <div class="disease-edit__view-md">
                 <p>Acute form is the most common and typical form. Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may contain blood — melena).</p>
@@ -2656,9 +2715,9 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
             </div>
             <div class="disease-edit__symptom-body">
               <ul class="disease-edit__symptom-chips">
-                <li class="badge badge--sm is-info">Rapid breathing (tachypnea)</li>
-                <li class="badge badge--sm is-info">Dyspnea</li>
-                <li class="badge badge--sm is-info">Nasal discharge</li>
+                <li class="badge is-info">Rapid breathing (tachypnea)</li>
+                <li class="badge is-info">Dyspnea</li>
+                <li class="badge is-info">Nasal discharge</li>
               </ul>
               <div class="disease-edit__view-md">
                 <p>Rapid breathing (tachypnea), dyspnea, nasal discharge (may contain blood or foam) due to pulmonary edema</p>
@@ -2672,8 +2731,8 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
             </div>
             <div class="disease-edit__symptom-body">
               <ul class="disease-edit__symptom-chips">
-                <li class="badge badge--sm is-info">Lethargy</li>
-                <li class="badge badge--sm is-info">Inactivity</li>
+                <li class="badge is-info">Lethargy</li>
+                <li class="badge is-info">Inactivity</li>
               </ul>
             </div>
           </div>
@@ -2684,10 +2743,10 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
             </div>
             <div class="disease-edit__symptom-body">
               <ul class="disease-edit__symptom-chips">
-                <li class="badge badge--sm is-info">Cyanosis</li>
-                <li class="badge badge--sm is-info">Intense hyperemia</li>
-                <li class="badge badge--sm is-info">Purple hemorrhagic marks</li>
-                <li class="badge badge--sm is-info">Cyanotic foci</li>
+                <li class="badge is-info">Cyanosis</li>
+                <li class="badge is-info">Intense hyperemia</li>
+                <li class="badge is-info">Purple hemorrhagic marks</li>
+                <li class="badge is-info">Cyanotic foci</li>
               </ul>
               <div class="disease-edit__view-md">
                 <p>Skin turns red or cyanotic due to intense hyperemia. Irregular purple hemorrhagic marks and cyanotic foci appear on the skin.</p>
@@ -2695,11 +2754,11 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
               <div class="disease-edit__symptom-areas">
                 <span class="disease-edit__symptom-areas-label">Affected areas:</span>
                 <ul class="disease-edit__symptom-chips">
-                  <li class="badge badge--sm is-safe">Ears</li>
-                  <li class="badge badge--sm is-safe">Chest</li>
-                  <li class="badge badge--sm is-safe">Abdomen</li>
-                  <li class="badge badge--sm is-safe">Perineum</li>
-                  <li class="badge badge--sm is-safe">Extremities</li>
+                  <li class="badge is-safe">Ears</li>
+                  <li class="badge is-safe">Chest</li>
+                  <li class="badge is-safe">Abdomen</li>
+                  <li class="badge is-safe">Perineum</li>
+                  <li class="badge is-safe">Extremities</li>
                 </ul>
               </div>
             </div>
@@ -2711,7 +2770,7 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
             </div>
             <div class="disease-edit__symptom-body">
               <ul class="disease-edit__symptom-chips">
-                <li class="badge badge--sm is-info">Abortion</li>
+                <li class="badge is-info">Abortion</li>
               </ul>
               <div class="disease-edit__view-md">
                 <p>Pregnant sows often abort; this can be the first sign of an outbreak</p>
@@ -3038,12 +3097,12 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
               </div>
               <div class="disease-edit__symptom-body">
                 <ul class="disease-edit__inherit-symptom-tags">
-                  <li class="badge badge--sm is-info">Reduced appetite</li>
-                  <li class="badge badge--sm is-info">Anorexia</li>
-                  <li class="badge badge--sm is-info">Vomiting</li>
-                  <li class="badge badge--sm is-info">Constipation</li>
-                  <li class="badge badge--sm is-info">Diarrhea</li>
-                  <li class="badge badge--sm is-info">Melena</li>
+                  <li class="badge is-info">Reduced appetite</li>
+                  <li class="badge is-info">Anorexia</li>
+                  <li class="badge is-info">Vomiting</li>
+                  <li class="badge is-info">Constipation</li>
+                  <li class="badge is-info">Diarrhea</li>
+                  <li class="badge is-info">Melena</li>
                 </ul>
                 <div class="chip-picker" data-chip-picker
                      data-vocab="digestive-symptoms"
@@ -3097,9 +3156,9 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
               </div>
               <div class="disease-edit__symptom-body">
                 <ul class="disease-edit__inherit-symptom-tags">
-                  <li class="badge badge--sm is-info">Rapid breathing (tachypnea)</li>
-                  <li class="badge badge--sm is-info">Dyspnea</li>
-                  <li class="badge badge--sm is-info">Nasal discharge</li>
+                  <li class="badge is-info">Rapid breathing (tachypnea)</li>
+                  <li class="badge is-info">Dyspnea</li>
+                  <li class="badge is-info">Nasal discharge</li>
                 </ul>
                 <div class="chip-picker" data-chip-picker
                      data-vocab="respiratory-symptoms"
@@ -3151,8 +3210,8 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
               </div>
               <div class="disease-edit__symptom-body">
                 <ul class="disease-edit__inherit-symptom-tags">
-                  <li class="badge badge--sm is-info">Lethargy</li>
-                  <li class="badge badge--sm is-info">Inactivity</li>
+                  <li class="badge is-info">Lethargy</li>
+                  <li class="badge is-info">Inactivity</li>
                 </ul>
                 <div class="chip-picker" data-chip-picker
                      data-vocab="neurological-symptoms"
@@ -3205,10 +3264,10 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
               <div class="disease-edit__symptom-body">
                 <ul class="disease-edit__inherit-symptom-tags">
                   <li class="disease-edit__inherit-symptom-tags__label">Symptoms:</li>
-                  <li class="badge badge--sm is-info">Cyanosis</li>
-                  <li class="badge badge--sm is-info">Intense hyperemia</li>
-                  <li class="badge badge--sm is-info">Purple hemorrhagic marks</li>
-                  <li class="badge badge--sm is-info">Cyanotic foci</li>
+                  <li class="badge is-info">Cyanosis</li>
+                  <li class="badge is-info">Intense hyperemia</li>
+                  <li class="badge is-info">Purple hemorrhagic marks</li>
+                  <li class="badge is-info">Cyanotic foci</li>
                 </ul>
                 <div class="chip-picker" data-chip-picker
                      data-vocab="dermatological-symptoms"
@@ -3220,11 +3279,11 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
                 <p class="disease-edit__symptom-sublabel" data-i18n="symptom.affectedAreas">Affected areas</p>
                 <ul class="disease-edit__inherit-symptom-tags">
                   <li class="disease-edit__inherit-symptom-tags__label">Affected areas:</li>
-                  <li class="badge badge--sm is-safe">Ears</li>
-                  <li class="badge badge--sm is-safe">Chest</li>
-                  <li class="badge badge--sm is-safe">Abdomen</li>
-                  <li class="badge badge--sm is-safe">Perineum</li>
-                  <li class="badge badge--sm is-safe">Extremities</li>
+                  <li class="badge is-safe">Ears</li>
+                  <li class="badge is-safe">Chest</li>
+                  <li class="badge is-safe">Abdomen</li>
+                  <li class="badge is-safe">Perineum</li>
+                  <li class="badge is-safe">Extremities</li>
                 </ul>
                 <div class="chip-picker chip-picker--areas" data-chip-picker
                      data-vocab="body-areas"
@@ -3276,7 +3335,7 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
               </div>
               <div class="disease-edit__symptom-body">
                 <ul class="disease-edit__inherit-symptom-tags">
-                  <li class="badge badge--sm is-info">Abortion</li>
+                  <li class="badge is-info">Abortion</li>
                 </ul>
                 <div class="chip-picker" data-chip-picker
                      data-vocab="reproductive-symptoms"
@@ -3383,12 +3442,12 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
             </div>
             <div class="disease-edit__symptom-body">
               <ul class="disease-edit__symptom-chips">
-                <li class="badge badge--sm is-info">Reduced appetite</li>
-                <li class="badge badge--sm is-info">Anorexia</li>
-                <li class="badge badge--sm is-info">Vomiting</li>
-                <li class="badge badge--sm is-info">Constipation</li>
-                <li class="badge badge--sm is-info">Diarrhea</li>
-                <li class="badge badge--sm is-info">Melena</li>
+                <li class="badge is-info">Reduced appetite</li>
+                <li class="badge is-info">Anorexia</li>
+                <li class="badge is-info">Vomiting</li>
+                <li class="badge is-info">Constipation</li>
+                <li class="badge is-info">Diarrhea</li>
+                <li class="badge is-info">Melena</li>
               </ul>
               <div class="disease-edit__view-md">
                 <p>Acute form is the most common and typical form. Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may contain blood — melena).</p>
@@ -3403,9 +3462,9 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
             </div>
             <div class="disease-edit__symptom-body">
               <ul class="disease-edit__symptom-chips">
-                <li class="badge badge--sm is-info">Rapid breathing (tachypnea)</li>
-                <li class="badge badge--sm is-info">Dyspnea</li>
-                <li class="badge badge--sm is-info">Nasal discharge</li>
+                <li class="badge is-info">Rapid breathing (tachypnea)</li>
+                <li class="badge is-info">Dyspnea</li>
+                <li class="badge is-info">Nasal discharge</li>
               </ul>
               <div class="disease-edit__view-md">
                 <p>Rapid breathing (tachypnea), dyspnea, nasal discharge (may contain blood or foam) due to pulmonary edema</p>
@@ -3419,8 +3478,8 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
             </div>
             <div class="disease-edit__symptom-body">
               <ul class="disease-edit__symptom-chips">
-                <li class="badge badge--sm is-info">Lethargy</li>
-                <li class="badge badge--sm is-info">Inactivity</li>
+                <li class="badge is-info">Lethargy</li>
+                <li class="badge is-info">Inactivity</li>
               </ul>
             </div>
           </div>
@@ -3431,10 +3490,10 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
             </div>
             <div class="disease-edit__symptom-body">
               <ul class="disease-edit__symptom-chips">
-                <li class="badge badge--sm is-info">Cyanosis</li>
-                <li class="badge badge--sm is-info">Intense hyperemia</li>
-                <li class="badge badge--sm is-info">Purple hemorrhagic marks</li>
-                <li class="badge badge--sm is-info">Cyanotic foci</li>
+                <li class="badge is-info">Cyanosis</li>
+                <li class="badge is-info">Intense hyperemia</li>
+                <li class="badge is-info">Purple hemorrhagic marks</li>
+                <li class="badge is-info">Cyanotic foci</li>
               </ul>
               <div class="disease-edit__view-md">
                 <p>Skin turns red or cyanotic due to intense hyperemia. Irregular purple hemorrhagic marks and cyanotic foci appear on the skin.</p>
@@ -3442,11 +3501,11 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
               <div class="disease-edit__symptom-areas">
                 <span class="disease-edit__symptom-areas-label">Affected areas:</span>
                 <ul class="disease-edit__symptom-chips">
-                  <li class="badge badge--sm is-safe">Ears</li>
-                  <li class="badge badge--sm is-safe">Chest</li>
-                  <li class="badge badge--sm is-safe">Abdomen</li>
-                  <li class="badge badge--sm is-safe">Perineum</li>
-                  <li class="badge badge--sm is-safe">Extremities</li>
+                  <li class="badge is-safe">Ears</li>
+                  <li class="badge is-safe">Chest</li>
+                  <li class="badge is-safe">Abdomen</li>
+                  <li class="badge is-safe">Perineum</li>
+                  <li class="badge is-safe">Extremities</li>
                 </ul>
               </div>
             </div>
@@ -3458,7 +3517,7 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
             </div>
             <div class="disease-edit__symptom-body">
               <ul class="disease-edit__symptom-chips">
-                <li class="badge badge--sm is-info">Abortion</li>
+                <li class="badge is-info">Abortion</li>
               </ul>
               <div class="disease-edit__view-md">
                 <p>Pregnant sows often abort; this can be the first sign of an outbreak</p>
@@ -3785,12 +3844,12 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
               </div>
               <div class="disease-edit__symptom-body">
                 <ul class="disease-edit__inherit-symptom-tags">
-                  <li class="badge badge--sm is-info">Reduced appetite</li>
-                  <li class="badge badge--sm is-info">Anorexia</li>
-                  <li class="badge badge--sm is-info">Vomiting</li>
-                  <li class="badge badge--sm is-info">Constipation</li>
-                  <li class="badge badge--sm is-info">Diarrhea</li>
-                  <li class="badge badge--sm is-info">Melena</li>
+                  <li class="badge is-info">Reduced appetite</li>
+                  <li class="badge is-info">Anorexia</li>
+                  <li class="badge is-info">Vomiting</li>
+                  <li class="badge is-info">Constipation</li>
+                  <li class="badge is-info">Diarrhea</li>
+                  <li class="badge is-info">Melena</li>
                 </ul>
                 <div class="chip-picker" data-chip-picker
                      data-vocab="digestive-symptoms"
@@ -3844,9 +3903,9 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
               </div>
               <div class="disease-edit__symptom-body">
                 <ul class="disease-edit__inherit-symptom-tags">
-                  <li class="badge badge--sm is-info">Rapid breathing (tachypnea)</li>
-                  <li class="badge badge--sm is-info">Dyspnea</li>
-                  <li class="badge badge--sm is-info">Nasal discharge</li>
+                  <li class="badge is-info">Rapid breathing (tachypnea)</li>
+                  <li class="badge is-info">Dyspnea</li>
+                  <li class="badge is-info">Nasal discharge</li>
                 </ul>
                 <div class="chip-picker" data-chip-picker
                      data-vocab="respiratory-symptoms"
@@ -3898,8 +3957,8 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
               </div>
               <div class="disease-edit__symptom-body">
                 <ul class="disease-edit__inherit-symptom-tags">
-                  <li class="badge badge--sm is-info">Lethargy</li>
-                  <li class="badge badge--sm is-info">Inactivity</li>
+                  <li class="badge is-info">Lethargy</li>
+                  <li class="badge is-info">Inactivity</li>
                 </ul>
                 <div class="chip-picker" data-chip-picker
                      data-vocab="neurological-symptoms"
@@ -3952,10 +4011,10 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
               <div class="disease-edit__symptom-body">
                 <ul class="disease-edit__inherit-symptom-tags">
                   <li class="disease-edit__inherit-symptom-tags__label">Symptoms:</li>
-                  <li class="badge badge--sm is-info">Cyanosis</li>
-                  <li class="badge badge--sm is-info">Intense hyperemia</li>
-                  <li class="badge badge--sm is-info">Purple hemorrhagic marks</li>
-                  <li class="badge badge--sm is-info">Cyanotic foci</li>
+                  <li class="badge is-info">Cyanosis</li>
+                  <li class="badge is-info">Intense hyperemia</li>
+                  <li class="badge is-info">Purple hemorrhagic marks</li>
+                  <li class="badge is-info">Cyanotic foci</li>
                 </ul>
                 <div class="chip-picker" data-chip-picker
                      data-vocab="dermatological-symptoms"
@@ -3967,11 +4026,11 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
                 <p class="disease-edit__symptom-sublabel" data-i18n="symptom.affectedAreas">Affected areas</p>
                 <ul class="disease-edit__inherit-symptom-tags">
                   <li class="disease-edit__inherit-symptom-tags__label">Affected areas:</li>
-                  <li class="badge badge--sm is-safe">Ears</li>
-                  <li class="badge badge--sm is-safe">Chest</li>
-                  <li class="badge badge--sm is-safe">Abdomen</li>
-                  <li class="badge badge--sm is-safe">Perineum</li>
-                  <li class="badge badge--sm is-safe">Extremities</li>
+                  <li class="badge is-safe">Ears</li>
+                  <li class="badge is-safe">Chest</li>
+                  <li class="badge is-safe">Abdomen</li>
+                  <li class="badge is-safe">Perineum</li>
+                  <li class="badge is-safe">Extremities</li>
                 </ul>
                 <div class="chip-picker chip-picker--areas" data-chip-picker
                      data-vocab="body-areas"
@@ -4023,7 +4082,7 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
               </div>
               <div class="disease-edit__symptom-body">
                 <ul class="disease-edit__inherit-symptom-tags">
-                  <li class="badge badge--sm is-info">Abortion</li>
+                  <li class="badge is-info">Abortion</li>
                 </ul>
                 <div class="chip-picker" data-chip-picker
                      data-vocab="reproductive-symptoms"
@@ -4130,12 +4189,12 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
             </div>
             <div class="disease-edit__symptom-body">
               <ul class="disease-edit__symptom-chips">
-                <li class="badge badge--sm is-info">Reduced appetite</li>
-                <li class="badge badge--sm is-info">Anorexia</li>
-                <li class="badge badge--sm is-info">Vomiting</li>
-                <li class="badge badge--sm is-info">Constipation</li>
-                <li class="badge badge--sm is-info">Diarrhea</li>
-                <li class="badge badge--sm is-info">Melena</li>
+                <li class="badge is-info">Reduced appetite</li>
+                <li class="badge is-info">Anorexia</li>
+                <li class="badge is-info">Vomiting</li>
+                <li class="badge is-info">Constipation</li>
+                <li class="badge is-info">Diarrhea</li>
+                <li class="badge is-info">Melena</li>
               </ul>
               <div class="disease-edit__view-md">
                 <p>Acute form is the most common and typical form. Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may contain blood — melena).</p>
@@ -4150,9 +4209,9 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
             </div>
             <div class="disease-edit__symptom-body">
               <ul class="disease-edit__symptom-chips">
-                <li class="badge badge--sm is-info">Rapid breathing (tachypnea)</li>
-                <li class="badge badge--sm is-info">Dyspnea</li>
-                <li class="badge badge--sm is-info">Nasal discharge</li>
+                <li class="badge is-info">Rapid breathing (tachypnea)</li>
+                <li class="badge is-info">Dyspnea</li>
+                <li class="badge is-info">Nasal discharge</li>
               </ul>
               <div class="disease-edit__view-md">
                 <p>Rapid breathing (tachypnea), dyspnea, nasal discharge (may contain blood or foam) due to pulmonary edema</p>
@@ -4166,8 +4225,8 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
             </div>
             <div class="disease-edit__symptom-body">
               <ul class="disease-edit__symptom-chips">
-                <li class="badge badge--sm is-info">Lethargy</li>
-                <li class="badge badge--sm is-info">Inactivity</li>
+                <li class="badge is-info">Lethargy</li>
+                <li class="badge is-info">Inactivity</li>
               </ul>
             </div>
           </div>
@@ -4178,10 +4237,10 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
             </div>
             <div class="disease-edit__symptom-body">
               <ul class="disease-edit__symptom-chips">
-                <li class="badge badge--sm is-info">Cyanosis</li>
-                <li class="badge badge--sm is-info">Intense hyperemia</li>
-                <li class="badge badge--sm is-info">Purple hemorrhagic marks</li>
-                <li class="badge badge--sm is-info">Cyanotic foci</li>
+                <li class="badge is-info">Cyanosis</li>
+                <li class="badge is-info">Intense hyperemia</li>
+                <li class="badge is-info">Purple hemorrhagic marks</li>
+                <li class="badge is-info">Cyanotic foci</li>
               </ul>
               <div class="disease-edit__view-md">
                 <p>Skin turns red or cyanotic due to intense hyperemia. Irregular purple hemorrhagic marks and cyanotic foci appear on the skin.</p>
@@ -4189,11 +4248,11 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
               <div class="disease-edit__symptom-areas">
                 <span class="disease-edit__symptom-areas-label">Affected areas:</span>
                 <ul class="disease-edit__symptom-chips">
-                  <li class="badge badge--sm is-safe">Ears</li>
-                  <li class="badge badge--sm is-safe">Chest</li>
-                  <li class="badge badge--sm is-safe">Abdomen</li>
-                  <li class="badge badge--sm is-safe">Perineum</li>
-                  <li class="badge badge--sm is-safe">Extremities</li>
+                  <li class="badge is-safe">Ears</li>
+                  <li class="badge is-safe">Chest</li>
+                  <li class="badge is-safe">Abdomen</li>
+                  <li class="badge is-safe">Perineum</li>
+                  <li class="badge is-safe">Extremities</li>
                 </ul>
               </div>
             </div>
@@ -4205,7 +4264,7 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
             </div>
             <div class="disease-edit__symptom-body">
               <ul class="disease-edit__symptom-chips">
-                <li class="badge badge--sm is-info">Abortion</li>
+                <li class="badge is-info">Abortion</li>
               </ul>
               <div class="disease-edit__view-md">
                 <p>Pregnant sows often abort; this can be the first sign of an outbreak</p>
@@ -4532,12 +4591,12 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
               </div>
               <div class="disease-edit__symptom-body">
                 <ul class="disease-edit__inherit-symptom-tags">
-                  <li class="badge badge--sm is-info">Reduced appetite</li>
-                  <li class="badge badge--sm is-info">Anorexia</li>
-                  <li class="badge badge--sm is-info">Vomiting</li>
-                  <li class="badge badge--sm is-info">Constipation</li>
-                  <li class="badge badge--sm is-info">Diarrhea</li>
-                  <li class="badge badge--sm is-info">Melena</li>
+                  <li class="badge is-info">Reduced appetite</li>
+                  <li class="badge is-info">Anorexia</li>
+                  <li class="badge is-info">Vomiting</li>
+                  <li class="badge is-info">Constipation</li>
+                  <li class="badge is-info">Diarrhea</li>
+                  <li class="badge is-info">Melena</li>
                 </ul>
                 <div class="chip-picker" data-chip-picker
                      data-vocab="digestive-symptoms"
@@ -4591,9 +4650,9 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
               </div>
               <div class="disease-edit__symptom-body">
                 <ul class="disease-edit__inherit-symptom-tags">
-                  <li class="badge badge--sm is-info">Rapid breathing (tachypnea)</li>
-                  <li class="badge badge--sm is-info">Dyspnea</li>
-                  <li class="badge badge--sm is-info">Nasal discharge</li>
+                  <li class="badge is-info">Rapid breathing (tachypnea)</li>
+                  <li class="badge is-info">Dyspnea</li>
+                  <li class="badge is-info">Nasal discharge</li>
                 </ul>
                 <div class="chip-picker" data-chip-picker
                      data-vocab="respiratory-symptoms"
@@ -4645,8 +4704,8 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
               </div>
               <div class="disease-edit__symptom-body">
                 <ul class="disease-edit__inherit-symptom-tags">
-                  <li class="badge badge--sm is-info">Lethargy</li>
-                  <li class="badge badge--sm is-info">Inactivity</li>
+                  <li class="badge is-info">Lethargy</li>
+                  <li class="badge is-info">Inactivity</li>
                 </ul>
                 <div class="chip-picker" data-chip-picker
                      data-vocab="neurological-symptoms"
@@ -4699,10 +4758,10 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
               <div class="disease-edit__symptom-body">
                 <ul class="disease-edit__inherit-symptom-tags">
                   <li class="disease-edit__inherit-symptom-tags__label">Symptoms:</li>
-                  <li class="badge badge--sm is-info">Cyanosis</li>
-                  <li class="badge badge--sm is-info">Intense hyperemia</li>
-                  <li class="badge badge--sm is-info">Purple hemorrhagic marks</li>
-                  <li class="badge badge--sm is-info">Cyanotic foci</li>
+                  <li class="badge is-info">Cyanosis</li>
+                  <li class="badge is-info">Intense hyperemia</li>
+                  <li class="badge is-info">Purple hemorrhagic marks</li>
+                  <li class="badge is-info">Cyanotic foci</li>
                 </ul>
                 <div class="chip-picker" data-chip-picker
                      data-vocab="dermatological-symptoms"
@@ -4714,11 +4773,11 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
                 <p class="disease-edit__symptom-sublabel" data-i18n="symptom.affectedAreas">Affected areas</p>
                 <ul class="disease-edit__inherit-symptom-tags">
                   <li class="disease-edit__inherit-symptom-tags__label">Affected areas:</li>
-                  <li class="badge badge--sm is-safe">Ears</li>
-                  <li class="badge badge--sm is-safe">Chest</li>
-                  <li class="badge badge--sm is-safe">Abdomen</li>
-                  <li class="badge badge--sm is-safe">Perineum</li>
-                  <li class="badge badge--sm is-safe">Extremities</li>
+                  <li class="badge is-safe">Ears</li>
+                  <li class="badge is-safe">Chest</li>
+                  <li class="badge is-safe">Abdomen</li>
+                  <li class="badge is-safe">Perineum</li>
+                  <li class="badge is-safe">Extremities</li>
                 </ul>
                 <div class="chip-picker chip-picker--areas" data-chip-picker
                      data-vocab="body-areas"
@@ -4770,7 +4829,7 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
               </div>
               <div class="disease-edit__symptom-body">
                 <ul class="disease-edit__inherit-symptom-tags">
-                  <li class="badge badge--sm is-info">Abortion</li>
+                  <li class="badge is-info">Abortion</li>
                 </ul>
                 <div class="chip-picker" data-chip-picker
                      data-vocab="reproductive-symptoms"
@@ -4878,12 +4937,12 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
             </div>
             <div class="disease-edit__symptom-body">
               <ul class="disease-edit__symptom-chips">
-                <li class="badge badge--sm is-info">Reduced appetite</li>
-                <li class="badge badge--sm is-info">Anorexia</li>
-                <li class="badge badge--sm is-info">Vomiting</li>
-                <li class="badge badge--sm is-info">Constipation</li>
-                <li class="badge badge--sm is-info">Diarrhea</li>
-                <li class="badge badge--sm is-info">Melena</li>
+                <li class="badge is-info">Reduced appetite</li>
+                <li class="badge is-info">Anorexia</li>
+                <li class="badge is-info">Vomiting</li>
+                <li class="badge is-info">Constipation</li>
+                <li class="badge is-info">Diarrhea</li>
+                <li class="badge is-info">Melena</li>
               </ul>
               <div class="disease-edit__view-md">
                 <p>Acute form is the most common and typical form. Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may contain blood — melena).</p>
@@ -4898,9 +4957,9 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
             </div>
             <div class="disease-edit__symptom-body">
               <ul class="disease-edit__symptom-chips">
-                <li class="badge badge--sm is-info">Rapid breathing (tachypnea)</li>
-                <li class="badge badge--sm is-info">Dyspnea</li>
-                <li class="badge badge--sm is-info">Nasal discharge</li>
+                <li class="badge is-info">Rapid breathing (tachypnea)</li>
+                <li class="badge is-info">Dyspnea</li>
+                <li class="badge is-info">Nasal discharge</li>
               </ul>
               <div class="disease-edit__view-md">
                 <p>Rapid breathing (tachypnea), dyspnea, nasal discharge (may contain blood or foam) due to pulmonary edema</p>
@@ -4914,8 +4973,8 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
             </div>
             <div class="disease-edit__symptom-body">
               <ul class="disease-edit__symptom-chips">
-                <li class="badge badge--sm is-info">Lethargy</li>
-                <li class="badge badge--sm is-info">Inactivity</li>
+                <li class="badge is-info">Lethargy</li>
+                <li class="badge is-info">Inactivity</li>
               </ul>
             </div>
           </div>
@@ -4926,10 +4985,10 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
             </div>
             <div class="disease-edit__symptom-body">
               <ul class="disease-edit__symptom-chips">
-                <li class="badge badge--sm is-info">Cyanosis</li>
-                <li class="badge badge--sm is-info">Intense hyperemia</li>
-                <li class="badge badge--sm is-info">Purple hemorrhagic marks</li>
-                <li class="badge badge--sm is-info">Cyanotic foci</li>
+                <li class="badge is-info">Cyanosis</li>
+                <li class="badge is-info">Intense hyperemia</li>
+                <li class="badge is-info">Purple hemorrhagic marks</li>
+                <li class="badge is-info">Cyanotic foci</li>
               </ul>
               <div class="disease-edit__view-md">
                 <p>Skin turns red or cyanotic due to intense hyperemia. Irregular purple hemorrhagic marks and cyanotic foci appear on the skin.</p>
@@ -4937,11 +4996,11 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
               <div class="disease-edit__symptom-areas">
                 <span class="disease-edit__symptom-areas-label">Affected areas:</span>
                 <ul class="disease-edit__symptom-chips">
-                  <li class="badge badge--sm is-safe">Ears</li>
-                  <li class="badge badge--sm is-safe">Chest</li>
-                  <li class="badge badge--sm is-safe">Abdomen</li>
-                  <li class="badge badge--sm is-safe">Perineum</li>
-                  <li class="badge badge--sm is-safe">Extremities</li>
+                  <li class="badge is-safe">Ears</li>
+                  <li class="badge is-safe">Chest</li>
+                  <li class="badge is-safe">Abdomen</li>
+                  <li class="badge is-safe">Perineum</li>
+                  <li class="badge is-safe">Extremities</li>
                 </ul>
               </div>
             </div>
@@ -4953,7 +5012,7 @@ Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may con
             </div>
             <div class="disease-edit__symptom-body">
               <ul class="disease-edit__symptom-chips">
-                <li class="badge badge--sm is-info">Abortion</li>
+                <li class="badge is-info">Abortion</li>
               </ul>
               <div class="disease-edit__view-md">
                 <p>Pregnant sows often abort; this can be the first sign of an outbreak</p>

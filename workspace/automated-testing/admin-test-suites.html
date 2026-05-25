@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin · Automated testing — test suites — Farm2Vet</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="../../styles/tokens.css" />
+<link rel="stylesheet" href="../../styles/base.css" />
+<link rel="stylesheet" href="../../styles/typography.css" />
+<link rel="stylesheet" href="../../styles/shell.css" />
+<link rel="stylesheet" href="../../styles/sidebar.css" />
+
+<link rel="stylesheet" href="../../styles/button.css" />
+<link rel="stylesheet" href="../../styles/card.css" />
+<link rel="stylesheet" href="../../styles/form.css" />
+<link rel="stylesheet" href="../../styles/badge.css" />
+<link rel="stylesheet" href="../../styles/chip.css" />
+<link rel="stylesheet" href="../../styles/dropdown.css" />
+<link rel="stylesheet" href="../../styles/search-toolbar.css" />
+<link rel="stylesheet" href="../../styles/tabs.css" />
+<link rel="stylesheet" href="../../styles/table.css" />
+
+<link rel="stylesheet" href="_shared.css" />
+
+<style>
+/* ---------- Two-panel master-detail layout ---------- */
+.suites-layout {
+    display: grid;
+    grid-template-columns: 360px minmax(0, 1fr);
+    gap: var(--spacing-6x);
+    align-items: stretch;
+}
+.suites-pane {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+.suites-pane__head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3x);
+}
+
+/* ---------- Left pane: sub-toolbar + suite list ---------- */
+.suites-pane--list .suites-subtoolbar {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2x);
+}
+.suites-pane--list .suites-subtoolbar .search-field { flex: 1 1 auto; }
+
+.suites-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2x);
+    padding: var(--spacing-3x);
+    overflow-y: auto;
+    max-height: calc(100vh - 320px);
+}
+
+/* ---------- Suite card ---------- */
+.suite-item {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--spacing-3x);
+    align-items: center;
+    width: 100%;
+    padding: var(--spacing-3x);
+    background: var(--background-default);
+    border: 1px solid var(--border-default-subtle);
+    border-radius: var(--radius-md);
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color .15s ease, border-color .15s ease;
+}
+.suite-item:hover {
+    background: var(--background-default-hover);
+    border-color: var(--border-default);
+}
+.suite-item.is-selected {
+    background: var(--background-default-minimal);
+    border-color: var(--border-default);
+}
+.suite-item.is-selected::before {
+    content: '';
+    position: absolute;
+    top: var(--spacing-2x);
+    bottom: var(--spacing-2x);
+    left: 0;
+    width: 3px;
+    background: var(--accent-500);
+    border-radius: 0 var(--radius-mc) var(--radius-mc) 0;
+}
+.suite-item:focus-visible {
+    outline: 2px solid var(--accent-500);
+    outline-offset: 2px;
+}
+
+.suite-item__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2x);
+    min-width: 0;
+}
+.suite-item__head {
+    display: flex;
+    align-items: baseline;
+    gap: var(--spacing-2x);
+    min-width: 0;
+}
+.suite-item__id {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-mono);
+    color: var(--text-default-subtle);
+    flex: 0 0 auto;
+}
+.suite-item__name {
+    font-weight: var(--font-weight-medium);
+    color: var(--text-default);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+}
+.suite-item__meta {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2x);
+    font-size: var(--text-body-sm);
+    color: var(--text-default-subtle);
+}
+.suite-item__sep { color: var(--text-default-minimal); }
+.suite-item__rate {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-1x);
+    font-variant-numeric: tabular-nums;
+}
+.suite-item__rate--errored { color: var(--text-critical); }
+
+/* Pass/fail rate icons — colored circle with white glyph inside.
+   Replaces .dash-status-dot in the suite-card meta row to make
+   pass vs fail explicit at small sizes. Filled-circle on currentColor
+   so tone tracks the modifier; inner check / × stroked white. */
+.suite-item__rate-icon {
+    display: inline-flex;
+    width: 14px;
+    height: 14px;
+    flex: 0 0 auto;
+}
+.suite-item__rate-icon svg { width: 100%; height: 100%; display: block; }
+.suite-item__rate-icon--pass { color: var(--safe-500); }
+.suite-item__rate-icon--fail { color: var(--critical-500); }
+
+/* Progress bar */
+.suite-item__progress {
+    height: 4px;
+    background: var(--background-default-minimal);
+    border-radius: var(--radius-pill);
+    overflow: hidden;
+}
+.suite-item.is-selected .suite-item__progress {
+    background: color-mix(in srgb, var(--neutral-900) 8%, transparent);
+}
+.suite-item__progress-fill {
+    display: block;
+    height: 100%;
+    width: var(--pct, 0%);
+    background: var(--accent-500);
+    border-radius: inherit;
+    transition: width .2s ease;
+}
+.suite-item--errored .suite-item__progress-fill { background: var(--critical-500); }
+
+/* Result link on each suite card. Resting = 32px square with the
+   check icon. Hover = pill widens, icon swaps to the doc/report
+   glyph, label "See detail report" reveals inline.
+   Behaviour: a real <a> that navigates to admin-test-run.html. */
+.suite-item__result {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-2x);
+    min-width: 32px;
+    height: 32px;
+    padding: 0 var(--spacing-2x);
+    border-radius: var(--radius-sm);
+    color: var(--icon-default-subtle);
+    text-decoration: none;
+    flex: 0 0 auto;
+    transition: background-color .15s ease, color .15s ease, padding .15s ease;
+}
+.suite-item__result-icon {
+    display: inline-flex;
+    width: 18px;
+    height: 18px;
+    flex: 0 0 auto;
+}
+.suite-item__result-icon svg {
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* Inline label is hidden at rest — revealed on row hover.
+   Sized to match the meta row's body-sm rhythm. */
+.suite-item__result-label {
+    display: none;
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-medium);
+    color: inherit;
+    white-space: nowrap;
+}
+
+/* Default icon-swap remains: rest visible, hover hidden. */
+.suite-item__result-icon--hover { display: none; }
+
+/* Row hover (or direct focus on the link) swaps icon + reveals label. */
+.suite-item:hover .suite-item__result,
+.suite-item__result:focus-visible {
+    background: var(--background-default-hover);
+    color: var(--text-default);
+}
+.suite-item:hover .suite-item__result-icon--rest,
+.suite-item__result:focus-visible .suite-item__result-icon--rest {
+    display: none;
+}
+.suite-item:hover .suite-item__result-icon--hover,
+.suite-item__result:focus-visible .suite-item__result-icon--hover {
+    display: inline-flex;
+}
+.suite-item:hover .suite-item__result-label,
+.suite-item__result:focus-visible .suite-item__result-label {
+    display: inline;
+}
+
+/* Running suites still hide the result link — same rule as before. */
+.suite-item--running .suite-item__result { display: none; }
+.suite-item--errored .suite-item__rate--pass,
+.suite-item--errored .suite-item__rate--fail { display: none; }
+
+/* ---------- Right pane: SP run results ---------- */
+.suites-detail__head {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-4x);
+}
+.suites-detail__title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--text-h6);
+    line-height: var(--line-height-heading);
+    color: var(--text-default);
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.suites-detail__actions {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-1x);
+    flex: 0 0 auto;
+}
+
+.sp-table-wrap { overflow-x: auto; }
+.sp-table .sp-status-icon {
+    display: inline-flex;
+    align-items: center;
+    width: 12px;
+    height: 12px;
+}
+.sp-table .sp-status-icon svg {
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* Animated pulse dot for "running" badges */
+.sp-pulse-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--warning-500);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--warning-500) 50%, transparent);
+    animation: sp-pulse 1.6s cubic-bezier(.4, 0, .6, 1) infinite;
+}
+@keyframes sp-pulse {
+    0%   { box-shadow: 0 0 0 0   color-mix(in srgb, var(--warning-500) 50%, transparent); }
+    70%  { box-shadow: 0 0 0 6px color-mix(in srgb, var(--warning-500)  0%, transparent); }
+    100% { box-shadow: 0 0 0 0   color-mix(in srgb, var(--warning-500)  0%, transparent); }
+}
+
+/* Mono ID link inside a table cell (drift fix from §7) */
+.cell-link {
+    color: inherit;
+    text-decoration: none;
+}
+.cell-link:hover { color: var(--text-default); }
+
+/* ---------- Legacy rules kept (still referenced by future iterations) ---------- */
+.suites-name {
+    font-weight: var(--font-weight-medium);
+    color: var(--text-default);
+    text-decoration: none;
+}
+.suites-name:hover { color: var(--text-link); }
+.suites-pass {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--spacing-1x);
+    font-variant-numeric: tabular-nums;
+}
+.suites-pass__pct { font-weight: var(--font-weight-semibold); }
+.suites-pass__pct--safe     { color: var(--text-safe); }
+.suites-pass__pct--warning  { color: var(--text-warning); }
+.suites-pass__pct--critical { color: var(--text-critical); }
+.suites-pass__pct--neutral  { color: var(--text-default-minimal); }
+.suites-pass__count {
+    color: var(--text-default-subtle);
+    font-size: var(--text-body-sm);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 960px) {
+    .suites-layout { grid-template-columns: 1fr; }
+    .suites-list { max-height: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="dash">
+
+  <!-- SIDEBAR -->
+  <aside class="dash__side">
+    <aside class="sidebar" aria-label="Admin primary navigation">
+      <header class="sidebar__header">
+        <a href="../admin-dashboard.html" class="sidebar__brand">
+          <img class="sidebar__brand-mark" src="../../logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
+          <span class="sidebar__brand-text">Farm2Vet</span>
+        </a>
+        <button type="button" class="sidebar__collapse" aria-label="Collapse sidebar" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6"/></svg>
+        </button>
+      </header>
+      <nav class="sidebar__nav" aria-label="Admin destinations">
+        <ul class="sidebar__list">
+          <li class="sidebar__item">
+            <a class="sidebar__link" href="../admin-dashboard.html">
+              <span class="sidebar__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+              </span>
+              <span class="sidebar__label">Overview</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <button type="button" class="sidebar__link" aria-expanded="false">
+              <span class="sidebar__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/></svg>
+              </span>
+              <span class="sidebar__label">Data management</span>
+              <span class="sidebar__trailing">
+                <svg class="sidebar__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+              </span>
+            </button>
+            <ul class="sidebar__sublist">
+              <li class="sidebar__item"><a class="sidebar__link" href="../admin-disease-earthsky.html"><span class="sidebar__label">Disease</span><span class="sidebar__trailing"><span class="sidebar__badge">142</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Question</span><span class="sidebar__trailing"><span class="sidebar__badge">318</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Conversation</span><span class="sidebar__trailing"><span class="sidebar__badge">47</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Image</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Resource</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">PDF Input</span></a></li>
+            </ul>
+          </li>
+          <li class="sidebar__item is-open">
+            <button type="button" class="sidebar__link" aria-expanded="true">
+              <span class="sidebar__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
+              </span>
+              <span class="sidebar__label">Automated testing</span>
+              <span class="sidebar__trailing">
+                <svg class="sidebar__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+              </span>
+            </button>
+            <ul class="sidebar__sublist">
+              <li class="sidebar__item"><a class="sidebar__link" href="admin-test-console.html"><span class="sidebar__label">Console</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="admin-test-profiles.html"><span class="sidebar__label">Profiles</span><span class="sidebar__trailing"><span class="sidebar__badge">142</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link is-current" href="admin-test-suites.html" aria-current="page"><span class="sidebar__label">Suites</span><span class="sidebar__trailing"><span class="sidebar__badge">12</span></span></a></li>
+            </ul>
+          </li>
+          <li class="sidebar__item">
+            <a class="sidebar__link" href="#">
+              <span class="sidebar__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              </span>
+              <span class="sidebar__label">Sync database</span>
+              <span class="sidebar__trailing"><span class="sidebar__badge sidebar__badge--warning">6</span></span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <div class="sidebar__footer">
+        <div class="sidebar__profile-wrap">
+          <div class="sidebar__profile">
+            <span class="sidebar__avatar" aria-hidden="true">M</span>
+            <span class="sidebar__profile-text">
+              <span class="sidebar__profile-name">Minh</span>
+              <span class="sidebar__profile-role">Admin</span>
+            </span>
+            <button type="button" class="sidebar__overflow" aria-label="Account menu" aria-haspopup="menu" aria-expanded="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="dash__main">
+
+    <header class="dash-topbar" aria-label="Workspace chrome">
+      <nav class="dash-topbar__crumbs" aria-label="Breadcrumb">
+        <a href="../admin-dashboard.html">Admin</a>
+        <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
+        <a href="admin-test-console.html">Automated testing</a>
+        <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
+        <span class="dash-topbar__crumb-tail" aria-current="page">Suites</span>
+      </nav>
+      <ul class="dash-topbar__cluster">
+        <li class="dash-topbar__cluster-item"><span class="dash-topbar__version">v1.4.2</span></li>
+      </ul>
+    </header>
+
+    <header class="dash-page">
+      <div class="dash-page__text">
+        <h1>Test suites.</h1>
+        <p class="dash-page__lede">Each suite bundles a group of profiles, a model, and a scoring mode. Run a suite to compare model responses across a fixed reference set.</p>
+      </div>
+      <div class="dash-page__cta">
+        <a href="admin-test-suite.html" class="btn btn--cta">
+          <span class="btn__leading" aria-hidden="true">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+          </span>
+          <span class="btn__label">New suite</span>
+        </a>
+      </div>
+    </header>
+
+    <section class="suites-layout" aria-label="Test suites and results">
+
+      <!-- LEFT: suite list -->
+      <article class="workspace-card workspace-card--flush suites-pane suites-pane--list"
+               aria-labelledby="suites-list-h">
+        <h2 id="suites-list-h" class="sr-only" hidden>Suites</h2>
+        <header class="workspace-card__head suites-pane__head">
+          <!-- Row A — search + filter -->
+          <div class="suites-subtoolbar">
+            <label class="search-field">
+              <span class="search-field__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+              </span>
+              <input type="search" class="input input--sm search-field__input" placeholder="Search suites…" />
+            </label>
+            <button type="button" class="btn btn--ghost btn--sm">
+              <span class="btn__leading" aria-hidden="true">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="10" y1="18" x2="14" y2="18"/></svg>
+              </span>
+              <span class="btn__label">Filter</span>
+            </button>
+          </div>
+
+          <!-- Row B — filter tabs.
+               Tabs are used purely as filter buttons here — there are
+               no .tabs__panel siblings since the panel is the suite list
+               itself. This diverges from tabs.css's documented
+               "every tab maps to a panel" contract; flagged in the
+               diff comment for Jack. -->
+          <div class="tabs tabs--line tabs--sm" data-suites-tabs>
+            <div class="tabs__list" role="tablist" aria-label="Filter suites by status">
+              <button type="button" class="tabs__tab is-selected" role="tab"
+                      aria-selected="true" data-filter="all">
+                <span class="tabs__label">All</span>
+                <span class="tabs__badge">7</span>
+              </button>
+              <button type="button" class="tabs__tab" role="tab"
+                      aria-selected="false" data-filter="running">
+                <span class="tabs__label">Running</span>
+                <span class="tabs__badge">1</span>
+              </button>
+              <button type="button" class="tabs__tab" role="tab"
+                      aria-selected="false" data-filter="completed">
+                <span class="tabs__label">Completed</span>
+                <span class="tabs__badge">5</span>
+              </button>
+              <button type="button" class="tabs__tab" role="tab"
+                      aria-selected="false" data-filter="failed">
+                <span class="tabs__label">Failed</span>
+                <span class="tabs__badge">1</span>
+              </button>
+              <span class="tabs__indicator" aria-hidden="true"></span>
+            </div>
+          </div>
+        </header>
+
+        <div class="suites-list" role="list" data-suites-listbox>
+
+          <!-- Selected · Running -->
+          <div class="suite-item suite-item--running is-selected"
+                  role="button" tabindex="0" aria-pressed="true"
+                  data-suite-id="2415"
+                  data-suite-name="UAT — CRM System v 2.1.2"
+                  data-state="running">
+            <div class="suite-item__body">
+              <div class="suite-item__head">
+                <span class="suite-item__id">#2415</span>
+                <span class="suite-item__name">UAT — CRM System v 2.1.2</span>
+              </div>
+              <div class="suite-item__meta">
+                <span class="suite-item__date">30 Oct — 15 Nov</span>
+                <span class="suite-item__sep" aria-hidden="true">·</span>
+                <span class="suite-item__rate suite-item__rate--pass">
+                  <span class="suite-item__rate-icon suite-item__rate-icon--pass" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
+                      <polyline points="7 12.5 10.5 16 17 9" stroke="#fff"/>
+                    </svg>
+                  </span>
+                  87%
+                </span>
+                <span class="suite-item__rate suite-item__rate--fail">
+                  <span class="suite-item__rate-icon suite-item__rate-icon--fail" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
+                      <line x1="8" y1="8" x2="16" y2="16" stroke="#fff"/>
+                      <line x1="16" y1="8" x2="8" y2="16" stroke="#fff"/>
+                    </svg>
+                  </span>
+                  6%
+                </span>
+              </div>
+              <div class="suite-item__progress" role="progressbar"
+                   aria-valuemin="0" aria-valuemax="100" aria-valuenow="87">
+                <span class="suite-item__progress-fill" style="--pct: 87%;"></span>
+              </div>
+            </div>
+            <a href="admin-test-run.html"
+               class="suite-item__result"
+               aria-label="See detail report">
+              <span class="suite-item__result-icon suite-item__result-icon--rest" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <span class="suite-item__result-icon suite-item__result-icon--hover" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
+              </span>
+              <span class="suite-item__result-label">See detail report</span>
+            </a>
+          </div>
+
+          <!-- Completed -->
+          <div class="suite-item"
+                  role="button" tabindex="0" aria-pressed="false"
+                  data-suite-id="2415"
+                  data-suite-name="Production — Smoke test 1.8.3"
+                  data-state="completed">
+            <div class="suite-item__body">
+              <div class="suite-item__head">
+                <span class="suite-item__id">#2415</span>
+                <span class="suite-item__name">Production — Smoke test 1.8.3</span>
+              </div>
+              <div class="suite-item__meta">
+                <span class="suite-item__date">22 Nov 2023</span>
+                <span class="suite-item__sep" aria-hidden="true">·</span>
+                <span class="suite-item__rate suite-item__rate--pass">
+                  <span class="suite-item__rate-icon suite-item__rate-icon--pass" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
+                      <polyline points="7 12.5 10.5 16 17 9" stroke="#fff"/>
+                    </svg>
+                  </span>
+                  87%
+                </span>
+                <span class="suite-item__rate suite-item__rate--fail">
+                  <span class="suite-item__rate-icon suite-item__rate-icon--fail" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
+                      <line x1="8" y1="8" x2="16" y2="16" stroke="#fff"/>
+                      <line x1="16" y1="8" x2="8" y2="16" stroke="#fff"/>
+                    </svg>
+                  </span>
+                  6%
+                </span>
+              </div>
+              <div class="suite-item__progress" role="progressbar"
+                   aria-valuemin="0" aria-valuemax="100" aria-valuenow="87">
+                <span class="suite-item__progress-fill" style="--pct: 87%;"></span>
+              </div>
+            </div>
+            <a href="admin-test-run.html"
+               class="suite-item__result"
+               aria-label="See detail report">
+              <span class="suite-item__result-icon suite-item__result-icon--rest" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <span class="suite-item__result-icon suite-item__result-icon--hover" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
+              </span>
+              <span class="suite-item__result-label">See detail report</span>
+            </a>
+          </div>
+
+          <!-- Completed -->
+          <div class="suite-item"
+                  role="button" tabindex="0" aria-pressed="false"
+                  data-suite-id="2415"
+                  data-suite-name="Production — Regress tests 1.8.3"
+                  data-state="completed">
+            <div class="suite-item__body">
+              <div class="suite-item__head">
+                <span class="suite-item__id">#2415</span>
+                <span class="suite-item__name">Production — Regress tests 1.8.3</span>
+              </div>
+              <div class="suite-item__meta">
+                <span class="suite-item__date">22 Nov 2023</span>
+                <span class="suite-item__sep" aria-hidden="true">·</span>
+                <span class="suite-item__rate suite-item__rate--pass">
+                  <span class="suite-item__rate-icon suite-item__rate-icon--pass" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
+                      <polyline points="7 12.5 10.5 16 17 9" stroke="#fff"/>
+                    </svg>
+                  </span>
+                  87%
+                </span>
+                <span class="suite-item__rate suite-item__rate--fail">
+                  <span class="suite-item__rate-icon suite-item__rate-icon--fail" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
+                      <line x1="8" y1="8" x2="16" y2="16" stroke="#fff"/>
+                      <line x1="16" y1="8" x2="8" y2="16" stroke="#fff"/>
+                    </svg>
+                  </span>
+                  6%
+                </span>
+              </div>
+              <div class="suite-item__progress" role="progressbar"
+                   aria-valuemin="0" aria-valuemax="100" aria-valuenow="87">
+                <span class="suite-item__progress-fill" style="--pct: 87%;"></span>
+              </div>
+            </div>
+            <a href="admin-test-run.html"
+               class="suite-item__result"
+               aria-label="See detail report">
+              <span class="suite-item__result-icon suite-item__result-icon--rest" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <span class="suite-item__result-icon suite-item__result-icon--hover" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
+              </span>
+              <span class="suite-item__result-label">See detail report</span>
+            </a>
+          </div>
+
+          <!-- Completed -->
+          <div class="suite-item"
+                  role="button" tabindex="0" aria-pressed="false"
+                  data-suite-id="2415"
+                  data-suite-name="Sprint 1.8.3"
+                  data-state="completed">
+            <div class="suite-item__body">
+              <div class="suite-item__head">
+                <span class="suite-item__id">#2415</span>
+                <span class="suite-item__name">Sprint 1.8.3</span>
+              </div>
+              <div class="suite-item__meta">
+                <span class="suite-item__date">18 Nov 2023</span>
+                <span class="suite-item__sep" aria-hidden="true">·</span>
+                <span class="suite-item__rate suite-item__rate--pass">
+                  <span class="suite-item__rate-icon suite-item__rate-icon--pass" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
+                      <polyline points="7 12.5 10.5 16 17 9" stroke="#fff"/>
+                    </svg>
+                  </span>
+                  87%
+                </span>
+                <span class="suite-item__rate suite-item__rate--fail">
+                  <span class="suite-item__rate-icon suite-item__rate-icon--fail" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
+                      <line x1="8" y1="8" x2="16" y2="16" stroke="#fff"/>
+                      <line x1="16" y1="8" x2="8" y2="16" stroke="#fff"/>
+                    </svg>
+                  </span>
+                  6%
+                </span>
+              </div>
+              <div class="suite-item__progress" role="progressbar"
+                   aria-valuemin="0" aria-valuemax="100" aria-valuenow="87">
+                <span class="suite-item__progress-fill" style="--pct: 87%;"></span>
+              </div>
+            </div>
+            <a href="admin-test-run.html"
+               class="suite-item__result"
+               aria-label="See detail report">
+              <span class="suite-item__result-icon suite-item__result-icon--rest" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <span class="suite-item__result-icon suite-item__result-icon--hover" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
+              </span>
+              <span class="suite-item__result-label">See detail report</span>
+            </a>
+          </div>
+
+          <!-- Completed -->
+          <div class="suite-item"
+                  role="button" tabindex="0" aria-pressed="false"
+                  data-suite-id="2415"
+                  data-suite-name="Production — Smoke test 1.8.2"
+                  data-state="completed">
+            <div class="suite-item__body">
+              <div class="suite-item__head">
+                <span class="suite-item__id">#2415</span>
+                <span class="suite-item__name">Production — Smoke test 1.8.2</span>
+              </div>
+              <div class="suite-item__meta">
+                <span class="suite-item__date">12 Nov 2023</span>
+                <span class="suite-item__sep" aria-hidden="true">·</span>
+                <span class="suite-item__rate suite-item__rate--pass">
+                  <span class="suite-item__rate-icon suite-item__rate-icon--pass" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
+                      <polyline points="7 12.5 10.5 16 17 9" stroke="#fff"/>
+                    </svg>
+                  </span>
+                  87%
+                </span>
+                <span class="suite-item__rate suite-item__rate--fail">
+                  <span class="suite-item__rate-icon suite-item__rate-icon--fail" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
+                      <line x1="8" y1="8" x2="16" y2="16" stroke="#fff"/>
+                      <line x1="16" y1="8" x2="8" y2="16" stroke="#fff"/>
+                    </svg>
+                  </span>
+                  6%
+                </span>
+              </div>
+              <div class="suite-item__progress" role="progressbar"
+                   aria-valuemin="0" aria-valuemax="100" aria-valuenow="87">
+                <span class="suite-item__progress-fill" style="--pct: 87%;"></span>
+              </div>
+            </div>
+            <a href="admin-test-run.html"
+               class="suite-item__result"
+               aria-label="See detail report">
+              <span class="suite-item__result-icon suite-item__result-icon--rest" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <span class="suite-item__result-icon suite-item__result-icon--hover" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
+              </span>
+              <span class="suite-item__result-label">See detail report</span>
+            </a>
+          </div>
+
+          <!-- Failed -->
+          <div class="suite-item suite-item--errored"
+                  role="button" tabindex="0" aria-pressed="false"
+                  data-suite-id="2415"
+                  data-suite-name="Production — Regress tests 1.8.2"
+                  data-state="failed">
+            <div class="suite-item__body">
+              <div class="suite-item__head">
+                <span class="dash-status-dot dash-status-dot--critical" aria-hidden="true"></span>
+                <span class="suite-item__id">#2415</span>
+                <span class="suite-item__name">Production — Regress tests 1.8.2</span>
+              </div>
+              <div class="suite-item__meta">
+                <span class="suite-item__date">12 Nov 2023</span>
+                <span class="suite-item__sep" aria-hidden="true">·</span>
+                <span class="suite-item__rate suite-item__rate--errored">errored</span>
+              </div>
+              <div class="suite-item__progress" role="progressbar"
+                   aria-valuemin="0" aria-valuemax="100" aria-valuenow="42">
+                <span class="suite-item__progress-fill" style="--pct: 42%;"></span>
+              </div>
+            </div>
+            <a href="admin-test-run.html"
+               class="suite-item__result"
+               aria-label="See detail report">
+              <span class="suite-item__result-icon suite-item__result-icon--rest" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <span class="suite-item__result-icon suite-item__result-icon--hover" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
+              </span>
+              <span class="suite-item__result-label">See detail report</span>
+            </a>
+          </div>
+
+          <!-- Completed -->
+          <div class="suite-item"
+                  role="button" tabindex="0" aria-pressed="false"
+                  data-suite-id="2415"
+                  data-suite-name="Sprint 1.8.2"
+                  data-state="completed">
+            <div class="suite-item__body">
+              <div class="suite-item__head">
+                <span class="suite-item__id">#2415</span>
+                <span class="suite-item__name">Sprint 1.8.2</span>
+              </div>
+              <div class="suite-item__meta">
+                <span class="suite-item__date">8 Nov 2023</span>
+                <span class="suite-item__sep" aria-hidden="true">·</span>
+                <span class="suite-item__rate suite-item__rate--pass">
+                  <span class="suite-item__rate-icon suite-item__rate-icon--pass" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
+                      <polyline points="7 12.5 10.5 16 17 9" stroke="#fff"/>
+                    </svg>
+                  </span>
+                  87%
+                </span>
+                <span class="suite-item__rate suite-item__rate--fail">
+                  <span class="suite-item__rate-icon suite-item__rate-icon--fail" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
+                      <line x1="8" y1="8" x2="16" y2="16" stroke="#fff"/>
+                      <line x1="16" y1="8" x2="8" y2="16" stroke="#fff"/>
+                    </svg>
+                  </span>
+                  6%
+                </span>
+              </div>
+              <div class="suite-item__progress" role="progressbar"
+                   aria-valuemin="0" aria-valuemax="100" aria-valuenow="87">
+                <span class="suite-item__progress-fill" style="--pct: 87%;"></span>
+              </div>
+            </div>
+            <a href="admin-test-run.html"
+               class="suite-item__result"
+               aria-label="See detail report">
+              <span class="suite-item__result-icon suite-item__result-icon--rest" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <span class="suite-item__result-icon suite-item__result-icon--hover" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
+              </span>
+              <span class="suite-item__result-label">See detail report</span>
+            </a>
+          </div>
+
+        </div>
+      </article>
+
+      <!-- RIGHT: selected suite's SP run results -->
+      <article class="workspace-card workspace-card--flush suites-pane suites-pane--detail"
+               aria-labelledby="suite-detail-h">
+        <header class="workspace-card__head suites-pane__head suites-detail__head">
+          <h2 id="suite-detail-h" class="suites-detail__title">UAT — CRM System v 2.1.2</h2>
+          <div class="suites-detail__actions">
+            <button type="button" class="dash-topbar__icon-btn" aria-label="Filter results">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="10" y1="18" x2="14" y2="18"/></svg>
+            </button>
+            <button type="button" class="dash-topbar__icon-btn" aria-label="Copy share link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5"/></svg>
+            </button>
+            <button type="button" class="dash-topbar__icon-btn" aria-label="Sort options">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4v16"/><polyline points="3 8 7 4 11 8"/><path d="M17 20V4"/><polyline points="13 16 17 20 21 16"/></svg>
+            </button>
+            <button type="button" class="dash-topbar__icon-btn" aria-label="More actions">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+            </button>
+          </div>
+        </header>
+
+        <div class="sp-table-wrap">
+          <table class="table table--sm sp-table">
+            <thead class="table__head">
+              <tr class="table__head-row">
+                <th class="table__head-cell">Status</th>
+                <th class="table__head-cell">
+                  <button type="button" class="table__sort" data-sort-key="id">
+                    <span>ID</span>
+                    <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="5 12 12 5 19 12"/></svg>
+                  </button>
+                </th>
+                <th class="table__head-cell">
+                  <button type="button" class="table__sort" data-sort-key="disease">
+                    <span>Disease</span>
+                    <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="5 12 12 5 19 12"/></svg>
+                  </button>
+                </th>
+                <th class="table__head-cell" style="text-align: right;">
+                  <button type="button" class="table__sort" data-sort-key="flu">
+                    <span>Flu</span>
+                    <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="5 12 12 5 19 12"/></svg>
+                  </button>
+                </th>
+                <th class="table__head-cell" style="text-align: right;">
+                  <button type="button" class="table__sort" data-sort-key="eff">
+                    <span>Eff</span>
+                    <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="5 12 12 5 19 12"/></svg>
+                  </button>
+                </th>
+                <th class="table__head-cell" style="text-align: right;">
+                  <button type="button" class="table__sort" data-sort-key="lat">
+                    <span>Lat</span>
+                    <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="5 12 12 5 19 12"/></svg>
+                  </button>
+                </th>
+                <th class="table__head-cell" style="text-align: right;">
+                  <button type="button" class="table__sort" data-sort-key="turns">
+                    <span>Turns</span>
+                    <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="5 12 12 5 19 12"/></svg>
+                  </button>
+                </th>
+                <th class="table__head-cell" style="text-align: right;">
+                  <button type="button" class="table__sort" data-sort-key="acc">
+                    <span>Acc</span>
+                    <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="5 12 12 5 19 12"/></svg>
+                  </button>
+                </th>
+                <th class="table__head-cell" style="text-align: right;">
+                  <button type="button" class="table__sort" data-sort-key="cost">
+                    <span>Cost</span>
+                    <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="5 12 12 5 19 12"/></svg>
+                  </button>
+                </th>
+                <th class="table__head-cell" style="text-align: right;">
+                  <button type="button" class="table__sort" data-sort-key="step">
+                    <span>Step</span>
+                    <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="5 12 12 5 19 12"/></svg>
+                  </button>
+                </th>
+                <th class="table__head-cell" style="text-align: right;"><span class="sr-only" hidden>Actions</span></th>
+              </tr>
+            </thead>
+            <tbody class="table__body">
+
+              <tr class="table__row is-selected">
+                <td class="table__cell table__cell--state">
+                  <span class="badge is-safe" aria-label="pass">
+                    <span class="badge__icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    </span>
+                  </span>
+                </td>
+                <td class="table__cell table__cell--mono" data-sort="2154"><a class="cell-link" href="admin-test-case.html">#2154</a></td>
+                <td class="table__cell" data-sort="prrs"><span class="badge badge--sm is-info"><span class="badge__label">PRRS</span></span></td>
+                <td class="table__cell table__cell--num" data-sort="87">87</td>
+                <td class="table__cell table__cell--num" data-sort="92">92</td>
+                <td class="table__cell table__cell--num" data-sort="1.2">1.2 s</td>
+                <td class="table__cell table__cell--num" data-sort="4">4</td>
+                <td class="table__cell table__cell--num" data-sort="100">100</td>
+                <td class="table__cell table__cell--num" data-sort="0.024">$0.024</td>
+                <td class="table__cell table__cell--num" data-sort="4">4/8</td>
+                <td class="table__cell" style="text-align: right;">
+                  <button type="button" class="dash-topbar__icon-btn" aria-label="Row actions">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                  </button>
+                </td>
+              </tr>
+
+              <tr class="table__row">
+                <td class="table__cell table__cell--state">
+                  <span class="badge is-safe" aria-label="pass">
+                    <span class="badge__icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    </span>
+                  </span>
+                </td>
+                <td class="table__cell table__cell--mono" data-sort="2155"><a class="cell-link" href="admin-test-case.html">#2155</a></td>
+                <td class="table__cell" data-sort="asf"><span class="badge badge--sm is-critical"><span class="badge__label">ASF</span></span></td>
+                <td class="table__cell table__cell--num" data-sort="91">91</td>
+                <td class="table__cell table__cell--num" data-sort="88">88</td>
+                <td class="table__cell table__cell--num" data-sort="0.9">0.9 s</td>
+                <td class="table__cell table__cell--num" data-sort="3">3</td>
+                <td class="table__cell table__cell--num" data-sort="100">100</td>
+                <td class="table__cell table__cell--num" data-sort="0.019">$0.019</td>
+                <td class="table__cell table__cell--num" data-sort="8">8/8</td>
+                <td class="table__cell" style="text-align: right;">
+                  <button type="button" class="dash-topbar__icon-btn" aria-label="Row actions">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                  </button>
+                </td>
+              </tr>
+
+              <tr class="table__row">
+                <td class="table__cell table__cell--state">
+                  <span class="badge is-warning" aria-label="running">
+                    <span class="badge__icon" aria-hidden="true">
+                      <span class="sp-pulse-dot"></span>
+                    </span>
+                  </span>
+                </td>
+                <td class="table__cell table__cell--mono" data-sort="2156"><a class="cell-link" href="admin-test-case.html">#2156</a></td>
+                <td class="table__cell" data-sort="tge"><span class="badge badge--sm is-warning"><span class="badge__label">TGE</span></span></td>
+                <td class="table__cell table__cell--num" data-sort="74">74</td>
+                <td class="table__cell table__cell--num" data-sort="81">81</td>
+                <td class="table__cell table__cell--num" data-sort="1.7">1.7 s</td>
+                <td class="table__cell table__cell--num" data-sort="5">5</td>
+                <td class="table__cell table__cell--num" data-sort="92">92</td>
+                <td class="table__cell table__cell--num" data-sort="0.031">$0.031</td>
+                <td class="table__cell table__cell--num" data-sort="2">2/8</td>
+                <td class="table__cell" style="text-align: right;">
+                  <button type="button" class="dash-topbar__icon-btn" aria-label="Row actions">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                  </button>
+                </td>
+              </tr>
+
+              <tr class="table__row">
+                <td class="table__cell table__cell--state">
+                  <span class="badge is-safe" aria-label="pass">
+                    <span class="badge__icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    </span>
+                  </span>
+                </td>
+                <td class="table__cell table__cell--mono" data-sort="2157"><a class="cell-link" href="admin-test-case.html">#2157</a></td>
+                <td class="table__cell" data-sort="app"><span class="badge badge--sm is-primary"><span class="badge__label">APP</span></span></td>
+                <td class="table__cell table__cell--num" data-sort="93">93</td>
+                <td class="table__cell table__cell--num" data-sort="95">95</td>
+                <td class="table__cell table__cell--num" data-sort="1.1">1.1 s</td>
+                <td class="table__cell table__cell--num" data-sort="4">4</td>
+                <td class="table__cell table__cell--num" data-sort="100">100</td>
+                <td class="table__cell table__cell--num" data-sort="0.022">$0.022</td>
+                <td class="table__cell table__cell--num" data-sort="8">8/8</td>
+                <td class="table__cell" style="text-align: right;">
+                  <button type="button" class="dash-topbar__icon-btn" aria-label="Row actions">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                  </button>
+                </td>
+              </tr>
+
+              <tr class="table__row">
+                <td class="table__cell table__cell--state">
+                  <span class="badge is-critical" aria-label="fail">
+                    <span class="badge__icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+                    </span>
+                  </span>
+                </td>
+                <td class="table__cell table__cell--mono" data-sort="2158"><a class="cell-link" href="admin-test-case.html">#2158</a></td>
+                <td class="table__cell" data-sort="erysipelas"><span class="badge badge--sm is-accent"><span class="badge__label">Erysipelas</span></span></td>
+                <td class="table__cell table__cell--num" data-sort="42">42</td>
+                <td class="table__cell table__cell--num" data-sort="38">38</td>
+                <td class="table__cell table__cell--num" data-sort="2.4">2.4 s</td>
+                <td class="table__cell table__cell--num" data-sort="6">6</td>
+                <td class="table__cell table__cell--num" data-sort="55">55</td>
+                <td class="table__cell table__cell--num" data-sort="0.041">$0.041</td>
+                <td class="table__cell table__cell--num" data-sort="8">8/8</td>
+                <td class="table__cell" style="text-align: right;">
+                  <button type="button" class="dash-topbar__icon-btn" aria-label="Row actions">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                  </button>
+                </td>
+              </tr>
+
+              <tr class="table__row">
+                <td class="table__cell table__cell--state">
+                  <span class="badge is-safe" aria-label="pass">
+                    <span class="badge__icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    </span>
+                  </span>
+                </td>
+                <td class="table__cell table__cell--mono" data-sort="2159"><a class="cell-link" href="admin-test-case.html">#2159</a></td>
+                <td class="table__cell" data-sort="ped"><span class="badge badge--sm is-info"><span class="badge__label">PED</span></span></td>
+                <td class="table__cell table__cell--num" data-sort="89">89</td>
+                <td class="table__cell table__cell--num" data-sort="90">90</td>
+                <td class="table__cell table__cell--num" data-sort="1.0">1.0 s</td>
+                <td class="table__cell table__cell--num" data-sort="3">3</td>
+                <td class="table__cell table__cell--num" data-sort="100">100</td>
+                <td class="table__cell table__cell--num" data-sort="0.018">$0.018</td>
+                <td class="table__cell table__cell--num" data-sort="8">8/8</td>
+                <td class="table__cell" style="text-align: right;">
+                  <button type="button" class="dash-topbar__icon-btn" aria-label="Row actions">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                  </button>
+                </td>
+              </tr>
+
+              <tr class="table__row">
+                <td class="table__cell table__cell--state">
+                  <span class="badge is-critical" aria-label="fail">
+                    <span class="badge__icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+                    </span>
+                  </span>
+                </td>
+                <td class="table__cell table__cell--mono" data-sort="2160"><a class="cell-link" href="admin-test-case.html">#2160</a></td>
+                <td class="table__cell" data-sort="mycoplasma"><span class="badge badge--sm is-warning"><span class="badge__label">Mycoplasma</span></span></td>
+                <td class="table__cell table__cell--num" data-sort="58">58</td>
+                <td class="table__cell table__cell--num" data-sort="61">61</td>
+                <td class="table__cell table__cell--num" data-sort="1.9">1.9 s</td>
+                <td class="table__cell table__cell--num" data-sort="5">5</td>
+                <td class="table__cell table__cell--num" data-sort="72">72</td>
+                <td class="table__cell table__cell--num" data-sort="0.033">$0.033</td>
+                <td class="table__cell table__cell--num" data-sort="8">8/8</td>
+                <td class="table__cell" style="text-align: right;">
+                  <button type="button" class="dash-topbar__icon-btn" aria-label="Row actions">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                  </button>
+                </td>
+              </tr>
+
+              <tr class="table__row">
+                <td class="table__cell table__cell--state">
+                  <span class="badge is-safe" aria-label="pass">
+                    <span class="badge__icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    </span>
+                  </span>
+                </td>
+                <td class="table__cell table__cell--mono" data-sort="2161"><a class="cell-link" href="admin-test-case.html">#2161</a></td>
+                <td class="table__cell" data-sort="csf"><span class="badge badge--sm is-critical"><span class="badge__label">CSF</span></span></td>
+                <td class="table__cell table__cell--num" data-sort="94">94</td>
+                <td class="table__cell table__cell--num" data-sort="93">93</td>
+                <td class="table__cell table__cell--num" data-sort="0.8">0.8 s</td>
+                <td class="table__cell table__cell--num" data-sort="3">3</td>
+                <td class="table__cell table__cell--num" data-sort="100">100</td>
+                <td class="table__cell table__cell--num" data-sort="0.017">$0.017</td>
+                <td class="table__cell table__cell--num" data-sort="8">8/8</td>
+                <td class="table__cell" style="text-align: right;">
+                  <button type="button" class="dash-topbar__icon-btn" aria-label="Row actions">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                  </button>
+                </td>
+              </tr>
+
+              <tr class="table__row">
+                <td class="table__cell table__cell--state">
+                  <span class="badge is-safe" aria-label="pass">
+                    <span class="badge__icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    </span>
+                  </span>
+                </td>
+                <td class="table__cell table__cell--mono" data-sort="2162"><a class="cell-link" href="admin-test-case.html">#2162</a></td>
+                <td class="table__cell" data-sort="salmonella"><span class="badge badge--sm is-primary"><span class="badge__label">Salmonella</span></span></td>
+                <td class="table__cell table__cell--num" data-sort="88">88</td>
+                <td class="table__cell table__cell--num" data-sort="86">86</td>
+                <td class="table__cell table__cell--num" data-sort="1.3">1.3 s</td>
+                <td class="table__cell table__cell--num" data-sort="4">4</td>
+                <td class="table__cell table__cell--num" data-sort="100">100</td>
+                <td class="table__cell table__cell--num" data-sort="0.021">$0.021</td>
+                <td class="table__cell table__cell--num" data-sort="8">8/8</td>
+                <td class="table__cell" style="text-align: right;">
+                  <button type="button" class="dash-topbar__icon-btn" aria-label="Row actions">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                  </button>
+                </td>
+              </tr>
+
+              <tr class="table__row">
+                <td class="table__cell table__cell--state">
+                  <span class="badge is-neutral" aria-label="not run">
+                    <span class="badge__icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/></svg>
+                    </span>
+                  </span>
+                </td>
+                <td class="table__cell table__cell--mono" data-sort="2163"><a class="cell-link" href="admin-test-case.html">#2163</a></td>
+                <td class="table__cell" data-sort="strep suis"><span class="badge badge--sm is-neutral"><span class="badge__label">Strep suis</span></span></td>
+                <td class="table__cell table__cell--num table__cell--meta" data-sort="0">—</td>
+                <td class="table__cell table__cell--num table__cell--meta" data-sort="0">—</td>
+                <td class="table__cell table__cell--num table__cell--meta" data-sort="0">—</td>
+                <td class="table__cell table__cell--num table__cell--meta" data-sort="0">—</td>
+                <td class="table__cell table__cell--num table__cell--meta" data-sort="0">—</td>
+                <td class="table__cell table__cell--num table__cell--meta" data-sort="0">—</td>
+                <td class="table__cell table__cell--num table__cell--meta" data-sort="0">—</td>
+                <td class="table__cell" style="text-align: right;">
+                  <button type="button" class="dash-topbar__icon-btn" aria-label="Row actions">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                  </button>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+      </article>
+
+    </section>
+
+  </main>
+</div>
+
+<script>
+  (function () {
+    var sidebar = document.querySelector('.dash__side .sidebar');
+    var btn = document.querySelector('.dash__side .sidebar__collapse');
+    if (sidebar && btn) {
+      btn.addEventListener('click', function () {
+        var collapsed = sidebar.classList.toggle('sidebar--collapsed');
+        btn.setAttribute('aria-pressed', collapsed ? 'true' : 'false');
+        btn.setAttribute('aria-label', collapsed ? 'Expand sidebar' : 'Collapse sidebar');
+      });
+    }
+  })();
+  document.querySelectorAll('.dash__side .sidebar__link[aria-expanded]').forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      var item = btn.closest('.sidebar__item');
+      if (!item) return;
+      var open = item.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  });
+
+  // ---------- Suite selection ----------
+  (function () {
+    var list = document.querySelector('[data-suites-listbox]');
+    var detailTitle = document.getElementById('suite-detail-h');
+    if (!list || !detailTitle) return;
+    list.addEventListener('click', function (e) {
+      if (e.target.closest('.suite-item__result')) return;
+      var card = e.target.closest('.suite-item');
+      if (!card || !list.contains(card)) return;
+      list.querySelectorAll('.suite-item.is-selected').forEach(function (n) {
+        n.classList.remove('is-selected');
+        n.setAttribute('aria-pressed', 'false');
+      });
+      card.classList.add('is-selected');
+      card.setAttribute('aria-pressed', 'true');
+      var name = card.getAttribute('data-suite-name');
+      if (name) detailTitle.textContent = name;
+      /* TODO: swap SP rows per selected suite */
+    });
+    list.addEventListener('keydown', function (e) {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      var card = e.target.closest('.suite-item');
+      if (!card || !list.contains(card)) return;
+      if (e.target.closest('.suite-item__result')) return;
+      e.preventDefault();
+      card.click();
+    });
+  })();
+
+  // ---------- Sortable SP table headers ----------
+  (function () {
+    var table = document.querySelector('.sp-table');
+    if (!table) return;
+    var tbody = table.querySelector('tbody');
+    if (!tbody) return;
+    function cellValue(row, colIndex, isNum) {
+      var cell = row.children[colIndex];
+      if (!cell) return isNum ? 0 : '';
+      var raw = cell.getAttribute('data-sort');
+      if (raw === null) raw = cell.textContent.trim();
+      return isNum ? parseFloat(raw) || 0 : raw.toLowerCase();
+    }
+    table.querySelectorAll('.table__sort').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var th = btn.closest('th');
+        var headRow = th && th.parentElement;
+        if (!headRow) return;
+        var colIndex = Array.prototype.indexOf.call(headRow.children, th);
+        var sampleCell = tbody.querySelector('tr')
+          ? tbody.querySelector('tr').children[colIndex]
+          : null;
+        var isNum = sampleCell && sampleCell.classList.contains('table__cell--num');
+        var nextDir = btn.classList.contains('is-asc') ? 'desc' : 'asc';
+        table.querySelectorAll('.table__sort').forEach(function (other) {
+          other.classList.remove('is-asc', 'is-desc');
+        });
+        btn.classList.add(nextDir === 'asc' ? 'is-asc' : 'is-desc');
+        var rows = Array.prototype.slice.call(tbody.querySelectorAll('tr'));
+        rows.sort(function (a, b) {
+          var av = cellValue(a, colIndex, isNum);
+          var bv = cellValue(b, colIndex, isNum);
+          if (av < bv) return nextDir === 'asc' ? -1 : 1;
+          if (av > bv) return nextDir === 'asc' ? 1 : -1;
+          return 0;
+        });
+        rows.forEach(function (r) { tbody.appendChild(r); });
+      });
+    });
+  })();
+
+  // ---------- Suite filter tabs ----------
+  (function () {
+    var tabsHost = document.querySelector('[data-suites-tabs]');
+    var list = document.querySelector('[data-suites-listbox]');
+    if (!tabsHost || !list) return;
+    tabsHost.querySelectorAll('.tabs__tab').forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        tabsHost.querySelectorAll('.tabs__tab').forEach(function (t) {
+          t.classList.remove('is-selected');
+          t.setAttribute('aria-selected', 'false');
+        });
+        tab.classList.add('is-selected');
+        tab.setAttribute('aria-selected', 'true');
+        var filter = tab.getAttribute('data-filter') || 'all';
+        if (filter === 'all') {
+          list.removeAttribute('data-filter');
+        } else {
+          list.setAttribute('data-filter', filter);
+        }
+        list.querySelectorAll('.suite-item').forEach(function (card) {
+          var state = card.getAttribute('data-state');
+          card.hidden = filter !== 'all' && state !== filter;
+        });
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>

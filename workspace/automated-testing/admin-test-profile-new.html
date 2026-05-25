@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin · Automated testing — new profile — Farm2Vet</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="../../styles/tokens.css" />
+<link rel="stylesheet" href="../../styles/base.css" />
+<link rel="stylesheet" href="../../styles/typography.css" />
+<link rel="stylesheet" href="../../styles/shell.css" />
+<link rel="stylesheet" href="../../styles/sidebar.css" />
+
+<link rel="stylesheet" href="../../styles/button.css" />
+<link rel="stylesheet" href="../../styles/card.css" />
+<link rel="stylesheet" href="../../styles/form.css" />
+<link rel="stylesheet" href="../../styles/badge.css" />
+<link rel="stylesheet" href="../../styles/chip.css" />
+<link rel="stylesheet" href="../../styles/chip-picker.css" />
+<link rel="stylesheet" href="../../styles/dropdown.css" />
+
+<link rel="stylesheet" href="_shared.css" />
+
+<style>
+/* Page-scoped scaffolding for admin-test-profile-new. */
+.form-section { gap: var(--spacing-4x); }
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--spacing-4x) var(--spacing-5x);
+}
+.form-grid .field--full {
+    grid-column: 1 / -1;
+}
+@media (max-width: 800px) {
+    .form-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="dash">
+
+  <!-- SIDEBAR -->
+  <aside class="dash__side">
+    <aside class="sidebar" aria-label="Admin primary navigation">
+      <header class="sidebar__header">
+        <a href="../admin-dashboard.html" class="sidebar__brand">
+          <img class="sidebar__brand-mark" src="../../logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
+          <span class="sidebar__brand-text">Farm2Vet</span>
+        </a>
+        <button type="button" class="sidebar__collapse" aria-label="Collapse sidebar" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6"/></svg>
+        </button>
+      </header>
+      <nav class="sidebar__nav" aria-label="Admin destinations">
+        <ul class="sidebar__list">
+          <li class="sidebar__item">
+            <a class="sidebar__link" href="../admin-dashboard.html">
+              <span class="sidebar__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+              </span>
+              <span class="sidebar__label">Overview</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <button type="button" class="sidebar__link" aria-expanded="false">
+              <span class="sidebar__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/></svg>
+              </span>
+              <span class="sidebar__label">Data management</span>
+              <span class="sidebar__trailing">
+                <svg class="sidebar__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+              </span>
+            </button>
+            <ul class="sidebar__sublist">
+              <li class="sidebar__item"><a class="sidebar__link" href="../admin-disease-earthsky.html"><span class="sidebar__label">Disease</span><span class="sidebar__trailing"><span class="sidebar__badge">142</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Question</span><span class="sidebar__trailing"><span class="sidebar__badge">318</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Conversation</span><span class="sidebar__trailing"><span class="sidebar__badge">47</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Image</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Resource</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">PDF Input</span></a></li>
+            </ul>
+          </li>
+          <li class="sidebar__item is-open">
+            <button type="button" class="sidebar__link" aria-expanded="true">
+              <span class="sidebar__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
+              </span>
+              <span class="sidebar__label">Automated testing</span>
+              <span class="sidebar__trailing">
+                <svg class="sidebar__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+              </span>
+            </button>
+            <ul class="sidebar__sublist">
+              <li class="sidebar__item"><a class="sidebar__link" href="admin-test-console.html"><span class="sidebar__label">Console</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link is-current" href="admin-test-profiles.html" aria-current="page"><span class="sidebar__label">Profiles</span><span class="sidebar__trailing"><span class="sidebar__badge">142</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="admin-test-suites.html"><span class="sidebar__label">Suites</span><span class="sidebar__trailing"><span class="sidebar__badge">12</span></span></a></li>
+            </ul>
+          </li>
+          <li class="sidebar__item">
+            <a class="sidebar__link" href="#">
+              <span class="sidebar__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              </span>
+              <span class="sidebar__label">Sync database</span>
+              <span class="sidebar__trailing"><span class="sidebar__badge sidebar__badge--warning">6</span></span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <div class="sidebar__footer">
+        <div class="sidebar__profile-wrap">
+          <div class="sidebar__profile">
+            <span class="sidebar__avatar" aria-hidden="true">M</span>
+            <span class="sidebar__profile-text">
+              <span class="sidebar__profile-name">Minh</span>
+              <span class="sidebar__profile-role">Admin</span>
+            </span>
+            <button type="button" class="sidebar__overflow" aria-label="Account menu" aria-haspopup="menu" aria-expanded="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="dash__main dash__main--has-actionbar">
+
+    <header class="dash-topbar" aria-label="Workspace chrome">
+      <nav class="dash-topbar__crumbs" aria-label="Breadcrumb">
+        <a href="../admin-dashboard.html">Admin</a>
+        <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
+        <a href="admin-test-console.html">Automated testing</a>
+        <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
+        <a href="admin-test-profiles.html">Profiles</a>
+        <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
+        <span class="dash-topbar__crumb-tail" aria-current="page">New</span>
+      </nav>
+      <ul class="dash-topbar__cluster">
+        <li class="dash-topbar__cluster-item"><span class="dash-topbar__version">draft · auto-saved</span></li>
+      </ul>
+    </header>
+
+    <header class="dash-page">
+      <div class="dash-page__text">
+        <h1>New profile.</h1>
+        <p class="dash-page__lede">A synthetic profile is a fictional farm + a case. Describe what the farmer would see and tell us which disease this profile labels.</p>
+      </div>
+    </header>
+
+    <!-- Card 1: Farm background -->
+    <article class="workspace-card">
+      <div class="workspace-section form-section">
+        <header class="workspace-section__head">
+          <h2 class="workspace-section__title">Farm background</h2>
+        </header>
+        <div class="form-grid">
+          <div class="field">
+            <label class="field__label" for="profile-farm-size">Farm size</label>
+            <input type="text" id="profile-farm-size" class="input input--sm" placeholder="e.g. 300 pigs" />
+          </div>
+          <div class="field">
+            <label class="field__label" for="profile-pig-types">Pig types</label>
+            <input type="text" id="profile-pig-types" class="input input--sm" placeholder="e.g. weaners, growers, finishers" />
+          </div>
+          <div class="field field--full">
+            <label class="field__label" for="profile-location-climate">Location &amp; climate</label>
+            <input type="text" id="profile-location-climate" class="input input--sm" placeholder="e.g. subtropical, Mekong delta" />
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 2: Observed evidences -->
+    <article class="workspace-card">
+      <div class="workspace-section form-section">
+        <header class="workspace-section__head">
+          <h2 class="workspace-section__title">Observed evidences</h2>
+          <p class="workspace-section__summary">What the farmer sees, in their words. Leave a field blank if the profile shouldn't volunteer it.</p>
+        </header>
+        <div class="form-grid">
+          <div class="field">
+            <label class="field__label" for="profile-affected">Affected pig types</label>
+            <input type="text" id="profile-affected" class="input input--sm" placeholder="e.g. mostly growers and finishers" />
+          </div>
+          <div class="field">
+            <label class="field__label" for="profile-total-affected">Total affected</label>
+            <input type="text" id="profile-total-affected" class="input input--sm" placeholder="e.g. about 180 out of 300" />
+          </div>
+          <div class="field">
+            <label class="field__label" for="profile-mortality">Mortality</label>
+            <textarea id="profile-mortality" class="input input--sm textarea" rows="2" placeholder="e.g. high, many pigs dying"></textarea>
+          </div>
+          <div class="field">
+            <label class="field__label" for="profile-fever">Fever</label>
+            <textarea id="profile-fever" class="input input--sm textarea" rows="2" placeholder="e.g. high fever"></textarea>
+          </div>
+          <div class="field">
+            <label class="field__label" for="profile-sym-digestive">Digestive symptoms</label>
+            <textarea id="profile-sym-digestive" class="input input--sm textarea" rows="3" placeholder="e.g. lost appetite, bloody diarrhea"></textarea>
+          </div>
+          <div class="field">
+            <label class="field__label" for="profile-sym-respiratory">Respiratory symptoms</label>
+            <textarea id="profile-sym-respiratory" class="input input--sm textarea" rows="3" placeholder="e.g. coughing, nasal discharge"></textarea>
+          </div>
+          <div class="field">
+            <label class="field__label" for="profile-sym-neurological">Neurological symptoms</label>
+            <textarea id="profile-sym-neurological" class="input input--sm textarea" rows="3" placeholder="e.g. wobbly gait, hind limb paralysis"></textarea>
+          </div>
+          <div class="field">
+            <label class="field__label" for="profile-sym-dermatology">Dermatological symptoms</label>
+            <textarea id="profile-sym-dermatology" class="input input--sm textarea" rows="3" placeholder="e.g. blue-purple discoloration on ears"></textarea>
+          </div>
+          <div class="field field--full">
+            <label class="field__label" for="profile-sym-reproductive">Reproductive symptoms</label>
+            <textarea id="profile-sym-reproductive" class="input input--sm textarea" rows="3" placeholder="e.g. abortions, weak piglets"></textarea>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 3: Medical history + disease label -->
+    <article class="workspace-card">
+      <div class="workspace-section form-section">
+        <header class="workspace-section__head">
+          <h2 class="workspace-section__title">Medical history</h2>
+        </header>
+        <div class="form-grid">
+          <div class="field">
+            <label class="field__label" for="profile-vaccination">Vaccination history</label>
+            <textarea id="profile-vaccination" class="input input--sm textarea" rows="3" placeholder="e.g. CSF 6 months ago, coverage unclear"></textarea>
+          </div>
+          <div class="field">
+            <label class="field__label" for="profile-treatment">Treatment history</label>
+            <textarea id="profile-treatment" class="input input--sm textarea" rows="3" placeholder="e.g. none yet"></textarea>
+          </div>
+          <div class="field field--full">
+            <label class="field__label" for="profile-disease">Disease label</label>
+            <select id="profile-disease" class="input input--sm">
+              <option value="" selected disabled>Pick a disease…</option>
+              <option value="PRRS">PRRS — Porcine Reproductive and Respiratory Syndrome</option>
+              <option value="ASF">ASF — African Swine Fever</option>
+              <option value="TGE">TGE — Transmissible Gastroenteritis</option>
+              <option value="ERY">ERY — Erysipelas</option>
+              <option value="APP">APP — Actinobacillus pleuropneumoniae</option>
+              <option value="CSF">CSF — Classical Swine Fever</option>
+            </select>
+            <p class="field__helper">The disease the chatbot is expected to land on. Scored as the labeller's truth at run time.</p>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Sticky action bar -->
+    <footer class="workspace-actionbar" role="region" aria-label="Form actions">
+      <span class="workspace-actionbar__hint">Profile will be assigned a new SP-### code on save.</span>
+      <div class="workspace-actionbar__spacer"></div>
+      <a href="admin-test-profiles.html" class="btn btn--ghost"><span class="btn__label">Cancel</span></a>
+      <button type="button" class="btn btn--cta"><span class="btn__label">Create profile</span></button>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+  (function () {
+    var sidebar = document.querySelector('.dash__side .sidebar');
+    var btn = document.querySelector('.dash__side .sidebar__collapse');
+    if (sidebar && btn) {
+      btn.addEventListener('click', function () {
+        var collapsed = sidebar.classList.toggle('sidebar--collapsed');
+        btn.setAttribute('aria-pressed', collapsed ? 'true' : 'false');
+        btn.setAttribute('aria-label', collapsed ? 'Expand sidebar' : 'Collapse sidebar');
+      });
+    }
+  })();
+  document.querySelectorAll('.dash__side .sidebar__link[aria-expanded]').forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      var item = btn.closest('.sidebar__item');
+      if (!item) return;
+      var open = item.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  });
+</script>
+
+</body>
+</html>
