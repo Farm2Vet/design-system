@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Wireframe · Image Management · Empty</title>
+<link rel="stylesheet" href="wireframe.css" />
+</head>
+<body>
+
+<div class="wf-banner">
+  <div class="wf-banner__crumbs">
+    <span>Wireframe</span>
+    <span>·</span>
+    <strong>Image Management</strong>
+    <span>·</span>
+    <span>Empty state (no results)</span>
+  </div>
+  <div class="wf-banner__nav">
+    <a href="index.html">Index</a>
+    <a href="01-list.html">List</a>
+    <a href="02-list-empty.html" class="is-current">Empty</a>
+    <a href="03-list-unauthorized.html">Unauthorized</a>
+    <a href="04-edit.html">Edit</a>
+    <a href="05-create.html">Create</a>
+    <a href="06-create-uploading.html">Uploading</a>
+  </div>
+</div>
+
+<div class="app">
+
+  <aside class="sidebar">
+    <div class="sidebar__brand">[ Brand / logo ]</div>
+    <div class="sidebar__group">
+      <div class="sidebar__label">Knowledge Base</div>
+      <div class="sidebar__item"><span class="dot"></span>Diseases</div>
+      <div class="sidebar__item is-active"><span class="dot"></span>Domain Images</div>
+      <div class="sidebar__item"><span class="dot"></span>Sources</div>
+      <div class="sidebar__item"><span class="dot"></span>Translations</div>
+    </div>
+    <div class="sidebar__group">
+      <div class="sidebar__label">Admin</div>
+      <div class="sidebar__item"><span class="dot"></span>Users</div>
+      <div class="sidebar__item"><span class="dot"></span>Audit log</div>
+      <div class="sidebar__item"><span class="dot"></span>Settings</div>
+    </div>
+  </aside>
+
+  <div class="main">
+
+    <header class="topbar">
+      <div class="topbar__path">
+        Admin <span class="sep">/</span> <strong>Domain Images</strong>
+      </div>
+      <div class="topbar__user">
+        <span>Admin user</span>
+        <div class="topbar__avatar"></div>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <div class="page-head">
+        <div>
+          <h1 class="page-head__title">Domain images</h1>
+          <p class="page-head__sub">
+            <strong>0</strong> results for current filters · <strong>188</strong> total images
+          </p>
+        </div>
+        <button class="btn btn--primary"><span class="plus"></span> Add image</button>
+      </div>
+
+      <!-- Toolbar with active filters to make "empty" feel like a search result -->
+      <div class="toolbar">
+        <label class="toolbar__search">
+          <span class="glyph"></span>
+          <input type="text" value="leptospira" placeholder="Search by disease, label, or source…" />
+        </label>
+
+        <span class="chip is-on">Disease: PRRSV <span class="chip__x">×</span></span>
+        <span class="chip is-on">Source: Merck <span class="chip__x">×</span></span>
+
+        <div class="toolbar__spacer"></div>
+
+        <select class="select" aria-label="Sort">
+          <option>Newest first</option>
+        </select>
+        <select class="select" aria-label="Per page">
+          <option>20 per page</option>
+        </select>
+      </div>
+
+      <!-- Empty state takes the place of the grid -->
+      <div class="empty">
+        <div class="empty__glyph">?</div>
+        <h2 class="empty__title">No images match the current filters</h2>
+        <p class="empty__body">
+          Try removing one of the filter chips above, broadening the search term,
+          or add a new image to the knowledge base for this disease.
+        </p>
+        <div class="empty__actions">
+          <button class="btn">Clear all filters</button>
+          <button class="btn btn--primary"><span class="plus"></span> Add image</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

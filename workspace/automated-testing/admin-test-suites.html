@@ -40,11 +40,11 @@
 .suites-panel {
     display: grid;
     grid-template-columns: 380px minmax(0, 1fr);
-    grid-template-rows: auto 1fr;
+    grid-template-rows: auto auto 1fr;     /* crumbs · top-header · columns */
     align-items: stretch;
     padding: 0;
     overflow: hidden;          /* clip column edges to the card's radius */
-    height: calc(100vh - 120px);  /* breadcrumb + dash body padding */
+    height: calc(100vh - 80px);  /* only the outer dash padding remains; crumb row lives inside the panel */
 }
 .suites-panel__top-header {
     grid-column: 1 / -1;
@@ -85,6 +85,30 @@
     padding: var(--spacing-5x) var(--spacing-5x) var(--spacing-4x);
     border-bottom: 1px solid var(--border-default-subtle);
 }
+
+/* Breadcrumb row — sits inside the panel, spans both columns,
+   sits above the page-title top header. Page-scoped so it doesn't
+   collide with the canonical .dash-topbar__crumbs treatment. */
+.suites-panel__crumbs {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2x);
+    padding: var(--spacing-3x) var(--spacing-6x);
+    border-bottom: 1px solid var(--border-default-subtle);
+    font-size: var(--text-body-sm);
+    color: var(--text-default-subtle);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.suites-panel__crumbs a {
+    color: var(--text-default-subtle);
+    text-decoration: none;
+}
+.suites-panel__crumbs a:hover { color: var(--text-default); }
+.suites-panel__crumb-sep  { color: var(--text-default-minimal); }
+.suites-panel__crumb-tail { color: var(--text-default); }
 
 /* ---------- Left column: sub-toolbar + suite list ---------- */
 .suites-panel__col--list .suites-subtoolbar {
@@ -183,14 +207,18 @@
 .suites-list {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-2x);
-    padding: var(--spacing-3x);
+    gap: 0;
+    padding: 0;
     overflow-y: auto;
     flex: 1 1 0;
     min-height: 0;
 }
 
-/* ---------- Suite card ---------- */
+/* ---------- Suite row ---------- */
+/* Flush row, separated from siblings by a hairline. No border,
+   radius, or bg of its own — the row is the row, not a chip-on-
+   cream. Horizontal padding matches the column head above so
+   the row's content edge aligns with it. */
 .suite-item {
     position: relative;
     display: grid;
@@ -198,37 +226,39 @@
     gap: var(--spacing-3x);
     align-items: center;
     width: 100%;
-    padding: var(--spacing-3x);
-    background: var(--background-default);
-    border: 1px solid var(--border-default-subtle);
-    border-radius: var(--radius-md);
+    padding: var(--spacing-3x) var(--spacing-5x);
+    background: transparent;
+    border: none;
+    border-radius: 0;
     color: inherit;
     font: inherit;
     text-align: left;
     cursor: pointer;
-    transition: background-color .15s ease, border-color .15s ease;
+    transition: background-color .15s ease;
 }
+.suite-item + .suite-item {
+    border-top: 1px solid var(--border-default-subtle);
+}
+/* Row interaction — ported from .dash-catalogue__item on
+   admin-disease-earthsky.html. The 3px primary inset bar
+   replaces the previous ::before pseudo-element; inset box-
+   shadow stacks cleanly with the row's transparent bg and the
+   transition target is one property (background-color) instead
+   of two. */
 .suite-item:hover {
-    background: var(--background-default-hover);
-    border-color: var(--border-default);
-}
-.suite-item.is-selected {
-    background: var(--background-default-minimal);
-    border-color: var(--border-default);
-}
-.suite-item.is-selected::before {
-    content: '';
-    position: absolute;
-    top: var(--spacing-2x);
-    bottom: var(--spacing-2x);
-    left: 0;
-    width: 3px;
-    background: var(--accent-500);
-    border-radius: 0 var(--radius-mc) var(--radius-mc) 0;
+    background: color-mix(in srgb, var(--primary-500) 10%, transparent);
+    box-shadow: inset 3px 0 0 var(--primary-500);
 }
 .suite-item:focus-visible {
     outline: 2px solid var(--accent-500);
-    outline-offset: 2px;
+    outline-offset: -2px;
+}
+.suite-item.is-selected {
+    background: color-mix(in srgb, var(--primary-500) 14%, transparent);
+    box-shadow: inset 3px 0 0 var(--primary-500);
+}
+.suite-item.is-selected:hover {
+    background: color-mix(in srgb, var(--primary-500) 18%, transparent);
 }
 
 .suite-item__body {
@@ -261,24 +291,20 @@
     white-space: nowrap;
     min-width: 0;
 }
-/* Two-row meta: timing on top, pass/fail rates below.
-   `gap` between rows is smaller than the head→meta gap so the two
-   meta rows read as one block. */
+/* Meta block now wraps only the timing line — pass/fail rates
+   moved into the trailing donut. */
 .suite-item__meta {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
     font-size: var(--text-body-sm);
     color: var(--text-default-subtle);
 }
-.suite-item__timing,
-.suite-item__rates {
+.suite-item__timing {
     display: flex;
     align-items: center;
     gap: var(--spacing-2x);
     min-width: 0;
+    flex-wrap: wrap;
+    row-gap: 2px;
 }
-.suite-item__timing { flex-wrap: wrap; row-gap: 2px; }
 .suite-item__timing-range,
 .suite-item__timing-dur,
 .suite-item__timing-eta {
@@ -313,8 +339,7 @@
     100% { box-shadow: 0 0 0 0   color-mix(in srgb, currentColor  0%, transparent); }
 }
 
-/* Running icon — 14 px filled warning circle, mirrors .suite-item__rate-icon
-   anatomy so pass / fail / running share one footprint. The white inner dot
+/* Running icon — 14 px filled warning circle. The white inner dot
    pings outward to convey ongoing aggregation. */
 .suite-item__timing-icon {
     display: inline-flex;
@@ -334,141 +359,138 @@
     50%      { transform: scale(1.6); opacity: 0.45; }
 }
 .suite-item__sep { color: var(--text-default-minimal); }
-.suite-item__rate {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-1x);
-    font-variant-numeric: tabular-nums;
-}
-.suite-item__rate--errored { color: var(--text-critical); }
 
-/* Pass/fail rate icons — colored circle with white glyph inside.
-   Replaces .dash-status-dot in the suite-card meta row to make
-   pass vs fail explicit at small sizes. Filled-circle on currentColor
-   so tone tracks the modifier; inner check / × stroked white. */
-.suite-item__rate-icon {
-    display: inline-flex;
-    width: 14px;
-    height: 14px;
-    flex: 0 0 auto;
+/* Mono small-caps tags inside the running row's timing line
+   (START / ETA). Sits inline before each value. */
+.suite-item__timing-key {
+    margin-right: 2px;
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
 }
-.suite-item__rate-icon svg { width: 100%; height: 100%; display: block; }
-.suite-item__rate-icon--pass { color: var(--safe-500); }
-.suite-item__rate-icon--fail { color: var(--critical-500); }
-
-/* Progress bar */
-.suite-item__progress {
-    height: 4px;
-    background: var(--background-default-minimal);
-    border-radius: var(--radius-pill);
-    overflow: hidden;
-}
-.suite-item.is-selected .suite-item__progress {
-    background: color-mix(in srgb, var(--neutral-900) 8%, transparent);
-}
-.suite-item__progress-fill {
-    display: block;
-    height: 100%;
-    width: var(--pct, 0%);
-    background: var(--accent-500);
-    border-radius: inherit;
-    transition: width .2s ease;
-}
-.suite-item--errored .suite-item__progress-fill { background: var(--critical-500); }
-
-/* Progress is an in-flight signal only — completed and errored
-   cards don't need a bar. */
-.suite-item:not(.suite-item--running) .suite-item__progress {
-    display: none;
-}
-
-/* Result control on each suite card — navigates to the run
-   report. NEUTRAL ghost circle (no green fill, no check) so it
-   doesn't conflict with .suite-item__rate-icon--pass and
-   .sp-status--pass, which legitimately use the green-circle-
-   white-check glyph for "Pass". Same 32 px footprint so the card
-   layout never shifts between states.
-   Behaviour: a real <a> that navigates to admin-test-run.html. */
-.suite-item__result {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    padding: 0;
-    border-radius: 50%;
-    background: transparent;
-    border: 1px solid var(--border-default);
-    color: var(--text-default-subtle);
-    text-decoration: none;
-    flex: 0 0 auto;
-    transition: background-color .15s ease, color .15s ease,
-                border-color .15s ease;
-}
-.suite-item__result:hover,
-.suite-item__result:focus-visible {
-    background: var(--background-default-hover);
-    border-color: var(--border-default);
-    color: var(--text-default);
-}
-.suite-item__result:focus-visible {
-    outline: 2px solid var(--accent-500);
-    outline-offset: 2px;
-}
-
-.suite-item__result-icon {
-    display: inline-flex;
-    width: 16px;
-    height: 16px;
-    flex: 0 0 auto;
-}
-.suite-item__result-icon svg {
-    width: 100%;
-    height: 100%;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-}
-
-/* Running suites still hide the result control. */
-.suite-item--running .suite-item__result { display: none; }
-.suite-item--errored .suite-item__rate--pass,
-.suite-item--errored .suite-item__rate--fail { display: none; }
-
-/* Errored cards swap the "see report" check for a rerun affordance.
-   Same 32 px circle so the card layout never shifts between states,
-   but the tone is critical-tinted, not primary-green. */
-.suite-item__action {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    padding: 0;
-    border: none;
-    border-radius: 50%;
-    background: color-mix(in srgb, var(--critical-500) 12%, transparent);
-    color: var(--critical-500);
-    cursor: pointer;
-    flex: 0 0 auto;
-    transition: background-color .15s ease, color .15s ease;
-}
-.suite-item__action:hover,
-.suite-item__action:focus-visible {
-    background: var(--critical-500);
-    color: #fff;
-}
-.suite-item__action:focus-visible {
-    outline: 2px solid var(--accent-500);
-    outline-offset: 2px;
-}
-.suite-item__action svg { width: 16px; height: 16px; }
-
 /* Errored is terminal, not in-flight — kill the timing-dot pulse. */
 .suite-item__timing-state--errored .suite-item__timing-dot {
     animation: none;
+}
+
+/* ---------- Trailing status donut ----------
+   One 32 px control per row that absorbs the old result link,
+   rerun button, pass/fail rates, and bottom progress bar into a
+   single state-aware surface.
+
+   State → tone:
+     running   → warning (orange ring, % readout, hover swaps in stop)
+     complete  → safe    (full green ring, check glyph)
+     errored   → critical (full red ring, warning glyph, hover swaps in rerun)
+
+   The track ring stays neutral across states. Only the progress
+   ring + readout glyph pick up the state colour. */
+.suite-donut {
+    --suite-donut-size: 32px;
+    --suite-donut-ring: var(--primary-500);
+
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--suite-donut-size);
+    height: var(--suite-donut-size);
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--suite-donut-ring);
+    text-decoration: none;
+    cursor: pointer;
+    flex: 0 0 auto;
+    transition: transform .15s ease;
+}
+.suite-donut:hover    { transform: scale(1.06); }
+.suite-donut:focus-visible {
+    outline: 2px solid var(--accent-500);
+    outline-offset: 2px;
+    border-radius: 50%;
+}
+
+.suite-donut__svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);   /* start ring at 12 o'clock */
+    overflow: visible;
+}
+.suite-donut__track {
+    stroke: color-mix(in srgb, currentColor 28%, transparent);
+}
+.suite-donut__ring {
+    stroke: currentColor;
+    stroke-linecap: round;
+    transition: stroke-dasharray .3s ease;
+}
+
+.suite-donut__readout {
+    position: absolute;
+    inset: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: var(--font-weight-medium);
+    line-height: 1;
+    color: var(--text-default);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+    transition: opacity .15s ease;
+}
+.suite-donut__readout svg { width: 14px; height: 14px; display: block; }
+.suite-donut__readout--hover { opacity: 0; }
+.suite-donut:hover .suite-donut__readout:not(.suite-donut__readout--hover) { opacity: 0; }
+.suite-donut:hover .suite-donut__readout--hover                            { opacity: 1; }
+
+/* State modifiers — only the ring colour and the readout glyph
+   tone change. Track ring stays neutral via currentColor mix. */
+.suite-donut--running {
+    --suite-donut-ring: var(--primary-500);
+}
+.suite-donut--complete {
+    --suite-donut-ring: var(--primary-500);
+}
+.suite-donut--complete .suite-donut__readout { color: var(--primary-500); }
+.suite-donut--complete:hover .suite-donut__readout:not(.suite-donut__readout--hover) {
+    opacity: 1;     /* completed has no hover swap, keep the check visible */
+}
+.suite-donut--errored {
+    --suite-donut-ring: var(--critical-500);
+}
+.suite-donut--errored .suite-donut__readout { color: var(--critical-500); }
+
+/* ---------- Running-row shimmer ----------
+   Slow horizontal gradient sweep across the row bg so the row
+   reads as 'live' at-a-glance. Low-alpha primary so it reinforces
+   the selection bar without competing with it on the selected row.
+   Sits on background-image; selected-row tint sits on background-
+   color — they stack rather than overwrite. */
+.suite-item--running {
+    background-image: linear-gradient(
+        90deg,
+        transparent 0%,
+        color-mix(in srgb, var(--primary-500) 7%, transparent) 50%,
+        transparent 100%
+    );
+    background-size: 200% 100%;
+    background-repeat: no-repeat;
+    animation: suite-item-shimmer 2.6s linear infinite;
+}
+@keyframes suite-item-shimmer {
+    0%   { background-position: 100% 0; }
+    100% { background-position: -100% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .suite-item--running {
+        animation: none;
+        background: color-mix(in srgb, var(--primary-500) 5%, transparent);
+    }
 }
 
 /* ---------- Right pane: SP run results ---------- */
@@ -708,35 +730,6 @@
 }
 
 /* ───────────────────────────────────────────────────────────
-   TOPBAR ISLANDS — override _shared.css's flat .dash-topbar.
-   Shell goes transparent; the breadcrumb becomes a floating
-   glass pill. Pattern mirrors admin-test-profile-editor.html.
-   ─────────────────────────────────────────────────────────── */
-.dash > .dash__main > .dash-topbar {
-    background:    transparent;
-    border:        none;
-    border-radius: 0;
-    padding:       0;
-    min-height:    0;
-    gap:           var(--spacing-3x);
-}
-.dash > .dash__main > .dash-topbar > .dash-topbar__crumbs {
-    display:        inline-flex;
-    align-items:    center;
-    gap:            var(--spacing-2x);
-    padding:        var(--spacing-2x) var(--spacing-4x);
-    background:     var(--glass-light-light-bg);
-    -webkit-backdrop-filter: var(--glass-light-light-blur) var(--glass-saturate);
-            backdrop-filter: var(--glass-light-light-blur) var(--glass-saturate);
-    border:         var(--border-width-base) solid var(--glass-light-light-border);
-    border-radius:  var(--radius-pill);
-    box-shadow:     var(--glass-shadow-raised), var(--glass-inset-light-soft);
-    font-size:      var(--text-body-sm);
-    color:          var(--text-default-subtle);
-    white-space:    nowrap;
-}
-
-/* ───────────────────────────────────────────────────────────
    PULSE-GRID BACKDROP — fixed, decorative.
    Recreated from outputs/B _ Pulse grid lab.html.
    ─────────────────────────────────────────────────────────── */
@@ -926,35 +919,32 @@
   <!-- MAIN -->
   <main class="dash__main">
 
-    <header class="dash-topbar" aria-label="Workspace chrome">
-      <nav class="dash-topbar__crumbs" aria-label="Breadcrumb">
-        <a href="../admin-dashboard.html">Admin</a>
-        <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
-        <a href="admin-test-console.html">Automated testing</a>
-        <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
-        <span class="dash-topbar__crumb-tail" aria-current="page">Suites</span>
-      </nav>
-    </header>
-
     <section class="suites-layout" aria-label="Test suites and results">
 
       <article class="workspace-card workspace-card--flush card--glass-frost suites-panel"
                aria-label="Test suites">
+
+        <!-- BREADCRUMB — sits inside the panel, spans both columns,
+             above the page-title top header. Absorbs the page chrome
+             role that used to live in the floating dash-topbar pill. -->
+        <nav class="suites-panel__crumbs" aria-label="Breadcrumb">
+          <a href="../admin-dashboard.html">Admin</a>
+          <span class="suites-panel__crumb-sep" aria-hidden="true">›</span>
+          <a href="admin-test-console.html">Automated testing</a>
+          <span class="suites-panel__crumb-sep" aria-hidden="true">›</span>
+          <span class="suites-panel__crumb-tail" aria-current="page">Suites</span>
+        </nav>
 
         <!-- TOP HEADER — page title + meta on the left, view toggle +
              New suite CTA on the right. Spans both columns; sits above
              the column hairline. -->
         <header class="suites-panel__top-header">
           <div class="suites-panel__top-header-text">
-            <span class="dash-page__eyebrow">Automated testing / Suites</span>
             <h1>Test suites.</h1>
             <p class="dash-page__meta">
               <span class="dash-page__meta-val">7</span> total
               <span class="dash-page__meta-sep" aria-hidden="true">·</span>
               <span class="dash-page__meta-val">1</span> running
-              <span class="dash-page__meta-sep" aria-hidden="true">·</span>
-              last finished
-              <span class="dash-page__meta-val">22 Nov</span>
             </p>
           </div>
           <div class="suites-panel__top-header-actions">
@@ -1124,47 +1114,32 @@
                       </svg>
                     </span>
                   </span>
-                  <span class="suite-item__timing-range">started 30 Oct</span>
+                  <span class="suite-item__timing-range">
+                    <span class="suite-item__timing-key">START</span> 30 Oct 14:23
+                  </span>
                   <span class="suite-item__sep" aria-hidden="true">·</span>
-                  <span class="suite-item__timing-eta">~3d 6h left</span>
-                </div>
-                <div class="suite-item__rates">
-                  <span class="suite-item__rate suite-item__rate--pass">
-                    <span class="suite-item__rate-icon suite-item__rate-icon--pass" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
-                        <polyline points="7 12.5 10.5 16 17 9" stroke="#fff"/>
-                      </svg>
-                    </span>
-                    62%
-                  </span>
-                  <span class="suite-item__rate suite-item__rate--fail">
-                    <span class="suite-item__rate-icon suite-item__rate-icon--fail" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
-                        <line x1="8" y1="8" x2="16" y2="16" stroke="#fff"/>
-                        <line x1="16" y1="8" x2="8" y2="16" stroke="#fff"/>
-                      </svg>
-                    </span>
-                    4%
+                  <span class="suite-item__timing-eta">
+                    <span class="suite-item__timing-key">ETA</span> 03:06:42
                   </span>
                 </div>
-              </div>
-              <div class="suite-item__progress" role="progressbar"
-                   aria-valuemin="0" aria-valuemax="100" aria-valuenow="66">
-                <span class="suite-item__progress-fill" style="--pct: 66%;"></span>
               </div>
             </div>
             <a href="admin-test-run.html"
-               class="suite-item__result"
-               aria-label="See detail report"
-               title="See detail report">
-              <span class="suite-item__result-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                  <polyline points="14 2 14 8 20 8"/>
-                  <line x1="8"  y1="13" x2="16" y2="13"/>
-                  <line x1="8"  y1="17" x2="13" y2="17"/>
+               class="suite-donut suite-donut--running"
+               style="--pct: 62;"
+               role="img" aria-label="Running, 62% complete. Click to stop.">
+              <svg class="suite-donut__svg" viewBox="0 0 36 36" aria-hidden="true">
+                <circle class="suite-donut__track" cx="18" cy="18" r="15.915"
+                        fill="none" stroke-width="3"/>
+                <circle class="suite-donut__ring"  cx="18" cy="18" r="15.915"
+                        fill="none" stroke-width="4"
+                        stroke-dasharray="var(--pct) 100"
+                        stroke-dashoffset="25"/>
+              </svg>
+              <span class="suite-donut__readout" data-readout="pct">62%</span>
+              <span class="suite-donut__readout suite-donut__readout--hover" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <rect x="7" y="7" width="10" height="10" rx="1.5"/>
                 </svg>
               </span>
             </a>
@@ -1173,12 +1148,12 @@
           <!-- Completed -->
           <div class="suite-item"
                   role="button" tabindex="0" aria-pressed="false"
-                  data-suite-id="2415"
+                  data-suite-id="2416"
                   data-suite-name="Production smoke — Diagnostic flow v1.8.3"
                   data-state="completed">
             <div class="suite-item__body">
               <div class="suite-item__head">
-                <span class="suite-item__id">#2415</span>
+                <span class="suite-item__id">#2416</span>
                 <span class="suite-item__name">Production smoke — Diagnostic flow v1.8.3</span>
               </div>
               <div class="suite-item__meta">
@@ -1187,43 +1162,21 @@
                   <span class="suite-item__sep" aria-hidden="true">·</span>
                   <span class="suite-item__timing-dur">8h 28m</span>
                 </div>
-                <div class="suite-item__rates">
-                  <span class="suite-item__rate suite-item__rate--pass">
-                    <span class="suite-item__rate-icon suite-item__rate-icon--pass" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
-                        <polyline points="7 12.5 10.5 16 17 9" stroke="#fff"/>
-                      </svg>
-                    </span>
-                    94%
-                  </span>
-                  <span class="suite-item__rate suite-item__rate--fail">
-                    <span class="suite-item__rate-icon suite-item__rate-icon--fail" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
-                        <line x1="8" y1="8" x2="16" y2="16" stroke="#fff"/>
-                        <line x1="16" y1="8" x2="8" y2="16" stroke="#fff"/>
-                      </svg>
-                    </span>
-                    3%
-                  </span>
-                </div>
-              </div>
-              <div class="suite-item__progress" role="progressbar"
-                   aria-valuemin="0" aria-valuemax="100" aria-valuenow="97">
-                <span class="suite-item__progress-fill" style="--pct: 97%;"></span>
               </div>
             </div>
             <a href="admin-test-run.html"
-               class="suite-item__result"
-               aria-label="See detail report"
-               title="See detail report">
-              <span class="suite-item__result-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                  <polyline points="14 2 14 8 20 8"/>
-                  <line x1="8"  y1="13" x2="16" y2="13"/>
-                  <line x1="8"  y1="17" x2="13" y2="17"/>
+               class="suite-donut suite-donut--complete"
+               style="--pct: 100;"
+               aria-label="Completed. View run report.">
+              <svg class="suite-donut__svg" viewBox="0 0 36 36" aria-hidden="true">
+                <circle class="suite-donut__track" cx="18" cy="18" r="15.915" fill="none" stroke-width="4"/>
+                <circle class="suite-donut__ring"  cx="18" cy="18" r="15.915" fill="none" stroke-width="4"
+                        stroke-dasharray="100 100" stroke-dashoffset="25"/>
+              </svg>
+              <span class="suite-donut__readout">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="6 12.5 10 16.5 18 8.5"/>
                 </svg>
               </span>
             </a>
@@ -1232,12 +1185,12 @@
           <!-- Completed -->
           <div class="suite-item"
                   role="button" tabindex="0" aria-pressed="false"
-                  data-suite-id="2415"
+                  data-suite-id="2417"
                   data-suite-name="Regression panel — Sow herd workflow v1.8.3"
                   data-state="completed">
             <div class="suite-item__body">
               <div class="suite-item__head">
-                <span class="suite-item__id">#2415</span>
+                <span class="suite-item__id">#2417</span>
                 <span class="suite-item__name">Regression panel — Sow herd workflow v1.8.3</span>
               </div>
               <div class="suite-item__meta">
@@ -1246,43 +1199,21 @@
                   <span class="suite-item__sep" aria-hidden="true">·</span>
                   <span class="suite-item__timing-dur">1d 4h</span>
                 </div>
-                <div class="suite-item__rates">
-                  <span class="suite-item__rate suite-item__rate--pass">
-                    <span class="suite-item__rate-icon suite-item__rate-icon--pass" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
-                        <polyline points="7 12.5 10.5 16 17 9" stroke="#fff"/>
-                      </svg>
-                    </span>
-                    88%
-                  </span>
-                  <span class="suite-item__rate suite-item__rate--fail">
-                    <span class="suite-item__rate-icon suite-item__rate-icon--fail" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
-                        <line x1="8" y1="8" x2="16" y2="16" stroke="#fff"/>
-                        <line x1="16" y1="8" x2="8" y2="16" stroke="#fff"/>
-                      </svg>
-                    </span>
-                    7%
-                  </span>
-                </div>
-              </div>
-              <div class="suite-item__progress" role="progressbar"
-                   aria-valuemin="0" aria-valuemax="100" aria-valuenow="95">
-                <span class="suite-item__progress-fill" style="--pct: 95%;"></span>
               </div>
             </div>
             <a href="admin-test-run.html"
-               class="suite-item__result"
-               aria-label="See detail report"
-               title="See detail report">
-              <span class="suite-item__result-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                  <polyline points="14 2 14 8 20 8"/>
-                  <line x1="8"  y1="13" x2="16" y2="13"/>
-                  <line x1="8"  y1="17" x2="13" y2="17"/>
+               class="suite-donut suite-donut--complete"
+               style="--pct: 100;"
+               aria-label="Completed. View run report.">
+              <svg class="suite-donut__svg" viewBox="0 0 36 36" aria-hidden="true">
+                <circle class="suite-donut__track" cx="18" cy="18" r="15.915" fill="none" stroke-width="4"/>
+                <circle class="suite-donut__ring"  cx="18" cy="18" r="15.915" fill="none" stroke-width="4"
+                        stroke-dasharray="100 100" stroke-dashoffset="25"/>
+              </svg>
+              <span class="suite-donut__readout">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="6 12.5 10 16.5 18 8.5"/>
                 </svg>
               </span>
             </a>
@@ -1291,12 +1222,12 @@
           <!-- Completed -->
           <div class="suite-item"
                   role="button" tabindex="0" aria-pressed="false"
-                  data-suite-id="2415"
+                  data-suite-id="2418"
                   data-suite-name="Sprint 47 — Smallholder onboarding"
                   data-state="completed">
             <div class="suite-item__body">
               <div class="suite-item__head">
-                <span class="suite-item__id">#2415</span>
+                <span class="suite-item__id">#2418</span>
                 <span class="suite-item__name">Sprint 47 — Smallholder onboarding</span>
               </div>
               <div class="suite-item__meta">
@@ -1305,43 +1236,21 @@
                   <span class="suite-item__sep" aria-hidden="true">·</span>
                   <span class="suite-item__timing-dur">6h 46m</span>
                 </div>
-                <div class="suite-item__rates">
-                  <span class="suite-item__rate suite-item__rate--pass">
-                    <span class="suite-item__rate-icon suite-item__rate-icon--pass" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
-                        <polyline points="7 12.5 10.5 16 17 9" stroke="#fff"/>
-                      </svg>
-                    </span>
-                    91%
-                  </span>
-                  <span class="suite-item__rate suite-item__rate--fail">
-                    <span class="suite-item__rate-icon suite-item__rate-icon--fail" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
-                        <line x1="8" y1="8" x2="16" y2="16" stroke="#fff"/>
-                        <line x1="16" y1="8" x2="8" y2="16" stroke="#fff"/>
-                      </svg>
-                    </span>
-                    5%
-                  </span>
-                </div>
-              </div>
-              <div class="suite-item__progress" role="progressbar"
-                   aria-valuemin="0" aria-valuemax="100" aria-valuenow="96">
-                <span class="suite-item__progress-fill" style="--pct: 96%;"></span>
               </div>
             </div>
             <a href="admin-test-run.html"
-               class="suite-item__result"
-               aria-label="See detail report"
-               title="See detail report">
-              <span class="suite-item__result-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                  <polyline points="14 2 14 8 20 8"/>
-                  <line x1="8"  y1="13" x2="16" y2="13"/>
-                  <line x1="8"  y1="17" x2="13" y2="17"/>
+               class="suite-donut suite-donut--complete"
+               style="--pct: 100;"
+               aria-label="Completed. View run report.">
+              <svg class="suite-donut__svg" viewBox="0 0 36 36" aria-hidden="true">
+                <circle class="suite-donut__track" cx="18" cy="18" r="15.915" fill="none" stroke-width="4"/>
+                <circle class="suite-donut__ring"  cx="18" cy="18" r="15.915" fill="none" stroke-width="4"
+                        stroke-dasharray="100 100" stroke-dashoffset="25"/>
+              </svg>
+              <span class="suite-donut__readout">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="6 12.5 10 16.5 18 8.5"/>
                 </svg>
               </span>
             </a>
@@ -1350,12 +1259,12 @@
           <!-- Completed -->
           <div class="suite-item"
                   role="button" tabindex="0" aria-pressed="false"
-                  data-suite-id="2415"
+                  data-suite-id="2419"
                   data-suite-name="Production smoke — Vinallergy multilingual v1.8.2"
                   data-state="completed">
             <div class="suite-item__body">
               <div class="suite-item__head">
-                <span class="suite-item__id">#2415</span>
+                <span class="suite-item__id">#2419</span>
                 <span class="suite-item__name">Production smoke — Vinallergy multilingual v1.8.2</span>
               </div>
               <div class="suite-item__meta">
@@ -1364,43 +1273,21 @@
                   <span class="suite-item__sep" aria-hidden="true">·</span>
                   <span class="suite-item__timing-dur">6h 25m</span>
                 </div>
-                <div class="suite-item__rates">
-                  <span class="suite-item__rate suite-item__rate--pass">
-                    <span class="suite-item__rate-icon suite-item__rate-icon--pass" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
-                        <polyline points="7 12.5 10.5 16 17 9" stroke="#fff"/>
-                      </svg>
-                    </span>
-                    96%
-                  </span>
-                  <span class="suite-item__rate suite-item__rate--fail">
-                    <span class="suite-item__rate-icon suite-item__rate-icon--fail" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
-                        <line x1="8" y1="8" x2="16" y2="16" stroke="#fff"/>
-                        <line x1="16" y1="8" x2="8" y2="16" stroke="#fff"/>
-                      </svg>
-                    </span>
-                    2%
-                  </span>
-                </div>
-              </div>
-              <div class="suite-item__progress" role="progressbar"
-                   aria-valuemin="0" aria-valuemax="100" aria-valuenow="98">
-                <span class="suite-item__progress-fill" style="--pct: 98%;"></span>
               </div>
             </div>
             <a href="admin-test-run.html"
-               class="suite-item__result"
-               aria-label="See detail report"
-               title="See detail report">
-              <span class="suite-item__result-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                  <polyline points="14 2 14 8 20 8"/>
-                  <line x1="8"  y1="13" x2="16" y2="13"/>
-                  <line x1="8"  y1="17" x2="13" y2="17"/>
+               class="suite-donut suite-donut--complete"
+               style="--pct: 100;"
+               aria-label="Completed. View run report.">
+              <svg class="suite-donut__svg" viewBox="0 0 36 36" aria-hidden="true">
+                <circle class="suite-donut__track" cx="18" cy="18" r="15.915" fill="none" stroke-width="4"/>
+                <circle class="suite-donut__ring"  cx="18" cy="18" r="15.915" fill="none" stroke-width="4"
+                        stroke-dasharray="100 100" stroke-dashoffset="25"/>
+              </svg>
+              <span class="suite-donut__readout">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="6 12.5 10 16.5 18 8.5"/>
                 </svg>
               </span>
             </a>
@@ -1409,12 +1296,12 @@
           <!-- Failed -->
           <div class="suite-item suite-item--errored"
                   role="button" tabindex="0" aria-pressed="false"
-                  data-suite-id="2415"
+                  data-suite-id="2420"
                   data-suite-name="Regression panel — Vaccination protocol Q&amp;A v1.8.2"
                   data-state="failed">
             <div class="suite-item__body">
               <div class="suite-item__head">
-                <span class="suite-item__id">#2415</span>
+                <span class="suite-item__id">#2420</span>
                 <span class="suite-item__name">Regression panel — Vaccination protocol Q&amp;A v1.8.2</span>
               </div>
               <div class="suite-item__meta">
@@ -1428,32 +1315,44 @@
                   <span class="suite-item__timing-dur">ran 2h 14m</span>
                 </div>
               </div>
-              <div class="suite-item__progress" role="progressbar"
-                   aria-valuemin="0" aria-valuemax="100" aria-valuenow="42">
-                <span class="suite-item__progress-fill" style="--pct: 42%;"></span>
-              </div>
             </div>
             <button type="button"
-                    class="suite-item__action suite-item__action--rerun"
-                    aria-label="Rerun suite">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"
-                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <polyline points="23 4 23 10 17 10"/>
-                <polyline points="1 20 1 14 7 14"/>
-                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+                    class="suite-donut suite-donut--errored"
+                    style="--pct: 100;"
+                    aria-label="Errored. Click to rerun.">
+              <svg class="suite-donut__svg" viewBox="0 0 36 36" aria-hidden="true">
+                <circle class="suite-donut__track" cx="18" cy="18" r="15.915" fill="none" stroke-width="4"/>
+                <circle class="suite-donut__ring"  cx="18" cy="18" r="15.915" fill="none" stroke-width="4"
+                        stroke-dasharray="var(--pct) 100" stroke-dashoffset="25"/>
               </svg>
+              <span class="suite-donut__readout">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 9v4"/>
+                  <path d="M12 17h.01"/>
+                  <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                </svg>
+              </span>
+              <span class="suite-donut__readout suite-donut__readout--hover" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"
+                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="23 4 23 10 17 10"/>
+                  <polyline points="1 20 1 14 7 14"/>
+                  <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+                </svg>
+              </span>
             </button>
           </div>
 
           <!-- Completed -->
           <div class="suite-item"
                   role="button" tabindex="0" aria-pressed="false"
-                  data-suite-id="2415"
+                  data-suite-id="2421"
                   data-suite-name="Sprint 46 — Field validation pilot"
                   data-state="completed">
             <div class="suite-item__body">
               <div class="suite-item__head">
-                <span class="suite-item__id">#2415</span>
+                <span class="suite-item__id">#2421</span>
                 <span class="suite-item__name">Sprint 46 — Field validation pilot</span>
               </div>
               <div class="suite-item__meta">
@@ -1462,43 +1361,21 @@
                   <span class="suite-item__sep" aria-hidden="true">·</span>
                   <span class="suite-item__timing-dur">6h 12m</span>
                 </div>
-                <div class="suite-item__rates">
-                  <span class="suite-item__rate suite-item__rate--pass">
-                    <span class="suite-item__rate-icon suite-item__rate-icon--pass" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
-                        <polyline points="7 12.5 10.5 16 17 9" stroke="#fff"/>
-                      </svg>
-                    </span>
-                    89%
-                  </span>
-                  <span class="suite-item__rate suite-item__rate--fail">
-                    <span class="suite-item__rate-icon suite-item__rate-icon--fail" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="11" fill="currentColor" stroke="none"/>
-                        <line x1="8" y1="8" x2="16" y2="16" stroke="#fff"/>
-                        <line x1="16" y1="8" x2="8" y2="16" stroke="#fff"/>
-                      </svg>
-                    </span>
-                    6%
-                  </span>
-                </div>
-              </div>
-              <div class="suite-item__progress" role="progressbar"
-                   aria-valuemin="0" aria-valuemax="100" aria-valuenow="95">
-                <span class="suite-item__progress-fill" style="--pct: 95%;"></span>
               </div>
             </div>
             <a href="admin-test-run.html"
-               class="suite-item__result"
-               aria-label="See detail report"
-               title="See detail report">
-              <span class="suite-item__result-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                  <polyline points="14 2 14 8 20 8"/>
-                  <line x1="8"  y1="13" x2="16" y2="13"/>
-                  <line x1="8"  y1="17" x2="13" y2="17"/>
+               class="suite-donut suite-donut--complete"
+               style="--pct: 100;"
+               aria-label="Completed. View run report.">
+              <svg class="suite-donut__svg" viewBox="0 0 36 36" aria-hidden="true">
+                <circle class="suite-donut__track" cx="18" cy="18" r="15.915" fill="none" stroke-width="4"/>
+                <circle class="suite-donut__ring"  cx="18" cy="18" r="15.915" fill="none" stroke-width="4"
+                        stroke-dasharray="100 100" stroke-dashoffset="25"/>
+              </svg>
+              <span class="suite-donut__readout">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="6 12.5 10 16.5 18 8.5"/>
                 </svg>
               </span>
             </a>
@@ -1946,7 +1823,7 @@
     var detailTitle = document.getElementById('suite-detail-h');
     if (!list || !detailTitle) return;
     list.addEventListener('click', function (e) {
-      if (e.target.closest('.suite-item__result')) return;
+      if (e.target.closest('.suite-donut')) return;
       var card = e.target.closest('.suite-item');
       if (!card || !list.contains(card)) return;
       list.querySelectorAll('.suite-item.is-selected').forEach(function (n) {
@@ -1963,7 +1840,7 @@
       if (e.key !== 'Enter' && e.key !== ' ') return;
       var card = e.target.closest('.suite-item');
       if (!card || !list.contains(card)) return;
-      if (e.target.closest('.suite-item__result')) return;
+      if (e.target.closest('.suite-donut')) return;
       e.preventDefault();
       card.click();
     });

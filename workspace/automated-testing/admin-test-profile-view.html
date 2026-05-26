@@ -119,33 +119,14 @@
     margin-inline: auto;
 }
 
-/* Page-scoped scaffolding for admin-test-profile-view. */
-.profile-hero {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-3x);
-}
-.profile-hero__row {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-3x);
-    flex-wrap: wrap;
-}
-.profile-hero__h2 {
-    font-family: var(--font-sans);
-    font-weight: var(--font-weight-semibold);
-    font-size: var(--text-h4);
-    line-height: var(--line-height-h4);
-    color: var(--text-default);
-    margin: 0;
-}
-.profile-hero__chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--spacing-2x);
-    list-style: none;
-    margin: 0;
-    padding: 0;
+/* Hero H1 — codename + leading disease badge on one row.
+   Default <h1> inside .dash-page is block; turn it into an inline-flex
+   row so the small neutral badge sits flush with the codename. */
+.dash-page .profile-page__h1 {
+    display:      inline-flex;
+    align-items:  center;
+    gap:          var(--spacing-3x);
+    flex-wrap:    wrap;          /* survive ultra-narrow viewports */
 }
 
 /* Two-column section: prose label + key/value rows. */
@@ -181,13 +162,227 @@
     font-style: italic;
 }
 
+/* Evidence-block scaffolding — copied from the editor twin so
+   the view file is self-contained. Block titles are h6-rank
+   semibold; subblock titles are the eyebrow tier in mono-ish
+   uppercase. */
+.evidence-block { display: flex; flex-direction: column; gap: var(--spacing-4x); }
+.evidence-block + .evidence-block {
+    padding-top: var(--spacing-6x);
+    border-top: 1px solid var(--border-default-subtle);
+}
+.evidence-block__title {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--text-h6);
+    color: var(--text-default);
+    margin: 0;
+}
+.evidence-subblock { display: flex; flex-direction: column; gap: var(--spacing-3x); }
+.evidence-subblock + .evidence-subblock { margin-top: var(--spacing-4x); }
+.evidence-subblock__title {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-medium);
+    font-size: var(--text-body);
+    color: var(--text-default-subtle);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-eyebrow);
+    margin: 0;
+}
+
+/* Farm-bg two-column grid — mirrors the editor's .farm-bg.
+   Image on the left, text rows on the right. Collapses on
+   narrow viewports (handled in the responsive block at the
+   bottom of the file). */
+.farm-bg {
+    display:               grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap:                   var(--spacing-5x) var(--spacing-6x);
+    align-items:           start;
+}
+.farm-bg__col {
+    display:        flex;
+    flex-direction: column;
+    gap:            var(--spacing-5x);
+    min-width:      0;
+}
+
+/* Static thumb — read-only twin of the editor's farm-image-picker__thumb.
+   Same dimensions + chrome; no button, no input. */
+.farm-image-picker__thumb {
+    flex:            0 0 auto;
+    width:           100%;
+    max-width:       360px;
+    aspect-ratio:    4 / 3;
+    height:          auto;
+    margin:          0;
+    border-radius:   var(--radius-md);
+    background:      var(--background-default-subtle);
+    border:          1px solid var(--border-default-subtle);
+    overflow:        hidden;
+    display:         flex;
+    align-items:     center;
+    justify-content: center;
+    color:           var(--icon-default-subtle);
+}
+.farm-image-picker__placeholder-icon {
+    width:  40px;
+    height: 40px;
+    color:  inherit;
+}
+
+/* Pig-types row — small label above a chip rail. Sibling of .profile-kv
+   in the right-hand column. */
+.profile-field {
+    display:        flex;
+    flex-direction: column;
+    gap:            var(--spacing-2x);
+}
+.profile-field__label {
+    font-size:   var(--text-body-sm);
+    color:       var(--text-default-subtle);
+    font-weight: var(--font-weight-medium);
+}
+.profile-chips {
+    display:    flex;
+    flex-wrap:  wrap;
+    gap:        var(--spacing-2x);
+    list-style: none;
+    margin:     0;
+    padding:    0;
+}
+
+/* ───────────────────────────────────────────────────────────
+   GLASS OPT-IN — overrides _shared.css's defensive
+   ".dash .card--glass { neutralised }" rule. Re-applies the
+   canonical .card--glass-frost surface on every workspace card.
+   ─────────────────────────────────────────────────────────── */
+.dash .workspace-card.card--glass-frost {
+    background:               var(--glass-light-light-bg);
+    border-color:             var(--glass-light-light-border);
+    backdrop-filter:          var(--glass-light-light-blur) var(--glass-saturate);
+    -webkit-backdrop-filter:  var(--glass-light-light-blur) var(--glass-saturate);
+    box-shadow:               var(--glass-shadow-raised), var(--glass-inset-light-soft);
+}
+.dash .workspace-card.card--glass-frost:hover {
+    background:               var(--glass-light-light-bg-hover);
+    border-color:             var(--glass-light-light-border-hover);
+    box-shadow:               var(--glass-shadow-raised-hover), var(--glass-inset-light-soft);
+}
+
+/* ───────────────────────────────────────────────────────────
+   PULSE-GRID BACKDROP — fixed, decorative.
+   Mirrors the editor twin (admin-test-profile-editor.html) so
+   toggling between view and edit keeps the field still.
+   ─────────────────────────────────────────────────────────── */
+.f2v-bg.f2v-bg--pulse {
+    position:       fixed;
+    inset:          0;
+    z-index:        0;
+    pointer-events: none;
+    overflow:       hidden;
+    /* Field: soft green gradient, primary-50 → primary-100. */
+    background-image: linear-gradient(
+        to bottom,
+        var(--primary-50) 0%,
+        var(--primary-100) 100%
+    );
+}
+
+/* Layer 2 — 48px hairline grid, accent-900 @ 10%, vignette-masked. */
+.f2v-bg__grid {
+    position: absolute;
+    inset:    0;
+    background-image:
+        linear-gradient(
+            to right,
+            color-mix(in srgb, var(--accent-900) 10%, transparent) 1px,
+            transparent 1px),
+        linear-gradient(
+            color-mix(in srgb, var(--accent-900) 10%, transparent) 1px,
+            transparent 1px);
+    background-size: 48px 48px, 48px 48px;
+    /* Vignette fade — grid is full strength near centre, dissolves
+       to nothing toward the page corners. */
+    -webkit-mask-image: radial-gradient(
+        80% 70% at 50% 55%,
+        black 35%,
+        transparent 90%);
+            mask-image: radial-gradient(
+        80% 70% at 50% 55%,
+        black 35%,
+        transparent 90%);
+}
+
+/* Layer 3 — corner sun glow, primary-500. */
+.f2v-bg__sun {
+    position: absolute;
+    top:      -80px;
+    right:    -80px;
+    width:    300px;
+    height:   300px;
+    background-image: radial-gradient(
+        circle,
+        color-mix(in srgb, var(--primary-500) 32%, transparent),
+        transparent 65%);
+}
+
+/* Layer 4 — single EKG pulse-line, accent-500 stroke. */
+.f2v-bg__pulse {
+    position: absolute;
+    top:      38%;
+    left:     0;
+    right:    0;
+    width:    100%;
+    height:   110px;
+    color:    var(--accent-500);  /* drives stroke="currentColor" */
+    opacity:  0.6;
+}
+
+/* Reduced transparency: backdrop is decorative — drop it for
+   users who've opted out. */
+@media (prefers-reduced-transparency: reduce) {
+    .f2v-bg.f2v-bg--pulse { display: none; }
+}
+
+/* Page shell is transparent on this view so the .f2v-bg--pulse
+   backdrop shows through. Stacking: backdrop at z:0, .dash at z:1. */
+.dash {
+    background:        transparent;
+    position:          relative;
+    z-index:           1;
+}
+
+/* prefers-reduced-transparency fallback — backdrop is hidden by
+   the @media rule above, so paint the cream surface back onto
+   .dash so the page still reads on a stable field. */
+@media (prefers-reduced-transparency: reduce) {
+    .dash { background: var(--background-default-subtle); }
+}
+
 @media (max-width: 720px) {
     .profile-kv { grid-template-columns: 1fr; gap: var(--spacing-1x); }
     .profile-kv dt { color: var(--text-default-subtle); }
+    .farm-bg     { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
+
+<!-- ============================================================
+     PULSE-GRID BACKDROP — fixed, decorative, aria-hidden.
+     Mirrors the editor twin (admin-test-profile-editor.html) so
+     toggling between view and edit keeps the field still.
+     ============================================================ -->
+<div class="f2v-bg f2v-bg--pulse" aria-hidden="true">
+  <div class="f2v-bg__grid"></div>
+  <div class="f2v-bg__sun"></div>
+  <svg class="f2v-bg__pulse" viewBox="0 0 1200 240" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 120 L160 120 L195 120 L220 80 L250 170 L280 120 L420 120 L460 120 L490 60 L520 180 L550 120 L760 120 L800 120 L832 70 L865 170 L898 120 L1060 120 L1100 120 L1130 90 L1160 150 L1190 120 L1200 120"
+          fill="none" stroke="currentColor" stroke-width="1.6"
+          stroke-linecap="round" stroke-linejoin="round" />
+  </svg>
+</div>
 
 <div class="dash">
 
@@ -306,7 +501,7 @@
 
         <!-- D · Edit — navigates to the editor twin -->
         <li>
-          <a href="admin-test-profile-editor.html" class="btn btn--sm btn--secondary">
+          <a href="admin-test-profile-editor.html" class="btn btn--sm btn--ghost">
             <span class="btn__leading" aria-hidden="true">
               <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M12 20h9"/>
@@ -322,96 +517,119 @@
 
     <header class="dash-page">
       <div class="dash-page__text">
-        <h1>SP-002.</h1>
+        <h1 class="profile-page__h1">
+          <span class="badge badge--sm is-neutral"><span class="badge__label">CSF</span></span>
+          <span>SP-002.</span>
+        </h1>
       </div>
     </header>
 
-    <!-- Hero card — title + disease badge + chip rail -->
-    <article class="workspace-card">
-      <div class="profile-hero">
-        <div class="profile-hero__row">
-          <span class="badge is-critical badge--solid"><span class="badge__label">CSF</span></span>
-          <h2 class="profile-hero__h2">Subtropical CSF outbreak — 300-head, mixed ages</h2>
-        </div>
-        <ul class="profile-hero__chips" aria-label="Profile tags">
-          <li><span class="chip"><span class="chip__label">300 pigs</span></span></li>
-          <li><span class="chip"><span class="chip__label">Subtropical</span></span></li>
-          <li><span class="chip"><span class="chip__label">Weaners · Growers · Finishers</span></span></li>
-          <li><span class="chip"><span class="chip__label">Difficulty: medium</span></span></li>
-        </ul>
-      </div>
-    </article>
-
     <!-- Section: Farm background -->
-    <article class="workspace-card">
+    <article class="workspace-card card card--glass-frost">
       <div class="workspace-section">
         <header class="workspace-section__head">
           <h2 class="workspace-section__title">Farm background</h2>
         </header>
-        <dl class="profile-kv">
-          <dt>Farm size</dt>
-          <dd>300 pigs</dd>
-          <dt>Pig types</dt>
-          <dd>weaners, growers, finishers</dd>
-          <dt>Location &amp; climate</dt>
-          <dd>subtropical</dd>
-        </dl>
+        <div class="farm-bg">
+          <div class="farm-bg__col farm-bg__col--visual">
+            <figure class="farm-image-picker__thumb" aria-label="Farm image (none uploaded)">
+              <svg class="farm-image-picker__placeholder-icon"
+                   viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                   aria-hidden="true">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                <circle cx="8.5" cy="8.5" r="1.5"/>
+                <polyline points="21 15 16 10 5 21"/>
+              </svg>
+            </figure>
+          </div>
+
+          <div class="farm-bg__col farm-bg__col--text">
+            <dl class="profile-kv">
+              <dt>Farm size</dt>
+              <dd>300 pigs</dd>
+              <dt>Location &amp; climate</dt>
+              <dd>Subtropical</dd>
+            </dl>
+
+            <div class="profile-field">
+              <span class="profile-field__label">Pig types</span>
+              <ul class="profile-chips" aria-label="Pig types">
+                <li><span class="chip"><span class="chip__label">Weaners</span></span></li>
+                <li><span class="chip"><span class="chip__label">Growers</span></span></li>
+                <li><span class="chip"><span class="chip__label">Fattening pigs</span></span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
     </article>
 
-    <!-- Section: Observed evidences -->
-    <article class="workspace-card">
+    <!-- Section: Observed evidences (General + Clinical → Symptoms + Medical history) -->
+    <article class="workspace-card card card--glass-frost">
       <div class="workspace-section">
         <header class="workspace-section__head">
           <h2 class="workspace-section__title">Observed evidences</h2>
           <p class="workspace-section__summary">What the farmer reports. Empty rows mean the profile shouldn't volunteer that detail unless asked.</p>
         </header>
-        <dl class="profile-kv">
-          <dt>Affected pig types</dt>
-          <dd>Mostly growers and finishers</dd>
-          <dt>Total affected</dt>
-          <dd>About 180 out of 300 (≈ 60%)</dd>
-          <dt>Mortality</dt>
-          <dd>≈ 35%, many pigs dying overnight</dd>
-          <dt>Fever</dt>
-          <dd>High fever</dd>
-          <dt>Digestive</dt>
-          <dd>Lost appetite, bloody diarrhea</dd>
-          <dt>Respiratory</dt>
-          <dd>Coughing, nasal discharge</dd>
-          <dt>Neurological</dt>
-          <dd>Some pigs have wobbly gait, hind limb paralysis</dd>
-          <dt>Dermatological</dt>
-          <dd>Blue-purple discoloration on ears and belly</dd>
-          <dt>Reproductive</dt>
-          <dd class="is-empty">Not observed</dd>
-        </dl>
-      </div>
-    </article>
 
-    <!-- Section: Medical history -->
-    <article class="workspace-card">
-      <div class="workspace-section">
-        <header class="workspace-section__head">
-          <h2 class="workspace-section__title">Medical history</h2>
-        </header>
-        <dl class="profile-kv">
-          <dt>Vaccination</dt>
-          <dd>Vaccinated against CSF 6 months ago — coverage unclear, farmer is unsure if all pigs were vaccinated.</dd>
-          <dt>Treatment</dt>
-          <dd class="is-empty">None yet</dd>
-        </dl>
+        <!-- Block 1 — General evidences -->
+        <div class="evidence-block">
+          <h3 class="evidence-block__title">General evidences</h3>
+          <dl class="profile-kv">
+            <dt>Affected pig types</dt>
+            <dd>Mostly growers and finishers</dd>
+            <dt>Total affected</dt>
+            <dd>About 180 out of 300 (≈ 60%)</dd>
+            <dt>Mortality</dt>
+            <dd>≈ 35%, many pigs dying overnight</dd>
+            <dt>Fever</dt>
+            <dd>High fever</dd>
+          </dl>
+        </div>
+
+        <!-- Block 2 — Clinical evidences (Symptoms + Medical history) -->
+        <div class="evidence-block">
+          <h3 class="evidence-block__title">Clinical evidences</h3>
+
+          <div class="evidence-subblock">
+            <h4 class="evidence-subblock__title">Symptoms</h4>
+            <dl class="profile-kv">
+              <dt>Digestive</dt>
+              <dd>Lost appetite, bloody diarrhea</dd>
+              <dt>Respiratory</dt>
+              <dd>Coughing, nasal discharge</dd>
+              <dt>Neurological</dt>
+              <dd>Some pigs have wobbly gait, hind limb paralysis</dd>
+              <dt>Dermatological</dt>
+              <dd>Blue-purple discoloration on ears and belly</dd>
+              <dt>Reproductive</dt>
+              <dd class="is-empty">Not observed</dd>
+            </dl>
+          </div>
+
+          <div class="evidence-subblock">
+            <h4 class="evidence-subblock__title">Medical history</h4>
+            <dl class="profile-kv">
+              <dt>Vaccination</dt>
+              <dd>Vaccinated against CSF 6 months ago — coverage unclear, farmer is unsure if all pigs were vaccinated.</dd>
+              <dt>Treatment</dt>
+              <dd class="is-empty">None yet</dd>
+            </dl>
+          </div>
+
+        </div>
       </div>
     </article>
 
     <!-- Section: Disease label -->
-    <article class="workspace-card">
+    <article class="workspace-card card card--glass-frost">
       <div class="workspace-section">
         <header class="workspace-section__head">
           <h2 class="workspace-section__title">Disease label</h2>
           <p class="workspace-section__summary">The labeller's ground truth — scored against the model's final answer at run time.</p>
         </header>
-        <p class="profile-prose"><span class="badge is-critical badge--solid"><span class="badge__label">CSF</span></span> &nbsp; Classical Swine Fever</p>
+        <p class="profile-prose"><span class="badge badge--sm is-neutral"><span class="badge__label">CSF</span></span> &nbsp; Classical Swine Fever</p>
       </div>
     </article>
 
