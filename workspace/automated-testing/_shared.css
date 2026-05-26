@@ -39,6 +39,23 @@
 .dash__side { position: sticky; top: var(--spacing-6x); align-self: start; }
 .dash__main { display: flex; flex-direction: column; gap: var(--spacing-10x); min-width: 0; }
 
+/* When the rail lives inside the workspace .dash shell, clamp
+   its height to the visible viewport. The base sidebar carries
+   `min-height: 100vh` (suits a full-bleed app shell like V-01 /
+   V-02 where the rail anchors to the viewport edges). Inside
+   .dash the shell pads --spacing-6x top and bottom and sticky-
+   anchors .dash__side at top: --spacing-6x — so a 100vh rail
+   overshoots the bottom of the viewport by at least one --spacing-6x
+   and the rail's footer (account cluster) slides off-screen.
+   Pin the height to the inset region so the rail stays sticky
+   without overflowing; the internal flex layout already gives
+   .sidebar__nav `overflow-y: auto` so a tall nav scrolls inside
+   the rail and the footer stays anchored at the bottom. */
+.dash__side .sidebar {
+    min-height: 0;
+    height: calc(100vh - 2 * var(--spacing-6x));
+}
+
 /* Sidebar renders as the canonical glass rail (see V-04-disease-input.html).
    No .dash-scoped overrides — backdrop blur, raised shadow, inner
    highlight, and the bright primary active-item tint all come from

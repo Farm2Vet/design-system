@@ -147,14 +147,16 @@
     align-items: center;
     justify-content: center;
     min-width: calc(var(--_icon) + var(--space-tier-7));
+    height: calc(var(--text-eyebrow) + var(--space-tier-4));
     padding: 0 var(--tabs-badge-pad-x);
     font-family: var(--font-mono);
     font-size: var(--text-eyebrow);
-    line-height: 1.6;
+    line-height: 1;          /* was 1.6 — the overflow source */
     letter-spacing: var(--letter-spacing-mono);
     color: var(--tabs-badge-fg-muted);
     background: var(--tabs-badge-bg-muted);
     border-radius: var(--tabs-badge-radius);
+    flex: 0 0 auto;
 }
 .tabs__tab.is-selected .tabs__badge,
 .tabs__tab[aria-selected="true"] .tabs__badge {

@@ -28,31 +28,157 @@
 <link rel="stylesheet" href="_shared.css" />
 
 <style>
-/* ---------- Two-panel master-detail layout ---------- */
+/* ---------- Unified master/detail panel ----------
+   One glass card holds both the suite list (left) and the
+   run detail (right). The vertical hairline between columns
+   replaces the gap-and-twin-card pattern that used to live
+   here. No nested glass: the panel is the single elevation. */
 .suites-layout {
+    /* Single child now — the panel fills the width. */
+    display: block;
+}
+.suites-panel {
     display: grid;
     grid-template-columns: 380px minmax(0, 1fr);
-    gap: var(--spacing-6x);
+    grid-template-rows: auto 1fr;
     align-items: stretch;
+    padding: 0;
+    overflow: hidden;          /* clip column edges to the card's radius */
+    height: calc(100vh - 120px);  /* breadcrumb + dash body padding */
 }
-.suites-pane {
+.suites-panel__top-header {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--spacing-5x);
+    padding: var(--spacing-5x) var(--spacing-6x);
+    border-bottom: 1px solid var(--border-default-subtle);
+}
+.suites-panel__top-header-text {
     display: flex;
     flex-direction: column;
+    gap: var(--spacing-1x);
+    min-width: 0;
+}
+.suites-panel__top-header-text h1     { margin: 0; }
+.suites-panel__top-header-text .dash-page__meta { margin: 0; }
+.suites-panel__top-header-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-3x);
+    flex: 0 0 auto;
+}
+.suites-panel__col {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
     min-height: 0;
 }
-.suites-pane__head {
+.suites-panel__col + .suites-panel__col {
+    border-left: 1px solid var(--border-default-subtle);
+}
+.suites-panel__col-head {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-3x);
+    padding: var(--spacing-5x) var(--spacing-5x) var(--spacing-4x);
+    border-bottom: 1px solid var(--border-default-subtle);
 }
 
-/* ---------- Left pane: sub-toolbar + suite list ---------- */
-.suites-pane--list .suites-subtoolbar {
+/* ---------- Left column: sub-toolbar + suite list ---------- */
+.suites-panel__col--list .suites-subtoolbar {
     display: flex;
     align-items: center;
     gap: var(--spacing-2x);
 }
-.suites-pane--list .suites-subtoolbar .search-field { flex: 1 1 auto; }
+.suites-panel__col--list .suites-subtoolbar .search-field { flex: 1 1 auto; }
+
+/* ---------- Filter button + popover ----------
+   Page-scoped pattern: a single trigger button on the left
+   column's subtoolbar opens a popover anchored under it. The
+   popover groups all filter dimensions in one surface; chips
+   inside use the canonical .chip component.
+
+   Single-select groups (Status, Created) carry data-single-select
+   on the chip row so only one chip can be on at a time. Multi-
+   select groups (Model, Mode) toggle independently. The trigger's
+   count badge shows the number of non-default filters applied.
+
+   The popover is position: fixed because .suites-panel is
+   overflow: hidden — an absolutely-positioned popover would be
+   clipped by the panel. JS positioner sets top/left from the
+   trigger's bounding rect on open. */
+.suites-filter {
+    position: relative;
+    flex: 0 0 auto;
+}
+
+/* btn--ghost btn--sm supplies surface + sizing. The count chip is
+   the only piece of layout glue this trigger needs. */
+.suites-filter__count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 6px;
+    margin-left: var(--spacing-1x);
+    border-radius: var(--radius-pill);
+    background: var(--accent-500);
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+.suites-filter__count[hidden] { display: none; }
+
+.suites-filter__pop {
+    position: fixed;          /* set by JS positioner on open */
+    top: 0;
+    left: 0;
+    z-index: 60;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4x);
+    width: 340px;
+    max-width: calc(100vw - var(--spacing-6x));
+    padding: var(--spacing-4x);
+    background: var(--background-default);
+    border: 1px solid var(--border-default-subtle);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+}
+.suites-filter__pop[hidden] { display: none; }
+
+.suites-filter__group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2x);
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+.suites-filter__legend {
+    padding: 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-subtle);
+}
+.suites-filter__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-1x);
+}
+.suites-filter__foot {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: var(--spacing-3x);
+    border-top: 1px solid var(--border-default-subtle);
+}
 
 .suites-list {
     display: flex;
@@ -60,7 +186,8 @@
     gap: var(--spacing-2x);
     padding: var(--spacing-3x);
     overflow-y: auto;
-    max-height: calc(100vh - 320px);
+    flex: 1 1 0;
+    min-height: 0;
 }
 
 /* ---------- Suite card ---------- */
@@ -255,12 +382,12 @@
     display: none;
 }
 
-/* Result control on each suite card. A 32 px primary-green circle
-   with a white check at rest. Hovering or focusing the button
-   itself (not the row) swaps the check for a document/report glyph
-   and darkens the circle one step. There is no inline label and no
-   row-hover-expands pattern — the button's footprint never changes,
-   so the card layout doesn't shift.
+/* Result control on each suite card — navigates to the run
+   report. NEUTRAL ghost circle (no green fill, no check) so it
+   doesn't conflict with .suite-item__rate-icon--pass and
+   .sp-status--pass, which legitimately use the green-circle-
+   white-check glyph for "Pass". Same 32 px footprint so the card
+   layout never shifts between states.
    Behaviour: a real <a> that navigates to admin-test-run.html. */
 .suite-item__result {
     display: inline-flex;
@@ -270,15 +397,19 @@
     height: 32px;
     padding: 0;
     border-radius: 50%;
-    background: var(--primary-500);
-    color: #fff;
+    background: transparent;
+    border: 1px solid var(--border-default);
+    color: var(--text-default-subtle);
     text-decoration: none;
     flex: 0 0 auto;
-    transition: background-color .15s ease, transform .15s ease;
+    transition: background-color .15s ease, color .15s ease,
+                border-color .15s ease;
 }
 .suite-item__result:hover,
 .suite-item__result:focus-visible {
-    background: var(--primary-600);
+    background: var(--background-default-hover);
+    border-color: var(--border-default);
+    color: var(--text-default);
 }
 .suite-item__result:focus-visible {
     outline: 2px solid var(--accent-500);
@@ -296,20 +427,9 @@
     height: 100%;
     fill: none;
     stroke: currentColor;
-    stroke-width: 2.25;
+    stroke-width: 2;
     stroke-linecap: round;
     stroke-linejoin: round;
-}
-
-/* Icon swap — scoped to the button, NOT the row. */
-.suite-item__result-icon--hover { display: none; }
-.suite-item__result:hover .suite-item__result-icon--rest,
-.suite-item__result:focus-visible .suite-item__result-icon--rest {
-    display: none;
-}
-.suite-item__result:hover .suite-item__result-icon--hover,
-.suite-item__result:focus-visible .suite-item__result-icon--hover {
-    display: inline-flex;
 }
 
 /* Running suites still hide the result control. */
@@ -376,8 +496,20 @@
     gap: var(--spacing-1x);
     flex: 0 0 auto;
 }
+.suites-detail__actions-sep {
+    display: inline-block;
+    width: 1px;
+    height: 18px;
+    margin: 0 var(--spacing-1x);
+    background: var(--border-default-subtle);
+    flex: 0 0 auto;
+}
 
-.sp-table-wrap { overflow-x: auto; }
+.sp-table-wrap {
+    flex: 1 1 0;
+    min-height: 0;
+    overflow: auto;      /* both axes — keeps wide-table x-scroll too */
+}
 
 /* ---------- SP-table status indicator ----------
    Filled-circle status atom, sized to read at small table density.
@@ -418,20 +550,6 @@
 @keyframes sp-status-ping {
     0%, 100% { transform: scale(1);   opacity: 1;   }
     50%      { transform: scale(1.6); opacity: 0.45; }
-}
-
-/* Queued / idle row hint — paired with .sp-status--idle in the
-   status cell. Sits inline after the disease chip so the row's
-   intent reads at a glance, instead of the em-dashes scanning as
-   missing data. */
-.sp-queued-hint {
-    display: inline-block;
-    margin-left: var(--spacing-2x);
-    font-family: var(--font-mono);
-    font-size: var(--text-eyebrow);
-    letter-spacing: var(--letter-spacing-mono);
-    color: var(--text-default-minimal);
-    vertical-align: middle;
 }
 
 /* Right-aligned sort headers: reverse the button's flex direction
@@ -507,6 +625,11 @@
 .suite-summary__metric-delta--better   { color: var(--text-safe); }
 .suite-summary__metric-delta--worse    { color: var(--text-critical); }
 .suite-summary__metric-delta--neutral  { color: var(--text-default-minimal); }
+.suite-summary__metric-delta--mono {
+    font-family: var(--font-mono);
+    letter-spacing: var(--letter-spacing-mono);
+    font-size: var(--text-eyebrow);
+}
 
 /* Live state — value pulses subtly to indicate ongoing aggregation. */
 .suite-summary--running .suite-summary__metric-value {
@@ -551,8 +674,18 @@
 
 /* ---------- Responsive ---------- */
 @media (max-width: 960px) {
-    .suites-layout { grid-template-columns: 1fr; }
-    .suites-list { max-height: none; }
+    .suites-panel { grid-template-columns: 1fr; height: auto; }
+    .suites-panel__col + .suites-panel__col {
+        border-left: none;
+        border-top: 1px solid var(--border-default-subtle);
+    }
+    .suites-list { max-height: none; flex: 0 0 auto; }
+    .suites-panel__top-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--spacing-3x);
+    }
+    .suites-panel__top-header-actions { justify-content: space-between; }
 }
 
 /* ───────────────────────────────────────────────────────────
@@ -803,75 +936,165 @@
       </nav>
     </header>
 
-    <header class="dash-page">
-      <div class="dash-page__text">
-        <span class="dash-page__eyebrow">Automated testing / Suites</span>
-        <h1>Test suites.</h1>
-        <p class="dash-page__meta">
-          <span class="dash-page__meta-val">7</span> total
-          <span class="dash-page__meta-sep" aria-hidden="true">·</span>
-          <span class="dash-page__meta-val">1</span> running
-          <span class="dash-page__meta-sep" aria-hidden="true">·</span>
-          last finished
-          <span class="dash-page__meta-val">22 Nov</span>
-        </p>
-      </div>
-      <div class="dash-page__cta">
-        <a href="admin-test-suite.html" class="btn btn--cta btn--sm">
-          <span class="btn__leading" aria-hidden="true">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-          </span>
-          <span class="btn__label">New suite</span>
-        </a>
-      </div>
-    </header>
-
     <section class="suites-layout" aria-label="Test suites and results">
 
-      <!-- LEFT: suite list -->
-      <article class="workspace-card workspace-card--flush card--glass-frost suites-pane suites-pane--list"
-               aria-labelledby="suites-list-h">
+      <article class="workspace-card workspace-card--flush card--glass-frost suites-panel"
+               aria-label="Test suites">
+
+        <!-- TOP HEADER — page title + meta on the left, view toggle +
+             New suite CTA on the right. Spans both columns; sits above
+             the column hairline. -->
+        <header class="suites-panel__top-header">
+          <div class="suites-panel__top-header-text">
+            <span class="dash-page__eyebrow">Automated testing / Suites</span>
+            <h1>Test suites.</h1>
+            <p class="dash-page__meta">
+              <span class="dash-page__meta-val">7</span> total
+              <span class="dash-page__meta-sep" aria-hidden="true">·</span>
+              <span class="dash-page__meta-val">1</span> running
+              <span class="dash-page__meta-sep" aria-hidden="true">·</span>
+              last finished
+              <span class="dash-page__meta-val">22 Nov</span>
+            </p>
+          </div>
+          <div class="suites-panel__top-header-actions">
+
+            <a href="admin-test-suite.html" class="btn btn--cta btn--sm">
+              <span class="btn__leading" aria-hidden="true">
+                <svg class="icon" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 5v14M5 12h14"/>
+                </svg>
+              </span>
+              <span class="btn__label">New suite</span>
+            </a>
+
+          </div>
+        </header>
+
+        <!-- LEFT column — suite list -->
+        <div class="suites-panel__col suites-panel__col--list"
+             aria-labelledby="suites-list-h">
         <h2 id="suites-list-h" class="sr-only" hidden>Suites</h2>
-        <header class="workspace-card__head suites-pane__head">
-          <!-- Row A — search + filter -->
+        <header class="suites-panel__col-head">
           <div class="suites-subtoolbar">
             <label class="search-field">
               <span class="search-field__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>
+                </svg>
               </span>
-              <input type="search" class="input input--sm search-field__input" placeholder="Search suites…" />
+              <input type="search" class="input input--sm search-field__input"
+                     placeholder="Search suites…" />
             </label>
-          </div>
 
-          <!-- Row B — filter tabs.
-               Tabs are used purely as filter buttons here — there are
-               no .tabs__panel siblings since the panel is the suite list
-               itself. This diverges from tabs.css's documented
-               "every tab maps to a panel" contract; flagged in the
-               diff comment for Jack. -->
-          <div class="tabs tabs--line tabs--sm" data-suites-tabs>
-            <div class="tabs__list" role="tablist" aria-label="Filter suites by status">
-              <button type="button" class="tabs__tab is-selected" role="tab"
-                      aria-selected="true" data-filter="all">
-                <span class="tabs__label">All</span>
-                <span class="tabs__badge">7</span>
+            <div class="suites-filter" data-suites-filter>
+              <button type="button" class="btn btn--ghost btn--sm suites-filter__trigger"
+                      aria-haspopup="dialog" aria-expanded="false"
+                      aria-controls="suites-filter-pop">
+                <span class="btn__leading" aria-hidden="true">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                       stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                  </svg>
+                </span>
+                <span class="btn__label">Filter</span>
+                <span class="suites-filter__count" data-filter-count hidden>0</span>
               </button>
-              <button type="button" class="tabs__tab" role="tab"
-                      aria-selected="false" data-filter="running">
-                <span class="tabs__label">Running</span>
-                <span class="tabs__badge">1</span>
-              </button>
-              <button type="button" class="tabs__tab" role="tab"
-                      aria-selected="false" data-filter="completed">
-                <span class="tabs__label">Completed</span>
-                <span class="tabs__badge">5</span>
-              </button>
-              <button type="button" class="tabs__tab" role="tab"
-                      aria-selected="false" data-filter="failed">
-                <span class="tabs__label">Failed</span>
-                <span class="tabs__badge">1</span>
-              </button>
-              <span class="tabs__indicator" aria-hidden="true"></span>
+
+              <div class="suites-filter__pop" id="suites-filter-pop"
+                   role="dialog" aria-label="Filter suites" hidden>
+
+                <fieldset class="suites-filter__group">
+                  <legend class="suites-filter__legend">Status</legend>
+                  <div class="suites-filter__chips"
+                       data-filter-group="status" data-single-select>
+                    <button type="button" class="chip" aria-pressed="true"
+                            data-filter-value="all">
+                      <span class="chip__label">All</span><span class="chip__count">7</span>
+                    </button>
+                    <button type="button" class="chip" aria-pressed="false"
+                            data-filter-value="running">
+                      <span class="chip__label">Running</span><span class="chip__count">1</span>
+                    </button>
+                    <button type="button" class="chip" aria-pressed="false"
+                            data-filter-value="completed">
+                      <span class="chip__label">Completed</span><span class="chip__count">5</span>
+                    </button>
+                    <button type="button" class="chip" aria-pressed="false"
+                            data-filter-value="failed">
+                      <span class="chip__label">Failed</span><span class="chip__count">1</span>
+                    </button>
+                  </div>
+                </fieldset>
+
+                <fieldset class="suites-filter__group">
+                  <legend class="suites-filter__legend">Model</legend>
+                  <div class="suites-filter__chips" data-filter-group="model">
+                    <button type="button" class="chip" aria-pressed="false"
+                            data-filter-value="claude-opus-4-6">
+                      <span class="chip__label">claude-opus-4-6</span>
+                    </button>
+                    <button type="button" class="chip" aria-pressed="false"
+                            data-filter-value="claude-sonnet-4-6">
+                      <span class="chip__label">claude-sonnet-4-6</span>
+                    </button>
+                    <button type="button" class="chip" aria-pressed="false"
+                            data-filter-value="claude-haiku-4-5">
+                      <span class="chip__label">claude-haiku-4-5</span>
+                    </button>
+                  </div>
+                </fieldset>
+
+                <fieldset class="suites-filter__group">
+                  <legend class="suites-filter__legend">Mode</legend>
+                  <div class="suites-filter__chips" data-filter-group="mode">
+                    <button type="button" class="chip" aria-pressed="false"
+                            data-filter-value="production">
+                      <span class="chip__label">production</span>
+                    </button>
+                    <button type="button" class="chip" aria-pressed="false"
+                            data-filter-value="shadow">
+                      <span class="chip__label">shadow</span>
+                    </button>
+                    <button type="button" class="chip" aria-pressed="false"
+                            data-filter-value="debug">
+                      <span class="chip__label">debug</span>
+                    </button>
+                  </div>
+                </fieldset>
+
+                <fieldset class="suites-filter__group">
+                  <legend class="suites-filter__legend">Created</legend>
+                  <div class="suites-filter__chips"
+                       data-filter-group="created" data-single-select>
+                    <button type="button" class="chip" aria-pressed="true"
+                            data-filter-value="any">
+                      <span class="chip__label">Any time</span>
+                    </button>
+                    <button type="button" class="chip" aria-pressed="false"
+                            data-filter-value="7d">
+                      <span class="chip__label">Last 7 days</span>
+                    </button>
+                    <button type="button" class="chip" aria-pressed="false"
+                            data-filter-value="30d">
+                      <span class="chip__label">Last 30 days</span>
+                    </button>
+                    <button type="button" class="chip" aria-pressed="false"
+                            data-filter-value="90d">
+                      <span class="chip__label">Last 90 days</span>
+                    </button>
+                  </div>
+                </fieldset>
+
+                <footer class="suites-filter__foot">
+                  <button type="button" class="btn btn--ghost btn--sm" data-filter-clear>
+                    Clear all
+                  </button>
+                </footer>
+              </div>
             </div>
           </div>
         </header>
@@ -882,12 +1105,12 @@
           <div class="suite-item suite-item--running is-selected"
                   role="button" tabindex="0" aria-pressed="true"
                   data-suite-id="2415"
-                  data-suite-name="UAT — CRM System v 2.1.2"
+                  data-suite-name="Pre-launch — Disease intake v2.1.2"
                   data-state="running">
             <div class="suite-item__body">
               <div class="suite-item__head">
                 <span class="suite-item__id">#2415</span>
-                <span class="suite-item__name">UAT — CRM System v 2.1.2</span>
+                <span class="suite-item__name">Pre-launch — Disease intake v2.1.2</span>
               </div>
               <div class="suite-item__meta">
                 <div class="suite-item__timing">
@@ -936,11 +1159,13 @@
                class="suite-item__result"
                aria-label="See detail report"
                title="See detail report">
-              <span class="suite-item__result-icon suite-item__result-icon--rest" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-              </span>
-              <span class="suite-item__result-icon suite-item__result-icon--hover" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
+              <span class="suite-item__result-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                  <line x1="8"  y1="13" x2="16" y2="13"/>
+                  <line x1="8"  y1="17" x2="13" y2="17"/>
+                </svg>
               </span>
             </a>
           </div>
@@ -949,12 +1174,12 @@
           <div class="suite-item"
                   role="button" tabindex="0" aria-pressed="false"
                   data-suite-id="2415"
-                  data-suite-name="Production — Smoke test 1.8.3"
+                  data-suite-name="Production smoke — Diagnostic flow v1.8.3"
                   data-state="completed">
             <div class="suite-item__body">
               <div class="suite-item__head">
                 <span class="suite-item__id">#2415</span>
-                <span class="suite-item__name">Production — Smoke test 1.8.3</span>
+                <span class="suite-item__name">Production smoke — Diagnostic flow v1.8.3</span>
               </div>
               <div class="suite-item__meta">
                 <div class="suite-item__timing">
@@ -993,11 +1218,13 @@
                class="suite-item__result"
                aria-label="See detail report"
                title="See detail report">
-              <span class="suite-item__result-icon suite-item__result-icon--rest" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-              </span>
-              <span class="suite-item__result-icon suite-item__result-icon--hover" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
+              <span class="suite-item__result-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                  <line x1="8"  y1="13" x2="16" y2="13"/>
+                  <line x1="8"  y1="17" x2="13" y2="17"/>
+                </svg>
               </span>
             </a>
           </div>
@@ -1006,12 +1233,12 @@
           <div class="suite-item"
                   role="button" tabindex="0" aria-pressed="false"
                   data-suite-id="2415"
-                  data-suite-name="Production — Regress tests 1.8.3"
+                  data-suite-name="Regression panel — Sow herd workflow v1.8.3"
                   data-state="completed">
             <div class="suite-item__body">
               <div class="suite-item__head">
                 <span class="suite-item__id">#2415</span>
-                <span class="suite-item__name">Production — Regress tests 1.8.3</span>
+                <span class="suite-item__name">Regression panel — Sow herd workflow v1.8.3</span>
               </div>
               <div class="suite-item__meta">
                 <div class="suite-item__timing">
@@ -1050,11 +1277,13 @@
                class="suite-item__result"
                aria-label="See detail report"
                title="See detail report">
-              <span class="suite-item__result-icon suite-item__result-icon--rest" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-              </span>
-              <span class="suite-item__result-icon suite-item__result-icon--hover" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
+              <span class="suite-item__result-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                  <line x1="8"  y1="13" x2="16" y2="13"/>
+                  <line x1="8"  y1="17" x2="13" y2="17"/>
+                </svg>
               </span>
             </a>
           </div>
@@ -1063,12 +1292,12 @@
           <div class="suite-item"
                   role="button" tabindex="0" aria-pressed="false"
                   data-suite-id="2415"
-                  data-suite-name="Sprint 1.8.3"
+                  data-suite-name="Sprint 47 — Smallholder onboarding"
                   data-state="completed">
             <div class="suite-item__body">
               <div class="suite-item__head">
                 <span class="suite-item__id">#2415</span>
-                <span class="suite-item__name">Sprint 1.8.3</span>
+                <span class="suite-item__name">Sprint 47 — Smallholder onboarding</span>
               </div>
               <div class="suite-item__meta">
                 <div class="suite-item__timing">
@@ -1107,11 +1336,13 @@
                class="suite-item__result"
                aria-label="See detail report"
                title="See detail report">
-              <span class="suite-item__result-icon suite-item__result-icon--rest" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-              </span>
-              <span class="suite-item__result-icon suite-item__result-icon--hover" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
+              <span class="suite-item__result-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                  <line x1="8"  y1="13" x2="16" y2="13"/>
+                  <line x1="8"  y1="17" x2="13" y2="17"/>
+                </svg>
               </span>
             </a>
           </div>
@@ -1120,12 +1351,12 @@
           <div class="suite-item"
                   role="button" tabindex="0" aria-pressed="false"
                   data-suite-id="2415"
-                  data-suite-name="Production — Smoke test 1.8.2"
+                  data-suite-name="Production smoke — Vinallergy multilingual v1.8.2"
                   data-state="completed">
             <div class="suite-item__body">
               <div class="suite-item__head">
                 <span class="suite-item__id">#2415</span>
-                <span class="suite-item__name">Production — Smoke test 1.8.2</span>
+                <span class="suite-item__name">Production smoke — Vinallergy multilingual v1.8.2</span>
               </div>
               <div class="suite-item__meta">
                 <div class="suite-item__timing">
@@ -1164,11 +1395,13 @@
                class="suite-item__result"
                aria-label="See detail report"
                title="See detail report">
-              <span class="suite-item__result-icon suite-item__result-icon--rest" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-              </span>
-              <span class="suite-item__result-icon suite-item__result-icon--hover" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
+              <span class="suite-item__result-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                  <line x1="8"  y1="13" x2="16" y2="13"/>
+                  <line x1="8"  y1="17" x2="13" y2="17"/>
+                </svg>
               </span>
             </a>
           </div>
@@ -1177,12 +1410,12 @@
           <div class="suite-item suite-item--errored"
                   role="button" tabindex="0" aria-pressed="false"
                   data-suite-id="2415"
-                  data-suite-name="Production — Regress tests 1.8.2"
+                  data-suite-name="Regression panel — Vaccination protocol Q&amp;A v1.8.2"
                   data-state="failed">
             <div class="suite-item__body">
               <div class="suite-item__head">
                 <span class="suite-item__id">#2415</span>
-                <span class="suite-item__name">Production — Regress tests 1.8.2</span>
+                <span class="suite-item__name">Regression panel — Vaccination protocol Q&amp;A v1.8.2</span>
               </div>
               <div class="suite-item__meta">
                 <div class="suite-item__timing">
@@ -1216,12 +1449,12 @@
           <div class="suite-item"
                   role="button" tabindex="0" aria-pressed="false"
                   data-suite-id="2415"
-                  data-suite-name="Sprint 1.8.2"
+                  data-suite-name="Sprint 46 — Field validation pilot"
                   data-state="completed">
             <div class="suite-item__body">
               <div class="suite-item__head">
                 <span class="suite-item__id">#2415</span>
-                <span class="suite-item__name">Sprint 1.8.2</span>
+                <span class="suite-item__name">Sprint 46 — Field validation pilot</span>
               </div>
               <div class="suite-item__meta">
                 <div class="suite-item__timing">
@@ -1260,27 +1493,49 @@
                class="suite-item__result"
                aria-label="See detail report"
                title="See detail report">
-              <span class="suite-item__result-icon suite-item__result-icon--rest" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-              </span>
-              <span class="suite-item__result-icon suite-item__result-icon--hover" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
+              <span class="suite-item__result-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                  <line x1="8"  y1="13" x2="16" y2="13"/>
+                  <line x1="8"  y1="17" x2="13" y2="17"/>
+                </svg>
               </span>
             </a>
           </div>
 
         </div>
-      </article>
+        </div>
 
-      <!-- RIGHT: selected suite's SP run results -->
-      <article class="workspace-card workspace-card--flush card--glass-frost suites-pane suites-pane--detail"
-               aria-labelledby="suite-detail-h">
-        <header class="workspace-card__head suites-pane__head suites-detail__head">
-          <h2 id="suite-detail-h" class="suites-detail__title">UAT — CRM System v 2.1.2</h2>
+        <!-- RIGHT column — selected suite detail -->
+        <div class="suites-panel__col suites-panel__col--detail"
+             aria-labelledby="suite-detail-h">
+        <header class="suites-panel__col-head suites-detail__head">
+          <h2 id="suite-detail-h" class="suites-detail__title">Pre-launch — Disease intake v2.1.2</h2>
           <div class="suites-detail__actions">
-            <button type="button" class="dash-topbar__icon-btn" aria-label="Filter results">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="10" y1="18" x2="14" y2="18"/></svg>
-            </button>
+            <a href="admin-test-suite.html"
+               class="dash-topbar__icon-btn"
+               aria-label="Suite configuration"
+               title="Suite configuration">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+              </svg>
+            </a>
+            <a href="admin-test-run.html"
+               class="dash-topbar__icon-btn"
+               aria-label="View detailed results"
+               title="View detailed results">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="8"  y1="13" x2="16" y2="13"/>
+                <line x1="8"  y1="17" x2="13" y2="17"/>
+              </svg>
+            </a>
+            <span class="suites-detail__actions-sep" aria-hidden="true"></span>
             <button type="button" class="dash-topbar__icon-btn" aria-label="Copy share link">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5"/></svg>
             </button>
@@ -1294,32 +1549,34 @@
           <div class="suite-summary__metric">
             <span class="suite-summary__metric-label">Acc</span>
             <span class="suite-summary__metric-value">84</span>
-            <span class="suite-summary__metric-delta suite-summary__metric-delta--better">+2 vs prev</span>
+            <span class="suite-summary__metric-delta suite-summary__metric-delta--better">(+2)</span>
           </div>
           <div class="suite-summary__metric">
             <span class="suite-summary__metric-label">Flu</span>
             <span class="suite-summary__metric-value">81</span>
-            <span class="suite-summary__metric-delta suite-summary__metric-delta--worse">−3 vs prev</span>
+            <span class="suite-summary__metric-delta suite-summary__metric-delta--worse">(−3)</span>
           </div>
           <div class="suite-summary__metric">
             <span class="suite-summary__metric-label">Eff</span>
             <span class="suite-summary__metric-value">82</span>
-            <span class="suite-summary__metric-delta suite-summary__metric-delta--better">+1 vs prev</span>
+            <span class="suite-summary__metric-delta suite-summary__metric-delta--better">(+1)</span>
           </div>
           <div class="suite-summary__metric">
             <span class="suite-summary__metric-label">Lat</span>
             <span class="suite-summary__metric-value">1.4<span class="suite-summary__metric-unit">s</span></span>
-            <span class="suite-summary__metric-delta suite-summary__metric-delta--better">−0.1s vs prev</span>
+            <span class="suite-summary__metric-delta suite-summary__metric-delta--better">(−0.1s)</span>
           </div>
           <div class="suite-summary__metric">
             <span class="suite-summary__metric-label">Cost</span>
-            <span class="suite-summary__metric-value">$0.141</span>
-            <span class="suite-summary__metric-delta suite-summary__metric-delta--neutral">running tally</span>
+            <span class="suite-summary__metric-value">$0.024</span>
+            <span class="suite-summary__metric-delta suite-summary__metric-delta--better">(−$0.002)</span>
           </div>
           <div class="suite-summary__metric suite-summary__metric--live">
             <span class="suite-summary__metric-label">ETA</span>
             <span class="suite-summary__metric-value">~3d 6h</span>
-            <span class="suite-summary__metric-delta suite-summary__metric-delta--neutral">started 30 Oct</span>
+            <span class="suite-summary__metric-delta suite-summary__metric-delta--neutral suite-summary__metric-delta--mono">
+              started 30 Oct 2025, 14:23
+            </span>
           </div>
         </section>
 
@@ -1634,7 +1891,6 @@
                 <td class="table__cell table__cell--mono" data-sort="010"><a class="cell-link" href="admin-test-case.html">SP-010</a></td>
                 <td class="table__cell" data-sort="strep suis">
                   <span class="badge badge--sm is-neutral"><span class="badge__label">Strep suis</span></span>
-                  <span class="sp-queued-hint">queued · runs after SP-009</span>
                 </td>
                 <td class="table__cell table__cell--num table__cell--meta" data-sort="0">—</td>
                 <td class="table__cell table__cell--num table__cell--meta" data-sort="0">—</td>
@@ -1653,6 +1909,8 @@
             </tbody>
           </table>
         </div>
+        </div>
+
       </article>
 
     </section>
@@ -1752,32 +2010,144 @@
     });
   })();
 
-  // ---------- Suite filter tabs ----------
+  // ---------- Suite filter popover ----------
   (function () {
-    var tabsHost = document.querySelector('[data-suites-tabs]');
+    var host = document.querySelector('[data-suites-filter]');
     var list = document.querySelector('[data-suites-listbox]');
-    if (!tabsHost || !list) return;
-    tabsHost.querySelectorAll('.tabs__tab').forEach(function (tab) {
-      tab.addEventListener('click', function () {
-        tabsHost.querySelectorAll('.tabs__tab').forEach(function (t) {
-          t.classList.remove('is-selected');
-          t.setAttribute('aria-selected', 'false');
-        });
-        tab.classList.add('is-selected');
-        tab.setAttribute('aria-selected', 'true');
-        var filter = tab.getAttribute('data-filter') || 'all';
-        if (filter === 'all') {
-          list.removeAttribute('data-filter');
+    if (!host || !list) return;
+
+    var trigger = host.querySelector('.suites-filter__trigger');
+    var pop     = host.querySelector('.suites-filter__pop');
+    var badge   = host.querySelector('[data-filter-count]');
+    var clear   = host.querySelector('[data-filter-clear]');
+    if (!trigger || !pop) return;
+
+    // Portal pop to <body> so position: fixed is relative to the
+    // viewport. .suites-panel has backdrop-filter, which establishes
+    // a containing block for fixed descendants — without portaling,
+    // the popover would be re-anchored to the panel AND clipped by
+    // its overflow: hidden.
+    document.body.appendChild(pop);
+
+    // ---- Positioner ----
+    // Popover is position: fixed so it escapes .suites-panel's
+    // overflow: hidden. Recompute on open + on scroll/resize while
+    // open.
+    function positionPop () {
+      var rect = trigger.getBoundingClientRect();
+      var popW = pop.offsetWidth;
+      var vw   = document.documentElement.clientWidth;
+      var top  = rect.bottom + 8;
+      var left = Math.min(rect.right - popW, vw - popW - 16);
+      if (left < 16) left = 16;
+      pop.style.top  = top  + 'px';
+      pop.style.left = left + 'px';
+    }
+
+    // ---- Open / close ----
+    function setOpen (open) {
+      pop.hidden = !open;
+      trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (open) {
+        positionPop();
+        window.addEventListener('scroll', positionPop, true);
+        window.addEventListener('resize', positionPop);
+      } else {
+        window.removeEventListener('scroll', positionPop, true);
+        window.removeEventListener('resize', positionPop);
+      }
+    }
+    trigger.addEventListener('click', function () {
+      setOpen(pop.hidden);
+    });
+    document.addEventListener('click', function (e) {
+      if (host.contains(e.target)) return;
+      setOpen(false);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !pop.hidden) {
+        setOpen(false);
+        trigger.focus();
+      }
+    });
+
+    // ---- Chip toggle ----
+    pop.querySelectorAll('.suites-filter__chips').forEach(function (group) {
+      var single = group.hasAttribute('data-single-select');
+      group.addEventListener('click', function (e) {
+        var chip = e.target.closest('.chip');
+        if (!chip || !group.contains(chip)) return;
+        if (single) {
+          group.querySelectorAll('.chip').forEach(function (c) {
+            c.setAttribute('aria-pressed', 'false');
+          });
+          chip.setAttribute('aria-pressed', 'true');
         } else {
-          list.setAttribute('data-filter', filter);
+          var on = chip.getAttribute('aria-pressed') !== 'true';
+          chip.setAttribute('aria-pressed', on ? 'true' : 'false');
         }
-        list.querySelectorAll('.suite-item').forEach(function (card) {
-          var state = card.getAttribute('data-state');
-          card.hidden = filter !== 'all' && state !== filter;
-        });
+        applyFilters();
       });
     });
+
+    // ---- Clear all ----
+    if (clear) {
+      clear.addEventListener('click', function () {
+        pop.querySelectorAll('.suites-filter__chips').forEach(function (group) {
+          var single = group.hasAttribute('data-single-select');
+          group.querySelectorAll('.chip').forEach(function (c, i) {
+            var first = i === 0;
+            c.setAttribute('aria-pressed', single && first ? 'true' : 'false');
+          });
+        });
+        applyFilters();
+      });
+    }
+
+    // ---- Apply ----
+    // Status is the only dimension wired to demo data (cards carry
+    // data-state). Model / Mode / Created chips toggle visually and
+    // update the trigger badge but don't filter the static cards —
+    // backend wiring will read the same data-filter-group /
+    // data-filter-value attributes and issue real queries.
+    function activeValues (groupName) {
+      var group = pop.querySelector('[data-filter-group="' + groupName + '"]');
+      if (!group) return [];
+      return Array.prototype.map.call(
+        group.querySelectorAll('.chip[aria-pressed="true"]'),
+        function (c) { return c.getAttribute('data-filter-value'); }
+      );
+    }
+
+    function applyFilters () {
+      // Status — demo wiring (preserves the old [data-filter] behavior).
+      var status = activeValues('status')[0] || 'all';
+      if (status === 'all') list.removeAttribute('data-filter');
+      else                  list.setAttribute('data-filter', status);
+      list.querySelectorAll('.suite-item').forEach(function (card) {
+        var state = card.getAttribute('data-state');
+        card.hidden = status !== 'all' && state !== status;
+      });
+
+      // Trigger badge: count of non-default selections across all
+      // groups. "Status: all" and "Created: any" are defaults and
+      // don't count.
+      var count = 0;
+      var s = activeValues('status')[0];
+      if (s && s !== 'all') count++;
+      count += activeValues('model').length;
+      count += activeValues('mode').length;
+      var c = activeValues('created')[0];
+      if (c && c !== 'any') count++;
+      if (badge) {
+        badge.textContent = count;
+        badge.hidden = count === 0;
+      }
+    }
+
+    applyFilters();
   })();
+
 </script>
 
 </body>
