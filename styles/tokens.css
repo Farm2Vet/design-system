@@ -16,6 +16,15 @@
     --white-base:#F9FAF9;
     --black-base:#000000;
 
+    /* ---------- Cream paper — warm near-white, brand-derived ----------
+       Shares hue with the primary/secondary accents so glass fills and
+       page background sit on the same colour temperature. This is the
+       default surface material in a glass-led system. */
+    --cream-base: #fffdf7;   /* glass-fill base, page base under the ambient */
+    --cream-50:   #f9f4e5;   /* hover background for rows inside glass cards */
+    --cream-100:  #f3edd7;   /* active row, pressed list-item                */
+    --cream-200:  #e8debf;   /* deepest cream, rare — section divider tint   */
+
     /* ---------- Primary — Lime ---------- */
     --primary-50:  #f1f7ee;
     --primary-100: #d8e9cd;
@@ -113,8 +122,8 @@
     --spacing-25x:     100px;
 
     /* ---------- Type families ---------- */
-    --font-sans: 'Poppins', 'Helvetica', sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
+    --font-sans:    'Poppins', 'Helvetica', sans-serif;
+    --font-mono:    'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
 
     /* ---------- Type scale (primitive)
        13 steps on a strict 1.2 ratio, anchored at --text-base = 1rem.
@@ -199,11 +208,11 @@
     --text-micro:       var(--text-eyebrow);
 
     /* ---------- Background ---------- */
-    --background-default:          var(--white-base);
-    --background-default-subtle:   var(--neutral-50);
-    --background-default-minimal:  var(--neutral-100);
-    --background-default-hover:    var(--neutral-200);
-    --background-default-active:   var(--neutral-300);
+    --background-default:          var(--cream-base);
+    --background-default-subtle:   var(--cream-50);
+    --background-default-minimal:  var(--cream-100);
+    --background-default-hover:    var(--cream-100);
+    --background-default-active:   var(--cream-200);
     --background-default-selected: var(--primary-50);
     --background-default-disabled: color-mix(in srgb, var(--neutral-900) 5%, transparent);
 
@@ -242,10 +251,16 @@
     --background-row-hover:        color-mix(in srgb, var(--primary-50) 60%, transparent);
     --background-toast:            color-mix(in srgb, var(--neutral-950) 92%, transparent);
     --background-ambient:
-        radial-gradient(ellipse 80% 50% at 20% 10%, color-mix(in srgb, var(--primary-500) 18%, transparent), transparent 70%),
-        radial-gradient(ellipse 60% 40% at 90% 30%, color-mix(in srgb, var(--accent-500) 16%, transparent), transparent 70%),
-        radial-gradient(ellipse 70% 50% at 50% 90%, color-mix(in srgb, var(--secondary-300) 10%, transparent), transparent 70%),
-        var(--white-base);
+        radial-gradient(ellipse 80% 50% at 20% 10%,
+            color-mix(in srgb, var(--primary-500)   28%, transparent),
+            transparent 70%),
+        radial-gradient(ellipse 60% 40% at 90% 30%,
+            color-mix(in srgb, var(--accent-500)    24%, transparent),
+            transparent 70%),
+        radial-gradient(ellipse 70% 50% at 50% 90%,
+            color-mix(in srgb, var(--secondary-300) 16%, transparent),
+            transparent 70%);
+    /* deliberate: no trailing var(--white-base) — body paints cream beneath */
 
     /* ---------- Text ---------- */
     --text-default:          var(--neutral-950);
@@ -520,33 +535,33 @@
        a matched set so the surface stays coherent across densities. */
 
     /* Clear — barely-there pane (filter chips, hover hints, soft tags) */
-    --glass-light-clear-bg:           color-mix(in srgb, var(--white-base) 25%, transparent);
-    --glass-light-clear-bg-hover:     color-mix(in srgb, var(--white-base) 42%, transparent);
-    --glass-light-clear-bg-pressed:   color-mix(in srgb, var(--white-base) 50%, transparent);
+    --glass-light-clear-bg:           color-mix(in srgb, var(--cream-base) 25%, transparent);
+    --glass-light-clear-bg-hover:     color-mix(in srgb, var(--cream-base) 42%, transparent);
+    --glass-light-clear-bg-pressed:   color-mix(in srgb, var(--cream-base) 50%, transparent);
     --glass-light-clear-border:       color-mix(in srgb, var(--white-base) 40%, transparent);
     --glass-light-clear-border-hover: color-mix(in srgb, var(--white-base) 60%, transparent);
     --glass-light-clear-blur:         var(--blur-sm);
 
     /* Light — the system default (cards, header, pills, contract) */
-    --glass-light-light-bg:           color-mix(in srgb, var(--white-base) 65%, transparent);
-    --glass-light-light-bg-hover:     color-mix(in srgb, var(--white-base) 80%, transparent);
-    --glass-light-light-bg-pressed:   color-mix(in srgb, var(--white-base) 88%, transparent);
+    --glass-light-light-bg:           color-mix(in srgb, var(--cream-base) 65%, transparent);
+    --glass-light-light-bg-hover:     color-mix(in srgb, var(--cream-base) 80%, transparent);
+    --glass-light-light-bg-pressed:   color-mix(in srgb, var(--cream-base) 88%, transparent);
     --glass-light-light-border:       color-mix(in srgb, var(--white-base) 85%, transparent);
     --glass-light-light-border-hover: color-mix(in srgb, var(--white-base) 95%, transparent);
     --glass-light-light-blur:         var(--blur-lg);
 
     /* Regular — content-grade density (dropdowns, popovers, side panels) */
-    --glass-light-regular-bg:           color-mix(in srgb, var(--white-base) 75%, transparent);
-    --glass-light-regular-bg-hover:     color-mix(in srgb, var(--white-base) 85%, transparent);
-    --glass-light-regular-bg-pressed:   color-mix(in srgb, var(--white-base) 92%, transparent);
+    --glass-light-regular-bg:           color-mix(in srgb, var(--cream-base) 75%, transparent);
+    --glass-light-regular-bg-hover:     color-mix(in srgb, var(--cream-base) 85%, transparent);
+    --glass-light-regular-bg-pressed:   color-mix(in srgb, var(--cream-base) 92%, transparent);
     --glass-light-regular-border:       color-mix(in srgb, var(--white-base) 70%, transparent);
     --glass-light-regular-border-hover: color-mix(in srgb, var(--white-base) 88%, transparent);
     --glass-light-regular-blur:         var(--blur-xl);
 
     /* Thick — near-opaque slab (modal sheets, drawer chrome, hero panels) */
-    --glass-light-thick-bg:           color-mix(in srgb, var(--white-base) 92%, transparent);
-    --glass-light-thick-bg-hover:     color-mix(in srgb, var(--white-base) 96%, transparent);
-    --glass-light-thick-bg-pressed:   color-mix(in srgb, var(--white-base) 98%, transparent);
+    --glass-light-thick-bg:           color-mix(in srgb, var(--cream-base) 92%, transparent);
+    --glass-light-thick-bg-hover:     color-mix(in srgb, var(--cream-base) 96%, transparent);
+    --glass-light-thick-bg-pressed:   color-mix(in srgb, var(--cream-base) 98%, transparent);
     --glass-light-thick-border:       color-mix(in srgb, var(--white-base) 90%, transparent);
     --glass-light-thick-border-hover: color-mix(in srgb, var(--white-base) 98%, transparent);
     --glass-light-thick-blur:         var(--blur-2xl);
@@ -631,16 +646,22 @@
 
        Soft  — quiet rim, for chrome and dense content.
        Strong— pronounced rim, for hero glass and overlay tiers. */
-    --glass-inset-light-soft:   inset 0 1px 0 color-mix(in srgb, var(--white-base) 55%, transparent),
-                                inset 0 -1px 0 color-mix(in srgb, var(--black-base) 4%,  transparent);
-    --glass-inset-light-strong: inset 0 1px 0 color-mix(in srgb, var(--white-base) 75%, transparent),
-                                inset 1px 1px 0 color-mix(in srgb, var(--white-base) 30%, transparent),
-                                inset 0 -1px 2px color-mix(in srgb, var(--black-base) 6%, transparent);
-    --glass-inset-dark-soft:    inset 0 1px 0 color-mix(in srgb, var(--white-base) 18%, transparent),
-                                inset 0 -1px 0 color-mix(in srgb, var(--black-base) 10%, transparent);
-    --glass-inset-dark-strong:  inset 0 1px 0 color-mix(in srgb, var(--white-base) 28%, transparent),
-                                inset 1px 1px 0 color-mix(in srgb, var(--white-base) 12%, transparent),
-                                inset 0 -1px 2px color-mix(in srgb, var(--black-base) 14%, transparent);
+    --glass-inset-light-soft:
+        inset  0  1px 0     color-mix(in srgb, var(--white-base) 60%, transparent),
+        inset  0  0   0 1px color-mix(in srgb, var(--white-base) 14%, transparent),
+        inset  0 -1px 0     color-mix(in srgb, var(--glass-shadow-ink)  5%, transparent);
+    --glass-inset-light-strong:
+        inset  0  1px 0     color-mix(in srgb, var(--white-base) 78%, transparent),
+        inset  0  0   0 1px color-mix(in srgb, var(--white-base) 18%, transparent),
+        inset  0 -1px 0     color-mix(in srgb, var(--glass-shadow-ink)  7%, transparent);
+    --glass-inset-dark-soft:
+        inset  0  1px 0     color-mix(in srgb, var(--white-base) 18%, transparent),
+        inset  0  0   0 1px color-mix(in srgb, var(--white-base)  6%, transparent),
+        inset  0 -1px 0     color-mix(in srgb, var(--neutral-950) 40%, transparent);
+    --glass-inset-dark-strong:
+        inset  0  1px 0     color-mix(in srgb, var(--white-base) 28%, transparent),
+        inset  0  0   0 1px color-mix(in srgb, var(--white-base) 10%, transparent),
+        inset  0 -1px 0     color-mix(in srgb, var(--neutral-950) 50%, transparent);
 
     /* ---------- Decorative — sheen and bevel (optional layers) ----------
        sheen: a subtle white gradient painted over the surface (step 6
@@ -781,6 +802,18 @@
     --btn-caution-fg:        var(--text-inverted);
     --btn-caution-border:    transparent;
     --btn-caution-shadow:    var(--shadow-sm);
+
+    /* ---------- Variant: Caution-ghost (destructive, lower emphasis) ----------
+       Pairs the Ghost weight with the Caution color rail. Transparent
+       resting surface, critical text and icon, subtle critical-tinted
+       hover fill. Used when a destructive action shares a row with a
+       higher-emphasis caution button and shouldn't compete for weight. */
+    --btn-caution-ghost-bg:           transparent;
+    --btn-caution-ghost-bg-hover:     var(--background-critical);
+    --btn-caution-ghost-bg-active:    color-mix(in srgb, var(--critical-500) 12%, transparent);
+    --btn-caution-ghost-fg:           var(--text-critical);
+    --btn-caution-ghost-border:       var(--border-default);
+    --btn-caution-ghost-border-hover: var(--border-critical);
 
     /* ---------- Variant: Tinted (Apple HIG · Bordered Tinted) ----------
        Subtle accent-flavoured fill. Sits between Ghost and CTA on the
@@ -1031,7 +1064,7 @@
     --dropdown-trigger-radius:       var(--form-radius);
 
     --dropdown-chevron-color:        var(--icon-default);
-    --dropdown-chevron-size:         16px;
+    --dropdown-chevron-size:         1em;
 
     /* Menu surface is solid — the dropdown is a content-grade
        selection surface, not chrome. Reads cleanly over glass
@@ -1221,7 +1254,7 @@
     --dropdown-trigger-radius:       var(--form-radius);
 
     --dropdown-chevron-color:        var(--icon-default);
-    --dropdown-chevron-size:         16px;
+    --dropdown-chevron-size:         1em;
 
     /* Menu surface is solid — the dropdown is a content-grade
        selection surface, not chrome. Reads cleanly over glass
@@ -1455,4 +1488,56 @@
     --pagination-jump-input-fg:     var(--text-default);
     --pagination-jump-input-border: var(--border-default);
     --pagination-jump-label-fg:     var(--text-default-subtle);
+}
+
+/* ---------- Reduced-transparency override ----------
+   Users who set prefers-reduced-transparency: reduce get opaque
+   cream surfaces in place of glass. The token API is unchanged;
+   only the resolved value flips. */
+@media (prefers-reduced-transparency: reduce) {
+    :root {
+        --glass-light-clear-bg:           var(--cream-base);
+        --glass-light-clear-bg-hover:     var(--cream-50);
+        --glass-light-clear-bg-pressed:   var(--cream-100);
+        --glass-light-light-bg:           var(--cream-base);
+        --glass-light-light-bg-hover:     var(--cream-50);
+        --glass-light-light-bg-pressed:   var(--cream-100);
+        --glass-light-regular-bg:         var(--cream-base);
+        --glass-light-regular-bg-hover:   var(--cream-50);
+        --glass-light-regular-bg-pressed: var(--cream-100);
+        --glass-light-thick-bg:           var(--cream-base);
+        --glass-light-thick-bg-hover:     var(--cream-50);
+        --glass-light-thick-bg-pressed:   var(--cream-100);
+
+        --glass-light-clear-blur:   var(--blur-none);
+        --glass-light-light-blur:   var(--blur-none);
+        --glass-light-regular-blur: var(--blur-none);
+        --glass-light-thick-blur:   var(--blur-none);
+
+        /* dark family flattens to the primary-900 reference it
+           already brand-tints around */
+        --glass-dark-clear-bg:           var(--primary-900);
+        --glass-dark-light-bg:           var(--primary-900);
+        --glass-dark-regular-bg:         var(--primary-900);
+        --glass-dark-thick-bg:           var(--primary-900);
+        --glass-dark-clear-blur:   var(--blur-none);
+        --glass-dark-light-blur:   var(--blur-none);
+        --glass-dark-regular-blur: var(--blur-none);
+        --glass-dark-thick-blur:   var(--blur-none);
+    }
+}
+
+/* ---------- backdrop-filter capability fallback ----------
+   Same opaque fallback for browsers without backdrop-filter. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    :root {
+        --glass-light-clear-bg:   var(--cream-base);
+        --glass-light-light-bg:   var(--cream-base);
+        --glass-light-regular-bg: var(--cream-base);
+        --glass-light-thick-bg:   var(--cream-base);
+        --glass-dark-clear-bg:    var(--primary-900);
+        --glass-dark-light-bg:    var(--primary-900);
+        --glass-dark-regular-bg:  var(--primary-900);
+        --glass-dark-thick-bg:    var(--primary-900);
+    }
 }

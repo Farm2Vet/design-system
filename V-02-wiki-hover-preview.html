@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Disease wiki (v2 · hover + header + app-bar preview) — Farm2Vet Admin</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<!-- Foundations -->
+<link rel="stylesheet" href="styles/tokens.css" />
+<link rel="stylesheet" href="styles/base.css" />
+<link rel="stylesheet" href="styles/typography.css" />
+
+<!-- Components -->
+<link rel="stylesheet" href="styles/button.css" />
+<link rel="stylesheet" href="styles/form.css" />
+<link rel="stylesheet" href="styles/dropdown.css" />
+<link rel="stylesheet" href="styles/badge.css" />
+<link rel="stylesheet" href="styles/card.css" />
+<link rel="stylesheet" href="styles/sidebar.css" />
+<link rel="stylesheet" href="styles/chip.css" />
+<link rel="stylesheet" href="styles/search-toolbar.css" />
+<link rel="stylesheet" href="styles/table.css" />
+<link rel="stylesheet" href="styles/tabs.css" />
+<link rel="stylesheet" href="styles/modal.css" />
+
+<!-- Page-specific layout (V-01 layout grid + page header + modal form;
+     V-02 contributes its own surface overrides on top) -->
+<link rel="stylesheet" href="styles/page-V-01.css" />
+<link rel="stylesheet" href="styles/page-V-02.css" />
+
+<!-- ============================================================
+     HOVER PREVIEW — proposed row hover for page-V-02.css.
+     Sits AFTER page-V-02.css so it overrides the current
+     white-mix hover rule. Not committed to page-V-02.css yet —
+     this is a visual-only preview to evaluate the look before
+     specing it.
+
+     Two rules:
+       1. .table__row:hover — the real hover, fires when Jack
+          mouses over any row in the catalogue.
+       2. .table__row.is-hover-demo — the same visual, pinned
+          on one row (PRRS) so the effect is visible without
+          mousing over. Strip this class once the look is
+          locked in — the spec only needs the :hover rule.
+     ============================================================ -->
+<style>
+  /* --- Column header readability ---
+     Default .table__head-cell resolves
+       --table-head-font-size: var(--text-body-sm)  /* 13.33px */
+       --table-head-fg:        var(--text-default-subtle)
+     Treat the column headers as small headings, not labels:
+     bump size to --text-h6 (19.2px) and colour to full
+     --text-default. Both are existing tokens — nothing new
+     introduced. The uppercase + 700-weight + 0.04em tracking
+     from the component stays for now; if it reads too loud at
+     this size we can drop those for a calmer treatment. */
+  .wiki-card .table__head-cell {
+    font-size: var(--text-h6);
+    color: var(--text-default);
+  }
+
+  /* --- Row hover (demo + real) --- */
+  .wiki-card .table__row:hover,
+  .wiki-card .table__row.is-hover-demo {
+    background: color-mix(in srgb, var(--primary-100) 55%, transparent);
+    box-shadow: inset 3px 0 0 var(--border-primary);
+  }
+
+  /* ============================================================
+     APP-BAR — proposed top global pill bar
+     New pattern. Page-scoped here for iteration; once locked in
+     this becomes its own component (.app-bar) with a III-page
+     documenting it. No existing CSS file is touched.
+
+     Composition (left → right): section breadcrumb pill, search
+     field, notification bell with status pip, EN/VI language
+     segmented switch, version pill. The bar itself is a glass
+     pill that floats with margin from the viewport edges and
+     sticks to the top on scroll.
+     ============================================================ */
+  .app-bar {
+    position: sticky;
+    top: var(--spacing-3x);
+    z-index: 50;
+    margin: var(--spacing-3x) var(--spacing-3x) 0;
+    padding: var(--spacing-2x) var(--spacing-3x);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-4x);
+    background: var(--glass-light-light-bg);
+    border: var(--border-width-base) solid var(--glass-light-light-border);
+    border-radius: var(--radius-pill);
+    -webkit-backdrop-filter: var(--glass-light-light-blur) var(--glass-saturate);
+            backdrop-filter: var(--glass-light-light-blur) var(--glass-saturate);
+    box-shadow: var(--glass-shadow-floating), var(--glass-inset-light-soft);
+    min-height: 56px;
+  }
+  /* Section breadcrumb pill — high-level location ("Admin >
+     Disease"). The page-level breadcrumb in .app-shell__page-header
+     stays for the deeper hierarchy (Data Management › Disease wiki
+     › Catalogue). The two are complementary: one is "where in the
+     app", the other is "where in the data". */
+  .app-bar__crumb {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2x);
+    padding: var(--spacing-1x) var(--spacing-3x);
+    border-radius: var(--radius-pill);
+    background: color-mix(in srgb, var(--white-base) 35%, transparent);
+    color: var(--text-default-subtle);
+    text-decoration: none;
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+  .app-bar__crumb-sep { color: var(--text-default-minimal); }
+  .app-bar__crumb-current {
+    color: var(--text-default);
+    font-weight: var(--font-weight-semibold);
+  }
+  .app-bar__crumb:hover {
+    background: color-mix(in srgb, var(--white-base) 55%, transparent);
+    color: var(--text-default);
+  }
+
+  /* Right cluster — search + bell + lang + version, pushed to the
+     trailing edge with margin-left: auto on the cluster itself. */
+  .app-bar__cluster {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-3x);
+  }
+
+  /* Search lives in the cluster. Reuses the canonical .search-field
+     component; only width is page-scoped. */
+  .app-bar__search { width: 320px; }
+
+  /* Icon button — square-cap, glass-tone, hosts a notification pip. */
+  .app-bar__icon-btn {
+    position: relative;
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: var(--icon-default);
+    cursor: pointer;
+    border-radius: var(--radius-pill);
+    transition: background-color .15s ease, color .15s ease;
+  }
+  .app-bar__icon-btn:hover {
+    background: color-mix(in srgb, var(--white-base) 35%, transparent);
+    color: var(--icon-default-strong);
+  }
+  .app-bar__icon-btn svg { width: 18px; height: 18px; }
+  .app-bar__pip {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--background-critical-strong);
+    border: 2px solid var(--white-base);
+    pointer-events: none;
+  }
+
+  /* Language segmented switch — two-option pill. Once .app-bar
+     becomes a real component, this should resolve to the
+     canonical .btn-switch--segmented; for the prototype it's
+     hand-rolled to match the screenshot exactly. */
+  .app-bar__lang {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 3px;
+    border-radius: var(--radius-pill);
+    background: color-mix(in srgb, var(--neutral-200) 50%, transparent);
+  }
+  .app-bar__lang-option {
+    min-width: 36px;
+    height: 28px;
+    padding: 0 var(--spacing-3x);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-default-subtle);
+    cursor: pointer;
+    transition: background-color .15s ease, color .15s ease;
+  }
+  .app-bar__lang-option:hover { color: var(--text-default); }
+  .app-bar__lang-option.is-active {
+    background: var(--background-primary);
+    color: var(--text-inverted);
+  }
+
+  /* Version pill — mono, quiet, far-trailing affordance. */
+  .app-bar__version {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--spacing-1x) var(--spacing-3x);
+    border-radius: var(--radius-pill);
+    background: color-mix(in srgb, var(--white-base) 50%, transparent);
+    border: var(--border-width-base) solid var(--glass-light-light-border);
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    color: var(--text-default-subtle);
+    letter-spacing: var(--letter-spacing-mono);
+  }
+  /* The inset box-shadow paints on the leading cell only by
+     default because table cells are independent layout boxes.
+     Re-apply on the first cell of every row directly so the
+     accent reads as a single edge bar, not a 3-px stripe per
+     cell. */
+  .wiki-card .table__row:hover  > .table__cell:first-child,
+  .wiki-card .table__row.is-hover-demo > .table__cell:first-child {
+    box-shadow: inset 3px 0 0 var(--border-primary);
+  }
+  /* The inset shadow on .table__row itself can be redundant
+     once it's painted on the first cell, but keep both —
+     border-collapse: separate lets the row shadow contribute
+     to the bar's solidity, especially under reduced-motion. */
+</style>
+
+<script src="scripts/dropdown.js" defer></script>
+<script src="scripts/sidebar.js" defer></script>
+</head>
+<body>
+
+<!-- ============== TOP APP BAR (prototype) ============== -->
+<header class="app-bar" aria-label="Application bar">
+  <a href="#" class="app-bar__crumb">
+    <span class="app-bar__crumb-section">Admin</span>
+    <span class="app-bar__crumb-sep" aria-hidden="true">›</span>
+    <span class="app-bar__crumb-current">Disease</span>
+  </a>
+
+  <div class="app-bar__cluster">
+    <label class="search-field app-bar__search">
+      <span class="search-field__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      </span>
+      <input type="search" class="input input--sm search-field__input" placeholder="Search…" />
+    </label>
+
+    <button type="button" class="app-bar__icon-btn" aria-label="Notifications">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+      </svg>
+      <span class="app-bar__pip" aria-hidden="true"></span>
+    </button>
+
+    <div class="app-bar__lang" role="group" aria-label="Language">
+      <button type="button" class="app-bar__lang-option is-active" aria-pressed="true">EN</button>
+      <button type="button" class="app-bar__lang-option" aria-pressed="false">VI</button>
+    </div>
+
+    <span class="app-bar__version">v1.4.2</span>
+  </div>
+</header>
+
+<!-- ============== APP SHELL ============== -->
+<div class="app-shell">
+
+  <!-- ───── Sidebar (canonical .sidebar, light glass) ───── -->
+  <aside class="app-shell__side">
+    <aside class="sidebar" aria-label="Admin primary navigation">
+      <header class="sidebar__header">
+        <a href="#" class="sidebar__brand">
+          <img class="sidebar__brand-mark" src="logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
+          <span class="sidebar__brand-text">Farm2Vet</span>
+        </a>
+        <button type="button" class="sidebar__collapse" aria-label="Collapse sidebar" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6"/></svg>
+        </button>
+      </header>
+      <nav class="sidebar__nav" aria-label="Admin destinations">
+        <ul class="sidebar__list">
+          <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span><span class="sidebar__label">Overview Dashboard</span></a></li>
+          <li class="sidebar__item is-open">
+            <button type="button" class="sidebar__link" aria-expanded="true">
+              <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/></svg></span>
+              <span class="sidebar__label">Data Management</span>
+              <span class="sidebar__trailing"><svg class="sidebar__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></span>
+            </button>
+            <ul class="sidebar__sublist">
+              <li class="sidebar__item"><a class="sidebar__link is-current" href="V-02-wiki.html" aria-current="page"><span class="sidebar__label">Disease</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Question</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Conversation</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Image</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Resource</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">PDF Input</span></a></li>
+            </ul>
+          </li>
+          <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg></span><span class="sidebar__label">Automated Testing</span></a></li>
+          <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></span><span class="sidebar__label">Sync database</span></a></li>
+        </ul>
+      </nav>
+      <div class="sidebar__footer">
+        <div class="sidebar__profile-wrap">
+          <div class="sidebar__profile">
+            <span class="sidebar__avatar" aria-hidden="true">M</span>
+            <span class="sidebar__profile-text">
+              <span class="sidebar__profile-name">Minh</span>
+              <span class="sidebar__profile-role">Admin</span>
+            </span>
+            <button type="button"
+                    class="sidebar__overflow"
+                    aria-label="Account menu"
+                    aria-haspopup="menu"
+                    aria-expanded="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="5" r="1"/>
+                <circle cx="12" cy="12" r="1"/>
+                <circle cx="12" cy="19" r="1"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="sidebar__menu" role="menu" aria-label="Account">
+            <span class="sidebar__menu-header">farm2vets.tech@gmail.com</span>
+            <ul class="sidebar__menu-list">
+              <li role="none">
+                <a class="sidebar__menu-item" role="menuitem" href="#">
+                  <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                  </svg>
+                  <span>Settings</span>
+                </a>
+              </li>
+              <li role="none">
+                <a class="sidebar__menu-item" role="menuitem" href="#">
+                  <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="2" y1="12" x2="22" y2="12"/>
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                  </svg>
+                  <span>Language</span>
+                </a>
+              </li>
+              <li role="none">
+                <a class="sidebar__menu-item" role="menuitem" href="#">
+                  <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                    <line x1="12" y1="17" x2="12.01" y2="17"/>
+                  </svg>
+                  <span>Get Help</span>
+                </a>
+              </li>
+              <li role="none" class="sidebar__menu-item--divider" aria-hidden="true"></li>
+              <li role="none">
+                <a class="sidebar__menu-item" role="menuitem" href="#">
+                  <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                    <polyline points="16 17 21 12 16 7"/>
+                    <line x1="21" y1="12" x2="9" y2="12"/>
+                  </svg>
+                  <span>Logout</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </aside>
+
+  <!-- ───── Main ───── -->
+  <main class="app-shell__main">
+
+    <!-- ───── Page header (breadcrumb · title · lede · primary action) ───── -->
+    <header class="app-shell__page-header">
+      <nav class="app-shell__breadcrumb" aria-label="Breadcrumb">
+        <a class="app-shell__breadcrumb-link" href="#">Data Management</a>
+        <span class="app-shell__breadcrumb-sep" aria-hidden="true">›</span>
+        <a class="app-shell__breadcrumb-link" href="#">Disease wiki</a>
+        <span class="app-shell__breadcrumb-sep" aria-hidden="true">›</span>
+        <span class="app-shell__breadcrumb-tail" aria-current="page">Catalogue</span>
+      </nav>
+
+      <div class="app-shell__page-header-row">
+        <div class="app-shell__page-header-text">
+          <h1 class="app-shell__page-title">Disease catalogue</h1>
+          <p class="app-shell__page-lede">
+            Codenames, full names, and lifecycle state for every disease entry.
+          </p>
+        </div>
+        <button type="button" class="btn btn--cta btn--md">
+          <span class="btn__leading" aria-hidden="true">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+          </span>
+          <span class="btn__label">New disease</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- ───── Search toolbar — canonical .search-toolbar with State + Species chips ───── -->
+    <header class="search-toolbar" role="toolbar" aria-label="Search and filters">
+
+      <label class="search-field search-toolbar__search">
+        <span class="search-field__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        </span>
+        <input type="search" class="input input--sm search-field__input" placeholder="Search disease, codename, alias…" />
+        <button type="button" class="search-field__clear" aria-label="Clear search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </label>
+
+      <div class="search-toolbar__filters" role="group" aria-label="Filters">
+
+        <button type="button" class="chip chip--removable" aria-label="Edit State filter">
+          <span class="chip__label">
+            <span class="chip__facet">State:</span>
+            <span class="chip__values">Active</span>
+          </span>
+          <span class="chip__trailing" role="button" tabindex="0" aria-label="Remove State filter">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </span>
+        </button>
+
+        <button type="button" class="chip chip--removable" aria-label="Edit Species filter">
+          <span class="chip__label">
+            <span class="chip__facet">Species:</span>
+            <span class="chip__values">Swine, Bovine<span class="chip__more">+1</span></span>
+          </span>
+          <span class="chip__trailing" role="button" tabindex="0" aria-label="Remove Species filter">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </span>
+        </button>
+
+        <div class="search-toolbar__add-filter">
+          <button type="button" class="btn btn--ghost btn--sm" aria-haspopup="dialog" aria-expanded="false" aria-controls="disease-filter-menu">
+            <span class="btn__leading" aria-hidden="true">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+            </span>
+            <span class="btn__label">Filter</span>
+          </button>
+
+          <div class="search-toolbar__menu" id="disease-filter-menu" role="dialog" aria-label="Add filter">
+            <div class="search-toolbar__menu-panel search-toolbar__menu-panel--facets">
+              <div class="search-toolbar__menu-search">
+                <input type="search" class="input input--sm" placeholder="Find a filter…" />
+              </div>
+              <ul class="search-toolbar__menu-list" role="menu">
+                <li>
+                  <button type="button" class="search-toolbar__menu-option" role="menuitem">
+                    <span class="search-toolbar__menu-option-label">State</span>
+                    <svg class="search-toolbar__menu-chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 2 8 6 4 10"/></svg>
+                  </button>
+                </li>
+                <li>
+                  <button type="button" class="search-toolbar__menu-option" role="menuitem">
+                    <span class="search-toolbar__menu-option-label">Species</span>
+                    <svg class="search-toolbar__menu-chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 2 8 6 4 10"/></svg>
+                  </button>
+                </li>
+                <li>
+                  <button type="button" class="search-toolbar__menu-option" role="menuitem">
+                    <span class="search-toolbar__menu-option-label">Pathogen type</span>
+                    <svg class="search-toolbar__menu-chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 2 8 6 4 10"/></svg>
+                  </button>
+                </li>
+                <li>
+                  <button type="button" class="search-toolbar__menu-option" role="menuitem">
+                    <span class="search-toolbar__menu-option-label">Last updated</span>
+                    <svg class="search-toolbar__menu-chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 2 8 6 4 10"/></svg>
+                  </button>
+                </li>
+              </ul>
+            </div>
+            <div class="search-toolbar__menu-panel search-toolbar__menu-panel--values">
+              <header class="search-toolbar__menu-header">
+                <button type="button" class="search-toolbar__menu-back" aria-label="Back to filters">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                </button>
+                <span class="search-toolbar__menu-heading"></span>
+              </header>
+              <div class="search-toolbar__menu-search">
+                <input type="search" class="input input--sm" placeholder="Search values…" />
+              </div>
+              <ul class="search-toolbar__menu-list" role="menu"></ul>
+              <footer class="search-toolbar__menu-footer">
+                <button type="button" class="btn btn--ghost btn--sm">Clear</button>
+                <button type="button" class="btn btn--cta btn--sm">Apply</button>
+              </footer>
+            </div>
+          </div>
+        </div>
+
+        <button type="button" class="btn btn--ghost btn--sm search-toolbar__clear">
+          <span class="btn__label">Clear filters</span>
+        </button>
+      </div>
+
+    </header>
+
+    <div class="app-shell__data-region">
+
+    <!-- ───── List panel — canonical .table inside a glass-frost card ───── -->
+    <section class="card card--glass-frost wiki-card" aria-label="Disease catalogue panel">
+
+      <table class="table table--boxed" aria-label="Disease catalogue">
+        <thead class="table__head">
+          <tr class="table__head-row">
+            <th class="table__head-cell" scope="col">
+              <button type="button" class="table__sort is-asc">
+                Codename
+                <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m5 12 7-7 7 7"/>
+                  <path d="M12 19V5"/>
+                </svg>
+              </button>
+            </th>
+            <th class="table__head-cell" scope="col">
+              <button type="button" class="table__sort">
+                Full name
+                <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m5 12 7-7 7 7"/>
+                  <path d="M12 19V5"/>
+                </svg>
+              </button>
+            </th>
+            <th class="table__head-cell" scope="col">
+              <button type="button" class="table__sort">
+                Species
+                <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m5 12 7-7 7 7"/>
+                  <path d="M12 19V5"/>
+                </svg>
+              </button>
+            </th>
+            <th class="table__head-cell" scope="col">
+              <button type="button" class="table__sort">
+                ID
+                <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m5 12 7-7 7 7"/>
+                  <path d="M12 19V5"/>
+                </svg>
+              </button>
+            </th>
+            <th class="table__head-cell" scope="col">
+              <button type="button" class="table__sort">
+                Updated
+                <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m5 12 7-7 7 7"/>
+                  <path d="M12 19V5"/>
+                </svg>
+              </button>
+            </th>
+            <th class="table__head-cell" scope="col" style="text-align:right">
+              <button type="button" class="table__sort">
+                State
+                <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m5 12 7-7 7 7"/>
+                  <path d="M12 19V5"/>
+                </svg>
+              </button>
+            </th>
+          </tr>
+        </thead>
+        <tbody class="table__body">
+          <tr class="table__row">
+            <td class="table__cell table__cell--mono">ASF</td>
+            <td class="table__cell">African Swine Fever</td>
+            <td class="table__cell">Swine</td>
+            <td class="table__cell table__cell--mono table__cell--meta">DIS-001</td>
+            <td class="table__cell table__cell--meta">Apr 18, 2026</td>
+            <td class="table__cell table__cell--state"><span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span></td>
+          </tr>
+          <tr class="table__row">
+            <td class="table__cell table__cell--mono">CSF</td>
+            <td class="table__cell">Classical Swine Fever</td>
+            <td class="table__cell">Swine</td>
+            <td class="table__cell table__cell--mono table__cell--meta">DIS-002</td>
+            <td class="table__cell table__cell--meta">Apr 12, 2026</td>
+            <td class="table__cell table__cell--state"><span class="badge badge--sm is-warning"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Incomplete</span></span></td>
+          </tr>
+          <tr class="table__row is-hover-demo">
+            <td class="table__cell table__cell--mono">PRRS</td>
+            <td class="table__cell">Porcine Reproductive &amp; Respiratory Syndrome</td>
+            <td class="table__cell">Swine</td>
+            <td class="table__cell table__cell--mono table__cell--meta">DIS-003</td>
+            <td class="table__cell table__cell--meta">Apr 10, 2026</td>
+            <td class="table__cell table__cell--state"><span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span></td>
+          </tr>
+          <tr class="table__row">
+            <td class="table__cell table__cell--mono">SALM</td>
+            <td class="table__cell">Salmonella enterica infection</td>
+            <td class="table__cell">Multi</td>
+            <td class="table__cell table__cell--mono table__cell--meta">DIS-004</td>
+            <td class="table__cell table__cell--meta">Apr 06, 2026</td>
+            <td class="table__cell table__cell--state"><span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span></td>
+          </tr>
+          <tr class="table__row table__row--dim">
+            <td class="table__cell table__cell--mono">TGE</td>
+            <td class="table__cell">Transmissible Gastroenteritis</td>
+            <td class="table__cell">Swine</td>
+            <td class="table__cell table__cell--mono table__cell--meta">DIS-005</td>
+            <td class="table__cell table__cell--meta">Apr 02, 2026</td>
+            <td class="table__cell table__cell--state"><span class="badge badge--sm is-neutral"><span class="badge__label">Inactive</span></span></td>
+          </tr>
+          <tr class="table__row">
+            <td class="table__cell table__cell--mono">SDYS</td>
+            <td class="table__cell">Brachyspira hyodysenteriae infection</td>
+            <td class="table__cell">Swine</td>
+            <td class="table__cell table__cell--mono table__cell--meta">DIS-006</td>
+            <td class="table__cell table__cell--meta">Mar 28, 2026</td>
+            <td class="table__cell table__cell--state"><span class="badge badge--sm is-warning"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Incomplete</span></span></td>
+          </tr>
+          <tr class="table__row">
+            <td class="table__cell table__cell--mono">GLAS</td>
+            <td class="table__cell">Gl&auml;sser&rsquo;s disease (Glaesserella parasuis)</td>
+            <td class="table__cell">Swine</td>
+            <td class="table__cell table__cell--mono table__cell--meta">DIS-007</td>
+            <td class="table__cell table__cell--meta">Mar 24, 2026</td>
+            <td class="table__cell table__cell--state"><span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span></td>
+          </tr>
+          <tr class="table__row table__row--dim">
+            <td class="table__cell table__cell--mono">PAST</td>
+            <td class="table__cell">Pasteurella multocida infection</td>
+            <td class="table__cell">Multi</td>
+            <td class="table__cell table__cell--mono table__cell--meta">DIS-008</td>
+            <td class="table__cell table__cell--meta">Mar 19, 2026</td>
+            <td class="table__cell table__cell--state"><span class="badge badge--sm is-neutral"><span class="badge__label">Inactive</span></span></td>
+          </tr>
+          <tr class="table__row">
+            <td class="table__cell table__cell--mono">APP</td>
+            <td class="table__cell">Actinobacillus Pleuropneumonia</td>
+            <td class="table__cell">Swine</td>
+            <td class="table__cell table__cell--mono table__cell--meta">DIS-009</td>
+            <td class="table__cell table__cell--meta">Mar 14, 2026</td>
+            <td class="table__cell table__cell--state"><span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span></td>
+          </tr>
+          <tr class="table__row">
+            <td class="table__cell table__cell--mono">EDEM</td>
+            <td class="table__cell">Edema disease (Shiga-toxin <em>E. coli</em>)</td>
+            <td class="table__cell">Swine</td>
+            <td class="table__cell table__cell--mono table__cell--meta">DIS-010</td>
+            <td class="table__cell table__cell--meta">Mar 08, 2026</td>
+            <td class="table__cell table__cell--state"><span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Pager — lives inside the same glass card as the table -->
+      <div class="wiki-card__footer">
+        <nav class="pagination" aria-label="Pagination">
+          <button type="button" class="pagination__step" data-direction="first" aria-label="First page">«</button>
+          <button type="button" class="pagination__step" data-direction="prev" aria-label="Previous page">‹</button>
+          <ol class="pagination__list">
+            <li><a class="pagination__page" href="#">1</a></li>
+            <li><a class="pagination__page" href="#">2</a></li>
+            <li><a class="pagination__page" href="#">3</a></li>
+            <li><a class="pagination__page is-current" href="#" aria-current="page">4</a></li>
+            <li><a class="pagination__page" href="#">5</a></li>
+            <li><a class="pagination__page" href="#">6</a></li>
+            <li><span class="pagination__ellipsis" aria-hidden="true">…</span></li>
+            <li><a class="pagination__page" href="#">15</a></li>
+          </ol>
+          <button type="button" class="pagination__step" data-direction="next" aria-label="Next page">›</button>
+          <button type="button" class="pagination__step" data-direction="last" aria-label="Last page">»</button>
+        </nav>
+      </div>
+
+    </section>
+
+    <!-- ───── Floating modal — "Add new disease" ───── -->
+    <div class="app-shell__modal-layer" aria-hidden="false">
+      <div class="modal modal--md" id="add-disease" role="dialog" aria-modal="true" aria-labelledby="add-disease-title">
+        <div class="modal__surface">
+
+          <header class="modal__header">
+            <div class="modal__heading">
+              <h3 class="modal__title" id="add-disease-title">Add new disease</h3>
+            </div>
+            <button type="button" class="modal__close" aria-label="Close dialog">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </button>
+          </header>
+
+          <div class="modal__body">
+            <form class="add-disease-form" onsubmit="return false;">
+
+              <div class="field field--cover">
+                <div class="cover-tile" aria-hidden="true">
+                  <div class="cover-tile__square">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 4v3M12 17v3M4 12h3M17 12h3M6 6l2 2M16 16l2 2M6 18l2-2M16 8l2-2"/></svg>
+                  </div>
+                  <span class="cover-tile__edit">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+                  </span>
+                </div>
+              </div>
+
+              <div class="field field--codename">
+                <label class="field__label" for="add-disease-codename">Codename</label>
+                <input type="text" id="add-disease-codename" class="input" value="ASF" />
+              </div>
+
+              <div class="field field--fullname">
+                <label class="field__label" for="add-disease-fullname">Full name</label>
+                <input type="text" id="add-disease-fullname" class="input" value="African Swine Fever" />
+              </div>
+
+              <div class="field field--species">
+                <label class="field__label" for="add-disease-species">Species</label>
+                <input type="text" id="add-disease-species" class="input" value="Swine" />
+              </div>
+
+              <div class="field field--pathogen">
+                <label class="field__label" for="add-disease-pathogen">Pathogen type</label>
+                <input type="text" id="add-disease-pathogen" class="input" value="Viral" />
+              </div>
+
+              <div class="field field--aliases">
+                <label class="field__label" for="add-disease-aliases">Aliases</label>
+                <input type="text" id="add-disease-aliases" class="input" value="Pig plague, African pig disease" />
+              </div>
+
+              <div class="field field--desc">
+                <label class="field__label" for="add-disease-desc">Short description</label>
+                <textarea id="add-disease-desc" class="input textarea" rows="3">A highly contagious haemorrhagic disease of pigs caused by African swine fever virus. No vaccine is available; control depends on surveillance and biosecurity.</textarea>
+              </div>
+
+            </form>
+          </div>
+
+          <footer class="modal__footer">
+            <button type="button" class="btn btn--ghost btn--md">Cancel</button>
+            <button type="button" class="btn btn--cta btn--md">Save</button>
+          </footer>
+
+        </div>
+      </div>
+    </div>
+
+    </div>
+
+  </main>
+
+</div>
+
+</body>
+</html>

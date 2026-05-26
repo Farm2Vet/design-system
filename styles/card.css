@@ -217,22 +217,26 @@
 
 /* =========================================================
    BASE
-   Default style is Elevated (subtle shadow, default border).
+   Default surface is regular-frost glass. The flat opaque
+   surface is the .card--flat opt-out.
    ========================================================= */
 .card {
     position: relative;
     display: flex;
     flex-direction: column;
     gap: var(--card-gap);
-    background: var(--card-bg);
     color: var(--card-fg);
-    border: var(--card-border-width) solid var(--card-border);
+    border: var(--card-border-width) solid var(--card-glass-frost-border);
     border-radius: var(--card-radius);
     padding: var(--card-padding-y) var(--card-padding-x);
-    box-shadow: var(--card-shadow);
     font-family: var(--card-font-family);
     transition: var(--card-transition);
     text-decoration: none;
+    background: var(--card-glass-frost-bg);
+    box-shadow: var(--glass-shadow-raised),
+                var(--glass-inset-light-strong);
+    backdrop-filter: var(--card-glass-frost-blur) var(--card-glass-saturate);
+    -webkit-backdrop-filter: var(--card-glass-frost-blur) var(--card-glass-saturate);
 }
 
 /* When the card itself is an <a>, base.css's `a:hover` would
@@ -262,17 +266,19 @@ button.card {
 .card.is-interactive:hover,
 a.card:hover,
 button.card:hover {
-    background: var(--card-bg-hover);
-    border-color: var(--card-border-hover);
-    box-shadow: var(--card-shadow-hover);
+    background: var(--card-glass-frost-bg-hover);
+    border-color: var(--card-glass-frost-border-hover);
+    box-shadow: var(--glass-shadow-raised-hover),
+                var(--glass-inset-light-strong);
     transform: translateY(-1px);
 }
 
 .card.is-interactive:active,
 a.card:active,
 button.card:active {
-    background: var(--card-bg-pressed);
-    box-shadow: var(--card-shadow);
+    background: var(--card-glass-frost-bg-pressed);
+    box-shadow: var(--glass-shadow-raised-pressed),
+                var(--glass-inset-light-strong);
     transform: translateY(0);
 }
 
@@ -311,6 +317,36 @@ button.card:focus-visible,
     opacity: var(--card-disabled-opacity);
     pointer-events: none;
     cursor: not-allowed;
+}
+
+/* =========================================================
+   STYLE VARIANT — Flat (opaque surface, the glass opt-out)
+   The pre-glass card treatment: solid fill, neutral border,
+   ambient drop shadow, no backdrop blur. Use where a surface
+   must stay opaque — token swatches, dense data tables, any
+   demo that needs a non-glass backdrop.
+   ========================================================= */
+.card--flat {
+    background: var(--card-bg);
+    border-color: var(--card-border);
+    box-shadow: var(--card-shadow);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+.card--flat.is-interactive:hover,
+a.card.card--flat:hover,
+button.card.card--flat:hover {
+    background: var(--card-bg-hover);
+    border-color: var(--card-border-hover);
+    box-shadow: var(--card-shadow-hover);
+    transform: translateY(-1px);
+}
+.card--flat.is-interactive:active,
+a.card.card--flat:active,
+button.card.card--flat:active {
+    background: var(--card-bg-pressed);
+    box-shadow: var(--card-shadow);
+    transform: translateY(0);
 }
 
 /* =========================================================

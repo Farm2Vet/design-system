@@ -6982,7 +6982,7 @@ body::before {
 
   <!-- ========================== SIDEBAR ========================== -->
   <aside class="dash__side">
-    <aside class="sidebar" aria-label="Admin primary navigation">
+    <aside class="sidebar sidebar--active-solid" aria-label="Admin primary navigation">
 
       <header class="sidebar__header">
         <a href="#" class="sidebar__brand">
@@ -7027,12 +7027,21 @@ body::before {
           </li>
 
           <li class="sidebar__item">
-            <a class="sidebar__link dash-sidebar__ai" href="#">
+            <button type="button" class="sidebar__link" aria-expanded="false">
               <span class="sidebar__icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
               </span>
               <span class="sidebar__label">Automated testing</span>
-            </a>
+              <span class="sidebar__trailing">
+                <svg class="sidebar__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+              </span>
+            </button>
+            <ul class="sidebar__sublist">
+              <li class="sidebar__item"><a class="sidebar__link" href="automated-testing/admin-test-console-earthsky.html"><span class="sidebar__label">Console</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="automated-testing/admin-test-profiles-earthsky.html"><span class="sidebar__label">Profiles</span><span class="sidebar__trailing"><span class="sidebar__badge">142</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="automated-testing/admin-test-suites-earthsky.html"><span class="sidebar__label">Suites</span><span class="sidebar__trailing"><span class="sidebar__badge">12</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="automated-testing/admin-test-run-earthsky.html"><span class="sidebar__label">Runs</span><span class="sidebar__trailing"><span class="sidebar__badge sidebar__badge--warning">3</span></span></a></li>
+            </ul>
           </li>
 
           <li class="sidebar__item">

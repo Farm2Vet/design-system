@@ -28,6 +28,11 @@
 
 <script src="scripts/global-nav.js" defer></script>
 
+<!-- Shared segmented-switch boot — sliding indicator + click wiring.
+     Binary on/off switches stay bootstrapped from the inline block
+     at the bottom of this page (only consumer so far). -->
+<script src="scripts/switch.js" defer></script>
+
 </head>
 <body data-page="III-11-switch">
 
@@ -574,75 +579,17 @@ function initReveal() {
 }
 
 /* =========================================================
-   SWITCH INTERACTION — binary + segmented
+   BINARY SWITCH INTERACTION
+   Segmented-switch boot lives in scripts/switch.js (shared) —
+   loaded via <script src> at the top of the page.
    ========================================================= */
 function initSwitches() {
-  /* Binary on/off switches */
   document.querySelectorAll('.switch:not(.switch--segmented)').forEach(sw => {
     sw.addEventListener('click', () => {
       if (sw.hasAttribute('disabled')) return;
       const checked = sw.getAttribute('aria-checked') === 'true';
       sw.setAttribute('aria-checked', String(!checked));
       sw.classList.toggle('is-on', !checked);
-    });
-  });
-  /* Segmented switches (single-select) — single sliding indicator
-     glides between options instead of the active background snapping. */
-  document.querySelectorAll('.switch--segmented').forEach(group => {
-    const opts = Array.from(group.querySelectorAll('.switch__option'));
-    if (opts.length === 0) return;
-
-    /* Inject the sliding pill once per group. */
-    let indicator = group.querySelector(':scope > .switch__indicator');
-    if (!indicator) {
-      indicator = document.createElement('span');
-      indicator.className = 'switch__indicator is-initial';
-      indicator.setAttribute('aria-hidden', 'true');
-      group.prepend(indicator);
-    }
-
-    const activeOpt = () =>
-      opts.find(o => o.classList.contains('is-on')
-                  || o.getAttribute('aria-pressed') === 'true'
-                  || o.getAttribute('aria-selected') === 'true')
-      || opts[0];
-
-    const positionIndicator = (animate) => {
-      const target = activeOpt();
-      if (!target) return;
-      if (!animate) indicator.classList.add('is-initial');
-      const groupRect  = group.getBoundingClientRect();
-      const targetRect = target.getBoundingClientRect();
-      const borderLeft = parseFloat(getComputedStyle(group).borderLeftWidth) || 0;
-      const x = targetRect.left - groupRect.left - borderLeft;
-      indicator.style.width = targetRect.width + 'px';
-      indicator.style.transform = `translateX(${x}px)`;
-      if (!animate) {
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => indicator.classList.remove('is-initial'));
-        });
-      }
-    };
-
-    positionIndicator(false);
-
-    window.addEventListener('resize', () => positionIndicator(false));
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(() => positionIndicator(false));
-    }
-
-    opts.forEach(opt => {
-      opt.addEventListener('click', () => {
-        if (opt.hasAttribute('disabled')) return;
-        if (opt.classList.contains('is-on')) return;
-        opts.forEach(o => {
-          o.classList.remove('is-on');
-          o.setAttribute('aria-pressed', 'false');
-        });
-        opt.classList.add('is-on');
-        opt.setAttribute('aria-pressed', 'true');
-        positionIndicator(true);
-      });
     });
   });
 }

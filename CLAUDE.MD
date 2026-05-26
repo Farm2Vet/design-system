@@ -26,9 +26,10 @@ Pages live at the repo root, named by section:
 | `IV-{NN}-{slug}.html`  | Assets             | `IV-01-logo.html`                 |
 | `V-{NN}-{slug}.html`   | Mockups            | `V-03-hero.html`                  |
 
-`design-system-v1.html` and `vinallergy-green*.html` are legacy /
-preview pages that don't render the global nav and aren't part of
-the section numbering.
+`vinallergy-green*.html` are legacy / preview pages that don't
+render the global nav and aren't part of the section numbering.
+`design-system-v1.html` is a live peer page — propagate
+component and CSS changes to it like any other consumer.
 
 ## Token architecture (three tiers)
 

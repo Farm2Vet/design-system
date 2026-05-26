@@ -1,7 +1,7 @@
 /* =========================================================
    FARM2VET DESIGN SYSTEM — BASE
    Reset, document shell, base typography, utility classes,
-   ambient background animation.
+   ambient background.
    Depends on: tokens.css
    ========================================================= */
 
@@ -29,26 +29,14 @@ body {
     font-size: var(--text-base);
     line-height: var(--line-height-body);
     color: var(--text-default);
-    background: var(--background-default);
+    background:
+        var(--background-ambient),
+        var(--background-default);
+    background-attachment: fixed;
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     overflow-x: hidden;
-}
-
-body::before {
-    content: '';
-    position: fixed;
-    inset: -10%;
-    z-index: -2;
-    background: var(--background-ambient);
-    animation: drift 32s ease-in-out infinite alternate;
-}
-
-@keyframes drift {
-    0%   { transform: translate3d(0, 0, 0) scale(1); }
-    50%  { transform: translate3d(-2%, 1%, 0) scale(1.04); }
-    100% { transform: translate3d(2%, -1%, 0) scale(1.02); }
 }
 
 /* =========================================================
@@ -96,12 +84,3 @@ a:hover      { color: var(--text-primary); }
    styles/typography.css. Pages must include that stylesheet
    to render typed headings, eyebrows, and accent treatments.
    ========================================================= */
-
-/* =========================================================
-   REDUCED MOTION (base)
-   Page-specific stylesheets may extend this rule
-   to silence their own component transitions.
-   ========================================================= */
-@media (prefers-reduced-motion: reduce) {
-    body::before { animation: none; }
-}

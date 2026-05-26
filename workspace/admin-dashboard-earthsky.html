@@ -6222,9 +6222,9 @@ button.card.card--inverted:hover {
 /* Sidebar contrast — text + interactive states tuned for glass.
    Resting text stays dark on transparent (works on light bg);
    hover uses a subtle dark overlay (visible on ANY backdrop because
-   it's darker than glass-tinted backdrop); active uses a solid
-   forest-green fill with white text (4.5:1 contrast, passes WCAG
-   AA — primary-500 lime would only give 2.2:1 with white). */
+   it's darker than glass-tinted backdrop). The active state is now
+   provided by the canonical `.sidebar--active-solid` modifier on
+   the rail itself, so no override here. */
 .dash__side .sidebar {
     /* Resting */
     --sidebar-item-fg:           var(--text-default);
@@ -6235,13 +6235,6 @@ button.card.card--inverted:hover {
     --sidebar-item-fg-hover:     var(--text-default);
     --sidebar-item-bg-hover:     rgba(0, 0, 0, 0.06);
     --sidebar-item-icon-hover:   var(--icon-default);
-
-    /* Current/active — solid lime with white text per design
-       direction. (Lime+white is 2.2:1, below WCAG AA — keeping
-       this is an aesthetic call by the designer.) */
-    --sidebar-item-fg-current:   var(--text-inverted);
-    --sidebar-item-bg-current:   var(--primary-500);
-    --sidebar-item-icon-current: var(--text-inverted);
 }
 
 .dash__main {
@@ -7177,7 +7170,7 @@ button.card.card--inverted:hover {
 
   <!-- ========================== SIDEBAR ========================== -->
   <aside class="dash__side">
-    <aside class="sidebar" aria-label="Admin primary navigation">
+    <aside class="sidebar sidebar--active-solid" aria-label="Admin primary navigation">
 
       <header class="sidebar__header">
         <a href="#" class="sidebar__brand">
@@ -7222,12 +7215,20 @@ button.card.card--inverted:hover {
           </li>
 
           <li class="sidebar__item">
-            <a class="sidebar__link dash-sidebar__ai" href="#">
+            <button type="button" class="sidebar__link" aria-expanded="false">
               <span class="sidebar__icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
               </span>
               <span class="sidebar__label">Automated testing</span>
-            </a>
+              <span class="sidebar__trailing">
+                <svg class="sidebar__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+              </span>
+            </button>
+            <ul class="sidebar__sublist">
+              <li class="sidebar__item"><a class="sidebar__link" href="automated-testing/admin-test-console-earthsky.html"><span class="sidebar__label">Console</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="automated-testing/admin-test-profiles-earthsky.html"><span class="sidebar__label">Profiles</span><span class="sidebar__trailing"><span class="sidebar__badge">142</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="automated-testing/admin-test-suites-earthsky.html"><span class="sidebar__label">Suites</span><span class="sidebar__trailing"><span class="sidebar__badge">12</span></span></a></li>
+            </ul>
           </li>
 
           <li class="sidebar__item">
@@ -7554,6 +7555,21 @@ button.card.card--inverted:hover {
       });
     }
   })();
+
+  // ----- Sidebar group expand/collapse -----
+  // When a .sidebar__item contains a <button class="sidebar__link">, clicking
+  // toggles is-open on the <li> and flips aria-expanded on the button. The
+  // canonical sidebar.css handles the visual sublist show/hide via
+  // .sidebar__item.is-open > .sidebar__sublist.
+  document.querySelectorAll('.dash__side .sidebar__link[aria-expanded]').forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      var item = btn.closest('.sidebar__item');
+      if (!item) return;
+      var open = item.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  });
 </script>
 
 </body>

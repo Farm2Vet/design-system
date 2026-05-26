@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin · PRRS regression — EN — Farm2Vet</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="../../styles/tokens.css" />
+<link rel="stylesheet" href="../../styles/base.css" />
+<link rel="stylesheet" href="../../styles/typography.css" />
+<link rel="stylesheet" href="../../styles/shell.css" />
+<link rel="stylesheet" href="../../styles/sidebar.css" />
+
+<link rel="stylesheet" href="../../styles/button.css" />
+<link rel="stylesheet" href="../../styles/card.css" />
+<link rel="stylesheet" href="../../styles/form.css" />
+<link rel="stylesheet" href="../../styles/badge.css" />
+<link rel="stylesheet" href="../../styles/chip.css" />
+<link rel="stylesheet" href="../../styles/dropdown.css" />
+<link rel="stylesheet" href="../../styles/search-toolbar.css" />
+<link rel="stylesheet" href="../../styles/table.css" />
+
+<link rel="stylesheet" href="_shared.css" />
+
+<style>
+.suite-profiles__row { /* override the global .table cell so the checkbox cell stays tight */ }
+.suite-settings-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--spacing-4x) var(--spacing-5x);
+}
+.suite-settings-grid .field--full { grid-column: 1 / -1; }
+
+.suite-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-2x);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+@media (max-width: 720px) {
+    .suite-settings-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="dash">
+
+  <!-- SIDEBAR -->
+  <aside class="dash__side">
+    <aside class="sidebar sidebar--active-solid" aria-label="Admin primary navigation">
+      <header class="sidebar__header">
+        <a href="../admin-dashboard.html" class="sidebar__brand">
+          <img class="sidebar__brand-mark" src="../../logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
+          <span class="sidebar__brand-text">Farm2Vet</span>
+        </a>
+        <button type="button" class="sidebar__collapse" aria-label="Collapse sidebar" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6"/></svg>
+        </button>
+      </header>
+      <nav class="sidebar__nav" aria-label="Admin destinations">
+        <ul class="sidebar__list">
+          <li class="sidebar__item">
+            <a class="sidebar__link" href="../admin-dashboard.html">
+              <span class="sidebar__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+              </span>
+              <span class="sidebar__label">Overview</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <button type="button" class="sidebar__link" aria-expanded="false">
+              <span class="sidebar__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/></svg>
+              </span>
+              <span class="sidebar__label">Data management</span>
+              <span class="sidebar__trailing">
+                <svg class="sidebar__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+              </span>
+            </button>
+            <ul class="sidebar__sublist">
+              <li class="sidebar__item"><a class="sidebar__link" href="../admin-disease-earthsky.html"><span class="sidebar__label">Disease</span><span class="sidebar__trailing"><span class="sidebar__badge">142</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Question</span><span class="sidebar__trailing"><span class="sidebar__badge">318</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Conversation</span><span class="sidebar__trailing"><span class="sidebar__badge">47</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Image</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Resource</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">PDF Input</span></a></li>
+            </ul>
+          </li>
+          <li class="sidebar__item is-open">
+            <button type="button" class="sidebar__link" aria-expanded="true">
+              <span class="sidebar__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
+              </span>
+              <span class="sidebar__label">Automated testing</span>
+              <span class="sidebar__trailing">
+                <svg class="sidebar__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+              </span>
+            </button>
+            <ul class="sidebar__sublist">
+              <li class="sidebar__item"><a class="sidebar__link" href="admin-test-console.html"><span class="sidebar__label">Console</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="admin-test-profiles.html"><span class="sidebar__label">Profiles</span><span class="sidebar__trailing"><span class="sidebar__badge">142</span></span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link is-current" href="admin-test-suites.html" aria-current="page"><span class="sidebar__label">Suites</span><span class="sidebar__trailing"><span class="sidebar__badge">12</span></span></a></li>
+            </ul>
+          </li>
+          <li class="sidebar__item">
+            <a class="sidebar__link" href="#">
+              <span class="sidebar__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              </span>
+              <span class="sidebar__label">Sync database</span>
+              <span class="sidebar__trailing"><span class="sidebar__badge sidebar__badge--warning">6</span></span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <div class="sidebar__footer">
+        <div class="sidebar__profile-wrap">
+          <div class="sidebar__profile">
+            <span class="sidebar__avatar" aria-hidden="true">M</span>
+            <span class="sidebar__profile-text">
+              <span class="sidebar__profile-name">Minh</span>
+              <span class="sidebar__profile-role">Admin</span>
+            </span>
+            <button type="button" class="sidebar__overflow" aria-label="Account menu" aria-haspopup="menu" aria-expanded="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="dash__main">
+
+    <header class="dash-topbar" aria-label="Workspace chrome">
+      <nav class="dash-topbar__crumbs" aria-label="Breadcrumb">
+        <a href="../admin-dashboard.html">Admin</a>
+        <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
+        <a href="admin-test-console.html">Automated testing</a>
+        <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
+        <a href="admin-test-suites.html">Suites</a>
+        <span class="dash-topbar__crumb-sep" aria-hidden="true">›</span>
+        <span class="dash-topbar__crumb-tail" aria-current="page">PRRS regression — EN</span>
+      </nav>
+      <ul class="dash-topbar__cluster">
+        <li class="dash-topbar__cluster-item"><span class="dash-topbar__version">v1.4.2</span></li>
+      </ul>
+    </header>
+
+    <header class="dash-page">
+      <div class="dash-page__text">
+        <h1>PRRS regression — EN.</h1>
+        <p class="dash-page__meta">
+          <span><span class="dash-page__meta-val">12</span> profiles</span>
+          <span class="dash-page__meta-sep" aria-hidden="true">·</span>
+          <span>Lang <span class="dash-page__meta-val">EN</span></span>
+          <span class="dash-page__meta-sep" aria-hidden="true">·</span>
+          <span>Last run <span class="dash-page__meta-val">30 m ago</span></span>
+          <span class="dash-page__meta-sep" aria-hidden="true">·</span>
+          <span><span class="dash-page__meta-val">92%</span> pass</span>
+        </p>
+      </div>
+      <div class="dash-page__cta">
+        <button type="button" class="btn btn--ghost"><span class="btn__label">Save changes</span></button>
+        <button type="button" class="btn btn--cta">
+          <span class="btn__leading" aria-hidden="true">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </span>
+          <span class="btn__label">Run suite</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Card: Profiles in this suite -->
+    <article class="workspace-card workspace-card--flush" aria-labelledby="suite-profiles-h">
+      <header class="workspace-card__head">
+        <div class="workspace-section">
+          <header class="workspace-section__head">
+            <h2 id="suite-profiles-h" class="workspace-section__title">Profiles in this suite</h2>
+            <a class="workspace-section__action" href="admin-test-profiles.html">Add from library →</a>
+          </header>
+          <p class="workspace-section__summary">12 of 142 synthetic profiles selected. The suite re-runs the chatbot through this exact set every time.</p>
+        </div>
+      </header>
+
+      <table class="table table--sm">
+        <thead class="table__head">
+          <tr class="table__head-row">
+            <th class="table__head-cell" style="width: 32px;"><input type="checkbox" class="checkbox" aria-label="Select all" checked /></th>
+            <th class="table__head-cell">Code</th>
+            <th class="table__head-cell">Title</th>
+            <th class="table__head-cell">Label</th>
+            <th class="table__head-cell">Difficulty</th>
+            <th class="table__head-cell">Last pass</th>
+          </tr>
+        </thead>
+        <tbody class="table__body">
+          <tr class="table__row is-selected">
+            <td class="table__cell"><input type="checkbox" class="checkbox" checked aria-label="Include SP-001" /></td>
+            <td class="table__cell"><a class="profiles-code" href="admin-test-profile-view.html" style="font-family:var(--font-mono);font-weight:500;color:var(--text-default);text-decoration:none;">SP-001</a></td>
+            <td class="table__cell">PRRS — late-term abortions</td>
+            <td class="table__cell"><span class="badge is-critical"><span class="badge__label">PRRS</span></span></td>
+            <td class="table__cell table__cell--meta">medium</td>
+            <td class="table__cell"><span class="badge is-safe"><span class="badge__label">pass</span></span></td>
+          </tr>
+          <tr class="table__row is-selected">
+            <td class="table__cell"><input type="checkbox" class="checkbox" checked aria-label="Include SP-007" /></td>
+            <td class="table__cell"><a href="admin-test-profile-view.html" style="font-family:var(--font-mono);font-weight:500;color:var(--text-default);text-decoration:none;">SP-007</a></td>
+            <td class="table__cell">PRRS — wean-to-finish drop</td>
+            <td class="table__cell"><span class="badge is-critical"><span class="badge__label">PRRS</span></span></td>
+            <td class="table__cell table__cell--meta">hard</td>
+            <td class="table__cell"><span class="badge is-safe"><span class="badge__label">pass</span></span></td>
+          </tr>
+          <tr class="table__row is-selected">
+            <td class="table__cell"><input type="checkbox" class="checkbox" checked aria-label="Include SP-019" /></td>
+            <td class="table__cell"><a href="admin-test-profile-view.html" style="font-family:var(--font-mono);font-weight:500;color:var(--text-default);text-decoration:none;">SP-019</a></td>
+            <td class="table__cell">PRRS — sow fertility crash</td>
+            <td class="table__cell"><span class="badge is-critical"><span class="badge__label">PRRS</span></span></td>
+            <td class="table__cell table__cell--meta">medium</td>
+            <td class="table__cell"><span class="badge is-warning"><span class="badge__label">close</span></span></td>
+          </tr>
+          <tr class="table__row is-selected">
+            <td class="table__cell"><input type="checkbox" class="checkbox" checked aria-label="Include SP-024" /></td>
+            <td class="table__cell"><a href="admin-test-profile-view.html" style="font-family:var(--font-mono);font-weight:500;color:var(--text-default);text-decoration:none;">SP-024</a></td>
+            <td class="table__cell">PRRS — nursery cough cluster</td>
+            <td class="table__cell"><span class="badge is-critical"><span class="badge__label">PRRS</span></span></td>
+            <td class="table__cell table__cell--meta">easy</td>
+            <td class="table__cell"><span class="badge is-safe"><span class="badge__label">pass</span></span></td>
+          </tr>
+          <tr class="table__row is-selected">
+            <td class="table__cell"><input type="checkbox" class="checkbox" checked aria-label="Include SP-031" /></td>
+            <td class="table__cell"><a href="admin-test-profile-view.html" style="font-family:var(--font-mono);font-weight:500;color:var(--text-default);text-decoration:none;">SP-031</a></td>
+            <td class="table__cell">PRRS — mixed-age unrest</td>
+            <td class="table__cell"><span class="badge is-critical"><span class="badge__label">PRRS</span></span></td>
+            <td class="table__cell table__cell--meta">hard</td>
+            <td class="table__cell"><span class="badge is-critical"><span class="badge__label">fail</span></span></td>
+          </tr>
+        </tbody>
+      </table>
+    </article>
+
+    <!-- Card: Run settings -->
+    <article class="workspace-card">
+      <div class="workspace-section">
+        <header class="workspace-section__head">
+          <h2 class="workspace-section__title">Run settings</h2>
+          <p class="workspace-section__summary">How the chatbot is invoked for every profile in this suite.</p>
+        </header>
+
+        <div class="suite-settings-grid">
+          <div class="field">
+            <label class="field__label" for="suite-model">Model</label>
+            <select id="suite-model" class="input input--sm">
+              <option value="claude-sonnet-4-6" selected>claude-sonnet-4-6</option>
+              <option value="claude-opus-4-7">claude-opus-4-7</option>
+              <option value="claude-haiku-4-5">claude-haiku-4-5</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field__label" for="suite-mode">Mode</label>
+            <select id="suite-mode" class="input input--sm">
+              <option value="qbq" selected>Question-by-question</option>
+              <option value="freeform">Free-form</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field__label" for="suite-temp">Temperature</label>
+            <input type="number" id="suite-temp" class="input input--sm" value="0.7" step="0.1" min="0" max="2" />
+          </div>
+          <div class="field">
+            <label class="field__label" for="suite-max-turns">Max turns per case</label>
+            <input type="number" id="suite-max-turns" class="input input--sm" value="8" step="1" min="1" max="20" />
+          </div>
+          <div class="field field--full">
+            <label class="field__label" for="suite-rubric">Scoring rubric</label>
+            <textarea id="suite-rubric" class="input input--sm textarea" rows="4">Compare the chatbot's final disease guess against the profile's labelled disease. Accuracy: exact match → 1.0; differential includes the label → 0.6; otherwise 0. Fluency: scored by a separate model judging clarity + tone. Efficiency: turns × cost ratio against a fixed benchmark.</textarea>
+          </div>
+          <div class="field field--full">
+            <label class="field__label">Rubric tags</label>
+            <ul class="suite-chips">
+              <li><span class="chip"><span class="chip__label">Accuracy</span></span></li>
+              <li><span class="chip"><span class="chip__label">Fluency</span></span></li>
+              <li><span class="chip"><span class="chip__label">Efficiency</span></span></li>
+              <li><span class="chip"><span class="chip__label">Latency</span></span></li>
+              <li><span class="chip"><span class="chip__label">Cost</span></span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </article>
+
+  </main>
+</div>
+
+<script>
+  (function () {
+    var sidebar = document.querySelector('.dash__side .sidebar');
+    var btn = document.querySelector('.dash__side .sidebar__collapse');
+    if (sidebar && btn) {
+      btn.addEventListener('click', function () {
+        var collapsed = sidebar.classList.toggle('sidebar--collapsed');
+        btn.setAttribute('aria-pressed', collapsed ? 'true' : 'false');
+        btn.setAttribute('aria-label', collapsed ? 'Expand sidebar' : 'Collapse sidebar');
+      });
+    }
+  })();
+  document.querySelectorAll('.dash__side .sidebar__link[aria-expanded]').forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      var item = btn.closest('.sidebar__item');
+      if (!item) return;
+      var open = item.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  });
+</script>
+
+</body>
+</html>
