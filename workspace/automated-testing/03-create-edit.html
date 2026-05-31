@@ -341,6 +341,7 @@
   }
   .textarea__body.is-placeholder { color: #9B9B9B; }
   .input-help { display: flex; justify-content: space-between; font-size: 11px; color: #8A8A8A; }
+  .input-hint { font-size: 11px; color: #8A8A8A; line-height: 1.45; }
 
   /* Stepper (number) */
   .stepper-num {
@@ -626,17 +627,20 @@
     background: #FAFAFA;
     display: flex; gap: 8px;
   }
-  .form-row--4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
-  .seg {
-    display: inline-flex; border: 1px solid #D6D6D6; border-radius: 6px;
-    background: #FFFFFF; overflow: hidden;
+  /* Pill toggle switch */
+  .switch { display: inline-flex; align-items: center; gap: 8px; }
+  .switch__track {
+    position: relative; width: 40px; height: 22px; flex: none;
+    border-radius: 999px; background: #D6D6D6; transition: background .15s;
   }
-  .seg__opt {
-    padding: 8px 14px; font-size: 12px; color: #4A4A4A;
-    border-right: 1px solid #E5E5E5; line-height: 1;
+  .switch__track::after {
+    content: ""; position: absolute; top: 2px; left: 2px;
+    width: 18px; height: 18px; border-radius: 50%; background: #FFFFFF;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.25); transition: transform .15s;
   }
-  .seg__opt:last-child { border-right: 0; }
-  .seg__opt.is-on { background: #2A2A2A; color: #FFFFFF; }
+  .switch.is-on .switch__track { background: #2A2A2A; }
+  .switch.is-on .switch__track::after { transform: translateX(18px); }
+  .switch__label { font-size: 12px; color: #4A4A4A; }
 </style>
 </head>
 <body>
@@ -678,8 +682,7 @@
           <div class="topbar__right">
             <span class="savestate"><span class="savestate__dot"></span>Unsaved draft</span>
             <button class="btn btn--ghost">Cancel</button>
-            <button class="btn">Save draft</button>
-            <button class="btn btn--primary"><svg viewBox="0 0 16 16" fill="currentColor" width="12" height="12"><path d="M4 2.5l9 5.5-9 5.5z"/></svg><span style="margin-left:2px;">Save &amp; run</span></button>
+            <button class="btn btn--primary"><svg viewBox="0 0 16 16" fill="currentColor" width="12" height="12"><path d="M2 2h9l3 3v9H2V2zm2 0v4h6V2H4zm4 6.5a2 2 0 100 4 2 2 0 000-4z"/></svg><span style="margin-left:2px;">Save</span></button>
           </div>
         </div>
         <div class="content">
@@ -721,27 +724,69 @@
             </div>
           </div>
 
-          <!-- Section 2: Model & mode -->
+          <!-- Section 2: Model, mode & execution -->
           <div class="section">
             <div class="section__head">
               <div style="display:flex;gap:12px;align-items:flex-start;">
                 <span class="section__index">2</span>
                 <div>
-                  <p class="section__title">Model &amp; mode</p>
-                  <p class="section__hint">Which generative model the chatbot uses, and how the synthetic profile conducts the conversation.</p>
+                  <p class="section__title">Model, mode &amp; execution</p>
+                  <p class="section__hint">Which generative model the chatbot uses and how the synthetic profile conducts the conversation, plus how the suite runs when triggered. Workers run conversations in parallel; repetitions multiply the case count.</p>
                 </div>
               </div>
             </div>
+            <!-- Row 1: Model | Workers + Repetitions -->
             <div class="form-row form-row--2">
               <div class="input-group">
                 <label class="input-label">Generative model <span class="req">*</span></label>
                 <div class="input input--select"><span><span class="chip chip--mono" style="margin-right:8px;">GPT</span><span style="color:#6B6B6B;">gpt-4o-mini</span></span><span class="chev"></span></div>
                 <div class="input-help"><span>Switching models invalidates baselines from prior runs.</span><span>&nbsp;</span></div>
               </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;align-content:start;">
+                <div class="input-group">
+                  <label class="input-label">Workers</label>
+                  <div class="stepper-num">
+                    <span class="stepper-num__btn">−</span>
+                    <span class="stepper-num__val">4</span>
+                    <span class="stepper-num__btn">+</span>
+                  </div>
+                  <span class="input-hint">Conversations run in parallel. More workers finish the suite faster but use more resources.</span>
+                </div>
+                <div class="input-group">
+                  <label class="input-label">Repetitions per profile</label>
+                  <div class="stepper-num">
+                    <span class="stepper-num__btn">−</span>
+                    <span class="stepper-num__val">1</span>
+                    <span class="stepper-num__btn">+</span>
+                  </div>
+                  <span class="input-hint">How many times each profile is run. Higher values give more reliable results but multiply the case count.</span>
+                </div>
+              </div>
+            </div>
+            <!-- Row 2: Mode | Anomaly + Accuracy toggles -->
+            <div class="form-row form-row--2">
               <div class="input-group">
                 <label class="input-label">Mode <span class="req">*</span></label>
                 <div class="input input--select"><span>Diagnostic</span><span class="chev"></span></div>
                 <div class="input-help"><span>Switching mode invalidates baselines from prior runs.</span><span>&nbsp;</span></div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;align-content:start;">
+                <div class="input-group">
+                  <label class="input-label">Anomaly report</label>
+                  <div class="switch is-on" style="align-self:flex-start;">
+                    <span class="switch__track"></span>
+                    <span class="switch__label">On</span>
+                  </div>
+                  <span class="input-hint">Flags unexpected or out-of-pattern chatbot responses for review after the run.</span>
+                </div>
+                <div class="input-group">
+                  <label class="input-label">Accuracy report</label>
+                  <div class="switch is-on" style="align-self:flex-start;">
+                    <span class="switch__track"></span>
+                    <span class="switch__label">On</span>
+                  </div>
+                  <span class="input-hint">Scores each response against the expected diagnosis and summarizes correctness.</span>
+                </div>
               </div>
             </div>
           </div>
@@ -875,51 +920,6 @@
                   <button class="btn btn--sm btn--ghost">Remove from suite</button>
                 </div>
               </aside>
-            </div>
-          </div>
-
-          <!-- Section 4: Execution -->
-          <div class="section">
-            <div class="section__head">
-              <div style="display:flex;gap:12px;align-items:flex-start;">
-                <span class="section__index">4</span>
-                <div>
-                  <p class="section__title">Execution</p>
-                  <p class="section__hint">How the suite runs when triggered. Workers run conversations in parallel; repetitions multiply the case count.</p>
-                </div>
-              </div>
-            </div>
-            <div class="form-row form-row--4">
-              <div class="input-group">
-                <label class="input-label">Workers <span class="hint">default 1</span></label>
-                <div class="stepper-num">
-                  <span class="stepper-num__btn">−</span>
-                  <span class="stepper-num__val">4</span>
-                  <span class="stepper-num__btn">+</span>
-                </div>
-              </div>
-              <div class="input-group">
-                <label class="input-label">Repetitions per profile</label>
-                <div class="stepper-num">
-                  <span class="stepper-num__btn">−</span>
-                  <span class="stepper-num__val">1</span>
-                  <span class="stepper-num__btn">+</span>
-                </div>
-              </div>
-              <div class="input-group">
-                <label class="input-label">Anomaly report</label>
-                <div class="seg" style="align-self:flex-start;">
-                  <span class="seg__opt is-on">On</span>
-                  <span class="seg__opt">Off</span>
-                </div>
-              </div>
-              <div class="input-group">
-                <label class="input-label">Accuracy report</label>
-                <div class="seg" style="align-self:flex-start;">
-                  <span class="seg__opt is-on">On</span>
-                  <span class="seg__opt">Off</span>
-                </div>
-              </div>
             </div>
           </div>
 

@@ -1,0 +1,1591 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Forest Dashboard — Conventional</title>
+<style>
+  :root {
+    /* Brand palette */
+    --primary:    #398c36;   /* forest — primary brand; sidebar; most UI */
+    --primary-700:#2a6b27;
+    --primary-600:#317a30;
+    --primary-300:#7ab578;
+    --primary-200:#aacca9;
+    --primary-100:#d9ebd8;
+    --primary-50: #ebf5ea;
+    --accent-50:  #f2faea;
+    --white-base: #ffffff;
+
+    --secondary:  #5c3a1a;   /* brown — supporting dark */
+    --secondary-700: #3f2710;
+    --secondary-300: #a78566;
+    --secondary-100: #ead9c5;
+
+    --accent:     #6ec13e;   /* lime — accent only, rare highlights */
+    --accent-700: #4f9027;
+    --accent-600: #5dac2f;
+    --accent-300: #9bd573;
+    --accent-100: #e4f4d7;
+    --accent-soft: #f2faea;
+
+    --neutral:    #7c8c73;   /* sage */
+    --neutral-900:#1e251c;
+    --neutral-700:#3b4537;
+    --neutral-500:#7c8c73;
+    --neutral-300:#aab4a4;
+    --neutral-200:#c9d0c5;
+    --neutral-100:#e6ebe3;
+    --neutral-50: #f5f7f3;
+
+    --ink-900: var(--neutral-900);
+    --ink-700: var(--neutral-700);
+    --ink-500: var(--neutral-500);
+    --ink-300: var(--neutral-300);
+    --ink-200: var(--neutral-200);
+    --ink-100: var(--neutral-100);
+    --ink-50:  var(--neutral-50);
+
+    --bg:        #f6f8f3;
+    --surface:   #ffffff;
+    --border:    #e2e7dc;
+
+    --success: var(--accent);
+    --warning: #b8761c;
+    --danger:  #b3322a;
+
+    --radius-sm: 6px;
+    --radius:    10px;
+    --radius-lg: 16px;
+
+    /* Conventional elevation scale — two-layer shadows at ~0.1 opacity,
+       tinted with a dark slate-green so they sit on-brand against the
+       light neutral field. Mirrors the Tailwind / Material convention:
+       a soft ambient layer + a tighter contact layer. Cards rest at
+       --shadow-sm; hovered / raised surfaces lift to --shadow. */
+    --shadow-xs: 0 1px 2px 0 rgba(16, 40, 24, 0.06);
+    --shadow-sm: 0 1px 3px 0 rgba(16, 40, 24, 0.10),
+                 0 1px 2px -1px rgba(16, 40, 24, 0.08);
+    --shadow:    0 4px 6px -1px rgba(16, 40, 24, 0.10),
+                 0 2px 4px -2px rgba(16, 40, 24, 0.07);
+    --shadow-lg: 0 10px 15px -3px rgba(16, 40, 24, 0.10),
+                 0 4px 6px -4px rgba(16, 40, 24, 0.08);
+
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-sans);
+    color: var(--ink-900);
+    /* Flat, light neutral field — the conventional dashboard ground that
+       lets card shadows read as genuine elevation. */
+    background: var(--bg);
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Layout shell */
+  .app {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    min-height: 100vh;
+  }
+
+  /* Sidebar — pinned to viewport, nav scrolls internally */
+  .sidebar {
+    background: var(--primary);
+    color: #fff;
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: sticky;
+    top: 0;
+    align-self: start;
+    height: 100vh;
+    overflow: hidden;
+  }
+  .nav {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    min-height: 0;
+    /* slim, theme-tinted scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.35) transparent;
+  }
+  .nav::-webkit-scrollbar { width: 6px; }
+  .nav::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 999px; }
+  .nav::-webkit-scrollbar-track { background: transparent; }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 6px 6px;
+    text-decoration: none;
+  }
+  .brand__emblem {
+    height: 32px;
+    width: 32px;
+    display: block;
+    flex-shrink: 0;
+  }
+  .brand__name {
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    line-height: 1;
+  }
+  .nav {
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .nav__group-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.78);
+    padding: 8px 10px 4px;
+    font-weight: 600;
+  }
+  .nav__item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 10px;
+    border-radius: var(--radius-sm);
+    color: rgba(255,255,255,0.92);
+    text-decoration: none;
+    font-size: 13.5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease;
+  }
+  .nav__item:hover { background: rgba(255,255,255,0.18); color: #fff; }
+  .nav__item.is-active {
+    background: #fff;
+    color: var(--accent-700);
+    font-weight: 600;
+  }
+  .nav__icon {
+    width: 18px; height: 18px;
+    display: inline-grid; place-items: center;
+    color: rgba(255,255,255,0.92);
+    flex-shrink: 0;
+  }
+  .nav__icon svg { width: 18px; height: 18px; display: block; }
+  .nav__item.is-active .nav__icon { color: var(--accent); }
+
+  /* Neutral — flask reads as a quiet supporting icon, not an accent. */
+  .nav__icon--ai,
+  .nav__item.is-active .nav__icon--ai {
+    color: var(--neutral-200);
+  }
+
+  /* Collapsible group */
+  .nav__group { display: flex; flex-direction: column; }
+  .nav__item--parent { justify-content: flex-start; gap: 10px; }
+  .nav__item--parent .nav__label { flex: 1; }
+  .nav__chev {
+    width: 12px; height: 12px;
+    display: inline-grid; place-items: center;
+    transition: transform .15s ease;
+    color: rgba(255,255,255,0.85);
+  }
+  .nav__chev svg { width: 12px; height: 12px; display: block; }
+  .nav__group.is-open .nav__chev { transform: rotate(0deg); }
+  .nav__group:not(.is-open) .nav__chev { transform: rotate(-90deg); }
+
+  .nav__children {
+    display: flex; flex-direction: column;
+    gap: 1px;
+    margin: 2px 0 2px 10px;
+    padding-left: 12px;
+    border-left: 1px solid rgba(255,255,255,0.28);
+    overflow: hidden;
+    max-height: 500px;
+    transition: max-height .2s ease, opacity .15s ease;
+  }
+  .nav__group:not(.is-open) .nav__children {
+    max-height: 0;
+    opacity: 0;
+    pointer-events: none;
+    margin-top: 0; margin-bottom: 0;
+  }
+  .nav__item--child {
+    padding: 7px 10px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.88);
+  }
+  .nav__item--child:hover { background: rgba(255,255,255,0.18); color: #fff; }
+  .nav__item--child.is-active {
+    background: #fff;
+    color: var(--accent-700);
+    font-weight: 600;
+  }
+
+  .sidebar__foot {
+    margin-top: auto;
+    border-top: 1px solid rgba(255,255,255,0.22);
+    padding-top: 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: #fff;
+    color: var(--accent-700);
+    display: grid; place-items: center;
+    font-size: 12px; font-weight: 700;
+  }
+  .sidebar__foot-meta { flex: 1; min-width: 0; }
+  .sidebar__foot-name { color: #fff; font-size: 13px; font-weight: 600; line-height: 1.25; }
+  .sidebar__foot small { display: block; color: rgba(255,255,255,0.82); font-size: 12px; }
+
+  .sidebar__settings {
+    width: 32px; height: 32px;
+    display: grid; place-items: center;
+    background: transparent;
+    border: 0;
+    border-radius: 999px;
+    color: rgba(255,255,255,0.85);
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease;
+    flex-shrink: 0;
+  }
+  .sidebar__settings:hover { background: rgba(255,255,255,0.18); color: #fff; }
+  .sidebar__settings svg { width: 16px; height: 16px; display: block; }
+
+  /* Main */
+  .main {
+    display: flex; flex-direction: column;
+    min-width: 0;
+  }
+
+  /* Topbar — conventional solid bar: white surface, hairline bottom
+     border, a faint resting shadow, sticky to the top of the scroll. */
+  .topbar {
+    position: sticky; top: 0; z-index: 5;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    box-shadow: var(--shadow-xs);
+    padding: 0 32px;
+  }
+  .topbar__inner {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-height: 64px;
+  }
+
+  /* Breadcrumb */
+  .topbar__crumbs {
+    display: inline-flex; align-items: center;
+    gap: 8px;
+    margin-right: auto;
+    font-size: 13px;
+    color: var(--ink-700);
+    white-space: nowrap;
+  }
+  .topbar__crumbs a { color: inherit; text-decoration: none; transition: color .15s ease; }
+  .topbar__crumbs a:hover { color: var(--ink-900); }
+  .topbar__crumb-sep { color: var(--ink-300); }
+  .topbar__crumb-tail { color: var(--ink-900); font-weight: 600; }
+
+  /* Search + actions cluster */
+  .topbar__cluster {
+    display: inline-flex; align-items: center;
+    gap: 12px;
+  }
+  .topbar__search {
+    position: relative;
+    display: inline-flex; align-items: center;
+    width: 260px;
+  }
+  .topbar__search input {
+    width: 100%;
+    border: 1px solid var(--border);
+    background: var(--ink-50);
+    font: inherit;
+    font-size: 13px;
+    color: var(--ink-900);
+    padding: 8px 12px 8px 34px;
+    border-radius: var(--radius-sm);
+    transition: background .15s ease, border-color .15s ease, box-shadow .15s ease;
+  }
+  .topbar__search input::placeholder { color: var(--ink-300); }
+  .topbar__search input:focus {
+    outline: 0;
+    background: var(--surface);
+    border-color: var(--primary-300);
+    box-shadow: 0 0 0 3px var(--primary-50);
+  }
+  .topbar__search-icon {
+    position: absolute;
+    left: 11px; top: 50%; transform: translateY(-50%);
+    width: 16px; height: 16px;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--ink-300);
+    pointer-events: none;
+  }
+  .topbar__search-icon svg { width: 100%; height: 100%; display: block; }
+
+  .topbar__divider {
+    width: 1px; height: 24px;
+    background: var(--border);
+    margin: 0 2px;
+  }
+
+  .topbar__icon-btn {
+    position: relative;
+    width: 36px; height: 36px;
+    border-radius: var(--radius-sm);
+    display: inline-flex; align-items: center; justify-content: center;
+    background: transparent;
+    border: 0;
+    color: var(--ink-500);
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease;
+  }
+  .topbar__icon-btn:hover {
+    background: var(--primary-50);
+    color: var(--primary-700);
+  }
+  .topbar__icon-btn svg { width: 18px; height: 18px; }
+  .topbar__dot {
+    position: absolute;
+    top: 7px; right: 7px;
+    width: 8px; height: 8px;
+    border-radius: 999px;
+    background: var(--danger);
+    box-shadow: 0 0 0 2px var(--surface);
+  }
+
+  .topbar__lang {
+    display: inline-flex;
+    gap: 2px;
+    padding: 3px;
+    background: var(--ink-50);
+    border-radius: var(--radius-sm);
+  }
+  .topbar__lang button {
+    border: 0; background: transparent;
+    padding: 5px 12px;
+    border-radius: 4px;
+    font: inherit;
+    font-size: 12px; font-weight: 500;
+    color: var(--ink-500);
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease;
+    min-width: 40px;
+  }
+  .topbar__lang button:hover { color: var(--ink-900); }
+  .topbar__lang button[aria-pressed="true"] {
+    background: var(--primary);
+    color: #fff;
+    box-shadow: var(--shadow-xs);
+  }
+
+  /* Version chip */
+  .topbar__chip {
+    display: inline-flex; align-items: center;
+    padding: 7px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--ink-700);
+    text-decoration: none;
+    font-size: 12.5px; font-weight: 600;
+    transition: background .15s ease, color .15s ease;
+  }
+  .topbar__chip:hover { background: var(--ink-50); color: var(--primary-700); }
+
+  @media (max-width: 1100px) {
+    .topbar__search { width: 200px; }
+  }
+  @media (max-width: 820px) {
+    .topbar__inner { flex-wrap: wrap; min-height: 0; padding: 14px 0; }
+    .topbar__crumbs { margin-right: 0; flex: 1 1 auto; }
+    .topbar__cluster { flex-basis: 100%; justify-content: space-between; }
+    .topbar__search { flex: 1; width: auto; }
+  }
+
+  /* Content */
+  .content {
+    padding: 32px;
+    display: flex; flex-direction: column; gap: 32px;
+  }
+  .page-head {
+    display: flex; align-items: end; justify-content: space-between;
+    gap: 16px; flex-wrap: wrap;
+  }
+  .page-head h1 {
+    margin: 0;
+    font-size: 22px; font-weight: 700;
+    color: var(--ink-900);
+  }
+  .page-head p {
+    margin: 4px 0 0;
+    color: var(--ink-500);
+    font-size: 13.5px;
+  }
+  .page-head__actions { display: flex; gap: 8px; }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 14px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--ink-900);
+    font: inherit; font-weight: 500;
+    cursor: pointer;
+    box-shadow: var(--shadow-xs);
+    transition: background .15s ease, border-color .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover { background: var(--ink-50); }
+  .btn--primary {
+    /* Forest — the dominant primary action */
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+  }
+  .btn--primary:hover { background: var(--primary-700); border-color: var(--primary-700); }
+  .btn--accent {
+    /* Lime — rare accent for a highlighted secondary action */
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+    font-weight: 600;
+  }
+  .btn--accent:hover { background: var(--accent-600); border-color: var(--accent-600); color: #fff; }
+  .btn--ghost { background: transparent; border-color: transparent; box-shadow: none; }
+  .btn--ghost:hover { background: var(--ink-50); }
+  .btn--sm { padding: 6px 10px; font-size: 12.5px; }
+  .btn--sm svg { display: block; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+  }
+  .kpi {
+    padding: 20px 24px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .kpi__label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-500);
+    font-weight: 600;
+  }
+  .kpi__value {
+    font-size: 26px; font-weight: 700;
+    color: var(--ink-900);
+    letter-spacing: -0.01em;
+  }
+  .kpi__meta {
+    display: flex; align-items: center;
+    gap: 8px; font-size: 12.5px;
+    color: var(--ink-500);
+  }
+  .trend {
+    display: inline-flex; align-items: center; gap: 3px;
+    padding: 2px 7px;
+    border-radius: 999px;
+    font-size: 11.5px; font-weight: 600;
+  }
+  .trend--up   { color: var(--primary-700); background: var(--primary-100); }
+  .trend--down { color: var(--danger);  background: #fbe5e3; }
+  .trend--flat { color: var(--ink-500); background: var(--ink-50); }
+
+  /* Grid for main rows */
+  .row {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+  }
+  .row--thirds {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  /* Card heads */
+  .card__head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card__title {
+    margin: 0;
+    font-size: 14px; font-weight: 600;
+    color: var(--ink-900);
+  }
+  .card__sub { font-size: 12px; color: var(--ink-500); margin-top: 2px; }
+  .card__body { padding: 24px; }
+
+  /* Tabs */
+  .tabs {
+    display: inline-flex; gap: 4px;
+    background: var(--ink-50);
+    padding: 3px; border-radius: var(--radius-sm);
+  }
+  .tab {
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px; font-weight: 500;
+    color: var(--ink-500);
+    cursor: pointer;
+    border: 0; background: transparent;
+  }
+  .tab.is-active {
+    background: var(--surface);
+    color: var(--ink-900);
+    box-shadow: var(--shadow-xs);
+  }
+
+  /* Chart */
+  .chart {
+    height: 240px;
+    width: 100%;
+  }
+  .chart-legend {
+    display: flex; gap: 16px;
+    font-size: 12px; color: var(--ink-500);
+    margin-top: 16px;
+  }
+  .legend-dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  /* Donut */
+  .donut-wrap {
+    display: flex; align-items: center; gap: 24px;
+  }
+  .donut {
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    background: conic-gradient(
+      var(--primary) 0 42%,
+      var(--primary-600) 42% 70%,
+      var(--primary-300) 70% 88%,
+      var(--neutral-200) 88% 100%
+    );
+    position: relative;
+    flex-shrink: 0;
+  }
+  .donut::after {
+    content: "";
+    position: absolute;
+    inset: 18px;
+    background: var(--surface);
+    border-radius: 50%;
+  }
+  .donut__center {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    text-align: center;
+    z-index: 1;
+  }
+  .donut__center strong {
+    display: block;
+    font-size: 22px; font-weight: 700;
+  }
+  .donut__center span { font-size: 11px; color: var(--ink-500); }
+  .donut-legend {
+    flex: 1;
+    display: flex; flex-direction: column; gap: 12px;
+    font-size: 13px;
+  }
+  .donut-legend__row {
+    display: flex; justify-content: space-between;
+    align-items: center;
+  }
+  .donut-legend__label { color: var(--ink-700); }
+  .donut-legend__value { font-weight: 600; }
+
+  /* Activity list */
+  .activity { display: flex; flex-direction: column; }
+  .activity__item {
+    display: flex; gap: 12px;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .activity__item:last-child { border-bottom: 0; }
+  .activity__dot {
+    flex-shrink: 0;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--primary-100);
+    color: var(--primary-700);
+    display: grid; place-items: center;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .activity__body { flex: 1; min-width: 0; font-size: 13px; }
+  .activity__body strong { font-weight: 600; }
+  .activity__time { color: var(--ink-500); font-size: 12px; margin-top: 2px; }
+
+  /* Table */
+  .table { width: 100%; border-collapse: collapse; }
+  .table th, .table td {
+    text-align: left;
+    padding: 14px 24px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .table th {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-500);
+    font-weight: 600;
+    background: var(--ink-50);
+  }
+  .table tr:last-child td { border-bottom: 0; }
+  .table tbody tr:hover { background: var(--primary-50); }
+
+  .badge {
+    display: inline-flex; align-items: center;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 11.5px; font-weight: 600;
+  }
+  .badge--ok   { background: var(--primary-100); color: var(--primary-700); }
+  .badge--pending { background: #fbf0d8; color: var(--warning); }
+  .badge--fail { background: #fbe5e3; color: var(--danger); }
+
+  /* Progress */
+  .progress {
+    background: var(--ink-100);
+    border-radius: 999px;
+    height: 6px;
+    overflow: hidden;
+    width: 100%;
+  }
+  .progress__bar {
+    height: 100%;
+    background: var(--primary);
+    border-radius: 999px;
+  }
+
+  /* 4-column row — performance spans 2, sync + incomplete take 1 each */
+  .row--quad {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .col-span-2 { grid-column: span 2; }
+
+  /* 6-column inventory row — clickable KPI tiles */
+  .row--six {
+    grid-template-columns: repeat(6, 1fr);
+  }
+  a.card.inventory-card {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+    transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+  }
+  a.card.inventory-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+    border-color: var(--primary-200);
+  }
+  a.card.inventory-card:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+  .inventory-card__icon {
+    width: 34px; height: 34px;
+    border-radius: var(--radius-sm);
+    background: var(--primary-50);
+    color: var(--primary-700);
+    display: grid; place-items: center;
+    margin-bottom: 2px;
+  }
+  .inventory-card__icon svg { width: 18px; height: 18px; display: block; }
+  .inventory-card__label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-500);
+    font-weight: 600;
+  }
+  .inventory-card__value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--ink-900);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .inventory-card__meta {
+    display: flex; align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--ink-500);
+    margin-top: 2px;
+  }
+
+  /* Performance-by-update card */
+  .perf-card__meta {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .perf-card__score {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--ink-900);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .perf-chart {
+    width: 100%;
+    height: 220px;
+    display: block;
+  }
+
+  /* Sync card */
+  .sync-card .card__body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .sync-card__icon {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: var(--primary-100);
+    color: var(--primary-700);
+    display: grid; place-items: center;
+  }
+  .sync-card__icon svg { width: 22px; height: 22px; display: block; }
+  .sync-card__when {
+    font-size: 22px; font-weight: 700;
+    color: var(--ink-900);
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+  }
+  .sync-card__stamp {
+    font-size: 12.5px; color: var(--ink-500);
+    margin-top: 4px;
+  }
+  .sync-card__status {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 4px 10px 4px 8px;
+    border-radius: 999px;
+    background: var(--accent-100);
+    color: var(--accent-700);
+    font-size: 12px; font-weight: 600;
+  }
+  .sync-card__pulse {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px rgba(110, 193, 62, 0.22);
+  }
+  .sync-card .btn {
+    align-self: stretch;
+    justify-content: center;
+    margin-top: auto;
+  }
+
+  /* Incomplete diseases card */
+  .incomplete-card .card__body {
+    display: flex; flex-direction: column;
+  }
+  .incomplete-card__num {
+    display: flex; align-items: baseline; gap: 6px;
+    font-size: 32px; font-weight: 700;
+    color: var(--ink-900);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .incomplete-card__num-sep {
+    color: var(--ink-300);
+    font-weight: 400;
+    font-size: 22px;
+  }
+  .incomplete-card__num-total {
+    color: var(--ink-500);
+    font-size: 18px;
+    font-weight: 500;
+  }
+  .incomplete-card__hint {
+    font-size: 12.5px; color: var(--ink-500);
+    margin: 6px 0 16px;
+  }
+  .incomplete-card__breakdown {
+    display: flex; flex-direction: column;
+    gap: 10px;
+    padding: 14px 16px;
+    background: var(--ink-50);
+    border-radius: var(--radius-sm);
+    margin-bottom: 16px;
+  }
+  .incomplete-card__brk-row {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 13px;
+    color: var(--ink-700);
+  }
+  .incomplete-card__brk-count {
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-900);
+  }
+  .incomplete-card .btn {
+    align-self: stretch;
+    justify-content: center;
+    margin-top: auto;
+  }
+
+  /* Responsive */
+  @media (max-width: 1100px) {
+    .row { grid-template-columns: 1fr; }
+    .row--thirds { grid-template-columns: 1fr; }
+    .row--quad { grid-template-columns: 1fr 1fr; }
+    .row--quad .col-span-2 { grid-column: span 2; }
+    .row--six { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 720px) {
+    .kpis { grid-template-columns: 1fr; }
+    .row--quad { grid-template-columns: 1fr; }
+    .row--quad .col-span-2 { grid-column: span 1; }
+    .row--six { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 720px) {
+    .app { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .content { padding: 20px; gap: 24px; }
+    .topbar { padding: 0 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <a class="brand" href="#" aria-label="Farm2Vet dashboard home">
+      <img class="brand__emblem" src="../logo/logo-emblem-white.svg" alt="" />
+      <span class="brand__name">Farm2Vet</span>
+    </a>
+
+    <nav class="nav">
+      <a class="nav__item is-active" href="#">
+        <span class="nav__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3"  y="3"  width="8" height="9" rx="1.5"/>
+            <rect x="13" y="3"  width="8" height="5" rx="1.5"/>
+            <rect x="3"  y="14" width="8" height="7" rx="1.5"/>
+            <rect x="13" y="10" width="8" height="11" rx="1.5"/>
+          </svg>
+        </span>
+        Overview
+      </a>
+
+      <div class="nav__group is-open">
+        <a class="nav__item nav__item--parent" href="#" aria-expanded="true">
+          <span class="nav__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <ellipse cx="12" cy="5" rx="8" ry="3"/>
+              <path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/>
+              <path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/>
+            </svg>
+          </span>
+          <span class="nav__label">Data management</span>
+          <span class="nav__chev" aria-hidden="true">
+            <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 4.5 L6 7.5 L9 4.5"/>
+            </svg>
+          </span>
+        </a>
+        <div class="nav__children">
+          <a class="nav__item nav__item--child" href="#">Disease</a>
+          <a class="nav__item nav__item--child" href="#">Question</a>
+          <a class="nav__item nav__item--child" href="#">Conversation</a>
+          <a class="nav__item nav__item--child" href="#">Image</a>
+          <a class="nav__item nav__item--child" href="#">Resource</a>
+          <a class="nav__item nav__item--child" href="#">PDF Input</a>
+        </div>
+      </div>
+
+      <a class="nav__item nav__item--ai" href="#">
+        <span class="nav__icon nav__icon--ai" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 2h6"/>
+            <path d="M10 2v6.5L4.5 18.5A2 2 0 0 0 6.2 21.5h11.6a2 2 0 0 0 1.7-3L14 8.5V2"/>
+            <path d="M7.5 14h9"/>
+          </svg>
+        </span>
+        Automated testing
+      </a>
+      <a class="nav__item" href="#">
+        <span class="nav__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12a9 9 0 0 1-15.5 6.2"/>
+            <path d="M3 12a9 9 0 0 1 15.5-6.2"/>
+            <path d="M18.5 2v4h-4"/>
+            <path d="M5.5 22v-4h4"/>
+          </svg>
+        </span>
+        Sync database
+      </a>
+    </nav>
+
+    <div class="sidebar__foot">
+      <div class="avatar">JM</div>
+      <div class="sidebar__foot-meta">
+        <div class="sidebar__foot-name">Jack Miller</div>
+        <small>Admin</small>
+      </div>
+      <button class="sidebar__settings" aria-label="Settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>
+        </svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+
+    <header class="topbar" aria-label="Admin chrome">
+      <div class="topbar__inner">
+
+        <!-- Breadcrumb -->
+        <nav class="topbar__crumbs" aria-label="Breadcrumb">
+          <a href="#">Admin</a>
+          <span class="topbar__crumb-sep" aria-hidden="true">›</span>
+          <span class="topbar__crumb-tail" aria-current="page">Overview</span>
+        </nav>
+
+        <!-- Search + notification + language + version cluster -->
+        <div class="topbar__cluster">
+          <label class="topbar__search">
+            <span class="topbar__search-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="7"/>
+                <path d="m21 21-4.3-4.3"/>
+              </svg>
+            </span>
+            <input type="search" placeholder="Search…" aria-label="Search the admin console" />
+          </label>
+
+          <button type="button" class="topbar__icon-btn" aria-label="Notifications, 3 unread">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+            </svg>
+            <span class="topbar__dot" aria-hidden="true"></span>
+          </button>
+
+          <div class="topbar__lang" role="group" aria-label="Interface language">
+            <button type="button" aria-pressed="true">EN</button>
+            <button type="button" aria-pressed="false">VI</button>
+          </div>
+
+          <span class="topbar__divider" aria-hidden="true"></span>
+
+          <!-- Version chip -->
+          <a href="#" class="topbar__chip" aria-label="Admin version">v1.4.2</a>
+        </div>
+
+      </div>
+    </header>
+
+    <div class="content">
+
+      <!-- Page head -->
+      <div class="page-head">
+        <div>
+          <h1>Overview</h1>
+          <p>Welcome back, Jack — here's how things are going today.</p>
+        </div>
+        <div class="page-head__actions">
+          <button class="btn">Export</button>
+          <button class="btn btn--primary">Refresh data</button>
+          <button class="btn btn--accent">+ New order</button>
+        </div>
+      </div>
+
+
+      <!-- Inventory row: database counts across data domains -->
+      <section class="row row--six">
+
+        <a class="card inventory-card" href="#" data-nav-target="Disease">
+          <div class="inventory-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4"/>
+              <path d="M12 3v3"/>
+              <path d="M12 18v3"/>
+              <path d="M3 12h3"/>
+              <path d="M18 12h3"/>
+              <path d="M5.5 5.5l2.1 2.1"/>
+              <path d="M16.4 16.4l2.1 2.1"/>
+              <path d="M5.5 18.5l2.1-2.1"/>
+              <path d="M16.4 7.6l2.1-2.1"/>
+            </svg>
+          </div>
+          <div class="inventory-card__label">Diseases</div>
+          <div class="inventory-card__value">148</div>
+          <div class="inventory-card__meta"><span class="trend trend--up">+6</span> this week</div>
+        </a>
+
+        <a class="card inventory-card" href="#" data-nav-target="Question">
+          <div class="inventory-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 11.5A8.5 8.5 0 1 1 6.5 5.5L3 21l4.5-3.5A8.5 8.5 0 0 0 21 11.5z"/>
+              <path d="M9.5 9.5a2.5 2.5 0 0 1 5 0c0 1.5-2.5 2-2.5 3.5"/>
+              <circle cx="12" cy="16" r="0.5"/>
+            </svg>
+          </div>
+          <div class="inventory-card__label">Questions</div>
+          <div class="inventory-card__value">2,341</div>
+          <div class="inventory-card__meta"><span class="trend trend--up">+124</span> this week</div>
+        </a>
+
+        <a class="card inventory-card" href="#" data-nav-target="Conversation">
+          <div class="inventory-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 9a2 2 0 0 1-2 2H6l-3 3V5a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v4z"/>
+              <path d="M18 9h1a2 2 0 0 1 2 2v10l-3-3h-7a2 2 0 0 1-2-2v-1"/>
+            </svg>
+          </div>
+          <div class="inventory-card__label">Conversations</div>
+          <div class="inventory-card__value">1,082</div>
+          <div class="inventory-card__meta"><span class="trend trend--up">+98</span> today</div>
+        </a>
+
+        <a class="card inventory-card" href="#" data-nav-target="Image">
+          <div class="inventory-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <circle cx="8.5" cy="9" r="1.5"/>
+              <path d="M21 15l-5-5L5 21"/>
+            </svg>
+          </div>
+          <div class="inventory-card__label">Images</div>
+          <div class="inventory-card__value">612</div>
+          <div class="inventory-card__meta"><span class="trend trend--up">+42</span> this week</div>
+        </a>
+
+        <a class="card inventory-card" href="#" data-nav-target="Automated testing">
+          <div class="inventory-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="10" cy="9" r="4"/>
+              <path d="M2 21a8 8 0 0 1 13.5-5.8"/>
+              <path d="M19 13l.8 2.2L22 16l-2.2.8L19 19l-.8-2.2L16 16l2.2-.8z"/>
+            </svg>
+          </div>
+          <div class="inventory-card__label">Synthetic profiles</div>
+          <div class="inventory-card__value">84</div>
+          <div class="inventory-card__meta"><span class="trend trend--up">+12</span> this week</div>
+        </a>
+
+        <a class="card inventory-card" href="#" data-nav-target="Automated testing">
+          <div class="inventory-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 4h2a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+              <rect x="9" y="2" width="6" height="4" rx="1"/>
+              <path d="M9 13l2 2 4-4"/>
+            </svg>
+          </div>
+          <div class="inventory-card__label">Test suites</div>
+          <div class="inventory-card__value">36</div>
+          <div class="inventory-card__meta"><span class="trend trend--up">+3</span> this week</div>
+        </a>
+
+      </section>
+
+      <!-- Status row: performance / last synced / incomplete diseases -->
+      <section class="row row--quad">
+
+        <!-- Performance by update (spans 2 cols) -->
+        <div class="card col-span-2">
+          <div class="card__head">
+            <div>
+              <h2 class="card__title">Performance by update</h2>
+              <div class="card__sub">Test-suite score (0–100) across recent patch versions</div>
+            </div>
+            <div class="perf-card__meta">
+              <span class="perf-card__score">87</span>
+              <span class="trend trend--up">▲ +4 vs v1.4.2</span>
+            </div>
+          </div>
+          <div class="card__body">
+            <canvas id="perfChart" class="perf-chart" aria-label="Performance score per patch version"></canvas>
+          </div>
+        </div>
+
+        <!-- Last synced -->
+        <div class="card sync-card">
+          <div class="card__head">
+            <div>
+              <h2 class="card__title">Last synced</h2>
+              <div class="card__sub">Database mirror</div>
+            </div>
+          </div>
+          <div class="card__body">
+            <div class="sync-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12a9 9 0 0 1-15.5 6.2"/>
+                <path d="M3 12a9 9 0 0 1 15.5-6.2"/>
+                <path d="M18.5 2v4h-4"/>
+                <path d="M5.5 22v-4h4"/>
+              </svg>
+            </div>
+            <div>
+              <div class="sync-card__when">12 minutes ago</div>
+              <div class="sync-card__stamp">May 19, 2026 · 2:34 PM · took 8.2s</div>
+            </div>
+            <span class="sync-card__status">
+              <span class="sync-card__pulse" aria-hidden="true"></span>
+              Up to date
+            </span>
+            <button type="button" class="btn btn--primary">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 12a9 9 0 0 1-15.5 6.2"/>
+                <path d="M3 12a9 9 0 0 1 15.5-6.2"/>
+                <path d="M18.5 2v4h-4"/>
+                <path d="M5.5 22v-4h4"/>
+              </svg>
+              Sync now
+            </button>
+          </div>
+        </div>
+
+        <!-- Incomplete diseases -->
+        <div class="card incomplete-card">
+          <div class="card__head">
+            <div>
+              <h2 class="card__title">Incomplete diseases</h2>
+              <div class="card__sub">Records missing required fields</div>
+            </div>
+          </div>
+          <div class="card__body">
+            <div class="incomplete-card__num">
+              23
+              <span class="incomplete-card__num-sep">/</span>
+              <span class="incomplete-card__num-total">148</span>
+            </div>
+            <div class="incomplete-card__hint">records need attention</div>
+            <div class="incomplete-card__breakdown">
+              <div class="incomplete-card__brk-row">
+                <span>Missing images</span>
+                <span class="incomplete-card__brk-count">12</span>
+              </div>
+              <div class="incomplete-card__brk-row">
+                <span>Missing symptoms</span>
+                <span class="incomplete-card__brk-count">8</span>
+              </div>
+              <div class="incomplete-card__brk-row">
+                <span>Missing treatments</span>
+                <span class="incomplete-card__brk-count">3</span>
+              </div>
+            </div>
+            <a href="#" class="btn" data-nav-target="Disease">Review records →</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Chart + donut -->
+      <section class="row">
+        <div class="card">
+          <div class="card__head">
+            <div>
+              <h2 class="card__title">Revenue trend</h2>
+              <div class="card__sub">Last 12 weeks</div>
+            </div>
+            <div class="tabs">
+              <button class="tab">Day</button>
+              <button class="tab is-active">Week</button>
+              <button class="tab">Month</button>
+            </div>
+          </div>
+          <div class="card__body">
+            <svg class="chart" viewBox="0 0 600 240" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#398c36" stop-opacity="0.32" />
+                  <stop offset="100%" stop-color="#398c36" stop-opacity="0" />
+                </linearGradient>
+              </defs>
+              <!-- gridlines -->
+              <g stroke="#e2e7dc" stroke-width="1">
+                <line x1="0" y1="40"  x2="600" y2="40" />
+                <line x1="0" y1="90"  x2="600" y2="90" />
+                <line x1="0" y1="140" x2="600" y2="140" />
+                <line x1="0" y1="190" x2="600" y2="190" />
+              </g>
+              <!-- area fill -->
+              <path d="M0,170 L50,150 L100,160 L150,120 L200,135 L250,95 L300,110 L350,80 L400,95 L450,55 L500,75 L550,40 L600,60 L600,240 L0,240 Z"
+                    fill="url(#areaGrad)" />
+              <!-- secondary line (last period) -->
+              <polyline fill="none" stroke="#aab4a4" stroke-width="2" stroke-dasharray="4 4"
+                points="0,190 50,185 100,180 150,170 200,175 250,160 300,165 350,150 400,158 450,140 500,148 550,135 600,142" />
+              <!-- main line -->
+              <polyline fill="none" stroke="#398c36" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                points="0,170 50,150 100,160 150,120 200,135 250,95 300,110 350,80 400,95 450,55 500,75 550,40 600,60" />
+              <!-- dots -->
+              <g fill="#398c36">
+                <circle cx="150" cy="120" r="3"/>
+                <circle cx="350" cy="80"  r="3"/>
+              </g>
+              <!-- lime accent: latest point -->
+              <circle cx="550" cy="40" r="4.5" fill="#6ec13e" stroke="#fff" stroke-width="2"/>
+              <!-- x-axis labels -->
+              <g fill="#7c8c73" font-size="10" font-family="-apple-system, sans-serif">
+                <text x="0"   y="225">W1</text>
+                <text x="100" y="225">W3</text>
+                <text x="200" y="225">W5</text>
+                <text x="300" y="225">W7</text>
+                <text x="400" y="225">W9</text>
+                <text x="500" y="225">W11</text>
+                <text x="580" y="225">W12</text>
+              </g>
+            </svg>
+            <div class="chart-legend">
+              <span><span class="legend-dot" style="background:#398c36;"></span> This period</span>
+              <span><span class="legend-dot" style="background:#aab4a4;"></span> Previous period</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card__head">
+            <div>
+              <h2 class="card__title">Traffic sources</h2>
+              <div class="card__sub">This week</div>
+            </div>
+          </div>
+          <div class="card__body">
+            <div class="donut-wrap">
+              <div class="donut">
+                <div class="donut__center">
+                  <strong>14.2k</strong>
+                  <span>visits</span>
+                </div>
+              </div>
+              <div class="donut-legend">
+                <div class="donut-legend__row">
+                  <span class="donut-legend__label"><span class="legend-dot" style="background:#398c36;"></span> Organic</span>
+                  <span class="donut-legend__value">42%</span>
+                </div>
+                <div class="donut-legend__row">
+                  <span class="donut-legend__label"><span class="legend-dot" style="background:#317a30;"></span> Direct</span>
+                  <span class="donut-legend__value">28%</span>
+                </div>
+                <div class="donut-legend__row">
+                  <span class="donut-legend__label"><span class="legend-dot" style="background:#7ab578;"></span> Referral</span>
+                  <span class="donut-legend__value">18%</span>
+                </div>
+                <div class="donut-legend__row">
+                  <span class="donut-legend__label"><span class="legend-dot" style="background:#c9d0c5;"></span> Other</span>
+                  <span class="donut-legend__value">12%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Table + activity -->
+      <section class="row">
+        <div class="card">
+          <div class="card__head">
+            <div>
+              <h2 class="card__title">Recent orders</h2>
+              <div class="card__sub">Latest 5 transactions</div>
+            </div>
+            <button class="btn btn--ghost">View all →</button>
+          </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Order</th>
+                <th>Customer</th>
+                <th>Status</th>
+                <th>Total</th>
+                <th>Fulfillment</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>#10428</strong></td>
+                <td>Lena Park</td>
+                <td><span class="badge badge--ok">Paid</span></td>
+                <td>$128.40</td>
+                <td>
+                  <div class="progress"><div class="progress__bar" style="width:90%"></div></div>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>#10427</strong></td>
+                <td>Mateo Alvarez</td>
+                <td><span class="badge badge--pending">Pending</span></td>
+                <td>$54.10</td>
+                <td>
+                  <div class="progress"><div class="progress__bar" style="width:35%"></div></div>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>#10426</strong></td>
+                <td>Priya Shah</td>
+                <td><span class="badge badge--ok">Paid</span></td>
+                <td>$212.00</td>
+                <td>
+                  <div class="progress"><div class="progress__bar" style="width:100%"></div></div>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>#10425</strong></td>
+                <td>Daniel Wu</td>
+                <td><span class="badge badge--fail">Refunded</span></td>
+                <td>$76.25</td>
+                <td>
+                  <div class="progress"><div class="progress__bar" style="width:0%"></div></div>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>#10424</strong></td>
+                <td>Sofia Rossi</td>
+                <td><span class="badge badge--ok">Paid</span></td>
+                <td>$41.95</td>
+                <td>
+                  <div class="progress"><div class="progress__bar" style="width:75%"></div></div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <div class="card__head">
+            <div>
+              <h2 class="card__title">Activity</h2>
+              <div class="card__sub">Today</div>
+            </div>
+          </div>
+          <div class="activity">
+            <div class="activity__item">
+              <div class="activity__dot">✓</div>
+              <div class="activity__body">
+                <strong>Order #10428</strong> was paid by Lena Park.
+                <div class="activity__time">2 minutes ago</div>
+              </div>
+            </div>
+            <div class="activity__item">
+              <div class="activity__dot">+</div>
+              <div class="activity__body">
+                New customer <strong>Mateo Alvarez</strong> signed up.
+                <div class="activity__time">18 minutes ago</div>
+              </div>
+            </div>
+            <div class="activity__item">
+              <div class="activity__dot">↺</div>
+              <div class="activity__body">
+                Refund issued for <strong>order #10425</strong>.
+                <div class="activity__time">1 hour ago</div>
+              </div>
+            </div>
+            <div class="activity__item">
+              <div class="activity__dot">★</div>
+              <div class="activity__body">
+                <strong>Priya Shah</strong> left a 5-star review.
+                <div class="activity__time">3 hours ago</div>
+              </div>
+            </div>
+            <div class="activity__item">
+              <div class="activity__dot">⌂</div>
+              <div class="activity__body">
+                Inventory low on <strong>Forest Tonic 250ml</strong>.
+                <div class="activity__time">5 hours ago</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  // Tab toggle
+  document.querySelectorAll('.tabs').forEach(group => {
+    group.addEventListener('click', e => {
+      const btn = e.target.closest('.tab');
+      if (!btn) return;
+      group.querySelectorAll('.tab').forEach(t => t.classList.remove('is-active'));
+      btn.classList.add('is-active');
+    });
+  });
+
+  // Sidebar: expand/collapse the Data management group
+  document.querySelectorAll('.nav__item--parent').forEach(parent => {
+    parent.addEventListener('click', e => {
+      e.preventDefault();
+      const group = parent.closest('.nav__group');
+      const open = group.classList.toggle('is-open');
+      parent.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  });
+
+  // Sidebar: active state for any clickable nav item (skip the parent toggle)
+  document.querySelectorAll('.nav__item:not(.nav__item--parent)').forEach(item => {
+    item.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelectorAll('.nav__item').forEach(i => i.classList.remove('is-active'));
+      item.classList.add('is-active');
+    });
+  });
+
+  // Performance-by-update chart — canvas line chart, score per patch version
+  const perfData = [
+    { version: 'v1.3.8', score: 71 },
+    { version: 'v1.3.9', score: 76 },
+    { version: 'v1.4.0', score: 81 },
+    { version: 'v1.4.1', score: 74 },
+    { version: 'v1.4.2', score: 83 },
+    { version: 'v1.4.3', score: 87 }
+  ];
+
+  function drawPerfChart() {
+    const canvas = document.getElementById('perfChart');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const dpr = window.devicePixelRatio || 1;
+    const cssW = canvas.clientWidth || canvas.parentElement.clientWidth;
+    const cssH = 220;
+    if (cssW === 0) return;
+    canvas.width = Math.round(cssW * dpr);
+    canvas.height = Math.round(cssH * dpr);
+    canvas.style.height = cssH + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, cssW, cssH);
+
+    const padL = 36, padR = 22, padT = 24, padB = 28;
+    const plotW = cssW - padL - padR;
+    const plotH = cssH - padT - padB;
+    const yToPx = v => padT + plotH - (v / 100) * plotH;
+    const xToPx = i => padL + (perfData.length === 1 ? plotW / 2 : (i / (perfData.length - 1)) * plotW);
+
+    // Gridlines + y-axis labels
+    ctx.font = '10px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif';
+    ctx.fillStyle = '#7c8c73';
+    ctx.strokeStyle = '#e2e7dc';
+    ctx.lineWidth = 1;
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    [0, 25, 50, 75, 100].forEach(v => {
+      const y = yToPx(v);
+      ctx.beginPath();
+      ctx.moveTo(padL, y);
+      ctx.lineTo(cssW - padR, y);
+      ctx.stroke();
+      ctx.fillText(String(v), padL - 8, y);
+    });
+
+    // X-axis labels (patch versions)
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    perfData.forEach((d, i) => {
+      ctx.fillText(d.version, xToPx(i), cssH - padB + 8);
+    });
+
+    // Area fill under the line
+    const grad = ctx.createLinearGradient(0, padT, 0, padT + plotH);
+    grad.addColorStop(0, 'rgba(57, 140, 54, 0.32)');
+    grad.addColorStop(1, 'rgba(57, 140, 54, 0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.moveTo(xToPx(0), padT + plotH);
+    perfData.forEach((d, i) => ctx.lineTo(xToPx(i), yToPx(d.score)));
+    ctx.lineTo(xToPx(perfData.length - 1), padT + plotH);
+    ctx.closePath();
+    ctx.fill();
+
+    // Line
+    ctx.strokeStyle = '#398c36';
+    ctx.lineWidth = 2.5;
+    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    perfData.forEach((d, i) => {
+      const x = xToPx(i), y = yToPx(d.score);
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+
+    // Dots + value labels
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'bottom';
+    ctx.font = '600 11px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif';
+    perfData.forEach((d, i) => {
+      const x = xToPx(i), y = yToPx(d.score);
+      const isLast = i === perfData.length - 1;
+      ctx.beginPath();
+      ctx.arc(x, y, isLast ? 5 : 3.5, 0, Math.PI * 2);
+      ctx.fillStyle = isLast ? '#6ec13e' : '#398c36';
+      ctx.fill();
+      if (isLast) {
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+      ctx.fillStyle = '#3b4537';
+      ctx.fillText(String(d.score), x, y - 9);
+    });
+  }
+
+  window.addEventListener('load', drawPerfChart);
+  let perfResizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(perfResizeTimer);
+    perfResizeTimer = setTimeout(drawPerfChart, 120);
+  });
+
+  // Card deep-links: data-nav-target="Disease" activates the matching sidebar child
+  document.querySelectorAll('[data-nav-target]').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = link.dataset.navTarget;
+      let match = Array.from(document.querySelectorAll('.nav__item--child'))
+        .find(el => el.textContent.trim() === target);
+      // Fall back to top-level items (e.g. "Automated testing", "Sync database")
+      if (!match) {
+        match = Array.from(document.querySelectorAll('.nav__item:not(.nav__item--parent):not(.nav__item--child)'))
+          .find(el => el.textContent.trim() === target);
+      }
+      if (!match) return;
+      // Ensure parent group is open so the active child is visible
+      const group = match.closest('.nav__group');
+      if (group && !group.classList.contains('is-open')) {
+        group.classList.add('is-open');
+        const parent = group.querySelector('.nav__item--parent');
+        if (parent) parent.setAttribute('aria-expanded', 'true');
+      }
+      document.querySelectorAll('.nav__item').forEach(i => i.classList.remove('is-active'));
+      match.classList.add('is-active');
+      match.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>

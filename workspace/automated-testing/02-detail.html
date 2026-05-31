@@ -495,7 +495,19 @@
   .device { border: 0; border-radius: 0; min-height: 100vh; }
 
   .metastrip { grid-template-columns: repeat(3, 1fr); }
-  .detail-head__desc { font-size: 13px; color: #4A4A4A; line-height: 1.6; margin: 10px 0 0; max-width: 720px; }
+  .detail-head__desc {
+    font-size: 13px; color: #4A4A4A; line-height: 1.6; margin: 10px 0 0; max-width: 720px;
+    display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;
+  }
+  .detail-head__desc.is-expanded {
+    display: block; -webkit-line-clamp: unset; overflow: visible;
+  }
+  .detail-head__more {
+    margin-top: 6px; font: inherit; font-size: 12px; font-weight: 500;
+    color: #2A2A2A; background: none; border: 0; padding: 0; cursor: pointer;
+  }
+  .detail-head__more:hover { text-decoration: underline; }
+  .detail-head__more[hidden] { display: none; }
   .config-grid {
     display: grid; grid-template-columns: 200px 1fr; row-gap: 14px; column-gap: 24px;
   }
@@ -526,7 +538,7 @@
     background: #FFFFFF; overflow: hidden;
   }
   .runtable__head, .runrow {
-    display: grid; grid-template-columns: 100px 180px 80px 130px 160px 90px 1fr;
+    display: grid; grid-template-columns: 100px 180px 80px 130px 150px 90px 80px 1fr;
     align-items: center; gap: 14px;
     padding: 12px 16px;
     border-bottom: 1px solid #ECECEC;
@@ -538,22 +550,18 @@
   }
   .runrow:last-child { border-bottom: 0; }
   .runrow.is-selected { background: #F4F4F4; }
-  .runrow__id, .runrow__dur, .runrow__acc {
+  .runrow__id, .runrow__dur, .runrow__acc, .runrow__cost {
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
     font-size: 12px; color: #2A2A2A;
   }
   .runrow__when { font-size: 12px; color: #4A4A4A; }
   .runrow__res { font-size: 12px; color: #4A4A4A; }
   .runrow .actions { display: flex; gap: 4px; justify-content: flex-end; }
-  /* Highlight the accuracy column, kept beside Results */
-  .runtable__head > div:nth-child(6),
-  .runrow > div:nth-child(6) {
-    align-self: stretch; display: flex; align-items: center;
-    margin: -12px 0; padding: 12px 10px;
-    background: #EEF3EF; border-left: 2px solid #6E9070;
-  }
-  .runtable__head > div:nth-child(6) { color: #3A5A3A; font-weight: 700; }
-  .runrow__acc { color: #2F5A3E; font-weight: 600; }
+  /* Accuracy — value-based color, no column highlight */
+  .runrow__acc { font-weight: 700; }
+  .runrow__acc--high { color: #1F7A43; }   /* >90% — strong accessible green */
+  .runrow__acc--mid  { color: #9A5B00; }   /* 80–89% — amber */
+  .runrow__acc--low  { color: #B23B3B; }   /* <80% — red */
 
   /* Tab panels */
   .tabs__item { cursor: pointer; user-select: none; }
@@ -633,7 +641,8 @@
           <div class="detail-head">
             <div class="detail-head__main">
               <h1>Diagnostic baseline · v3</h1>
-              <p class="detail-head__desc">Baseline cohort for diagnostic-mode regression. v3 swaps in the new piglet PED profiles and removes the duplicate sow PRRS profile from v2.</p>
+              <p class="detail-head__desc" id="suiteDesc">Baseline cohort for diagnostic-mode regression. v3 swaps in the new piglet PED profiles and removes the duplicate sow PRRS profile that was double-counted in v2. Use this suite as the reference point when comparing accuracy across model upgrades — it is intentionally held stable between releases so run-over-run deltas reflect model changes, not cohort drift. Editing the profile set here invalidates historical accuracy comparisons, so duplicate the suite instead if you need a different cohort.</p>
+              <button class="detail-head__more" id="suiteDescToggle" type="button" hidden>Show more</button>
             </div>
             <div class="detail-head__actions">
               <button class="btn">Duplicate</button>
@@ -663,7 +672,7 @@
           <div class="tabs" role="tablist">
             <div class="tabs__item is-active" data-tab="config" role="tab">Configuration</div>
             <div class="tabs__item" data-tab="profiles" role="tab">Synthetic profiles<span class="count">12</span></div>
-            <div class="tabs__item" data-tab="runs" role="tab">Runs<span class="count">6</span></div>
+            <div class="tabs__item" data-tab="runs" role="tab">Run History<span class="count">4</span></div>
           </div>
 
           <!-- Configuration tab -->
@@ -680,19 +689,19 @@
             </div>
             <dl class="config-grid">
               <dt>Model</dt>
-              <dd><span class="chip chip--mono">gpt-4o-mini</span> <span style="color:#6B6B6B;margin-left:8px;">openai · v 2025-02</span></dd>
+              <dd><span class="chip chip--mono" style="margin-right:8px;">GPT</span><span style="color:#6B6B6B;">gpt-4o-mini</span></dd>
 
               <dt>Mode</dt>
-              <dd>Diagnostic <span style="color:#6B6B6B;">— SP provides symptoms, chatbot must reach a disease hypothesis</span></dd>
+              <dd>Diagnostic</dd>
 
               <dt>Workers</dt>
-              <dd>4 <span style="color:#6B6B6B;">parallel conversations per run</span></dd>
+              <dd>4</dd>
 
               <dt>Repetitions per profile</dt>
               <dd>1</dd>
 
               <dt>Anomaly detection</dt>
-              <dd>Enabled <span style="color:#6B6B6B;">— flags off-script chatbot responses</span></dd>
+              <dd>Enabled</dd>
 
               <dt>Accuracy report</dt>
               <dd>Enabled</dd>
@@ -851,7 +860,7 @@
             <div class="section__head">
               <div style="display:flex;gap:12px;align-items:flex-start;">
                 <div>
-                  <p class="section__title">Runs · 6 total</p>
+                  <p class="section__title">Run history · 4 total</p>
                   <p class="section__hint">Most recent runs first. Click a run to see the per-case metrics table.</p>
                 </div>
               </div>
@@ -865,15 +874,17 @@
                 <div>Status</div>
                 <div>Results</div>
                 <div>Accuracy</div>
+                <div>Cost</div>
                 <div style="text-align:right;">Actions</div>
               </div>
               <div class="runrow is-selected">
                 <div class="runrow__id">RUN-204</div>
-                <div class="runrow__when">Feb 24, 2026 · 19:42</div>
+                <div class="runrow__when">Feb 24, 2026 19:42:18</div>
                 <div class="runrow__dur">1m 48s</div>
                 <div><span class="chip chip--ok"><span class="chip__dot"></span>completed</span></div>
                 <div class="runrow__res">39 / 42 passed</div>
-                <div class="runrow__acc">92.8%</div>
+                <div class="runrow__acc runrow__acc--high">92.8%</div>
+                <div class="runrow__cost">$0.62</div>
                 <div class="actions">
                   <button class="btn btn--icon" title="View results"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"/><circle cx="8" cy="8" r="2"/></svg></button>
                   <button class="btn btn--icon" title="Download report"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><path d="M8 2v9M4.5 7.5L8 11l3.5-3.5M2.5 13.5h11"/></svg></button>
@@ -881,11 +892,12 @@
               </div>
               <div class="runrow">
                 <div class="runrow__id">RUN-198</div>
-                <div class="runrow__when">Feb 22, 2026 · 14:08</div>
+                <div class="runrow__when">Feb 22, 2026 14:08:33</div>
                 <div class="runrow__dur">1m 51s</div>
                 <div><span class="chip chip--ok"><span class="chip__dot"></span>completed</span></div>
                 <div class="runrow__res">37 / 42 passed</div>
-                <div class="runrow__acc">88.1%</div>
+                <div class="runrow__acc runrow__acc--mid">88.1%</div>
+                <div class="runrow__cost">$0.63</div>
                 <div class="actions">
                   <button class="btn btn--icon" title="View results"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"/><circle cx="8" cy="8" r="2"/></svg></button>
                   <button class="btn btn--icon" title="Download report"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><path d="M8 2v9M4.5 7.5L8 11l3.5-3.5M2.5 13.5h11"/></svg></button>
@@ -893,11 +905,12 @@
               </div>
               <div class="runrow">
                 <div class="runrow__id">RUN-192</div>
-                <div class="runrow__when">Feb 19, 2026 · 11:02</div>
+                <div class="runrow__when">Feb 19, 2026 11:02:07</div>
                 <div class="runrow__dur">1m 46s</div>
                 <div><span class="chip chip--ok"><span class="chip__dot"></span>completed</span></div>
                 <div class="runrow__res">38 / 42 passed</div>
-                <div class="runrow__acc">90.5%</div>
+                <div class="runrow__acc runrow__acc--high">90.5%</div>
+                <div class="runrow__cost">$0.61</div>
                 <div class="actions">
                   <button class="btn btn--icon" title="View results"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"/><circle cx="8" cy="8" r="2"/></svg></button>
                   <button class="btn btn--icon" title="Download report"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><path d="M8 2v9M4.5 7.5L8 11l3.5-3.5M2.5 13.5h11"/></svg></button>
@@ -905,23 +918,12 @@
               </div>
               <div class="runrow">
                 <div class="runrow__id">RUN-187</div>
-                <div class="runrow__when">Feb 18, 2026 · 10:12</div>
+                <div class="runrow__when">Feb 18, 2026 10:12:51</div>
                 <div class="runrow__dur">1m 52s</div>
                 <div><span class="chip chip--ok"><span class="chip__dot"></span>completed</span></div>
                 <div class="runrow__res">35 / 42 passed</div>
-                <div class="runrow__acc">83.3%</div>
-                <div class="actions">
-                  <button class="btn btn--icon" title="View results"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"/><circle cx="8" cy="8" r="2"/></svg></button>
-                  <button class="btn btn--icon" title="Download report"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><path d="M8 2v9M4.5 7.5L8 11l3.5-3.5M2.5 13.5h11"/></svg></button>
-                </div>
-              </div>
-              <div class="runrow">
-                <div class="runrow__id">RUN-180</div>
-                <div class="runrow__when">Feb 15, 2026 · 16:30</div>
-                <div class="runrow__dur">2m 02s</div>
-                <div><span class="chip chip--err"><span class="chip__dot"></span>failed</span></div>
-                <div class="runrow__res">✗ worker crash · step 11</div>
-                <div class="runrow__acc">—</div>
+                <div class="runrow__acc runrow__acc--mid">83.3%</div>
+                <div class="runrow__cost">$0.60</div>
                 <div class="actions">
                   <button class="btn btn--icon" title="View results"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"/><circle cx="8" cy="8" r="2"/></svg></button>
                   <button class="btn btn--icon" title="Download report"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><path d="M8 2v9M4.5 7.5L8 11l3.5-3.5M2.5 13.5h11"/></svg></button>
@@ -947,6 +949,17 @@
       });
     });
   });
+
+  // Clamp the suite description; reveal the toggle only when it overflows.
+  var desc = document.getElementById('suiteDesc');
+  var toggle = document.getElementById('suiteDescToggle');
+  if (desc && toggle) {
+    if (desc.scrollHeight > desc.clientHeight + 1) { toggle.hidden = false; }
+    toggle.addEventListener('click', function () {
+      var expanded = desc.classList.toggle('is-expanded');
+      toggle.textContent = expanded ? 'Show less' : 'Show more';
+    });
+  }
 })();
 </script>
 </body>

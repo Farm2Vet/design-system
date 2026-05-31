@@ -563,8 +563,10 @@
      plain ink for contrast against the green ring; finished/paused
      pick up the ring tone since the glyph is the only character. */
   .exec-donut--running  { --exec-donut-tone: var(--primary-500); }
-  .exec-donut--paused   { --exec-donut-tone: var(--warning-500); }
-  .exec-donut--paused   .exec-donut__readout { color: var(--warning-500); }
+  .exec-donut--paused,
+  .exec-donut--queued   { --exec-donut-tone: var(--warning-500); }
+  .exec-donut--paused   .exec-donut__readout,
+  .exec-donut--queued   .exec-donut__readout { color: var(--warning-500); }
   .exec-donut--finished { --exec-donut-tone: var(--primary-500); }
   .exec-donut--finished .exec-donut__readout { color: var(--primary-500); }
   /* Finished runs paint a continuous ring — no dash gap, no round caps. */
@@ -725,7 +727,7 @@
           </div>
 
           <!-- Filter bar -->
-          <div class="filterbar" style="grid-template-columns: 1fr 160px 160px 200px;">
+          <div class="filterbar" style="grid-template-columns: 1fr 160px 160px 160px 44px;">
             <div class="field field--search">
               <span class="icon"></span>
               <input type="text" placeholder="Search by execution id, suite name, or model…" />
@@ -742,9 +744,14 @@
             </div>
             <div class="field">
               <span class="label">Sort by</span>
-              <span class="val">Started · newest</span>
+              <span class="val">Started</span>
               <span class="chev"></span>
             </div>
+            <button class="btn btn--icon" title="Newest first" aria-label="Sort direction: newest first" style="height:36px;width:36px;">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="12" height="12" aria-hidden="true">
+                <path d="M8 3v10M4 9l4 4 4-4"/>
+              </svg>
+            </button>
           </div>
 
           <!-- Result strip -->
@@ -885,7 +892,7 @@
               <a class="exec-suite" href="./02-detail.html">TS-015 · Diagnostic baseline · v4 (smoke)</a>
               <div class="status-cell">
                 <div class="status-cell__donut-wrap">
-                  <div class="exec-donut exec-donut--paused" style="--pct: 0;" role="img" aria-label="Queued, 0 of 6 cases">
+                  <div class="exec-donut exec-donut--queued" style="--pct: 0;" role="img" aria-label="Queued, 0 of 6 cases">
                     <svg class="exec-donut__svg" viewBox="0 0 36 36" aria-hidden="true">
                       <circle class="exec-donut__track" cx="18" cy="18" r="15.915"/>
                       <circle class="exec-donut__ring"  cx="18" cy="18" r="15.915"/>
@@ -905,7 +912,8 @@
               <div class="updated">Feb 24 · 19:50</div>
               <div class="time-cell time-cell--idle">—</div>
               <div class="actions">
-                <button class="btn btn--icon" title="Cancel queue"><svg viewBox="0 0 16 16" fill="currentColor" width="11" height="11" aria-hidden="true"><rect x="4" y="4" width="8" height="8" rx="1"/></svg></button>
+                <button class="btn btn--icon" title="Start now" aria-label="Start this run now"><svg viewBox="0 0 16 16" fill="currentColor" width="11" height="11" aria-hidden="true"><path d="M4 2.5l9 5.5-9 5.5z"/></svg></button>
+                <button class="btn btn--icon" title="Cancel queue" aria-label="Cancel queued run"><svg viewBox="0 0 16 16" fill="currentColor" width="11" height="11" aria-hidden="true"><rect x="4" y="4" width="8" height="8" rx="1"/></svg></button>
               </div>
             </div>
 
@@ -942,6 +950,9 @@
               <div class="updated">Feb 24 · 19:42</div>
               <div class="time-cell"><span class="time-cell__main">1m 48s</span></div>
               <div class="actions">
+                <button class="btn btn--icon" title="Rerun suite" aria-label="Rerun this suite">
+                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13" aria-hidden="true"><path d="M14 8a6 6 0 1 1-1.76-4.24M14 3v3h-3"/></svg>
+                </button>
                 <a class="btn btn--icon" href="./04-results.html" title="View results"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"/><circle cx="8" cy="8" r="2"/></svg></a>
                 <button class="btn btn--icon" title="Delete from history"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><path d="M3 4h10M6 4V2.5h4V4M5 4l1 9h4l1-9"/></svg></button>
               </div>
@@ -980,6 +991,9 @@
               <div class="updated">Feb 22 · 14:08</div>
               <div class="time-cell"><span class="time-cell__main">1m 51s</span></div>
               <div class="actions">
+                <button class="btn btn--icon" title="Rerun suite" aria-label="Rerun this suite">
+                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13" aria-hidden="true"><path d="M14 8a6 6 0 1 1-1.76-4.24M14 3v3h-3"/></svg>
+                </button>
                 <a class="btn btn--icon" href="./04-results.html" title="View results"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"/><circle cx="8" cy="8" r="2"/></svg></a>
                 <button class="btn btn--icon" title="Delete from history"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><path d="M3 4h10M6 4V2.5h4V4M5 4l1 9h4l1-9"/></svg></button>
               </div>
@@ -998,7 +1012,8 @@
                     </svg>
                     <span class="exec-donut__readout" aria-hidden="true">
                       <svg viewBox="0 0 16 16" fill="currentColor">
-                        <path d="M5 3.5l7 4.5-7 4.5z"/>
+                        <rect x="4" y="3" width="3" height="10" rx="0.5"/>
+                        <rect x="9" y="3" width="3" height="10" rx="0.5"/>
                       </svg>
                     </span>
                   </div>
@@ -1057,6 +1072,9 @@
               <div class="updated">Feb 14 · 22:54</div>
               <div class="time-cell"><span class="time-cell__main">2m 51s</span></div>
               <div class="actions">
+                <button class="btn btn--icon" title="Rerun suite" aria-label="Rerun this suite">
+                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13" aria-hidden="true"><path d="M14 8a6 6 0 1 1-1.76-4.24M14 3v3h-3"/></svg>
+                </button>
                 <a class="btn btn--icon" href="./04-results.html" title="View results"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"/><circle cx="8" cy="8" r="2"/></svg></a>
                 <button class="btn btn--icon" title="Delete from history"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><path d="M3 4h10M6 4V2.5h4V4M5 4l1 9h4l1-9"/></svg></button>
               </div>
@@ -1075,7 +1093,8 @@
                     </svg>
                     <span class="exec-donut__readout" aria-hidden="true">
                       <svg viewBox="0 0 16 16" fill="currentColor">
-                        <path d="M5 3.5l7 4.5-7 4.5z"/>
+                        <rect x="4" y="3" width="3" height="10" rx="0.5"/>
+                        <rect x="9" y="3" width="3" height="10" rx="0.5"/>
                       </svg>
                     </span>
                   </div>
@@ -1134,6 +1153,9 @@
               <div class="updated">Feb 12 · 16:02</div>
               <div class="time-cell"><span class="time-cell__main">1m 22s</span></div>
               <div class="actions">
+                <button class="btn btn--icon" title="Rerun suite" aria-label="Rerun this suite">
+                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13" aria-hidden="true"><path d="M14 8a6 6 0 1 1-1.76-4.24M14 3v3h-3"/></svg>
+                </button>
                 <a class="btn btn--icon" href="./04-results.html" title="View results"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"/><circle cx="8" cy="8" r="2"/></svg></a>
                 <button class="btn btn--icon" title="Delete from history"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><path d="M3 4h10M6 4V2.5h4V4M5 4l1 9h4l1-9"/></svg></button>
               </div>
