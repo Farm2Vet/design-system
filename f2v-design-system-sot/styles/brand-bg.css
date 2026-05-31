@@ -1,0 +1,80 @@
+/* =========================================================
+   FARM2VET BRAND BACKDROP — drop-in motif layer behind the
+   glass UI. Inserts as the first child of <body>, sits between
+   the body background (cream + ambient radials from Spec A)
+   and the page content (z-index: 1).
+
+   Default pattern: two clusters of concentric "contour rings"
+   — topographic field contours / data ripples — anchored at
+   the top-left and bottom-right page corners. Brand-coloured
+   via tokens, low opacity, fully decorative.
+
+   Pages opt into the brand backdrop by:
+     - importing this stylesheet
+     - inserting <div class="f2v-bg" aria-hidden="true">…</div>
+       as the first child of <body>
+
+   Pages opt out by either:
+     - omitting the import + markup (default for now), or
+     - hiding the slot in page CSS: .f2v-bg { display: none; }
+
+   Hero / landing pages can replace the default contour clusters
+   with custom SVG illustrations dropped into the slot.
+
+   Depends on: tokens.css
+   ========================================================= */
+
+.f2v-bg {
+    position:        fixed;
+    inset:           0;
+    z-index:         0;            /* sits above body background, below z-index:1 content */
+    pointer-events:  none;
+    overflow:        hidden;
+}
+
+/* A cluster is a square box that holds one ring stack. Sized
+   in vw so the rings scale with viewport; positioned off-page
+   so only the outer rings intersect the visible area. */
+.f2v-bg__cluster {
+    position:    absolute;
+    width:       56vw;
+    height:      56vw;
+    max-width:   720px;
+    max-height:  720px;
+    min-width:   480px;
+    min-height:  480px;
+    color:       var(--primary-500);    /* drives stroke="currentColor" inside the SVG */
+}
+
+.f2v-bg__cluster svg {
+    width:   100%;
+    height:  100%;
+    display: block;
+}
+
+/* Top-left cluster — anchor near top-left corner, deeper forest
+   green, slightly stronger opacity (catches the eye when the
+   page first loads). */
+.f2v-bg__cluster--tl {
+    top:    -10vw;
+    left:   -10vw;
+    color:  color-mix(in srgb, var(--primary-500) 55%, transparent);
+}
+
+/* Bottom-right cluster — anchor near bottom-right corner,
+   accent (brighter) green, slightly subtler. */
+.f2v-bg__cluster--br {
+    bottom: -12vw;
+    right:  -12vw;
+    color:  color-mix(in srgb, var(--accent-500) 45%, transparent);
+}
+
+/* Reduced-transparency: backdrop is decorative; hide it for
+   users who've opted out of transparency effects. Page still
+   reads on the cream + ambient backdrop alone. */
+@media (prefers-reduced-transparency: reduce) {
+    .f2v-bg { display: none; }
+}
+
+/* Reduced-motion: spec ships static — no animation to gate yet.
+   Future ambient drift, if added, gates here. */

@@ -1,0 +1,1178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1320" />
+<title>06 · Executions list — FR-384 wireframes</title>
+<link rel="stylesheet" href="../../styles/tokens.css" />
+<style>
+  /* ---------- Reset / page ---------- */
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Inter", system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #111;
+    background: #ECECEC;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-size: 13px;
+    line-height: 1.45;
+  }
+
+  /* ---------- Page wrapper ---------- */
+  .page { max-width: 1360px; margin: 0 auto; padding: 48px 40px 96px; }
+  .doc-head { margin: 0 0 40px; }
+  .doc-head .eyebrow {
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: #6B6B6B; margin: 0 0 6px;
+  }
+  .doc-head h1 {
+    font-size: 22px; font-weight: 600; margin: 0 0 6px; letter-spacing: -0.01em;
+  }
+  .doc-head p { margin: 0; color: #4A4A4A; max-width: 720px; }
+  .doc-head .meta { margin-top: 14px; font-size: 11px; color: #6B6B6B; }
+  .doc-head .meta span + span { margin-left: 16px; }
+
+  /* ---------- Device frame ---------- */
+  .device {
+    background: #FFFFFF; border: 1px solid #D6D6D6; border-radius: 4px;
+    overflow: hidden; display: grid; grid-template-columns: 220px 1fr;
+    min-height: 720px;
+  }
+
+  /* ---------- Sidebar ---------- */
+  .sidebar { background: #FAFAFA; border-right: 1px solid #E5E5E5; padding: 18px 0; }
+  .sidebar__brand {
+    display: flex; align-items: center; gap: 10px;
+    padding: 4px 18px 22px; border-bottom: 1px solid #ECECEC; margin-bottom: 14px;
+  }
+  .sidebar__logo {
+    width: 28px; height: 28px; border-radius: 6px;
+    background: #E5E5E5; display: grid; place-items: center;
+    font-size: 11px; color: #6B6B6B; font-weight: 600;
+  }
+  .sidebar__brand-text { font-weight: 600; font-size: 13px; color: #2A2A2A; }
+  .sidebar__brand-sub { font-size: 10px; color: #8A8A8A; margin-top: 1px; }
+  .sidebar__group { padding: 0 12px; margin-bottom: 18px; }
+  .sidebar__group-label {
+    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: #8A8A8A; padding: 0 8px 8px;
+  }
+  .sidebar__item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 10px; border-radius: 6px;
+    color: #4A4A4A; font-size: 13px; line-height: 1; margin-bottom: 2px;
+  }
+  .sidebar__item-glyph {
+    width: 16px; height: 16px; background: #E5E5E5;
+    border-radius: 3px; flex: none;
+  }
+  .sidebar__item.is-active { background: #E9E9E9; color: #111; font-weight: 600; }
+  .sidebar__item.is-active .sidebar__item-glyph { background: #BFBFBF; }
+  .sidebar__count {
+    margin-left: auto; font-size: 11px; color: #6B6B6B;
+    background: #FFFFFF; border: 1px solid #DDDDDD; border-radius: 99px;
+    padding: 1px 7px;
+  }
+
+  /* ---------- Main column ---------- */
+  .main { display: flex; flex-direction: column; min-width: 0; }
+  .topbar {
+    display: flex; align-items: center; gap: 16px;
+    height: 52px; padding: 0 24px;
+    border-bottom: 1px solid #ECECEC; background: #FFFFFF; flex: none;
+  }
+  .crumb { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #6B6B6B; }
+  .crumb a, .crumb span { color: inherit; text-decoration: none; }
+  .crumb .sep { color: #C5C5C5; }
+  .crumb .here { color: #111; font-weight: 500; }
+  .topbar__right {
+    margin-left: auto; display: flex; align-items: center; gap: 10px;
+    color: #6B6B6B; font-size: 12px;
+  }
+  .avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: #E0E0E0; border: 1px solid #D0D0D0;
+  }
+  .content { padding: 28px 32px 40px; flex: 1 1 auto; }
+
+  /* ---------- Page header ---------- */
+  .pagehead {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 24px;
+  }
+  .pagehead h1 {
+    font-size: 24px; line-height: 1.2; font-weight: 600;
+    letter-spacing: -0.01em; margin: 0 0 6px;
+  }
+  .pagehead p { margin: 0; color: #6B6B6B; font-size: 13px; }
+  .pagehead__actions { display: flex; align-items: center; gap: 10px; flex: none; }
+
+  /* ---------- Buttons ---------- */
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    height: 34px; padding: 0 14px;
+    font-size: 13px; line-height: 1; border-radius: 6px;
+    border: 1px solid #C5C5C5; background: #FFFFFF; color: #111;
+    cursor: default; white-space: nowrap;
+  }
+  .btn--primary { background: #2A2A2A; border-color: #2A2A2A; color: #FFFFFF; }
+  .btn--ghost { background: transparent; border-color: transparent; color: #4A4A4A; }
+  .btn--sm { height: 28px; padding: 0 10px; font-size: 12px; }
+  .btn--icon { width: 30px; height: 30px; padding: 0; justify-content: center; color: #4A4A4A; }
+  .btn .gl {
+    display: inline-block; width: 12px; height: 12px;
+    border: 1.5px solid currentColor; border-radius: 2px;
+  }
+  .btn--primary .gl { border-color: #FFF; }
+
+  /* ---------- Filter bar ---------- */
+  .filterbar {
+    display: grid; gap: 10px;
+    grid-template-columns: 1fr 160px 160px 200px;
+    padding: 12px; border: 1px solid #E5E5E5; border-radius: 8px;
+    background: #FAFAFA; margin-bottom: 14px;
+  }
+  .field {
+    height: 36px; border: 1px solid #D6D6D6; border-radius: 6px;
+    background: #FFFFFF; display: flex; align-items: center; gap: 8px;
+    padding: 0 12px; color: #6B6B6B; font-size: 13px; min-width: 0;
+  }
+  .field .label { color: #8A8A8A; font-size: 12px; }
+  .field .val { color: #111; font-weight: 500; }
+  .field .chev {
+    margin-left: auto; width: 0; height: 0;
+    border-left: 4px solid transparent; border-right: 4px solid transparent;
+    border-top: 5px solid #8A8A8A;
+  }
+  .field--search .icon {
+    width: 14px; height: 14px; border: 1.5px solid #8A8A8A;
+    border-radius: 50%; position: relative;
+  }
+  .field--search .icon::after {
+    content: ""; position: absolute;
+    width: 6px; height: 1.5px; background: #8A8A8A;
+    transform: rotate(45deg); bottom: -2px; right: -3px;
+    border-radius: 1px;
+  }
+  .field input[type="text"] {
+    border: 0; outline: 0; background: transparent;
+    width: 100%; font: inherit; color: #111;
+  }
+  .field input::placeholder { color: #9B9B9B; }
+
+  /* ---------- Result strip ---------- */
+  .resultbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 4px 4px 12px; font-size: 12px; color: #6B6B6B;
+  }
+  .resultbar__left b { color: #111; font-weight: 600; }
+  .resultbar__right { display: flex; align-items: center; gap: 10px; }
+  .perpage {
+    display: inline-flex; align-items: center; gap: 6px;
+    border: 1px solid #D6D6D6; background: #FFFFFF; border-radius: 6px;
+    padding: 4px 10px; color: #111; font-size: 12px;
+  }
+
+  /* ---------- Generic table ---------- */
+  .table { border: 1px solid #E5E5E5; border-radius: 8px; overflow: hidden; background: #FFFFFF; }
+  .table__head, .table__row {
+    display: grid; align-items: center;
+    gap: 14px; padding: 12px 16px; border-bottom: 1px solid #ECECEC;
+  }
+  .table__head { background: #FAFAFA; color: #6B6B6B;
+    font-size: 11px; letter-spacing: 0.06em;
+    text-transform: uppercase; font-weight: 600;
+  }
+  .table__row:last-child { border-bottom: 0; }
+  .table__row.is-selected { background: #F4F4F4; }
+  .table__row .actions { display: flex; gap: 2px; justify-content: flex-end; }
+  .table__row .updated { color: #6B6B6B; font-size: 12px; }
+  .checkbox {
+    display: inline-block; width: 16px; height: 16px;
+    border: 1.5px solid #BFBFBF; border-radius: 3px;
+    background: #FFFFFF; vertical-align: middle;
+  }
+  .checkbox.is-checked {
+    background: #2A2A2A; border-color: #2A2A2A; position: relative;
+  }
+  .checkbox.is-checked::after {
+    content: ""; position: absolute; left: 4px; top: 1px;
+    width: 4px; height: 8px;
+    border: solid #FFF; border-width: 0 1.5px 1.5px 0;
+    transform: rotate(45deg);
+  }
+
+  /* ---------- Chips & status ---------- */
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    height: 22px; padding: 0 9px; border-radius: 99px;
+    font-size: 11px; background: #EFEFEF; color: #4A4A4A;
+    border: 1px solid #E0E0E0; white-space: nowrap;
+  }
+  .chip__dot { width: 6px; height: 6px; border-radius: 50%; background: #9B9B9B; }
+  .chip--sub { background: #F6F6F6; color: #6B6B6B; }
+  .chip--mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; padding: 0 7px; }
+  .chip--ok { background: #ECEFEC; color: #3A5A3A; border-color: #D6DDD6; }
+  .chip--ok .chip__dot { background: #6E9070; }
+  .chip--run { background: #EAEEF2; color: #3F5A75; border-color: #D5DBE2; }
+  .chip--run .chip__dot { background: #6A7E92; }
+  .chip--warn { background: #F1ECDB; color: #7A6118; border-color: #E3D9B7; }
+  .chip--warn .chip__dot { background: #A78F45; }
+  .chip--err { background: #F2DEDE; color: #8A3A3A; border-color: #E3C2C2; }
+  .chip--err .chip__dot { background: #A86060; }
+  .chip--idle { background: #F2F2F2; color: #6B6B6B; border-color: #E0E0E0; }
+
+  /* ---------- Pagination ---------- */
+  .pager {
+    display: flex; justify-content: center; align-items: center; gap: 4px;
+    margin-top: 16px;
+  }
+  .pager__item {
+    min-width: 30px; height: 30px;
+    border: 1px solid #D6D6D6; border-radius: 6px; background: #FFFFFF;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 12px; color: #4A4A4A; padding: 0 8px;
+  }
+  .pager__item.is-current { background: #2A2A2A; color: #FFFFFF; border-color: #2A2A2A; }
+  .pager__ellipsis { color: #9B9B9B; padding: 0 4px; }
+
+  /* ---------- Detail head / metastrip / tabs ---------- */
+  .detail-head { display: flex; align-items: flex-start; gap: 24px; margin-bottom: 24px; }
+  .detail-head__main { flex: 1; min-width: 0; }
+  .detail-head__chips { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+  .detail-head h1 {
+    font-size: 22px; line-height: 1.3; font-weight: 600;
+    letter-spacing: -0.005em; margin: 0 0 6px; color: #111;
+  }
+  .detail-head .sub { font-size: 13px; color: #6B6B6B; margin: 0; }
+  .detail-head__actions { display: flex; gap: 8px; flex: none; }
+
+  .metastrip {
+    display: grid; gap: 0;
+    border: 1px solid #E5E5E5; border-radius: 8px;
+    background: #FAFAFA; margin-bottom: 20px; overflow: hidden;
+  }
+  .metastrip__cell { padding: 12px 16px; border-right: 1px solid #ECECEC; }
+  .metastrip__cell:last-child { border-right: 0; }
+  .metastrip__label {
+    font-size: 10px; color: #8A8A8A;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .metastrip__value { font-size: 13px; color: #111; font-weight: 500; }
+  .status-dot {
+    display: inline-block; width: 7px; height: 7px;
+    border-radius: 50%; background: #5A5A5A;
+    margin-right: 6px; vertical-align: 1px;
+  }
+  .status-dot--ok { background: #6E9070; }
+  .status-dot--run { background: #6A7E92; }
+  .status-dot--err { background: #A86060; }
+  .status-dot--idle { background: #BFBFBF; }
+
+  .tabs { display: flex; gap: 0; border-bottom: 1px solid #E5E5E5; margin-bottom: 20px; }
+  .tabs__item {
+    padding: 10px 4px; margin-right: 24px;
+    font-size: 13px; color: #6B6B6B;
+    border-bottom: 2px solid transparent; margin-bottom: -1px;
+  }
+  .tabs__item.is-active { color: #111; font-weight: 600; border-bottom-color: #2A2A2A; }
+  .tabs__item .count { color: #9B9B9B; font-weight: 500; margin-left: 4px; }
+
+  /* ---------- Section / card ---------- */
+  .section {
+    border: 1px solid #E5E5E5; border-radius: 8px;
+    background: #FFFFFF; padding: 22px 24px; margin-bottom: 16px;
+  }
+  .section__head {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px; margin-bottom: 16px;
+  }
+  .section__title { font-size: 14px; font-weight: 600; color: #111; margin: 0 0 4px; }
+  .section__hint { font-size: 12px; color: #6B6B6B; margin: 0; max-width: 580px; }
+  .section__index {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: #EFEFEF; color: #4A4A4A;
+    font-size: 11px; font-weight: 600;
+    display: grid; place-items: center; flex: none;
+  }
+  .section-label {
+    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: #8A8A8A; margin: 18px 0 8px; font-weight: 600;
+  }
+  .section-label:first-of-type { margin-top: 0; }
+  .body-text { font-size: 13px; line-height: 1.6; color: #2A2A2A; margin: 0 0 10px; }
+
+  /* ---------- Form primitives ---------- */
+  .form-row { display: grid; gap: 16px; margin-bottom: 12px; }
+  .form-row--2 { grid-template-columns: 1fr 1fr; }
+  .form-row--3 { grid-template-columns: 1fr 1fr 1fr; }
+  .form-row--single { grid-template-columns: 1fr; }
+  .input-group { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .input-label { font-size: 12px; color: #4A4A4A; font-weight: 500; }
+  .input-label .req { color: #B04A4A; margin-left: 2px; }
+  .input-label .hint {
+    margin-left: 6px; font-weight: 400; color: #8A8A8A;
+  }
+  .input {
+    min-height: 36px;
+    border: 1px solid #D6D6D6; border-radius: 6px; background: #FFFFFF;
+    padding: 8px 12px; font-size: 13px; color: #111; line-height: 1.5;
+    display: flex; align-items: center;
+  }
+  .input--placeholder { color: #9B9B9B; }
+  .input--select { justify-content: space-between; }
+  .input--select .chev {
+    width: 0; height: 0;
+    border-left: 4px solid transparent; border-right: 4px solid transparent;
+    border-top: 5px solid #8A8A8A;
+  }
+  .textarea { border: 1px solid #D6D6D6; border-radius: 6px; background: #FFFFFF; overflow: hidden; }
+  .textarea__body {
+    min-height: 90px; padding: 10px 12px;
+    font-size: 13px; color: #2A2A2A; line-height: 1.6;
+  }
+  .textarea__body.is-placeholder { color: #9B9B9B; }
+  .input-help { display: flex; justify-content: space-between; font-size: 11px; color: #8A8A8A; }
+
+  /* Stepper (number) */
+  .stepper-num {
+    display: inline-flex; align-items: center;
+    border: 1px solid #D6D6D6; border-radius: 6px; background: #FFFFFF;
+    height: 36px; overflow: hidden;
+  }
+  .stepper-num__btn {
+    width: 32px; height: 100%;
+    display: grid; place-items: center;
+    color: #4A4A4A; font-size: 14px;
+    background: #FAFAFA; border-right: 1px solid #E5E5E5;
+  }
+  .stepper-num__btn:last-child { border-right: 0; border-left: 1px solid #E5E5E5; }
+  .stepper-num__val {
+    min-width: 56px; padding: 0 12px;
+    font-size: 13px; color: #111; font-weight: 500;
+    text-align: center;
+  }
+
+  /* ---------- Stat tiles ---------- */
+  .stats { display: grid; gap: 12px; margin-bottom: 16px; }
+  .stats--4 { grid-template-columns: repeat(4, 1fr); }
+  .stats--5 { grid-template-columns: repeat(5, 1fr); }
+  .stat {
+    border: 1px solid #E5E5E5; border-radius: 8px;
+    background: #FFFFFF; padding: 14px 16px;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .stat__label {
+    font-size: 10px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: #8A8A8A;
+  }
+  .stat__num {
+    font-size: 22px; font-weight: 600; color: #111; letter-spacing: -0.01em;
+  }
+  .stat__sub { font-size: 11px; color: #6B6B6B; }
+  .stat__bar {
+    height: 4px; border-radius: 2px;
+    background: #ECECEC; overflow: hidden; margin-top: 4px;
+  }
+  .stat__bar > span { display: block; height: 100%; background: #2A2A2A; border-radius: 2px; }
+
+  /* ---------- Filter chips (segment) ---------- */
+  .filterchips { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+  .filterchip {
+    display: inline-flex; align-items: center; gap: 6px;
+    height: 28px; padding: 0 12px; border-radius: 99px;
+    border: 1px solid #D6D6D6; background: #FFFFFF;
+    font-size: 12px; color: #4A4A4A;
+  }
+  .filterchip.is-active { background: #2A2A2A; border-color: #2A2A2A; color: #FFFFFF; }
+  .filterchip__num {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 10px; color: inherit; opacity: 0.7;
+  }
+
+  /* ---------- Sticky action bar ---------- */
+  .actionbar {
+    position: sticky; bottom: 0;
+    margin: 24px -32px -40px; padding: 14px 32px;
+    border-top: 1px solid #E5E5E5;
+    background: rgba(255,255,255,0.96);
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px;
+  }
+  .actionbar__hint { font-size: 12px; color: #6B6B6B; }
+  .actionbar__right { display: flex; gap: 10px; }
+
+  /* ---------- Annotation pill ---------- */
+  .annot {
+    display: inline-block;
+    font-size: 11px; font-style: italic; color: #6B6B6B;
+    background: #F4F4F4; border: 1px dashed #CFCFCF;
+    border-radius: 4px; padding: 2px 8px;
+    margin-left: 8px; vertical-align: 2px;
+  }
+
+  /* ---------- Frame legend (index only) ---------- */
+  .legend {
+    margin: 56px 0 0; padding: 20px 24px;
+    border: 1px dashed #C5C5C5; border-radius: 6px;
+    background: #FAFAFA; font-size: 12px; color: #4A4A4A; line-height: 1.7;
+  }
+  .legend h3 {
+    margin: 0 0 8px; font-size: 12px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: #6B6B6B; font-weight: 600;
+  }
+  .legend code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    background: #FFFFFF; border: 1px solid #E5E5E5;
+    border-radius: 3px; padding: 1px 5px;
+    font-size: 11px; color: #2A2A2A;
+  }
+
+  /* ---------- Conversation bubbles (case detail) ---------- */
+  .convo { display: flex; flex-direction: column; gap: 14px; }
+  .turn { display: grid; grid-template-columns: 90px 1fr; gap: 12px; }
+  .turn__meta {
+    font-size: 11px; color: #8A8A8A;
+    line-height: 1.5; padding-top: 12px;
+  }
+  .turn__meta .step {
+    display: inline-block;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    color: #4A4A4A; font-weight: 600;
+    margin-bottom: 2px;
+  }
+  .turn__bubble {
+    border: 1px solid #E5E5E5; border-radius: 8px;
+    padding: 12px 14px;
+    background: #FFFFFF;
+    font-size: 13px; line-height: 1.55; color: #2A2A2A;
+  }
+  .turn--user .turn__bubble { background: #FAFAFA; }
+  .turn--bot .turn__bubble { background: #FFFFFF; }
+  .turn__role {
+    font-size: 10px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: #8A8A8A;
+    margin-bottom: 4px; font-weight: 600;
+  }
+
+  /* ---------- Hypothesis timeline ---------- */
+  .timeline { padding: 0; margin: 0; list-style: none; position: relative; }
+  .timeline::before {
+    content: ""; position: absolute; left: 9px; top: 4px; bottom: 4px;
+    width: 1.5px; background: #E5E5E5;
+  }
+  .timeline > li {
+    position: relative; padding: 0 0 14px 28px;
+  }
+  .timeline > li::before {
+    content: ""; position: absolute; left: 5px; top: 4px;
+    width: 9px; height: 9px; border-radius: 50%;
+    background: #BFBFBF; border: 2px solid #FFFFFF;
+  }
+  .timeline > li.is-now::before { background: #2A2A2A; }
+  .timeline > li .tl__step {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 10px; color: #8A8A8A;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+  .timeline > li .tl__hyp { font-size: 13px; color: #111; font-weight: 500; margin: 0 0 4px; }
+  .timeline > li .tl__conf {
+    font-size: 11px; color: #6B6B6B;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .timeline > li .tl__bar {
+    display: inline-block; width: 80px; height: 4px;
+    background: #ECECEC; border-radius: 2px; vertical-align: middle;
+    overflow: hidden;
+  }
+  .timeline > li .tl__bar > span { display: block; height: 100%; background: #4A4A4A; }
+</style>
+<style>
+  /* ---------- Page-scoped overrides (06-executions) ---------- */
+  body { background: #FFFFFF; }
+  .device { border: 0; border-radius: 0; min-height: 100vh; }
+
+  .table__head, .table__row {
+    grid-template-columns: 84px minmax(140px, 1fr) 170px 140px 90px 90px 110px 120px 128px;
+  }
+  .table__head { padding-top: 14px; padding-bottom: 14px; }
+
+  /* Status cell — chip stacked over a state-aware progress donut + count */
+  .status-cell {
+    display: flex; flex-direction: column; align-items: flex-start;
+    gap: 8px; min-width: 0;
+  }
+  .status-cell__donut-wrap {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .status-cell__count {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11px; color: #6B6B6B; font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .status-cell__count b { color: #111; font-weight: 600; }
+
+  /* ---------- Progress donut ----------
+     32 px ring, three states (running / paused / finished). Ported
+     from .suite-donut in admin-test-suites.html. Ring + glyph tones
+     come from design-system tokens (--primary-500 for live/finished,
+     --warning-500 for paused) — do not substitute hex literals. */
+  .exec-donut {
+    --exec-donut-tone: var(--primary-500);
+    position: relative;
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; flex: 0 0 auto;
+    color: var(--exec-donut-tone);
+  }
+  .exec-donut__svg {
+    width: 100%; height: 100%;
+    transform: rotate(-90deg);
+    overflow: visible;
+  }
+  .exec-donut__track {
+    /* Tints with the state via currentColor — same pattern as
+       admin-test-suites.html's .suite-donut__track. */
+    stroke: color-mix(in srgb, currentColor 28%, transparent);
+    fill: none;
+    stroke-width: 3;
+  }
+  .exec-donut__ring {
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-dasharray: var(--pct, 0) 100;
+    stroke-dashoffset: 25;
+  }
+  .exec-donut__readout {
+    position: absolute; inset: 0;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 10px; font-weight: 600;
+    line-height: 1; color: #111;
+    font-variant-numeric: tabular-nums; letter-spacing: -0.02em;
+  }
+  .exec-donut__readout svg { width: 12px; height: 12px; display: block; }
+
+  /* State modifiers — ring tone (and for icon-only readouts, the
+     readout colour follows the ring). Running keeps the % glyph in
+     plain ink for contrast against the green ring; finished/paused
+     pick up the ring tone since the glyph is the only character. */
+  .exec-donut--running  { --exec-donut-tone: var(--primary-500); }
+  .exec-donut--paused,
+  .exec-donut--queued   { --exec-donut-tone: var(--warning-500); }
+  .exec-donut--paused   .exec-donut__readout,
+  .exec-donut--queued   .exec-donut__readout { color: var(--warning-500); }
+  .exec-donut--finished { --exec-donut-tone: var(--primary-500); }
+  .exec-donut--finished .exec-donut__readout { color: var(--primary-500); }
+  /* Finished runs paint a continuous ring — no dash gap, no round caps. */
+  .exec-donut--finished .exec-donut__ring {
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+    stroke-linecap: butt;
+  }
+
+  .exec-id {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px; color: #111; font-weight: 500;
+  }
+  .exec-suite {
+    font-size: 13px; color: #111; font-weight: 500;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    min-width: 0;
+  }
+  .numcell {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px; color: #4A4A4A;
+  }
+  .results-sub {
+    font-size: 11px; color: #8A8A8A;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    margin-top: 2px;
+  }
+
+  /* Time column — stacked elapsed + ETA / ago / paused sub-line */
+  .time-cell {
+    display: flex; flex-direction: column; gap: 1px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px; color: #111;
+  }
+  .time-cell__main { color: #111; }
+  .time-cell__sub  { color: #8A8A8A; font-size: 11px; }
+  .time-cell__sub--paused { color: var(--warning-500); font-style: italic; }
+  .time-cell--idle { color: #9B9B9B; }
+
+  /* Linkified Run + Suite cells */
+  a.exec-id, a.exec-suite {
+    text-decoration: none; color: inherit; cursor: pointer;
+  }
+  a.exec-id:hover, a.exec-suite:hover { text-decoration: underline; }
+
+  /* Bucket mini-counts (column 4) */
+  .bucket-mini {
+    display: inline-flex; gap: 10px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px; color: #4A4A4A;
+  }
+  .bucket-mini__seg { display: inline-flex; align-items: center; gap: 5px; }
+  .bucket-mini__dot { width: 7px; height: 7px; border-radius: 50%; background: #BFBFBF; }
+  .bucket-mini__seg--high .bucket-mini__dot { background: #6E9070; }
+  .bucket-mini__seg--low  .bucket-mini__dot { background: #A78F45; }
+  .bucket-mini__seg--err  .bucket-mini__dot { background: #A86060; }
+  .bucket-mini__seg--pending .bucket-mini__dot { background: #E0E0E0; }
+  .bucket-mini__seg--pending { color: #8A8A8A; }
+
+  /* Live-ping dot on running chip */
+  .table__row .chip--run .chip__dot { animation: livePing 1.6s ease-in-out infinite; }
+  @keyframes livePing {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: 0.35; transform: scale(0.7); }
+  }
+
+  /* ---------- Screen nav ---------- */
+  .screennav {
+    max-width: 1360px; margin: 0 auto 24px; padding: 14px 40px;
+    display: flex; align-items: center; gap: 18px;
+    background: #FFFFFF; border-bottom: 1px solid #E0E0E0;
+    font-size: 12px; position: sticky; top: 0; z-index: 10;
+  }
+  .screennav__brand {
+    font-weight: 600; color: #111; letter-spacing: -0.005em; margin-right: 8px;
+  }
+  .screennav__brand small { color: #6B6B6B; font-weight: 400; margin-left: 6px; }
+  .screennav__sep { width: 1px; height: 14px; background: #E0E0E0; }
+  .screennav a {
+    color: #6B6B6B; text-decoration: none;
+    padding: 6px 10px; border-radius: 5px;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .screennav a:hover { background: #F4F4F4; color: #111; }
+  .screennav a.is-current { background: #2A2A2A; color: #FFFFFF; }
+  .screennav a code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 10px; color: inherit; opacity: 0.7;
+  }
+  .screennav__route {
+    margin-left: auto; color: #8A8A8A;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11px;
+  }
+</style>
+</head>
+<body>
+<nav class="screennav">
+  <span class="screennav__brand">FR-384 wireframes <small>· lo-fi</small></span>
+  <span class="screennav__sep"></span>
+  <a href="./index.html">Index</a>
+  <span class="screennav__sep"></span>
+  <a href="./01-list.html"><code>01</code>Test suite list</a><a href="./02-detail.html"><code>02</code>Test suite detail</a><a href="./03-create-edit.html"><code>03</code>New / edit test suite</a><a href="./04-results.html"><code>04</code>Run results</a><a href="./04-results-running.html"><code>04r</code>Running</a><a href="./04-results-paused.html"><code>04p</code>Paused</a><a href="./05-case-detail.html"><code>05</code>Test case · full conversation</a><a href="./06-executions.html" class="is-current"><code>06</code>Executions</a>
+  <span class="screennav__route">/admin/testing/executions</span>
+</nav>
+
+<div class="device">
+      <aside class="sidebar">
+        <div class="sidebar__brand">
+          <div class="sidebar__logo">F2V</div>
+          <div>
+            <div class="sidebar__brand-text">Farm2Vet</div>
+            <div class="sidebar__brand-sub">Admin console</div>
+          </div>
+        </div>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Workspace</div>
+          <div class="sidebar__item"><span class="sidebar__item-glyph"></span>Dashboard</div>
+          <div class="sidebar__item"><span class="sidebar__item-glyph"></span>Questions<span class="sidebar__count">393</span></div>
+          <div class="sidebar__item"><span class="sidebar__item-glyph"></span>Diseases<span class="sidebar__count">47</span></div>
+          <div class="sidebar__item"><span class="sidebar__item-glyph"></span>Synthetic profiles<span class="sidebar__count">86</span></div>
+          <div class="sidebar__item is-active"><span class="sidebar__item-glyph"></span>Testing<span class="sidebar__count">24</span></div>
+        </div>
+        <div class="sidebar__group">
+          <div class="sidebar__group-label">Operations</div>
+          <div class="sidebar__item"><span class="sidebar__item-glyph"></span>Users</div>
+          <div class="sidebar__item"><span class="sidebar__item-glyph"></span>Reports</div>
+          <div class="sidebar__item"><span class="sidebar__item-glyph"></span>Settings</div>
+        </div>
+      </aside>
+      <div class="main">
+        <div class="topbar">
+          <div class="crumb">
+            <span>Admin</span>
+            <span class="sep">/</span>
+            <span>Testing</span>
+            <span class="sep">/</span>
+            <span class="here">Executions</span>
+          </div>
+          <div class="topbar__right">
+            <span>Minh Bùi</span>
+            <span class="avatar"></span>
+          </div>
+        </div>
+        <div class="content">
+          <!-- Page header -->
+          <div class="pagehead">
+            <div>
+              <h1>Executions</h1>
+              <p>Automated testing console · 3 running · 2 paused · 38 in the last 7 days</p>
+            </div>
+            <div class="pagehead__actions">
+              <button class="btn btn--ghost">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><path d="M14 8a6 6 0 1 1-1.76-4.24M14 3v3h-3"/></svg>
+                <span style="margin-left:2px;">Refresh</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Filter bar -->
+          <div class="filterbar" style="grid-template-columns: 1fr 160px 160px 160px 44px;">
+            <div class="field field--search">
+              <span class="icon"></span>
+              <input type="text" placeholder="Search by execution id, suite name, or model…" />
+            </div>
+            <div class="field">
+              <span class="label">Suite</span>
+              <span class="val">All</span>
+              <span class="chev"></span>
+            </div>
+            <div class="field">
+              <span class="label">Status</span>
+              <span class="val">All</span>
+              <span class="chev"></span>
+            </div>
+            <div class="field">
+              <span class="label">Sort by</span>
+              <span class="val">Started</span>
+              <span class="chev"></span>
+            </div>
+            <button class="btn btn--icon" title="Newest first" aria-label="Sort direction: newest first" style="height:36px;width:36px;">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="12" height="12" aria-hidden="true">
+                <path d="M8 3v10M4 9l4 4 4-4"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Result strip -->
+          <div class="resultbar">
+            <div class="resultbar__left">
+              Showing <b>1–10</b> of <b>38</b> executions
+              <span style="color:#8A8A8A;margin-left:8px;">· 3 running · cumulative cost today $4.82</span>
+            </div>
+            <div class="resultbar__right">
+              <span class="perpage">10 per page
+                <span style="margin-left:4px;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid #8A8A8A;display:inline-block;width:0;height:0;"></span>
+              </span>
+            </div>
+          </div>
+
+          <!-- Table -->
+          <div class="table">
+            <div class="table__head">
+              <div>Run</div>
+              <div>Test suite</div>
+              <div>Status</div>
+              <div>Outcomes</div>
+              <div>Performance score</div>
+              <div>Cumulative cost</div>
+              <div>Started</div>
+              <div>Time</div>
+              <div style="text-align:right;">Actions</div>
+            </div>
+
+            <!-- Row 1 · Running · RUN-211 -->
+            <div class="table__row">
+              <a class="exec-id" href="./04-results-running.html">RUN-211</a>
+              <a class="exec-suite" href="./02-detail.html">TS-014 · Diagnostic baseline · v3</a>
+              <div class="status-cell">
+                <div class="status-cell__donut-wrap">
+                  <div class="exec-donut exec-donut--running" style="--pct: 58;" role="img" aria-label="Running, 58% complete">
+                    <svg class="exec-donut__svg" viewBox="0 0 36 36" aria-hidden="true">
+                      <circle class="exec-donut__track" cx="18" cy="18" r="15.915"/>
+                      <circle class="exec-donut__ring"  cx="18" cy="18" r="15.915"/>
+                    </svg>
+                    <span class="exec-donut__readout">58%</span>
+                  </div>
+                  <div class="status-cell__count"><b>7</b> / 12</div>
+                </div>
+              </div>
+              <div>
+                <div class="bucket-mini">
+                  <span class="bucket-mini__seg bucket-mini__seg--high"><span class="bucket-mini__dot"></span>5</span>
+                  <span class="bucket-mini__seg bucket-mini__seg--low"><span class="bucket-mini__dot"></span>1</span>
+                  <span class="bucket-mini__seg bucket-mini__seg--err"><span class="bucket-mini__dot"></span>0</span>
+                  <span class="bucket-mini__seg bucket-mini__seg--pending"><span class="bucket-mini__dot"></span>6</span>
+                </div>
+              </div>
+              <div class="numcell">88%<span style="color:#8A8A8A;font-size:11px;margin-left:4px;">live</span></div>
+              <div class="numcell">$0.21<span style="color:#8A8A8A;font-size:11px;margin-left:4px;">live</span></div>
+              <div class="updated">Feb 24 · 19:42</div>
+              <div class="time-cell"><span class="time-cell__main">1m 12s</span><span class="time-cell__sub">≈1m 28s left</span></div>
+              <div class="actions">
+                <button class="btn btn--icon" title="Pause run"><svg viewBox="0 0 16 16" fill="currentColor" width="11" height="11" aria-hidden="true"><rect x="4" y="3" width="3" height="10" rx="0.5"/><rect x="9" y="3" width="3" height="10" rx="0.5"/></svg></button>
+                <button class="btn btn--icon" title="Stop run"><svg viewBox="0 0 16 16" fill="currentColor" width="11" height="11" aria-hidden="true"><rect x="4" y="4" width="8" height="8" rx="1"/></svg></button>
+                <a class="btn btn--icon" href="./04-results-running.html" title="Watch live"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"/><circle cx="8" cy="8" r="2"/></svg></a>
+              </div>
+            </div>
+
+            <!-- Row 2 · Running · RUN-210 -->
+            <div class="table__row">
+              <a class="exec-id" href="./04-results-running.html">RUN-210</a>
+              <a class="exec-suite" href="./02-detail.html">TS-012 · Advisor regression — feed</a>
+              <div class="status-cell">
+                <div class="status-cell__donut-wrap">
+                  <div class="exec-donut exec-donut--running" style="--pct: 38;" role="img" aria-label="Running, 38% complete">
+                    <svg class="exec-donut__svg" viewBox="0 0 36 36" aria-hidden="true">
+                      <circle class="exec-donut__track" cx="18" cy="18" r="15.915"/>
+                      <circle class="exec-donut__ring"  cx="18" cy="18" r="15.915"/>
+                    </svg>
+                    <span class="exec-donut__readout">38%</span>
+                  </div>
+                  <div class="status-cell__count"><b>3</b> / 8</div>
+                </div>
+              </div>
+              <div>
+                <div class="bucket-mini">
+                  <span class="bucket-mini__seg bucket-mini__seg--high"><span class="bucket-mini__dot"></span>2</span>
+                  <span class="bucket-mini__seg bucket-mini__seg--low"><span class="bucket-mini__dot"></span>1</span>
+                  <span class="bucket-mini__seg bucket-mini__seg--err"><span class="bucket-mini__dot"></span>0</span>
+                  <span class="bucket-mini__seg bucket-mini__seg--pending"><span class="bucket-mini__dot"></span>5</span>
+                </div>
+              </div>
+              <div class="numcell">82%<span style="color:#8A8A8A;font-size:11px;margin-left:4px;">live</span></div>
+              <div class="numcell">$0.09<span style="color:#8A8A8A;font-size:11px;margin-left:4px;">live</span></div>
+              <div class="updated">Feb 24 · 19:48</div>
+              <div class="time-cell"><span class="time-cell__main">0m 41s</span><span class="time-cell__sub">≈1m 05s left</span></div>
+              <div class="actions">
+                <button class="btn btn--icon" title="Pause run"><svg viewBox="0 0 16 16" fill="currentColor" width="11" height="11" aria-hidden="true"><rect x="4" y="3" width="3" height="10" rx="0.5"/><rect x="9" y="3" width="3" height="10" rx="0.5"/></svg></button>
+                <button class="btn btn--icon" title="Stop run"><svg viewBox="0 0 16 16" fill="currentColor" width="11" height="11" aria-hidden="true"><rect x="4" y="4" width="8" height="8" rx="1"/></svg></button>
+                <a class="btn btn--icon" href="./04-results-running.html" title="Watch live"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"/><circle cx="8" cy="8" r="2"/></svg></a>
+              </div>
+            </div>
+
+            <!-- Row 3 · Running · RUN-209 -->
+            <div class="table__row">
+              <a class="exec-id" href="./04-results-running.html">RUN-209</a>
+              <a class="exec-suite" href="./02-detail.html">TS-010 · Free-form · multilingual</a>
+              <div class="status-cell">
+                <div class="status-cell__donut-wrap">
+                  <div class="exec-donut exec-donut--running" style="--pct: 64;" role="img" aria-label="Running, 64% complete">
+                    <svg class="exec-donut__svg" viewBox="0 0 36 36" aria-hidden="true">
+                      <circle class="exec-donut__track" cx="18" cy="18" r="15.915"/>
+                      <circle class="exec-donut__ring"  cx="18" cy="18" r="15.915"/>
+                    </svg>
+                    <span class="exec-donut__readout">64%</span>
+                  </div>
+                  <div class="status-cell__count"><b>9</b> / 14</div>
+                </div>
+              </div>
+              <div>
+                <div class="bucket-mini">
+                  <span class="bucket-mini__seg bucket-mini__seg--high"><span class="bucket-mini__dot"></span>4</span>
+                  <span class="bucket-mini__seg bucket-mini__seg--low"><span class="bucket-mini__dot"></span>3</span>
+                  <span class="bucket-mini__seg bucket-mini__seg--err"><span class="bucket-mini__dot"></span>2</span>
+                  <span class="bucket-mini__seg bucket-mini__seg--pending"><span class="bucket-mini__dot"></span>5</span>
+                </div>
+              </div>
+              <div class="numcell">64%<span style="color:#8A8A8A;font-size:11px;margin-left:4px;">live</span></div>
+              <div class="numcell">$0.41<span style="color:#8A8A8A;font-size:11px;margin-left:4px;">live</span></div>
+              <div class="updated">Feb 24 · 19:33</div>
+              <div class="time-cell"><span class="time-cell__main">2m 18s</span><span class="time-cell__sub">≈1m 18s left</span></div>
+              <div class="actions">
+                <button class="btn btn--icon" title="Pause run"><svg viewBox="0 0 16 16" fill="currentColor" width="11" height="11" aria-hidden="true"><rect x="4" y="3" width="3" height="10" rx="0.5"/><rect x="9" y="3" width="3" height="10" rx="0.5"/></svg></button>
+                <button class="btn btn--icon" title="Stop run"><svg viewBox="0 0 16 16" fill="currentColor" width="11" height="11" aria-hidden="true"><rect x="4" y="4" width="8" height="8" rx="1"/></svg></button>
+                <a class="btn btn--icon" href="./04-results-running.html" title="Watch live"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"/><circle cx="8" cy="8" r="2"/></svg></a>
+              </div>
+            </div>
+
+            <!-- Row 4 · Idle (was queued) · RUN-212 -->
+            <div class="table__row">
+              <div class="exec-id">RUN-212</div>
+              <a class="exec-suite" href="./02-detail.html">TS-015 · Diagnostic baseline · v4 (smoke)</a>
+              <div class="status-cell">
+                <div class="status-cell__donut-wrap">
+                  <div class="exec-donut exec-donut--queued" style="--pct: 0;" role="img" aria-label="Queued, 0 of 6 cases">
+                    <svg class="exec-donut__svg" viewBox="0 0 36 36" aria-hidden="true">
+                      <circle class="exec-donut__track" cx="18" cy="18" r="15.915"/>
+                      <circle class="exec-donut__ring"  cx="18" cy="18" r="15.915"/>
+                    </svg>
+                    <span class="exec-donut__readout" aria-hidden="true">
+                      <svg viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M5 3.5l7 4.5-7 4.5z"/>
+                      </svg>
+                    </span>
+                  </div>
+                  <div class="status-cell__count"><b>0</b> / 6</div>
+                </div>
+              </div>
+              <div><span style="color:#9B9B9B;">—</span></div>
+              <div class="numcell" style="color:#9B9B9B;">—</div>
+              <div class="numcell" style="color:#9B9B9B;">—</div>
+              <div class="updated">Feb 24 · 19:50</div>
+              <div class="time-cell time-cell--idle">—</div>
+              <div class="actions">
+                <button class="btn btn--icon" title="Start now" aria-label="Start this run now"><svg viewBox="0 0 16 16" fill="currentColor" width="11" height="11" aria-hidden="true"><path d="M4 2.5l9 5.5-9 5.5z"/></svg></button>
+                <button class="btn btn--icon" title="Cancel queue" aria-label="Cancel queued run"><svg viewBox="0 0 16 16" fill="currentColor" width="11" height="11" aria-hidden="true"><rect x="4" y="4" width="8" height="8" rx="1"/></svg></button>
+              </div>
+            </div>
+
+            <!-- Row 5 · Completed · RUN-204 -->
+            <div class="table__row">
+              <a class="exec-id" href="./04-results.html">RUN-204</a>
+              <a class="exec-suite" href="./02-detail.html">TS-014 · Diagnostic baseline · v3</a>
+              <div class="status-cell">
+                <div class="status-cell__donut-wrap">
+                  <div class="exec-donut exec-donut--finished" style="--pct: 100;" role="img" aria-label="Completed, 12 of 12 cases">
+                    <svg class="exec-donut__svg" viewBox="0 0 36 36" aria-hidden="true">
+                      <circle class="exec-donut__track" cx="18" cy="18" r="15.915"/>
+                      <circle class="exec-donut__ring"  cx="18" cy="18" r="15.915"/>
+                    </svg>
+                    <span class="exec-donut__readout" aria-hidden="true">
+                      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 8.5L6.5 12 13 4.5"/>
+                      </svg>
+                    </span>
+                  </div>
+                  <div class="status-cell__count"><b>12</b> / 12</div>
+                </div>
+              </div>
+              <div>
+                <div class="bucket-mini">
+                  <span class="bucket-mini__seg bucket-mini__seg--high"><span class="bucket-mini__dot"></span>9</span>
+                  <span class="bucket-mini__seg bucket-mini__seg--low"><span class="bucket-mini__dot"></span>2</span>
+                  <span class="bucket-mini__seg bucket-mini__seg--err"><span class="bucket-mini__dot"></span>1</span>
+                  <span class="bucket-mini__seg bucket-mini__seg--pending"><span class="bucket-mini__dot"></span>0</span>
+                </div>
+              </div>
+              <div class="numcell">86%</div>
+              <div class="numcell">$0.34</div>
+              <div class="updated">Feb 24 · 19:42</div>
+              <div class="time-cell"><span class="time-cell__main">1m 48s</span></div>
+              <div class="actions">
+                <button class="btn btn--icon" title="Rerun suite" aria-label="Rerun this suite">
+                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13" aria-hidden="true"><path d="M14 8a6 6 0 1 1-1.76-4.24M14 3v3h-3"/></svg>
+                </button>
+                <a class="btn btn--icon" href="./04-results.html" title="View results"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"/><circle cx="8" cy="8" r="2"/></svg></a>
+                <button class="btn btn--icon" title="Delete from history"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><path d="M3 4h10M6 4V2.5h4V4M5 4l1 9h4l1-9"/></svg></button>
+              </div>
+            </div>
+
+            <!-- Row 6 · Completed · RUN-198 -->
+            <div class="table__row">
+              <a class="exec-id" href="./04-results.html">RUN-198</a>
+              <a class="exec-suite" href="./02-detail.html">TS-014 · Diagnostic baseline · v3</a>
+              <div class="status-cell">
+                <div class="status-cell__donut-wrap">
+                  <div class="exec-donut exec-donut--finished" style="--pct: 100;" role="img" aria-label="Completed, 12 of 12 cases">
+                    <svg class="exec-donut__svg" viewBox="0 0 36 36" aria-hidden="true">
+                      <circle class="exec-donut__track" cx="18" cy="18" r="15.915"/>
+                      <circle class="exec-donut__ring"  cx="18" cy="18" r="15.915"/>
+                    </svg>
+                    <span class="exec-donut__readout" aria-hidden="true">
+                      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 8.5L6.5 12 13 4.5"/>
+                      </svg>
+                    </span>
+                  </div>
+                  <div class="status-cell__count"><b>12</b> / 12</div>
+                </div>
+              </div>
+              <div>
+                <div class="bucket-mini">
+                  <span class="bucket-mini__seg bucket-mini__seg--high"><span class="bucket-mini__dot"></span>8</span>
+                  <span class="bucket-mini__seg bucket-mini__seg--low"><span class="bucket-mini__dot"></span>3</span>
+                  <span class="bucket-mini__seg bucket-mini__seg--err"><span class="bucket-mini__dot"></span>1</span>
+                  <span class="bucket-mini__seg bucket-mini__seg--pending"><span class="bucket-mini__dot"></span>0</span>
+                </div>
+              </div>
+              <div class="numcell">82%</div>
+              <div class="numcell">$0.31</div>
+              <div class="updated">Feb 22 · 14:08</div>
+              <div class="time-cell"><span class="time-cell__main">1m 51s</span></div>
+              <div class="actions">
+                <button class="btn btn--icon" title="Rerun suite" aria-label="Rerun this suite">
+                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13" aria-hidden="true"><path d="M14 8a6 6 0 1 1-1.76-4.24M14 3v3h-3"/></svg>
+                </button>
+                <a class="btn btn--icon" href="./04-results.html" title="View results"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"/><circle cx="8" cy="8" r="2"/></svg></a>
+                <button class="btn btn--icon" title="Delete from history"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><path d="M3 4h10M6 4V2.5h4V4M5 4l1 9h4l1-9"/></svg></button>
+              </div>
+            </div>
+
+            <!-- Row 7 · Idle (was failed) · RUN-180 -->
+            <div class="table__row">
+              <a class="exec-id" href="./04-results-paused.html">RUN-180</a>
+              <a class="exec-suite" href="./02-detail.html">TS-014 · Diagnostic baseline · v3</a>
+              <div class="status-cell">
+                <div class="status-cell__donut-wrap">
+                  <div class="exec-donut exec-donut--paused" style="--pct: 33;" role="img" aria-label="Paused, 4 of 12 cases run">
+                    <svg class="exec-donut__svg" viewBox="0 0 36 36" aria-hidden="true">
+                      <circle class="exec-donut__track" cx="18" cy="18" r="15.915"/>
+                      <circle class="exec-donut__ring"  cx="18" cy="18" r="15.915"/>
+                    </svg>
+                    <span class="exec-donut__readout" aria-hidden="true">
+                      <svg viewBox="0 0 16 16" fill="currentColor">
+                        <rect x="4" y="3" width="3" height="10" rx="0.5"/>
+                        <rect x="9" y="3" width="3" height="10" rx="0.5"/>
+                      </svg>
+                    </span>
+                  </div>
+                  <div class="status-cell__count"><b>4</b> / 12</div>
+                </div>
+              </div>
+              <div>
+                <div class="bucket-mini">
+                  <span class="bucket-mini__seg bucket-mini__seg--high"><span class="bucket-mini__dot"></span>2</span>
+                  <span class="bucket-mini__seg bucket-mini__seg--low"><span class="bucket-mini__dot"></span>1</span>
+                  <span class="bucket-mini__seg bucket-mini__seg--err"><span class="bucket-mini__dot"></span>1</span>
+                  <span class="bucket-mini__seg bucket-mini__seg--pending"><span class="bucket-mini__dot"></span>0</span>
+                </div>
+              </div>
+              <div class="numcell" style="color:#9B9B9B;">—</div>
+              <div class="numcell">$0.11</div>
+              <div class="updated">Feb 15 · 16:30</div>
+              <div class="time-cell"><span class="time-cell__main">2m 02s</span><span class="time-cell__sub time-cell__sub--paused">paused · 14d ago</span></div>
+              <div class="actions">
+                <button class="btn btn--icon" title="Resume run"><svg viewBox="0 0 16 16" fill="currentColor" width="11" height="11" aria-hidden="true"><path d="M4 2.5l9 5.5-9 5.5z"/></svg></button>
+                <button class="btn btn--icon" title="Stop run"><svg viewBox="0 0 16 16" fill="currentColor" width="11" height="11" aria-hidden="true"><rect x="4" y="4" width="8" height="8" rx="1"/></svg></button>
+                <a class="btn btn--icon" href="./04-results-paused.html" title="View partial results"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"/><circle cx="8" cy="8" r="2"/></svg></a>
+              </div>
+            </div>
+
+            <!-- Row 8 · Idle (was completed · low) · RUN-176 -->
+            <div class="table__row">
+              <a class="exec-id" href="./04-results.html">RUN-176</a>
+              <a class="exec-suite" href="./02-detail.html">TS-010 · Free-form · multilingual</a>
+              <div class="status-cell">
+                <div class="status-cell__donut-wrap">
+                  <div class="exec-donut exec-donut--finished" style="--pct: 100;" role="img" aria-label="Completed, 14 of 14 cases">
+                    <svg class="exec-donut__svg" viewBox="0 0 36 36" aria-hidden="true">
+                      <circle class="exec-donut__track" cx="18" cy="18" r="15.915"/>
+                      <circle class="exec-donut__ring"  cx="18" cy="18" r="15.915"/>
+                    </svg>
+                    <span class="exec-donut__readout" aria-hidden="true">
+                      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 8.5L6.5 12 13 4.5"/>
+                      </svg>
+                    </span>
+                  </div>
+                  <div class="status-cell__count"><b>14</b> / 14</div>
+                </div>
+              </div>
+              <div>
+                <div class="bucket-mini">
+                  <span class="bucket-mini__seg bucket-mini__seg--high"><span class="bucket-mini__dot"></span>6</span>
+                  <span class="bucket-mini__seg bucket-mini__seg--low"><span class="bucket-mini__dot"></span>5</span>
+                  <span class="bucket-mini__seg bucket-mini__seg--err"><span class="bucket-mini__dot"></span>3</span>
+                  <span class="bucket-mini__seg bucket-mini__seg--pending"><span class="bucket-mini__dot"></span>0</span>
+                </div>
+              </div>
+              <div class="numcell">54%</div>
+              <div class="numcell">$0.62</div>
+              <div class="updated">Feb 14 · 22:54</div>
+              <div class="time-cell"><span class="time-cell__main">2m 51s</span></div>
+              <div class="actions">
+                <button class="btn btn--icon" title="Rerun suite" aria-label="Rerun this suite">
+                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13" aria-hidden="true"><path d="M14 8a6 6 0 1 1-1.76-4.24M14 3v3h-3"/></svg>
+                </button>
+                <a class="btn btn--icon" href="./04-results.html" title="View results"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"/><circle cx="8" cy="8" r="2"/></svg></a>
+                <button class="btn btn--icon" title="Delete from history"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><path d="M3 4h10M6 4V2.5h4V4M5 4l1 9h4l1-9"/></svg></button>
+              </div>
+            </div>
+
+            <!-- Row 9 · Idle (was cancelled) · RUN-172 -->
+            <div class="table__row">
+              <a class="exec-id" href="./04-results-paused.html">RUN-172</a>
+              <a class="exec-suite" href="./02-detail.html">TS-007 · Cost-sensitive triage</a>
+              <div class="status-cell">
+                <div class="status-cell__donut-wrap">
+                  <div class="exec-donut exec-donut--paused" style="--pct: 38;" role="img" aria-label="Paused, 3 of 8 cases run">
+                    <svg class="exec-donut__svg" viewBox="0 0 36 36" aria-hidden="true">
+                      <circle class="exec-donut__track" cx="18" cy="18" r="15.915"/>
+                      <circle class="exec-donut__ring"  cx="18" cy="18" r="15.915"/>
+                    </svg>
+                    <span class="exec-donut__readout" aria-hidden="true">
+                      <svg viewBox="0 0 16 16" fill="currentColor">
+                        <rect x="4" y="3" width="3" height="10" rx="0.5"/>
+                        <rect x="9" y="3" width="3" height="10" rx="0.5"/>
+                      </svg>
+                    </span>
+                  </div>
+                  <div class="status-cell__count"><b>3</b> / 8</div>
+                </div>
+              </div>
+              <div>
+                <div class="bucket-mini">
+                  <span class="bucket-mini__seg bucket-mini__seg--high"><span class="bucket-mini__dot"></span>2</span>
+                  <span class="bucket-mini__seg bucket-mini__seg--low"><span class="bucket-mini__dot"></span>0</span>
+                  <span class="bucket-mini__seg bucket-mini__seg--err"><span class="bucket-mini__dot"></span>1</span>
+                  <span class="bucket-mini__seg bucket-mini__seg--pending"><span class="bucket-mini__dot"></span>0</span>
+                </div>
+              </div>
+              <div class="numcell" style="color:#9B9B9B;">—</div>
+              <div class="numcell">$0.04</div>
+              <div class="updated">Feb 14 · 11:15</div>
+              <div class="time-cell"><span class="time-cell__main">0m 38s</span><span class="time-cell__sub time-cell__sub--paused">paused · 15d ago</span></div>
+              <div class="actions">
+                <button class="btn btn--icon" title="Resume run"><svg viewBox="0 0 16 16" fill="currentColor" width="11" height="11" aria-hidden="true"><path d="M4 2.5l9 5.5-9 5.5z"/></svg></button>
+                <button class="btn btn--icon" title="Stop run"><svg viewBox="0 0 16 16" fill="currentColor" width="11" height="11" aria-hidden="true"><rect x="4" y="4" width="8" height="8" rx="1"/></svg></button>
+                <a class="btn btn--icon" href="./04-results-paused.html" title="View partial results"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"/><circle cx="8" cy="8" r="2"/></svg></a>
+              </div>
+            </div>
+
+            <!-- Row 10 · Completed · RUN-168 -->
+            <div class="table__row">
+              <a class="exec-id" href="./04-results.html">RUN-168</a>
+              <a class="exec-suite" href="./02-detail.html">TS-009 · Husbandry advisor — winter</a>
+              <div class="status-cell">
+                <div class="status-cell__donut-wrap">
+                  <div class="exec-donut exec-donut--finished" style="--pct: 100;" role="img" aria-label="Completed, 9 of 9 cases">
+                    <svg class="exec-donut__svg" viewBox="0 0 36 36" aria-hidden="true">
+                      <circle class="exec-donut__track" cx="18" cy="18" r="15.915"/>
+                      <circle class="exec-donut__ring"  cx="18" cy="18" r="15.915"/>
+                    </svg>
+                    <span class="exec-donut__readout" aria-hidden="true">
+                      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 8.5L6.5 12 13 4.5"/>
+                      </svg>
+                    </span>
+                  </div>
+                  <div class="status-cell__count"><b>9</b> / 9</div>
+                </div>
+              </div>
+              <div>
+                <div class="bucket-mini">
+                  <span class="bucket-mini__seg bucket-mini__seg--high"><span class="bucket-mini__dot"></span>9</span>
+                  <span class="bucket-mini__seg bucket-mini__seg--low"><span class="bucket-mini__dot"></span>0</span>
+                  <span class="bucket-mini__seg bucket-mini__seg--err"><span class="bucket-mini__dot"></span>0</span>
+                  <span class="bucket-mini__seg bucket-mini__seg--pending"><span class="bucket-mini__dot"></span>0</span>
+                </div>
+              </div>
+              <div class="numcell">100%</div>
+              <div class="numcell">$0.18</div>
+              <div class="updated">Feb 12 · 16:02</div>
+              <div class="time-cell"><span class="time-cell__main">1m 22s</span></div>
+              <div class="actions">
+                <button class="btn btn--icon" title="Rerun suite" aria-label="Rerun this suite">
+                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13" aria-hidden="true"><path d="M14 8a6 6 0 1 1-1.76-4.24M14 3v3h-3"/></svg>
+                </button>
+                <a class="btn btn--icon" href="./04-results.html" title="View results"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"/><circle cx="8" cy="8" r="2"/></svg></a>
+                <button class="btn btn--icon" title="Delete from history"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><path d="M3 4h10M6 4V2.5h4V4M5 4l1 9h4l1-9"/></svg></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pagination -->
+          <div class="pager">
+            <div class="pager__item">‹</div>
+            <div class="pager__item is-current">1</div>
+            <div class="pager__item">2</div>
+            <div class="pager__item">3</div>
+            <div class="pager__item">4</div>
+            <div class="pager__item">›</div>
+          </div>
+        </div>
+      </div>
+    </div>
+</body>
+</html>

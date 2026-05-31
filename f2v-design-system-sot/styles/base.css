@@ -1,0 +1,86 @@
+/* =========================================================
+   FARM2VET DESIGN SYSTEM — BASE
+   Reset, document shell, base typography, utility classes,
+   ambient background.
+   Depends on: tokens.css
+   ========================================================= */
+
+/* =========================================================
+   RESET
+   ========================================================= */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+}
+
+/* =========================================================
+   DOCUMENT SHELL
+   ========================================================= */
+body {
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--line-height-body);
+    color: var(--text-default);
+    background:
+        var(--background-ambient),
+        var(--background-default);
+    background-attachment: fixed;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+}
+
+/* =========================================================
+   BASE TYPOGRAPHY — element defaults only.
+   Element rules carry NO size, weight, or style. Visual
+   treatment is applied via the typography component classes
+   defined in styles/typography.css (.h1-.h6, .body,
+   .caption, .eyebrow, etc.). A bare <h1> with no class
+   therefore inherits only family, color, and a margin
+   default; its visible size is whatever the consuming
+   component decides.
+   ========================================================= */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-sans);
+    color: var(--text-default);
+}
+
+h1, h2, h3 { margin-bottom: var(--space-flow-element); }
+h4, h5, h6 { margin-bottom: var(--space-flow-tight); }
+
+p {
+    font-size: var(--text-body);
+    color: inherit;
+    margin-bottom: var(--space-flow-heading);
+    line-height: var(--line-height-body);
+}
+
+small { font-size: var(--text-body-sm); }
+
+code {
+    font-family: var(--font-mono);
+    font-size: var(--text-body-sm);
+    background: var(--background-default-minimal);
+    color: var(--text-default);
+    padding: var(--spacing-half) var(--spacing-1x);
+    border-radius: var(--radius-sm);
+}
+
+a            { color: var(--text-link); text-decoration: none; }
+a:hover      { color: var(--text-primary); }
+
+/* =========================================================
+   NOTE — Typography component classes (.h1-.h6, .body,
+   .caption, .eyebrow, .mono, .text-accent, .italic) live in
+   styles/typography.css. Pages must include that stylesheet
+   to render typed headings, eyebrows, and accent treatments.
+   ========================================================= */

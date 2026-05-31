@@ -1,0 +1,426 @@
+/* =========================================================
+   COMPONENT — CHIP
+   A toggleable filter pill. Composes a label, an optional
+   leading icon slot (for the on-state check), and an optional
+   trailing count slot (for "if you toggled this, how many
+   rows would match?"). Multi-select by contract — chips
+   within a filter row can be toggled independently and
+   stack as additive filters. Counts are read-only and never
+   live on the active fill, so the chip's tinted on-state
+   carries the visual signal alone.
+
+   Two flavours:
+   · Toggle chip (default) — aria-pressed, stays in the row
+     after click, fills tinted when active.
+   · Removable chip (.chip--removable) — for the "active
+     filters" tray pattern; carries a trailing × that
+     dismisses the chip entirely. Out of scope for V-01 but
+     reserved here so future consumers can opt in.
+
+   Depends on: tokens.css
+   ========================================================= */
+:root {
+  /* ---------- Container — shape + rhythm ---------- */
+  --chip-height:         28px;
+  --chip-radius:         var(--radius-pill);
+  --chip-padding-x:      var(--spacing-3x);
+  --chip-gap:            var(--spacing-2x);
+  --chip-font-size:      var(--text-body-sm);
+  --chip-font-weight:    var(--font-weight-regular);
+  --chip-icon-size:      14px;
+  --chip-transition:     background-color .15s ease,
+                         border-color .15s ease,
+                         color .15s ease;
+
+  /* ---------- Rest ---------- */
+  --chip-bg:             transparent;
+  --chip-fg:             var(--text-default-subtle);
+  --chip-border:         var(--border-default);
+  --chip-count-fg:       var(--text-default-minimal);
+
+  /* ---------- Hover ---------- */
+  --chip-bg-hover:       var(--background-default-hover);
+  --chip-fg-hover:       var(--text-default);
+  --chip-border-hover:   var(--border-default);
+
+  /* ---------- Pressed (mousedown only)
+     --background-default-pressed isn't in the semantic rail;
+     fall back to a slightly-deeper neutral by mixing hover
+     with text-default, matching the convention .btn uses
+     when its component-token rail names a colour the global
+     rail doesn't expose. */
+  --chip-bg-pressed:     color-mix(in srgb,
+                                   var(--background-default-hover) 88%,
+                                   var(--text-default));
+
+  /* ---------- Active (toggled on) ---------- */
+  --chip-bg-active:           var(--background-primary-subtle);
+  --chip-fg-active:           var(--text-primary-strong);
+  --chip-border-active:       var(--background-primary);
+  --chip-count-fg-active:     var(--text-primary-strong);
+  /* --background-primary-subtle-hover isn't in the semantic
+     rail either; mix the active fill with the primary
+     foreground so hover deepens the tint without leaving
+     the primary family. */
+  --chip-bg-active-hover:     color-mix(in srgb,
+                                        var(--background-primary-subtle) 88%,
+                                        var(--text-primary-strong));
+
+  /* ---------- Disabled ---------- */
+  --chip-bg-disabled:        transparent;
+  --chip-fg-disabled:        var(--text-default-disabled);
+  --chip-border-disabled:    var(--border-default-subtle);
+
+  /* ---------- Focus ring ---------- */
+  --chip-focus-ring:         0 0 0 3px var(--background-primary-subtle);
+
+  /* ---------- Segmented chip ----------
+     A second interaction model on the same block. Where
+     .chip--removable is remove-and-redo, .chip--segmented is
+     edit-in-place: the chip splits into independently clickable
+     segments (property | optional operator | value | close) and
+     each segment opens its own popover anchored to that segment.
+     Lives on inverse surface tokens — the dark pill carries
+     the eye away from removable chips in the same toolbar. */
+  --chip-segmented-bg:                 var(--background-inverse);
+  --chip-segmented-fg:                 var(--text-on-inverse);
+  --chip-segmented-border:             var(--background-inverse);
+  --chip-segmented-divider:            var(--border-on-inverse-subtle);
+  --chip-segmented-radius:             var(--radius-pill);
+  --chip-segmented-height:             var(--chip-height);
+  --chip-segmented-seg-pad-x:          var(--spacing-3x);
+  --chip-segmented-seg-pad-y:          var(--spacing-1x);
+  --chip-segmented-seg-gap:            var(--spacing-1x);
+  --chip-segmented-seg-fg-placeholder: color-mix(in srgb,
+                                         var(--text-on-inverse) 55%,
+                                         transparent);
+  --chip-segmented-seg-bg-hover:       var(--background-on-inverse-hover);
+  --chip-segmented-seg-bg-active:      var(--background-on-inverse-active);
+  --chip-segmented-seg-outline:        var(--text-on-inverse);
+  --chip-segmented-value-max-w:        220px;
+  --chip-segmented-value-solo-max-w:   170px;
+}
+
+/* =========================================================
+   BLOCK
+   ========================================================= */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--chip-gap);
+  height: var(--chip-height);
+  padding: 0 var(--chip-padding-x);
+  border-radius: var(--chip-radius);
+  background: var(--chip-bg);
+  color: var(--chip-fg);
+  border: var(--border-width-base) solid var(--chip-border);
+  font-family: var(--font-sans);
+  font-size: var(--chip-font-size);
+  font-weight: var(--chip-font-weight);
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition: var(--chip-transition);
+  -webkit-appearance: none;
+       appearance: none;
+}
+.chip:hover {
+  background: var(--chip-bg-hover);
+  color: var(--chip-fg-hover);
+  border-color: var(--chip-border-hover);
+}
+.chip:active { background: var(--chip-bg-pressed); }
+.chip:focus-visible {
+  outline: none;
+  box-shadow: var(--chip-focus-ring);
+}
+
+/* =========================================================
+   ELEMENTS
+   ========================================================= */
+.chip__leading,
+.chip__trailing {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--chip-icon-size);
+  height: var(--chip-icon-size);
+  flex-shrink: 0;
+}
+.chip__leading svg,
+.chip__trailing svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.chip__label {
+  display: inline-flex;
+  align-items: center;
+}
+
+.chip__count {
+  color: var(--chip-count-fg);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--chip-font-size);
+}
+
+/* The leading slot only shows when the chip is active —
+   the on-state check is the chip's primary affordance.
+   Authors can keep the markup in place at rest; the slot
+   collapses visually. */
+.chip:not(.is-active):not([aria-pressed="true"]) .chip__leading {
+  display: none;
+}
+
+/* =========================================================
+   STATE — active (aria-pressed="true" or .is-active)
+   ========================================================= */
+.chip[aria-pressed="true"],
+.chip.is-active {
+  background: var(--chip-bg-active);
+  color: var(--chip-fg-active);
+  border-color: var(--chip-border-active);
+  font-weight: var(--font-weight-medium);
+}
+.chip[aria-pressed="true"]:hover,
+.chip.is-active:hover {
+  background: var(--chip-bg-active-hover);
+}
+.chip[aria-pressed="true"] .chip__count,
+.chip.is-active .chip__count {
+  color: var(--chip-count-fg-active);
+}
+
+/* =========================================================
+   STATE — disabled
+   ========================================================= */
+.chip[disabled],
+.chip.is-disabled {
+  background: var(--chip-bg-disabled);
+  color: var(--chip-fg-disabled);
+  border-color: var(--chip-border-disabled);
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   MODIFIER — removable
+   Reserved for the "active filters" tray pattern. The
+   trailing × dismisses the chip entirely (not the same as
+   toggling it off). Not used on V-01 yet.
+   ========================================================= */
+.chip--removable .chip__trailing {
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background-color .15s ease;
+}
+.chip--removable .chip__trailing:hover {
+  background: var(--background-default-hover);
+}
+
+/* =========================================================
+   ELEMENTS — applied-filter shape (composes with --removable)
+   When a chip carries .chip--removable it doubles as an
+   "applied filter" pill: facet label + value summary +
+   trailing dismiss. These three elements compose inside
+   .chip__label and only have weight here — toggle chips
+   keep using a plain string inside .chip__label.
+
+   Reading order: "{facet}: {values}". The facet name reads
+   muted so the values carry the eye; "+N" is the overflow
+   summary when more values are selected than fit inline.
+   ========================================================= */
+.chip__facet {
+  color: var(--text-default-minimal);
+  font-weight: var(--font-weight-medium);
+  margin-right: var(--spacing-1x);
+}
+.chip__values {
+  color: var(--text-default);
+}
+.chip__more {
+  color: var(--text-default-minimal);
+  margin-left: var(--spacing-1x);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The × glyph reads a hair lighter than the values so the
+   dismiss target doesn't shout — and brightens on hover so
+   the user knows the trailing region is hot. */
+.chip--removable .chip__trailing svg { color: var(--text-default-minimal); }
+.chip--removable .chip__trailing:hover svg { color: var(--text-default); }
+
+/* =========================================================
+   MODIFIER — segmented
+   Edit-in-place applied-filter chip. The block renders as a
+   <span> container (no inherent affordance — its children
+   carry the click targets). Each .chip__seg is an independent
+   <button>; the dividers between them are 1px white-alpha
+   strokes drawn with inline borders rather than ::before so
+   they round with the pill at the ends.
+   ========================================================= */
+.chip--segmented {
+  display: inline-flex;
+  align-items: stretch;
+  gap: 0;
+  height: var(--chip-segmented-height);
+  padding: 0;
+  border-radius: var(--chip-segmented-radius);
+  background: var(--chip-segmented-bg);
+  color: var(--chip-segmented-fg);
+  border: var(--border-width-base) solid var(--chip-segmented-border);
+  overflow: hidden;
+  cursor: default;
+}
+/* Reset the .chip base hover / pressed — segments own their
+   own interactive surfaces; the block itself is inert. */
+.chip--segmented:hover,
+.chip--segmented:active {
+  background: var(--chip-segmented-bg);
+  color: var(--chip-segmented-fg);
+  border-color: var(--chip-segmented-border);
+}
+
+/* ---------- Segment (shared) ----------
+   Each segment is a borderless button that fills the chip
+   height and carries its own hover. Inter-segment dividers
+   are left borders on every segment EXCEPT the first. */
+.chip__seg {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--chip-segmented-seg-gap);
+  height: 100%;
+  padding: var(--chip-segmented-seg-pad-y) var(--chip-segmented-seg-pad-x);
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: var(--chip-font-size);
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color .15s ease;
+  -webkit-appearance: none;
+       appearance: none;
+}
+.chip__seg + .chip__seg {
+  border-left: 1px solid var(--chip-segmented-divider);
+}
+.chip__seg:hover {
+  background: var(--chip-segmented-seg-bg-hover);
+}
+.chip__seg:focus-visible {
+  outline: 2px solid var(--chip-segmented-seg-outline);
+  outline-offset: -2px;
+}
+.chip__seg.is-active {
+  background: var(--chip-segmented-seg-bg-active);
+  outline: 2px solid var(--chip-segmented-seg-outline);
+  outline-offset: -2px;
+}
+
+/* Inline icon slot inside a segment — 16×16, follows
+   currentColor so it inherits the inverse foreground. */
+.chip__seg-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+.chip__seg-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ---------- Property segment ----------
+   Carries the facet icon + name. Medium-weight so it reads
+   as the heading of the chip. */
+.chip__seg--property {
+  font-weight: var(--font-weight-medium);
+}
+
+/* ---------- Operator segment (time facets only) ----------
+   Same weight as the value segment — the operator is read as
+   a relationship between property and value, not as a label. */
+.chip__seg--operator {
+  font-weight: var(--font-weight-regular);
+}
+
+/* ---------- Value segment ----------
+   Truncates with ellipsis at --chip-segmented-value-max-w.
+   .is-solo (exactly one value picked) clamps tighter; the +N
+   badge handles overflow when several are selected. */
+.chip__seg--value {
+  max-width: var(--chip-segmented-value-max-w);
+  overflow: hidden;
+}
+.chip__seg--value > .chip__seg-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.chip__seg--value.is-solo {
+  max-width: var(--chip-segmented-value-solo-max-w);
+}
+.chip__seg--value.is-placeholder {
+  color: var(--chip-segmented-seg-fg-placeholder);
+  font-style: italic;
+}
+
+/* ---------- Close segment ----------
+   Trailing × dismisses the entire chip. The × glyph inherits
+   currentColor (inverse foreground); the segment hover overlay
+   is shared with the others. */
+.chip__seg--close {
+  padding-left: var(--spacing-2x);
+  padding-right: var(--spacing-2x);
+}
+.chip__seg--close svg {
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+
+/* ---------- Overflow badge — +N inside a value segment ----
+   Reuses the existing .chip__more element (declared above)
+   for visual consistency. On the segmented chip the badge
+   sits inside the value segment and inherits the inverse
+   palette, so override the muted-on-light colour. */
+.chip--segmented .chip__more {
+  color: var(--chip-segmented-seg-fg-placeholder);
+  margin-left: var(--spacing-2x);
+}
+
+/* Hover tooltip for the +N badge. Pure-CSS reveal using a
+   sibling .chip__more-tooltip — the consuming product wires
+   the value list into the tooltip; the DS only provides the
+   shell. */
+.chip__more-tooltip {
+  position: absolute;
+  bottom: calc(100% + var(--spacing-2x));
+  left: 50%;
+  transform: translateX(-50%);
+  padding: var(--spacing-2x) var(--spacing-3x);
+  background: var(--chip-segmented-bg);
+  color: var(--chip-segmented-fg);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  font-size: var(--text-xs);
+  line-height: 1.4;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .15s ease;
+  z-index: 60;
+}
+.chip__more {
+  position: relative;
+}
+.chip__more:hover .chip__more-tooltip,
+.chip__more:focus-visible .chip__more-tooltip {
+  opacity: 1;
+}

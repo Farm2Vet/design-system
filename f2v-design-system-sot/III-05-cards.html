@@ -1,0 +1,984 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Farm2Vet · Card — Design System</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<!-- Design system: shared, reusable foundation -->
+<link rel="stylesheet" href="styles/tokens.css" />
+<link rel="stylesheet" href="styles/base.css" />
+<link rel="stylesheet" href="styles/typography.css" />
+<link rel="stylesheet" href="styles/shell.css" />
+<link rel="stylesheet" href="styles/global-nav.css" />
+<link rel="stylesheet" href="styles/button.css" />
+<link rel="stylesheet" href="styles/card.css" />
+<!-- Toast component (provides the .toast--snackbar copy-confirmation pill) -->
+<link rel="stylesheet" href="styles/toast.css" />
+<!-- Page-specific layout -->
+<link rel="stylesheet" href="styles/page-III-05.css" />
+<!-- Reuse: usage-note pattern + token-table styling -->
+<link rel="stylesheet" href="styles/page-III-03.css" />
+<link rel="stylesheet" href="styles/page-III-02.css" />
+
+<!-- Shared behaviour: scroll-spy highlights the in-view TOC link -->
+<script src="scripts/scroll-spy.js" defer></script>
+<script src="scripts/global-nav.js" defer></script>
+
+</head>
+<body data-page="III-05-cards">
+
+<!-- ========================== GLOBAL NAV ========================== -->
+<header class="global-nav" aria-label="Design system navigation">
+  <div class="global-nav__inner">
+
+    <a href="index.html" class="global-nav__brand" aria-label="Farm2Vet design system home">
+      <img src="logo/logo-wordmark-color.svg" alt="Farm2Vet" class="global-nav__logo" />
+      <small>Design System</small>
+    </a>
+
+    <nav class="global-nav__sections" aria-label="Design system sections">
+      <ul class="global-nav__list">
+        <li class="global-nav__item">
+          <a class="global-nav__link" href="I-primitives.html">I. Primitives</a>
+        </li>
+        <li class="global-nav__item">
+          <a class="global-nav__link" href="II-semantics.html">II. Semantics</a>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="components">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-components">
+            III. Components
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-components" class="global-nav__panel" role="region" aria-label="Components">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="III-01-typography.html"><span class="global-nav__index">01</span><span>Typography</span></a></li>
+                <li><a href="III-02-buttons.html"><span class="global-nav__index">02</span><span>Buttons</span></a></li>
+                <li><a href="III-03-form.html"><span class="global-nav__index">03</span><span>Form</span></a></li>
+                <li><a href="III-04-dropdowns.html"><span class="global-nav__index">04</span><span>Dropdowns</span></a></li>
+                <li><a href="III-05-cards.html"><span class="global-nav__index">05</span><span>Cards</span></a></li>
+                <li><a href="III-06-modal.html"><span class="global-nav__index">06</span><span>Modal Dialog</span></a></li>
+                <li><a href="III-07-side-panel.html"><span class="global-nav__index">07</span><span>Side Panel</span></a></li>
+                <li><a href="III-08-toast.html"><span class="global-nav__index">08</span><span>Toast</span></a></li>
+                <li><a href="III-09-alert-badges.html"><span class="global-nav__index">09</span><span>Alert &amp; Badge</span></a></li>
+                <li><a href="III-10-header-navigation.html"><span class="global-nav__index">10</span><span>Header &amp; Nav Bar</span></a></li>
+                <li><a href="III-11-switch.html"><span class="global-nav__index">11</span><span>Switch</span></a></li>
+                <li><a href="III-12-sidebar.html"><span class="global-nav__index">12</span><span>Sidebar</span></a></li>
+                <li><a href="III-13-chip.html"><span class="global-nav__index">13</span><span>Chip</span></a></li>
+                <li><a href="III-14-tabs.html"><span class="global-nav__index">14</span><span>Tabs</span></a></li>
+                <li><a href="III-15-table.html"><span class="global-nav__index">15</span><span>Table</span></a></li>
+                <li><a href="III-16-search-toolbar.html"><span class="global-nav__index">16</span><span>Search Toolbar</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="assets">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-assets">
+            IV. Assets
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-assets" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Assets">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="IV-01-logo.html"><span class="global-nav__index">01</span><span>Logo</span></a></li>
+                <li><a href="IV-02-icons.html"><span class="global-nav__index">02</span><span>Icons</span></a></li>
+                <li><a href="IV-03-images.html" class="is-placeholder"><span class="global-nav__index">03</span><span>Images</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="mockups">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-mockups">
+            V. Mockups
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-mockups" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Mockups">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="V-01-wiki.html"><span class="global-nav__index">01</span><span>Wiki</span></a></li>
+                <li><a href="V-02-chatbot.html" class="is-placeholder"><span class="global-nav__index">02</span><span>Chatbot</span></a></li>
+                <li><a href="V-03-hero.html"    class="is-placeholder"><span class="global-nav__index">03</span><span>Hero</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+      </ul>
+    </nav>
+
+    <a href="#" class="global-nav__chip" aria-label="Design system version">v1.0</a>
+
+  </div>
+</header>
+<main class="shell" id="top">
+
+  <!-- ========================== HERO ========================== -->
+  <section class="hero">
+    <div>
+      <h1 class="h1 reveal">
+        <span class="num">III-05 / Components</span>
+        Card.
+      </h1>
+    </div>
+    <div>
+      <p class="lede reveal">
+        A bounded container that groups related content. Composed from a
+        slot-based anatomy and modified through style, layout, functional,
+        and surface variants. All declarations resolve through the
+        <code>--card-*</code> token layer.
+      </p>
+    </div>
+
+    <dl class="meta-strip reveal">
+      <div><dt>Component</dt><dd>Card</dd></div>
+      <div><dt>Style</dt><dd>3 base + 5 glass + left-bar</dd></div>
+      <div><dt>Layout</dt><dd>Vertical · Horizontal · Content-only · List</dd></div>
+      <div><dt>States</dt><dd>5 + is-selected</dd></div>
+    </dl>
+  </section>
+
+  <!-- ========================== ARCHITECTURAL CALLOUT ========================== -->
+  <section class="chunk" style="padding-top: var(--spacing-8x); padding-bottom: 0;">
+    <div class="card-callout reveal" role="note">
+      <span class="label">Architectural note · scope boundary</span>
+      <p>
+        <strong>FAQ / Q&amp;A patterns are documented under Accordion,
+        not Card.</strong> A disclosure that expands to reveal hidden
+        content has its own keyboard contract, animation timing, and
+        aria semantics. Card therefore does not ship a
+        <code>.card--question</code> variant; the equivalent
+        affordance lives under <em>component-accordion.html</em>.
+      </p>
+    </div>
+
+    <p class="usage-note reveal" style="margin-top: var(--spacing-5x)">
+      <strong>Cards are glanceable surfaces.</strong> A card surfaces
+      the most important fact first and pushes detail to a destination.
+      If a reader has to study a card to extract its meaning, the card
+      is doing too much.
+    </p>
+  </section>
+
+  <!-- ========================== STYLE VARIANTS ========================== -->
+  <section class="chunk" id="card-style">
+    <header class="chunk-head reveal">
+      <span class="num-tag">01 / Card — Variants</span>
+      <h2 class="h2">Elevation.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      Modifiers that control the card's surface treatment.
+        <em>Elevated</em>: shadow plus border (default).
+        <em>Filled</em>: tinted background, no shadow.
+        <em>Outlined</em>: thicker border, no shadow.
+        <em>Left-bar</em>: composes with any of the above; adds a leading-edge
+        accent in primary or status colour.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>Apply one style per region.</strong> Mixing Elevated and
+      Outlined cards in the same grid creates competing depth cues. Pick
+      the style that matches the region's elevation budget: content
+      surfaces use Elevated; dashboards and admin tooling use Outlined or
+      Filled.
+    </p>
+
+    <section class="card-doc__variant-section reveal">
+      <span class="card-doc__variant">Variant</span>
+      <h3 class="card-doc__variant-name">Elevated · default</h3>
+
+      <p class="card-doc__lede">
+        The default style. A subtle shadow plus a 1px border separates
+        the card from the canvas. Reach for Elevated on content blocks,
+        intake forms, and feed items where lift is the cue that the
+        card belongs above the page.
+      </p>
+
+      <div class="card-doc__demo">
+        <article class="card">
+          <span class="card__eyebrow">Caseload · 2026-05-07</span>
+          <header class="card__header">
+            <h3 class="card__title">Bessie · Holstein, 4y</h3>
+            <p class="card__subtitle">Owner: Nguyen Minh · Farm 12B</p>
+          </header>
+          <p class="card__body">
+            Recurrent left-fore lameness, grade 2/5. Vitals stable.
+          </p>
+        </article>
+      </div>
+
+      <div class="card-doc__states-row" role="list" aria-label="Elevated card — interaction states">
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">1</span>
+          <article class="card card-doc__states-sample">
+            <span class="card-doc__states-label">Default</span>
+          </article>
+        </div>
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">2</span>
+          <article class="card card-doc__states-sample"
+                   style="background: var(--card-bg-hover); border-color: var(--card-border-hover); box-shadow: var(--card-shadow-hover); transform: translateY(-1px);">
+            <span class="card-doc__states-label">Hover</span>
+          </article>
+        </div>
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">3</span>
+          <article class="card card-doc__states-sample"
+                   style="outline: 2px solid var(--outline-focus); outline-offset: 2px;">
+            <span class="card-doc__states-label">Focus</span>
+          </article>
+        </div>
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">4</span>
+          <article class="card card-doc__states-sample"
+                   style="animation: ds-pulse 1.6s ease infinite; background: var(--card-bg-pressed);">
+            <span class="card-doc__states-label">Pressed</span>
+          </article>
+        </div>
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">5</span>
+          <article class="card card-doc__states-sample is-disabled" aria-disabled="true">
+            <span class="card-doc__states-label">Disabled</span>
+          </article>
+        </div>
+      </div>
+
+      <p class="card-doc__prose">
+        Interactive states only apply when the card itself is the
+        affordance. <strong>Responsive.</strong> One up on mobile, two
+        to three per row on tablet, three to four in dashboard grids.
+      </p>
+    </section>
+
+    <section class="card-doc__variant-section reveal">
+      <span class="card-doc__variant">Variant</span>
+      <h3 class="card-doc__variant-name">Filled · muted</h3>
+
+      <p class="card-doc__lede">
+        A tinted background with no shadow and a transparent border.
+        Use Filled for secondary blocks that live inside a parent
+        surface — settings groups, inline panels, list items nested in
+        a parent card — where the canvas already carries elevation.
+      </p>
+
+      <div class="card-doc__demo">
+        <article class="card card--filled is-interactive" tabindex="0">
+          <span class="card__eyebrow">Settings · group</span>
+          <header class="card__header">
+            <h3 class="card__title">Notification preferences</h3>
+            <p class="card__subtitle">3 settings · last edited yesterday</p>
+          </header>
+          <p class="card__body">
+            No drop shadow. A subtle background tint separates the
+            card from the canvas.
+          </p>
+        </article>
+      </div>
+
+      <div class="card-doc__states-row" role="list" aria-label="Filled card — interaction states">
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">1</span>
+          <article class="card card--filled card-doc__states-sample">
+            <span class="card-doc__states-label">Default</span>
+          </article>
+        </div>
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">2</span>
+          <article class="card card--filled card-doc__states-sample"
+                   style="background: var(--card-filled-bg-hover); box-shadow: none;">
+            <span class="card-doc__states-label">Hover</span>
+          </article>
+        </div>
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">3</span>
+          <article class="card card--filled card-doc__states-sample"
+                   style="outline: 2px solid var(--outline-focus); outline-offset: 2px;">
+            <span class="card-doc__states-label">Focus</span>
+          </article>
+        </div>
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">4</span>
+          <article class="card card--filled card-doc__states-sample"
+                   style="background: var(--card-filled-bg-hover); box-shadow: none; transform: translateY(0);">
+            <span class="card-doc__states-label">Pressed</span>
+          </article>
+        </div>
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">5</span>
+          <article class="card card--filled card-doc__states-sample is-disabled" aria-disabled="true">
+            <span class="card-doc__states-label">Disabled</span>
+          </article>
+        </div>
+      </div>
+
+      <p class="card-doc__prose">
+        The typical Filled pattern is a whole-card affordance with no
+        inner buttons — add inner buttons only when the surface itself
+        is non-interactive. <strong>Responsive.</strong> Stretches
+        full-width inside its parent column and stacks vertically on
+        every breakpoint.
+      </p>
+    </section>
+
+    <section class="card-doc__variant-section reveal">
+      <span class="card-doc__variant">Variant</span>
+      <h3 class="card-doc__variant-name">Outlined · border-led</h3>
+
+      <p class="card-doc__lede">
+        A 1.5px border on the default background, no shadow. Outlined
+        holds separation in dense layouts — pickers, comparison grids,
+        dashboard tiles — where shadows would compound and muddy the
+        surface.
+      </p>
+
+      <div class="card-doc__demo">
+        <article class="card card--outlined is-interactive" tabindex="0">
+          <span class="card__eyebrow">Picker · option</span>
+          <header class="card__header">
+            <h3 class="card__title">Bovine</h3>
+            <p class="card__subtitle">Cattle · dairy &amp; beef</p>
+          </header>
+          <p class="card__body">
+            Thicker border, no shadow. Holds separation in dense
+            layouts where shadows would compound.
+          </p>
+        </article>
+      </div>
+
+      <div class="card-doc__states-row" role="list" aria-label="Outlined card — interaction states">
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">1</span>
+          <article class="card card--outlined card-doc__states-sample">
+            <span class="card-doc__states-label">Default</span>
+          </article>
+        </div>
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">2</span>
+          <article class="card card--outlined card-doc__states-sample"
+                   style="background: var(--card-outlined-bg-hover); border-color: var(--border-primary); box-shadow: none;">
+            <span class="card-doc__states-label">Hover</span>
+          </article>
+        </div>
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">3</span>
+          <article class="card card--outlined card-doc__states-sample"
+                   style="outline: 2px solid var(--outline-focus); outline-offset: 2px;">
+            <span class="card-doc__states-label">Focus</span>
+          </article>
+        </div>
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">4</span>
+          <article class="card card--outlined card-doc__states-sample"
+                   style="background: var(--card-outlined-bg-hover); border-color: var(--border-primary); box-shadow: none; transform: translateY(0);">
+            <span class="card-doc__states-label">Pressed</span>
+          </article>
+        </div>
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">5</span>
+          <article class="card card--outlined card-doc__states-sample is-disabled" aria-disabled="true">
+            <span class="card-doc__states-label">Disabled</span>
+          </article>
+        </div>
+      </div>
+
+      <p class="card-doc__prose">
+        Outlined is often paired with <code>.is-selected</code>.
+        <strong>Responsive.</strong> Wraps in a grid; the border keeps
+        separation on mobile without shadow bloom.
+      </p>
+    </section>
+
+    <section class="card-doc__variant-section reveal">
+      <span class="card-doc__variant">Variant</span>
+      <h3 class="card-doc__variant-name">Left-bar · callout / alert / highlight</h3>
+
+      <div class="card-doc__left-bar-row" role="list" aria-label="Left-bar tones">
+        <article class="card card--left-bar is-primary" role="listitem">
+          <span class="card__eyebrow">Reminder · 2026-05-07</span>
+          <header class="card__header">
+            <h3 class="card__title">Bessie's bloodwork is back.</h3>
+            <p class="card__subtitle">Awaiting your sign-off before dispatch</p>
+          </header>
+          <p class="card__body">
+            Default tone. Use for general highlights and pinned items
+            without an explicit status meaning.
+          </p>
+        </article>
+
+        <article class="card card--left-bar is-info" role="listitem">
+          <div class="card__badge-row">
+            <span class="card__badge card__badge--info">Info</span>
+          </div>
+          <header class="card__header">
+            <h3 class="card__title">Scheduled maintenance · Sunday 03:00 UTC</h3>
+            <p class="card__subtitle">~15 minutes of downtime expected</p>
+          </header>
+          <p class="card__body">
+            Use info tone for system messages, scheduled events, and
+            non-blocking advisories.
+          </p>
+        </article>
+
+        <article class="card card--left-bar is-warning" role="listitem">
+          <div class="card__badge-row">
+            <span class="card__badge card__badge--warning">Warning</span>
+          </div>
+          <header class="card__header">
+            <h3 class="card__title">NSAID withdrawal incomplete</h3>
+            <p class="card__subtitle">42 hours remaining before milk dispatch</p>
+          </header>
+          <p class="card__body">
+            Warning tone surfaces caution-worthy state — the user can
+            proceed but should know.
+          </p>
+        </article>
+
+        <article class="card card--left-bar is-critical" role="listitem">
+          <div class="card__badge-row">
+            <span class="card__badge card__badge--critical">Critical</span>
+          </div>
+          <header class="card__header">
+            <h3 class="card__title">Lab connection failed · cannot sync results</h3>
+            <p class="card__subtitle">Last successful sync: 3 hours ago</p>
+          </header>
+          <p class="card__body">
+            Critical tone is reserved for failures and blocking errors
+            that need attention now. Pair with a clear remediation CTA.
+          </p>
+          <footer class="card__footer">
+            <span class="card__eyebrow">External lab API</span>
+            <div class="card__actions">
+              <button class="btn btn--secondary btn--sm">Retry sync</button>
+            </div>
+          </footer>
+        </article>
+
+        <article class="card card--left-bar is-safe" role="listitem">
+          <div class="card__badge-row">
+            <span class="card__badge card__badge--safe">Confirmed</span>
+          </div>
+          <header class="card__header">
+            <h3 class="card__title">Vaccination schedule updated</h3>
+            <p class="card__subtitle">Atlas · Quarter horse · next due 2026-08-12</p>
+          </header>
+          <p class="card__body">
+            Safe tone confirms a successful state without claiming
+            attention the way a Critical tone does.
+          </p>
+        </article>
+      </div>
+    </section>
+  </section>
+
+  <!-- ========================== GLASS ========================== -->
+  <section class="chunk" id="card-glass">
+    <header class="chunk-head reveal">
+      <span class="num-tag">02 / Card — Glass</span>
+      <h2 class="h2">Glass.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      Glass is the only surface treatment the Card component ships.
+        Every style variant in section 02 is glass at a different
+        density; this section demonstrates the treatment over visual
+        content, where the blur becomes the dominant cue. On the
+        flat page canvas glass reads as a near-solid panel — that's
+        the intended low-noise behaviour, not a missing effect.
+    </p>
+
+    <h4 class="card-doc__variant reveal">Default · .card--glass.</h4>
+    <p class="card-doc__lede reveal">
+      The light-frost glass card with real content. Backdrop tint,
+      blur, border, outer shadow, and the inner rim highlight resolve
+      to the system glass rail in <code>tokens.css</code>. Sat over
+      imagery so the blur reads.
+    </p>
+    <div class="card-doc__demo card-doc__demo--on-vivid reveal">
+      <article class="card card--glass">
+        <span class="card__eyebrow">Caseload</span>
+        <header class="card__header">
+          <h3 class="card__title">Bessie · Holstein</h3>
+          <p class="card__subtitle">Lameness, grade 2/5</p>
+        </header>
+        <p class="card__body">Vitals stable. Bloodwork pending lab return.</p>
+      </article>
+    </div>
+    <p class="card-doc__prose reveal">
+      Background and border resolve through
+      <code>--card-glass-bg</code> and <code>--card-glass-border</code>;
+      blur through <code>--card-glass-blur</code>; the saturation boost
+      and the resting outer + inner shadow pair come from the shared
+      glass rail (<code>--glass-saturate</code>,
+      <code>--glass-shadow-raised</code>,
+      <code>--glass-inset-light-soft</code>). No component-local
+      shadow tokens — every glass surface in the system shares this
+      same elevation contract.
+    </p>
+
+    <div class="card-doc__demo card-doc__demo--wide card-doc__demo--on-vivid reveal">
+      <div class="card-doc__states-row" role="list" aria-label="Glass card — interaction states on a vivid backdrop">
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">1</span>
+          <article class="card card--glass card-doc__states-sample">
+            <span class="card-doc__states-label">Default</span>
+          </article>
+        </div>
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">2</span>
+          <article class="card card--glass card-doc__states-sample"
+                   style="background: var(--card-glass-bg-hover); border-color: var(--card-glass-border-hover); box-shadow: var(--glass-shadow-raised-hover), var(--glass-inset-light-soft); transform: translateY(-1px);">
+            <span class="card-doc__states-label">Hover</span>
+          </article>
+        </div>
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">3</span>
+          <article class="card card--glass card-doc__states-sample"
+                   style="outline: 2px solid var(--outline-focus); outline-offset: 2px;">
+            <span class="card-doc__states-label">Focus</span>
+          </article>
+        </div>
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">4</span>
+          <article class="card card--glass card-doc__states-sample"
+                   style="animation: ds-pulse 1.6s ease infinite; background: var(--card-glass-bg-pressed); box-shadow: var(--glass-shadow-raised-pressed), var(--glass-inset-light-soft);">
+            <span class="card-doc__states-label">Pressed</span>
+          </article>
+        </div>
+        <div class="card-doc__states-cell" role="listitem">
+          <span class="card-doc__states-num" aria-hidden="true">5</span>
+          <article class="card card--glass card-doc__states-sample is-disabled" aria-disabled="true">
+            <span class="card-doc__states-label">Disabled</span>
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <p class="usage-note reveal">
+      <strong>Compositional overrides.</strong> Two modifiers exist
+      for cases the variant identity doesn't cover.
+      <code>.card--glass-heavy</code> swaps the default light frost
+      for a near-opaque slab — modal sheets and drawer chrome where
+      the surface needs to dominate the backdrop.
+      <code>.card--glass-tinted</code> wires the glass through the
+      primary ramp instead of white — brand-skinned overlays and
+      promotional surfaces. Both compose with any style variant.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>Interactive states tint up, never flip opaque.</strong>
+      Hover and pressed shift the glass to a higher tint; focus draws
+      the system ring; disabled drops opacity. Blur and translucency
+      persist across every state — the glass identity is preserved
+      end to end.
+    </p>
+  </section>
+
+  <!-- ========================== VERSIONS ========================== -->
+  <section class="chunk" id="card-versions">
+    <header class="chunk-head reveal">
+      <span class="num-tag">03 / Card — Versions</span>
+      <h2 class="h2">Versions.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      Surface adaptations beyond the state matrix.
+        <em>Default</em>: light canvas (rest).
+        <em>Inverted</em>: re-wires every colour role for dark or brand
+        backdrops.
+        <em>is-selected</em>: state modifier marking the active card in a
+        navigation list with a primary-tinted background, primary border,
+        and primary ring shadow.
+    </p>
+
+    <h4 class="h4 reveal">Default · Inverted · Selected <span class="tag">applied to elevated</span></h4>
+
+    <h4 class="card-doc__variant reveal">Default · light surface.</h4>
+    <p class="card-doc__lede reveal">
+      The card on the canvas at rest. Every other version is a
+      deliberate move away from this baseline; if a region doesn't
+      need a dark or selected version, it should sit here.
+    </p>
+    <div class="card-doc__demo reveal">
+      <article class="card">
+        <span class="card__eyebrow">Caseload</span>
+        <header class="card__header">
+          <h3 class="card__title">Bessie · Holstein</h3>
+          <p class="card__subtitle">Lameness, grade 2/5</p>
+        </header>
+        <p class="card__body">Vitals stable. Bloodwork pending lab return.</p>
+      </article>
+    </div>
+    <p class="card-doc__prose reveal">
+      No special tokens — pure <code>--card-bg</code> and
+      <code>--card-border</code>. This is the surface the rest of
+      the page is calibrated against.
+    </p>
+
+    <h4 class="card-doc__variant reveal">Inverted · on quiet dark wash.</h4>
+    <p class="card-doc__lede reveal">
+      A re-wired colour role for dark or brand backdrops. Use
+      <code>.card--inverted</code> when the card lands on a deep
+      neutral or photographic surface and the default light treatment
+      would lose contrast.
+    </p>
+    <div class="card-doc__demo card-doc__demo--on-dark reveal">
+      <article class="card card--inverted">
+        <span class="card__eyebrow">Caseload</span>
+        <header class="card__header">
+          <h3 class="card__title">Bessie · Holstein</h3>
+          <p class="card__subtitle">Lameness, grade 2/5</p>
+        </header>
+        <p class="card__body">Vitals stable. Bloodwork pending lab return.</p>
+      </article>
+    </div>
+    <p class="card-doc__prose reveal">
+      The inverted surface uses
+      <code>--card-inverted-bg</code> through
+      <code>--card-inverted-divider</code>; every text and border
+      role is re-wired so contrast lands inside the dark wash, not
+      against it.
+    </p>
+
+    <h4 class="card-doc__variant reveal">Selected · .is-selected.</h4>
+    <p class="card-doc__lede reveal">
+      A state modifier marking the active card in a navigation list.
+      A primary-tinted background, primary border, and primary ring
+      shadow combine into a clear "you are here" signal.
+    </p>
+    <div class="card-doc__demo reveal">
+      <article class="card is-selected" aria-current="true">
+        <span class="card__eyebrow">Caseload · selected</span>
+        <header class="card__header">
+          <h3 class="card__title">Bessie · Holstein</h3>
+          <p class="card__subtitle">Lameness, grade 2/5</p>
+        </header>
+        <p class="card__body">Vitals stable. Bloodwork pending lab return.</p>
+      </article>
+    </div>
+    <p class="card-doc__prose reveal">
+      Pair <code>.is-selected</code> with
+      <code>aria-current="true"</code> on the active item so the
+      selection is announced. Only one card per list should carry
+      the selected state at a time.
+    </p>
+  </section>
+
+  <!-- ========================== TOKENS ========================== -->
+  <section class="chunk" id="card-tokens">
+    <header class="chunk-head reveal">
+      <span class="num-tag">04 / Card — Component tokens</span>
+      <h2 class="h2">Tokens.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      Component-scoped tokens that resolve to semantic tokens. Card
+        declarations reference only this layer; semantic-layer changes
+        cascade through automatically.
+    </p>
+
+    <table class="token-table reveal" aria-label="Card component tokens">
+      <thead>
+        <tr>
+          <th>Component token</th>
+          <th>References</th>
+          <th>Resolves to</th>
+          <th>Preview</th>
+        </tr>
+      </thead>
+      <tbody id="cardTokenTable"></tbody>
+    </table>
+  </section>
+
+  <!-- ========================== FOOTER ========================== -->
+  <footer>
+    <span>END OF SECTION</span>
+  </footer>
+
+</main>
+
+<!-- ========================== TOAST ========================== -->
+<!-- Copy-confirmation snackbar — see III-08-toast.html -->
+<div class="toast toast--snackbar" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<script>
+/* =========================================================
+   COMPONENT TOKEN DATA — Card
+   Each entry: [name, semanticReference]
+   ========================================================= */
+const CARD_TOKENS = [
+  { group: 'Shared shape', tokens: [
+    ['--card-font-family',   'var(--font-sans)'],
+    ['--card-radius',        'var(--radius-lg)'],
+    ['--card-radius-inner',  'var(--radius-md)'],
+    ['--card-border-width',  'var(--border-width-base)'],
+    ['--card-padding-x',     'var(--space-container-x)'],
+    ['--card-padding-y',     'var(--space-container-y)'],
+    ['--card-gap',           'var(--space-gap-default)'],
+    ['--card-gap-tight',     'var(--space-gap-snug)'],
+  ]},
+  { group: 'Style · Elevated (default)', tokens: [
+    ['--card-bg',            'var(--background-default)'],
+    ['--card-bg-hover',      'var(--background-default-subtle)'],
+    ['--card-bg-pressed',    'var(--background-default-minimal)'],
+    ['--card-fg',            'var(--text-default)'],
+    ['--card-fg-subtle',     'var(--text-default-subtle)'],
+    ['--card-fg-minimal',    'var(--text-default-minimal)'],
+    ['--card-border',        'var(--border-default)'],
+    ['--card-border-hover',  'var(--border-default-strong)'],
+    ['--card-shadow',        'var(--shadow-sm)'],
+    ['--card-shadow-hover',  'var(--shadow-md)'],
+  ]},
+  { group: 'Style · Filled', tokens: [
+    ['--card-filled-bg',         'var(--background-default-subtle)'],
+    ['--card-filled-bg-hover',   'var(--background-default-minimal)'],
+    ['--card-filled-border',     'transparent'],
+    ['--card-filled-shadow',     'none'],
+  ]},
+  { group: 'Style · Outlined', tokens: [
+    ['--card-outlined-bg',           'var(--background-default)'],
+    ['--card-outlined-bg-hover',     'var(--background-default-subtle)'],
+    ['--card-outlined-border',       'var(--border-default-strong)'],
+    ['--card-outlined-border-width', '1.5px'],
+    ['--card-outlined-shadow',       'none'],
+  ]},
+  { group: 'Layout · Horizontal', tokens: [
+    ['--card-horizontal-media-w',   '38%'],
+    ['--card-horizontal-media-min', '140px'],
+  ]},
+  { group: 'Style · Left-bar (callout / alert)', tokens: [
+    ['--card-left-bar-width',    '4px'],
+    ['--card-left-bar-color',    'var(--border-primary)'],
+    ['--card-left-bar-info',     'var(--border-info)'],
+    ['--card-left-bar-warning',  'var(--border-warning)'],
+    ['--card-left-bar-critical', 'var(--border-critical-strong)'],
+    ['--card-left-bar-safe',     'var(--border-safe)'],
+    ['--card-left-bar-primary',  'var(--border-primary)'],
+  ]},
+  { group: 'Layout · List (row stack)', tokens: [
+    ['--card-list-bg',           'var(--background-default)'],
+    ['--card-list-border',       'var(--border-default)'],
+    ['--card-list-row-divider',  'var(--border-default-subtle)'],
+    ['--card-list-row-bg-hover', 'var(--background-row-hover)'],
+    ['--card-list-row-pad-x',    'var(--space-container-x)'],
+    ['--card-list-row-pad-y',    'var(--space-tier-4)'],
+  ]},
+  { group: 'Glass · shared', tokens: [
+    ['--card-glass-saturate',   '140%'],
+    ['--card-glass-border',     'var(--border-glass-light)'],
+  ]},
+  { group: 'Glass · Light (default tier) — interactive states', tokens: [
+    ['--card-glass-bg',           'var(--background-glass-light)'],
+    ['--card-glass-bg-hover',     'color-mix(in srgb, var(--white-base) 80%, transparent)'],
+    ['--card-glass-bg-pressed',   'color-mix(in srgb, var(--white-base) 88%, transparent)'],
+    ['--card-glass-border-hover', 'color-mix(in srgb, var(--white-base) 95%, transparent)'],
+    ['--card-glass-blur',         'var(--blur-lg)'],
+  ]},
+  { group: 'Glass · Clear (tier 01) — interactive states', tokens: [
+    ['--card-glass-clear-bg',           'color-mix(in srgb, var(--white-base) 25%, transparent)'],
+    ['--card-glass-clear-bg-hover',     'color-mix(in srgb, var(--white-base) 42%, transparent)'],
+    ['--card-glass-clear-bg-pressed',   'color-mix(in srgb, var(--white-base) 50%, transparent)'],
+    ['--card-glass-clear-blur',         'var(--blur-sm)'],
+    ['--card-glass-clear-border',       'color-mix(in srgb, var(--white-base) 40%, transparent)'],
+    ['--card-glass-clear-border-hover', 'color-mix(in srgb, var(--white-base) 60%, transparent)'],
+  ]},
+  { group: 'Glass · Frost (tier 03) — interactive states', tokens: [
+    ['--card-glass-frost-bg',           'color-mix(in srgb, var(--white-base) 75%, transparent)'],
+    ['--card-glass-frost-bg-hover',     'color-mix(in srgb, var(--white-base) 85%, transparent)'],
+    ['--card-glass-frost-bg-pressed',   'color-mix(in srgb, var(--white-base) 92%, transparent)'],
+    ['--card-glass-frost-blur',         'var(--blur-xl)'],
+    ['--card-glass-frost-border',       'color-mix(in srgb, var(--white-base) 70%, transparent)'],
+    ['--card-glass-frost-border-hover', 'color-mix(in srgb, var(--white-base) 88%, transparent)'],
+  ]},
+  { group: 'Glass · Heavy (tier 04) — interactive states', tokens: [
+    ['--card-glass-heavy-bg',           'color-mix(in srgb, var(--white-base) 92%, transparent)'],
+    ['--card-glass-heavy-bg-hover',     'color-mix(in srgb, var(--white-base) 96%, transparent)'],
+    ['--card-glass-heavy-bg-pressed',   'color-mix(in srgb, var(--white-base) 98%, transparent)'],
+    ['--card-glass-heavy-blur',         'var(--blur-2xl)'],
+    ['--card-glass-heavy-border',       'color-mix(in srgb, var(--white-base) 90%, transparent)'],
+    ['--card-glass-heavy-border-hover', 'color-mix(in srgb, var(--white-base) 98%, transparent)'],
+  ]},
+  { group: 'Glass · Tinted (tier 05) — interactive states', tokens: [
+    ['--card-glass-tinted-bg',           'var(--background-glass-dark)'],
+    ['--card-glass-tinted-bg-hover',     'color-mix(in srgb, var(--primary-200) 50%, transparent)'],
+    ['--card-glass-tinted-bg-pressed',   'color-mix(in srgb, var(--primary-200) 60%, transparent)'],
+    ['--card-glass-tinted-blur',         'var(--blur-lg)'],
+    ['--card-glass-tinted-border',       'var(--border-glass-dark)'],
+    ['--card-glass-tinted-border-hover', 'color-mix(in srgb, var(--white-base) 35%, transparent)'],
+  ]},
+  { group: 'Surface · Inverted', tokens: [
+    ['--card-inverted-bg',            'color-mix(in srgb, var(--white-base) 8%, transparent)'],
+    ['--card-inverted-bg-hover',      'color-mix(in srgb, var(--white-base) 14%, transparent)'],
+    ['--card-inverted-fg',            'var(--text-inverted)'],
+    ['--card-inverted-fg-subtle',     'var(--text-inverted-subtle)'],
+    ['--card-inverted-fg-minimal',    'var(--text-inverted-minimal)'],
+    ['--card-inverted-border',        'var(--border-inverted)'],
+    ['--card-inverted-border-strong', 'var(--border-inverted-strong)'],
+    ['--card-inverted-divider',       'color-mix(in srgb, var(--white-base) 14%, transparent)'],
+    ['--card-inverted-mark-bg',       'color-mix(in srgb, var(--white-base) 16%, transparent)'],
+    ['--card-inverted-mark-fg',       'var(--text-inverted)'],
+  ]},
+  { group: 'State · is-selected', tokens: [
+    ['--card-selected-bg',      'var(--background-default-selected)'],
+    ['--card-selected-fg',      'var(--text-default)'],
+    ['--card-selected-border',  'var(--border-primary)'],
+    ['--card-selected-shadow',  'ring + var(--shadow-md)'],
+  ]},
+  { group: 'State · Disabled', tokens: [
+    ['--card-disabled-bg',      'var(--background-default-disabled)'],
+    ['--card-disabled-fg',      'var(--text-default-disabled)'],
+    ['--card-disabled-border',  'var(--border-default-disabled)'],
+    ['--card-disabled-opacity', '0.6'],
+  ]},
+  { group: 'Slots · header / body / footer', tokens: [
+    ['--card-eyebrow-fg',     'var(--text-default-minimal)'],
+    ['--card-title-fg',       'var(--text-default)'],
+    ['--card-subtitle-fg',    'var(--text-default-subtle)'],
+    ['--card-body-fg',        'var(--text-default-subtle)'],
+    ['--card-footer-divider', 'var(--border-default-subtle)'],
+    ['--card-title-font-size',    'var(--text-h5)'],
+    ['--card-subtitle-font-size', 'var(--text-sm)'],
+    ['--card-eyebrow-font-size',  'var(--text-micro)'],
+    ['--card-body-font-size',     'var(--text-base)'],
+  ]},
+  { group: 'Sub-components · Badge / Price / Rating / Metric', tokens: [
+    ['--card-badge-bg',          'var(--background-primary-minimal)'],
+    ['--card-badge-fg',          'var(--text-primary-strong)'],
+    ['--card-badge-radius',      'var(--radius-pill)'],
+    ['--card-badge-info-bg',     'var(--background-info)'],
+    ['--card-badge-warning-bg',  'var(--background-warning)'],
+    ['--card-badge-critical-bg', 'var(--background-critical)'],
+    ['--card-badge-safe-bg',     'var(--background-safe)'],
+    ['--card-price-fg',          'var(--text-default)'],
+    ['--card-price-strike-fg',   'var(--text-default-minimal)'],
+    ['--card-rating-fg',         'var(--secondary-300)'],
+    ['--card-rating-empty-fg',   'var(--neutral-200)'],
+    ['--card-metric-fg',         'var(--text-default)'],
+    ['--card-metric-label-fg',   'var(--text-default-minimal)'],
+    ['--card-metric-delta-up',   'var(--text-safe)'],
+    ['--card-metric-delta-down', 'var(--text-critical)'],
+  ]},
+  { group: 'Focus ring', tokens: [
+    ['--card-focus-outline',         'var(--outline-focus)'],
+    ['--card-focus-outline-width',   '2px'],
+    ['--card-focus-outline-offset',  '2px'],
+  ]},
+];
+
+/* =========================================================
+   RENDER — Card token table
+   Resolve each var() chain to a final value via
+   getComputedStyle, and decide whether the chip should
+   render a colour or be hidden.
+   ========================================================= */
+function resolveCss(varName) {
+  const styles = getComputedStyle(document.documentElement);
+  return styles.getPropertyValue(varName).trim();
+}
+
+function isColorish(value) {
+  if (!value) return false;
+  const v = value.toLowerCase();
+  return v.startsWith('#') ||
+         v.startsWith('rgb') ||
+         v.startsWith('hsl') ||
+         v.startsWith('color-mix') ||
+         v.startsWith('linear-gradient') ||
+         v.startsWith('radial-gradient') ||
+         v === 'transparent' ||
+         /^[a-z]+$/.test(v);
+}
+
+function renderTokenTable() {
+  const tbody = document.getElementById('cardTokenTable');
+  let html = '';
+  CARD_TOKENS.forEach(group => {
+    html += `<tr class="group-row"><td colspan="4">${group.group}</td></tr>`;
+    group.tokens.forEach(([name, ref]) => {
+      const resolved = resolveCss(name) || '—';
+      const isColor = isColorish(resolved);
+      const chip = isColor
+        ? `<span class="chip" style="background:${resolved}"></span>`
+        : `<span class="chip" style="background: repeating-linear-gradient(45deg, var(--neutral-100) 0 6px, var(--neutral-50) 6px 12px); opacity:.6"></span>`;
+      html += `
+        <tr>
+          <td class="tk-name">${name}</td>
+          <td class="tk-ref">${ref.replace(/</g,'&lt;')}</td>
+          <td class="tk-resolved">${resolved.length > 60 ? resolved.slice(0,57)+'…' : resolved}</td>
+          <td class="tk-swatch">${chip}</td>
+        </tr>`;
+    });
+  });
+  tbody.innerHTML = html;
+}
+
+/* =========================================================
+   PRESS PULSE — fire ds-pulse on click
+   Mirrors the swatch / token-card copy-pulse pattern from
+   I-primitives.html and II-semantics.html. Add .is-pulsing,
+   force a reflow with offsetWidth, re-add to restart. The
+   animation runs once (0.6s) then ends; the class stays
+   until the next click resets it.
+   ========================================================= */
+function initCardPress() {
+  const cards = document.querySelectorAll(
+    '.card.is-interactive, a.card, button.card, .card--selectable'
+  );
+  cards.forEach(card => {
+    card.addEventListener('click', () => {
+      card.classList.remove('is-pulsing');
+      // force reflow so the animation restarts on a repeat click
+      void card.offsetWidth;
+      card.classList.add('is-pulsing');
+    });
+  });
+}
+
+/* =========================================================
+   REVEAL ON SCROLL
+   ========================================================= */
+function initReveal() {
+  const items = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    items.forEach(el => el.classList.add('in'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        en.target.classList.add('in');
+        io.unobserve(en.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(el => io.observe(el));
+}
+
+/* =========================================================
+   BOOT
+   ========================================================= */
+document.addEventListener('DOMContentLoaded', () => {
+  renderTokenTable();
+  initCardPress();
+  initReveal();
+});
+</script>
+
+</body>
+</html>

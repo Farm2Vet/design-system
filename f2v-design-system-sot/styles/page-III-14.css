@@ -1,0 +1,298 @@
+/* =========================================================
+   PAGE — COMPONENT · TABS
+   Styles unique to III-14-tabs.html: the anatomy diagram,
+   the variant grid (one card per visual treatment), and
+   the keyboard-model matrix. Reuses .form-variant-card,
+   .form-version-card, .form-size-stage from page-III-03.css
+   and the .token-table styling from page-III-02.css —
+   no need to redeclare those here.
+   The actual Tabs component (and the breadcrumb / pagination
+   siblings) lives in tabs.css.
+   Depends on: tokens.css, base.css, shell.css, tabs.css,
+               page-III-03.css, page-III-02.css
+   ========================================================= */
+
+/* =========================================================
+   USAGE-NOTE LIST — definition-list variant
+   The variant guidance under "Match the variant to the
+   surface" renders as a <dl class="usage-note usage-note--list">
+   so each variant gets its own term/description row instead
+   of a parallel-rhythm prose sentence. Inherits font, colour,
+   max-width, padding, and border-left from .usage-note in
+   page-III-03.css; this rule only fills in the dt/dd
+   typography and row rhythm.
+   ========================================================= */
+.usage-note--list {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    column-gap: var(--space-tier-4);
+    row-gap: var(--space-tier-7);
+}
+.usage-note--list dt {
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-default);
+}
+.usage-note--list dd {
+    margin: 0;
+    color: var(--text-default-subtle);
+}
+
+/* =========================================================
+   VARIANT CARD — wide demo column for tabs
+   The form-variant-card has a fixed two-column layout
+   with the demo capped at 720px. Tabs need a wider demo
+   surface (the full row of tabs + a panel preview), so
+   this rule lets the demo span the full card width when
+   the .tabs-variant-card class is applied alongside
+   .form-variant-card (.form-variant-card.tabs-variant-card).
+   ========================================================= */
+.tabs-variant-card .demo {
+    max-width: none;
+    width: 100%;
+}
+.tabs-variant-card .demo .tabs__panel {
+    background: color-mix(in srgb, var(--background-default) 75%, transparent);
+    border: var(--border-width-base) dashed var(--border-default);
+    border-radius: var(--radius-sm);
+    padding: var(--space-tier-4) var(--spacing-5x);
+    color: var(--text-default-subtle);
+    font-size: var(--text-sm);
+    margin-top: var(--space-tier-4);
+}
+
+/* =========================================================
+   ANATOMY — labelled tab list with slot vocabulary
+   ========================================================= */
+.tabs-anatomy {
+    padding: var(--space-tier-2);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-tier-2);
+}
+.tabs-anatomy__diagram {
+    position: relative;
+    padding: var(--space-tier-3) var(--space-tier-4) var(--space-tier-1);
+    border: var(--border-width-base) dashed var(--border-default);
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--background-default-subtle) 60%, transparent);
+}
+.tabs-anatomy__legend {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: var(--space-tier-6) var(--spacing-5x);
+    margin: 0;
+}
+.tabs-anatomy__legend dt {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-primary-strong);
+    font-weight: var(--font-weight-medium);
+    padding-top: 2px;
+}
+.tabs-anatomy__legend dd {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    line-height: var(--line-height-body);
+    color: var(--text-default-subtle);
+    margin: 0 0 var(--space-tier-6);
+}
+.tabs-anatomy__legend dd code {
+    font-family: var(--font-mono);
+    font-size: var(--text-body-sm);
+    color: var(--text-primary-strong);
+    background: var(--background-primary-minimal);
+    padding: 0.05em 0.4em;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+}
+.tabs-anatomy__tag {
+    position: absolute;
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-primary-strong);
+    background: var(--background-primary-minimal);
+    padding: var(--spacing-half) var(--space-tier-6);
+    border-radius: var(--radius-pill);
+    border: var(--border-width-base) solid var(--border-primary-subtle);
+}
+
+/* =========================================================
+   KEYBOARD-MODEL TABLE — manual vs automatic activation
+   A small spec table that documents the keyboard contract
+   for Tabs. Owns its own cell layout because it doesn't
+   share the four-column shape of the token-table.
+   ========================================================= */
+.kbd-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--background-glass-light);
+    backdrop-filter: var(--blur-lg) saturate(140%);
+    -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
+    border: var(--border-width-base) solid var(--border-glass-light);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    font-family: var(--font-sans);
+}
+.kbd-table thead th {
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+    font-weight: var(--font-weight-medium);
+    padding: var(--space-tier-4) var(--spacing-5x);
+    background: var(--background-glass-light);
+    border-bottom: var(--border-width-base) solid var(--border-default);
+}
+.kbd-table tbody td {
+    padding: var(--space-tier-5) var(--spacing-5x);
+    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
+    vertical-align: top;
+    font-size: var(--text-sm);
+    color: var(--text-default);
+    line-height: var(--line-height-body);
+}
+.kbd-table tbody tr:last-child td { border-bottom: none; }
+.kbd-table .kbd {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    color: var(--text-primary-strong);
+    background: var(--background-primary-minimal);
+    border: var(--border-width-base) solid var(--border-primary-subtle);
+    padding: 1px var(--space-tier-6);
+    border-radius: var(--radius-sm);
+    margin-right: var(--space-tier-7);
+}
+.kbd-table td.kbd-action {
+    width: 30%;
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-default);
+}
+.kbd-table td.kbd-keys { width: 30%; }
+.kbd-table td.kbd-note { color: var(--text-default-subtle); }
+
+/* =========================================================
+   RULE-MATRIX TABLE — Tabs vs sibling navigation
+   Architectural decision matrix: when to reach for Tabs,
+   Breadcrumb, Pagination, the Segmented Switch in
+   button.css, or the Header Nav in global-nav.css.
+   ========================================================= */
+.rule-matrix {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--background-glass-light);
+    backdrop-filter: var(--blur-lg) saturate(140%);
+    -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
+    border: var(--border-width-base) solid var(--border-glass-light);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+.rule-matrix thead th {
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+    font-weight: var(--font-weight-medium);
+    padding: var(--space-tier-4) var(--spacing-5x);
+    background: var(--background-glass-light);
+    border-bottom: var(--border-width-base) solid var(--border-default);
+}
+.rule-matrix tbody td {
+    padding: var(--space-tier-4) var(--spacing-5x);
+    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
+    vertical-align: top;
+    font-size: var(--text-sm);
+    line-height: var(--line-height-body);
+    color: var(--text-default);
+}
+.rule-matrix tbody tr:last-child td { border-bottom: none; }
+.rule-matrix .rm-name {
+    font-family: var(--font-mono);
+    color: var(--text-primary-strong);
+    font-weight: var(--font-weight-medium);
+    width: 22%;
+    word-break: break-all;
+}
+.rule-matrix .rm-purpose {
+    color: var(--text-default);
+    width: 30%;
+}
+.rule-matrix .rm-when {
+    color: var(--text-default-subtle);
+}
+
+/* =========================================================
+   STATE STAGE — single column showing rest / hover /
+   selected / focus / disabled side-by-side. Uses the same
+   .form-version-card structure but with custom inner grid.
+   ========================================================= */
+.tabs-state-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-tier-4);
+}
+@media (max-width: 960px) {
+    .tabs-state-grid { grid-template-columns: 1fr; }
+}
+
+/* =========================================================
+   IN-DEMO PANEL FAUX CONTENT — bullet rows used to
+   illustrate that each tab maps to a panel.
+   ========================================================= */
+.demo-panel-rows {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tier-7);
+}
+.demo-panel-rows li {
+    display: grid;
+    grid-template-columns: 18ch 1fr;
+    gap: var(--space-tier-5);
+    font-size: var(--text-sm);
+    color: var(--text-default-subtle);
+}
+.demo-panel-rows li strong {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-primary-strong);
+    font-weight: var(--font-weight-medium);
+    padding-top: 2px;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 960px) {
+    .tabs-anatomy { padding: var(--spacing-5x); }
+    .kbd-table thead, .rule-matrix thead { display: none; }
+    .kbd-table tbody td, .rule-matrix tbody td { display: block; padding: var(--space-tier-6) var(--space-tier-4); }
+    .kbd-table .kbd-action,
+    .kbd-table .kbd-keys,
+    .kbd-table .kbd-note,
+    .rule-matrix .rm-name,
+    .rule-matrix .rm-purpose,
+    .rule-matrix .rm-when { width: auto; }
+    .rule-matrix tbody tr td:first-child {
+        padding-top: var(--space-tier-4);
+    }
+    .rule-matrix tbody tr td:last-child {
+        padding-bottom: var(--space-tier-4);
+        border-bottom: var(--border-width-base) solid var(--border-default-subtle);
+    }
+}

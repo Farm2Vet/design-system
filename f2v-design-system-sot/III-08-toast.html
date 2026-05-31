@@ -1,0 +1,1273 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Farm2Vet · Toast — Design System</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<!-- Design system: shared, reusable foundation -->
+<link rel="stylesheet" href="styles/tokens.css" />
+<link rel="stylesheet" href="styles/base.css" />
+<link rel="stylesheet" href="styles/typography.css" />
+<link rel="stylesheet" href="styles/shell.css" />
+<link rel="stylesheet" href="styles/global-nav.css" />
+<link rel="stylesheet" href="styles/button.css" />
+<link rel="stylesheet" href="styles/toast.css" />
+<!-- Page-specific layout -->
+<link rel="stylesheet" href="styles/page-III-08.css" />
+<!-- Reuse: usage-note pattern + token-table styling + .card-callout + .preview-stage -->
+<link rel="stylesheet" href="styles/page-III-03.css" />
+<link rel="stylesheet" href="styles/page-III-02.css" />
+<link rel="stylesheet" href="styles/page-III-05.css" />
+
+<!-- Shared behaviour: scroll-spy highlights the in-view TOC link -->
+<script src="scripts/scroll-spy.js" defer></script>
+<script src="scripts/global-nav.js" defer></script>
+
+</head>
+<body data-page="III-08-toast">
+
+<!-- ========================== GLOBAL NAV ========================== -->
+<header class="global-nav" aria-label="Design system navigation">
+  <div class="global-nav__inner">
+
+    <a href="index.html" class="global-nav__brand" aria-label="Farm2Vet design system home">
+      <img src="logo/logo-wordmark-color.svg" alt="Farm2Vet" class="global-nav__logo" />
+      <small>Design System</small>
+    </a>
+
+    <nav class="global-nav__sections" aria-label="Design system sections">
+      <ul class="global-nav__list">
+        <li class="global-nav__item">
+          <a class="global-nav__link" href="I-primitives.html">I. Primitives</a>
+        </li>
+        <li class="global-nav__item">
+          <a class="global-nav__link" href="II-semantics.html">II. Semantics</a>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="components">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-components">
+            III. Components
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-components" class="global-nav__panel" role="region" aria-label="Components">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="III-01-typography.html"><span class="global-nav__index">01</span><span>Typography</span></a></li>
+                <li><a href="III-02-buttons.html"><span class="global-nav__index">02</span><span>Buttons</span></a></li>
+                <li><a href="III-03-form.html"><span class="global-nav__index">03</span><span>Form</span></a></li>
+                <li><a href="III-04-dropdowns.html"><span class="global-nav__index">04</span><span>Dropdowns</span></a></li>
+                <li><a href="III-05-cards.html"><span class="global-nav__index">05</span><span>Cards</span></a></li>
+                <li><a href="III-06-modal.html"><span class="global-nav__index">06</span><span>Modal Dialog</span></a></li>
+                <li><a href="III-07-side-panel.html"><span class="global-nav__index">07</span><span>Side Panel</span></a></li>
+                <li><a href="III-08-toast.html"><span class="global-nav__index">08</span><span>Toast</span></a></li>
+                <li><a href="III-09-alert-badges.html"><span class="global-nav__index">09</span><span>Alert &amp; Badge</span></a></li>
+                <li><a href="III-10-header-navigation.html"><span class="global-nav__index">10</span><span>Header &amp; Nav Bar</span></a></li>
+                <li><a href="III-11-switch.html"><span class="global-nav__index">11</span><span>Switch</span></a></li>
+                <li><a href="III-12-sidebar.html"><span class="global-nav__index">12</span><span>Sidebar</span></a></li>
+                <li><a href="III-13-chip.html"><span class="global-nav__index">13</span><span>Chip</span></a></li>
+                <li><a href="III-14-tabs.html"><span class="global-nav__index">14</span><span>Tabs</span></a></li>
+                <li><a href="III-15-table.html"><span class="global-nav__index">15</span><span>Table</span></a></li>
+                <li><a href="III-16-search-toolbar.html"><span class="global-nav__index">16</span><span>Search Toolbar</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="assets">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-assets">
+            IV. Assets
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-assets" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Assets">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="IV-01-logo.html"><span class="global-nav__index">01</span><span>Logo</span></a></li>
+                <li><a href="IV-02-icons.html"><span class="global-nav__index">02</span><span>Icons</span></a></li>
+                <li><a href="IV-03-images.html" class="is-placeholder"><span class="global-nav__index">03</span><span>Images</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="mockups">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-mockups">
+            V. Mockups
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-mockups" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Mockups">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="V-01-wiki.html"><span class="global-nav__index">01</span><span>Wiki</span></a></li>
+                <li><a href="V-02-chatbot.html" class="is-placeholder"><span class="global-nav__index">02</span><span>Chatbot</span></a></li>
+                <li><a href="V-03-hero.html"    class="is-placeholder"><span class="global-nav__index">03</span><span>Hero</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+      </ul>
+    </nav>
+
+    <a href="#" class="global-nav__chip" aria-label="Design system version">v1.0</a>
+
+  </div>
+</header>
+<main class="shell" id="top">
+
+  <!-- ========================== HERO ========================== -->
+  <section class="hero">
+    <div>
+      <h1 class="h1 reveal">
+        <span class="num">III-08 / Components</span>
+        Toast.
+      </h1>
+    </div>
+    <div>
+      <p class="lede reveal">
+        A transient, non-blocking notification surface that floats
+        above the main content. Composed of icon, content stack
+        (title and body), optional actions, optional dismiss, and
+        optional auto-dismiss progress. Resolves through a
+        component-scoped token layer (<code>--toast-*</code>) that
+        references the system's shared status colour families and
+        echoes the Alert family one-for-one.
+      </p>
+    </div>
+
+    <dl class="meta-strip reveal">
+      <div><dt>Tones</dt><dd>4</dd></div>
+      <div><dt>Layouts</dt><dd>6</dd></div>
+      <div><dt>Sizes</dt><dd>3</dd></div>
+      <div><dt>Positions</dt><dd>2</dd></div>
+    </dl>
+  </section>
+
+  <!-- ========================== ARCHITECTURAL CALLOUT ========================== -->
+  <section class="chunk" style="padding-top: var(--spacing-8x); padding-bottom: 0;">
+    <div class="card-callout reveal" role="note">
+      <span class="label">Architectural note · scope boundaries</span>
+      <p>
+        <strong>Toast is the transient, auto-dismissing feedback surface.</strong>
+        A non-blocking message that stays in the document flow is an
+        Alert. A blocking message that interrupts the task flow is a
+        Modal. Toast is reserved for ephemeral confirmations
+        (<em>Saved</em>, <em>Sent</em>), recoverable failures
+        (<em>Sync failed · Retry</em>), and out-of-band system events
+        the user did not directly trigger.
+      </p>
+    </div>
+
+    <div class="card-callout reveal" role="note" style="margin-top: var(--spacing-4x);">
+      <span class="label">Architectural note · region</span>
+      <p>
+        <strong>Toasts never live in document flow.</strong> They are
+        appended to a <code>.toast-region</code>, a fixed-position
+        container anchored to one of two viewport edges
+        (<em>top-right</em> default, <em>bottom-right</em>). New
+        toasts are appended to the region's flex column in DOM order;
+        bottom-anchored regions reverse the visual flow so the
+        newest toast still sits closest to the viewport edge.
+      </p>
+    </div>
+  </section>
+
+  <!-- ========================== TOAST · ANATOMY ========================== -->
+  <section class="chunk" id="toast-anatomy">
+    <header class="chunk-head reveal">
+      <span class="num-tag">01 / Toast — Anatomy</span>
+      <h2 class="h2">Anatomy.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      A Toast is a horizontal strip with three regions. The leading
+        region holds an icon, or a spinner when the toast represents an
+        in-flight operation. The content region stacks a title above an
+        optional body. The trailing region holds optional actions and an
+        optional dismiss button. An optional progress bar pinned to the
+        bottom edge represents the auto-dismiss timer.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>Title is the only required slot.</strong> A toast
+      without a title resolves as a Compact one-liner (see Layouts).
+      Toasts without an icon are valid for purely textual
+      confirmations but lose the tonal glance-cue — reach for the
+      Compact layout instead, which keeps the icon while trimming
+      everything else.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>Default lifetime is five seconds.</strong> Toast
+      content must be parseable in that window. If the message
+      exceeds a one-line title plus a one-line body, it is too long
+      for a Toast — promote it to an Alert. Hover and focus pause
+      the auto-dismiss timer; the progress bar reflects the
+      remaining lifetime.
+    </p>
+
+    <div class="glass toast-anatomy reveal">
+      <div class="toast is-info" role="status">
+        <span class="toast__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        </span>
+        <div class="toast__content">
+          <p class="toast__title">Bessie's bloodwork uploaded</p>
+          <p class="toast__body">
+            Lab portal acknowledged the file. <a href="#">Open chart</a>.
+          </p>
+        </div>
+        <div class="toast__actions">
+          <button type="button" class="toast__action">Undo</button>
+        </div>
+        <button type="button" class="toast__close" aria-label="Dismiss toast">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+        <span class="toast__progress" aria-hidden="true"></span>
+      </div>
+
+      <dl class="legend">
+        <dt>.toast__icon</dt>
+        <dd>Tone-bearing leading glyph. Inherits <code>currentColor</code> so a single SVG works across tones. Replaced by <code>.toast__spinner</code> when the toast is announcing a promise.</dd>
+
+        <dt>.toast__content</dt>
+        <dd>Vertical stack: title, then body. Body slot accepts a paragraph or a link; lists belong in Alert, not Toast.</dd>
+
+        <dt>.toast__title</dt>
+        <dd>Required for default and large sizes. Optional for compact one-liners — the body alone is enough.</dd>
+
+        <dt>.toast__actions</dt>
+        <dd>Optional trailing region. SM and MD cap at one action (Undo, Retry, View) — the auto-dismiss lifetime is too short for a deliberation. LG accepts up to two actions on a row beneath the content, for dominant onboarding cases that legitimately need a primary and an escape.</dd>
+
+        <dt>.toast__close</dt>
+        <dd>Always last in DOM order, before the progress bar. Cancels the auto-dismiss timer immediately.</dd>
+
+        <dt>.toast__progress</dt>
+        <dd>Optional auto-dismiss progress. Pauses on hover or focus-within. Hidden under <code>prefers-reduced-motion</code>.</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ========================== TOAST · TONES ========================== -->
+  <section class="chunk" id="toast-tones">
+    <header class="chunk-head reveal">
+      <span class="num-tag">02 / Toast — Tone matrix</span>
+      <h2 class="h2">Tones.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      Four canonical tones — Info, Safe, Warning, Critical — each
+        remap the toast's surface, border, foreground, and icon
+        token slots. Tones map 1:1 with the system's status colour
+        families and with the Alert component's <code>.is-*</code>
+        modifiers.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>Tone is selected by intent, not aesthetics.</strong>
+      Info for advisory confirmations and out-of-band updates. Safe
+      for confirmation of a successful action. Warning for
+      non-blocking caution that does not require an immediate
+      response. Critical for failures the user can still recover
+      from with one action. Ambient hints and ungraded tips belong
+      in a Compact info toast, not a tone of their own.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>Critical toasts must always carry a recovery
+      action.</strong> A Critical toast that disappears with no way
+      to retry, undo, or open the failing record is a dead-end. If
+      the failure has no actionable recovery, the message belongs
+      in an Alert pinned to the affected surface, not in a Toast.
+    </p>
+
+    <div class="toast-list reveal">
+
+      <!-- INFO -->
+      <div class="toast is-info" role="status">
+        <span class="toast__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        </span>
+        <div class="toast__content">
+          <p class="toast__title">Schedule resync queued</p>
+          <p class="toast__body">Estimated ~12 s · running in the background.</p>
+        </div>
+      </div>
+
+      <!-- SAFE -->
+      <div class="toast is-safe" role="status">
+        <span class="toast__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        </span>
+        <div class="toast__content">
+          <p class="toast__title">Vaccination record saved</p>
+          <p class="toast__body">Atlas · Quarter horse · synced to the lab portal.</p>
+        </div>
+      </div>
+
+      <!-- WARNING -->
+      <div class="toast is-warning" role="status">
+        <span class="toast__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+        </span>
+        <div class="toast__content">
+          <p class="toast__title">Auto-save paused · offline</p>
+          <p class="toast__body">Your edits will sync when the connection recovers.</p>
+        </div>
+      </div>
+
+      <!-- CRITICAL -->
+      <div class="toast is-critical" role="alert">
+        <span class="toast__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+        </span>
+        <div class="toast__content">
+          <p class="toast__title">Dispatch sign-off failed</p>
+          <p class="toast__body">Network timeout · the form is still drafted on this device.</p>
+        </div>
+        <div class="toast__actions">
+          <button type="button" class="toast__action toast__action--strong">Retry</button>
+        </div>
+      </div>
+
+    </div>
+
+    <p class="usage-note reveal" style="margin-top: var(--spacing-5x);">
+      <strong>Preview each tone in motion.</strong> The triggers
+      below spawn the corresponding tone into the page's top-right
+      region with the default 5-second auto-dismiss.
+    </p>
+
+    <div class="tone-triggers reveal">
+      <button type="button" class="toast-trigger is-tone-info"
+              data-spawn-toast data-tone="info"
+              data-title="Schedule resync queued"
+              data-body="Estimated ~12 s · running in the background.">
+        Spawn info
+      </button>
+      <button type="button" class="toast-trigger is-tone-safe"
+              data-spawn-toast data-tone="safe"
+              data-title="Vaccination record saved"
+              data-body="Atlas · synced to the lab portal.">
+        Spawn safe
+      </button>
+      <button type="button" class="toast-trigger is-tone-warning"
+              data-spawn-toast data-tone="warning"
+              data-title="Auto-save paused · offline"
+              data-body="Edits will sync when the connection recovers.">
+        Spawn warning
+      </button>
+      <button type="button" class="toast-trigger is-tone-critical"
+              data-spawn-toast data-tone="critical" data-action="Retry"
+              data-title="Dispatch sign-off failed"
+              data-body="Network timeout · the form is still drafted on this device.">
+        Spawn critical
+      </button>
+    </div>
+  </section>
+
+  <!-- ========================== TOAST · LAYOUTS ========================== -->
+  <section class="chunk" id="toast-layouts">
+    <header class="chunk-head reveal">
+      <span class="num-tag">03 / Toast — Layouts</span>
+      <h2 class="h2">Layouts.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      Six layout modes resolve from the same DOM by exposing or
+        hiding slots. <em>Default</em>: title and body. <em>Compact</em>
+        (<code>.toast--compact</code>): title-only, single-line.
+        <em>With action</em>: trailing CTA. <em>With dismiss</em>:
+        explicit close × that cancels the auto-dismiss timer. <em>With
+        progress</em>: auto-dismiss progress bar pinned to the
+        bottom edge. <em>Promise / loading</em>: spinner replaces
+        the leading icon.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>SM and MD cap trailing actions at one.</strong> The
+      auto-dismiss lifetime is too short for a deliberation between
+      two affordances at these sizes. LG is the exception — a
+      dominant onboarding toast is not auto-dismissed in a hurry,
+      and the two-action pairing (filled primary + ghost secondary)
+      gives the user a clear primary path and an escape without
+      promoting the message to an Alert or Modal.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>Promise toasts replace themselves rather than
+      stacking.</strong> A loading toast announces an in-flight
+      operation; on completion it is upgraded in place to a Safe or
+      Critical toast (same DOM node, swapped class and content).
+      Spawning a new toast on completion would double the noise.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>Progress is a visual cue, not a guarantee.</strong>
+      The progress bar reflects the auto-dismiss timer, not the
+      state of any underlying operation. Use the spinner of the
+      Promise layout when the toast represents in-flight work.
+    </p>
+
+    <div class="toast-showcase reveal">
+
+      <!-- COMPACT -->
+      <article class="toast-showcase__tile">
+        <span class="label">Compact · single-line</span>
+        <div class="demo">
+          <div class="toast toast--compact is-safe">
+            <span class="toast__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            </span>
+            <div class="toast__content">
+              <p class="toast__title">Saved · synced 2 s ago</p>
+            </div>
+          </div>
+        </div>
+        <div class="meta"><span>.toast--compact</span><strong>no body, tight padding</strong></div>
+      </article>
+
+      <!-- WITH ACTION -->
+      <article class="toast-showcase__tile">
+        <span class="label">With action · single trailing CTA</span>
+        <div class="demo">
+          <div class="toast is-warning">
+            <span class="toast__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            </span>
+            <div class="toast__content">
+              <p class="toast__title">Case archived</p>
+              <p class="toast__body">Moved to the archive · revertable for the next minute.</p>
+            </div>
+            <div class="toast__actions">
+              <button type="button" class="toast__action toast__action--strong">Undo</button>
+            </div>
+          </div>
+        </div>
+        <div class="meta"><span>.toast__actions</span><strong>≤ 1 trailing action</strong></div>
+      </article>
+
+      <!-- WITH DISMISS -->
+      <article class="toast-showcase__tile">
+        <span class="label">Dismissible · explicit close (×)</span>
+        <div class="demo">
+          <div class="toast is-info">
+            <span class="toast__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+            </span>
+            <div class="toast__content">
+              <p class="toast__title">Welcome to Farm2Vet 0.5</p>
+              <p class="toast__body">Drag rows on the caseload board to reorder.</p>
+            </div>
+            <button type="button" class="toast__close" aria-label="Dismiss toast">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="meta"><span>.toast__close</span><strong>cancels auto-dismiss</strong></div>
+      </article>
+
+      <!-- WITH PROGRESS -->
+      <article class="toast-showcase__tile">
+        <span class="label">With progress · auto-dismiss timer</span>
+        <div class="demo">
+          <div class="toast is-warning">
+            <span class="toast__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            </span>
+            <div class="toast__content">
+              <p class="toast__title">Withdrawal window closing in 2 hours</p>
+              <p class="toast__body">Bessie · NSAID · last dispatch is locked until 14:30.</p>
+            </div>
+            <span class="toast__progress" aria-hidden="true"></span>
+          </div>
+        </div>
+        <div class="meta"><span>.toast__progress</span><strong>pauses on hover / focus</strong></div>
+      </article>
+
+      <!-- PROMISE / LOADING -->
+      <article class="toast-showcase__tile">
+        <span class="label">Promise · loading spinner</span>
+        <div class="demo">
+          <div class="toast is-info">
+            <span class="toast__spinner" aria-hidden="true"></span>
+            <div class="toast__content">
+              <p class="toast__title">Uploading bloodwork…</p>
+              <p class="toast__body">2.4 MB · ~8 seconds remaining.</p>
+            </div>
+          </div>
+        </div>
+        <div class="meta"><span>.toast__spinner</span><strong>upgrades in place on settle</strong></div>
+      </article>
+
+    </div>
+
+    <div class="layout-triggers reveal" style="margin-top: var(--spacing-4x);">
+      <button type="button" class="toast-trigger is-tone-safe"
+              data-spawn-toast data-tone="safe" data-layout="compact"
+              data-title="Saved · synced 2 s ago">
+        Spawn compact
+      </button>
+      <button type="button" class="toast-trigger is-tone-warning"
+              data-spawn-toast data-tone="warning" data-action="Undo"
+              data-title="Case archived"
+              data-body="Moved to the archive · revertable for the next minute.">
+        Spawn with action
+      </button>
+      <button type="button" class="toast-trigger is-tone-info"
+              data-spawn-toast data-tone="info"
+              data-title="Welcome to Farm2Vet 0.5"
+              data-body="Drag rows on the caseload board to reorder."
+              data-dismiss="true" data-progress="false">
+        Spawn dismissible
+      </button>
+      <button type="button" class="toast-trigger is-tone-warning"
+              data-spawn-toast data-tone="warning" data-progress="true"
+              data-title="Withdrawal window closing in 2 hours"
+              data-body="Bessie · NSAID · last dispatch is locked until 14:30.">
+        Spawn with progress
+      </button>
+      <button type="button" class="toast-trigger is-tone-info"
+              data-spawn-toast data-tone="info" data-layout="promise"
+              data-title="Uploading bloodwork…"
+              data-body="2.4 MB · ~8 seconds remaining."
+              data-progress="false" data-dismiss="false" data-lifetime="6000"
+              data-promise-resolve='{"tone":"safe","title":"Bloodwork uploaded","body":"Lab portal acknowledged the file."}'>
+        Spawn promise (resolves)
+      </button>
+    </div>
+  </section>
+
+  <!-- ========================== TOAST · SIZES ========================== -->
+  <section class="chunk" id="toast-sizes">
+    <header class="chunk-head reveal">
+      <span class="num-tag">04 / Toast — Sizes</span>
+      <h2 class="h2">Sizes.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      Three sizes scale padding, icon glyph, title font-size, and
+        minimum width in lockstep. <em>SM</em>: <code>--text-sm</code>
+        (13.33 px) font, 16 px icon, compact padding. <em>MD</em>
+        (default): <code>--text-base</code> (16 px / 1 rem) font,
+        20 px icon. <em>LG</em>: <code>--text-base</code> (16 px) body
+        with a <code>--text-h6</code> (19.2 px) title, 24 px icon,
+        generous padding. Body line-height is shared
+        (<code>--toast-body-line</code>) across all sizes.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>Size is selected by host viewport, not by tone.</strong>
+      MD is the default for desktop and tablet. SM is reserved for
+      narrow regions (mobile, side-rail panels) where the default
+      width crowds the content beneath it. LG is for the dominant
+      toast in a marketing or onboarding context — never more than
+      one LG toast on screen at a time.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>LG carries its actions on a row beneath the content.</strong>
+      SM and MD keep the inline trailing-action layout — the action
+      sits on the headline row and stays vertically tied to a single
+      line of content. LG content is multi-line by definition, so the
+      trailing-action position has no text element to anchor to; the
+      action drops to its own row, left-aligned under the title
+      column. Pair a filled <code>.toast__action--strong</code>
+      primary with a <code>.toast__action--ghost</code> secondary
+      when a dominant toast needs two affordances; cap at two — a
+      third belongs in a Modal.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>The close × is always present on LG.</strong> A
+      dominant onboarding toast carries a dismiss affordance on
+      principle — there's no scenario where the user is locked into
+      one action with no way out. Sticky / non-dismissible toasts
+      aren't part of this variant set; add as a separate variant if
+      a future blocking-onboarding case calls for it.
+    </p>
+
+    <div class="preview-stage column glass-surface reveal">
+      <span class="stage-caption">SM · narrow regions, mobile</span>
+      <div class="toast toast--sm is-info">
+        <span class="toast__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        </span>
+        <div class="toast__content">
+          <p class="toast__title">Sync resumed</p>
+        </div>
+      </div>
+
+      <span class="stage-caption">MD · default</span>
+      <div class="toast is-info">
+        <span class="toast__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        </span>
+        <div class="toast__content">
+          <p class="toast__title">Bulk reassignment available</p>
+          <p class="toast__body">Select multiple cases and reassign in one move.</p>
+        </div>
+      </div>
+
+      <span class="stage-caption">LG · dominant onboarding toast · single action</span>
+      <div class="toast toast--lg is-info">
+        <span class="toast__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        </span>
+        <div class="toast__content">
+          <p class="toast__title">Quarterly compliance review opened</p>
+          <p class="toast__body">Open dispatch forms must be signed off before 2026-05-12.</p>
+        </div>
+        <div class="toast__actions">
+          <button type="button" class="toast__action toast__action--strong">Open records</button>
+        </div>
+        <button type="button" class="toast__close" aria-label="Dismiss toast">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+
+      <span class="stage-caption">LG · dominant onboarding toast · two actions</span>
+      <div class="toast toast--lg is-info">
+        <span class="toast__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        </span>
+        <div class="toast__content">
+          <p class="toast__title">Quarterly compliance review opened</p>
+          <p class="toast__body">Open dispatch forms must be signed off before 2026-05-12.</p>
+        </div>
+        <div class="toast__actions">
+          <button type="button" class="toast__action toast__action--strong">Open records</button>
+          <button type="button" class="toast__action toast__action--ghost">Remind me later</button>
+        </div>
+        <button type="button" class="toast__close" aria-label="Dismiss toast">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="size-triggers reveal" style="margin-top: var(--spacing-4x);">
+      <button type="button" class="toast-trigger is-tone-info"
+              data-spawn-toast data-tone="info" data-size="sm"
+              data-title="Sync resumed">
+        Spawn SM
+      </button>
+      <button type="button" class="toast-trigger is-tone-info"
+              data-spawn-toast data-tone="info"
+              data-title="Bulk reassignment available"
+              data-body="Select multiple cases and reassign in one move.">
+        Spawn MD (default)
+      </button>
+      <button type="button" class="toast-trigger is-tone-info"
+              data-spawn-toast data-tone="info" data-size="lg" data-action="Open records"
+              data-title="Quarterly compliance review opened"
+              data-body="Open dispatch forms must be signed off before 2026-05-12.">
+        Spawn LG
+      </button>
+      <button type="button" class="toast-trigger is-tone-info"
+              data-spawn-toast data-tone="info" data-size="lg" data-action="Open records"
+              data-action-secondary="Remind me later"
+              data-title="Quarterly compliance review opened"
+              data-body="Open dispatch forms must be signed off before 2026-05-12.">
+        Spawn LG (two actions)
+      </button>
+    </div>
+  </section>
+
+  <!-- ========================== TOAST · POSITION ========================== -->
+  <section class="chunk" id="toast-positions">
+    <header class="chunk-head reveal">
+      <span class="num-tag">05 / Toast — Region position</span>
+      <h2 class="h2">Position.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      Toasts live inside a <code>.toast-region</code>, a fixed-position
+        container anchored to one of two viewport edges:
+        <em>top-right</em> (default) and <em>bottom-right</em>. The
+        anchor is set on the region via <code>data-position</code>;
+        toasts inside the region inherit the entry direction and stack
+        flow from it.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>Pick one anchor per product and keep it.</strong>
+      Toasts that move between anchors during a session train users
+      to expect inconsistency, and the absence of a fixed gaze
+      target erodes the system's ability to surface urgency.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>Right-anchored regions are the safest default for
+      desktop.</strong> They sit furthest from primary navigation,
+      do not occlude the document outline on the left, and align
+      with the conventional placement of OS-level notifications.
+      Pair the default top-right with a bottom-right alt only when
+      the product surface has a persistent header that would occlude
+      the top row.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>Top-anchored regions reverse the visual order.</strong>
+      In a top region the newest toast renders at the top of the
+      pile so it never has to push older toasts off the viewport
+      edge. In a bottom region the newest toast renders at the
+      bottom, closest to the viewport edge, with older toasts
+      peeking upward.
+    </p>
+
+    <div class="position-grid reveal">
+
+      <article class="position-grid__tile">
+        <div class="stage">
+          <div class="toast-region" data-position="top-right">
+            <div class="toast is-safe toast--compact">
+              <span class="toast__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              </span>
+              <div class="toast__content"><p class="toast__title">top-right · default</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="label">
+          <strong>top-right · default</strong>
+          <button type="button" class="toast-trigger is-tone-safe"
+                  data-spawn-toast data-tone="safe" data-position="top-right"
+                  data-title="Spawned at top-right"
+                  data-body="The conventional default for desktop notifications.">
+            Trigger here
+          </button>
+        </div>
+      </article>
+
+      <article class="position-grid__tile">
+        <div class="stage">
+          <div class="toast-region" data-position="bottom-right">
+            <div class="toast is-safe toast--compact">
+              <span class="toast__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              </span>
+              <div class="toast__content"><p class="toast__title">bottom-right</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="label">
+          <strong>bottom-right</strong>
+          <button type="button" class="toast-trigger is-tone-safe"
+                  data-spawn-toast data-tone="safe" data-position="bottom-right"
+                  data-title="Spawned at bottom-right"
+                  data-body="Region anchored to the viewport's bottom-right corner.">
+            Trigger here
+          </button>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ========================== TOKENS ========================== -->
+  <section class="chunk" id="toast-tokens">
+    <header class="chunk-head reveal">
+      <span class="num-tag">06 / Toast — Component tokens</span>
+      <h2 class="h2">Tokens.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      The component token layer for Toast. Each component token
+        references a semantic token (never a primitive directly),
+        so changes to a status colour family or surface token
+        propagate through every toast consistently. Tone tokens
+        echo the Alert family one-for-one; the two components share
+        a single status colour vocabulary.
+    </p>
+
+    <table class="token-table reveal" aria-label="Toast component tokens">
+      <thead>
+        <tr>
+          <th>Component token</th>
+          <th>References</th>
+          <th>Resolves to</th>
+          <th>Preview</th>
+        </tr>
+      </thead>
+      <tbody id="toastTokenTable"></tbody>
+    </table>
+  </section>
+
+  <!-- ========================== FOOTER ========================== -->
+  <footer>
+    <span>END OF SECTION</span>
+  </footer>
+
+</main>
+
+<script>
+/* =========================================================
+   COMPONENT TOKEN DATA — Toast
+   Each entry: [name, semanticReference]
+   ========================================================= */
+const TOAST_TOKENS = [
+  { group: 'Toast · Shared shape', tokens: [
+    ['--toast-font-family',   'var(--font-sans)'],
+    ['--toast-radius',        'var(--radius-md)'],
+    ['--toast-border-width',  'var(--border-width-base)'],
+    ['--toast-shadow',        'var(--shadow-lg)'],
+    ['--toast-gap',           'var(--space-gap-tight)'],
+    ['--toast-gap-tight',     'var(--space-gap-snug)'],
+    ['--toast-bar-width',     '4px'],
+    ['--toast-max-width',     '420px'],
+  ]},
+  { group: 'Toast · Sizes', tokens: [
+    ['--toast-sm-font-size',  'var(--text-sm)'],
+    ['--toast-sm-padding-x',  'var(--space-content-x-sm)'],
+    ['--toast-sm-padding-y',  'var(--space-content-y-sm)'],
+    ['--toast-sm-icon',       '16px'],
+    ['--toast-sm-min-width',  '240px'],
+    ['--toast-md-font-size',  'var(--text-base)'],
+    ['--toast-md-padding-x',  'var(--space-content-x-md)'],
+    ['--toast-md-padding-y',  'var(--space-content-y-md)'],
+    ['--toast-md-icon',       '20px'],
+    ['--toast-md-min-width',  '320px'],
+    ['--toast-lg-font-size',  'var(--text-base)'],
+    ['--toast-lg-padding-x',  'var(--space-content-x-lg)'],
+    ['--toast-lg-padding-y',  'var(--space-content-y-lg)'],
+    ['--toast-lg-icon',       '24px'],
+    ['--toast-lg-min-width',  '420px'],
+    ['--toast-lg-max-width',  '560px'],
+  ]},
+  { group: 'Toast · Tone — Info (default)', tokens: [
+    ['--toast-info-bg',        'var(--background-info)'],
+    ['--toast-info-border',    'var(--border-info)'],
+    ['--toast-info-fg',        'var(--text-info-strong)'],
+    ['--toast-info-fg-body',   'var(--text-default)'],
+    ['--toast-info-icon',      'var(--text-info)'],
+    ['--toast-info-bar',       'var(--info-500)'],
+    ['--toast-info-solid-bg',  'var(--info-500)'],
+    ['--toast-info-solid-fg',  'var(--text-inverted)'],
+  ]},
+  { group: 'Toast · Tone — Safe (success)', tokens: [
+    ['--toast-safe-bg',        'var(--background-safe)'],
+    ['--toast-safe-border',    'var(--border-safe)'],
+    ['--toast-safe-fg',        'var(--text-safe)'],
+    ['--toast-safe-icon',      'var(--text-safe)'],
+    ['--toast-safe-bar',       'var(--safe-500)'],
+    ['--toast-safe-solid-bg',  'var(--safe-500)'],
+    ['--toast-safe-solid-fg',  'var(--text-inverted)'],
+  ]},
+  { group: 'Toast · Tone — Warning', tokens: [
+    ['--toast-warning-bg',        'var(--background-warning)'],
+    ['--toast-warning-border',    'var(--border-warning)'],
+    ['--toast-warning-fg',        'var(--text-warning)'],
+    ['--toast-warning-icon',      'var(--text-warning)'],
+    ['--toast-warning-bar',       'var(--warning-500)'],
+    ['--toast-warning-solid-bg',  'var(--warning-500)'],
+    ['--toast-warning-solid-fg',  'var(--text-inverted)'],
+  ]},
+  { group: 'Toast · Tone — Critical (error)', tokens: [
+    ['--toast-critical-bg',        'var(--background-critical)'],
+    ['--toast-critical-border',    'var(--border-critical)'],
+    ['--toast-critical-fg',        'var(--text-critical)'],
+    ['--toast-critical-icon',      'var(--text-critical)'],
+    ['--toast-critical-bar',       'var(--critical-500)'],
+    ['--toast-critical-solid-bg',  'var(--critical-500)'],
+    ['--toast-critical-solid-fg',  'var(--text-inverted)'],
+  ]},
+  { group: 'Toast · Slots & dismiss', tokens: [
+    ['--toast-title-weight',  'var(--font-weight-semibold)'],
+    ['--toast-body-fg',       'var(--text-default-subtle)'],
+    ['--toast-body-line',     'var(--line-height-body)'],
+    ['--toast-close-size',    '28px'],
+    ['--toast-close-radius',  'var(--radius-sm)'],
+    ['--toast-close-fg',      'var(--icon-default)'],
+    ['--toast-close-fg-hover','var(--text-default)'],
+  ]},
+  { group: 'Toast · Auto-dismiss progress', tokens: [
+    ['--toast-progress-height',   '3px'],
+    ['--toast-progress-bg',       'color-mix(currentColor 22%)'],
+    ['--toast-progress-fg',       'currentColor'],
+    ['--toast-progress-duration', '5s'],
+  ]},
+  { group: 'Toast · Loading spinner', tokens: [
+    ['--toast-spinner-size',  '16px'],
+    ['--toast-spinner-track', 'color-mix(currentColor 18%)'],
+    ['--toast-spinner-thumb', 'currentColor'],
+  ]},
+  { group: 'Toast · Region', tokens: [
+    ['--toast-region-padding', 'var(--spacing-6x)'],
+    ['--toast-region-gap',     'var(--spacing-3x)'],
+    ['--toast-region-width',   'min(560px, calc(100vw - var(--spacing-8x)))'],
+  ]},
+  { group: 'Toast · Focus ring', tokens: [
+    ['--toast-focus-outline',         'var(--outline-focus)'],
+    ['--toast-focus-outline-width',   '2px'],
+    ['--toast-focus-outline-offset',  '2px'],
+  ]},
+];
+
+/* =========================================================
+   RENDER — Toast token table
+   ========================================================= */
+function resolveCss(varName) {
+  const styles = getComputedStyle(document.documentElement);
+  return styles.getPropertyValue(varName).trim();
+}
+
+function isColorish(value) {
+  if (!value) return false;
+  const v = value.toLowerCase();
+  return v.startsWith('#') ||
+         v.startsWith('rgb') ||
+         v.startsWith('hsl') ||
+         v.startsWith('color-mix') ||
+         v.startsWith('linear-gradient') ||
+         v.startsWith('radial-gradient') ||
+         v === 'transparent' ||
+         /^[a-z]+$/.test(v);
+}
+
+function renderTokenTable() {
+  const tbody = document.getElementById('toastTokenTable');
+  if (!tbody) return;
+  let html = '';
+  TOAST_TOKENS.forEach(group => {
+    html += `<tr class="group-row"><td colspan="4">${group.group}</td></tr>`;
+    group.tokens.forEach(([name, ref]) => {
+      const resolved = resolveCss(name) || '—';
+      const isColor = isColorish(resolved);
+      const chip = isColor
+        ? `<span class="chip" style="background:${resolved}"></span>`
+        : `<span class="chip" style="background: repeating-linear-gradient(45deg, var(--neutral-100) 0 6px, var(--neutral-50) 6px 12px); opacity:.6"></span>`;
+      html += `
+        <tr>
+          <td class="tk-name">${name}</td>
+          <td class="tk-ref">${ref.replace(/</g,'&lt;')}</td>
+          <td class="tk-resolved">${resolved.length > 60 ? resolved.slice(0,57)+'…' : resolved}</td>
+          <td class="tk-swatch">${chip}</td>
+        </tr>`;
+    });
+  });
+  tbody.innerHTML = html;
+}
+
+/* =========================================================
+   DISMISS BEHAVIOUR — fade + collapse on close click
+   Applies to both the static demo toasts and any toast
+   spawned via the trigger buttons below.
+   ========================================================= */
+function dismissToast(toastEl, removeAfter = true) {
+  if (!toastEl) return;
+  toastEl.classList.add('is-dismissed');
+  setTimeout(() => {
+    if (!removeAfter) { toastEl.style.display = 'none'; return; }
+    toastEl.remove();
+  }, 260);
+}
+function initDismiss() {
+  document.addEventListener('click', (e) => {
+    const close = e.target.closest('.toast .toast__close');
+    if (!close) return;
+    const toastEl = close.closest('.toast');
+    // Static demo toasts on the page hide visually so the
+    // demo doesn't disappear from the documentation; live
+    // spawned toasts are removed from the DOM.
+    const isLive = toastEl && toastEl.closest('.toast-region.is-live');
+    dismissToast(toastEl, !!isLive);
+  });
+}
+
+/* =========================================================
+   TOKEN COPY — clicking a token name copies var(--name) to
+   the clipboard and confirms with a compact live toast
+   (bottom-right, 2s, no dismiss/progress chrome).
+   ========================================================= */
+function showCopyToast(title, tone = 'safe') {
+  spawnLiveToast({
+    tone,
+    layout: 'compact',
+    position: 'bottom-right',
+    title,
+    lifetime: 2000,
+    dismiss: false,
+    progress: false,
+  });
+}
+async function copyTokenName(name) {
+  const text = `var(${name})`;
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+    } else {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    }
+    showCopyToast(`Copied ${name}`);
+  } catch (err) {
+    showCopyToast('Copy failed', 'critical');
+  }
+}
+function initTokenCopy() {
+  document.addEventListener('click', (e) => {
+    const cell = e.target.closest('.token-table .tk-name');
+    if (!cell) return;
+    const name = cell.textContent.trim();
+    if (name.startsWith('--')) copyTokenName(name);
+  });
+}
+
+/* =========================================================
+   LIVE TOAST SPAWNER
+   Buttons with [data-spawn-toast] mount a real toast into
+   a viewport-anchored .toast-region.is-live container.
+   Buttons with [data-clear-toasts] dismiss every live toast
+   on the page (the static demo toasts are untouched).
+   ========================================================= */
+
+/* Tone icons mirror the static demos so spawned toasts
+   read the same as their reference markup. */
+const TONE_ICONS = {
+  info:     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>',
+  safe:     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
+  warning:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>',
+  critical: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>',
+};
+const CLOSE_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>';
+
+function getOrCreateLiveRegion(position) {
+  let region = document.querySelector(`.toast-region.is-live[data-position="${position}"]`);
+  if (!region) {
+    region = document.createElement('div');
+    region.className = 'toast-region is-live';
+    region.setAttribute('data-position', position);
+    document.body.appendChild(region);
+  }
+  return region;
+}
+
+/* Build the toast DOM from an options object. The shape
+   mirrors the static markup elsewhere on this page. */
+function buildLiveToast(opts) {
+  const t = document.createElement('div');
+  t.className = 'toast';
+  if (opts.tone)  t.classList.add(`is-${opts.tone}`);
+  if (opts.style) t.classList.add(`toast--${opts.style}`);
+  if (opts.size)  t.classList.add(`toast--${opts.size}`);
+  if (opts.layout === 'compact') t.classList.add('toast--compact');
+  t.setAttribute('role', opts.tone === 'critical' ? 'alert' : 'status');
+
+  // Leading slot — spinner for promise, icon otherwise.
+  if (opts.layout === 'promise') {
+    const sp = document.createElement('span');
+    sp.className = 'toast__spinner';
+    sp.setAttribute('aria-hidden', 'true');
+    t.appendChild(sp);
+  } else {
+    const ic = document.createElement('span');
+    ic.className = 'toast__icon';
+    ic.setAttribute('aria-hidden', 'true');
+    ic.innerHTML = TONE_ICONS[opts.tone] || TONE_ICONS.info;
+    t.appendChild(ic);
+  }
+
+  // Content
+  const content = document.createElement('div');
+  content.className = 'toast__content';
+  if (opts.title) {
+    const titleEl = document.createElement('p');
+    titleEl.className = 'toast__title';
+    titleEl.textContent = opts.title;
+    content.appendChild(titleEl);
+  }
+  if (opts.body) {
+    const bodyEl = document.createElement('p');
+    bodyEl.className = 'toast__body';
+    bodyEl.textContent = opts.body;
+    content.appendChild(bodyEl);
+  }
+  t.appendChild(content);
+
+  // Trailing action(s).
+  // Primary fills the tone token (--strong). An optional secondary
+  // action takes --ghost so both buttons share the same colour rail
+  // and the order conveys priority. Secondary is only allowed on LG.
+  if (opts.action) {
+    const actions = document.createElement('div');
+    actions.className = 'toast__actions';
+
+    const aBtn = document.createElement('button');
+    aBtn.type = 'button';
+    aBtn.className = 'toast__action toast__action--strong';
+    aBtn.textContent = opts.action;
+    aBtn.addEventListener('click', () => dismissToast(t));
+    actions.appendChild(aBtn);
+
+    if (opts.actionSecondary && opts.size === 'lg') {
+      const bBtn = document.createElement('button');
+      bBtn.type = 'button';
+      bBtn.className = 'toast__action toast__action--ghost';
+      bBtn.textContent = opts.actionSecondary;
+      bBtn.addEventListener('click', () => dismissToast(t));
+      actions.appendChild(bBtn);
+    }
+
+    t.appendChild(actions);
+  }
+
+  // Close (×)
+  if (opts.dismiss !== false) {
+    const close = document.createElement('button');
+    close.type = 'button';
+    close.className = 'toast__close';
+    close.setAttribute('aria-label', 'Dismiss toast');
+    close.innerHTML = CLOSE_SVG;
+    t.appendChild(close);
+  }
+
+  // Progress
+  if (opts.progress !== false && opts.layout !== 'promise') {
+    const prog = document.createElement('span');
+    prog.className = 'toast__progress';
+    prog.setAttribute('aria-hidden', 'true');
+    t.appendChild(prog);
+  }
+
+  return t;
+}
+
+/* Spawn a toast from an options bag. */
+function spawnLiveToast(opts) {
+  const position = opts.position || 'top-right';
+  const region   = getOrCreateLiveRegion(position);
+  const toast    = buildLiveToast(opts);
+
+  // Entry animation — class added before mount, removed
+  // on the next frame so the transition runs.
+  toast.classList.add('is-entering');
+  region.appendChild(toast);
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => toast.classList.remove('is-entering'));
+  });
+
+  const lifetime = (opts.lifetime != null) ? opts.lifetime : 5000;
+  let dismissTimer = lifetime > 0
+    ? setTimeout(() => dismissToast(toast), lifetime)
+    : null;
+
+  // Promise resolution — after the lifetime, swap the
+  // spinner toast in place for a settled tone toast at
+  // the same DOM position.
+  if (opts.layout === 'promise' && opts.promiseResolve) {
+    setTimeout(() => {
+      const settled = buildLiveToast(Object.assign({}, opts.promiseResolve, { position }));
+      region.replaceChild(settled, toast);
+      settled.classList.add('is-entering');
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => settled.classList.remove('is-entering'));
+      });
+      const settledLife = (opts.promiseResolve.lifetime != null) ? opts.promiseResolve.lifetime : 5000;
+      if (settledLife > 0) setTimeout(() => dismissToast(settled), settledLife);
+    }, opts.promiseResolveAt || 2200);
+  }
+}
+
+/* Translate a button's data-* attributes into the spawn
+   options object. */
+function readSpawnOpts(btn) {
+  const ds = btn.dataset;
+  let promiseResolve = null;
+  if (ds.promiseResolve) {
+    try { promiseResolve = JSON.parse(ds.promiseResolve); }
+    catch (e) { promiseResolve = null; }
+  }
+  return {
+    tone:            ds.tone,
+    style:           ds.style,
+    size:            ds.size,
+    layout:          ds.layout,
+    position:        ds.position,
+    title:           ds.title,
+    body:            ds.body,
+    action:          ds.action,
+    actionSecondary: ds.actionSecondary,
+    dismiss:         ds.dismiss === undefined ? true  : ds.dismiss !== 'false',
+    progress:        ds.progress === undefined ? true : ds.progress !== 'false',
+    lifetime:        ds.lifetime != null ? Number(ds.lifetime) : 5000,
+    promiseResolve,
+  };
+}
+
+function clearLiveToasts() {
+  document.querySelectorAll('.toast-region.is-live .toast').forEach(t => dismissToast(t));
+  setTimeout(() => {
+    document.querySelectorAll('.toast-region.is-live').forEach(r => {
+      if (!r.querySelector('.toast')) r.remove();
+    });
+  }, 320);
+}
+
+function initSpawners() {
+  document.addEventListener('click', (e) => {
+    const single = e.target.closest('[data-spawn-toast]');
+    const clear  = e.target.closest('[data-clear-toasts]');
+
+    if (clear) {
+      clearLiveToasts();
+      return;
+    }
+    if (single) {
+      spawnLiveToast(readSpawnOpts(single));
+    }
+  });
+}
+
+/* =========================================================
+   REVEAL ON SCROLL
+   ========================================================= */
+function initReveal() {
+  const items = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    items.forEach(el => el.classList.add('in'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        en.target.classList.add('in');
+        io.unobserve(en.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(el => io.observe(el));
+}
+
+/* =========================================================
+   BOOT
+   ========================================================= */
+document.addEventListener('DOMContentLoaded', () => {
+  renderTokenTable();
+  initDismiss();
+  initTokenCopy();
+  initSpawners();
+  initReveal();
+});
+</script>
+</body>
+</html>
+

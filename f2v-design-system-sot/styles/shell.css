@@ -1,0 +1,548 @@
+/* =========================================================
+   FARM2VET DESIGN SYSTEM — SHELL
+   Page chrome shared across every section:
+   topbar / nav, shell container, hero, meta-strip, chunk
+   wrappers, glass surfaces, footer, toast, reveal-on-scroll,
+   shared interactive-card pulse animation, and base
+   responsive rules.
+   Depends on: tokens.css, base.css
+   ========================================================= */
+
+/* =========================================================
+   NAV (TOP BAR)
+   ========================================================= */
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    padding: var(--space-tier-5) var(--space-page-x);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--background-glass-light);
+    backdrop-filter: var(--blur-lg) saturate(140%);
+    -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
+    border-bottom: var(--border-width-base) solid var(--border-glass-light);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3x);
+}
+.brand-logo {
+    height: var(--spacing-10x);
+    width: auto;
+    display: block;
+}
+.brand small {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+    font-style: normal;
+    padding-left: var(--spacing-3x);
+    border-left: var(--border-width-base) solid var(--border-default);
+}
+
+.toc {
+    display: flex;
+    gap: var(--spacing-1x);
+    padding: var(--spacing-1x);
+    border-radius: var(--radius-pill);
+    background: var(--background-glass-light);
+    border: var(--border-width-base) solid var(--border-glass-light);
+}
+.toc a {
+    padding: var(--spacing-2x) var(--spacing-4x);
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    color: var(--text-default-subtle);
+    text-decoration: none;
+    border-radius: var(--radius-pill);
+    transition: all 0.2s ease;
+}
+.toc a:hover {
+    background: var(--background-default);
+    color: var(--text-default);
+}
+
+/* Active section — set by scroll-spy on the page (toggles
+   .is-active on the TOC link whose target is currently in
+   view). Uses the primary tint to match the system's
+   selected/active convention. */
+.toc a.is-active {
+    background: var(--background-primary-subtle);
+    color: var(--text-primary-strong);
+    font-weight: var(--font-weight-medium);
+}
+.toc a.is-active:hover {
+    background: var(--background-primary-minimal);
+    color: var(--text-primary-strong);
+}
+
+.version {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-wide);
+    color: var(--text-default-minimal);
+    padding: var(--spacing-half) var(--spacing-3x);
+    border-radius: var(--radius-pill);
+    border: var(--border-width-base) solid var(--border-default);
+}
+
+/* =========================================================
+   LAYOUT
+   ========================================================= */
+.shell {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 0 var(--space-page-x);
+}
+
+/* =========================================================
+   HERO — layout only.
+   The hero heading must carry class="h1"; sizing, weight,
+   line-height, and tracking are owned by that component
+   class in styles/typography.css. shell.css owns only the
+   grid layout and the in-hero supercaps (.num) and lede
+   (.lede) sub-elements.
+   ========================================================= */
+.hero {
+    padding: var(--space-region-y-lg) 0 var(--space-region-y);
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: var(--space-region-y);
+    align-items: end;
+}
+.hero .num {
+    display:        block;
+    font-family:    var(--font-mono);
+    font-size:      var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-widest);
+    color:          var(--text-default-minimal);
+    margin-bottom:  var(--space-tier-3);
+    font-weight:    var(--font-weight-medium);
+    text-transform: uppercase;
+}
+.hero .lede {
+    font-size:   var(--text-body);
+    line-height: var(--line-height-h5);
+    color:       var(--text-default-subtle);
+    max-width:   38ch;
+}
+
+/* =========================================================
+   META STRIP (4-column key/value bar in hero)
+   ========================================================= */
+.meta-strip {
+    margin-top: var(--space-region-y);
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--border-width-base);
+    background: var(--border-default);
+    border-top: var(--border-width-base) solid var(--border-default);
+    border-bottom: var(--border-width-base) solid var(--border-default);
+}
+.meta-strip > div {
+    background: var(--background-glass-light);
+    padding: var(--space-tier-4) var(--spacing-5x);
+    backdrop-filter: var(--blur-md);
+}
+.meta-strip dt {
+    font-family:    var(--font-mono);
+    font-size:      var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color:          var(--text-default-minimal);
+    margin-bottom:  var(--spacing-half);
+}
+.meta-strip dd {
+    font-family:    var(--font-sans);
+    font-size:      var(--text-h5);
+    font-weight:    var(--font-weight-medium);
+    letter-spacing: var(--letter-spacing-snug);
+}
+
+/* =========================================================
+   SECTION WRAPPER
+   ========================================================= */
+section.chunk {
+    padding: var(--space-region-y) 0;
+    scroll-margin-top: var(--spacing-25x);
+}
+.chunk-head {
+    margin-bottom: var(--space-flow-block);
+    padding-bottom: var(--space-flow-heading);
+    border-bottom: var(--border-width-base) solid var(--border-default);
+}
+/* Chunk-head heading: must carry class="h2".
+   Sizing, weight, line-height, and tracking are owned by the
+   component class in styles/typography.css. The summary lives
+   below the header as <p class="section-lede">, not inside it. */
+.chunk-head .num-tag {
+    font-family:    var(--font-mono);
+    font-size:      var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-widest);
+    color:          var(--text-default-minimal);
+    margin-bottom:  var(--space-flow-heading);
+    display:        block;
+    text-transform: uppercase;
+}
+
+/* Section-level summary paragraph. Sits between .chunk-head and
+   the section's demo content. Replaces the old two-column
+   chunk-head where the summary lived in the right column. */
+.section-lede {
+    font-size:    var(--text-body);
+    color:        var(--text-default-subtle);
+    line-height:  var(--line-height-body);
+    max-width:    72ch;
+    margin:       0 0 var(--space-flow-section) 0;
+}
+
+/* =========================================================
+   H4 + TAG — heading-with-pill rail.
+   .h4 (and bare <h4>) is a flex baseline row so an optional
+   <span class="tag"> pill can sit beside the heading text.
+   Sizing / weight / color come from the .h4 component class
+   in styles/typography.css.
+   ========================================================= */
+h4,
+.h4 {
+    display:     flex;
+    align-items: baseline;
+    gap:         var(--space-gap-tight);
+}
+
+h4 .tag,
+.h4 .tag {
+    font-family:    var(--font-mono);
+    font-size:      var(--text-eyebrow);
+    font-weight:    var(--font-weight-medium);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color:          var(--text-default-minimal);
+    padding:        var(--spacing-half) var(--spacing-2x);
+    border:         var(--border-width-base) solid var(--border-default);
+    border-radius:  var(--radius-pill);
+}
+
+/* =========================================================
+   GLASS SURFACE — translucent material
+   The .glass utility is a token-driven surface. Default = LIGHT
+   tone, LIGHT frost, RAISED elevation. Switch axes with the
+   .glass--{frost}, .glass--inverted, .glass--{elevation}, and
+   the optional .glass--sheen / .glass--bevel modifiers. The rule
+   reads from per-instance custom properties so the modifiers are
+   pure variable assignments — no duplicated declarations.
+   ========================================================= */
+.glass {
+    --glass-bg:             var(--glass-light-light-bg);
+    --glass-bg-hover:       var(--glass-light-light-bg-hover);
+    --glass-bg-pressed:     var(--glass-light-light-bg-pressed);
+    --glass-border:         var(--glass-light-light-border);
+    --glass-border-hover:   var(--glass-light-light-border-hover);
+    --glass-blur:           var(--glass-light-light-blur);
+    --glass-shadow:         var(--glass-shadow-raised);
+    --glass-shadow-hover:   var(--glass-shadow-raised-hover);
+    --glass-shadow-pressed: var(--glass-shadow-raised-pressed);
+    --glass-inset:          var(--glass-inset-light-soft);
+    --glass-radius-local:   var(--glass-radius);
+
+    position: relative;
+    background: var(--glass-bg);
+    border: var(--border-width-base) solid var(--glass-border);
+    border-radius: var(--glass-radius-local);
+    /* Outer shadow first (elevation), inner shadow second (rim light). */
+    box-shadow: var(--glass-shadow), var(--glass-inset);
+    -webkit-backdrop-filter: var(--glass-blur) var(--glass-saturate);
+            backdrop-filter: var(--glass-blur) var(--glass-saturate);
+    transition: background-color .2s ease, border-color .2s ease,
+                box-shadow .2s ease, transform .2s cubic-bezier(.2,.8,.2,1);
+}
+
+/* ---------- Frost modifiers (light tone) ---------- */
+.glass.glass--clear   { --glass-bg: var(--glass-light-clear-bg);
+                        --glass-bg-hover: var(--glass-light-clear-bg-hover);
+                        --glass-bg-pressed: var(--glass-light-clear-bg-pressed);
+                        --glass-border: var(--glass-light-clear-border);
+                        --glass-border-hover: var(--glass-light-clear-border-hover);
+                        --glass-blur: var(--glass-light-clear-blur); }
+.glass.glass--regular { --glass-bg: var(--glass-light-regular-bg);
+                        --glass-bg-hover: var(--glass-light-regular-bg-hover);
+                        --glass-bg-pressed: var(--glass-light-regular-bg-pressed);
+                        --glass-border: var(--glass-light-regular-border);
+                        --glass-border-hover: var(--glass-light-regular-border-hover);
+                        --glass-blur: var(--glass-light-regular-blur); }
+.glass.glass--thick   { --glass-bg: var(--glass-light-thick-bg);
+                        --glass-bg-hover: var(--glass-light-thick-bg-hover);
+                        --glass-bg-pressed: var(--glass-light-thick-bg-pressed);
+                        --glass-border: var(--glass-light-thick-border);
+                        --glass-border-hover: var(--glass-light-thick-border-hover);
+                        --glass-blur: var(--glass-light-thick-blur); }
+
+/* ---------- Tone modifier (inverted = dark) ---------- */
+.glass.glass--inverted          { --glass-bg: var(--glass-dark-light-bg);
+                                  --glass-bg-hover: var(--glass-dark-light-bg-hover);
+                                  --glass-bg-pressed: var(--glass-dark-light-bg-pressed);
+                                  --glass-border: var(--glass-dark-light-border);
+                                  --glass-border-hover: var(--glass-dark-light-border-hover);
+                                  --glass-blur: var(--glass-dark-light-blur);
+                                  --glass-inset: var(--glass-inset-dark-soft);
+                                  color: var(--text-inverted); }
+.glass.glass--inverted.glass--clear   { --glass-bg: var(--glass-dark-clear-bg);
+                                        --glass-bg-hover: var(--glass-dark-clear-bg-hover);
+                                        --glass-bg-pressed: var(--glass-dark-clear-bg-pressed);
+                                        --glass-border: var(--glass-dark-clear-border);
+                                        --glass-border-hover: var(--glass-dark-clear-border-hover);
+                                        --glass-blur: var(--glass-dark-clear-blur); }
+.glass.glass--inverted.glass--regular { --glass-bg: var(--glass-dark-regular-bg);
+                                        --glass-bg-hover: var(--glass-dark-regular-bg-hover);
+                                        --glass-bg-pressed: var(--glass-dark-regular-bg-pressed);
+                                        --glass-border: var(--glass-dark-regular-border);
+                                        --glass-border-hover: var(--glass-dark-regular-border-hover);
+                                        --glass-blur: var(--glass-dark-regular-blur); }
+.glass.glass--inverted.glass--thick   { --glass-bg: var(--glass-dark-thick-bg);
+                                        --glass-bg-hover: var(--glass-dark-thick-bg-hover);
+                                        --glass-bg-pressed: var(--glass-dark-thick-bg-pressed);
+                                        --glass-border: var(--glass-dark-thick-border);
+                                        --glass-border-hover: var(--glass-dark-thick-border-hover);
+                                        --glass-blur: var(--glass-dark-thick-blur); }
+
+/* ---------- Elevation modifiers ----------
+   Each elevation modifier moves the resting, hover, and pressed
+   shadows together. The trio is the contract — pick a tier and
+   you get all three states scaled consistently. */
+.glass.glass--flat     { --glass-shadow: var(--glass-shadow-flat);
+                         --glass-shadow-hover: var(--glass-shadow-flat-hover);
+                         --glass-shadow-pressed: var(--glass-shadow-flat-pressed); }
+.glass.glass--floating { --glass-shadow: var(--glass-shadow-floating);
+                         --glass-shadow-hover: var(--glass-shadow-floating-hover);
+                         --glass-shadow-pressed: var(--glass-shadow-floating-pressed); }
+.glass.glass--overlay  { --glass-shadow: var(--glass-shadow-overlay);
+                         --glass-shadow-hover: var(--glass-shadow-overlay-hover);
+                         --glass-shadow-pressed: var(--glass-shadow-overlay-pressed);
+                         --glass-inset: var(--glass-inset-light-strong); }
+.glass.glass--inverted.glass--overlay { --glass-inset: var(--glass-inset-dark-strong); }
+
+/* Stronger rim on thick frost — denser glass earns a more
+   pronounced top-edge highlight. */
+.glass.glass--thick                 { --glass-inset: var(--glass-inset-light-strong); }
+.glass.glass--inverted.glass--thick { --glass-inset: var(--glass-inset-dark-strong); }
+
+/* ---------- Radius modifiers ---------- */
+.glass.glass--radius-sm { --glass-radius-local: var(--glass-radius-sm); }
+.glass.glass--radius-lg { --glass-radius-local: var(--glass-radius-lg); }
+
+/* ---------- Decorative — sheen (subtle white gradient over surface) ---------- */
+.glass.glass--sheen::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--glass-sheen-light);
+    pointer-events: none;
+    z-index: 0;
+}
+.glass.glass--inverted.glass--sheen::before { background: var(--glass-sheen-dark); }
+.glass.glass--sheen > * { position: relative; z-index: 1; }
+
+/* ---------- Decorative — bevel (1px inside-border gradient) ---------- */
+.glass.glass--bevel {
+    border-color: transparent;
+    background-clip: padding-box;
+}
+.glass.glass--bevel::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: var(--border-width-base);
+    background: var(--glass-bevel-light);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    pointer-events: none;
+    z-index: 2;
+}
+.glass.glass--inverted.glass--bevel::after { background: var(--glass-bevel-dark); }
+
+/* ---------- Interactive states (only when the host opts in) ----------
+   Glass surfaces ALWAYS show shadow movement on hover and press —
+   the tint shift alone is too low-contrast to register as
+   feedback. Hover elevates one tier up, pressed deepens one tier
+   down (but never flat). transform: translateY pairs with the
+   shadow change so the surface visibly lifts and settles. */
+.glass.is-interactive,
+a.glass,
+button.glass { cursor: pointer; }
+.glass.is-interactive:hover,
+a.glass:hover,
+button.glass:hover {
+    background: var(--glass-bg-hover);
+    border-color: var(--glass-border-hover);
+    box-shadow: var(--glass-shadow-hover), var(--glass-inset);
+    transform: translateY(-1px);
+}
+.glass.is-interactive:active,
+a.glass:active,
+button.glass:active {
+    background: var(--glass-bg-pressed);
+    box-shadow: var(--glass-shadow-pressed), var(--glass-inset);
+    transform: translateY(0);
+}
+
+/* =========================================================
+   CONTRACT — global rule statement block, used at the top of
+   primitive and component pages to restate the system rules.
+   ========================================================= */
+.contract {
+    margin:          0 0 var(--space-region-y);
+    padding:         var(--space-container-y-lg) var(--space-container-x-lg);
+    background:      var(--glass-light-light-bg);
+    border:          var(--border-width-base) solid var(--glass-light-light-border);
+    border-left:     var(--spacing-1x) solid var(--border-primary);
+    border-radius:   var(--glass-radius);
+    box-shadow:      var(--glass-shadow-raised), var(--glass-inset-light-soft);
+    -webkit-backdrop-filter: var(--glass-light-regular-blur) var(--glass-saturate);
+            backdrop-filter: var(--glass-light-regular-blur) var(--glass-saturate);
+}
+.contract .eyebrow {
+    margin-bottom: var(--space-flow-element);
+    color:         var(--text-primary-strong);
+}
+.contract-body {
+    font-size:     var(--text-body);
+    line-height:   var(--line-height-body);
+    color:         var(--text-default);
+    margin-bottom: var(--space-flow-heading);
+    max-width:     72ch;
+}
+.contract-body:last-child { margin-bottom: 0; }
+.contract-body code {
+    background: var(--background-default-minimal);
+    color:      var(--text-default);
+    padding:    var(--spacing-half) var(--spacing-1x);
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+footer {
+    padding:        var(--space-region-y-lg) 0 var(--space-region-y);
+    margin-top:     var(--spacing-10x);
+    border-top:     var(--border-width-base) solid var(--border-default);
+    display:        flex;
+    justify-content: space-between;
+    align-items:    center;
+    font-family:    var(--font-mono);
+    font-size:      var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    color:          var(--text-default-minimal);
+}
+footer .sigil {
+    font-family:    var(--font-sans);
+    font-weight:    var(--font-weight-medium);
+    font-size:      var(--text-body-sm);
+    letter-spacing: 0;
+    text-transform: none;
+    color:          var(--text-default);
+}
+footer a {
+    color: var(--text-default-minimal);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2x);
+    transition: color 0.2s ease;
+}
+footer a:hover { color: var(--text-primary); }
+
+/* =========================================================
+   TOAST — moved out of shell.
+   The transient feedback surface (notification + snackbar)
+   has graduated to its own component file at
+   styles/toast.css. The legacy bottom-centre copy pill is
+   still available as the .toast.toast--snackbar variant of
+   that component. Pages that need the snackbar must include
+   toast.css and apply both classes on the host element.
+   See III-08-toast.html for full documentation.
+   ========================================================= */
+
+/* =========================================================
+   REVEAL ON SCROLL
+   Every page tags introductory blocks with class="reveal";
+   per-page IntersectionObserver scripts (initReveal) add the
+   .in class as each block scrolls into view. The element
+   fades up and settles. Without the observer running the
+   element must still be visible — see the no-IntersectionObserver
+   fallback in initReveal which marks every .reveal as .in
+   immediately.
+   ========================================================= */
+.reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+        opacity   0.7s ease,
+        transform 0.7s cubic-bezier(.2, .8, .2, 1);
+}
+.reveal.in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* =========================================================
+   SHARED PRESSED AURA — "ds-pulse"
+   A radiating ring fired on any copy-to-clipboard surface
+   the moment its content is committed to the system pasteboard.
+   Consumers attach the keyframe to a transient state class:
+       .swatch.copied      { animation: ds-pulse 0.6s ease; }
+       .token-card.copied  { animation: ds-pulse 0.6s ease; }
+       .card.is-pulsing    { animation: ds-pulse 0.6s ease; }
+   The animation runs once; the JS removes the trigger class
+   on animationend. Replaces the page-local `pulse` and
+   `tokenPulse` keyframes that previously diverged across
+   pages.
+   ========================================================= */
+@keyframes ds-pulse {
+    0% {
+        box-shadow: 0 0 0 0
+            color-mix(in srgb, var(--background-primary-hover) 60%, transparent);
+    }
+    100% {
+        box-shadow: 0 0 0 var(--spacing-5x)
+            color-mix(in srgb, var(--background-primary-hover)  0%, transparent);
+    }
+}
+
+/* =========================================================
+   RESPONSIVE — base shell
+   Component pages may extend these rules; this is the
+   shared baseline.
+   ========================================================= */
+@media (max-width: 960px) {
+    .hero        { grid-template-columns: 1fr; gap: var(--spacing-8x); padding-top: var(--spacing-16x); }
+    .meta-strip  { grid-template-columns: repeat(2, 1fr); }
+    .toc         { display: none; }
+}
+@media (max-width: 600px) {
+    .shell       { padding: 0 var(--space-page-x-md); }
+    .topbar      { padding: var(--space-tier-5) var(--space-page-x-md); }
+}
+
+/* =========================================================
+   REDUCED MOTION — silence reveal motion when the user has
+   set the system-level preference. The pulse keyframe is
+   short and tactile and is left enabled; component-level
+   stylesheets that fire longer animations should add their
+   own override here.
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+}

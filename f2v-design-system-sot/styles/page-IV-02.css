@@ -1,0 +1,83 @@
+/* =========================================================
+   PAGE — ASSETS · ICONS (IV-02)
+   Page-specific scaffolding for the icon library grid.
+   .token-table comes from page-III-02.css, .usage-note from
+   page-III-03.css — import those instead of redeclaring.
+   Depends on: tokens.css, base.css, typography.css,
+               shell.css, global-nav.css
+   ========================================================= */
+
+.icon-library {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-8x);
+}
+
+.icon-group__head {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-tier-4);
+    margin-bottom: var(--space-tier-5);
+    padding-bottom: var(--space-tier-5);
+    border-bottom: var(--border-width-base) solid var(--border-default);
+}
+.icon-group__title {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-primary-strong);
+    margin: 0;
+}
+.icon-group__count {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    color: var(--text-default-minimal);
+}
+
+.icon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: var(--space-tier-5);
+}
+
+.icon-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-tier-5);
+    padding: var(--space-tier-4);
+    border-radius: var(--radius-md);
+    border: var(--border-width-base) solid var(--border-default);
+    background: var(--background-default);
+    transition: border-color 120ms ease, background 120ms ease;
+}
+.icon-card:hover {
+    border-color: var(--border-default-strong);
+    background: var(--background-default-subtle);
+}
+
+.icon-card__glyph {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    background: var(--background-default-subtle);
+    color: var(--text-default);
+    display: grid;
+    place-items: center;
+}
+.icon-card__glyph svg { width: 24px; height: 24px; }
+
+.icon-card__name {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--text-default);
+    margin: 0;
+    word-break: break-word;
+}
+.icon-card__use {
+    font-size: var(--text-micro);
+    color: var(--text-default-minimal);
+    line-height: var(--line-height-body);
+    margin: 0;
+}

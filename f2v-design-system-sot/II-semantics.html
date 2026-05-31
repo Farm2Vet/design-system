@@ -1,0 +1,1337 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Farm2Vet · Semantics — Design System</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<!-- Design system: shared, reusable foundation -->
+<link rel="stylesheet" href="styles/tokens.css" />
+<link rel="stylesheet" href="styles/base.css" />
+<link rel="stylesheet" href="styles/typography.css" />
+<link rel="stylesheet" href="styles/shell.css" />
+<link rel="stylesheet" href="styles/global-nav.css" />
+<!-- Toast component (provides the .toast--snackbar copy-confirmation pill) -->
+<link rel="stylesheet" href="styles/toast.css" />
+<!-- Page-specific: only what is unique to II-semantics.html -->
+<link rel="stylesheet" href="styles/page-II.css" />
+
+<!-- Shared behaviour: scroll-spy highlights the in-view TOC link -->
+<script src="scripts/scroll-spy.js" defer></script>
+
+<script src="scripts/global-nav.js" defer></script>
+
+</head>
+<body data-page="II-semantics">
+
+<!-- ========================== GLOBAL NAV ========================== -->
+<header class="global-nav" aria-label="Design system navigation">
+  <div class="global-nav__inner">
+
+    <a href="index.html" class="global-nav__brand" aria-label="Farm2Vet design system home">
+      <img src="logo/logo-wordmark-color.svg" alt="Farm2Vet" class="global-nav__logo" />
+      <small>Design System</small>
+    </a>
+
+    <nav class="global-nav__sections" aria-label="Design system sections">
+      <ul class="global-nav__list">
+        <li class="global-nav__item">
+          <a class="global-nav__link" href="I-primitives.html">I. Primitives</a>
+        </li>
+        <li class="global-nav__item">
+          <a class="global-nav__link" href="II-semantics.html">II. Semantics</a>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="components">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-components">
+            III. Components
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-components" class="global-nav__panel" role="region" aria-label="Components">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="III-01-typography.html"><span class="global-nav__index">01</span><span>Typography</span></a></li>
+                <li><a href="III-02-buttons.html"><span class="global-nav__index">02</span><span>Buttons</span></a></li>
+                <li><a href="III-03-form.html"><span class="global-nav__index">03</span><span>Form</span></a></li>
+                <li><a href="III-04-dropdowns.html"><span class="global-nav__index">04</span><span>Dropdowns</span></a></li>
+                <li><a href="III-05-cards.html"><span class="global-nav__index">05</span><span>Cards</span></a></li>
+                <li><a href="III-06-modal.html"><span class="global-nav__index">06</span><span>Modal Dialog</span></a></li>
+                <li><a href="III-07-side-panel.html"><span class="global-nav__index">07</span><span>Side Panel</span></a></li>
+                <li><a href="III-08-toast.html"><span class="global-nav__index">08</span><span>Toast</span></a></li>
+                <li><a href="III-09-alert-badges.html"><span class="global-nav__index">09</span><span>Alert &amp; Badge</span></a></li>
+                <li><a href="III-10-header-navigation.html"><span class="global-nav__index">10</span><span>Header &amp; Nav Bar</span></a></li>
+                <li><a href="III-11-switch.html"><span class="global-nav__index">11</span><span>Switch</span></a></li>
+                <li><a href="III-12-sidebar.html"><span class="global-nav__index">12</span><span>Sidebar</span></a></li>
+                <li><a href="III-13-chip.html"><span class="global-nav__index">13</span><span>Chip</span></a></li>
+                <li><a href="III-14-tabs.html"><span class="global-nav__index">14</span><span>Tabs</span></a></li>
+                <li><a href="III-15-table.html"><span class="global-nav__index">15</span><span>Table</span></a></li>
+                <li><a href="III-16-search-toolbar.html"><span class="global-nav__index">16</span><span>Search Toolbar</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="assets">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-assets">
+            IV. Assets
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-assets" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Assets">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="IV-01-logo.html"><span class="global-nav__index">01</span><span>Logo</span></a></li>
+                <li><a href="IV-02-icons.html"><span class="global-nav__index">02</span><span>Icons</span></a></li>
+                <li><a href="IV-03-images.html" class="is-placeholder"><span class="global-nav__index">03</span><span>Images</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="mockups">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-mockups">
+            V. Mockups
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-mockups" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Mockups">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="V-01-wiki.html"><span class="global-nav__index">01</span><span>Wiki</span></a></li>
+                <li><a href="V-02-chatbot.html" class="is-placeholder"><span class="global-nav__index">02</span><span>Chatbot</span></a></li>
+                <li><a href="V-03-hero.html"    class="is-placeholder"><span class="global-nav__index">03</span><span>Hero</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+      </ul>
+    </nav>
+
+    <a href="#" class="global-nav__chip" aria-label="Design system version">v1.0</a>
+
+  </div>
+</header>
+<main class="shell" id="top">
+
+  <!-- ========================== HERO ========================== -->
+  <section class="hero">
+    <div>
+      <h1 class="h1 reveal">
+        <span class="num">II / Foundations</span>
+        Semantics.
+      </h1>
+    </div>
+  </section>
+
+  <!-- ========================== BACKGROUND ========================== -->
+  <section class="chunk" id="background">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">01 / Background</span>
+        <h2 class="h2">Background color.</h2>
+      </div>
+    </header>
+
+    <h4 class="h4 reveal">Default</h4>
+    <div class="token-grid reveal" data-group="bg-default"></div>
+
+    <h4 class="h4 reveal">Primary</h4>
+    <div class="token-grid reveal" data-group="bg-primary"></div>
+
+    <h4 class="h4 reveal">Inverted</h4>
+    <p class="usage-note reveal">
+      <strong>Use sparingly.</strong> Inverted surfaces are for anchoring a single moment of contrast — a hero band, a feature callout, or a footer. Limit to one or two regions per view. Broad use flattens hierarchy and competes with primary action surfaces for attention.
+    </p>
+    <div class="token-grid reveal" data-group="bg-inverted"></div>
+
+    <h4 class="h4 reveal">Inverse · neutral-dark surface</h4>
+    <p class="usage-note reveal">
+      <strong>A second inverse rail, neutral-dark rather than brand-tinted.</strong> Where <code>--background-inverted</code> carries the primary green for hero / footer moments, <code>--background-inverse</code> carries a neutral-dark surface for utility chrome that shouldn't compete with primary actions — segmented filter chips on a busy admin toolbar, dark utility tooltips, future inverse popovers. The <code>--*-on-inverse-*</code> family covers text, dividers, and hover/active overlays on that surface.
+    </p>
+    <div class="token-grid reveal" data-group="bg-inverse"></div>
+
+    <h4 class="h4 reveal">Status</h4>
+    <div class="token-grid reveal" data-group="bg-status"></div>
+
+    <h4 class="h4 reveal">Utility</h4>
+    <div class="token-grid reveal" data-group="bg-utility"></div>
+  </section>
+
+  <!-- ========================== TEXT ========================== -->
+  <section class="chunk" id="text">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">02 / Text</span>
+        <h2 class="h2">Text color.</h2>
+      </div>
+    </header>
+
+    <h4 class="h4 reveal">Default</h4>
+    <div class="glass text-stack reveal" id="textDefault"></div>
+
+    <h4 class="h4 reveal">Inverted</h4>
+    <div class="glass text-stack reveal" id="textInverted" style="background: var(--background-inverted); border-color: var(--border-inverted);"></div>
+
+    <h4 class="h4 reveal">Brand and emphasis</h4>
+    <p class="usage-note reveal">
+      <strong>Accent is reserved for CTAs.</strong> <code>--text-accent</code> and <code>--text-accent-subtle</code> are for primary call-to-action labels and key action language only — not for body copy, headings, or decorative emphasis. For brand voice within content, use <code>--text-primary</code> or <code>--text-emphasis</code> instead.
+    </p>
+    <div class="glass text-stack reveal" id="textBrand"></div>
+
+    <h4 class="h4 reveal">Status</h4>
+    <div class="glass text-stack reveal" id="textStatus"></div>
+  </section>
+
+  <!-- ========================== BORDER ========================== -->
+  <section class="chunk" id="border">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">03 / Border</span>
+        <h2 class="h2">Border color.</h2>
+      </div>
+    </header>
+
+    <h4 class="h4 reveal">Default</h4>
+    <div class="border-grid reveal" data-group="border-default"></div>
+
+    <h4 class="h4 reveal">Primary and focus</h4>
+    <div class="border-grid reveal" data-group="border-primary"></div>
+
+    <h4 class="h4 reveal">Inverted</h4>
+    <div class="border-grid reveal" data-group="border-inverted"></div>
+
+    <h4 class="h4 reveal">Status</h4>
+    <div class="border-grid reveal" data-group="border-status"></div>
+
+    <h4 class="h4 reveal">Utility</h4>
+    <div class="border-grid reveal" data-group="border-utility"></div>
+  </section>
+
+  <!-- ========================== ICON ========================== -->
+  <section class="chunk" id="icon">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">04 / Icon</span>
+        <h2 class="h2">Icon color.</h2>
+      </div>
+    </header>
+
+    <h4 class="h4 reveal">Default</h4>
+    <div class="icon-grid reveal" data-group="icon-default"></div>
+
+    <h4 class="h4 reveal">Primary</h4>
+    <div class="icon-grid reveal" data-group="icon-primary"></div>
+
+    <h4 class="h4 reveal">Inverted</h4>
+    <div class="icon-grid reveal" data-group="icon-inverted"></div>
+
+    <h4 class="h4 reveal">Status</h4>
+    <div class="icon-grid reveal" data-group="icon-status"></div>
+  </section>
+
+  <!-- ========================== SPACING (semantic) ========================== -->
+  <section class="chunk" id="spacing-sem">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">05 / Spacing</span>
+        <h2 class="h2">Element spacing.</h2>
+      </div>
+    </header>
+
+    <div class="glass semantic-space-stack reveal" id="semSpacing"></div>
+  </section>
+
+  <!-- ========================== RADIUS ========================== -->
+  <section class="chunk" id="radius">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">06 / Radius</span>
+        <h2 class="h2">Corner radius.</h2>
+      </div>
+    </header>
+
+    <div class="radius-row reveal" id="radiusRow"></div>
+  </section>
+
+  <!-- ========================== GRADIENT ========================== -->
+  <section class="chunk" id="gradient">
+    <header class="chunk-head reveal">
+      <span class="num-tag">07 / Gradient</span>
+      <h2 class="h2">Brand gradients.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      Multi-stop gradients composed from the primary, secondary, and supporting palettes. Three configurations: linear, vertical, and conic.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>Accent moments, not surfaces.</strong> Reserve gradients for hero areas, brand marks, and feature callouts where the brand should lead the eye — typically once per view, never more than twice. Avoid as default component backgrounds, dense content surfaces, or large layout regions, where they fight legibility and dilute hierarchy. Pair every gradient with neutral surfaces around it so the wash remains the focal point.
+    </p>
+
+    <div class="gradient-grid reveal" id="gradientGrid"></div>
+  </section>
+
+  <!-- ========================== GLASS / BLUR ========================== -->
+  <section class="chunk" id="glass">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">08 / Glass</span>
+        <h2 class="h2">Glass surfaces.</h2>
+      </div>
+    </header>
+
+    <p class="section-lede reveal">
+      Glassmorphism is the main material of this system. Every glass
+      surface — header, card, dropdown, toast, modal sheet — composes
+      from the same seven properties: a translucent background tint,
+      a backdrop blur, a saturation boost, a translucent border, a
+      radius, an outer shadow for elevation, and an inner shadow that
+      simulates the rim of the pane. Three axes determine the values.
+      Frost combines tint, blur, and border density. Tone selects
+      between a light treatment for canvas surfaces and a dark
+      treatment for imagery. Elevation selects the shadow tier.
+    </p>
+
+    <h4 class="h4 reveal">Anatomy</h4>
+    <div class="glass-anatomy reveal" id="glassAnatomy"></div>
+
+    <h4 class="h4 reveal">Frost — clear · light · regular · thick</h4>
+    <div class="glass-frost-grid reveal" id="glassFrostGrid"></div>
+
+    <h4 class="h4 reveal">Tone — light over canvas, dark over imagery</h4>
+    <div class="glass-tone-grid reveal" id="glassToneGrid"></div>
+
+    <h4 class="h4 reveal">Elevation — flat · raised · floating · overlay</h4>
+    <div class="glass-elevation-grid reveal" id="glassElevationGrid"></div>
+
+    <h4 class="h4 reveal">Inner shadow — rim light at every elevation</h4>
+    <div class="glass-inset-grid reveal" id="glassInsetGrid"></div>
+
+    <h4 class="h4 reveal">States — resting · hover · pressed</h4>
+    <div class="glass-states-grid reveal" id="glassStatesGrid"></div>
+
+    <h4 class="h4 reveal">Blur scale</h4>
+    <div class="blur-row reveal" id="blurRow"></div>
+
+    <p class="usage-note reveal">
+      <strong>Pick one axis at a time.</strong> Frost handles content
+      density (clear for chips and hints, light for cards and chrome,
+      regular for popovers and side panels, thick for modal sheets).
+      Elevation handles vertical position above the page. Tone handles
+      the underlying canvas. Mixing axes is fine — a dark-tone, thick,
+      overlay glass is the standard modal treatment over imagery — but
+      every axis should pull its weight; don't pick a value that just
+      matches the default.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>Glass always carries shadow — including on press.</strong>
+      Resting glass uses its elevation tier; hover steps up one tier;
+      pressed steps down but never lands at zero. Without the shadow
+      movement, the tint shift alone is too low-contrast to register
+      as feedback — the surface reads as static even when it isn't.
+      Inner shadow stays constant across states; outer shadow does
+      the work.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>Sheen and bevel are decoration, not structure.</strong>
+      <code>.glass--sheen</code> paints a soft white gradient over the
+      surface; <code>.glass--bevel</code> draws an inside-border
+      gradient. Reach for them on hero glass and overlay surfaces
+      where extra dimensionality earns its keep. Skip them on dense
+      chrome (cards in a grid, list rows) where they read as visual
+      noise.
+    </p>
+  </section>
+
+  <!-- ========================== SHADOW & OUTLINE & OVERLAY ========================== -->
+  <section class="chunk" id="misc">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">09 / Effects</span>
+        <h2 class="h2">Visual effects.</h2>
+      </div>
+    </header>
+
+    <h4 class="h4 reveal">Shadow</h4>
+    <div class="misc-row reveal" id="shadowRow"></div>
+
+    <h4 class="h4 reveal">Focus and overlay</h4>
+    <div class="misc-row reveal" id="focusRow"></div>
+  </section>
+
+  <!-- ========================== FOOTER ========================== -->
+  <footer>
+    <span>END OF SECTION</span>
+  </footer>
+
+</main>
+
+<!-- ========================== TOAST · COPY-CONFIRMATION SNACKBAR ========================== -->
+<div class="toast toast--snackbar" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<script>
+/* =========================================================
+   TOKEN GROUPS — semantic only
+   ========================================================= */
+const BG_GROUPS = {
+  'bg-default': [
+    '--background-default',
+    '--background-default-subtle',
+    '--background-default-minimal',
+    '--background-default-hover',
+    '--background-default-active',
+    '--background-default-selected',
+    '--background-default-disabled',
+  ],
+  'bg-primary': [
+    '--background-primary',
+    '--background-primary-hover',
+    '--background-primary-active',
+    '--background-primary-subtle',
+    '--background-primary-minimal',
+    '--background-primary-disabled',
+    '--background-secondary-minimal',
+  ],
+  'bg-inverted': [
+    '--background-inverted',
+    '--background-inverted-subtle',
+    '--background-inverted-minimal',
+    '--background-inverted-hover',
+  ],
+  'bg-inverse': [
+    '--background-inverse',
+    '--background-on-inverse-hover',
+    '--background-on-inverse-active',
+  ],
+  'bg-status': [
+    '--background-safe',
+    '--background-info',
+    '--background-warning',
+    '--background-critical',
+  ],
+  'bg-utility': [
+    '--background-overlay',
+    '--background-row-hover',
+    '--background-toast',
+  ],
+};
+
+const TEXT_DEFAULT = [
+  '--text-default',
+  '--text-default-subtle',
+  '--text-default-minimal',
+  '--text-default-disabled',
+];
+const TEXT_INVERTED = [
+  '--text-inverted',
+  '--text-inverted-subtle',
+  '--text-inverted-minimal',
+  '--text-on-inverse',
+];
+const TEXT_BRAND = [
+  '--text-primary',
+  '--text-primary-subtle',
+  '--text-primary-strong',
+  '--text-secondary-strong',
+  '--text-accent',
+  '--text-accent-subtle',
+  '--text-emphasis',
+  '--text-link',
+];
+const TEXT_STATUS = [
+  '--text-safe',
+  '--text-safe-subtle',
+  '--text-info',
+  '--text-info-subtle',
+  '--text-info-strong',
+  '--text-warning',
+  '--text-warning-subtle',
+  '--text-critical',
+  '--text-critical-subtle',
+];
+
+const BORDER_GROUPS = {
+  'border-default': [
+    '--border-default',
+    '--border-default-subtle',
+    '--border-default-strong',
+    '--border-default-input',
+    '--border-default-disabled',
+  ],
+  'border-primary': [
+    '--border-primary',
+    '--border-primary-subtle',
+    '--border-primary-focus',
+    '--outline-focus',
+  ],
+  'border-inverted': [
+    '--border-inverted',
+    '--border-on-inverse-subtle',
+  ],
+  'border-status': [
+    '--border-safe',
+    '--border-info',
+    '--border-warning',
+    '--border-critical',
+    '--border-critical-strong',
+  ],
+  'border-utility': [
+    '--border-decorator',
+    '--border-swatch',
+    '--border-toast',
+    '--border-glass-light',
+    '--border-glass-dark',
+  ],
+};
+
+const ICON_DEFAULT = [
+  '--icon-default',
+  '--icon-default-subtle',
+  '--icon-default-minimal',
+  '--icon-default-disabled',
+];
+const ICON_PRIMARY = [
+  '--icon-primary',
+  '--icon-primary-strong',
+];
+const ICON_INVERTED = [
+  '--icon-inverted',
+  '--icon-inverted-subtle',
+];
+const ICON_STATUS = [
+  '--icon-safe',
+  '--icon-info',
+  '--icon-warning',
+  '--icon-critical',
+];
+
+/* Semantic spacing — seven groups (tier ladder, region rhythm,
+   container insets, control insets, content insets, flow rhythm,
+   gap) plus a deprecated-aliases group at the bottom. Each group
+   renders as a sub-heading followed by its rows, all inside the
+   existing .semantic-space-stack treatment. */
+const SEM_SPACING = [
+  { title: 'Tier ladder', tokens: [
+    '--space-tier-1', '--space-tier-2', '--space-tier-3', '--space-tier-4',
+    '--space-tier-5', '--space-tier-6', '--space-tier-7',
+  ]},
+  { title: 'Region rhythm', tokens: [
+    '--space-region-y-lg', '--space-region-y', '--space-region-y-sm',
+    '--space-page-x', '--space-page-x-md',
+  ]},
+  { title: 'Container insets', tokens: [
+    '--space-container-y-sm', '--space-container-y', '--space-container-y-lg',
+    '--space-container-x-sm', '--space-container-x', '--space-container-x-lg',
+  ]},
+  { title: 'Control insets', tokens: [
+    '--space-control-y-sm', '--space-control-y-md', '--space-control-y-lg',
+    '--space-control-y-xl', '--space-control-y-2xl',
+    '--space-control-x-sm', '--space-control-x-md', '--space-control-x-lg',
+    '--space-control-x-xl', '--space-control-x-2xl',
+  ]},
+  { title: 'Golden bands', kind: 'band' },
+  { title: 'Content insets', tokens: [
+    '--space-content-y-sm', '--space-content-y-md', '--space-content-y-lg',
+    '--space-content-x-sm', '--space-content-x-md', '--space-content-x-lg',
+  ]},
+  { title: 'Flow rhythm', tokens: [
+    '--space-flow-section', '--space-flow-block', '--space-flow-heading',
+    '--space-flow-element', '--space-flow-tight', '--space-flow-micro',
+  ]},
+  { title: 'Gap', tokens: [
+    '--space-gap-loose', '--space-gap-default', '--space-gap-tight',
+    '--space-gap-snug', '--space-gap-micro',
+  ]},
+  { title: 'Backward-compat aliases (deprecated)',
+    deprecated: true,
+    note: 'alias retained while existing CSS migrates to --space-flow-*',
+    tokens: [
+      '--margin-bottom-heading', '--margin-bottom-subheading',
+      '--margin-bottom-element', '--margin-bottom-paragraph',
+    ]},
+];
+
+const RADIUS_TOKENS = [
+  ['--radius-mc',   'first',  'micro corner'],
+  ['--radius-sm',   'second', 'small'],
+  ['--radius-md',   'third',  'medium'],
+  ['--radius-lg',   'fourth', 'large'],
+  ['--radius-xl',   'fifth',  'extra large'],
+  ['--radius-pill', 'sixth',  'pill'],
+];
+
+const GRADIENTS = [
+  ['--gradient-primary-secondary-horizontal', 'Primary → Secondary, horizontal'],
+  ['--gradient-primary-secondary-vertical',   'Primary → Secondary, vertical'],
+  ['--gradient-secondary-primary-horizontal', 'Secondary → Primary, horizontal'],
+  ['--gradient-secondary-primary-vertical',   'Secondary → Primary, vertical'],
+  ['--gradient-primary-subtle',               'Subtle lime wash'],
+  ['--gradient-brand',                        'Bold brand — lime → forest'],
+  ['--gradient-brand-mark',                   'Brand mark — conic'],
+  ['--gradient-earthy',                       'Earthy transition — lime → brown'],
+  ['--gradient-fade-down',                    'Fade to transparent'],
+  ['--gradient-secondary-subtle',             'Subtle earthy wash'],
+];
+
+const GLASS_ANATOMY = [
+  ['1. Background tint',    'color-mix(white-base 65%, transparent)',    '--glass-light-light-bg'],
+  ['2. Backdrop blur',      'blur(16px)',                                '--glass-light-light-blur'],
+  ['3. Saturation',         'saturate(140%)',                            '--glass-saturate'],
+  ['4. Border',             '1px solid mix(white 85%, transparent)',     '--glass-light-light-border'],
+  ['5. Radius',             'radius-lg (16)',                            '--glass-radius'],
+  ['6. Outer shadow',       '0 4px 30px mix(black 10%, transparent)',    '--glass-shadow-raised'],
+  ['7. Inner shadow (rim)', 'inset 0 1px 0 mix(white 55%, transparent)', '--glass-inset-light-soft'],
+  ['+ Sheen (optional)',    'linear-gradient 135deg, white 30% → 0',     '--glass-sheen-light'],
+];
+
+const GLASS_FROST = [
+  ['Clear',   '--glass-light-clear-bg',   '--glass-light-clear-border',   '--glass-light-clear-blur'],
+  ['Light',   '--glass-light-light-bg',   '--glass-light-light-border',   '--glass-light-light-blur'],
+  ['Regular', '--glass-light-regular-bg', '--glass-light-regular-border', '--glass-light-regular-blur'],
+  ['Thick',   '--glass-light-thick-bg',   '--glass-light-thick-border',   '--glass-light-thick-blur'],
+];
+
+const GLASS_TONES = [
+  ['Light · Light',   '--glass-light-light-bg',   '--glass-light-light-border',   false],
+  ['Light · Thick',   '--glass-light-thick-bg',   '--glass-light-thick-border',   false],
+  ['Dark · Light',    '--glass-dark-light-bg',    '--glass-dark-light-border',    true],
+  ['Dark · Thick',    '--glass-dark-thick-bg',    '--glass-dark-thick-border',    true],
+];
+
+const GLASS_ELEVATIONS = [
+  ['Flat',     '--glass-shadow-flat'],
+  ['Raised',   '--glass-shadow-raised'],
+  ['Floating', '--glass-shadow-floating'],
+  ['Overlay',  '--glass-shadow-overlay'],
+];
+
+const GLASS_INSETS = [
+  ['Light · Soft',   '--glass-inset-light-soft',   false],
+  ['Light · Strong', '--glass-inset-light-strong', false],
+  ['Dark · Soft',    '--glass-inset-dark-soft',    true],
+  ['Dark · Strong',  '--glass-inset-dark-strong',  true],
+];
+
+const GLASS_STATES = [
+  ['Resting', '--glass-shadow-raised'],
+  ['Hover',   '--glass-shadow-raised-hover'],
+  ['Pressed', '--glass-shadow-raised-pressed'],
+];
+
+const BLURS = [
+  '--blur-none',
+  '--blur-sm',
+  '--blur-md',
+  '--blur-lg',
+  '--blur-xl',
+  '--blur-2xl',
+];
+
+const SHADOWS = [
+  ['--shadow-sm', 'Subtle lift'],
+  ['--shadow-md', 'Cards & panels'],
+  ['--shadow-lg', 'Modals & overlays'],
+];
+
+const FOCUS_OVERLAY = [
+  ['--outline-focus',     'Keyboard focus ring'],
+  ['--background-overlay','Modal scrim'],
+];
+
+/* =========================================================
+   PRIMITIVE-REFERENCE MAP
+   For each semantic token shown on this page, the primitive
+   (or color-mix expression) it aliases in tokens.css. Source
+   of truth is tokens.css §2 — keep this in sync when a
+   semantic's definition changes.
+   ========================================================= */
+const SOURCES = {
+  /* ---------- Background ---------- */
+  '--background-default':          '--white-base',
+  '--background-default-subtle':   '--neutral-50',
+  '--background-default-minimal':  '--neutral-100',
+  '--background-default-hover':    '--neutral-200',
+  '--background-default-active':   '--neutral-300',
+  '--background-default-selected': '--primary-50',
+  '--background-default-disabled': 'mix(--neutral-900 5%, transparent)',
+
+  '--background-primary':          '--primary-400',
+  '--background-primary-hover':    '--primary-500',
+  '--background-primary-active':   '--primary-600',
+  '--background-primary-subtle':   '--primary-50',
+  '--background-primary-minimal':  '--primary-100',
+  '--background-primary-disabled': 'mix(--neutral-900 5%, transparent)',
+  '--background-secondary-minimal':'--secondary-100',
+
+  '--background-inverted':         '--primary-500',
+  '--background-inverted-subtle':  '--primary-600',
+  '--background-inverted-minimal': 'mix(--white-base 10%, transparent)',
+  '--background-inverted-hover':   '--primary-400',
+
+  '--background-inverse':           '--neutral-950',
+  '--background-on-inverse-hover':  'mix(--text-on-inverse 12%, transparent)',
+  '--background-on-inverse-active': 'mix(--text-on-inverse 22%, transparent)',
+
+  '--background-safe':             '--accent-50',
+  '--background-info':             '--info-50',
+  '--background-warning':          '--secondary-50',
+  '--background-critical':         '--critical-50',
+
+  '--background-overlay':          'mix(--primary-900 48%, transparent)',
+  '--background-row-hover':        'mix(--primary-50 60%, transparent)',
+  '--background-toast':            'mix(--neutral-950 92%, transparent)',
+
+  /* ---------- Text ---------- */
+  '--text-default':          '--neutral-950',
+  '--text-default-subtle':   'mix(--neutral-700 60%, --neutral-600 40%)',
+  '--text-default-minimal':  '--neutral-600',
+  '--text-default-disabled': 'mix(--neutral-900 30%, transparent)',
+
+  '--text-inverted':         '--white-base',
+  '--text-inverted-subtle':  'mix(--white-base 70%, transparent)',
+  '--text-inverted-minimal': 'mix(--white-base 45%, transparent)',
+
+  '--text-on-inverse':       '--white-base',
+
+  '--text-primary':          '--primary-500',
+  '--text-primary-subtle':   '--primary-400',
+  '--text-primary-strong':   '--primary-900',
+  '--text-secondary-strong': '--secondary-700',
+  '--text-accent':           '--accent-500',
+  '--text-accent-subtle':    '--accent-400',
+  '--text-emphasis':         '--secondary-500',
+  '--text-link':             '--primary-600',
+
+  '--text-safe':             '--accent-700',
+  '--text-safe-subtle':      '--accent-500',
+  '--text-info':             '--info-500',
+  '--text-info-subtle':      '--info-300',
+  '--text-info-strong':      '--info-700',
+  '--text-warning':          '--secondary-700',
+  '--text-warning-subtle':   '--secondary-500',
+  '--text-critical':         '--critical-700',
+  '--text-critical-subtle':  '--critical-500',
+
+  /* ---------- Border ---------- */
+  '--border-default':          'mix(--neutral-900 9%, transparent)',
+  '--border-default-subtle':   'mix(--neutral-900 5%, transparent)',
+  '--border-default-strong':   'mix(--neutral-900 22%, transparent)',
+  '--border-default-input':    '--neutral-300',
+  '--border-default-disabled': 'mix(--neutral-900 12%, transparent)',
+
+  '--border-primary':        '--primary-400',
+  '--border-primary-subtle': '--primary-200',
+  '--border-primary-focus':  '--secondary-500',
+  '--outline-focus':         '--primary-700',
+
+  '--border-inverted':       'mix(--white-base 18%, transparent)',
+  '--border-on-inverse-subtle': 'mix(--text-on-inverse 25%, transparent)',
+
+  '--border-safe':           '--accent-300',
+  '--border-info':           '--info-300',
+  '--border-warning':        '--secondary-300',
+  '--border-critical':       '--critical-300',
+  '--border-critical-strong':'--critical-500',
+
+  '--border-decorator':      '→ --text-default-subtle (semantic alias)',
+  '--border-swatch':         'mix(--black-base 6%, transparent)',
+  '--border-toast':          'mix(--white-base 12%, transparent)',
+  '--border-glass-light':    'mix(--white-base 85%, transparent)',
+  '--border-glass-dark':     'mix(--white-base 15%, transparent)',
+
+  /* ---------- Icon ---------- */
+  '--icon-default':          '--neutral-700',
+  '--icon-default-subtle':   '--neutral-500',
+  '--icon-default-minimal':  '--neutral-400',
+  '--icon-default-disabled': 'mix(--neutral-900 30%, transparent)',
+
+  '--icon-primary':          '--primary-400',
+  '--icon-primary-strong':   '--primary-500',
+
+  '--icon-inverted':         '--white-base',
+  '--icon-inverted-subtle':  'mix(--white-base 70%, transparent)',
+
+  '--icon-safe':             '--accent-500',
+  '--icon-info':             '--secondary-500',
+  '--icon-warning':          '--secondary-500',
+  '--icon-critical':         '--critical-500',
+
+  /* ---------- Semantic spacing — tier ladder ---------- */
+  '--space-tier-1': '--spacing-12x',
+  '--space-tier-2': '--spacing-8x',
+  '--space-tier-3': '--spacing-6x',
+  '--space-tier-4': '--spacing-4x',
+  '--space-tier-5': '--spacing-3x',
+  '--space-tier-6': '--spacing-2x',
+  '--space-tier-7': '--spacing-1x',
+
+  /* ---------- Region rhythm ---------- */
+  '--space-region-y-lg': '--spacing-16x',
+  '--space-region-y':    '--space-tier-1',
+  '--space-region-y-sm': '--space-tier-2',
+
+  /* ---------- Page gutter ---------- */
+  '--space-page-x':    '--spacing-8x',
+  '--space-page-x-md': '--spacing-5x',
+
+  /* ---------- Container insets ---------- */
+  '--space-container-y-sm': '--space-tier-4',
+  '--space-container-x-sm': '--spacing-5x',
+  '--space-container-y':    '--space-tier-3',
+  '--space-container-x':    '--space-tier-3',
+  '--space-container-y-lg': '--space-tier-2',
+  '--space-container-x-lg': '--space-tier-2',
+
+  /* ---------- Control insets ---------- */
+  '--space-control-y-sm':  '--space-tier-7',
+  '--space-control-y-md':  '--space-tier-6',
+  '--space-control-y-lg':  '--space-tier-5',
+  '--space-control-y-xl':  '--space-tier-4',
+  '--space-control-y-2xl':  '--spacing-5x',
+  '--space-control-x-sm':  '--space-tier-4',
+  '--space-control-x-md':  '--spacing-5x',
+  '--space-control-x-lg':  '--space-tier-2',
+  '--space-control-x-xl':  '--spacing-10x',
+  '--space-control-x-2xl':  '--space-tier-1',
+
+  /* ---------- Content insets ---------- */
+  '--space-content-y-sm': '--space-tier-6',
+  '--space-content-y-md': '--space-tier-4',
+  '--space-content-y-lg': '--spacing-5x',
+  '--space-content-x-sm': '--space-tier-5',
+  '--space-content-x-md': '--spacing-5x',
+  '--space-content-x-lg': '--space-tier-3',
+
+  /* ---------- Flow rhythm ---------- */
+  '--space-flow-section':  '--space-tier-2',
+  '--space-flow-block':    '--space-tier-3',
+  '--space-flow-heading':  '--space-tier-4',
+  '--space-flow-element':  '--space-tier-5',
+  '--space-flow-tight':    '--space-tier-6',
+  '--space-flow-micro':    '--space-tier-7',
+
+  /* ---------- Gap ---------- */
+  '--space-gap-loose':   '--space-tier-3',
+  '--space-gap-default': '--space-tier-4',
+  '--space-gap-tight':   '--space-tier-5',
+  '--space-gap-snug':    '--space-tier-6',
+  '--space-gap-micro':   '--space-tier-7',
+
+  /* ---------- Backward-compat aliases (deprecated) ---------- */
+  '--margin-bottom-heading':    '--space-flow-heading',
+  '--margin-bottom-subheading': '--space-flow-element',
+  '--margin-bottom-element':    '--space-flow-tight',
+  '--margin-bottom-paragraph':  '--space-flow-heading',
+
+  /* ---------- Radius ---------- */
+  '--radius-mc':   '--spacing-1x',
+  '--radius-sm':   '--spacing-2x',
+  '--radius-md':   '--spacing-3x',
+  '--radius-lg':   '--spacing-4x',
+  '--radius-xl':   '--spacing-6x',
+  '--radius-pill': '--spacing-25x',
+
+  /* ---------- Glass surfaces ---------- */
+  '--background-glass-light': 'mix(--white-base 65%, transparent)',
+  '--background-glass-dark':  'mix(--primary-200 35%, transparent)',
+
+  '--glass-saturate':              'saturate(140%)',
+  '--glass-radius':                '--radius-lg',
+  '--glass-light-clear-bg':        'mix(--white-base 25%, transparent)',
+  '--glass-light-light-bg':        'mix(--white-base 65%, transparent)',
+  '--glass-light-regular-bg':      'mix(--white-base 75%, transparent)',
+  '--glass-light-thick-bg':        'mix(--white-base 92%, transparent)',
+  '--glass-light-clear-border':    'mix(--white-base 40%, transparent)',
+  '--glass-light-light-border':    'mix(--white-base 85%, transparent)',
+  '--glass-light-regular-border':  'mix(--white-base 70%, transparent)',
+  '--glass-light-thick-border':    'mix(--white-base 90%, transparent)',
+  '--glass-dark-light-bg':         'mix(--primary-200 35%, transparent)',
+  '--glass-dark-thick-bg':         'mix(--primary-900 82%, transparent)',
+  '--glass-dark-light-border':     'mix(--white-base 15%, transparent)',
+  '--glass-dark-thick-border':     'mix(--white-base 22%, transparent)',
+  '--glass-shadow-raised':         '0 4px 30px mix(--black-base 10%, transparent), 0 1px 2px mix(--black-base 4%, transparent)',
+  '--glass-shadow-floating':       '0 12px 40px mix(--black-base 14%, transparent), 0 4px 12px mix(--black-base 6%, transparent)',
+  '--glass-shadow-overlay':        '0 24px 60px mix(--black-base 18%, transparent), 0 8px 20px mix(--black-base 8%, transparent)',
+  '--glass-shadow-raised-hover':   '0 12px 40px mix(--black-base 14%, transparent), 0 4px 12px mix(--black-base 6%, transparent)',
+  '--glass-shadow-raised-pressed': '0 2px 12px mix(--black-base 8%, transparent)',
+  '--glass-inset-light-soft':      'inset 0 1px 0 mix(--white-base 55%, transparent), inset 0 -1px 0 mix(--black-base 4%, transparent)',
+  '--glass-inset-light-strong':    'inset 0 1px 0 mix(--white-base 75%, transparent), inset 1px 1px 0 mix(--white-base 30%, transparent), inset 0 -1px 2px mix(--black-base 6%, transparent)',
+  '--glass-inset-dark-soft':       'inset 0 1px 0 mix(--white-base 18%, transparent), inset 0 -1px 0 mix(--black-base 10%, transparent)',
+  '--glass-inset-dark-strong':     'inset 0 1px 0 mix(--white-base 28%, transparent), inset 1px 1px 0 mix(--white-base 12%, transparent), inset 0 -1px 2px mix(--black-base 14%, transparent)',
+};
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+const cs = getComputedStyle(document.documentElement);
+function resolve(varName) {
+  return cs.getPropertyValue(varName).trim();
+}
+
+/* =========================================================
+   RENDER — background token cards
+   ========================================================= */
+function renderBackgroundGroups() {
+  Object.entries(BG_GROUPS).forEach(([group, list]) => {
+    const wrap = document.querySelector(`[data-group="${group}"]`);
+    if (!wrap) return;
+    wrap.innerHTML = list.map(name => `
+      <button type="button" class="token-card" data-var="${name}" aria-label="Copy ${name}"
+              style="--swatch: var(${name})">
+        <div class="preview"></div>
+        <div class="body">
+          <span class="name">${name}</span>
+          <span class="resolved">${escapeHtml(SOURCES[name] || resolve(name)) || '—'}</span>
+        </div>
+      </button>
+    `).join('');
+  });
+}
+
+/* =========================================================
+   RENDER — text token rows
+   ========================================================= */
+function renderTextRow(containerId, list, opts = {}) {
+  const wrap = document.getElementById(containerId);
+  if (!wrap) return;
+  wrap.innerHTML = list.map(name => {
+    const rowClass = opts.inverted ? 'text-row inverted-row' : 'text-row';
+    return `
+      <div class="${rowClass}" data-var="${name}" tabindex="0" role="button" aria-label="Copy ${name}">
+        <span class="label">${name}</span>
+        <span class="sample" style="color: var(${name})">Combatting AMR on the Farm Frontier — Aa Bb 1234</span>
+      </div>
+    `;
+  }).join('');
+}
+
+/* =========================================================
+   RENDER — border cards
+   ========================================================= */
+function renderBorderGroups() {
+  Object.entries(BORDER_GROUPS).forEach(([group, list]) => {
+    const wrap = document.querySelector(`[data-group="${group}"]`);
+    if (!wrap) return;
+    const isInverted = group === 'border-inverted';
+    wrap.innerHTML = list.map(name => {
+      const cardClass = isInverted ? 'border-card inverted-card' : 'border-card';
+      const value = SOURCES[name] || resolve(name) || '—';
+      return `
+        <button type="button" class="${cardClass}" data-var="${name}" aria-label="Copy ${name}"
+                style="border: var(--border-width-base) solid var(${name})">
+          <div class="demo" style="border: var(--border-width-base) solid var(${name})"></div>
+          <span class="name">${name}</span>
+          <span class="resolved">${escapeHtml(value)}</span>
+        </button>
+      `;
+    }).join('');
+  });
+}
+
+/* =========================================================
+   RENDER — icon cards (single SVG glyph)
+   ========================================================= */
+const ICON_SVG = `
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M12 2C9 6 5 8 5 13a7 7 0 0 0 14 0c0-5-4-7-7-11Z"/>
+    <path d="M12 9v9"/>
+  </svg>
+`;
+function renderIconGroup(group, list, opts = {}) {
+  const wrap = document.querySelector(`[data-group="${group}"]`);
+  if (!wrap) return;
+  wrap.innerHTML = list.map(name => {
+    const cardClass = opts.inverted ? 'icon-card inverted-card' : 'icon-card';
+    const value = SOURCES[name] || resolve(name) || '—';
+    return `
+      <button type="button" class="${cardClass}" data-var="${name}" aria-label="Copy ${name}">
+        <span class="icon-bubble" style="color: var(${name})">${ICON_SVG}</span>
+        <span class="meta">
+          <span class="name">${name}</span>
+          <span class="resolved">${escapeHtml(value)}</span>
+        </span>
+      </button>
+    `;
+  }).join('');
+}
+
+/* =========================================================
+   RENDER — semantic spacing
+   ========================================================= */
+function renderSemSpacing() {
+  const wrap = document.getElementById('semSpacing');
+  if (!wrap) return;
+  wrap.innerHTML = SEM_SPACING.map(group => {
+    if (group.kind === 'band') {
+      return `
+        <h4 class="sem-space-group-title">${escapeHtml(group.title)}</h4>
+        <p class="sem-space-group-note sem-space-band-note">
+          Three rails each obey their own band of padding-to-font
+          ratios. The bands differ because the surface types hold
+          different content — a single-line label on a button, a
+          floating value inside a long rail on an input, multi-line
+          prose on an alert. New surfaces declare which rail they
+          belong to and inherit the corresponding band. SM
+          consistently sits below the Y floor on the control rails
+          as a documented density tier, matching peer-system
+          convention for compact inputs and compact buttons.
+        </p>
+        <table class="sem-space-band">
+          <thead>
+            <tr>
+              <th>Rail</th>
+              <th>pad-y / font</th>
+              <th>pad-x / font</th>
+              <th>X cap?</th>
+              <th>Surfaces</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Form (input)</td>
+              <td>0.50 – 0.75 at MD+</td>
+              <td>1.00 – 1.50 at canonical</td>
+              <td>Yes — 32px above LG</td>
+              <td>Text input, textarea, select, dropdown trigger, multi-select</td>
+            </tr>
+            <tr>
+              <td>Button</td>
+              <td>0.50 – 0.75 at MD+</td>
+              <td>1.00 – 1.50 at all sizes</td>
+              <td>No</td>
+              <td>Button, tab, segmented switch</td>
+            </tr>
+            <tr>
+              <td>Content</td>
+              <td>0.60 – 1.25</td>
+              <td>0.90 – 1.50</td>
+              <td>n/a</td>
+              <td>Alert, toast</td>
+            </tr>
+          </tbody>
+        </table>
+      `;
+    }
+    const heading = `
+      <h4 class="sem-space-group-title${group.deprecated ? ' is-deprecated' : ''}">
+        ${escapeHtml(group.title)}${group.note
+          ? ` <span class="sem-space-group-note">${escapeHtml(group.note)}</span>`
+          : ''}
+      </h4>
+    `;
+    const rows = group.tokens.map(name => {
+      const value = SOURCES[name] || resolve(name) || '—';
+      return `
+        <div class="sem-space-row${group.deprecated ? ' is-deprecated' : ''}" data-var="${name}" tabindex="0" role="button" aria-label="Copy ${name}">
+          <span class="label">${name}${group.deprecated
+            ? ' <span class="sem-space-deprecated-tag">DEPRECATED</span>'
+            : ''}</span>
+          <div class="bar-wrap">
+            <div class="bar" style="width: var(${name})"></div>
+          </div>
+          <span class="resolved">${escapeHtml(value)}</span>
+        </div>
+      `;
+    }).join('');
+    return heading + rows;
+  }).join('');
+}
+
+/* =========================================================
+   RENDER — radius
+   ========================================================= */
+function renderRadius() {
+  const wrap = document.getElementById('radiusRow');
+  if (!wrap) return;
+  wrap.innerHTML = RADIUS_TOKENS.map(([name, modifier, label]) => {
+    const value = SOURCES[name] || resolve(name) || '—';
+    return `
+      <button type="button" class="radius-card ${modifier}" data-var="${name}" aria-label="Copy ${name}">
+        <div class="demo"></div>
+        <span class="name">${name}</span>
+        <span class="resolved">${escapeHtml(value)}</span>
+      </button>
+    `;
+  }).join('');
+}
+
+/* =========================================================
+   RENDER — gradients
+   ========================================================= */
+function renderGradients() {
+  const wrap = document.getElementById('gradientGrid');
+  if (!wrap) return;
+  wrap.innerHTML = GRADIENTS.map(([name, desc]) => `
+    <button type="button" class="gradient-card" data-var="${name}" aria-label="Copy ${name}">
+      <div class="preview" style="background: var(${name})"></div>
+      <div class="body">
+        <div class="name">${name}</div>
+        <div class="desc">${desc}</div>
+      </div>
+    </button>
+  `).join('');
+}
+
+/* =========================================================
+   RENDER — glass surfaces & blur
+   ========================================================= */
+function renderGlassAnatomy() {
+  const wrap = document.getElementById('glassAnatomy');
+  if (!wrap) return;
+  wrap.innerHTML = GLASS_ANATOMY.map(([label, value, varName]) => `
+    <div class="glass-layer-row" data-var="${varName}" tabindex="0" role="button" aria-label="Copy ${varName}">
+      <span class="glass-layer-row__label">${label}</span>
+      <span class="glass-layer-row__value">${escapeHtml(value)}</span>
+      <span class="glass-layer-row__name">${varName}</span>
+    </div>
+  `).join('');
+}
+
+function renderGlassFrostGrid() {
+  const wrap = document.getElementById('glassFrostGrid');
+  if (!wrap) return;
+  wrap.innerHTML = GLASS_FROST.map(([label, bgVar, borderVar, blurVar]) => `
+    <div class="glass-frost-tile" style="background: var(${bgVar}); border-color: var(${borderVar});
+                                         -webkit-backdrop-filter: var(${blurVar}) var(--glass-saturate);
+                                                 backdrop-filter: var(${blurVar}) var(--glass-saturate);"
+         data-var="${bgVar}" tabindex="0" role="button" aria-label="Copy ${bgVar}">
+      <span class="glass-frost-tile__label">${label}</span>
+      <span class="glass-frost-tile__token">${bgVar}</span>
+      <span class="glass-frost-tile__token">${blurVar}</span>
+    </div>
+  `).join('');
+}
+
+function renderGlassToneGrid() {
+  const wrap = document.getElementById('glassToneGrid');
+  if (!wrap) return;
+  wrap.innerHTML = GLASS_TONES.map(([label, bgVar, borderVar, isDark]) => `
+    <div class="glass-tone-tile ${isDark ? 'is-dark' : ''}"
+         style="background: var(${bgVar}); border-color: var(${borderVar});
+                -webkit-backdrop-filter: var(--blur-lg) var(--glass-saturate);
+                        backdrop-filter: var(--blur-lg) var(--glass-saturate);"
+         data-var="${bgVar}" tabindex="0" role="button" aria-label="Copy ${bgVar}">
+      <span class="glass-tone-tile__label">${label}</span>
+      <span class="glass-tone-tile__token">${bgVar}</span>
+    </div>
+  `).join('');
+}
+
+function renderGlassElevationGrid() {
+  const wrap = document.getElementById('glassElevationGrid');
+  if (!wrap) return;
+  wrap.innerHTML = GLASS_ELEVATIONS.map(([label, shadowVar]) => `
+    <div class="glass-elev-tile" style="box-shadow: var(${shadowVar}), var(--glass-inset-light-soft);"
+         data-var="${shadowVar}" tabindex="0" role="button" aria-label="Copy ${shadowVar}">
+      <span class="glass-elev-tile__label">${label}</span>
+      <span class="glass-elev-tile__token">${shadowVar}</span>
+    </div>
+  `).join('');
+}
+
+function renderGlassInsetGrid() {
+  const wrap = document.getElementById('glassInsetGrid');
+  if (!wrap) return;
+  wrap.innerHTML = GLASS_INSETS.map(([label, insetVar, isDark]) => `
+    <div class="glass-inset-tile ${isDark ? 'is-dark' : ''}"
+         style="background: var(${isDark ? '--glass-dark-light-bg' : '--glass-light-light-bg'});
+                border-color: var(${isDark ? '--glass-dark-light-border' : '--glass-light-light-border'});
+                box-shadow: var(${insetVar});
+                -webkit-backdrop-filter: var(--blur-lg) var(--glass-saturate);
+                        backdrop-filter: var(--blur-lg) var(--glass-saturate);"
+         data-var="${insetVar}" tabindex="0" role="button" aria-label="Copy ${insetVar}">
+      <span class="glass-inset-tile__label">${label}</span>
+      <span class="glass-inset-tile__token">${insetVar}</span>
+    </div>
+  `).join('');
+}
+
+function renderGlassStatesGrid() {
+  const wrap = document.getElementById('glassStatesGrid');
+  if (!wrap) return;
+  wrap.innerHTML = GLASS_STATES.map(([label, shadowVar], i) => `
+    <div class="glass-state-tile"
+         style="background: var(${i === 2 ? '--glass-light-light-bg-pressed' : i === 1 ? '--glass-light-light-bg-hover' : '--glass-light-light-bg'});
+                border-color: var(${i === 1 ? '--glass-light-light-border-hover' : '--glass-light-light-border'});
+                box-shadow: var(${shadowVar}), var(--glass-inset-light-soft);
+                transform: translateY(${i === 1 ? '-1px' : '0'});
+                -webkit-backdrop-filter: var(--blur-lg) var(--glass-saturate);
+                        backdrop-filter: var(--blur-lg) var(--glass-saturate);"
+         data-var="${shadowVar}" tabindex="0" role="button" aria-label="Copy ${shadowVar}">
+      <span class="glass-state-tile__label">${label}</span>
+      <span class="glass-state-tile__token">${shadowVar}</span>
+    </div>
+  `).join('');
+}
+
+function renderBlurRow() {
+  const wrap = document.getElementById('blurRow');
+  if (!wrap) return;
+  wrap.innerHTML = BLURS.map(name => `
+    <div class="blur-tile" data-var="${name}" tabindex="0" role="button" aria-label="Copy ${name}"
+         style="--blur-amount: var(${name})">
+      <span class="meta">${name}</span>
+    </div>
+  `).join('');
+}
+
+/* =========================================================
+   RENDER — shadow / focus / overlay
+   ========================================================= */
+function renderShadows() {
+  const wrap = document.getElementById('shadowRow');
+  if (!wrap) return;
+  wrap.innerHTML = SHADOWS.map(([name, label]) => `
+    <button type="button" class="misc-card" data-var="${name}" aria-label="Copy ${name}"
+            style="box-shadow: var(${name})">
+      <span class="name">${name}</span>
+      <span class="resolved">${label}</span>
+    </button>
+  `).join('');
+}
+
+function renderFocusOverlay() {
+  const wrap = document.getElementById('focusRow');
+  if (!wrap) return;
+  wrap.innerHTML = FOCUS_OVERLAY.map(([name, label]) => {
+    const isOutline = name === '--outline-focus';
+    const styleAttr = isOutline
+      ? `outline: 3px solid var(${name}); outline-offset: 4px;`
+      : `background: var(${name}); color: var(--text-inverted); border-color: transparent;`;
+    return `
+      <button type="button" class="misc-card" data-var="${name}" aria-label="Copy ${name}" style="${styleAttr}">
+        <span class="name" ${isOutline ? '' : 'style="color: var(--text-inverted)"'}>${name}</span>
+        <span class="resolved" ${isOutline ? '' : 'style="color: var(--text-inverted-subtle)"'}>${label}</span>
+      </button>
+    `;
+  }).join('');
+}
+
+/* =========================================================
+   COPY + TOAST (delegated)
+   ========================================================= */
+const toast = document.getElementById('toast');
+let toastTimer;
+function showToast(varName) {
+  toast.innerHTML = `Copied <span class="toast-name">${varName}</span>`;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 2000);
+}
+async function copyVar(varName, el) {
+  const text = `var(${varName})`;
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+    } else {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    }
+    showToast(varName);
+    if (el && el.classList) {
+      el.classList.remove('copied');
+      void el.offsetWidth;
+      el.classList.add('copied');
+    }
+  } catch (err) {
+    showToast('Copy failed');
+  }
+}
+function getCopyTarget(el) {
+  if (!el) return null;
+  return el.closest('[data-var]');
+}
+document.addEventListener('click', (e) => {
+  const target = getCopyTarget(e.target);
+  if (target) copyVar(target.dataset.var, target);
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const target = getCopyTarget(document.activeElement);
+  if (target) {
+    e.preventDefault();
+    copyVar(target.dataset.var, target);
+  }
+});
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, m => ({
+    '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+  })[m]);
+}
+
+/* =========================================================
+   REVEAL ON SCROLL
+   ========================================================= */
+function initReveal() {
+  const items = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    items.forEach(el => el.classList.add('in'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        en.target.classList.add('in');
+        io.unobserve(en.target);
+      }
+    });
+  }, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(el => io.observe(el));
+}
+
+/* =========================================================
+   BOOT
+   ========================================================= */
+document.addEventListener('DOMContentLoaded', () => {
+  renderBackgroundGroups();
+  renderTextRow('textDefault',  TEXT_DEFAULT);
+  renderTextRow('textInverted', TEXT_INVERTED, { inverted: true });
+  renderTextRow('textBrand',    TEXT_BRAND);
+  renderTextRow('textStatus',   TEXT_STATUS);
+  renderBorderGroups();
+  renderIconGroup('icon-default',  ICON_DEFAULT);
+  renderIconGroup('icon-primary',  ICON_PRIMARY);
+  renderIconGroup('icon-inverted', ICON_INVERTED, { inverted: true });
+  renderIconGroup('icon-status',   ICON_STATUS);
+  renderSemSpacing();
+  renderRadius();
+  renderGradients();
+  renderGlassAnatomy();
+  renderGlassFrostGrid();
+  renderGlassToneGrid();
+  renderGlassElevationGrid();
+  renderGlassInsetGrid();
+  renderGlassStatesGrid();
+  renderBlurRow();
+  renderShadows();
+  renderFocusOverlay();
+  initReveal();
+});
+</script>
+
+</body>
+</html>

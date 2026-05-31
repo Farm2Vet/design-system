@@ -1,0 +1,317 @@
+/* =========================================================
+   PAGE — DISEASE WIKI (V-01)
+   The Disease Management admin landing. This page IS the
+   product page — no design-system documentation chrome and
+   no top app bar; the sidebar's brand and profile footer
+   are the single source of truth for identity.
+
+   Every interactive surface on the page is a real component
+   instance. This file contributes only:
+     · A flat document body (no ambient gradient — this is
+       a product surface, not a docs page).
+     · The app-shell layout grid (sidebar | main).
+     · Slot positioning for the page header (breadcrumb,
+       title, lede, primary action), the toolbar (saved-view
+       tabs + 2 icon-only buttons), the catalogue table, the
+       pager, and the floating modal.
+     · Square-cap width overrides on .btn instances used in
+       the pager and toolbar slots.
+     · The cover-tile + form grid inside the modal.
+
+   Depends on: tokens.css, base.css, typography.css,
+               form.css, dropdown.css, button.css, badge.css,
+               sidebar.css, table.css, modal.css,
+               chip.css, search-toolbar.css
+   ========================================================= */
+
+/* =========================================================
+   DOCUMENT BODY
+   Override base.css's ambient gradient: a product page reads
+   flat. The drifting gradient is documentation atmosphere,
+   not product chrome.
+   ========================================================= */
+body { background: var(--background-default-subtle); }
+body::before { content: none; }
+
+/* =========================================================
+   APP SHELL — sidebar | main grid. No top app bar lives
+   above the shell, so the grid takes the full viewport.
+
+   The grid column tracks the sidebar's collapsed state via
+   :has(). When .sidebar--collapsed is toggled (by
+   scripts/sidebar.js), the column resolves from
+   --sidebar-width-expanded (280px) to --sidebar-width-rail
+   (64px) and main reflows into the freed space. Without
+   this, the slot would stay at the expanded width and leave
+   a dead gap between the collapsed rail and main.
+
+   Width tokens are read from :root (sidebar.css) — the local
+   override `--sidebar-width-expanded: 100%` on
+   `.app-shell__side .sidebar` only re-scopes the rail's own
+   width inside the slot, it does not cascade up to
+   .app-shell, so the root 280px / 64px values still resolve
+   here.
+   ========================================================= */
+.app-shell {
+    display: grid;
+    grid-template-columns: var(--sidebar-width-expanded) minmax(0, 1fr);
+    min-height: 100vh;
+    background: var(--background-default);
+    /* Match the rail's own width transition so the column
+       animates in lock-step with the rail. */
+    transition: grid-template-columns .22s cubic-bezier(.2,.8,.2,1);
+}
+.app-shell:has(.sidebar--collapsed) {
+    grid-template-columns: var(--sidebar-width-rail) minmax(0, 1fr);
+}
+@media (max-width: 880px) {
+    /* Below the sidebar breakpoint the rail is hidden, so the
+       collapsed-state column override must also collapse to a
+       single content column — otherwise :has() (which has
+       higher specificity than the base .app-shell rule) would
+       keep the 64px column even with .app-shell__side hidden. */
+    .app-shell,
+    .app-shell:has(.sidebar--collapsed) { grid-template-columns: 1fr; }
+    .app-shell__side { display: none; }
+}
+
+/* =========================================================
+   SIDEBAR SLOT
+   The slot is a bare column — the .sidebar--anchored rail
+   inside provides its own solid surface, flush edge, and
+   trailing-edge shadow. No slot padding, no slot background,
+   no slot border.
+
+   z-index lifts the rail above .app-shell__main so the rail's
+   trailing-edge shadow renders over the content column. Without
+   it, main (the later grid sibling) paints on top of the shadow
+   band and the shadow disappears at the boundary.
+   ========================================================= */
+.app-shell__side {
+    padding: 0;
+    position: relative;
+    z-index: 1;
+}
+.app-shell__side .sidebar {
+    /* Re-size the rail to the slot's 280-col without touching
+       the global token. */
+    --sidebar-width-expanded: 100%;
+    /* Full viewport-height column; min-height: auto on the
+       base rail would let it shrink to content. */
+    min-height: 100vh;
+}
+
+/* =========================================================
+   MAIN SLOT
+   ========================================================= */
+.app-shell__main {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    background: var(--background-default);
+}
+
+/* =========================================================
+   PAGE HEADER — breadcrumb · title · lede · primary action
+   Page-scoped scaffolding. Positioning only.
+   ========================================================= */
+.app-shell__page-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tier-5);
+    padding: var(--space-tier-3) var(--space-page-x) 0;
+}
+
+.app-shell__breadcrumb {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-tier-7);
+    font-size: var(--text-eyebrow);
+    color: var(--text-default-minimal);
+}
+.app-shell__breadcrumb-link {
+    color: inherit;
+    text-decoration: none;
+}
+.app-shell__breadcrumb-link:hover { color: var(--text-default-subtle); }
+.app-shell__breadcrumb-sep { color: var(--text-default-disabled); }
+.app-shell__breadcrumb-tail {
+    color: var(--text-default-subtle);
+    font-weight: 600;
+}
+
+.app-shell__page-header-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-tier-3);
+}
+.app-shell__page-header-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tier-7);
+}
+.app-shell__page-title {
+    margin: 0;
+    font-size: var(--text-h3);
+    line-height: 1.2;
+    color: var(--text-default);
+    font-weight: 600;
+}
+.app-shell__page-lede {
+    margin: 0;
+    font-size: var(--text-body-sm);
+    color: var(--text-default-subtle);
+}
+
+/* =========================================================
+   CATALOGUE SLOT — the .table inside the catalogue slot.
+   Width + margin only — the component owns its own visuals.
+   ========================================================= */
+.app-shell__catalogue {
+    margin: var(--space-tier-4) var(--space-page-x) var(--space-tier-3);
+    width: calc(100% - 2 * var(--space-page-x));
+}
+
+/* =========================================================
+   PAGER — every clickable cell is a real .btn instance.
+   ========================================================= */
+.app-pager-region {
+    padding: var(--space-container-y) var(--space-container-x-lg);
+    border-top: var(--border-width-base) solid var(--border-default-subtle);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-gap-default);
+    background: var(--background-default-subtle);
+    margin-top: auto;
+}
+.app-pager {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-gap-micro);
+}
+.app-pager__btn.btn {
+    width: 32px;
+    min-width: 32px;
+    padding-left: 0;
+    padding-right: 0;
+}
+.app-pager__btn .icon { width: 14px; height: 14px; }
+
+.app-pager__ellipsis {
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    color: var(--text-default-minimal);
+    user-select: none;
+}
+
+/* =========================================================
+   DATA REGION — positioning context for the floating modal.
+   The modal anchors to the top of the table region, not to
+   the top of main, so it never overlaps the toolbar.
+   ========================================================= */
+.app-shell__data-region {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+/* =========================================================
+   FLOATING MODAL — pinned to top-right of the data region
+   (table + pager). Canonical .modal markup; only positioning
+   changes.
+   ========================================================= */
+.app-shell__modal-layer {
+    position: absolute;
+    top: var(--space-tier-4);
+    right: var(--space-tier-4);
+    width: clamp(380px, 32%, 480px);
+    z-index: 81;
+}
+@media (max-width: 1100px) {
+    .app-shell__modal-layer {
+        position: static;
+        width: auto;
+        margin: var(--space-tier-4) var(--space-container-x-lg) var(--space-container-y);
+    }
+}
+.app-shell__modal-layer .modal {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    max-width: none;
+    transform: none;
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+.app-shell__modal-layer .modal__surface {
+    width: 100%;
+    max-width: none;
+}
+
+/* Modal form grid */
+.add-disease-form {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: var(--space-gap-default);
+}
+.add-disease-form > .field--cover    { grid-column: 1 / -1; justify-self: center; }
+.add-disease-form > .field--codename { grid-column: span 2; }
+.add-disease-form > .field--fullname { grid-column: span 4; }
+.add-disease-form > .field--species  { grid-column: span 3; }
+.add-disease-form > .field--pathogen { grid-column: span 3; }
+.add-disease-form > .field--aliases  { grid-column: 1 / -1; }
+.add-disease-form > .field--desc     { grid-column: 1 / -1; }
+
+@media (max-width: 600px) {
+    .add-disease-form > .field--codename,
+    .add-disease-form > .field--fullname,
+    .add-disease-form > .field--species,
+    .add-disease-form > .field--pathogen {
+        grid-column: 1 / -1;
+    }
+}
+
+/* Cover-image tile — page-scaffolding (no avatar-upload
+   component exists; .file-upload is a dropzone, wrong shape). */
+.cover-tile {
+    position: relative;
+    width: 88px;
+    height: 88px;
+}
+.cover-tile__square {
+    width: 88px;
+    height: 88px;
+    border-radius: var(--radius-md);
+    background: var(--background-default-minimal);
+    color: var(--icon-default);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.cover-tile__square svg { width: 44px; height: 44px; }
+.cover-tile__edit {
+    position: absolute;
+    bottom: -6px;
+    right: -6px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--background-primary);
+    color: var(--text-inverted);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--background-default);
+    box-shadow: var(--shadow-sm);
+}
+.cover-tile__edit svg { width: 14px; height: 14px; }

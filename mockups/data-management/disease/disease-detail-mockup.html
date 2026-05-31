@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Disease Detail — Low-Fi Mockup</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, system-ui, sans-serif;
+    margin: 0;
+    padding: 24px;
+    background: #f5f5f5;
+    color: #222;
+    line-height: 1.5;
+  }
+  .frame { max-width: 1100px; margin: 0 auto; }
+
+  /* Generic low-fi box */
+  .box {
+    border: 1.5px solid #888;
+    background: #fff;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+  }
+  .box--dashed { border-style: dashed; background: #fafafa; }
+  .box--muted { background: #eee; }
+
+  .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .row--between { justify-content: space-between; }
+  .grow { flex: 1; }
+  .stack > * + * { margin-top: 10px; }
+
+  /* Fake controls */
+  .btn {
+    border: 1.5px solid #555;
+    background: #fff;
+    padding: 6px 14px;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .btn--primary { background: #222; color: #fff; }
+  .btn--danger  { border-color: #b00; color: #b00; }
+
+  .chip {
+    display: inline-block;
+    border: 1.5px solid #888;
+    border-radius: 999px;
+    padding: 2px 10px;
+    font-size: 12px;
+    background: #fff;
+  }
+  .chip--on { background: #222; color: #fff; border-color: #222; }
+  .chip--warn { background: #fff3cd; border-color: #c8a200; }
+
+  .tab {
+    border: 1.5px solid #888;
+    border-bottom: none;
+    background: #eee;
+    padding: 6px 14px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .tab--active { background: #fff; font-weight: 600; }
+  .tabstrip { display: flex; gap: 0; border-bottom: 1.5px solid #888; margin-bottom: 0; }
+  .tabstrip .tab + .tab { margin-left: -1.5px; }
+
+  .dd {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1.5px solid #555;
+    background: #fff;
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+  .dd::after { content: "▾"; font-size: 11px; }
+
+  /* Section */
+  h1 { font-size: 24px; margin: 0; }
+  h2 { font-size: 16px; margin: 0 0 10px; text-transform: uppercase; letter-spacing: 0.04em; color: #555; }
+  h3 { font-size: 13px; margin: 0 0 4px; color: #666; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  .field { padding: 8px 0; border-bottom: 1px dashed #ccc; }
+  .field:last-child { border-bottom: none; }
+  .field__label { font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+  .field__value { font-size: 14px; color: #222; }
+  .field__value--md::before { content: "[ markdown ] "; color: #888; font-size: 11px; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+
+  .stat {
+    border: 1.5px solid #888;
+    padding: 10px;
+    text-align: center;
+    background: #fafafa;
+  }
+  .stat__label { font-size: 11px; color: #666; text-transform: uppercase; }
+  .stat__value { font-size: 18px; font-weight: 600; margin-top: 4px; }
+
+  .crumb { font-size: 13px; color: #666; margin-bottom: 10px; }
+  .crumb a { color: #666; text-decoration: underline; }
+
+  .placeholder {
+    color: #999;
+    font-style: italic;
+  }
+
+  /* Annotation note for low-fi */
+  .annot {
+    font-size: 11px;
+    color: #999;
+    text-align: right;
+    margin-top: -8px;
+    margin-bottom: 14px;
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+<div class="frame">
+
+  <!-- Global nav placeholder -->
+  <div class="box box--muted" style="text-align:center; color:#666;">[ global nav ]</div>
+
+  <!-- Breadcrumb -->
+  <div class="crumb">
+    <a href="#">Admin</a> / <a href="#">Disease Management</a> / <strong>PRRS-V2</strong>
+  </div>
+
+  <!-- Page header: title + status + meta + actions -->
+  <div class="box">
+    <div class="row row--between">
+      <div>
+        <div style="font-size:11px; color:#888; text-transform:uppercase; letter-spacing:0.05em;">Codename</div>
+        <h1>PRRS-V2</h1>
+        <div class="row" style="margin-top:8px;">
+          <span class="chip chip--on">Active</span>
+          <span class="chip chip--warn">⚠ EN version incomplete</span>
+          <span style="font-size:12px; color:#666;">Last updated: 2026-05-20 14:32</span>
+          <span style="font-size:12px; color:#666;">Created: 2025-11-03</span>
+        </div>
+      </div>
+      <div class="row">
+        <button class="btn">✎ Edit</button>
+        <button class="btn">Deactivate</button>
+        <button class="btn">⟳ Sync to Chatbot</button>
+        <button class="btn btn--danger">🗑 Delete version</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Version + Language controls -->
+  <div class="box">
+    <div class="row row--between">
+      <div class="row">
+        <div>
+          <div style="font-size:11px; color:#666; text-transform:uppercase;">Version</div>
+          <div class="dd" style="margin-top:4px;">v3.2 (active)</div>
+        </div>
+        <button class="btn" style="align-self:flex-end;">+ Add Version</button>
+        <button class="btn" style="align-self:flex-end;">Activate this version</button>
+      </div>
+      <div>
+        <div style="font-size:11px; color:#666; text-transform:uppercase;">Language</div>
+        <div class="tabstrip" style="margin-top:4px;">
+          <button class="tab tab--active">Vietnamese</button>
+          <button class="tab">English</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form switcher -->
+  <div class="box" style="border-color:#333; border-width:2px;">
+    <div class="row row--between">
+      <div class="grow">
+        <div style="font-size:11px; color:#666; text-transform:uppercase;">Clinical Form</div>
+        <div class="tabstrip" style="margin-top:6px;">
+          <button class="tab tab--active">Acute</button>
+          <button class="tab">Chronic</button>
+          <button class="tab">Subclinical</button>
+          <button class="tab" style="border-style:dashed; color:#666;">+ Add Form</button>
+        </div>
+      </div>
+      <div class="row">
+        <button class="btn">✎ Rename form</button>
+        <button class="btn btn--danger">🗑 Delete form</button>
+      </div>
+    </div>
+    <div style="font-size:12px; color:#666; margin-top:10px; font-style:italic;">
+      ▾ Fields below belong to the <strong>Acute</strong> form. Switch tabs to view/edit other forms.
+    </div>
+  </div>
+
+  <!-- Completeness warning -->
+  <div class="box" style="border-color:#c8a200; background:#fff8db;">
+    <strong>⚠ Incomplete fields:</strong>
+    <span class="placeholder">prevention, symptoms_dermatology, differential_diagnosis</span>
+  </div>
+
+  <p class="annot">— Low-fi mockup. Boxes = real components later. —</p>
+
+  <!-- ============ DETAIL SECTIONS ============ -->
+
+  <!-- General Info -->
+  <div class="box stack">
+    <h2>General Info</h2>
+    <div class="field">
+      <div class="field__label">Name</div>
+      <div class="field__value field__value--md">Hội chứng rối loạn sinh sản và hô hấp ở lợn</div>
+    </div>
+    <div class="field">
+      <div class="field__label">Description</div>
+      <div class="field__value field__value--md placeholder">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Bệnh do virus PRRSV gây ra...</div>
+    </div>
+    <div class="field">
+      <div class="field__label">Possible Pig Types</div>
+      <div class="field__value">
+        <span class="chip">Sows</span>
+        <span class="chip">Boars</span>
+        <span class="chip">Piglets</span>
+        <span class="chip">Weaners</span>
+        <span class="chip">Growers</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Disease Stats -->
+  <div class="box">
+    <h2>Disease Stats</h2>
+    <div class="grid-3">
+      <div class="stat">
+        <div class="stat__label">Mortality Rate</div>
+        <div class="stat__value">30–80%</div>
+      </div>
+      <div class="stat">
+        <div class="stat__label">Morbidity Rate</div>
+        <div class="stat__value">90–100%</div>
+      </div>
+      <div class="stat">
+        <div class="stat__label">Fever</div>
+        <div class="stat__value">40.5–41.5 °C</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Symptoms -->
+  <div class="box">
+    <h2>Symptoms</h2>
+    <div class="grid-2">
+      <div class="box box--dashed">
+        <h3>Respiratory</h3>
+        <div class="placeholder">Ho khan, thở nhanh, viêm phổi kẽ...</div>
+      </div>
+      <div class="box box--dashed">
+        <h3>Digestive</h3>
+        <div class="placeholder">Tiêu chảy ở lợn con, bỏ ăn...</div>
+      </div>
+      <div class="box box--dashed">
+        <h3>Neurological</h3>
+        <div class="placeholder">Run rẩy, mất phối hợp vận động...</div>
+      </div>
+      <div class="box box--dashed">
+        <h3>Dermatology</h3>
+        <div class="placeholder">— empty —</div>
+      </div>
+      <div class="box box--dashed" style="grid-column: 1 / -1;">
+        <h3>Reproductive</h3>
+        <div class="placeholder">Sảy thai cuối kỳ, thai chết lưu, lợn con yếu...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Management -->
+  <div class="box">
+    <h2>Management</h2>
+    <div class="stack">
+      <div class="field">
+        <div class="field__label">Vaccines</div>
+        <div class="field__value field__value--md placeholder">Vacxin nhược độc PRRS-MLV, tiêm lúc 3–4 tuần tuổi...</div>
+      </div>
+      <div class="field">
+        <div class="field__label">Treatment</div>
+        <div class="field__value field__value--md placeholder">Không có điều trị đặc hiệu. Hỗ trợ bằng kháng sinh phổ rộng...</div>
+      </div>
+      <div class="field">
+        <div class="field__label">Recommendation</div>
+        <div class="field__value field__value--md placeholder">Cách ly đàn nhiễm, vệ sinh chuồng trại, kiểm soát con giống...</div>
+      </div>
+      <div class="field">
+        <div class="field__label">Prevention</div>
+        <div class="field__value placeholder">— empty —</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Additional Information -->
+  <div class="box">
+    <h2>Additional Information</h2>
+    <div class="stack">
+      <div class="field">
+        <div class="field__label">Immediate Actions</div>
+        <div class="field__value field__value--md placeholder">Cách ly ngay đàn có triệu chứng, báo thú y địa phương...</div>
+      </div>
+      <div class="field">
+        <div class="field__label">Differential Diagnosis</div>
+        <div class="field__value placeholder">— empty —</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer actions -->
+  <div class="box">
+    <div class="row row--between">
+      <button class="btn">← Back to list</button>
+      <div class="row">
+        <button class="btn">Cancel</button>
+        <button class="btn btn--primary">✎ Edit this disease</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

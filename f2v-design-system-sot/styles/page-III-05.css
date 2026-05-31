@@ -1,0 +1,282 @@
+/* =========================================================
+   PAGE — COMPONENT · CARD
+   Styles unique to III-05-cards.html: the prose-doc layout
+   wrappers, the architectural callout, the anatomy diagram,
+   and the kanban mock-up. Token-table styling is reused from
+   page-III-02.css; usage-note + .subheading styling is
+   reused from page-III-03.css.
+   The actual Card component lives in card.css.
+   Depends on: tokens.css, base.css, shell.css, card.css
+   ========================================================= */
+
+/* =========================================================
+   PROSE DOCUMENTATION LAYOUT — replaces the tile grid.
+   Cards are not catalogued in a grid; they are documented
+   inline alongside the prose that describes them. Each
+   variant gets a subheading, an intro paragraph, the live
+   demo, and one or more usage-note paragraphs. Nothing
+   carries tile chrome.
+   ========================================================= */
+
+/* The variant heading sitting above each demo. Quieter than
+   .subheading — this is a third-level cue inside a section,
+   not a section title. */
+.card-doc__variant {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-primary-strong);
+    font-weight: var(--font-weight-medium);
+    margin: var(--spacing-7x) 0 var(--space-tier-6);
+}
+.card-doc__variant:first-child {
+    margin-top: 0;
+}
+
+/* The lead paragraph that defines the variant — sits between
+   the variant heading and the live demo. */
+.card-doc__lede {
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--line-height-body);
+    color: var(--text-default);
+    margin: 0 0 var(--space-tier-4);
+    max-width: 72ch;
+}
+
+/* Inline demo wrapper. The card sits directly on the page;
+   this wrapper exists only to constrain the demo's width on
+   wide viewports (so a horizontal card doesn't sprawl edge
+   to edge) and to provide the small bottom-margin that the
+   following paragraphs read against. */
+.card-doc__demo {
+    margin: 0 0 var(--space-tier-4);
+    max-width: 640px;
+}
+.card-doc__demo--wide {
+    max-width: 100%;
+}
+.card-doc__demo > .card,
+.card-doc__demo > a.card {
+    width: 100%;
+}
+
+/* Prose continuation after the demo — the use case, states,
+   interactions, and responsive behaviour all flow as
+   sentences. Reuses .usage-note from page-III-03.css when
+   the prose is rule-shaped; this class is for plain
+   descriptive prose. */
+.card-doc__prose {
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    line-height: var(--line-height-body);
+    color: var(--text-default-subtle);
+    margin: 0 0 var(--spacing-5x);
+    max-width: 72ch;
+}
+.card-doc__prose strong {
+    color: var(--text-default);
+    font-weight: var(--font-weight-medium);
+}
+.card-doc__prose code {
+    font-family: var(--font-mono);
+    font-size: var(--text-body-sm);
+    color: var(--text-primary-strong);
+    background: var(--background-primary-minimal);
+    padding: 0.05em 0.4em;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+}
+.card-doc__prose + .card-doc__prose {
+    margin-top: calc(var(--spacing-5x) * -1 + var(--space-tier-5));
+}
+
+/* On-vivid backdrop for the Glass-scale demos. The glass
+   tiers need a non-flat surface behind them to read. This
+   was previously .card-showcase__tile.on-vivid; now it's a
+   demo-only wrapper that sits inline with the prose. */
+.card-doc__demo--on-vivid {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    padding: var(--space-tier-3);
+    background:
+        radial-gradient(ellipse 80% 60% at 20% 15%, color-mix(in srgb, var(--primary-200) 45%, transparent), transparent 65%),
+        radial-gradient(ellipse 70% 55% at 85% 90%, color-mix(in srgb, var(--accent-200)  35%, transparent), transparent 60%),
+        radial-gradient(ellipse 60% 40% at 70% 30%, color-mix(in srgb, var(--secondary-100) 30%, transparent), transparent 70%),
+        var(--background-default);
+    border: var(--border-width-base) solid var(--border-default);
+}
+
+/* On-dark backdrop for the Inverted version demo, replacing
+   .card-showcase__tile.on-dark. Same restraint, same brand
+   hint, no tile chrome. */
+.card-doc__demo--on-dark {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    padding: var(--space-tier-3);
+    background:
+        radial-gradient(ellipse 90% 70% at 25% 20%, color-mix(in srgb, var(--accent-500) 22%, transparent), transparent 65%),
+        linear-gradient(160deg, var(--neutral-800) 0%, var(--neutral-950) 100%);
+    border: var(--border-width-base) solid var(--border-glass-dark);
+}
+
+/* =========================================================
+   STATES ROW — five-cell strip that sits between a style
+   variant's hero preview and its documentation prose. Each
+   cell pairs a numbered badge with a card sample frozen in
+   one interaction state. Concept borrowed from M3's state
+   matrix; every value resolves to our own card tokens.
+   ========================================================= */
+.card-doc__states-row {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: var(--space-tier-5);
+    margin: 0 0 var(--spacing-5x);
+    max-width: 100%;
+}
+.card-doc__states-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-tier-6);
+    min-width: 0;
+}
+.card-doc__states-num {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--neutral-900);
+    color: var(--white-base);
+    font-family: var(--font-sans);
+    font-size: var(--text-micro);
+    font-weight: var(--font-weight-medium);
+    line-height: 1;
+}
+.card-doc__states-sample {
+    /* The sample is a real .card with the variant modifiers, so
+       background / border / radius / shadow come from card.css.
+       This rule only constrains the sample's footprint and pins
+       the label to the bottom-left so the row reads as a strip
+       of equal-height tiles. Transitions are disabled because
+       these samples are static demonstrations, not affordances. */
+    width: 100%;
+    min-height: 96px;
+    padding: var(--space-tier-5);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    transition: none;
+}
+.card-doc__states-label {
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    color: var(--text-default);
+    font-weight: var(--font-weight-medium);
+    line-height: 1;
+}
+
+@media (max-width: 720px) {
+    .card-doc__states-row {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .card-doc__states-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* =========================================================
+   VARIANT SUBSECTIONS — spacing-only wrappers.
+   Each variant in section 01 (Elevated, Filled, Outlined,
+   Left-bar) sits inside a .card-doc__variant-section. The
+   wrapper is intentionally chromeless: it only owns the
+   gap between its inner rows and the margin to the next
+   subsection. The eyebrow above each block reads "Variant"
+   and the actual variant name sits in the
+   .card-doc__variant-name heading inside.
+   ========================================================= */
+.card-doc__variant-section {
+    margin: 0 0 var(--space-tier-2);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tier-4);
+}
+.card-doc__variant-section:last-of-type {
+    margin-bottom: 0;
+}
+.card-doc__variant-section > .card-doc__variant       { margin: 0; }
+.card-doc__variant-section > .card-doc__variant-name  { margin: 0; }
+.card-doc__variant-section > .card-doc__lede          { margin: 0; }
+.card-doc__variant-section > .card-doc__demo          { margin: 0; }
+.card-doc__variant-section > .card-doc__states-row    { margin: 0; }
+.card-doc__variant-section > .card-doc__prose         { margin: 0; }
+
+.card-doc__variant-name {
+    font-family: var(--font-sans);
+    font-size: var(--text-h4);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-default);
+    line-height: var(--line-height-heading);
+}
+
+/* Left-bar previews — each tone on its own full-width row,
+   carrying realistic mock content. The stack reads like a
+   short notification feed so the tones can be compared at
+   the size and density they ship at in product. */
+.card-doc__left-bar-row {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tier-5);
+}
+
+/* =========================================================
+   ARCHITECTURAL CALLOUT — for the FAQ → Accordion redirect
+   and other system-level decisions that don't fit in
+   .usage-note. Reads as a quiet aside, not a loud warning.
+   ========================================================= */
+.card-callout {
+    padding: var(--spacing-5x) var(--space-tier-3);
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--background-info) 60%, var(--background-default));
+    border-left: 3px solid var(--border-info);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tier-6);
+    margin-bottom: var(--space-tier-2);
+}
+.card-callout .label {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-info-strong);
+    font-weight: var(--font-weight-medium);
+}
+.card-callout p {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    line-height: var(--line-height-body);
+    color: var(--text-default);
+    margin: 0;
+}
+.card-callout strong {
+    color: var(--text-info-strong);
+    font-weight: var(--font-weight-semibold);
+}
+.card-callout code {
+    font-family: var(--font-mono);
+    font-size: var(--text-body-sm);
+    color: var(--text-info-strong);
+    background: color-mix(in srgb, var(--background-info) 80%, transparent);
+    padding: 0.05em 0.4em;
+    border-radius: var(--radius-sm);
+}
+

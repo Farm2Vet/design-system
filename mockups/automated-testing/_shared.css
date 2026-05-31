@@ -1,0 +1,379 @@
+/* =========================================================
+   _shared.css — admin workspace scaffolding
+   Foundations + components must be linked first.
+   This file only contains layout primitives that are
+   reused across every admin/automated-testing page.
+   Page-specific styles live in <style> blocks at the top
+   of each HTML page (no per-page CSS file in workspace/).
+
+   Token-substitution notes (the spec used token names that
+   do not exist in this codebase). The mapping in use here:
+     --surface-page     →  var(--background-default)
+     --surface-raised   →  var(--background-default)         (cards over the page)
+     --surface-sunken   →  var(--background-default-minimal) (current-item fill)
+     --text-default-faint → var(--text-default-minimal)
+   ========================================================= */
+
+/* ---------- Dashboard shell ---------- */
+.dash {
+    display: grid;
+    grid-template-columns: var(--sidebar-width-expanded) minmax(0, 1fr);
+    gap: var(--spacing-6x);
+    padding: var(--spacing-6x);
+    min-height: 100vh;
+    background: var(--background-default-subtle); /* flat warm-neutral, NO conic backdrop */
+    /* Animate the column-width swap in lock-step with the rail's
+       own width transition so the gap closes smoothly. Match the
+       curve used by .app-shell in styles/page-V-01.css. */
+    transition: grid-template-columns .22s cubic-bezier(.2,.8,.2,1);
+}
+
+/* Mirror styles/page-V-01.css:64 — when the rail inside the slot
+   collapses to .sidebar--collapsed, shrink the grid column to the
+   rail width so .dash__main reclaims the space. Without this the
+   slot stays 280px wide and a ~216px gap opens between the rail's
+   trailing edge and the main column. */
+.dash:has(.sidebar--collapsed) {
+    grid-template-columns: var(--sidebar-width-rail) minmax(0, 1fr);
+}
+.dash__side { position: sticky; top: var(--spacing-6x); align-self: start; }
+.dash__main { display: flex; flex-direction: column; gap: var(--spacing-10x); min-width: 0; }
+
+/* When the rail lives inside the workspace .dash shell, clamp
+   its height to the visible viewport. The base sidebar carries
+   `min-height: 100vh` (suits a full-bleed app shell like V-01 /
+   V-02 where the rail anchors to the viewport edges). Inside
+   .dash the shell pads --spacing-6x top and bottom and sticky-
+   anchors .dash__side at top: --spacing-6x — so a 100vh rail
+   overshoots the bottom of the viewport by at least one --spacing-6x
+   and the rail's footer (account cluster) slides off-screen.
+   Pin the height to the inset region so the rail stays sticky
+   without overflowing; the internal flex layout already gives
+   .sidebar__nav `overflow-y: auto` so a tall nav scrolls inside
+   the rail and the footer stays anchored at the bottom. */
+.dash__side .sidebar {
+    min-height: 0;
+    height: calc(100vh - 2 * var(--spacing-6x));
+}
+
+/* Sidebar renders as the canonical glass rail (see V-04-disease-input.html).
+   No .dash-scoped overrides — backdrop blur, raised shadow, inner
+   highlight, and the bright primary active-item tint all come from
+   styles/sidebar.css as defined. */
+
+/* ---------- Topbar (breadcrumb + utilities) ----------
+   Dense bar. Breadcrumb is the protagonist; utilities sit right.
+   No global-nav glass treatment. */
+.dash-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-4x);
+    min-height: 48px;
+    padding: var(--spacing-2x) var(--spacing-4x);
+    background: var(--background-default);
+    border: 1px solid var(--border-default-subtle);
+    border-radius: var(--radius-md);
+}
+.dash-topbar__crumbs {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2x);
+    font-size: var(--text-body-sm);
+    color: var(--text-default-subtle);
+}
+.dash-topbar__crumbs a {
+    color: var(--text-default-subtle);
+    text-decoration: none;
+    transition: color .15s ease;
+}
+.dash-topbar__crumbs a:hover { color: var(--text-default); }
+.dash-topbar__crumb-tail {
+    color: var(--text-default);
+    font-weight: var(--font-weight-medium);
+}
+.dash-topbar__crumb-sep { color: var(--text-default-minimal); }
+.dash-topbar__cluster {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3x);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.dash-topbar__cluster-item {
+    display: inline-flex;
+    align-items: center;
+}
+.dash-topbar__search {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+.dash-topbar__search input {
+    width: 220px;
+}
+.dash-topbar__icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    color: var(--icon-default);
+    cursor: pointer;
+    transition: background-color .15s ease, color .15s ease;
+}
+.dash-topbar__icon-btn:hover {
+    background: var(--background-default-subtle);
+    color: var(--text-default);
+}
+.dash-topbar__icon-btn svg { width: 16px; height: 16px; }
+.dash-topbar__divider {
+    display: inline-block;
+    width: 1px;
+    height: 20px;
+    background: var(--border-default-subtle);
+}
+.dash-topbar__version {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-mono);
+    color: var(--text-default-subtle);
+    padding: var(--spacing-1x) var(--spacing-2x);
+    border-radius: var(--radius-sm);
+    background: var(--background-default-subtle);
+}
+
+/* ---------- Page header ----------
+   The pattern every page opens with: optional eyebrow, h1, optional
+   meta line, optional lede, optional trailing CTA cluster. */
+.dash-page {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--spacing-6x);
+    padding-bottom: var(--spacing-6x);
+    border-bottom: 1px solid var(--border-default-subtle);
+}
+.dash-page__text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2x);
+    min-width: 0;
+}
+.dash-page__eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-subtle);
+}
+.dash-page h1 {
+    margin: 0;
+}
+.dash-page__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--spacing-2x);
+    font-size: var(--text-body-sm);
+    color: var(--text-default-subtle);
+    margin: 0;
+}
+.dash-page__meta-val {
+    color: var(--text-default);
+    font-weight: var(--font-weight-medium);
+}
+.dash-page__meta-sep {
+    color: var(--text-default-minimal);
+}
+.dash-page__lede {
+    max-width: 60ch;
+    color: var(--text-default-subtle);
+    line-height: var(--line-height-body);
+    margin: 0;
+}
+.dash-page__cta {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2x);
+}
+
+/* ---------- Workspace card ----------
+   Flat surface, 1px border, no shadow at rest. Hover lifts subtly.
+   This is the *only* card pattern allowed on workspace pages.
+   The marketing-side .card--glass is forbidden inside .dash. */
+.dash .card,
+.dash .workspace-card {
+    background: var(--background-default);
+    border: 1px solid var(--border-default-subtle);
+    border-radius: var(--radius-lg);
+    box-shadow: none;
+    padding: var(--spacing-6x);
+    color: var(--text-default);
+}
+.dash .card:hover,
+.dash .workspace-card:hover {
+    border-color: var(--border-default);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Defensive: forbid glass under .dash. If a demo page accidentally
+   carries .card--glass, neutralize the glass treatment so the page
+   still reads as workspace, not marketing. */
+.dash .card--glass {
+    background: var(--background-default);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+}
+
+/* Interactive card (whole-card link). Removes default link
+   underline + colour and renders the workspace-card chrome. */
+.dash a.card,
+.dash a.workspace-card {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+/* ---------- Section header inside a card ---------- */
+.workspace-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4x);
+}
+.workspace-section__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--spacing-4x);
+}
+.workspace-section__title {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--text-h5);
+    line-height: var(--line-height-h5);
+    margin: 0;
+}
+.workspace-section__summary {
+    color: var(--text-default-subtle);
+    margin: 0;
+    max-width: 70ch;
+}
+.workspace-section__action {
+    font-size: var(--text-body-sm);
+    color: var(--text-default-subtle);
+    text-decoration: none;
+}
+.workspace-section__action:hover { color: var(--text-default); }
+
+/* ---------- Workspace card variant: no internal padding ----------
+   For cards that contain a flush .table or list. The table owns the
+   inner padding via its cell rules, so the card just provides the
+   border + radius. */
+.dash .workspace-card--flush {
+    padding: 0;
+    overflow: hidden;
+}
+.dash .workspace-card--flush .workspace-card__head {
+    padding: var(--spacing-5x) var(--spacing-6x);
+    border-bottom: 1px solid var(--border-default-subtle);
+}
+
+/* ---------- Empty state ----------
+   Claude IA: every list page has a thoughtful empty state.
+   Centered, body-sized illustration optional, single CTA. */
+.workspace-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--spacing-4x);
+    padding: var(--spacing-12x) var(--spacing-6x);
+    color: var(--text-default-subtle);
+}
+.workspace-empty__icon {
+    width: 40px;
+    height: 40px;
+    color: var(--icon-default-subtle);
+}
+.workspace-empty__title {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--text-h6);
+    color: var(--text-default);
+    margin: 0;
+}
+.workspace-empty__body {
+    max-width: 48ch;
+    line-height: var(--line-height-body);
+    margin: 0;
+}
+
+/* ---------- Action bar (sticky bottom) ----------
+   Used by the create / edit forms. Sits at the bottom of the
+   main column; pushes content above it. */
+.workspace-actionbar {
+    position: sticky;
+    bottom: var(--spacing-6x);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--spacing-3x);
+    padding: var(--spacing-3x) var(--spacing-4x);
+    background: var(--background-default);
+    border: 1px solid var(--border-default-subtle);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    z-index: 10;
+}
+.workspace-actionbar__spacer { flex: 1 1 auto; }
+.workspace-actionbar__hint {
+    font-size: var(--text-body-sm);
+    color: var(--text-default-subtle);
+}
+
+/* ---------- Destructive card (delete this profile) ---------- */
+.workspace-card--danger {
+    border-color: var(--border-critical) !important; /* override workspace-card border */
+}
+.workspace-card--danger .workspace-section__title {
+    color: var(--text-critical);
+}
+
+/* ---------- Page padding override when the form has a sticky bar ---------- */
+.dash__main--has-actionbar {
+    padding-bottom: var(--spacing-8x);
+}
+
+/* ---------- Status dot (reused across console + list pages) ---------- */
+.dash-status-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--neutral-300);
+    flex: 0 0 auto;
+    vertical-align: middle;
+}
+.dash-status-dot--safe     { background: var(--safe-500); }
+.dash-status-dot--warning  { background: var(--warning-500); }
+.dash-status-dot--critical { background: var(--critical-500); }
+.dash-status-dot--info     { background: var(--info-500); }
+.dash-status-dot--neutral  { background: var(--neutral-400); }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 960px) {
+    .dash {
+        grid-template-columns: 1fr;
+    }
+    .dash__side {
+        position: static;
+    }
+}

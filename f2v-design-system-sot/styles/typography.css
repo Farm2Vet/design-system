@@ -1,0 +1,262 @@
+/* =========================================================
+   FARM2VET DESIGN SYSTEM — TYPOGRAPHY COMPONENTS
+   Component-layer classes that compose semantic typography
+   tokens into ready-to-use treatments.
+
+   ARCHITECTURE
+     Primitive (--text-xs..--text-9xl)
+        ↑ referenced only by
+     Semantic (--text-body, --text-h1, --text-h2, …)
+        ↑ referenced only by
+     Component (.h1, .h2, .body, .eyebrow, …)
+
+   CONTRACT
+     Every numeric typography value declared in this file MUST
+     be a var(--…) reference. No raw rem / px / unitless number
+     is permitted outside of tokens.css. New sizes are added by
+     extending the primitive scale, never inlined here.
+
+   Depends on: tokens.css
+   ========================================================= */
+
+/* =========================================================
+   HEADINGS — semantic tags rendered at their token size.
+   One heading family covers hero, chunk-head, and inline
+   use. Rank is chosen by document outline; visual treatment
+   by class (.h1 on <h1>, .h2 on <h2>, …).
+   ========================================================= */
+.h1 {
+    font-family:    var(--font-sans);
+    font-size:      var(--text-h1);
+    font-weight:    var(--font-weight-semibold);
+    line-height:    var(--line-height-heading);
+    color:          var(--text-default);
+    margin-bottom:  var(--space-flow-heading);
+}
+
+.h2 {
+    font-family:    var(--font-sans);
+    font-size:      var(--text-h2);
+    font-weight:    var(--font-weight-semibold);
+    line-height:    var(--line-height-heading);
+    color:          var(--text-default);
+    margin-bottom:  var(--space-flow-element);
+}
+
+.h3 {
+    font-family:    var(--font-sans);
+    font-size:      var(--text-h3);
+    font-weight:    var(--font-weight-semibold);
+    line-height:    var(--line-height-h3);
+    color:          var(--text-default);
+    margin-bottom:  var(--space-flow-element);
+}
+
+.h4 {
+    font-family:    var(--font-sans);
+    font-size:      var(--text-h4);
+    font-weight:    var(--font-weight-semibold);
+    line-height:    var(--line-height-h4);
+    color:          var(--text-default);
+    margin-bottom:  var(--space-flow-tight);
+}
+
+.h5 {
+    font-family:    var(--font-sans);
+    font-size:      var(--text-h5);
+    font-weight:    var(--font-weight-semibold);
+    line-height:    var(--line-height-h5);
+    color:          var(--text-default);
+    margin-bottom:  var(--space-flow-tight);
+}
+
+.h6 {
+    font-family:    var(--font-sans);
+    font-size:      var(--text-h6);
+    font-weight:    var(--font-weight-semibold);
+    line-height:    var(--line-height-h6);
+    color:          var(--text-default);
+    margin-bottom:  var(--space-flow-tight);
+}
+
+/* Accent words inside a heading: wrap in <em> to receive the
+   brand italic + voice colour. Italic carries no semantic
+   stress in this context; it is a documented decorative
+   treatment of the heading tier. The two large heading ranks
+   use different voice colours by design:
+     .h1 em → --text-accent     (forest green, page-title voice)
+     .h2 em → --text-emphasis   (earthy brown, section voice)
+*/
+.h1 em {
+    font-style: italic;
+    color:      var(--text-accent);
+}
+.h2 em {
+    font-style: italic;
+    color:      var(--text-emphasis);
+}
+
+/* =========================================================
+   BODY & SECONDARY TEXT
+   ========================================================= */
+.body {
+    font-family:   var(--font-sans);
+    font-size:     var(--text-body);
+    font-weight:   var(--font-weight-regular);
+    line-height:   var(--line-height-body);
+    color:         var(--text-default);
+    margin-bottom: var(--space-flow-heading);
+}
+
+.body-sm {
+    font-family:   var(--font-sans);
+    font-size:     var(--text-body-sm);
+    font-weight:   var(--font-weight-regular);
+    line-height:   var(--line-height-body);
+    color:         var(--text-default-subtle);
+    margin-bottom: var(--space-flow-tight);
+}
+
+.caption {
+    font-family:   var(--font-sans);
+    font-size:     var(--text-caption);
+    font-weight:   var(--font-weight-regular);
+    line-height:   var(--line-height-h5);
+    color:         var(--text-default-subtle);
+}
+
+/* =========================================================
+   EYEBROW — uppercase mono label that prefixes a heading
+   or section. Carries a short leading rule by default;
+   suppress the decorator with .eyebrow--bare.
+   ========================================================= */
+.eyebrow {
+    font-family:     var(--font-mono);
+    font-size:       var(--text-eyebrow);
+    font-weight:     var(--font-weight-medium);
+    letter-spacing:  var(--letter-spacing-eyebrow);
+    text-transform:  uppercase;
+    color:           var(--text-default-subtle);
+    display:         inline-flex;
+    align-items:     center;
+    gap:             var(--space-gap-tight);
+}
+.eyebrow::before {
+    content:    '';
+    width:      var(--spacing-5x);
+    height:     var(--border-width-base);
+    background: var(--border-decorator);
+    display:    inline-block;
+}
+.eyebrow--bare::before { display: none; }
+
+/* =========================================================
+   FAMILY UTILITY
+   ========================================================= */
+.mono {
+    font-family: var(--font-mono);
+}
+
+/* =========================================================
+   COLOUR / EMPHASIS UTILITIES
+   Apply to an inline span (or any element) inside a heading
+   or paragraph to shift its colour without changing weight
+   or style. Colour and italic are independent axes; combine
+   utilities only when both treatments are intended.
+   ========================================================= */
+.text-accent     { color: var(--text-accent);          }
+.text-emphasis   { color: var(--text-emphasis);        }
+.text-secondary  { color: var(--text-secondary-strong); }
+.text-subtle     { color: var(--text-default-subtle);  }
+.text-minimal    { color: var(--text-default-minimal); }
+
+/* =========================================================
+   STYLE UTILITIES
+   .italic — decorative italic with no semantic weight.
+              Use when a word's meaning does not change if
+              the italic is removed. For stress emphasis,
+              wrap in <em> instead and rely on the cascade.
+   ========================================================= */
+.italic { font-style: italic; }
+
+/* =========================================================
+   ADMIN TIER — opt-in utility classes for admin/data-management
+   pages (V-04 disease editor, future V-* admin pages).
+   Each class binds a --text-admin-* token from tokens.css to
+   the visual rank the admin pages need:
+     .admin-page-title         h1 rank on admin pages
+     .admin-card-title         card head / section title
+     .admin-subsection-title   subsection / sub-card title
+     .admin-field-label        uppercase label above a value
+     .admin-field-value        read-only value below a label
+     .admin-caption            meta / timestamp / hint
+     .admin-stat-value         KPI tile value
+   Marketing rail (.h1…/.body/.caption/.eyebrow) is untouched.
+   ========================================================= */
+
+.admin-page-title {
+    font-family:    var(--font-sans);
+    font-size:      var(--text-admin-page-title);
+    font-weight:    var(--font-weight-medium);
+    line-height:    var(--line-height-h3);
+    letter-spacing: 0;
+    text-transform: none;
+    color:          var(--text-default);
+    margin: 0;
+}
+
+.admin-card-title {
+    font-family:    var(--font-sans);
+    font-size:      var(--text-admin-card-title);
+    font-weight:    var(--font-weight-medium);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color:          var(--text-default-subtle);
+    margin: 0;
+}
+
+.admin-subsection-title {
+    font-family:    var(--font-sans);
+    font-size:      var(--text-admin-subsection-title);
+    font-weight:    var(--font-weight-medium);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color:          var(--text-default-minimal);
+    margin: 0;
+}
+
+.admin-field-label {
+    font-family:    var(--font-mono);
+    font-size:      var(--text-admin-field-label);
+    font-weight:    var(--font-weight-medium);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color:          var(--text-default-minimal);
+    margin: 0;
+}
+
+.admin-field-value {
+    font-family:    var(--font-sans);
+    font-size:      var(--text-admin-body);
+    font-weight:    var(--font-weight-regular);
+    line-height:    var(--line-height-body);
+    color:          var(--text-default);
+    margin: 0;
+}
+
+.admin-caption {
+    font-family:    var(--font-sans);
+    font-size:      var(--text-admin-caption);
+    font-weight:    var(--font-weight-regular);
+    line-height:    var(--line-height-h5);
+    color:          var(--text-default-subtle);
+}
+
+.admin-stat-value {
+    font-family:    var(--font-sans);
+    font-size:      var(--text-admin-stat-value);
+    font-weight:    var(--font-weight-semibold);
+    line-height:    var(--line-height-h4);
+    color:          var(--text-default);
+    margin: 0;
+}

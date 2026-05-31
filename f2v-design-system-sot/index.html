@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Farm2Vet — Design System</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+
+    <link rel="stylesheet" href="styles/tokens.css"/>
+    <link rel="stylesheet" href="styles/base.css"/>
+    <link rel="stylesheet" href="styles/typography.css"/>
+    <link rel="stylesheet" href="styles/shell.css" />
+    <link rel="stylesheet" href="styles/global-nav.css" />
+    <link rel="stylesheet" href="styles/card.css" />
+    <link rel="stylesheet" href="styles/page-home.css" />
+    <script src="scripts/global-nav.js" defer></script>
+</head>
+<body data-page="index">
+
+<!-- ========================== GLOBAL NAV ========================== -->
+<header class="global-nav" aria-label="Design system navigation">
+  <div class="global-nav__inner">
+
+    <a href="index.html" class="global-nav__brand" aria-label="Farm2Vet design system home">
+      <img src="logo/logo-wordmark-color.svg" alt="Farm2Vet" class="global-nav__logo" />
+      <small>Design System</small>
+    </a>
+
+    <nav class="global-nav__sections" aria-label="Design system sections">
+      <ul class="global-nav__list">
+        <li class="global-nav__item">
+          <a class="global-nav__link" href="I-primitives.html">I. Primitives</a>
+        </li>
+        <li class="global-nav__item">
+          <a class="global-nav__link" href="II-semantics.html">II. Semantics</a>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="components">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-components">
+            III. Components
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-components" class="global-nav__panel" role="region" aria-label="Components">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="III-01-typography.html"><span class="global-nav__index">01</span><span>Typography</span></a></li>
+                <li><a href="III-02-buttons.html"><span class="global-nav__index">02</span><span>Buttons</span></a></li>
+                <li><a href="III-03-form.html"><span class="global-nav__index">03</span><span>Form</span></a></li>
+                <li><a href="III-04-dropdowns.html"><span class="global-nav__index">04</span><span>Dropdowns</span></a></li>
+                <li><a href="III-05-cards.html"><span class="global-nav__index">05</span><span>Cards</span></a></li>
+                <li><a href="III-06-modal.html"><span class="global-nav__index">06</span><span>Modal Dialog</span></a></li>
+                <li><a href="III-07-side-panel.html"><span class="global-nav__index">07</span><span>Side Panel</span></a></li>
+                <li><a href="III-08-toast.html"><span class="global-nav__index">08</span><span>Toast</span></a></li>
+                <li><a href="III-09-alert-badges.html"><span class="global-nav__index">09</span><span>Alert &amp; Badge</span></a></li>
+                <li><a href="III-10-header-navigation.html"><span class="global-nav__index">10</span><span>Header &amp; Nav Bar</span></a></li>
+                <li><a href="III-11-switch.html"><span class="global-nav__index">11</span><span>Switch</span></a></li>
+                <li><a href="III-12-sidebar.html"><span class="global-nav__index">12</span><span>Sidebar</span></a></li>
+                <li><a href="III-13-chip.html"><span class="global-nav__index">13</span><span>Chip</span></a></li>
+                <li><a href="III-14-tabs.html"><span class="global-nav__index">14</span><span>Tabs</span></a></li>
+                <li><a href="III-15-table.html"><span class="global-nav__index">15</span><span>Table</span></a></li>
+                <li><a href="III-16-search-toolbar.html"><span class="global-nav__index">16</span><span>Search Toolbar</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="assets">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-assets">
+            IV. Assets
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-assets" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Assets">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="IV-01-logo.html"><span class="global-nav__index">01</span><span>Logo</span></a></li>
+                <li><a href="IV-02-icons.html"><span class="global-nav__index">02</span><span>Icons</span></a></li>
+                <li><a href="IV-03-images.html" class="is-placeholder"><span class="global-nav__index">03</span><span>Images</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="mockups">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-mockups">
+            V. Mockups
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-mockups" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Mockups">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="V-01-wiki.html"><span class="global-nav__index">01</span><span>Wiki</span></a></li>
+                <li><a href="V-02-chatbot.html" class="is-placeholder"><span class="global-nav__index">02</span><span>Chatbot</span></a></li>
+                <li><a href="V-03-hero.html"    class="is-placeholder"><span class="global-nav__index">03</span><span>Hero</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+      </ul>
+    </nav>
+
+    <a href="#" class="global-nav__chip" aria-label="Design system version">v1.0</a>
+
+  </div>
+</header>
+<main class="shell" id="top">
+
+  <!-- ========================== HERO ========================== -->
+  <section class="home-hero reveal">
+    <span class="home-hero__eyebrow">Farm2Vet · v1.0</span>
+    <h1 class="h1 home-hero__title">Design system.</h1>
+    <p class="lede home-hero__lede">
+      A documented system of primitives, semantics, components, assets,
+      and mockups — the shared foundation the Farm2Vet team builds
+      product from.
+    </p>
+  </section>
+
+  <!-- ========================== SECTIONS GRID ========================== -->
+  <section class="home-sections" aria-label="Design system sections">
+
+    <a href="I-primitives.html" class="card card--glass is-interactive home-tile reveal">
+      <span class="card__eyebrow home-tile__numeral">I</span>
+      <header class="card__header">
+        <h2 class="card__title">Primitives.</h2>
+        <p class="card__subtitle">Foundations</p>
+      </header>
+      <p class="card__body">
+        Most basic form of design tokens: colour ramps, spacing, radius, shadow, type scale.
+        The bottom rail of the token architecture.
+      </p>
+      <span class="home-tile__cta">Browse foundations →</span>
+    </a>
+
+    <a href="II-semantics.html" class="card card--glass is-interactive home-tile reveal">
+      <span class="card__eyebrow home-tile__numeral">II</span>
+      <header class="card__header">
+        <h2 class="card__title">Semantics.</h2>
+        <p class="card__subtitle">Foundations</p>
+      </header>
+      <p class="card__body">
+        Meaning-based aliases over primitives: action, surface,
+        border, text. The contract every component consumes.
+      </p>
+      <span class="home-tile__cta">Browse semantics →</span>
+    </a>
+
+    <a href="III-01-typography.html" class="card card--glass is-interactive home-tile reveal">
+      <span class="card__eyebrow home-tile__numeral">III</span>
+      <header class="card__header">
+        <h2 class="card__title">Components.</h2>
+        <p class="card__subtitle">Fourteen documented blocks</p>
+      </header>
+      <p class="card__body">
+        The surfaces the product is built from: Typography, buttons, forms, cards, etc. Each defines their own component tokens, generally refer to semantic tokens
+      </p>
+      <span class="home-tile__cta">Browse components →</span>
+    </a>
+
+    <a href="IV-01-logo.html" class="card card--glass is-interactive home-tile reveal">
+      <span class="card__eyebrow home-tile__numeral">IV</span>
+      <header class="card__header">
+        <h2 class="card__title">Assets.</h2>
+        <p class="card__subtitle">Brand atoms</p>
+      </header>
+      <p class="card__body">
+        Resources that
+        live alongside the system.
+      </p>
+      <span class="home-tile__cta">Browse assets →</span>
+    </a>
+
+    <a href="V-01-wiki.html" class="card card--glass is-interactive home-tile reveal">
+      <span class="card__eyebrow home-tile__numeral">V</span>
+      <header class="card__header">
+        <h2 class="card__title">Mockups.</h2>
+        <p class="card__subtitle">The system in product</p>
+      </header>
+      <p class="card__body">
+        Mockups assembled by canonical components. These are used to validate the defined components.
+      </p>
+      <span class="home-tile__cta">Browse mockups →</span>
+    </a>
+
+  </section>
+
+  <!-- ========================== FOOTER ========================== -->
+  <footer>
+    <span>END OF SECTION</span>
+  </footer>
+
+</main>
+
+<script>
+  /* Reveal-on-scroll. Same pattern as I-primitives.html. */
+  (function () {
+    const items = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) {
+      items.forEach(el => el.classList.add('in'));
+      return;
+    }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(en => {
+        if (en.isIntersecting) {
+          en.target.classList.add('in');
+          io.unobserve(en.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    items.forEach(el => io.observe(el));
+  })();
+</script>
+
+</body>
+</html>

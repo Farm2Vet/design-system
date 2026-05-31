@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Wireframe · Synthetic Profile SP-002 edit — Farm2Vet Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../conversation-management/wireframe.css" />
+<style>
+.wf-page-hero { display: flex; flex-direction: column; gap: var(--wf-s-3); margin-bottom: var(--wf-s-6); }
+.wf-page-hero__eyebrow { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--wf-ink-4); }
+.wf-page-hero__h1 { font-size: 28px; font-weight: 600; letter-spacing: -0.01em; margin: 0; color: var(--wf-ink); display: flex; align-items: center; gap: var(--wf-s-3); flex-wrap: wrap; }
+.wf-page-hero__summary { font-size: 14px; color: var(--wf-ink-3); margin: 0; max-width: 70ch; line-height: 1.55; }
+.wf-badge-mini { display: inline-flex; align-items: center; height: 26px; padding: 0 10px; border-radius: 4px; background: var(--wf-surface-3); border: 1px solid var(--wf-line-strong); font-size: 12px; font-weight: 500; color: var(--wf-ink); letter-spacing: 0.04em; }
+.wf-editable-title { display: inline-flex; align-items: center; gap: 6px; }
+.wf-editable-title__input {
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--wf-r-sm);
+  padding: 2px 6px;
+  margin: -2px -6px;
+  width: 8ch;
+  min-width: 0;
+  letter-spacing: inherit;
+}
+.wf-editable-title__input:hover {
+  border-color: var(--wf-line);
+}
+.wf-editable-title__input:focus {
+  outline: none;
+  border-color: var(--wf-line-strong);
+  background: var(--wf-surface);
+}
+.wf-editable-title__edit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid transparent;
+  border-radius: var(--wf-r-sm);
+  background: transparent;
+  color: var(--wf-ink-3);
+  cursor: pointer;
+  padding: 0;
+}
+.wf-editable-title__edit:hover {
+  border-color: var(--wf-line);
+  color: var(--wf-ink);
+}
+.wf-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--wf-s-4) var(--wf-s-5); }
+.wf-form-grid > .wf-field--full { grid-column: 1 / -1; }
+.wf-field-row { display: flex; flex-wrap: wrap; gap: var(--wf-s-4) var(--wf-s-5); align-items: flex-start; }
+.wf-field-row > .wf-field { min-width: 0; flex: 1 1 240px; }
+.wf-field-row > .wf-field--narrow { flex: 0 0 160px; max-width: 160px; }
+.wf-field-row > .wf-field--medium { flex: 0 0 280px; max-width: 280px; }
+.wf-field-row > .wf-field--full { flex: 1 1 100%; }
+.wf-input-pair { display: flex; align-items: center; gap: var(--wf-s-2); }
+.wf-input-pair .wf-input { flex: 1 1 auto; min-width: 0; }
+.wf-input-pair__suffix { font-size: 13px; color: var(--wf-ink-3); }
+.wf-input--filled, .wf-select--filled { color: var(--wf-ink); }
+.wf-chip--removable { padding-right: 4px; }
+.wf-chip__x { display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px; border-radius: 50%; background: var(--wf-fill-2); color: var(--wf-ink-3); font-size: 10px; line-height: 1; }
+.wf-chip-add { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; height: 22px; border-radius: var(--wf-r-pill); background: transparent; border: 1px dashed var(--wf-line-dashed); font-size: 11px; color: var(--wf-ink-3); }
+.wf-chip-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.wf-chip--toggle {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  font-family: inherit;
+  user-select: none;
+}
+.wf-chip--toggle:focus-visible {
+  outline: 2px solid var(--wf-ink);
+  outline-offset: 2px;
+}
+.wf-chip--toggle.is-on {
+  background: var(--wf-ink);
+  border-color: var(--wf-ink);
+  color: #fff;
+}
+.wf-pig-add {
+  align-self: flex-start;
+  width: 280px;
+  max-width: 100%;
+  color: var(--wf-ink-3);
+}
+.wf-pig-add__placeholder { font-style: italic; }
+.wf-dropdown { display: flex; align-items: center; justify-content: space-between; height: 40px; padding: 0 14px; border: 1px solid var(--wf-line-strong); border-radius: var(--wf-r-sm); background: var(--wf-surface); font-size: 13px; color: var(--wf-ink); gap: var(--wf-s-2); }
+.wf-dropdown__value { display: flex; align-items: center; gap: var(--wf-s-3); }
+.wf-dropdown__chev { width: 8px; height: 8px; border-right: 1.5px solid var(--wf-ink-3); border-bottom: 1.5px solid var(--wf-ink-3); transform: rotate(45deg) translateY(-2px); flex: none; }
+.wf-card-group .wf-card + .wf-card { margin-top: var(--wf-s-3); }
+.wf-card--danger { background: var(--wf-surface-2); border-color: var(--wf-line-strong); }
+.wf-card--danger .wf-card__title { color: var(--wf-ink); }
+.wf-danger { display: flex; align-items: center; justify-content: space-between; gap: var(--wf-s-5); }
+.wf-danger__text { min-width: 0; }
+.wf-danger__title { font-size: 14px; font-weight: 600; margin: 0 0 4px; color: var(--wf-ink); }
+.wf-danger__body { font-size: 13px; color: var(--wf-ink-3); margin: 0; line-height: 1.55; max-width: 60ch; }
+@media (max-width: 720px) {
+  .wf-form-grid { grid-template-columns: 1fr; }
+  .wf-danger { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<div class="wf-shell">
+  <aside class="wf-side">
+    <div class="wf-side__brand">
+      <span class="wf-side__brand-mark"></span>
+      <span class="wf-side__brand-text">Farm2Vet · Admin</span>
+    </div>
+    <nav class="wf-side__nav" aria-label="Primary">
+      <div class="wf-side__group">
+        <div class="wf-side__group-title">Workspace</div>
+        <a class="wf-side__item" href="#"><span class="wf-side__item-icon"></span>Overview</a>
+      </div>
+      <div class="wf-side__group">
+        <div class="wf-side__group-title">Data management</div>
+        <a class="wf-side__item" href="#"><span class="wf-side__item-icon"></span>Disease</a>
+        <a class="wf-side__item" href="#"><span class="wf-side__item-icon"></span>Question</a>
+        <a class="wf-side__item" href="#"><span class="wf-side__item-icon"></span>Conversation</a>
+        <a class="wf-side__item" href="#"><span class="wf-side__item-icon"></span>Image</a>
+        <a class="wf-side__item" href="#"><span class="wf-side__item-icon"></span>Resource</a>
+        <a class="wf-side__item" href="#"><span class="wf-side__item-icon"></span>PDF input</a>
+      </div>
+      <div class="wf-side__group">
+        <div class="wf-side__group-title">Quality</div>
+        <a class="wf-side__item" href="#"><span class="wf-side__item-icon"></span>Automated testing</a>
+        <a class="wf-side__item wf-side__item--child" href="#">Console</a>
+        <a class="wf-side__item wf-side__item--child is-active" href="#">Profiles</a>
+        <a class="wf-side__item wf-side__item--child" href="#">Suites</a>
+        <a class="wf-side__item" href="#"><span class="wf-side__item-icon"></span>Sync database</a>
+      </div>
+    </nav>
+    <div class="wf-side__footer">
+      <span class="wf-side__avatar"></span>
+      <span class="wf-side__who">
+        <span class="wf-side__who-name">Minh Bùi</span>
+        <span class="wf-side__who-role">Admin</span>
+      </span>
+    </div>
+  </aside>
+
+  <div class="wf-main">
+
+    <header class="wf-topbar">
+      <nav class="wf-crumbs" aria-label="Breadcrumb">
+        <a href="#">Admin</a>
+        <span class="wf-crumbs__sep">/</span>
+        <a href="#">Automated testing</a>
+        <span class="wf-crumbs__sep">/</span>
+        <a href="#">Profiles</a>
+        <span class="wf-crumbs__sep">/</span>
+        <a href="wireframe-profile-view.html">SP-002</a>
+        <span class="wf-crumbs__sep">/</span>
+        <span class="wf-crumbs__here">Edit</span>
+      </nav>
+      <div class="wf-topbar__cluster">
+        <span class="wf-savebar__state">
+          <span class="wf-savebar__dot is-dirty"></span>
+          Unsaved changes
+        </span>
+        <span style="width:1px; height:24px; background:var(--wf-line);"></span>
+        <a class="wf-btn" href="wireframe-profile-view.html">Discard</a>
+        <button class="wf-btn wf-btn--primary" type="button">Save changes</button>
+      </div>
+    </header>
+
+    <main class="wf-page" style="padding-bottom: 96px;">
+
+      <a class="wf-btn wf-btn--ghost wf-btn--sm" href="wireframe-profile-view.html"
+         style="padding-left:0; color:var(--wf-ink-3); margin-bottom:16px;">‹ Back to profile</a>
+
+      <header class="wf-page-hero">
+        <div class="wf-page-hero__eyebrow">Synthetic profile · editing</div>
+        <h1 class="wf-page-hero__h1">
+          <span class="wf-badge-mini">CSF</span>
+          <span class="wf-editable-title">
+            <input class="wf-editable-title__input" type="text" value="SP-002" aria-label="Profile label" />
+            <button class="wf-editable-title__edit" type="button" aria-label="Rename profile">
+              <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+                <path d="M11.5 2.5l2 2L5 13H3v-2L11.5 2.5z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </span>
+        </h1>
+        <p class="wf-page-hero__summary">
+          Edit the case the model is tested against. Empty fields tell the simulated farmer to stay quiet about that detail unless the model asks.
+        </p>
+      </header>
+
+      <!-- ───────────────── Smart-fill shortcut.
+                              Admin pastes any free-form text (vet
+                              write-up, paste from email, voice-to-text
+                              transcript, …) and presses the AI button;
+                              the AI maps it onto the structured fields
+                              below. Admin still reviews + edits before
+                              saving. -->
+      <section class="wf-card wf-card--smartfill" aria-label="Smart fill from notes">
+        <div class="wf-card__head">
+          <div>
+            <h2 class="wf-card__title">Smart fill from notes</h2>
+            <span class="wf-card__sub">Paste a vet write-up, case notes, or anything in any format. AI fills the fields below; you review before saving.</span>
+          </div>
+        </div>
+        <div class="wf-card__body">
+          <div class="wf-field">
+            <label class="wf-field__label" for="wf-smartfill-input">Notes</label>
+            <div id="wf-smartfill-input" class="wf-textarea" style="min-height:132px; color:var(--wf-ink-4); font-style:italic;">
+              Paste case notes here — anything goes. e.g. "300-pig farm in the Mekong delta, growers and finishers hit, high fever, bloody diarrhea, ear discoloration, vaccinated against CSF 6 months ago…"
+            </div>
+          </div>
+          <div class="wf-smartfill__actions" style="display:flex; justify-content:flex-end; align-items:center; gap:var(--wf-s-3); margin-top:var(--wf-s-4);">
+            <span style="font-size:12px; color:var(--wf-ink-4);">AI overwrites any field it can map. Empty fields stay empty.</span>
+            <button type="button" class="wf-btn wf-btn--primary">Smart fill with AI</button>
+          </div>
+        </div>
+      </section>
+
+      <div class="wf-section-label">Disease label</div>
+      <section class="wf-card">
+        <div class="wf-card__head">
+          <div>
+            <h2 class="wf-card__title">Ground truth</h2>
+            <span class="wf-card__sub">Scored against the model’s final answer at run time.</span>
+          </div>
+        </div>
+        <div class="wf-card__body">
+          <div class="wf-field">
+            <label class="wf-field__label">Disease</label>
+            <div class="wf-dropdown">
+              <span class="wf-dropdown__value">
+                <span class="wf-badge-mini">CSF</span>
+                <span>Classical Swine Fever</span>
+              </span>
+              <span class="wf-dropdown__chev" aria-hidden="true"></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="wf-card" aria-label="Farm background">
+        <div class="wf-card__head">
+          <div>
+            <h2 class="wf-card__title">Farm background</h2>
+            <span class="wf-card__sub">The setting the model should imagine before reading the evidences.</span>
+          </div>
+        </div>
+        <div class="wf-card__body">
+          <div class="wf-field-row">
+
+            <div class="wf-field">
+              <label class="wf-field__label">Farm size</label>
+              <span class="wf-input wf-input--filled">300</span>
+            </div>
+
+            <div class="wf-field">
+              <label class="wf-field__label">Location</label>
+              <span class="wf-input wf-input--filled">Mekong Delta, Vietnam</span>
+            </div>
+
+            <div class="wf-field">
+              <label class="wf-field__label">Pig types</label>
+              <div class="wf-chip-row" role="group" aria-label="Pig types">
+                <button type="button" class="wf-chip wf-chip--toggle" data-pig-all aria-pressed="false">All</button>
+                <button type="button" class="wf-chip wf-chip--toggle is-on" data-pig-type="Weaners" aria-pressed="true">Weaners</button>
+                <button type="button" class="wf-chip wf-chip--toggle is-on" data-pig-type="Growers" aria-pressed="true">Growers</button>
+                <button type="button" class="wf-chip wf-chip--toggle is-on" data-pig-type="Finishers" aria-pressed="true">Finishers</button>
+                <button type="button" class="wf-chip wf-chip--toggle" data-pig-type="Sows" aria-pressed="false">Sows</button>
+                <button type="button" class="wf-chip wf-chip--toggle" data-pig-type="Sucking Piglets" aria-pressed="false">Sucking Piglets</button>
+                <button type="button" class="wf-chip wf-chip--toggle" data-pig-type="Boars" aria-pressed="false">Boars</button>
+                <button type="button" class="wf-chip wf-chip--toggle" data-pig-type="Piglets" aria-pressed="false">Piglets</button>
+              </div>
+              <span class="wf-field__hint">Tap each pig type that applies. <strong>All</strong> toggles every type at once.</span>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <div class="wf-section-label">Observed evidences</div>
+      <p style="font-size:13px; color:var(--wf-ink-3); margin:0 0 16px; max-width:70ch;">
+        What the simulated farmer reports. Leave a field blank if the profile shouldn’t volunteer that detail unless the model asks for it.
+      </p>
+
+      <div class="wf-card-group">
+
+        <section class="wf-card">
+          <div class="wf-card__head">
+            <div>
+              <h2 class="wf-card__title">General evidences</h2>
+              <span class="wf-card__sub">Headline facts about the outbreak.</span>
+            </div>
+          </div>
+          <div class="wf-card__body">
+            <div class="wf-form-grid">
+              <div class="wf-field">
+                <label class="wf-field__label">Affected pig types</label>
+                <div class="wf-textarea" style="color:var(--wf-ink);">Mostly growers and finishers</div>
+              </div>
+              <div class="wf-field">
+                <label class="wf-field__label">Total affected</label>
+                <div class="wf-textarea" style="color:var(--wf-ink);">About 180 out of 300</div>
+              </div>
+              <div class="wf-field">
+                <label class="wf-field__label">Mortality description</label>
+                <div class="wf-textarea" style="color:var(--wf-ink);">High, many pigs dying overnight (~35%)</div>
+              </div>
+              <div class="wf-field">
+                <label class="wf-field__label">Fever description</label>
+                <div class="wf-textarea" style="color:var(--wf-ink);">High fever</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="wf-card">
+          <div class="wf-card__head">
+            <div>
+              <h2 class="wf-card__title">Symptoms</h2>
+              <span class="wf-card__sub">Organ-system breakdown — leave blank when not observed.</span>
+            </div>
+          </div>
+          <div class="wf-card__body">
+            <div class="wf-form-grid">
+              <div class="wf-field">
+                <label class="wf-field__label">Digestive</label>
+                <div class="wf-textarea" style="color:var(--wf-ink);">Lost appetite, bloody diarrhea</div>
+              </div>
+              <div class="wf-field">
+                <label class="wf-field__label">Respiratory</label>
+                <div class="wf-textarea" style="color:var(--wf-ink);">Coughing, nasal discharge</div>
+              </div>
+              <div class="wf-field">
+                <label class="wf-field__label">Neurological</label>
+                <div class="wf-textarea" style="color:var(--wf-ink);">Some pigs have wobbly gait, hind-limb paralysis</div>
+              </div>
+              <div class="wf-field">
+                <label class="wf-field__label">Dermatological</label>
+                <div class="wf-textarea" style="color:var(--wf-ink);">Blue-purple discoloration on ears and belly</div>
+              </div>
+              <div class="wf-field">
+                <label class="wf-field__label">Reproductive</label>
+                <div class="wf-textarea" style="color:var(--wf-ink-4); font-style:italic;">Not observed</div>
+              </div>
+              <div class="wf-field">
+                <label class="wf-field__label">Others</label>
+                <div class="wf-textarea" style="color:var(--wf-ink-4); font-style:italic;">Anything that doesn't fit the categories above.</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="wf-card">
+          <div class="wf-card__head">
+            <div>
+              <h2 class="wf-card__title">Medical history</h2>
+              <span class="wf-card__sub">Prior vaccination and treatment context.</span>
+            </div>
+          </div>
+          <div class="wf-card__body">
+            <div class="wf-form-grid">
+              <div class="wf-field">
+                <label class="wf-field__label">Vaccination history</label>
+                <div class="wf-textarea" style="color:var(--wf-ink);">Vaccinated against CSF 6 months ago but unsure if all pigs covered</div>
+              </div>
+              <div class="wf-field">
+                <label class="wf-field__label">Treatment</label>
+                <div class="wf-textarea" style="color:var(--wf-ink-4); font-style:italic;">None yet</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <div class="wf-section-label">Danger zone</div>
+      <section class="wf-card wf-card--danger">
+        <div class="wf-card__body">
+          <div class="wf-danger">
+            <div class="wf-danger__text">
+              <h2 class="wf-danger__title">Delete this profile</h2>
+              <p class="wf-danger__body">SP-002 will be removed from every suite that references it. Past run history is preserved, but the profile won’t appear in new runs.</p>
+            </div>
+            <button type="button" class="wf-btn wf-btn--danger">Delete profile…</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var anchor = document.querySelector('[data-pig-all]');
+    if (!anchor) return;
+    var row = anchor.closest('.wf-chip-row');
+    var allBtn = row.querySelector('[data-pig-all]');
+    var typeBtns = Array.prototype.slice.call(row.querySelectorAll('[data-pig-type]'));
+
+    function setOn(btn, on) {
+      btn.classList.toggle('is-on', on);
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    }
+    function syncAllFromTypes() {
+      var allSelected = typeBtns.every(function (b) { return b.classList.contains('is-on'); });
+      setOn(allBtn, allSelected);
+    }
+
+    allBtn.addEventListener('click', function () {
+      var nowOn = !allBtn.classList.contains('is-on');
+      setOn(allBtn, nowOn);
+      typeBtns.forEach(function (b) { setOn(b, nowOn); });
+    });
+    typeBtns.forEach(function (b) {
+      b.addEventListener('click', function () {
+        setOn(b, !b.classList.contains('is-on'));
+        syncAllFromTypes();
+      });
+    });
+
+    // Reconcile in case the seeded markup is inconsistent.
+    syncAllFromTypes();
+  })();
+</script>
+
+</body>
+</html>

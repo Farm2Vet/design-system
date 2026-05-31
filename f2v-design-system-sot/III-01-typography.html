@@ -1,0 +1,549 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Farm2Vet · Typography components — Design System</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<!-- Design system: shared, reusable foundation -->
+<link rel="stylesheet" href="styles/tokens.css" />
+<link rel="stylesheet" href="styles/base.css" />
+<link rel="stylesheet" href="styles/typography.css" />
+<link rel="stylesheet" href="styles/shell.css" />
+<link rel="stylesheet" href="styles/global-nav.css" />
+<link rel="stylesheet" href="styles/toast.css" />
+<!-- Page-specific: only what is unique to III-01-typography.html -->
+<link rel="stylesheet" href="styles/page-III-01.css" />
+
+<script src="scripts/scroll-spy.js" defer></script>
+
+<script src="scripts/global-nav.js" defer></script>
+
+</head>
+<body data-page="III-01-typography">
+
+<!-- ========================== GLOBAL NAV ========================== -->
+<header class="global-nav" aria-label="Design system navigation">
+  <div class="global-nav__inner">
+
+    <a href="index.html" class="global-nav__brand" aria-label="Farm2Vet design system home">
+      <img src="logo/logo-wordmark-color.svg" alt="Farm2Vet" class="global-nav__logo" />
+      <small>Design System</small>
+    </a>
+
+    <nav class="global-nav__sections" aria-label="Design system sections">
+      <ul class="global-nav__list">
+        <li class="global-nav__item">
+          <a class="global-nav__link" href="I-primitives.html">I. Primitives</a>
+        </li>
+        <li class="global-nav__item">
+          <a class="global-nav__link" href="II-semantics.html">II. Semantics</a>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="components">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-components">
+            III. Components
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-components" class="global-nav__panel" role="region" aria-label="Components">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="III-01-typography.html"><span class="global-nav__index">01</span><span>Typography</span></a></li>
+                <li><a href="III-02-buttons.html"><span class="global-nav__index">02</span><span>Buttons</span></a></li>
+                <li><a href="III-03-form.html"><span class="global-nav__index">03</span><span>Form</span></a></li>
+                <li><a href="III-04-dropdowns.html"><span class="global-nav__index">04</span><span>Dropdowns</span></a></li>
+                <li><a href="III-05-cards.html"><span class="global-nav__index">05</span><span>Cards</span></a></li>
+                <li><a href="III-06-modal.html"><span class="global-nav__index">06</span><span>Modal Dialog</span></a></li>
+                <li><a href="III-07-side-panel.html"><span class="global-nav__index">07</span><span>Side Panel</span></a></li>
+                <li><a href="III-08-toast.html"><span class="global-nav__index">08</span><span>Toast</span></a></li>
+                <li><a href="III-09-alert-badges.html"><span class="global-nav__index">09</span><span>Alert &amp; Badge</span></a></li>
+                <li><a href="III-10-header-navigation.html"><span class="global-nav__index">10</span><span>Header &amp; Nav Bar</span></a></li>
+                <li><a href="III-11-switch.html"><span class="global-nav__index">11</span><span>Switch</span></a></li>
+                <li><a href="III-12-sidebar.html"><span class="global-nav__index">12</span><span>Sidebar</span></a></li>
+                <li><a href="III-13-chip.html"><span class="global-nav__index">13</span><span>Chip</span></a></li>
+                <li><a href="III-14-tabs.html"><span class="global-nav__index">14</span><span>Tabs</span></a></li>
+                <li><a href="III-15-table.html"><span class="global-nav__index">15</span><span>Table</span></a></li>
+                <li><a href="III-16-search-toolbar.html"><span class="global-nav__index">16</span><span>Search Toolbar</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="assets">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-assets">
+            IV. Assets
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-assets" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Assets">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="IV-01-logo.html"><span class="global-nav__index">01</span><span>Logo</span></a></li>
+                <li><a href="IV-02-icons.html"><span class="global-nav__index">02</span><span>Icons</span></a></li>
+                <li><a href="IV-03-images.html" class="is-placeholder"><span class="global-nav__index">03</span><span>Images</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="mockups">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-mockups">
+            V. Mockups
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-mockups" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Mockups">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="V-01-wiki.html"><span class="global-nav__index">01</span><span>Wiki</span></a></li>
+                <li><a href="V-02-chatbot.html" class="is-placeholder"><span class="global-nav__index">02</span><span>Chatbot</span></a></li>
+                <li><a href="V-03-hero.html"    class="is-placeholder"><span class="global-nav__index">03</span><span>Hero</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+      </ul>
+    </nav>
+
+    <a href="#" class="global-nav__chip" aria-label="Design system version">v1.0</a>
+
+  </div>
+</header>
+<main class="shell" id="top">
+
+  <!-- ========================== HERO ========================== -->
+  <section class="hero">
+    <div>
+      <h1 class="h1 reveal">
+        <span class="num">III-01 / Components</span>
+        Typography <em>components</em>.
+      </h1>
+    </div>
+  </section>
+
+  <!-- ========================== CONTRACT ========================== -->
+  <section class="contract reveal" aria-label="Design system contract">
+    <p class="eyebrow eyebrow--bare">Contract</p>
+    <p class="contract-body">
+      Every numeric value in any stylesheet — font-size, line-height,
+      letter-spacing, color, spacing, radius, shadow — must be a
+      <code>var(--…)</code> reference to a token defined in
+      <code>tokens.css</code>. Raw <code>rem</code>, <code>px</code>,
+      <code>em</code>, <code>%</code>, and hex values are not permitted
+      outside the primitive layer. New sizes are introduced by extending
+      the primitive scale; consumers continue to reference tokens only.
+    </p>
+  </section>
+
+  <!-- ========================== 01 — ARCHITECTURE ========================== -->
+  <section class="chunk" id="architecture">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">01 / Architecture</span>
+        <h2 class="h2">Three-layer model.</h2>
+      </div>
+    </header>
+
+    <div class="spec reveal">
+      <p>
+        The typography system is structured in three strict layers.
+        Each layer references the layer immediately below it; no layer
+        skips down or sideways.
+      </p>
+
+      <ol class="spec-list">
+        <li>
+          <span class="spec-term">Primitive scale</span> —
+          <code>--text-xs</code> through <code>--text-9xl</code>, defined
+          in <code>tokens.css</code>. Thirteen steps on a strict
+          <code>1.2</code> ratio anchored at <code>--text-base = 1rem</code>.
+          The primitive layer carries no semantic role. See
+          <a href="I-primitives.html#type">Section 01 —
+          Primitives</a> for the enumeration.
+        </li>
+        <li>
+          <span class="spec-term">Semantic tokens</span> —
+          <code>--text-body</code>, <code>--text-eyebrow</code>,
+          <code>--text-h1</code> through <code>--text-h6</code>.
+          Defined in <code>tokens.css</code> under SEMANTIC TOKENS. Each
+          semantic token is a <code>var()</code> alias of a primitive.
+          Renaming the role here updates every consumer.
+        </li>
+        <li>
+          <span class="spec-term">Component classes</span> —
+          <code>.h1</code>–<code>.h6</code>, <code>.body</code>,
+          <code>.body-sm</code>, <code>.caption</code>,
+          <code>.eyebrow</code>, <code>.text-accent</code>,
+          <code>.italic</code>. Defined in <code>typography.css</code>.
+          Components reference semantic tokens only. Pages apply
+          component classes to markup.
+        </li>
+      </ol>
+
+      <p>
+        Element-level CSS rules (<code>h1 {}</code>, <code>h2 {}</code>,
+        <code>p {}</code>) declare only <em>family</em>, <em>colour</em>,
+        and <em>margin defaults</em>. They do not declare font-size,
+        weight, italic, or letter-spacing. A bare <code>&lt;h1&gt;</code>
+        with no class therefore inherits no visible size; visual
+        treatment is opt-in via component class.
+      </p>
+    </div>
+  </section>
+
+  <!-- ========================== 02 — SEMANTIC TOKENS ========================== -->
+  <section class="chunk" id="semantic-tokens">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">02 / Semantic tokens</span>
+        <h2 class="h2">Roles and aliases.</h2>
+      </div>
+    </header>
+
+    <p class="spec-intro reveal">
+      Each semantic token below names a typographic role. Components
+      consume these tokens; they do not consume primitives directly.
+      The <em>Aliases</em> column shows the primitive each role resolves
+      to today; reassigning a role to a different primitive updates
+      every component without markup changes.
+    </p>
+
+    <table class="spec-table reveal" aria-label="Semantic typography tokens">
+      <thead>
+        <tr>
+          <th scope="col">Token</th>
+          <th scope="col">Aliases</th>
+          <th scope="col">Px</th>
+          <th scope="col">Use for</th>
+        </tr>
+      </thead>
+      <tbody id="semanticTable"></tbody>
+    </table>
+  </section>
+
+  <!-- ========================== 03 — COMPONENT CLASSES ========================== -->
+  <section class="chunk" id="components">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">03 / Components</span>
+        <h2 class="h2">Class previews.</h2>
+      </div>
+    </header>
+
+    <p class="spec-intro reveal">
+      Each component class below renders the role at its specified
+      size, weight, line-height, and tracking. Apply the class directly
+      to the appropriate semantic tag (e.g. <code>&lt;h2 class="h2"&gt;</code>,
+      <code>&lt;p class="body"&gt;</code>). Each heading class is
+      applied to the matching tag (<code>.h1</code> on
+      <code>&lt;h1&gt;</code>, etc.). The same family covers hero,
+      chunk-head, and inline use; rank is chosen by document outline,
+      visual treatment by class.
+    </p>
+
+    <div class="component-stack" id="componentStack"></div>
+  </section>
+
+  <!-- ========================== 04 — HEADING LEVELS ========================== -->
+  <section class="chunk" id="headings">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">04 / Heading levels</span>
+        <h2 class="h2">Semantic specification.</h2>
+      </div>
+    </header>
+
+    <div class="spec reveal">
+      <p>
+        Heading rank is a semantic decision, independent of visual
+        size. Choose the heading tag that correctly nests the page's
+        document outline; choose the visual treatment separately by
+        applying the appropriate component class.
+      </p>
+
+      <dl class="spec-defs">
+        <dt><code>&lt;h1&gt;</code> — Page title</dt>
+        <dd>
+          Exactly one per page. The page's primary heading; almost
+          always the hero. Apply <code>class="h1"</code>.
+        </dd>
+
+        <dt><code>&lt;h2&gt;</code> — Top-level section</dt>
+        <dd>
+          A major section within the page. In the section template,
+          this is the chunk-head heading (Color, Spacing, Typography,
+          Shadow). Apply <code>class="h2"</code>.
+        </dd>
+
+        <dt><code>&lt;h3&gt;</code> — Subsection</dt>
+        <dd>
+          A subdivision within a section: a card title, a named group
+          (Primary, Secondary, Status), an inline content block. Apply
+          <code>class="h3"</code>.
+        </dd>
+
+        <dt><code>&lt;h4&gt;</code> — Labelled grouping</dt>
+        <dd>
+          A grouping within a subsection: <em>Weights</em>,
+          <em>Line heights</em>, <em>Letter spacing</em>. Apply
+          <code>class="h4"</code>; an optional
+          <code>&lt;span class="tag"&gt;</code> pill sits beside the
+          heading on the same baseline.
+        </dd>
+
+        <dt><code>&lt;h5&gt;</code>, <code>&lt;h6&gt;</code> — Deep nesting</dt>
+        <dd>
+          Reserved for content with nested structural depth (technical
+          documentation, long-form articles). Rare in component-driven
+          interfaces. Apply <code>class="h5"</code> or
+          <code>class="h6"</code>.
+        </dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ========================== 05 — ITALIC & EMPHASIS ========================== -->
+  <section class="chunk" id="emphasis">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">05 / Italic &amp; emphasis</span>
+        <h2 class="h2">Emphasis.</h2>
+      </div>
+    </header>
+
+    <div class="spec reveal">
+      <p>
+        Italic in this system is governed by three distinct mechanisms.
+        Each has a defined purpose; do not interchange them.
+      </p>
+
+      <dl class="spec-defs">
+        <dt><code>&lt;em&gt;</code> — Stress emphasis</dt>
+        <dd>
+          The semantic element for emphasis. Use when removing the
+          italic would change the sentence's meaning (e.g.
+          <em>this</em> is the one that matters). Renders italic by
+          default. Inside an <code>.h1</code> or <code>.h2</code>
+          heading, <code>&lt;em&gt;</code> additionally receives the
+          brand voice colour (forest green on <code>.h1</code>, earthy
+          brown on <code>.h2</code>) by typographic component rule.
+          The italic on heading-tier <code>&lt;em&gt;</code> is
+          documented as a decorative voice treatment and is not
+          interpreted as stress emphasis by assistive technology in
+          that context.
+        </dd>
+
+        <dt><code>&lt;i&gt;</code> — Alternate voice</dt>
+        <dd>
+          Use for foreign-language phrases, technical or scientific
+          names, ship names, internal monologue, and similar
+          conventional italic uses where there is no stress meaning.
+          Renders italic by default. Receives no automatic colour
+          treatment. Reserved for editorial or content-rich pages.
+        </dd>
+
+        <dt><code>.italic</code> — Decorative italic</dt>
+        <dd>
+          A utility class for italic with no semantic weight. Use when
+          the visual italic is wanted but the content carries neither
+          stress nor an alternate-voice convention. Apply to a
+          <code>&lt;span&gt;</code>; do not apply to a heading or
+          paragraph as a whole.
+        </dd>
+      </dl>
+
+      <p class="spec-note">
+        Element rules in <code>base.css</code> never apply italic.
+        A bare <code>&lt;h2&gt;</code> renders upright. Italic appears
+        only when one of the three mechanisms above is invoked.
+      </p>
+    </div>
+  </section>
+
+  <!-- ========================== 06 — COLOUR UTILITIES ========================== -->
+  <section class="chunk" id="colour">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">06 / Colour utilities</span>
+        <h2 class="h2">Voice and emphasis colour.</h2>
+      </div>
+    </header>
+
+    <div class="spec reveal">
+      <p>
+        Voice colour is an axis independent of italic. The utilities
+        below shift colour without altering style or weight; combine
+        with <code>&lt;em&gt;</code> or <code>.italic</code> when both
+        treatments are intended.
+      </p>
+
+      <table class="spec-table" aria-label="Colour utilities">
+        <thead>
+          <tr>
+            <th scope="col">Utility</th>
+            <th scope="col">Token</th>
+            <th scope="col">Use for</th>
+            <th scope="col">Preview</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="var-name">.text-accent</td>
+            <td class="var-value">--text-accent</td>
+            <td>Hero / primary brand voice. Default colour for <code>&lt;em&gt;</code> inside <code>.h1</code>.</td>
+            <td class="preview"><span class="h3"><span class="text-accent">Combatting AMR</span> on the Farm Frontier</span></td>
+          </tr>
+          <tr>
+            <td class="var-name">.text-emphasis</td>
+            <td class="var-value">--text-emphasis</td>
+            <td>Section / chunk-head voice. Default colour for <code>&lt;em&gt;</code> inside <code>.h2</code>.</td>
+            <td class="preview"><span class="h3"><span class="text-emphasis">Combatting AMR</span> on the Farm Frontier</span></td>
+          </tr>
+          <tr>
+            <td class="var-name">.text-secondary</td>
+            <td class="var-value">--text-secondary-strong</td>
+            <td>Secondary voice. Earth-tone callouts within body content.</td>
+            <td class="preview"><span class="h3"><span class="text-secondary">Combatting AMR</span> on the Farm Frontier</span></td>
+          </tr>
+          <tr>
+            <td class="var-name">.text-subtle</td>
+            <td class="var-value">--text-default-subtle</td>
+            <td>De-emphasised supporting text within a heading or paragraph.</td>
+            <td class="preview"><span class="h3"><span class="text-subtle">Combatting AMR</span> on the Farm Frontier</span></td>
+          </tr>
+          <tr>
+            <td class="var-name">.text-minimal</td>
+            <td class="var-value">--text-default-minimal</td>
+            <td>Lowest-priority text: row metadata, value annotations, secondary timestamps.</td>
+            <td class="preview"><span class="h3"><span class="text-minimal">Combatting AMR</span> on the Farm Frontier</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="spec-note">
+        To apply colour without italic, wrap the word in a
+        <code>&lt;span&gt;</code> and apply the colour utility:
+        <code>&lt;span class="text-accent"&gt;word&lt;/span&gt;</code>.
+        To apply italic without colour, use the
+        <code>.italic</code> utility on the same span:
+        <code>&lt;span class="italic"&gt;word&lt;/span&gt;</code>.
+        To apply both, apply both classes.
+      </p>
+    </div>
+  </section>
+
+  <!-- ========================== FOOTER ========================== -->
+  <footer>
+    <span>END OF SECTION</span>
+  </footer>
+
+</main>
+
+<script>
+/* =========================================================
+   DATA
+   ========================================================= */
+const SEMANTIC_TOKENS = [
+  ['--text-h1',         '--text-5xl', '47.78', 'Page-title heading. Apply via .h1.'],
+  ['--text-h2',         '--text-4xl', '39.81', 'Section heading. Apply via .h2.'],
+  ['--text-h3',         '--text-3xl', '33.18', 'Subsection heading; card titles; named groups.'],
+  ['--text-h4',         '--text-2xl', '27.65', 'Labelled grouping within a subsection.'],
+  ['--text-h5',         '--text-xl',  '23.04', 'Deep-nesting heading; rare.'],
+  ['--text-h6',         '--text-lg',  '19.20', 'Deepest heading rank; rare.'],
+  ['--text-body',       '--text-base','16.00', 'Default paragraph text.'],
+  ['--text-body-sm',    '--text-sm',  '13.33', 'Secondary body; helper text under inputs.'],
+  ['--text-caption',    '--text-sm',  '13.33', 'Captions under figures, cards, tables.'],
+  ['--text-eyebrow',    '--text-xs',  '11.10', 'Uppercase mono labels; section eyebrows.'],
+];
+
+const COMPONENTS = [
+  { cls: 'h1',  role: 'page title',  note: 'Page hero and page title. Wrap accent words in <code>&lt;em&gt;</code> to apply italic + accent colour.',  sample: 'Combatting <em>AMR</em> on the Farm Frontier' },
+  { cls: 'h2',  role: 'section',     note: 'Section heading and chunk-head. Wrap accent words in <code>&lt;em&gt;</code> to apply italic + emphasis colour.', sample: 'Combatting <em>AMR</em> on the Farm Frontier' },
+  { cls: 'h3',  role: 'subsection',          note: 'Card titles, named groups within a section.',       sample: 'Combatting AMR on the Farm Frontier' },
+  { cls: 'h4',  role: 'labelled grouping',   note: 'Labelled grouping within a subsection.',            sample: 'Combatting AMR on the Farm Frontier' },
+  { cls: 'h5',  role: 'deep nesting',        note: 'Reserved for documentation depth.',                 sample: 'Combatting AMR on the Farm Frontier' },
+  { cls: 'h6',  role: 'deep nesting',        note: 'Deepest rank; technical documentation only.',       sample: 'Combatting AMR on the Farm Frontier' },
+  { cls: 'body',    role: 'paragraph',  note: 'Default body copy, sans, regular weight.',  sample: 'Combatting AMR on the Farm Frontier' },
+  { cls: 'body-sm', role: 'secondary',  note: 'Helper text, secondary copy, footnotes.',   sample: 'Combatting AMR on the Farm Frontier' },
+  { cls: 'caption', role: 'caption',    note: 'Caption beneath a figure, card, or table.', sample: 'Combatting AMR on the Farm Frontier' },
+  { cls: 'eyebrow', role: 'eyebrow',    note: 'Uppercase mono label that prefixes a heading or section.', sample: 'Combatting AMR on the Farm Frontier' },
+];
+
+/* =========================================================
+   RENDER — semantic token table
+   ========================================================= */
+function renderSemanticTable() {
+  const tbody = document.getElementById('semanticTable');
+  tbody.innerHTML = SEMANTIC_TOKENS.map(([token, alias, px, use]) => `
+    <tr>
+      <td class="var-name">${token}</td>
+      <td class="var-value">${alias}</td>
+      <td class="var-px">${px}px</td>
+      <td class="spec-use">${use}</td>
+    </tr>
+  `).join('');
+}
+
+/* =========================================================
+   RENDER — component class previews
+   ========================================================= */
+function renderComponents() {
+  const stack = document.getElementById('componentStack');
+  stack.innerHTML = COMPONENTS.map(({cls, role, note, sample}) => `
+    <article class="component-row">
+      <div class="component-meta">
+        <code class="component-class">.${cls}</code>
+        <span class="component-role">${role}</span>
+        <p class="component-note">${note}</p>
+      </div>
+      <div class="component-preview">
+        <span class="${cls}">${sample}</span>
+      </div>
+    </article>
+  `).join('');
+}
+
+/* =========================================================
+   REVEAL ON SCROLL
+   ========================================================= */
+function initReveal() {
+  const items = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    items.forEach(el => el.classList.add('in'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        en.target.classList.add('in');
+        io.unobserve(en.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(el => io.observe(el));
+}
+
+/* =========================================================
+   BOOT
+   ========================================================= */
+document.addEventListener('DOMContentLoaded', () => {
+  renderSemanticTable();
+  renderComponents();
+  initReveal();
+});
+</script>
+
+</body>
+</html>

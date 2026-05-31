@@ -1,0 +1,216 @@
+{
+  "codename": "ASF",
+  "full_name": {
+    "en": "African Swine Fever",
+    "vi": null
+  },
+  "etiology_agent": null,
+  "notifiable": {
+    "is_notifiable": true,
+    "jurisdiction": "Vietnam",
+    "legal_basis": "Vietnamese animal health law"
+  },
+  "affected_pig_types": ["All"],
+
+  "mortality": {
+    "headline": { "min": 0, "max": 100, "unit": "%" },
+    "caption": "Depends on virus virulence",
+    "by_virulence": [
+      { "level": "Highly virulent",     "rate": "90–100%" },
+      { "level": "Moderately virulent", "rate": "20–40% in adult pigs; 70–80% in young pigs" },
+      { "level": "Low virulence",       "rate": "10–30%" }
+    ],
+    "by_clinical_form": [
+      { "form": "Peracute", "is_most_common": false, "description": "Pigs usually die rapidly within 1–4 days after the onset of clinical signs." },
+      { "form": "Acute",    "is_most_common": true,  "label": "The most common and typical form", "description": "Mortality is very high, occurring within 7 days of the appearance of clinical signs." },
+      { "form": "Subacute", "is_most_common": false, "description": "Pigs may die (30–70% mortality) or recover after 3–4 weeks." }
+    ]
+  },
+
+  "morbidity": {
+    "headline": { "min": 40, "max": 85, "unit": "%" },
+    "caption": "Depends on virus virulence and route of infection",
+    "outbreak_peak": "Up to 100% in acute outbreaks"
+  },
+
+  "fever": {
+    "value": { "min": 40, "max": 42, "unit": "°C" },
+    "caption": "High fever"
+  },
+
+  "symptoms": {
+    "digestive": {
+      "tags": ["Reduced appetite", "Anorexia", "Vomiting", "Constipation", "Diarrhea", "Melena"],
+      "description_md": "Acute form is the most common and typical form. Reduced appetite or anorexia. Vomiting, constipation, or diarrhea (feces may contain blood — melena).\n\nIn chronic form, nonspecific clinical signs are observed, which may include emaciation (wasting), swollen joints (arthritis), and respiratory problems."
+    },
+    "respiratory": {
+      "tags": ["Rapid breathing (tachypnea)", "Dyspnea", "Nasal discharge"],
+      "description_md": "Rapid breathing (tachypnea), dyspnea, nasal discharge (may contain blood or foam) due to pulmonary edema."
+    },
+    "neurological": {
+      "tags": ["Lethargy", "Inactivity"],
+      "description_md": null
+    },
+    "dermatological": {
+      "tags": ["Cyanosis", "Intense hyperemia", "Purple hemorrhagic marks", "Cyanotic foci"],
+      "affected_areas": ["Ears", "Chest", "Abdomen", "Perineum", "Extremities"],
+      "description_md": "Skin turns red or cyanotic due to intense hyperemia. Irregular purple hemorrhagic marks and cyanotic foci appear on the skin of the ears, chest, abdomen, perineum, and extremities."
+    },
+    "reproductive": {
+      "tags": ["Abortion"],
+      "description_md": "Pregnant sows often abort; this can be the first sign of an outbreak."
+    },
+    "other": {
+      "tags": [],
+      "description_md": null
+    }
+  },
+
+  "differential_diagnosis": [
+    {
+      "disease": "ASF",
+      "mortality": "Sudden, high",
+      "fever": "Early transient",
+      "others": "Cyanosis, rapid spread",
+      "notes": "High suspicion due to lesions, no vaccine. No blood from nose/mouth; no burnt smell in pen; uncommon to see hind limb paralysis."
+    },
+    {
+      "disease": "CSF",
+      "mortality": "Moderate–high",
+      "fever": "Often present",
+      "others": "Skin lesions, cyanosis",
+      "notes": "Could fit, but no confirmation. Not typical for 60–70 kg pigs and paralysis."
+    },
+    {
+      "disease": "Salmonella choleraesuis & Salmonella typhimurium",
+      "mortality": "Septicemia, sudden death",
+      "fever": "Yes / Variable",
+      "others": "Bloody or watery diarrhea, blood or mucus in feces",
+      "notes": "Can cause lameness and enteritis, but usually with fever."
+    },
+    {
+      "disease": "Actinobacillus pleuropneumoniae (APP)",
+      "mortality": "Respiratory distress, hemorrhagic lungs",
+      "fever": "Yes",
+      "others": "Hemorrhagic cough, dog-sitting, rapid spread",
+      "notes": "Would expect more respiratory signs and fever."
+    },
+    {
+      "disease": "PRRS",
+      "mortality": "Variable",
+      "fever": "Yes",
+      "others": "Variable respiratory signs, eye swelling, wasting",
+      "notes": "Usually with fever, diarrhea, reproductive signs (abortions), cyanosis."
+    },
+    {
+      "disease": "Swine Erysipela",
+      "mortality": "Sudden death",
+      "fever": "Yes",
+      "others": "Cyanosis, skin lesions, anorexia",
+      "notes": "Usually slower spread; lesions often diamond-shaped."
+    },
+    {
+      "disease": "Streptococcus suis",
+      "mortality": "Sudden death. Mortality can reach up to 20% without prophylactic treatment.",
+      "fever": "Variable",
+      "others": "Cyanosis, limb paralysis, purple skin spots, arthritis, meningitis, eye inflammation",
+      "notes": "Usually causes meningitis, not footpad bruising and neurologic signs, edema. May be early skin vasculitis or mild septicemia signs from S. suis. Subacute cases may not always show high fever. Reduced appetite common in early illness. S. suis is the most important bacterial pathogen in post-weaned piglets and is an emerging zoonotic agent. Clinical signs of infection are observed mainly in weaned pigs (2–5 weeks after weaning), rarely in suckling and growing pigs, and almost never in adult animals."
+    }
+  ],
+
+  "management": {
+    "vaccines": {
+      "available_in_vietnam": true,
+      "products": [
+        { "name": "NAVET-ASFVAC",  "type": "live attenuated" },
+        { "name": "AVAC ASF LIVE", "type": "live attenuated" }
+      ],
+      "mechanism_and_risks_md": "Live attenuated vaccines carry risks of vaccine virus shedding into the environment or reversion to virulence if biosafety management and vaccination practices are inadequate.",
+      "recommendations": [
+        "Use only in fattening pigs. Extreme caution is required, or vaccination should be avoided, in breeding sows (unless the latest official guidance from the Department of Animal Health confirms safety for pregnancy), due to the risk of embryonic/fetal effects and vertical transmission.",
+        "Vaccinate pigs at 4–8 weeks of age.",
+        "Closely monitor post-vaccination reactions within the first 72 hours."
+      ]
+    },
+    "treatment": {
+      "treatment_available": false,
+      "summary_md": "No effective treatment exists; antibiotics and antipyretics are ineffective.",
+      "required_actions": [
+        "Immediate reporting to veterinary authorities.",
+        "Culling of the herd.",
+        "Implementing strict biosecurity and disinfection protocols."
+      ]
+    }
+  },
+
+  "outbreak_response": {
+    "applies_to_md": "Suspected African Swine Fever (ASF), Classical Swine Fever (CSF), or other diseases for which treatment is prohibited.",
+
+    "immediate_control": [
+      "Immediately isolate all affected pigs.",
+      "Halt all movement of pigs in and out of the farm.",
+      "Do not provide further treatment until intervention from the official veterinary authority.",
+      "Closely monitor new cases for clinical signs: fever, loss of appetite (anorexia), lethargy, skin discoloration, diarrhea."
+    ],
+
+    "official_notification": {
+      "jurisdiction": "Vietnam",
+      "contacts": [
+        "Sub-Department of Animal Health (Chi cục Thú y) in your area",
+        "Sub-Department of Livestock Production and Animal Health (Chi cục Chăn nuôi và Thú y) in your area"
+      ],
+      "legal_basis": "ASF is a mandatory reportable disease under Vietnamese animal health law."
+    },
+
+    "sample_submission": {
+      "trigger_md": "When pigs show clinical signs such as fever above 40°C.",
+      "preferred_samples_md": "Inguinal lymph node samples. Avoid performing full necropsies to prevent environmental contamination with the virus.",
+      "sampling_targets": [
+        "Pigs suspected of ASF: off-feed, sick, fever > 40°C, or dead.",
+        "F1, F2 generation pigs from suspected animals (collect 5–10 samples).",
+        "Blood samples for ASF surveillance."
+      ],
+      "lab_handling": {
+        "test_method": "RT-PCR",
+        "pooling_md": "Up to 5 samples may be pooled per RT-PCR test.",
+        "cross_validation_md": "Send samples to at least two laboratories for cross-validation."
+      }
+    },
+
+    "prohibited_actions": [
+      "Do not sell, slaughter, or bury pigs without government authorization.",
+      "Do not disinfect the farm or housing immediately — disinfectant can interfere with sample collection for testing."
+    ],
+
+    "severity_handling": [
+      {
+        "severity": "Very severe outbreak",
+        "action_md": "Depopulate the entire herd to prevent risk of spread. Clean and disinfect the entire farming area and its surroundings."
+      },
+      {
+        "severity": "Severe outbreak, not yet herd-wide",
+        "action_md": "Cull problematic groups and high-risk individuals. Strictly control spread; handle empty pens and related areas. Restocking only with control and risk assessment."
+      },
+      {
+        "severity": "Less severe",
+        "action_md": "Flexible handling: quickly cull sick or at-risk groups of pigs. Maintain strict spread control and farm hygiene. Restocking only after biosecurity has been confirmed."
+      }
+    ],
+
+    "control_procedures": [
+      { "area": "Human control",                           "description_md": "Restrict farm access, implement disinfection, and change protective clothing." },
+      { "area": "Insect and rodent control",               "description_md": "Eliminate intermediate hosts that can carry the pathogen." },
+      { "area": "Tool and equipment control",              "description_md": "Ensure all tools are disinfected." },
+      { "area": "Pig flow control",                        "description_md": "Strictly manage movement to avoid cross-contamination." },
+      { "area": "Handling and disposal of problematic pigs","description_md": "Includes steps for culling, isolation, destruction, and testing." },
+      { "area": "Farm hygiene",                            "description_md": "Regular and thorough disinfection after culling the infected herd." },
+      { "area": "Controlled restocking",                   "description_md": "Only proceed after the facility meets biosecurity standards and with the supervision of veterinary authorities." }
+    ],
+
+    "if_confirmed": [
+      "All pigs on the farm may be culled according to national policy.",
+      "The farm will be disinfected under official supervision.",
+      "Enhanced biosecurity and movement restrictions will be implemented to contain the outbreak."
+    ]
+  }
+}

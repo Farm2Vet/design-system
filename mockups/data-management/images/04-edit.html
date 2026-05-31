@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Wireframe · Image Management · Edit</title>
+<link rel="stylesheet" href="wireframe.css" />
+</head>
+<body>
+
+<div class="wf-banner">
+  <div class="wf-banner__crumbs">
+    <span>Wireframe</span>
+    <span>·</span>
+    <strong>Image Management</strong>
+    <span>·</span>
+    <span>UC-331 — Edit image</span>
+  </div>
+  <div class="wf-banner__nav">
+    <a href="index.html">Index</a>
+    <a href="01-list.html">List</a>
+    <a href="02-list-empty.html">Empty</a>
+    <a href="03-list-unauthorized.html">Unauthorized</a>
+    <a href="04-edit.html" class="is-current">Edit</a>
+    <a href="05-create.html">Create</a>
+    <a href="06-create-uploading.html">Uploading</a>
+  </div>
+</div>
+
+<div class="app">
+
+  <aside class="sidebar">
+    <div class="sidebar__brand">[ Brand / logo ]</div>
+    <div class="sidebar__group">
+      <div class="sidebar__label">Knowledge Base</div>
+      <div class="sidebar__item"><span class="dot"></span>Diseases</div>
+      <div class="sidebar__item is-active"><span class="dot"></span>Domain Images</div>
+      <div class="sidebar__item"><span class="dot"></span>Sources</div>
+      <div class="sidebar__item"><span class="dot"></span>Translations</div>
+    </div>
+    <div class="sidebar__group">
+      <div class="sidebar__label">Admin</div>
+      <div class="sidebar__item"><span class="dot"></span>Users</div>
+      <div class="sidebar__item"><span class="dot"></span>Audit log</div>
+      <div class="sidebar__item"><span class="dot"></span>Settings</div>
+    </div>
+  </aside>
+
+  <div class="main">
+
+    <header class="topbar">
+      <div class="topbar__path">
+        Admin
+        <span class="sep">/</span>
+        <a href="01-list.html" style="text-decoration:none;color:inherit;">Domain Images</a>
+        <span class="sep">/</span>
+        <strong>Edit image</strong>
+      </div>
+      <div class="topbar__user">
+        <span>Admin user</span>
+        <div class="topbar__avatar"></div>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <!-- Breadcrumb + screen title -->
+      <div class="crumb">
+        <a href="01-list.html">← Back to all images</a>
+        <span class="sep">·</span>
+        <span class="current">Image #68c7cc9b12823ded7e22ca7</span>
+      </div>
+
+      <div class="page-head">
+        <div>
+          <h1 class="page-head__title">Edit image</h1>
+          <p class="page-head__sub">
+            Last modified by <strong>jack@farm2vet</strong> · 14 May 2026 ·
+            URL: <code style="font:12px var(--w-mono); color: var(--w-ink-3);">/admin/images/68c7cc9b</code>
+          </p>
+        </div>
+        <div style="display:flex; gap:10px;">
+          <button class="btn" style="color: var(--w-danger); border-color: var(--w-line-1);">Delete</button>
+        </div>
+      </div>
+
+      <!-- Two-column form -->
+      <form class="form-layout" onsubmit="event.preventDefault();">
+
+        <!-- Media column -->
+        <div class="form-layout__media">
+          <div class="preview">
+            <span class="preview__label">image.jpg · 1240 × 930 · 248 KB</span>
+          </div>
+          <div class="media-meta">
+            <span>Uploaded 2 Mar 2026</span>
+            <span>·</span>
+            <span>By jack@farm2vet</span>
+          </div>
+          <div class="media-actions">
+            <button type="button" class="btn btn--sm">Replace file…</button>
+            <button type="button" class="btn btn--sm btn--ghost">Download</button>
+          </div>
+        </div>
+
+        <!-- Fields column -->
+        <div class="fields">
+
+          <div class="field">
+            <label class="field__label">Disease <span class="req">required</span></label>
+            <div class="input-wrap">
+              <input class="input" value="African Swine Fever Virus (ASFV)" />
+              <span class="input-wrap__caret"></span>
+            </div>
+            <span class="field__help">Pick from the existing disease list. Add a new disease in <em>Diseases</em>.</span>
+          </div>
+
+          <div class="field">
+            <label class="field__label">English description <span class="req">required</span></label>
+            <textarea class="textarea" rows="3">Hyperemia (reddening) of the extremities (ears and snout) of a pig with African swine fever.</textarea>
+            <span class="field__help">A single, descriptive sentence. This is shown to clinicians during diagnosis.</span>
+          </div>
+
+          <div class="field">
+            <label class="field__label">Vietnamese description <span class="req">required</span></label>
+            <textarea class="textarea" rows="3">Sung huyết (đỏ) ở các vùng đầu mút của cơ thể (tai và mõm) của lợn mắc dịch tả lợn châu Phi.</textarea>
+            <span class="field__help">Mirror the English description. Use clinical terminology where possible.</span>
+          </div>
+
+          <div class="field">
+            <label class="field__label">Source <span class="req">required</span></label>
+            <input class="input" value="Merck Veterinary Manual — African Swine Fever" />
+            <input class="input" value="https://www.merckvetmanual.com/generalized-conditions/african-swine-fever/african-swine-fever" style="margin-top:6px;" placeholder="Source URL (optional)" />
+            <div class="help-note">
+              Enter the human-readable title in the first field, and an optional URL in the
+              second. The system will render them as a hyperlink — you no longer need to type
+              raw <code>&lt;a href&gt;</code> markup.
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Sticky footer action bar (spans both columns) -->
+        <div class="action-bar action-bar--sticky" style="grid-column: 1 / -1;">
+          <button type="button" class="btn">Cancel</button>
+          <button type="submit" class="btn btn--primary">Save changes</button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

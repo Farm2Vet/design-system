@@ -1,0 +1,844 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Farm2Vet · Components — Design System</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<!-- Design system: shared, reusable foundation -->
+<link rel="stylesheet" href="styles/tokens.css" />
+<link rel="stylesheet" href="styles/base.css" />
+<link rel="stylesheet" href="styles/typography.css" />
+<link rel="stylesheet" href="styles/shell.css" />
+<link rel="stylesheet" href="styles/global-nav.css" />
+<link rel="stylesheet" href="styles/button.css" />
+<!-- Page-specific: only what is unique to III-02-buttons.html -->
+<link rel="stylesheet" href="styles/page-III-02.css" />
+<!-- Reused: usage-note pattern lives in page-III-03.css -->
+<link rel="stylesheet" href="styles/page-III-03.css" />
+
+<!-- Shared behaviour: scroll-spy highlights the in-view TOC link -->
+<script src="scripts/scroll-spy.js" defer></script>
+
+<script src="scripts/global-nav.js" defer></script>
+
+</head>
+<body data-page="III-02-buttons">
+
+<!-- ========================== GLOBAL NAV ========================== -->
+<header class="global-nav" aria-label="Design system navigation">
+  <div class="global-nav__inner">
+
+    <a href="index.html" class="global-nav__brand" aria-label="Farm2Vet design system home">
+      <img src="logo/logo-wordmark-color.svg" alt="Farm2Vet" class="global-nav__logo" />
+      <small>Design System</small>
+    </a>
+
+    <nav class="global-nav__sections" aria-label="Design system sections">
+      <ul class="global-nav__list">
+        <li class="global-nav__item">
+          <a class="global-nav__link" href="I-primitives.html">I. Primitives</a>
+        </li>
+        <li class="global-nav__item">
+          <a class="global-nav__link" href="II-semantics.html">II. Semantics</a>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="components">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-components">
+            III. Components
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-components" class="global-nav__panel" role="region" aria-label="Components">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="III-01-typography.html"><span class="global-nav__index">01</span><span>Typography</span></a></li>
+                <li><a href="III-02-buttons.html"><span class="global-nav__index">02</span><span>Buttons</span></a></li>
+                <li><a href="III-03-form.html"><span class="global-nav__index">03</span><span>Form</span></a></li>
+                <li><a href="III-04-dropdowns.html"><span class="global-nav__index">04</span><span>Dropdowns</span></a></li>
+                <li><a href="III-05-cards.html"><span class="global-nav__index">05</span><span>Cards</span></a></li>
+                <li><a href="III-06-modal.html"><span class="global-nav__index">06</span><span>Modal Dialog</span></a></li>
+                <li><a href="III-07-side-panel.html"><span class="global-nav__index">07</span><span>Side Panel</span></a></li>
+                <li><a href="III-08-toast.html"><span class="global-nav__index">08</span><span>Toast</span></a></li>
+                <li><a href="III-09-alert-badges.html"><span class="global-nav__index">09</span><span>Alert &amp; Badge</span></a></li>
+                <li><a href="III-10-header-navigation.html"><span class="global-nav__index">10</span><span>Header &amp; Nav Bar</span></a></li>
+                <li><a href="III-11-switch.html"><span class="global-nav__index">11</span><span>Switch</span></a></li>
+                <li><a href="III-12-sidebar.html"><span class="global-nav__index">12</span><span>Sidebar</span></a></li>
+                <li><a href="III-13-chip.html"><span class="global-nav__index">13</span><span>Chip</span></a></li>
+                <li><a href="III-14-tabs.html"><span class="global-nav__index">14</span><span>Tabs</span></a></li>
+                <li><a href="III-15-table.html"><span class="global-nav__index">15</span><span>Table</span></a></li>
+                <li><a href="III-16-search-toolbar.html"><span class="global-nav__index">16</span><span>Search Toolbar</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="assets">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-assets">
+            IV. Assets
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-assets" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Assets">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="IV-01-logo.html"><span class="global-nav__index">01</span><span>Logo</span></a></li>
+                <li><a href="IV-02-icons.html"><span class="global-nav__index">02</span><span>Icons</span></a></li>
+                <li><a href="IV-03-images.html" class="is-placeholder"><span class="global-nav__index">03</span><span>Images</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="mockups">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-mockups">
+            V. Mockups
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-mockups" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Mockups">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="V-01-wiki.html"><span class="global-nav__index">01</span><span>Wiki</span></a></li>
+                <li><a href="V-02-chatbot.html" class="is-placeholder"><span class="global-nav__index">02</span><span>Chatbot</span></a></li>
+                <li><a href="V-03-hero.html"    class="is-placeholder"><span class="global-nav__index">03</span><span>Hero</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+      </ul>
+    </nav>
+
+    <a href="#" class="global-nav__chip" aria-label="Design system version">v1.0</a>
+
+  </div>
+</header>
+<main class="shell" id="top">
+
+  <!-- ========================== HERO ========================== -->
+  <section class="hero">
+    <div>
+      <h1 class="h1 reveal">
+        <span class="num">III-02 / Components</span>
+        Buttons.
+      </h1>
+    </div>
+    <div>
+      <p class="lede reveal">
+        Composable surfaces built on the semantic layer. Each component declares
+        its own narrowly-scoped tokens that resolve to semantic tokens, never
+        to raw primitives. This page documents the Button — the highest-frequency
+        interactive element in the system.
+      </p>
+    </div>
+
+    <dl class="meta-strip reveal">
+      <div><dt>Component</dt><dd>Button</dd></div>
+      <div><dt>Variants</dt><dd>8</dd></div>
+      <div><dt>States</dt><dd>6</dd></div>
+      <div><dt>Versions</dt><dd>4</dd></div>
+      <div><dt>Sizes</dt><dd>5</dd></div>
+    </dl>
+  </section>
+
+  <!-- ========================== BUTTON · VARIANTS ========================== -->
+  <section class="chunk" id="button-variants">
+    <header class="chunk-head reveal">
+      <span class="num-tag">01 / Button — Variants</span>
+      <h2 class="h2">Variants.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      Eight variants, listed in descending emphasis: CTA, Secondary,
+      Tinted, Glass, Ghost, Borderless, Caution, Toggle. Each variant
+      corresponds to a single role — primary action, supporting action,
+      low-emphasis surface, destructive action, or stateful toggle.
+    </p>
+
+    <div class="variant-grid reveal">
+
+      <article class="variant-card">
+        <span class="label">CTA · Primary</span>
+        <div class="demo">
+          <button class="btn btn--cta btn--lg">
+            <span class="btn__label">Run diagnosis</span>
+          </button>
+        </div>
+        <div class="meta"><span>.btn--cta</span><strong>primary action</strong></div>
+      </article>
+
+      <article class="variant-card">
+        <span class="label">Secondary</span>
+        <div class="demo">
+          <button class="btn btn--secondary btn--lg">
+            <span class="btn__label">View case file</span>
+          </button>
+        </div>
+        <div class="meta"><span>.btn--secondary</span><strong>supporting</strong></div>
+      </article>
+
+      <article class="variant-card">
+        <span class="label">Tinted</span>
+        <div class="demo">
+          <button class="btn btn--tinted btn--lg">
+            <span class="btn__label">Schedule recheck</span>
+          </button>
+        </div>
+        <div class="meta"><span>.btn--tinted</span><strong>accented · quiet</strong></div>
+      </article>
+
+      <article class="variant-card variant-card--glass-stage">
+        <span class="label">Glass</span>
+        <div class="demo">
+          <button class="btn btn--glass btn--lg">
+            <span class="btn__label">Float over</span>
+          </button>
+        </div>
+        <div class="meta"><span>.btn--glass</span><strong>floating · blurred</strong></div>
+      </article>
+
+      <article class="variant-card">
+        <span class="label">Ghost</span>
+        <div class="demo">
+          <button class="btn btn--ghost btn--lg">
+            <span class="btn__label">Skip triage</span>
+          </button>
+        </div>
+        <div class="meta"><span>.btn--ghost</span><strong>low emphasis</strong></div>
+      </article>
+
+      <article class="variant-card">
+        <span class="label">Borderless</span>
+        <div class="demo">
+          <button class="btn btn--borderless btn--cta btn--lg">
+            <span class="btn__label">Open chart</span>
+          </button>
+        </div>
+        <div class="meta"><span>.btn--borderless.btn--cta</span><strong>typographic</strong></div>
+      </article>
+
+      <article class="variant-card">
+        <span class="label">Caution · Destructive</span>
+        <div class="demo">
+          <button class="btn btn--caution btn--lg">
+            <span class="btn__label">Order euthanasia</span>
+          </button>
+        </div>
+        <div class="meta"><span>.btn--caution</span><strong>irreversible</strong></div>
+      </article>
+
+      <article class="variant-card">
+        <span class="label">Toggle (on)</span>
+        <div class="demo">
+          <button class="btn btn--toggle btn--lg is-on" aria-pressed="true">
+            <span class="btn__label">Vitals monitor</span>
+          </button>
+        </div>
+        <div class="meta"><span>.btn--toggle.is-on</span><strong>switchable</strong></div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ========================== BUTTON · STATES ========================== -->
+  <section class="chunk" id="button-states">
+    <header class="chunk-head reveal">
+      <span class="num-tag">02 / Button — States</span>
+      <h2 class="h2">States.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      Every variant supports the same state set: rest, hover, pressed,
+      focused, disabled, and loading. Hover, pressed, and focused cells
+      use static <code>data-state</code> proxies — they paint the visual
+      the live pseudo-class would produce, without altering behaviour.
+    </p>
+
+    <div class="variant-grid reveal">
+
+      <article class="variant-card">
+        <span class="label">Rest</span>
+        <div class="demo">
+          <button class="btn btn--cta btn--lg">
+            <span class="btn__label">Run diagnosis</span>
+          </button>
+        </div>
+        <div class="meta"><span>:default</span><strong>idle</strong></div>
+      </article>
+
+      <article class="variant-card">
+        <span class="label">Hover</span>
+        <div class="demo">
+          <button class="btn btn--cta btn--lg" data-state="hover">
+            <span class="btn__label">Run diagnosis</span>
+          </button>
+        </div>
+        <div class="meta"><span>:hover</span><strong>cursor over</strong></div>
+      </article>
+
+      <article class="variant-card">
+        <span class="label">Pressed</span>
+        <div class="demo">
+          <button class="btn btn--cta btn--lg" data-state="active">
+            <span class="btn__label">Run diagnosis</span>
+          </button>
+        </div>
+        <div class="meta"><span>:active</span><strong>mid-click</strong></div>
+      </article>
+
+      <article class="variant-card">
+        <span class="label">Focused</span>
+        <div class="demo">
+          <button class="btn btn--cta btn--lg" data-state="focus">
+            <span class="btn__label">Run diagnosis</span>
+          </button>
+        </div>
+        <div class="meta"><span>:focus-visible</span><strong>keyboard</strong></div>
+      </article>
+
+      <article class="variant-card">
+        <span class="label">Disabled</span>
+        <div class="demo">
+          <button class="btn btn--cta btn--lg" disabled>
+            <span class="btn__label">Awaiting samples</span>
+          </button>
+        </div>
+        <div class="meta"><span>[disabled]</span><strong>blocked</strong></div>
+      </article>
+
+      <article class="variant-card">
+        <span class="label">Loading</span>
+        <div class="demo">
+          <button class="btn btn--loading btn--lg">
+            <span class="btn__leading"><span class="spinner" aria-hidden="true"></span></span>
+            <span class="btn__label">Analyzing</span>
+          </button>
+        </div>
+        <div class="meta"><span>.btn--loading</span><strong>in progress</strong></div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ========================== BUTTON · VERSIONS ========================== -->
+  <section class="chunk" id="button-versions">
+    <header class="chunk-head reveal">
+      <span class="num-tag">03 / Button — Versions</span>
+      <h2 class="h2">Versions.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      The same variant adapts to its container. Default, inverted, and
+      secondary-subtle surfaces shift the contrast scheme; icon-only and
+      borderless re-shape the affordance for compact rails and inline
+      contexts.
+    </p>
+
+    <div class="version-stage reveal">
+
+      <article class="version-card">
+        <div class="demo">
+          <button class="btn btn--cta btn--lg">Diagnose</button>
+          <button class="btn btn--secondary btn--lg">Vitals</button>
+          <button class="btn btn--ghost btn--lg">Defer</button>
+        </div>
+        <div class="body">
+          <span class="name">Default</span>
+        </div>
+      </article>
+
+      <article class="version-card dark">
+        <div class="demo surface-inverted">
+          <button class="btn btn--cta btn--lg">Diagnose</button>
+          <button class="btn btn--secondary btn--lg">Vitals</button>
+          <button class="btn btn--ghost btn--lg">Defer</button>
+        </div>
+        <div class="body">
+          <span class="name">Inverted Surface</span>
+        </div>
+      </article>
+
+      <article class="version-card">
+        <div class="demo surface-secondary-subtle">
+          <button class="btn btn--cta btn--lg">Diagnose</button>
+          <button class="btn btn--secondary btn--lg">Vitals</button>
+          <button class="btn btn--ghost btn--lg">Defer</button>
+        </div>
+        <div class="body">
+          <span class="name">Secondary Subtle Surface</span>
+        </div>
+      </article>
+
+      <article class="version-card">
+        <div class="demo">
+          <button class="btn btn--cta btn--lg btn--icon-only" aria-label="Add to caseload">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+          </button>
+          <button class="btn btn--secondary btn--lg btn--icon-only" aria-label="Exam settings">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          </button>
+          <button class="btn btn--ghost btn--lg btn--icon-only" aria-label="More options">
+            <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
+          </button>
+          <button class="btn btn--caution btn--lg btn--icon-only" aria-label="Mark deceased">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+          </button>
+        </div>
+        <div class="body">
+          <span class="name">Icon Only</span>
+        </div>
+      </article>
+
+      <article class="version-card">
+        <div class="demo">
+          <button class="btn btn--cta btn--lg btn--borderless">Open chart</button>
+          <button class="btn btn--secondary btn--lg btn--borderless">Back to ward</button>
+          <button class="btn btn--caution btn--lg btn--borderless">Discard sample</button>
+        </div>
+        <div class="body">
+          <span class="name">Borderless</span>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ========================== BUTTON · SIZES ========================== -->
+  <section class="chunk" id="button-sizes">
+    <header class="chunk-head reveal">
+      <span class="num-tag">04 / Button — Sizes</span>
+      <h2 class="h2">Sizes.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      Five steps along the same scale that drives type. Large · 22.5px is
+      the default for primary actions in marketing surfaces and form
+      footers.
+    </p>
+
+    <h4 class="h4 reveal">CTA — across all sizes <span class="tag">primary intent</span></h4>
+    <div class="glass size-stage reveal">
+      <div class="size-cell">
+        <button class="btn btn--cta btn--sm">Diagnose</button>
+        <span class="tag">SM · 13.33px</span>
+      </div>
+      <div class="size-cell">
+        <button class="btn btn--cta btn--md">Diagnose</button>
+        <span class="tag">MD · 16px</span>
+      </div>
+      <div class="size-cell">
+        <button class="btn btn--cta btn--lg">Diagnose</button>
+        <span class="tag">LG · 22.5px</span>
+      </div>
+      <div class="size-cell">
+        <button class="btn btn--cta btn--xl">Diagnose</button>
+        <span class="tag">XL · 27.65px</span>
+      </div>
+      <div class="size-cell">
+        <button class="btn btn--cta btn--2xl">Diagnose</button>
+        <span class="tag">2XL · 33.18px</span>
+      </div>
+    </div>
+
+    <h4 class="h4 reveal">Icon-only — across all sizes <span class="tag">version</span></h4>
+    <div class="glass size-stage reveal">
+      <div class="size-cell">
+        <button class="btn btn--cta btn--sm btn--icon-only" aria-label="Add diagnosis">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+        <span class="tag">SM</span>
+      </div>
+      <div class="size-cell">
+        <button class="btn btn--cta btn--md btn--icon-only" aria-label="Add diagnosis">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+        <span class="tag">MD</span>
+      </div>
+      <div class="size-cell">
+        <button class="btn btn--cta btn--lg btn--icon-only" aria-label="Add diagnosis">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+        <span class="tag">LG</span>
+      </div>
+      <div class="size-cell">
+        <button class="btn btn--cta btn--xl btn--icon-only" aria-label="Add diagnosis">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+        <span class="tag">XL</span>
+      </div>
+      <div class="size-cell">
+        <button class="btn btn--cta btn--2xl btn--icon-only" aria-label="Add diagnosis">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+        <span class="tag">2XL</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================== PADDING RATIO ========================== -->
+  <section class="chunk" id="padding-ratio">
+    <header class="chunk-head reveal">
+      <span class="num-tag">05 / Button — Padding ratio</span>
+      <h2 class="h2">Padding ratio.</h2>
+    </header>
+    <p class="section-lede reveal">
+      Buttons obey the golden band on both axes across every
+      size: pad-y 0.5 – 0.75 of the label font, pad-x 1.0 – 1.5
+      of it. Unlike form inputs (which cap X at 32px above LG
+      because the value floats in an empty rail), buttons keep
+      scaling X with font — the label <em>is</em> the surface, so the
+      padding has to grow with the word. SM is the density
+      tier and sits below the Y floor by design, the same
+      convention every peer system follows for compact buttons.
+      See <a href="III-03-form.html">form fields</a> for the
+      capped sibling rule.
+    </p>
+
+    <div class="ratio-table reveal">
+      <table>
+        <thead>
+          <tr>
+            <th>Size</th>
+            <th>font</th>
+            <th>pad-y</th>
+            <th>pad-x</th>
+            <th>H : V</th>
+            <th>pad-x / font</th>
+            <th>pad-y / font</th>
+            <th>Control rail token</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>SM</td>
+            <td>13.33px</td>
+            <td>4 px</td>
+            <td>16 px</td>
+            <td>4.0 : 1</td>
+            <td>1.20</td>
+            <td>0.30</td>
+            <td><code>--space-control-x-sm</code></td>
+          </tr>
+          <tr>
+            <td>MD</td>
+            <td>16px</td>
+            <td>8 px</td>
+            <td>20 px</td>
+            <td>2.5 : 1</td>
+            <td>1.25</td>
+            <td>0.50</td>
+            <td><code>--space-control-x-md</code></td>
+          </tr>
+          <tr>
+            <td>LG</td>
+            <td>22.5px</td>
+            <td>12 px</td>
+            <td>32 px</td>
+            <td>2.67 : 1</td>
+            <td>1.42</td>
+            <td>0.53</td>
+            <td><code>--space-control-x-lg</code></td>
+          </tr>
+          <tr>
+            <td>XL</td>
+            <td>27.65px</td>
+            <td>16 px</td>
+            <td>40 px</td>
+            <td>2.5 : 1</td>
+            <td>1.45</td>
+            <td>0.58</td>
+            <td><code>--space-control-x-xl</code></td>
+          </tr>
+          <tr>
+            <td>2XL</td>
+            <td>33.18px</td>
+            <td>20 px</td>
+            <td>48 px</td>
+            <td>2.4 : 1</td>
+            <td>1.45</td>
+            <td>0.60</td>
+            <td><code>--space-control-x-2xl</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <aside class="ratio-table__band reveal">
+      <strong>Golden band — button rail:</strong>
+      <ul>
+        <li>pad-y / font ∈ [0.50, 0.75] at MD and above</li>
+        <li>pad-x / font ∈ [1.00, 1.50] at all sizes — no cap</li>
+        <li>SM is the density tier — intentionally below the
+            Y floor</li>
+      </ul>
+      <p>
+        Form inputs share these tokens but cap pad-x at 32px
+        above LG (the placeholder rail problem). See
+        <a href="III-03-form.html">form fields</a> for the
+        capped sibling rule.
+      </p>
+      <p>
+        Content surfaces (alerts, toasts) run a separate,
+        looser band — they hold multi-line prose, where
+        vertical headroom matters more than horizontal trim.
+        See <a href="III-09-alert-badges.html">alerts &amp;
+        badges</a>.
+      </p>
+    </aside>
+  </section>
+
+  <!-- ========================== BUTTON · TOKENS ========================== -->
+  <section class="chunk" id="button-tokens">
+    <header class="chunk-head reveal">
+      <span class="num-tag">06 / Button — Component tokens</span>
+      <h2 class="h2">Tokens.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      Every Button declaration resolves through this layer. Component tokens
+      only ever reference semantic tokens — never primitives — so any change
+      in intent is inherited automatically.
+    </p>
+
+    <table class="token-table reveal" aria-label="Button component tokens">
+      <thead>
+        <tr>
+          <th>Component token</th>
+          <th>References</th>
+          <th>Resolves to</th>
+          <th>Preview</th>
+        </tr>
+      </thead>
+      <tbody id="btnTokenTable"></tbody>
+    </table>
+  </section>
+
+  <!-- ========================== FOOTER ========================== -->
+  <footer>
+    <span>END OF SECTION</span>
+  </footer>
+
+</main>
+
+<script>
+/* =========================================================
+   COMPONENT TOKEN DATA — Button
+   Each entry: [groupOrName, semanticReference, isGroupHeader?]
+   ========================================================= */
+const BTN_TOKENS = [
+  { group: 'Shared shape', tokens: [
+    ['--btn-font-family',     'var(--font-sans)'],
+    ['--btn-font-weight',     'var(--font-weight-medium)'],
+    ['--btn-letter-spacing',  '0'],
+    ['--btn-radius',          'var(--radius-md)'],
+    ['--btn-radius-pill',     'var(--radius-pill)'],
+    ['--btn-border-width',    'var(--border-width-base)'],
+    ['--btn-gap',             'var(--space-gap-snug)'],
+    ['--btn-shadow-rest',     'var(--shadow-sm)'],
+    ['--btn-shadow-hover',    'var(--shadow-md)'],
+  ]},
+  { group: 'Sizes — focus on LG (22.5px)', tokens: [
+    ['--btn-sm-font-size',    'var(--text-sm)'],
+    ['--btn-sm-padding-x',    'var(--space-control-x-sm)'],
+    ['--btn-sm-padding-y',    'var(--space-control-y-sm)'],
+    ['--btn-md-font-size',    'var(--text-base)'],
+    ['--btn-md-padding-x',    'var(--space-control-x-md)'],
+    ['--btn-md-padding-y',    'var(--space-control-y-md)'],
+    ['--btn-lg-font-size',    '22.5px /* focus */'],
+    ['--btn-lg-padding-x',    'var(--space-control-x-lg)'],
+    ['--btn-lg-padding-y',    'var(--space-control-y-lg)'],
+    ['--btn-xl-font-size',    'var(--text-h4)'],
+    ['--btn-xl-padding-x',    'var(--space-control-x-xl)'],
+    ['--btn-xl-padding-y',    'var(--space-control-y-xl)'],
+    ['--btn-2xl-font-size',   'var(--text-h3)'],
+    ['--btn-2xl-padding-x',   'var(--space-control-x-2xl)'],
+    ['--btn-2xl-padding-y',   'var(--space-control-y-2xl)'],
+  ]},
+  { group: 'Variant · CTA (Accent · primary action)', tokens: [
+    ['--btn-cta-bg',          'var(--background-accent)'],
+    ['--btn-cta-bg-hover',    'var(--background-accent-hover)'],
+    ['--btn-cta-bg-active',   'var(--background-accent-active)'],
+    ['--btn-cta-fg',          'var(--text-inverted)'],
+    ['--btn-cta-border',      'transparent'],
+    ['--btn-cta-shadow',      'var(--shadow-sm)'],
+  ]},
+  { group: 'Variant · Secondary', tokens: [
+    ['--btn-secondary-bg',        'var(--background-default)'],
+    ['--btn-secondary-bg-hover',  'var(--background-default-hover)'],
+    ['--btn-secondary-bg-active', 'var(--background-default-active)'],
+    ['--btn-secondary-fg',        'var(--text-default)'],
+    ['--btn-secondary-border',    'var(--border-default-strong)'],
+    ['--btn-secondary-shadow',    'var(--shadow-sm)'],
+  ]},
+  { group: 'Variant · Ghost', tokens: [
+    ['--btn-ghost-bg',          'transparent'],
+    ['--btn-ghost-bg-hover',    'var(--background-default-subtle)'],
+    ['--btn-ghost-bg-active',   'var(--background-default-minimal)'],
+    ['--btn-ghost-fg',          'var(--text-default)'],
+    ['--btn-ghost-border',      'transparent'],
+  ]},
+  { group: 'Variant · Disabled', tokens: [
+    ['--btn-disabled-bg',     'var(--background-default-disabled)'],
+    ['--btn-disabled-fg',     'var(--text-default-disabled)'],
+    ['--btn-disabled-border', 'var(--border-default-disabled)'],
+    ['--btn-disabled-cursor', 'not-allowed'],
+    ['--btn-disabled-opacity','1'],
+  ]},
+  { group: 'Variant · Loading', tokens: [
+    ['--btn-loading-bg',      'var(--background-primary)'],
+    ['--btn-loading-fg',      'var(--text-inverted)'],
+    ['--btn-loading-spinner', 'var(--text-inverted)'],
+    ['--btn-loading-track',   'color-mix(in srgb, var(--white-base) 35%, transparent)'],
+  ]},
+  { group: 'Variant · Caution (Destructive)', tokens: [
+    ['--btn-caution-bg',        'var(--background-critical-strong)'],
+    ['--btn-caution-bg-hover',  'var(--background-critical-hover)'],
+    ['--btn-caution-bg-active', 'var(--background-critical-active)'],
+    ['--btn-caution-fg',        'var(--text-inverted)'],
+    ['--btn-caution-border',    'transparent'],
+    ['--btn-caution-shadow',    'var(--shadow-sm)'],
+  ]},
+  { group: 'Variant · Tinted', tokens: [
+    ['--btn-tinted-bg',        'var(--background-accent-minimal)'],
+    ['--btn-tinted-bg-hover',  'var(--background-accent-subtle)'],
+    ['--btn-tinted-bg-active', 'color-mix(in srgb, var(--accent-200) 70%, var(--background-default))'],
+    ['--btn-tinted-fg',        'var(--text-accent-strong)'],
+    ['--btn-tinted-border',    'transparent'],
+  ]},
+  { group: 'Variant · Glass', tokens: [
+    ['--btn-glass-bg',        'var(--background-glass-light)'],
+    ['--btn-glass-bg-hover',  'color-mix(in srgb, var(--white-base) 80%, transparent)'],
+    ['--btn-glass-bg-active', 'color-mix(in srgb, var(--white-base) 92%, transparent)'],
+    ['--btn-glass-fg',        'var(--text-default)'],
+    ['--btn-glass-border',    'var(--border-glass-light)'],
+    ['--btn-glass-blur',      'var(--blur-lg)'],
+    ['--btn-glass-saturate',  '140%'],
+  ]},
+  { group: 'Variant · Toggle', tokens: [
+    ['--btn-toggle-bg',         'var(--background-default)'],
+    ['--btn-toggle-bg-hover',   'var(--background-default-hover)'],
+    ['--btn-toggle-fg',         'var(--text-default)'],
+    ['--btn-toggle-border',     'var(--border-default-strong)'],
+    ['--btn-toggle-on-bg',      'var(--background-primary)'],
+    ['--btn-toggle-on-fg',      'var(--text-inverted)'],
+    ['--btn-toggle-on-border',  'var(--border-primary)'],
+  ]},
+  { group: 'Version · Inverted Surface', tokens: [
+    ['--btn-inverted-cta-bg',         'var(--background-default)'],
+    ['--btn-inverted-cta-fg',         'var(--text-accent-strong)'],
+    ['--btn-inverted-cta-bg-hover',   'var(--background-accent-subtle)'],
+    ['--btn-inverted-secondary-bg',     'transparent'],
+    ['--btn-inverted-secondary-fg',     'var(--text-inverted)'],
+    ['--btn-inverted-secondary-border', 'var(--border-inverted-strong)'],
+    ['--btn-inverted-ghost-fg',         'var(--text-inverted)'],
+    ['--btn-inverted-ghost-bg-hover',   'var(--background-inverted-minimal)'],
+  ]},
+  { group: 'Focus ring', tokens: [
+    ['--btn-focus-outline',         'var(--outline-focus)'],
+    ['--btn-focus-outline-width',   '2px'],
+    ['--btn-focus-outline-offset',  '2px'],
+  ]},
+];
+
+/* =========================================================
+   RENDER — Button token table
+   Resolve each var() chain to a final value via getComputedStyle,
+   and decide whether the chip should render a colour or be hidden.
+   ========================================================= */
+function resolveCss(varName) {
+  const styles = getComputedStyle(document.documentElement);
+  return styles.getPropertyValue(varName).trim();
+}
+
+function isColorish(value) {
+  if (!value) return false;
+  const v = value.toLowerCase();
+  return v.startsWith('#') ||
+         v.startsWith('rgb') ||
+         v.startsWith('hsl') ||
+         v.startsWith('color-mix') ||
+         v.startsWith('linear-gradient') ||
+         v.startsWith('radial-gradient') ||
+         v === 'transparent' ||
+         /^[a-z]+$/.test(v);
+}
+
+function renderTokenTable() {
+  const tbody = document.getElementById('btnTokenTable');
+  let html = '';
+  BTN_TOKENS.forEach(group => {
+    html += `<tr class="group-row"><td colspan="4">${group.group}</td></tr>`;
+    group.tokens.forEach(([name, ref]) => {
+      const resolved = resolveCss(name) || '—';
+      const isColor = isColorish(resolved);
+      const chip = isColor
+        ? `<span class="chip" style="background:${resolved}"></span>`
+        : `<span class="chip" style="background: repeating-linear-gradient(45deg, var(--neutral-100) 0 6px, var(--neutral-50) 6px 12px); opacity:.6"></span>`;
+      html += `
+        <tr>
+          <td class="tk-name">${name}</td>
+          <td class="tk-ref">${ref.replace(/</g,'&lt;')}</td>
+          <td class="tk-resolved">${resolved.length > 60 ? resolved.slice(0,57)+'…' : resolved}</td>
+          <td class="tk-swatch">${chip}</td>
+        </tr>`;
+    });
+  });
+  tbody.innerHTML = html;
+}
+
+/* =========================================================
+   REVEAL ON SCROLL
+   ========================================================= */
+function initReveal() {
+  const items = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    items.forEach(el => el.classList.add('in'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        en.target.classList.add('in');
+        io.unobserve(en.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(el => io.observe(el));
+}
+
+/* =========================================================
+   TOGGLE INTERACTION
+   ========================================================= */
+function initToggles() {
+  document.querySelectorAll('.btn--toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const pressed = btn.getAttribute('aria-pressed') === 'true';
+      btn.setAttribute('aria-pressed', String(!pressed));
+      btn.classList.toggle('is-on', !pressed);
+    });
+  });
+}
+
+/* =========================================================
+   BOOT
+   ========================================================= */
+document.addEventListener('DOMContentLoaded', () => {
+  renderTokenTable();
+  initReveal();
+  initToggles();
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,409 @@
+/* =========================================================
+   PAGE — COMPONENT · FORM
+   Styles unique to section-04-form.html: layout for the
+   form variant grid, version showcase, size stage, and the
+   component token spec table.
+   The actual form components live in form.css.
+   Depends on: tokens.css, base.css, shell.css, form.css
+   ========================================================= */
+
+/* =========================================================
+   STACKING — lift any showcase card whose dropdown is open
+   The .form-variant-card / .form-version-card surfaces use
+   backdrop-filter for their glass treatment, which creates a
+   new stacking context per card. That traps the dropdown menu
+   inside the card it lives in — so a long menu paints under
+   the next card in the grid even with high z-index on the
+   menu itself. Lifting the parent card via :has() promotes
+   the entire stacking context above its siblings while open.
+   ========================================================= */
+.form-variant-card:has(.dropdown.is-open),
+.form-version-card:has(.dropdown.is-open),
+.form-size-row:has(.dropdown.is-open) {
+    position: relative;
+    z-index: 50;
+}
+/* Also lift the showcase container itself. Each grid carries .reveal,
+   whose transform establishes a stacking context — without this, the
+   card's z-index is scoped inside the grid and any sibling that follows
+   the grid (notably the trailing .usage-note--below, which is also
+   .reveal and so its own stacking context) paints over the dropdown
+   menu when it overflows below the last card. */
+.form-variant-grid:has(.dropdown.is-open),
+.form-version-stage:has(.dropdown.is-open),
+.form-size-stage:has(.dropdown.is-open) {
+    position: relative;
+    z-index: 50;
+}
+
+/* =========================================================
+   USAGE NOTE — instructional paragraph
+   Lifted from page-II.css so any component-page that
+   imports this file inherits the same usage-note pattern.
+   Use as <p class="usage-note reveal">…</p> placed BEFORE
+   the content it governs (above a grid, table, or demo).
+   Lead with a <strong> phrase, then the rule.
+   ========================================================= */
+.usage-note {
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--line-height-body);
+    color: var(--text-default-subtle);
+    max-width: 72ch;
+    margin: calc(var(--space-tier-6) * -1) 0 var(--space-tier-2) 0;
+    padding: var(--space-tier-5) 0 var(--space-tier-5) var(--space-tier-4);
+    border-left: 2px solid var(--border-primary-subtle);
+}
+.usage-note + .usage-note {
+    margin-top: var(--space-tier-5);
+}
+.usage-note strong {
+    color: var(--text-default);
+    font-weight: var(--font-weight-semibold);
+}
+.usage-note code {
+    font-family: var(--font-mono);
+    font-size: var(--text-body-sm);
+    color: var(--text-primary-strong);
+    background: var(--background-primary-minimal);
+    padding: 0.1em 0.4em;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+}
+
+/* "Below" placement (new canonical pattern): the usage-note
+   sits *after* the content it governs (variant grid, demo
+   stage, etc.). Positive top margin restores normal flow.
+   Spec C will migrate existing above-the-demo usages to this
+   modifier and the unmodified default rule can then be retired. */
+.usage-note--below {
+    margin-top:    var(--space-tier-3);
+    margin-bottom: var(--space-tier-2);
+}
+.usage-note--below + .usage-note--below {
+    margin-top: var(--space-tier-5);
+}
+
+/* Block children inside .usage-note. Used when the rule carries a lead
+   sentence plus a list of contexts — the wrapper switches from <p> to
+   <div>, and the inner <p>/<ul> reset their default margins so the
+   border-accent + indent stays visually crisp. */
+.usage-note > p {
+    margin: 0;
+}
+.usage-note > p + ul,
+.usage-note > p + ol {
+    margin-top: var(--space-tier-5);
+}
+.usage-note > ul,
+.usage-note > ol {
+    font-size: var(--text-body-sm);
+    line-height: 1.65;
+    margin: 0;
+    padding-left: var(--spacing-5x);
+    color: var(--text-default-subtle);
+}
+.usage-note li + li {
+    margin-top: var(--space-tier-7);
+}
+.usage-note li code {
+    font-family: var(--font-mono);
+    font-size: 0.92em;
+    color: var(--text-primary-strong);
+    background: var(--background-primary-minimal);
+    padding: 0.1em 0.4em;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+}
+
+/* =========================================================
+   VARIANT GRID — one card per form variant
+   Single column on desktop. Each card spans the full
+   content width with a horizontal inner layout: a narrow
+   left rail carries the label + token meta (the spec) and
+   the wider right rail hosts the live demo. This mirrors
+   modern design-system documentation conventions
+   (Tailwind UI, Linear, Stripe) — wide enough for the
+   input to breathe at LG (22.5px) without distortion,
+   yet still anchored by the spec column so the reader
+   can always tie the visual back to its class hooks.
+   ========================================================= */
+.form-variant-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-5x);
+}
+.form-variant-card {
+    border-radius: var(--radius-lg);
+    border: var(--border-width-base) solid var(--border-glass-light);
+    background: var(--background-glass-light);
+    backdrop-filter: var(--blur-lg) saturate(140%);
+    -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
+    padding: var(--space-tier-3) var(--space-tier-2);
+    display: grid;
+    grid-template-columns: minmax(220px, 280px) 1fr;
+    grid-template-rows: auto 1fr;
+    column-gap: var(--space-tier-2);
+    row-gap: var(--space-tier-5);
+    align-items: stretch;
+    min-height: 200px;
+}
+.form-variant-card.tall { min-height: 260px; }
+
+.form-variant-card .label {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+    grid-column: 1;
+    grid-row: 1;
+}
+.form-variant-card .demo {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    max-width: 720px;
+}
+.form-variant-card .meta {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    color: var(--text-default-minimal);
+    letter-spacing: var(--letter-spacing-mono);
+    border-top: var(--border-width-base) solid var(--border-default-subtle);
+    padding-top: var(--space-tier-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tier-7);
+    grid-column: 1;
+    grid-row: 2;
+    align-self: end;
+}
+.form-variant-card .meta strong {
+    color: var(--text-default);
+    font-weight: var(--font-weight-medium);
+}
+
+/* =========================================================
+   VERSION STAGE — Default / With-value / Error
+   Stacked vertically as a single column so each state
+   card spans the full row. The horizontal inner layout
+   keeps the spec on the left and the live demo on the
+   right, giving the input a generous, modern aspect
+   ratio while preserving direct comparability between
+   the three states (read top-to-bottom instead of
+   left-to-right).
+   ========================================================= */
+.form-version-stage {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-tier-4);
+}
+.form-version-card {
+    border-radius: var(--radius-lg);
+    border: var(--border-width-base) solid var(--border-glass-light);
+    background: var(--background-glass-light);
+    backdrop-filter: var(--blur-lg) saturate(140%);
+    -webkit-backdrop-filter: var(--blur-lg) saturate(140%);
+    padding: var(--space-tier-3) var(--space-tier-2);
+    display: grid;
+    grid-template-columns: minmax(200px, 240px) 1fr;
+    grid-template-rows: auto 1fr;
+    column-gap: var(--space-tier-2);
+    row-gap: var(--space-tier-5);
+    align-items: stretch;
+    min-height: 180px;
+}
+.form-version-card .label {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+    grid-column: 1;
+    grid-row: 1;
+}
+.form-version-card .demo {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    max-width: 720px;
+}
+.form-version-card .meta {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    color: var(--text-default-minimal);
+    letter-spacing: var(--letter-spacing-mono);
+    border-top: var(--border-width-base) solid var(--border-default-subtle);
+    padding-top: var(--space-tier-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tier-7);
+    grid-column: 1;
+    grid-row: 2;
+    align-self: end;
+}
+.form-version-card .meta strong {
+    color: var(--text-default);
+    font-weight: var(--font-weight-medium);
+}
+
+/* =========================================================
+   SIZE STAGE — sizes stacked vertically (inputs are full-width
+   so a horizontal layout would stretch awkwardly).
+   ========================================================= */
+.form-size-stage {
+    padding: var(--space-tier-2);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tier-3);
+}
+.form-size-row {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    align-items: center;
+    gap: var(--space-tier-3);
+    padding-bottom: var(--spacing-5x);
+    border-bottom: var(--border-width-base) dashed var(--border-default);
+}
+.form-size-row:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+}
+.form-size-row .tag {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+    justify-self: start;
+}
+.form-size-row .demo {
+    width: 100%;
+    max-width: 480px;
+}
+
+/* =========================================================
+   RESPONSIVE
+   The outer grids are already single-column, so at narrow
+   widths we just collapse the inner two-column card layout
+   (spec rail + demo) into a stacked layout — label on top,
+   demo in the middle, meta on the bottom — so the demo
+   never gets squeezed below its natural width.
+   ========================================================= */
+@media (max-width: 960px) {
+    .form-variant-card,
+    .form-version-card {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+        padding: var(--space-tier-3);
+        column-gap: 0;
+        row-gap: var(--space-tier-4);
+    }
+    .form-variant-card .label,
+    .form-version-card .label   { grid-column: 1; grid-row: 1; }
+    .form-variant-card .demo,
+    .form-version-card .demo    { grid-column: 1; grid-row: 2; max-width: none; }
+    .form-variant-card .meta,
+    .form-version-card .meta    { grid-column: 1; grid-row: 3; flex-direction: row; justify-content: space-between; }
+
+    .form-size-row              { grid-template-columns: 1fr; gap: var(--space-tier-5); }
+    .form-size-row .tag         { justify-self: start; }
+}
+
+/* =========================================================
+   PADDING RATIO TABLE — H:V + text/padding documentation
+   ========================================================= */
+.ratio-table {
+    border: var(--border-width-base) solid var(--border-default);
+    border-radius: var(--radius-md);
+    background: var(--background-default);
+    overflow: hidden;
+}
+.ratio-table table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+}
+.ratio-table th,
+.ratio-table td {
+    padding: var(--space-tier-5) var(--space-tier-4);
+    text-align: left;
+    border-bottom: var(--border-width-base) solid var(--border-default-subtle);
+    line-height: var(--line-height-h4);
+    color: var(--text-default);
+}
+.ratio-table th {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+    font-weight: var(--font-weight-medium);
+    background: var(--background-default-subtle);
+}
+.ratio-table tbody tr:last-child td { border-bottom: none; }
+.ratio-table tbody tr.is-focus td {
+    background: var(--background-primary-subtle);
+    color: var(--text-primary-strong);
+    font-weight: var(--font-weight-medium);
+}
+.ratio-table code {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    background: transparent;
+    color: var(--text-default-subtle);
+    padding: 0;
+}
+.ratio-table__tag {
+    display: inline-block;
+    margin-left: var(--space-gap-micro);
+    padding: 2px var(--space-tier-6);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-primary-strong);
+    background: var(--background-primary-minimal);
+    border-radius: var(--radius-pill);
+    vertical-align: middle;
+}
+.ratio-table__tag--note {
+    background: var(--background-default-minimal);
+    color: var(--text-default-subtle);
+}
+.ratio-table__band {
+    margin-top: var(--space-flow-heading);
+    padding: var(--space-tier-4);
+    background: var(--background-default-subtle);
+    border-radius: var(--radius-md);
+    font-size: var(--text-sm);
+    color: var(--text-default-subtle);
+    line-height: var(--line-height-body);
+}
+.ratio-table__band strong {
+    color: var(--text-default);
+    font-weight: var(--font-weight-semibold);
+}
+.ratio-table__band ul {
+    margin: var(--space-tier-6) 0 var(--space-tier-5);
+    padding-left: var(--space-tier-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-gap-micro);
+}
+.ratio-table__band ul li {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--text-default);
+}
+.ratio-table__band p {
+    margin: 0;
+}

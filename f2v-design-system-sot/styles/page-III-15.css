@@ -1,0 +1,94 @@
+/* =========================================================
+   PAGE — III-15 / Components / Table
+   Page-scoped scaffolding for the Table component page.
+   Layout helpers only: anatomy key, demo-hover override,
+   and a stage that hosts the live <table> examples. The
+   component itself ships from styles/table.css.
+
+   Depends on: tokens.css, base.css, typography.css, shell.css,
+               global-nav.css, badge.css, button.css, table.css,
+               page-III-02.css (.token-table),
+               page-III-03.css (.usage-note, .preview-stage)
+   ========================================================= */
+
+/* Tighten the preview stage when it hosts a wide <table>:
+   the table fills the stage, so vertical centering would
+   leave a wide swathe of empty stage above and below. */
+.preview-stage:has(> .table) {
+    display: block;
+    padding: var(--space-tier-4);
+}
+
+/* Anatomy key — plain definition list, two columns. Names
+   on the left, descriptions on the right. */
+.anatomy-key {
+    display: grid;
+    grid-template-columns: minmax(140px, 220px) 1fr;
+    column-gap: var(--space-tier-4);
+    row-gap: var(--space-tier-6);
+    margin: var(--space-tier-4) 0 0;
+    padding: 0;
+    font-size: var(--text-body-sm);
+    line-height: var(--line-height-body);
+}
+.anatomy-key dt {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-mono);
+    color: var(--text-default-subtle);
+}
+.anatomy-key dd {
+    margin: 0;
+    color: var(--text-default);
+}
+.anatomy-key code {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    color: var(--text-default-subtle);
+}
+
+/* Force the second row in the States example to render its
+   hover background, for documentation purposes only. */
+.is-demo-hover .table__row {
+    background: var(--background-row-hover);
+}
+
+/* Two-up stage so the Sizes section can render md and sm
+   examples side by side. */
+.sizes-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-tier-3);
+}
+@media (min-width: 960px) {
+    .sizes-grid { grid-template-columns: 1fr 1fr; }
+}
+.sizes-grid__caption {
+    margin: 0 0 var(--space-tier-6);
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-mono);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+}
+
+/* Inline sort-state demo row underneath the States table. */
+.sort-demo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-tier-3);
+    margin-top: var(--space-tier-4);
+    padding: var(--space-tier-4);
+    background: var(--background-default-subtle);
+    border: var(--border-width-base) solid var(--border-default-subtle);
+    border-radius: var(--radius-md);
+}
+.sort-demo__item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-tier-6);
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-mono);
+    color: var(--text-default-minimal);
+}

@@ -1,0 +1,77 @@
+/* =========================================================
+   PAGE — COMPONENT · SIDE PANEL
+   Styles unique to III-07-side-panel.html. The drawer is an
+   edge-anchored modal; its slot interior reuses the modal
+   component, and the inline preview infrastructure
+   (.dialog-preview*, glass surface, content stub) is
+   inherited from page-III-06.css, which this page imports.
+   What's here:
+     - Page-scoped scrim override (matches III-06's light wash)
+     - .drawer-toggle in-section slide stage
+   Depends on: tokens.css, base.css, shell.css, modal.css,
+               button.css, page-III-06.css
+   ========================================================= */
+
+/* =========================================================
+   PAGE-SCOPED SCRIM OVERRIDE
+   Mirrors III-06: the system default scrim resolves to a
+   brand-green tint. On the documentation page we replace it
+   with a light neutral wash + heavier backdrop blur so the
+   page behind the drawer stays visible but defocused.
+   ========================================================= */
+body[data-page="III-07-side-panel"] .modal {
+    --modal-backdrop:      color-mix(in srgb, var(--white-base) 32%, transparent);
+    --modal-backdrop-blur: var(--blur-xl);
+}
+
+/* Page-scoped override: live drawer on this page uses the
+   same pure-blur glass as the static previews. */
+body[data-page="III-07-side-panel"] .modal.modal--glass .modal__surface {
+    background: transparent;
+}
+
+/* =========================================================
+   DRAWER TOGGLE — in-section open/close preview
+   A controlled stage that demonstrates the right-anchored
+   drawer's slide-in / slide-out animation without taking
+   over the viewport. Surface starts off-stage to the right;
+   .is-open translates it back to flush.
+   ========================================================= */
+.drawer-toggle {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tier-5);
+}
+.drawer-toggle__controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-tier-5);
+    flex-wrap: wrap;
+}
+.drawer-toggle__label {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+}
+/* The base .dialog-preview__surface rule pins transform and
+   opacity with !important so the static previews always read.
+   The toggle stage needs to defeat that so the slide animates. */
+.drawer-toggle__stage .dialog-preview__surface {
+    transform: translateX(calc(100% + var(--space-tier-2))) !important;
+    opacity: 0 !important;
+    transition: transform var(--modal-anim-duration, 260ms) var(--modal-anim-easing, cubic-bezier(.2, .8, .2, 1)),
+                opacity var(--modal-anim-duration, 260ms) var(--modal-anim-easing, cubic-bezier(.2, .8, .2, 1));
+}
+.drawer-toggle__stage.is-open .dialog-preview__surface {
+    transform: translateX(0) !important;
+    opacity: 1 !important;
+}
+@media (prefers-reduced-motion: reduce) {
+    .drawer-toggle__stage .dialog-preview__surface {
+        transition: opacity var(--modal-anim-duration, 260ms) linear !important;
+        transform: none !important;
+    }
+}
