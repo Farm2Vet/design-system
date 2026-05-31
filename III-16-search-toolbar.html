@@ -148,6 +148,12 @@
         chip would force a per-facet aggregate query before first
         paint, which the catalogue can't afford as it grows.
       </p>
+      <p class="lede reveal">
+        When the underlying list demands frequent filter-value edits,
+        render the toolbar in <code>.search-toolbar--segmented</code>
+        mode; applied filters become editable in place, with each
+        segment of the chip anchoring its own popover.
+      </p>
     </div>
 
     <dl class="meta-strip reveal">
@@ -342,10 +348,260 @@
     </div>
   </section>
 
-  <!-- ========================== 03 / TOKENS ========================== -->
+  <!-- ========================== 03 / SEGMENTED MODE ========================== -->
+  <section class="chunk" id="segmented">
+    <header class="chunk-head reveal">
+      <span class="num-tag">03 / Search toolbar — Segmented mode</span>
+      <h2 class="h2">Segmented mode.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      <code>.search-toolbar--segmented</code> flips the applied-filter
+      chips from <code>.chip--removable</code> to
+      <code>.chip--segmented</code>. The popover now anchors to whichever
+      segment was clicked (property, operator, value) rather than only
+      to the <code>+ Filter</code> trigger. A new
+      <code>--step-operator</code> menu mode opens for time facets;
+      multi-select value picks re-render the chip in place without
+      closing the popover.
+    </p>
+
+    <!-- Live specimen — segmented toolbar with two chips applied. -->
+    <div class="search-toolbar search-toolbar--specimen search-toolbar--segmented reveal">
+      <label class="search-field search-toolbar__search">
+        <span class="search-field__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        </span>
+        <input type="search" class="input input--sm search-field__input" placeholder="Search…" />
+      </label>
+
+      <div class="search-toolbar__filters" role="group" aria-label="Filters">
+
+        <span class="chip chip--segmented">
+          <button type="button" class="chip__seg chip__seg--property">
+            <span class="chip__seg-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+            </span>
+            <span class="chip__seg-text">Label</span>
+          </button>
+          <button type="button" class="chip__seg chip__seg--value">
+            <span class="chip__seg-text">CSF, PRRS</span>
+            <span class="chip__more" tabindex="0">+3</span>
+          </button>
+          <button type="button" class="chip__seg chip__seg--close" aria-label="Remove Label filter">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
+        </span>
+
+        <span class="chip chip--segmented">
+          <button type="button" class="chip__seg chip__seg--property">
+            <span class="chip__seg-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
+            </span>
+            <span class="chip__seg-text">Last updated</span>
+          </button>
+          <button type="button" class="chip__seg chip__seg--operator">
+            <span class="chip__seg-text">is in the last</span>
+          </button>
+          <button type="button" class="chip__seg chip__seg--value">
+            <span class="chip__seg-text">30 days</span>
+          </button>
+          <button type="button" class="chip__seg chip__seg--close" aria-label="Remove Last updated filter">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
+        </span>
+
+        <div class="search-toolbar__add-filter">
+          <button type="button" class="btn btn--ghost btn--sm" aria-haspopup="dialog" aria-expanded="false">
+            <span class="btn__leading" aria-hidden="true">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+            </span>
+            <span class="btn__label">Add filter</span>
+          </button>
+        </div>
+
+        <button type="button" class="btn btn--ghost btn--sm search-toolbar__clear">
+          <span class="btn__label">Clear filters</span>
+        </button>
+      </div>
+    </div>
+
+    <p class="section-lede reveal" style="margin-top: var(--space-tier-6);">
+      Three popover specimens. The property picker opens when the user
+      clicks <code>+ Add filter</code> or the property segment of an
+      existing chip. The operator picker is the third panel sibling
+      (<code>--operator</code>), reached only from a time chip's middle
+      segment. The value picker is the same panel as the removable-mode
+      step 2 — it keeps the popover open across multi-select toggles so
+      the chip can re-render without dismiss/reopen.
+    </p>
+
+    <div class="state-grid reveal">
+
+      <!-- Property picker -->
+      <figure class="state-grid__cell">
+        <figcaption>Popover open · property picker · clicked from + Add filter</figcaption>
+        <div class="state-grid__stage">
+          <div class="search-toolbar__add-filter">
+            <button type="button" class="btn btn--ghost btn--sm" aria-haspopup="dialog" aria-expanded="true">
+              <span class="btn__leading" aria-hidden="true">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+              </span>
+              <span class="btn__label">Add filter</span>
+            </button>
+            <div class="search-toolbar__menu is-open" role="dialog" aria-label="Add filter">
+              <div class="search-toolbar__menu-panel search-toolbar__menu-panel--facets">
+                <div class="search-toolbar__menu-search">
+                  <input type="search" class="input input--sm" placeholder="Find a filter…" />
+                </div>
+                <ul class="search-toolbar__menu-list" role="menu">
+                  <li>
+                    <button type="button" class="search-toolbar__menu-option is-disabled" role="menuitem" aria-disabled="true">
+                      <span class="search-toolbar__menu-option-label">Label</span>
+                      <svg class="search-toolbar__menu-chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 2 8 6 4 10"/></svg>
+                    </button>
+                  </li>
+                  <li>
+                    <button type="button" class="search-toolbar__menu-option" role="menuitem">
+                      <span class="search-toolbar__menu-option-label">Tag</span>
+                      <svg class="search-toolbar__menu-chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 2 8 6 4 10"/></svg>
+                    </button>
+                  </li>
+                  <li>
+                    <button type="button" class="search-toolbar__menu-option" role="menuitem">
+                      <span class="search-toolbar__menu-option-label">State</span>
+                      <svg class="search-toolbar__menu-chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 2 8 6 4 10"/></svg>
+                    </button>
+                  </li>
+                  <li>
+                    <button type="button" class="search-toolbar__menu-option is-disabled" role="menuitem" aria-disabled="true">
+                      <span class="search-toolbar__menu-option-label">Last updated</span>
+                      <svg class="search-toolbar__menu-chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 2 8 6 4 10"/></svg>
+                    </button>
+                  </li>
+                  <li>
+                    <button type="button" class="search-toolbar__menu-option" role="menuitem">
+                      <span class="search-toolbar__menu-option-label">Created</span>
+                      <svg class="search-toolbar__menu-chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 2 8 6 4 10"/></svg>
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </figure>
+
+      <!-- Operator picker -->
+      <figure class="state-grid__cell">
+        <figcaption>Popover open · operator picker · clicked from a time chip's middle segment</figcaption>
+        <div class="state-grid__stage">
+          <div class="search-toolbar__add-filter">
+            <span class="chip chip--segmented">
+              <button type="button" class="chip__seg chip__seg--property">
+                <span class="chip__seg-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
+                </span>
+                <span class="chip__seg-text">Last updated</span>
+              </button>
+              <button type="button" class="chip__seg chip__seg--operator is-active">
+                <span class="chip__seg-text">is in the last</span>
+              </button>
+              <button type="button" class="chip__seg chip__seg--value">
+                <span class="chip__seg-text">30 days</span>
+              </button>
+              <button type="button" class="chip__seg chip__seg--close" aria-label="Remove">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+              </button>
+            </span>
+            <div class="search-toolbar__menu is-open search-toolbar__menu--step-operator" role="dialog" aria-label="Pick operator">
+              <div class="search-toolbar__menu-panel search-toolbar__menu-panel--operator">
+                <header class="search-toolbar__menu-header">
+                  <span class="search-toolbar__menu-heading">Operator</span>
+                </header>
+                <ul class="search-toolbar__menu-list" role="menu">
+                  <li>
+                    <button type="button" class="search-toolbar__menu-option is-selected" role="menuitemradio" aria-checked="true">
+                      <span class="search-toolbar__menu-option-label">is in the last</span>
+                    </button>
+                  </li>
+                  <li>
+                    <button type="button" class="search-toolbar__menu-option" role="menuitemradio" aria-checked="false">
+                      <span class="search-toolbar__menu-option-label">is before</span>
+                    </button>
+                  </li>
+                  <li>
+                    <button type="button" class="search-toolbar__menu-option" role="menuitemradio" aria-checked="false">
+                      <span class="search-toolbar__menu-option-label">is after</span>
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </figure>
+
+      <!-- Value picker — multi-select for a Label chip -->
+      <figure class="state-grid__cell">
+        <figcaption>Popover open · value picker · clicked from a Label chip's value segment. Multi-select; chip re-renders on each toggle without closing.</figcaption>
+        <div class="state-grid__stage">
+          <div class="search-toolbar__add-filter">
+            <span class="chip chip--segmented">
+              <button type="button" class="chip__seg chip__seg--property">
+                <span class="chip__seg-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+                </span>
+                <span class="chip__seg-text">Label</span>
+              </button>
+              <button type="button" class="chip__seg chip__seg--value is-active">
+                <span class="chip__seg-text">CSF, PRRS</span>
+              </button>
+              <button type="button" class="chip__seg chip__seg--close" aria-label="Remove">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+              </button>
+            </span>
+            <div class="search-toolbar__menu is-open search-toolbar__menu--step-values" role="dialog" aria-label="Pick values">
+              <div class="search-toolbar__menu-panel search-toolbar__menu-panel--values">
+                <header class="search-toolbar__menu-header">
+                  <span class="search-toolbar__menu-heading">Label</span>
+                </header>
+                <div class="search-toolbar__menu-search">
+                  <input type="search" class="input input--sm" placeholder="Search labels…" />
+                </div>
+                <ul class="search-toolbar__menu-list" role="menu">
+                  <li><label class="search-toolbar__menu-option search-toolbar__menu-option--check"><input type="checkbox" class="search-toolbar__menu-checkbox" checked /><span class="search-toolbar__menu-option-label">CSF</span></label></li>
+                  <li><label class="search-toolbar__menu-option search-toolbar__menu-option--check"><input type="checkbox" class="search-toolbar__menu-checkbox" checked /><span class="search-toolbar__menu-option-label">PRRS</span></label></li>
+                  <li><label class="search-toolbar__menu-option search-toolbar__menu-option--check"><input type="checkbox" class="search-toolbar__menu-checkbox" /><span class="search-toolbar__menu-option-label">FMD</span></label></li>
+                  <li><label class="search-toolbar__menu-option search-toolbar__menu-option--check"><input type="checkbox" class="search-toolbar__menu-checkbox" /><span class="search-toolbar__menu-option-label">ASF</span></label></li>
+                  <li><label class="search-toolbar__menu-option search-toolbar__menu-option--check"><input type="checkbox" class="search-toolbar__menu-checkbox" /><span class="search-toolbar__menu-option-label">Salmonellosis</span></label></li>
+                </ul>
+                <footer class="search-toolbar__menu-footer">
+                  <button type="button" class="btn btn--ghost btn--sm">Clear</button>
+                  <span style="font-size: var(--text-xs); color: var(--text-default-minimal);">2 selected</span>
+                </footer>
+              </div>
+            </div>
+          </div>
+        </div>
+      </figure>
+
+    </div>
+
+    <p class="usage-note usage-note--below reveal">
+      <strong>Reserve segmented mode for admin surfaces where the
+      filter row is the primary work surface.</strong> On a
+      list-with-occasional-filtering page, the removable mode reads
+      as less visual weight. The two modes are not interchangeable
+      mid-toolbar — pick one render mode per
+      <code>.search-toolbar</code> instance.
+    </p>
+  </section>
+
+  <!-- ========================== 04 / TOKENS ========================== -->
   <section class="chunk" id="tokens">
     <header class="chunk-head reveal">
-      <span class="num-tag">03 / Search toolbar — Tokens</span>
+      <span class="num-tag">04 / Search toolbar — Tokens</span>
       <h2 class="h2">Tokens.</h2>
     </header>
 

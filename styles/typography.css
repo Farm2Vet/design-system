@@ -180,29 +180,39 @@
 .italic { font-style: italic; }
 
 /* =========================================================
-   ADMIN TIER — opt-in component classes for admin / data-rich
-   product surfaces. Marketing rail (.h1..h6, .body, .caption,
-   .eyebrow) is unchanged. Adopt these classes explicitly on
-   pages that need admin density. Never auto-remap.
+   ADMIN TIER — opt-in utility classes for admin/data-management
+   pages (V-04 disease editor, future V-* admin pages).
+   Each class binds a --text-admin-* token from tokens.css to
+   the visual rank the admin pages need:
+     .admin-page-title         h1 rank on admin pages
+     .admin-card-title         card head / section title
+     .admin-subsection-title   subsection / sub-card title
+     .admin-field-label        uppercase label above a value
+     .admin-field-value        read-only value below a label
+     .admin-caption            meta / timestamp / hint
+     .admin-stat-value         KPI tile value
+   Marketing rail (.h1…/.body/.caption/.eyebrow) is untouched.
    ========================================================= */
+
 .admin-page-title {
-    font-family:   var(--font-sans);
-    font-size:     var(--text-admin-page-title);
-    font-weight:   var(--font-weight-semibold);
-    line-height:   var(--line-height-heading);
-    letter-spacing:var(--letter-spacing-tight);
-    color:         var(--text-default);
-    margin:        0;
+    font-family:    var(--font-sans);
+    font-size:      var(--text-admin-page-title);
+    font-weight:    var(--font-weight-medium);
+    line-height:    var(--line-height-h3);
+    letter-spacing: 0;
+    text-transform: none;
+    color:          var(--text-default);
+    margin: 0;
 }
 
-.admin-section-title {
+.admin-card-title {
     font-family:    var(--font-sans);
     font-size:      var(--text-admin-card-title);
     font-weight:    var(--font-weight-medium);
     letter-spacing: var(--letter-spacing-eyebrow);
     text-transform: uppercase;
     color:          var(--text-default-subtle);
-    margin:         0;
+    margin: 0;
 }
 
 .admin-subsection-title {
@@ -212,7 +222,7 @@
     letter-spacing: var(--letter-spacing-eyebrow);
     text-transform: uppercase;
     color:          var(--text-default-minimal);
-    margin:         0;
+    margin: 0;
 }
 
 .admin-field-label {
@@ -222,29 +232,31 @@
     letter-spacing: var(--letter-spacing-eyebrow);
     text-transform: uppercase;
     color:          var(--text-default-minimal);
+    margin: 0;
 }
 
-.admin-body {
-    font-family: var(--font-sans);
-    font-size:   var(--text-admin-body);
-    font-weight: var(--font-weight-regular);
-    line-height: var(--line-height-body);
-    color:       var(--text-default);
+.admin-field-value {
+    font-family:    var(--font-sans);
+    font-size:      var(--text-admin-body);
+    font-weight:    var(--font-weight-regular);
+    line-height:    var(--line-height-body);
+    color:          var(--text-default);
+    margin: 0;
 }
 
 .admin-caption {
-    font-family: var(--font-sans);
-    font-size:   var(--text-admin-caption);
-    font-weight: var(--font-weight-regular);
-    line-height: var(--line-height-h6);
-    color:       var(--text-default-subtle);
+    font-family:    var(--font-sans);
+    font-size:      var(--text-admin-caption);
+    font-weight:    var(--font-weight-regular);
+    line-height:    var(--line-height-h5);
+    color:          var(--text-default-subtle);
 }
 
 .admin-stat-value {
-    font-family:  var(--font-sans);
-    font-size:    var(--text-admin-stat-value);
-    font-weight:  var(--font-weight-semibold);
-    line-height:  var(--line-height-heading);
-    color:        var(--text-default);
-    font-variant-numeric: tabular-nums;
+    font-family:    var(--font-sans);
+    font-size:      var(--text-admin-stat-value);
+    font-weight:    var(--font-weight-semibold);
+    line-height:    var(--line-height-h4);
+    color:          var(--text-default);
+    margin: 0;
 }

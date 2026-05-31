@@ -251,11 +251,16 @@
     border-radius: 2px;
   }
   .btn--primary .gl { border-color: #FFF; }
+  .btn--icon svg {
+    width: 14px; height: 14px;
+    display: block;
+    color: currentColor;
+  }
 
   /* ---------- Filter bar ---------- */
   .filterbar {
     display: grid;
-    grid-template-columns: 1fr 180px 180px 160px 200px;
+    grid-template-columns: 1fr 160px 200px 140px 200px;
     gap: 10px;
     padding: 12px;
     border: 1px solid #E5E5E5;
@@ -326,11 +331,18 @@
   }
   .table__head, .table__row {
     display: grid;
-    grid-template-columns: 36px 140px 1fr 110px 130px 110px;
+    grid-template-columns: 36px 92px 140px 1fr 110px 130px 110px;
     align-items: center;
     gap: 16px;
     padding: 12px 16px;
     border-bottom: 1px solid #ECECEC;
+  }
+  .table__row .role-cell,
+  .table__row .topic-cell {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    min-width: 0;
   }
   .table__head {
     background: #FAFAFA;
@@ -1010,61 +1022,17 @@
 </style>
 
 <style>
-  .screennav {
-    max-width: 1360px;
-    margin: 0 auto 24px;
-    padding: 14px 40px;
-    display: flex; align-items: center; gap: 18px;
-    background: #FFFFFF;
-    border-bottom: 1px solid #E0E0E0;
-    font-size: 12px;
-    position: sticky; top: 0; z-index: 10;
+  /* Full-bleed: device is the page */
+  body { background: #FFFFFF; }
+  .device {
+    border: 0;
+    border-radius: 0;
+    min-height: 100vh;
   }
-  .screennav__brand {
-    font-weight: 600; color: #111; letter-spacing: -0.005em;
-    margin-right: 8px;
-  }
-  .screennav__brand small { color: #6B6B6B; font-weight: 400; margin-left: 6px; }
-  .screennav__sep { width: 1px; height: 14px; background: #E0E0E0; }
-  .screennav a {
-    color: #6B6B6B; text-decoration: none;
-    padding: 6px 10px; border-radius: 5px;
-    display: inline-flex; align-items: center; gap: 6px;
-  }
-  .screennav a:hover { background: #F4F4F4; color: #111; }
-  .screennav a.is-current { background: #2A2A2A; color: #FFFFFF; }
-  .screennav a code {
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 10px; color: inherit; opacity: 0.7;
-  }
-  .screennav__route {
-    margin-left: auto;
-    color: #8A8A8A;
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 11px;
-  }
-  .page--solo { padding-top: 24px; }
 </style>
 <title>01 · Question list — FR-310 wireframes</title>
 </head>
 <body>
-
-<nav class="screennav">
-  <span class="screennav__brand">FR-310 wireframes <small>· lo-fi</small></span>
-  <span class="screennav__sep"></span>
-  <a href="./index.html">Index</a>
-  <span class="screennav__sep"></span>
-  <a href="./01-list.html" class="is-current"><code>01</code>Question list</a><a href="./02-detail.html" class=""><code>02</code>Question detail</a><a href="./03-create-edit.html" class=""><code>03</code>New question</a><a href="./04-batch-import.html" class=""><code>04</code>Batch import</a>
-  <span class="screennav__route">/admin/questions</span>
-</nav>
-
-<div class="page page--solo">
-<section class="frame">
-    <div class="frame__label">
-      <span class="frame__num">Screen 01</span>
-      <span class="frame__title">Question list with filters</span>
-      <span class="frame__note">— UC-311 main success scenario, step 1</span>
-    </div>
 
     <div class="device">
 
@@ -1129,12 +1097,12 @@
               <input type="text" placeholder="Search questions by title (EN or VI)…" />
             </div>
             <div class="field">
-              <span class="label">Topic</span>
-              <span class="val">All</span>
+              <span class="label">Role</span>
+              <span class="val">Any</span>
               <span class="chev"></span>
             </div>
             <div class="field">
-              <span class="label">Subtopic</span>
+              <span class="label">Topic</span>
               <span class="val">All</span>
               <span class="chev"></span>
             </div>
@@ -1162,6 +1130,7 @@
           <div class="table">
             <div class="table__head">
               <div><span class="checkbox"></span></div>
+              <div>Role</div>
               <div>Topic</div>
               <div>Question</div>
               <div>Language</div>
@@ -1171,9 +1140,12 @@
 
             <div class="table__row is-selected">
               <div><span class="checkbox is-checked"></span></div>
-              <div>
+              <div class="role-cell">
                 <span class="chip"><span class="chip__dot"></span>producer</span>
-                <span class="chip chip--sub">facilities</span>
+              </div>
+              <div class="topic-cell">
+                <span class="chip">Facilities</span>
+                <span class="chip chip--sub">farm-to-residence distance</span>
               </div>
               <div class="question">
                 What is the minimum required distance between a farm and residential areas to maintain environmental safety?
@@ -1182,17 +1154,20 @@
               <div><span class="chip chip--lang">EN</span> <span class="chip chip--lang">VI</span></div>
               <div class="updated">Feb 24, 2026</div>
               <div class="actions">
-                <button class="btn btn--icon" title="View">○</button>
+                <button class="btn btn--icon" title="View"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"/><circle cx="8" cy="8" r="2"/></svg></button>
                 <button class="btn btn--icon" title="Edit">✎</button>
-                <button class="btn btn--icon" title="More">⋯</button>
+                <button class="btn btn--icon" title="Delete"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 4h11M6 4V2.5h4V4M4 4l.7 9a1 1 0 001 1h4.6a1 1 0 001-1L12 4M6.5 7v5M9.5 7v5"/></svg></button>
               </div>
             </div>
 
             <div class="table__row">
               <div><span class="checkbox"></span></div>
-              <div>
+              <div class="role-cell">
                 <span class="chip"><span class="chip__dot"></span>producer</span>
-                <span class="chip chip--sub">disease · treatment</span>
+              </div>
+              <div class="topic-cell">
+                <span class="chip">Disease - Treatment</span>
+                <span class="chip chip--sub">respiratory disease in swine</span>
               </div>
               <div class="question">
                 Why are pigs susceptible to respiratory diseases?
@@ -1201,17 +1176,20 @@
               <div><span class="chip chip--lang">EN</span> <span class="chip chip--lang">VI</span></div>
               <div class="updated">Feb 24, 2026</div>
               <div class="actions">
-                <button class="btn btn--icon">○</button>
-                <button class="btn btn--icon">✎</button>
-                <button class="btn btn--icon">⋯</button>
+                <button class="btn btn--icon" title="View"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"/><circle cx="8" cy="8" r="2"/></svg></button>
+                <button class="btn btn--icon" title="Edit">✎</button>
+                <button class="btn btn--icon" title="Delete"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 4h11M6 4V2.5h4V4M4 4l.7 9a1 1 0 001 1h4.6a1 1 0 001-1L12 4M6.5 7v5M9.5 7v5"/></svg></button>
               </div>
             </div>
 
             <div class="table__row">
               <div><span class="checkbox"></span></div>
-              <div>
+              <div class="role-cell">
                 <span class="chip"><span class="chip__dot"></span>producer</span>
-                <span class="chip chip--sub">husbandry</span>
+              </div>
+              <div class="topic-cell">
+                <span class="chip">Husbandry</span>
+                <span class="chip chip--sub">sow water intake</span>
               </div>
               <div class="question">
                 How much water does a lactating sow require? What is the appropriate water pressure?
@@ -1220,17 +1198,20 @@
               <div><span class="chip chip--lang">EN</span> <span class="chip chip--lang">VI</span></div>
               <div class="updated">Feb 24, 2026</div>
               <div class="actions">
-                <button class="btn btn--icon">○</button>
-                <button class="btn btn--icon">✎</button>
-                <button class="btn btn--icon">⋯</button>
+                <button class="btn btn--icon" title="View"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"/><circle cx="8" cy="8" r="2"/></svg></button>
+                <button class="btn btn--icon" title="Edit">✎</button>
+                <button class="btn btn--icon" title="Delete"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 4h11M6 4V2.5h4V4M4 4l.7 9a1 1 0 001 1h4.6a1 1 0 001-1L12 4M6.5 7v5M9.5 7v5"/></svg></button>
               </div>
             </div>
 
             <div class="table__row">
               <div><span class="checkbox"></span></div>
-              <div>
+              <div class="role-cell">
                 <span class="chip"><span class="chip__dot"></span>producer</span>
-                <span class="chip chip--sub">facilities</span>
+              </div>
+              <div class="topic-cell">
+                <span class="chip">Biosecurity</span>
+                <span class="chip chip--sub">isolation area</span>
               </div>
               <div class="question">
                 Do we need to construct an isolation area in the pig farm? If yes, how should this area be designed?
@@ -1239,17 +1220,20 @@
               <div><span class="chip chip--lang">EN</span> <span class="chip chip--lang">VI</span></div>
               <div class="updated">Feb 23, 2026</div>
               <div class="actions">
-                <button class="btn btn--icon">○</button>
-                <button class="btn btn--icon">✎</button>
-                <button class="btn btn--icon">⋯</button>
+                <button class="btn btn--icon" title="View"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"/><circle cx="8" cy="8" r="2"/></svg></button>
+                <button class="btn btn--icon" title="Edit">✎</button>
+                <button class="btn btn--icon" title="Delete"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 4h11M6 4V2.5h4V4M4 4l.7 9a1 1 0 001 1h4.6a1 1 0 001-1L12 4M6.5 7v5M9.5 7v5"/></svg></button>
               </div>
             </div>
 
             <div class="table__row">
               <div><span class="checkbox"></span></div>
-              <div>
+              <div class="role-cell">
                 <span class="chip"><span class="chip__dot"></span>producer</span>
-                <span class="chip chip--sub">facilities</span>
+              </div>
+              <div class="topic-cell">
+                <span class="chip">Facilities</span>
+                <span class="chip chip--sub">winter barn temperature</span>
               </div>
               <div class="question">
                 How to control the temperature of the pig barn in winter?
@@ -1258,17 +1242,20 @@
               <div><span class="chip chip--lang">EN</span> <span class="chip chip--lang">VI</span></div>
               <div class="updated">Feb 23, 2026</div>
               <div class="actions">
-                <button class="btn btn--icon">○</button>
-                <button class="btn btn--icon">✎</button>
-                <button class="btn btn--icon">⋯</button>
+                <button class="btn btn--icon" title="View"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"/><circle cx="8" cy="8" r="2"/></svg></button>
+                <button class="btn btn--icon" title="Edit">✎</button>
+                <button class="btn btn--icon" title="Delete"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 4h11M6 4V2.5h4V4M4 4l.7 9a1 1 0 001 1h4.6a1 1 0 001-1L12 4M6.5 7v5M9.5 7v5"/></svg></button>
               </div>
             </div>
 
             <div class="table__row">
               <div><span class="checkbox"></span></div>
-              <div>
+              <div class="role-cell">
                 <span class="chip"><span class="chip__dot"></span>vet</span>
-                <span class="chip chip--sub">diagnostics</span>
+              </div>
+              <div class="topic-cell">
+                <span class="chip">Disease - Treatment</span>
+                <span class="chip chip--sub">PRRS differential diagnosis</span>
               </div>
               <div class="question">
                 Which clinical signs differentiate PRRS from classical swine fever in the field?
@@ -1277,17 +1264,20 @@
               <div><span class="chip chip--lang">EN</span> <span class="chip chip--lang">VI</span></div>
               <div class="updated">Feb 22, 2026</div>
               <div class="actions">
-                <button class="btn btn--icon">○</button>
-                <button class="btn btn--icon">✎</button>
-                <button class="btn btn--icon">⋯</button>
+                <button class="btn btn--icon" title="View"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"/><circle cx="8" cy="8" r="2"/></svg></button>
+                <button class="btn btn--icon" title="Edit">✎</button>
+                <button class="btn btn--icon" title="Delete"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 4h11M6 4V2.5h4V4M4 4l.7 9a1 1 0 001 1h4.6a1 1 0 001-1L12 4M6.5 7v5M9.5 7v5"/></svg></button>
               </div>
             </div>
 
             <div class="table__row">
               <div><span class="checkbox"></span></div>
-              <div>
+              <div class="role-cell">
                 <span class="chip"><span class="chip__dot"></span>producer</span>
-                <span class="chip chip--sub">husbandry</span>
+              </div>
+              <div class="topic-cell">
+                <span class="chip">Husbandry</span>
+                <span class="chip chip--sub">weaning transfer</span>
               </div>
               <div class="question">
                 When should weaning piglets be transferred to the nursery, and what is the recommended weight?
@@ -1296,9 +1286,9 @@
               <div><span class="chip chip--lang">EN</span> <span class="chip chip--lang">VI</span></div>
               <div class="updated">Feb 21, 2026</div>
               <div class="actions">
-                <button class="btn btn--icon">○</button>
-                <button class="btn btn--icon">✎</button>
-                <button class="btn btn--icon">⋯</button>
+                <button class="btn btn--icon" title="View"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"/><circle cx="8" cy="8" r="2"/></svg></button>
+                <button class="btn btn--icon" title="Edit">✎</button>
+                <button class="btn btn--icon" title="Delete"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 4h11M6 4V2.5h4V4M4 4l.7 9a1 1 0 001 1h4.6a1 1 0 001-1L12 4M6.5 7v5M9.5 7v5"/></svg></button>
               </div>
             </div>
 
@@ -1319,7 +1309,5 @@
         </div>
       </div>
     </div>
-  </section>
-</div>
 </body>
 </html>

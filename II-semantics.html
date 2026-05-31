@@ -156,6 +156,12 @@
     </p>
     <div class="token-grid reveal" data-group="bg-inverted"></div>
 
+    <h4 class="h4 reveal">Inverse · neutral-dark surface</h4>
+    <p class="usage-note reveal">
+      <strong>A second inverse rail, neutral-dark rather than brand-tinted.</strong> Where <code>--background-inverted</code> carries the primary green for hero / footer moments, <code>--background-inverse</code> carries a neutral-dark surface for utility chrome that shouldn't compete with primary actions — segmented filter chips on a busy admin toolbar, dark utility tooltips, future inverse popovers. The <code>--*-on-inverse-*</code> family covers text, dividers, and hover/active overlays on that surface.
+    </p>
+    <div class="token-grid reveal" data-group="bg-inverse"></div>
+
     <h4 class="h4 reveal">Status</h4>
     <div class="token-grid reveal" data-group="bg-status"></div>
 
@@ -406,6 +412,11 @@ const BG_GROUPS = {
     '--background-inverted-minimal',
     '--background-inverted-hover',
   ],
+  'bg-inverse': [
+    '--background-inverse',
+    '--background-on-inverse-hover',
+    '--background-on-inverse-active',
+  ],
   'bg-status': [
     '--background-safe',
     '--background-info',
@@ -429,6 +440,7 @@ const TEXT_INVERTED = [
   '--text-inverted',
   '--text-inverted-subtle',
   '--text-inverted-minimal',
+  '--text-on-inverse',
 ];
 const TEXT_BRAND = [
   '--text-primary',
@@ -468,6 +480,7 @@ const BORDER_GROUPS = {
   ],
   'border-inverted': [
     '--border-inverted',
+    '--border-on-inverse-subtle',
   ],
   'border-status': [
     '--border-safe',
@@ -669,6 +682,10 @@ const SOURCES = {
   '--background-inverted-minimal': 'mix(--white-base 10%, transparent)',
   '--background-inverted-hover':   '--primary-400',
 
+  '--background-inverse':           '--neutral-950',
+  '--background-on-inverse-hover':  'mix(--text-on-inverse 12%, transparent)',
+  '--background-on-inverse-active': 'mix(--text-on-inverse 22%, transparent)',
+
   '--background-safe':             '--accent-50',
   '--background-info':             '--info-50',
   '--background-warning':          '--secondary-50',
@@ -687,6 +704,8 @@ const SOURCES = {
   '--text-inverted':         '--white-base',
   '--text-inverted-subtle':  'mix(--white-base 70%, transparent)',
   '--text-inverted-minimal': 'mix(--white-base 45%, transparent)',
+
+  '--text-on-inverse':       '--white-base',
 
   '--text-primary':          '--primary-500',
   '--text-primary-subtle':   '--primary-400',
@@ -720,6 +739,7 @@ const SOURCES = {
   '--outline-focus':         '--primary-700',
 
   '--border-inverted':       'mix(--white-base 18%, transparent)',
+  '--border-on-inverse-subtle': 'mix(--text-on-inverse 25%, transparent)',
 
   '--border-safe':           '--accent-300',
   '--border-info':           '--info-300',

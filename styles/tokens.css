@@ -234,6 +234,26 @@
     --background-inverted-minimal: color-mix(in srgb, var(--white-base) 10%, transparent);
     --background-inverted-hover:   var(--primary-400);
 
+    /* ---------- Inverse — neutral-dark surface ----------
+       A second inverse rail, distinct from --background-inverted
+       (brand-tinted). This one carries the neutral-dark surface
+       (segmented filter chip, future dark utility tooltips) where
+       a brand-tinted dark would compete with primary actions.
+       /* TODO: needs neutral ramp — --neutral-950 is brand-tinted
+          sage, not a true neutral; revisit once a pure-grey
+          primitive ramp lands. */
+    --background-inverse:           var(--neutral-950);
+    --text-on-inverse:              var(--white-base);
+    --border-on-inverse-subtle:     color-mix(in srgb,
+                                       var(--text-on-inverse) 25%,
+                                       transparent);
+    --background-on-inverse-hover:  color-mix(in srgb,
+                                       var(--text-on-inverse) 12%,
+                                       transparent);
+    --background-on-inverse-active: color-mix(in srgb,
+                                       var(--text-on-inverse) 22%,
+                                       transparent);
+
     --background-primary:          var(--primary-400);
     --background-primary-hover:    var(--primary-500);
     --background-primary-active:   var(--primary-600);

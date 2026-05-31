@@ -924,7 +924,7 @@
   }
   .ptable__head, .ptable__row {
     display: grid;
-    grid-template-columns: 50px 90px 130px 1fr 1fr 220px;
+    grid-template-columns: 50px 90px 90px 160px 1fr 1fr 200px;
     gap: 14px;
     align-items: start;
     padding: 12px 16px;
@@ -1010,61 +1010,17 @@
 </style>
 
 <style>
-  .screennav {
-    max-width: 1360px;
-    margin: 0 auto 24px;
-    padding: 14px 40px;
-    display: flex; align-items: center; gap: 18px;
-    background: #FFFFFF;
-    border-bottom: 1px solid #E0E0E0;
-    font-size: 12px;
-    position: sticky; top: 0; z-index: 10;
+  /* Full-bleed: device is the page */
+  body { background: #FFFFFF; }
+  .device {
+    border: 0;
+    border-radius: 0;
+    min-height: 100vh;
   }
-  .screennav__brand {
-    font-weight: 600; color: #111; letter-spacing: -0.005em;
-    margin-right: 8px;
-  }
-  .screennav__brand small { color: #6B6B6B; font-weight: 400; margin-left: 6px; }
-  .screennav__sep { width: 1px; height: 14px; background: #E0E0E0; }
-  .screennav a {
-    color: #6B6B6B; text-decoration: none;
-    padding: 6px 10px; border-radius: 5px;
-    display: inline-flex; align-items: center; gap: 6px;
-  }
-  .screennav a:hover { background: #F4F4F4; color: #111; }
-  .screennav a.is-current { background: #2A2A2A; color: #FFFFFF; }
-  .screennav a code {
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 10px; color: inherit; opacity: 0.7;
-  }
-  .screennav__route {
-    margin-left: auto;
-    color: #8A8A8A;
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 11px;
-  }
-  .page--solo { padding-top: 24px; }
 </style>
 <title>04 · Batch import — FR-310 wireframes</title>
 </head>
 <body>
-
-<nav class="screennav">
-  <span class="screennav__brand">FR-310 wireframes <small>· lo-fi</small></span>
-  <span class="screennav__sep"></span>
-  <a href="./index.html">Index</a>
-  <span class="screennav__sep"></span>
-  <a href="./01-list.html" class=""><code>01</code>Question list</a><a href="./02-detail.html" class=""><code>02</code>Question detail</a><a href="./03-create-edit.html" class=""><code>03</code>New question</a><a href="./04-batch-import.html" class="is-current"><code>04</code>Batch import</a>
-  <span class="screennav__route">/admin/question-import</span>
-</nav>
-
-<div class="page page--solo">
-<section class="frame">
-    <div class="frame__label">
-      <span class="frame__num">Screen 04</span>
-      <span class="frame__title">Batch import — review uploaded CSV/XLSX</span>
-      <span class="frame__note">— UC-313: shown at the Review step with mixed-status rows</span>
-    </div>
 
     <div class="device">
       <aside class="sidebar">
@@ -1111,8 +1067,8 @@
               <p>Upload a CSV or XLSX file to add many questions at once. Review and resolve validation issues before committing.</p>
             </div>
             <div class="pagehead__actions">
-              <button class="btn btn--ghost">Download template</button>
-              <button class="btn btn--ghost">Cancel import</button>
+              <button class="btn btn--ghost"><span class="gl"></span>Download template</button>
+              <button class="btn btn--ghost"><span class="gl"></span>Cancel import</button>
             </div>
           </div>
 
@@ -1158,8 +1114,8 @@
               </div>
             </div>
             <div class="upload-summary__actions">
-              <button class="btn btn--sm">Re-map columns</button>
-              <button class="btn btn--sm">Replace file</button>
+              <button class="btn btn--sm"><span class="gl"></span>Re-map columns</button>
+              <button class="btn btn--sm"><span class="gl"></span>Replace file</button>
             </div>
           </div>
 
@@ -1203,6 +1159,7 @@
             <div class="ptable__head">
               <div>Row</div>
               <div>Status</div>
+              <div>Role</div>
               <div>Topic</div>
               <div>Question (EN)</div>
               <div>Question (VI)</div>
@@ -1212,7 +1169,11 @@
             <div class="ptable__row">
               <div class="rownum">2</div>
               <div><span class="badge badge--ok"><span class="glyph">✓</span>Valid</span></div>
-              <div><span class="chip">producer</span></div>
+              <div><span class="chip"><span class="chip__dot"></span>producer</span></div>
+              <div>
+                <span class="chip">Husbandry</span>
+                <span class="chip chip--sub">drinking water replacement</span>
+              </div>
               <div class="qtext">How often should pig drinking water be replaced?</div>
               <div class="qtext vi">Nước uống cho heo nên được thay bao lâu một lần?</div>
               <div class="issue">—</div>
@@ -1221,7 +1182,11 @@
             <div class="ptable__row">
               <div class="rownum">3</div>
               <div><span class="badge badge--ok"><span class="glyph">✓</span>Valid</span></div>
-              <div><span class="chip">vet</span></div>
+              <div><span class="chip"><span class="chip__dot"></span>vet</span></div>
+              <div>
+                <span class="chip">Disease - Treatment</span>
+                <span class="chip chip--sub">piglet diarrhea</span>
+              </div>
               <div class="qtext">First-line treatment for piglet diarrhea under 7 days old.</div>
               <div class="qtext vi">Phương pháp điều trị đầu tiên cho heo con dưới 7 ngày tuổi bị tiêu chảy.</div>
               <div class="issue">—</div>
@@ -1230,7 +1195,11 @@
             <div class="ptable__row is-warn">
               <div class="rownum">4</div>
               <div><span class="badge badge--warn"><span class="glyph">!</span>Warning</span></div>
-              <div><span class="chip">producer</span></div>
+              <div><span class="chip"><span class="chip__dot"></span>producer</span></div>
+              <div>
+                <span class="chip">Facilities</span>
+                <span class="chip chip--sub">farrowing room temperature</span>
+              </div>
               <div class="qtext">What temperature should the farrowing room be kept at?</div>
               <div class="qtext vi" style="color:#B89A45;">— missing —</div>
               <div class="issue">Vietnamese translation missing. Will import as English-only.</div>
@@ -1239,7 +1208,11 @@
             <div class="ptable__row">
               <div class="rownum">5</div>
               <div><span class="badge badge--ok"><span class="glyph">✓</span>Valid</span></div>
-              <div><span class="chip">producer</span></div>
+              <div><span class="chip"><span class="chip__dot"></span>producer</span></div>
+              <div>
+                <span class="chip">Husbandry</span>
+                <span class="chip chip--sub">heat stress in sows</span>
+              </div>
               <div class="qtext">What are the signs of heat stress in lactating sows?</div>
               <div class="qtext vi">Dấu hiệu stress nhiệt ở heo nái đang nuôi con là gì?</div>
               <div class="issue">—</div>
@@ -1248,16 +1221,23 @@
             <div class="ptable__row is-err">
               <div class="rownum">6</div>
               <div><span class="badge badge--err"><span class="glyph">×</span>Error</span></div>
-              <div><span class="chip" style="background:#F2DEDE;color:#8A3A3A;border-color:#E3C2C2;">unknown</span></div>
+              <div><span class="chip"><span class="chip__dot"></span>vet</span></div>
+              <div>
+                <span class="chip" style="background:#F2DEDE;color:#8A3A3A;border-color:#E3C2C2;">veterinary-logistics</span>
+              </div>
               <div class="qtext">Best practice for vaccine cold-chain in remote farms?</div>
               <div class="qtext vi">Thực hành tốt nhất cho chuỗi lạnh vaccine ở trang trại vùng sâu?</div>
-              <div class="issue">Topic "veterinary-logistics" does not exist. Create the topic first, or change to an existing one.</div>
+              <div class="issue">Topic "veterinary-logistics" does not exist. Allowed: Facilities, Disease - Treatment, Husbandry, Biosecurity, General management, Vaccination.</div>
             </div>
 
             <div class="ptable__row is-warn">
               <div class="rownum">7</div>
               <div><span class="badge badge--warn"><span class="glyph">!</span>Warning</span></div>
-              <div><span class="chip">producer</span></div>
+              <div><span class="chip"><span class="chip__dot"></span>producer</span></div>
+              <div>
+                <span class="chip">Husbandry</span>
+                <span class="chip chip--sub">weaning weight</span>
+              </div>
               <div class="qtext">When to wean piglets and recommended weight target?</div>
               <div class="qtext vi">Khi nào cai sữa heo con và trọng lượng khuyến nghị?</div>
               <div class="issue">Duplicate of existing question #214. Will skip unless "Allow duplicates" is enabled.</div>
@@ -1266,7 +1246,11 @@
             <div class="ptable__row is-err">
               <div class="rownum">8</div>
               <div><span class="badge badge--err"><span class="glyph">×</span>Error</span></div>
-              <div><span class="chip" style="background:#F4F4F4;color:#9B9B9B;border-color:#E5E5E5;">—</span></div>
+              <div><span class="chip"><span class="chip__dot"></span>producer</span></div>
+              <div>
+                <span class="chip">Vaccination</span>
+                <span class="chip chip--sub">deworming schedule</span>
+              </div>
               <div class="qtext" style="color:#9B9B9B;">— empty —</div>
               <div class="qtext vi">Lịch tẩy giun cho heo thịt là khi nào?</div>
               <div class="issue">English question is required and is missing.</div>
@@ -1275,7 +1259,11 @@
             <div class="ptable__row">
               <div class="rownum">9</div>
               <div><span class="badge badge--ok"><span class="glyph">✓</span>Valid</span></div>
-              <div><span class="chip">producer</span></div>
+              <div><span class="chip"><span class="chip__dot"></span>producer</span></div>
+              <div>
+                <span class="chip">Husbandry</span>
+                <span class="chip chip--sub">gestation period</span>
+              </div>
               <div class="qtext">How long is the typical gestation period for sows?</div>
               <div class="qtext vi">Thời gian mang thai trung bình của heo nái là bao lâu?</div>
               <div class="issue">—</div>
@@ -1286,16 +1274,14 @@
           <div class="actionbar">
             <div class="actionbar__hint">4 errors will be skipped. Fix the file and re-upload to include them.</div>
             <div class="actionbar__right">
-              <button class="btn btn--ghost">Cancel</button>
-              <button class="btn">Download error report</button>
-              <button class="btn btn--primary">Import 382 valid questions</button>
+              <button class="btn btn--ghost"><span class="gl"></span>Cancel</button>
+              <button class="btn"><span class="gl"></span>Download error report</button>
+              <button class="btn btn--primary"><span class="gl"></span>Import 382 valid questions</button>
             </div>
           </div>
 
         </div>
       </div>
     </div>
-  </section>
-</div>
 </body>
 </html>

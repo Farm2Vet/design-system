@@ -9,10 +9,14 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
 
+<!-- Asset refs use ../../ because this page lives in
+     workspace/disease-management/, two levels below the project
+     root where styles/ and scripts/ actually live. -->
+
 <!-- Foundations -->
-<link rel="stylesheet" href="styles/tokens.css" />
-<link rel="stylesheet" href="styles/base.css" />
-<link rel="stylesheet" href="styles/typography.css" />
+<link rel="stylesheet" href="../../styles/tokens.css" />
+<link rel="stylesheet" href="../../styles/base.css" />
+<link rel="stylesheet" href="../../styles/typography.css" />
 
 <!-- Canonical components (consumed, never re-implemented) -->
 <!-- dropdown.css loads before button.css so that .btn rules win
@@ -20,32 +24,32 @@
      (icon-only kebab, overflow menu in a table row). See the
      load-order note at the top of the trigger section in
      styles/dropdown.css. -->
-<link rel="stylesheet" href="styles/dropdown.css" />
-<link rel="stylesheet" href="styles/button.css" />
-<link rel="stylesheet" href="styles/form.css" />
-<link rel="stylesheet" href="styles/badge.css" />
-<link rel="stylesheet" href="styles/card.css" />
-<link rel="stylesheet" href="styles/sidebar.css" />
-<link rel="stylesheet" href="styles/chip.css" />
-<link rel="stylesheet" href="styles/tabs.css" />
-<link rel="stylesheet" href="styles/switch.css" />
-<link rel="stylesheet" href="styles/alert.css" />
-<link rel="stylesheet" href="styles/modal.css" />
-<link rel="stylesheet" href="styles/chip-picker.css" />
+<link rel="stylesheet" href="../../styles/dropdown.css" />
+<link rel="stylesheet" href="../../styles/button.css" />
+<link rel="stylesheet" href="../../styles/form.css" />
+<link rel="stylesheet" href="../../styles/badge.css" />
+<link rel="stylesheet" href="../../styles/card.css" />
+<link rel="stylesheet" href="../../styles/sidebar.css" />
+<link rel="stylesheet" href="../../styles/chip.css" />
+<link rel="stylesheet" href="../../styles/tabs.css" />
+<link rel="stylesheet" href="../../styles/switch.css" />
+<link rel="stylesheet" href="../../styles/alert.css" />
+<link rel="stylesheet" href="../../styles/modal.css" />
+<link rel="stylesheet" href="../../styles/chip-picker.css" />
 
 <!-- Provides the .global-nav / .global-nav__inner / .global-nav__list
      base used by the dash-topbar islands pattern. The .dash-topbar
      overrides below re-skin those classes for admin page chrome. -->
-<link rel="stylesheet" href="styles/global-nav.css" />
+<link rel="stylesheet" href="../../styles/global-nav.css" />
 
 <!-- Reuse the admin shell scaffolding established by V-01 -->
-<link rel="stylesheet" href="styles/brand-bg.css" />
-<link rel="stylesheet" href="styles/page-V-01.css" />
+<link rel="stylesheet" href="../../styles/brand-bg.css" />
+<link rel="stylesheet" href="../../styles/page-V-01.css" />
 
-<script src="scripts/dropdown.js" defer></script>
-<script src="scripts/sidebar.js" defer></script>
-<script src="scripts/switch.js" defer></script>
-<script src="scripts/v04-disease.js" defer></script>
+<script src="../../scripts/dropdown.js" defer></script>
+<script src="../../scripts/sidebar.js" defer></script>
+<script src="../../scripts/switch.js" defer></script>
+<script src="../../scripts/v04-disease.js" defer></script>
 
 <style>
   /* =========================================================
@@ -271,7 +275,15 @@
      overrides it to full width — see .disease-edit__version
      .disease-edit__versions in the RAIL VERSION BLOCK. */
   .disease-edit__versions { width: auto; }
-  .disease-edit__versions .dropdown__menu { min-width: 100%; }
+  /* Base .dropdown__menu pins both left:0 and right:0 to the trigger,
+     which clips wider option labels (e.g. "v3.3 Inactive") on this
+     content-sized trigger. Release the right edge and let the menu
+     grow to its content while keeping the trigger as the min width. */
+  .disease-edit__versions .dropdown__menu {
+    right: auto;
+    min-width: 100%;
+    width: max-content;
+  }
 
   /* Version trigger — value label sits inline with the chevron. */
   .disease-edit__versions .dropdown__trigger {
@@ -314,10 +326,10 @@
      rail) form one vertically aligned column on wide screens. */
   .disease-edit__layout {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 320px;
+    grid-template-columns: minmax(0, 1fr) 180px;
     gap: var(--space-container-x-lg);
     align-items: start;
-    width: min(100% - 2 * var(--space-page-x), 1080px);
+    width: min(100% - 2 * var(--space-page-x), 1280px);
     margin: 0 auto var(--spacing-12x);
   }
   /* The main column is a vertical stack: global card + one card per
@@ -351,7 +363,7 @@
     flex-direction: column;
     padding-top: var(--spacing-12x);
   }
-  @media (max-width: 1100px) {
+  @media (max-width: 1080px) {
     .disease-edit__layout { grid-template-columns: 1fr; }
     .disease-edit__main,
     .disease-edit__rail  { grid-column: auto; }
@@ -364,7 +376,7 @@
      stat values override locally below. The marketing rail (.h1..h6,
      .body, .caption, .eyebrow) is untouched on every other page. */
   .disease-edit__card {
-    font-size: var(--text-admin-body);
+    font-size: 13px;
   }
   .disease-edit__card .field__label {
     font-family:    var(--font-mono);
@@ -408,37 +420,36 @@
      row, and the action button row. Replaces the bare page-head. */
   .disease-edit__header-card {
     display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: var(--spacing-6x);
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-3x);
     padding: var(--space-container-y) var(--space-container-x-lg);
+  }
+  /* Hero title runs one tier below the global admin-page-title rank
+     so the header card reads as page chrome, not a banner. */
+  .disease-edit__header-card .admin-page-title {
+    font-size: var(--text-xl);
   }
   .disease-edit__header-identity {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-2x);
+    gap: var(--spacing-1x);
     min-width: 0;
   }
   .disease-edit__header-chips {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--spacing-2x);
-    margin-top: var(--spacing-2x);
+    gap: var(--spacing-3x);
+    margin-top: var(--spacing-1x);
   }
   .disease-edit__header-actions {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: var(--spacing-2x);
-  }
-  @media (max-width: 700px) {
-    .disease-edit__header-card {
-      flex-direction: column;
-      align-items: stretch;
-    }
+    margin-top: var(--spacing-2x);
+    justify-content: flex-start;
   }
 
   /* ────────────── VERSION + LANGUAGE CARD ──────────────
@@ -446,12 +457,20 @@
      + Activate) and language tabs. */
   .disease-edit__version-card {
     padding: var(--space-container-y) var(--space-container-x-lg);
+    /* .card--glass-frost on every sibling card creates a stacking
+       context via backdrop-filter. Without an explicit z-index here,
+       the next sibling (form-switcher-card) paints on top and clips
+       this card's open version-picker menu. Lift the whole card so
+       its dropdown menu escapes into view. */
+    position: relative;
+    z-index: 10;
   }
   .disease-edit__version-card-row {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
     gap: var(--spacing-6x);
-    align-items: start;
   }
   .disease-edit__version-card-cell {
     display: flex;
@@ -459,14 +478,49 @@
     gap: var(--spacing-2x);
     min-width: 0;
   }
+  .disease-edit__version-card-cell--language {
+    /* Segmented language tabs hug their content; only the version
+       cell on the left flex-grows to take the remaining space. */
+    flex: 0 0 auto;
+  }
+  .disease-edit__version-card-cell--language .tabs__list {
+    width: max-content;
+  }
   .disease-edit__version-card-controls {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: var(--spacing-2x);
   }
+  /* Card-scoped: widen the picker trigger so the value reads as a
+     deliberate field instead of a cramped chip. min-width matches the
+     open menu (which auto-sizes to "v3.3 Incomplete" via width:
+     max-content on .dropdown__menu) so trigger + menu read as one
+     vertical stack. Scope to .disease-edit__version-card so the
+     rail's content-sized picker (.disease-edit__version) is
+     untouched — its width: 100% rule below still wins. */
+  .disease-edit__version-card .disease-edit__versions .dropdown__trigger {
+    min-width: 12rem;
+    justify-content: space-between;
+  }
+  /* Equalize the three version-row controls (picker · Add Version ·
+     Activate) so they read as a deliberate trio, matching the
+     wireframe. The dropdown trigger already carries the min-width
+     above; this applies the same floor to the two sibling buttons. */
+  .disease-edit__version-card-controls .btn {
+    min-width: 12rem;
+  }
+  /* Suppress the base .tabs__tab:hover background on the currently
+     selected segmented tab. Without this, hovering the active tab
+     paints the hover fill on top of the sliding bubble, which reads
+     as the bubble flickering an extra surface. Scoped to the
+     language cell so the form-switcher line tabs are untouched. */
+  .disease-edit__version-card-cell--language .tabs__tab.is-selected:hover,
+  .disease-edit__version-card-cell--language .tabs__tab[aria-selected="true"]:hover {
+    background: transparent;
+  }
   @media (max-width: 700px) {
-    .disease-edit__version-card-row { grid-template-columns: 1fr; }
+    .disease-edit__version-card-row { flex-direction: column; align-items: stretch; }
   }
 
   /* ────────────── FORM SWITCHER CARD ──────────────
@@ -611,12 +665,17 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--spacing-2x);
+    gap: var(--spacing-1x);
+  }
+  .disease-edit__rail-dock-version,
+  .disease-edit__rail-dock-form {
+    flex: 1 1 100%;
   }
   .disease-edit__rail-dock-lang {
     display: inline-flex;
     align-items: center;
     gap: var(--spacing-1x);
+    flex: 1 1 100%;
   }
   .disease-edit__rail-dock-lang .btn.is-selected {
     background: var(--background-primary-subtle);
@@ -773,10 +832,10 @@
   }
   .disease-edit__toc-item {
     display: grid;
-    grid-template-columns: 20px 1fr auto;
+    grid-template-columns: 20px 1fr;
     align-items: center;
     gap: var(--spacing-2x);
-    padding: var(--spacing-3x);
+    padding: var(--spacing-3x) var(--spacing-2x);
     border-radius: var(--radius-md);
     text-decoration: none;
     color: var(--text-default-subtle);
@@ -825,18 +884,6 @@
     margin-bottom: var(--spacing-3x);
     padding-bottom: var(--spacing-3x);
     border-bottom: var(--border-width-base) solid var(--border-default);
-  }
-  /* Subsection title — admin-tier uppercase subsection treatment.
-     Sits below the card title (which is now admin-section-title
-     uppercase as well, one tier above). */
-  .disease-edit__section-title {
-    font-family:    var(--font-sans);
-    font-size:      var(--text-admin-subsection-title);
-    font-weight:    var(--font-weight-medium);
-    letter-spacing: var(--letter-spacing-eyebrow);
-    text-transform: uppercase;
-    color:          var(--text-default-minimal);
-    margin: 0;
   }
   .disease-edit__section-summary {
     font-size: var(--text-body);
@@ -1092,18 +1139,6 @@
     border-bottom-color: transparent;
   }
 
-  .disease-edit__form-title {
-    font-family:    var(--font-sans);
-    /* Admin-tier section title — uppercase mono-letterspaced eyebrow
-       treatment at the card-title size (16px). Section dividers above
-       cards are gone; identity now comes from the card title itself. */
-    font-size:      var(--text-admin-card-title);
-    font-weight:    var(--font-weight-medium);
-    letter-spacing: var(--letter-spacing-eyebrow);
-    text-transform: uppercase;
-    color:          var(--text-default-subtle);
-    margin: 0;
-  }
   .disease-edit__form-head-actions {
     display: inline-flex;
     align-items: center;
@@ -1124,8 +1159,13 @@
      still wins over the edit/view two-tree display rules below. */
   .disease-edit__form-body[hidden] { display: none !important; }
 
-  /* Global card distinguishes via the eyebrow text alone; surface
-     stays glass-frost. The head has no actions cluster. */
+  /* Form-shared card distinguishes via the eyebrow text alone; surface
+     stays glass-frost. The head has no actions cluster.
+     `--shared` replaces the legacy `--global` modifier — same semantics
+     ("value applies across all clinical forms") under a more accurate
+     name. The old class is kept as a tail selector for any leftover
+     markup that hasn't been migrated. */
+  .disease-edit__card--shared .disease-edit__form-head,
   .disease-edit__card--global .disease-edit__form-head {
     border-bottom-color: var(--border-default-subtle);
   }
@@ -1666,6 +1706,133 @@
     font-size: var(--text-body-sm);
     color: var(--text-default-minimal);
   }
+
+  /* ════════════════ V04 REWORK ADDITIONS ════════════════ */
+
+  /* Inline "form-shared · unique" / "form-shared · markdown" helper
+     under a field label. Mirrors .field__helper but lives in this
+     page so we can tune the rhythm without touching form.css. */
+  .disease-edit__shared-hint {
+    margin: 0 0 var(--spacing-2x);
+    font-size: var(--text-body-sm);
+    color: var(--text-default-subtle);
+  }
+
+  /* Mono utility for the editable codename input — codename is the
+     one place in this page where a mono treatment is warranted (the
+     value is a code, not prose). Scoped to the codename field so we
+     don't introduce a global .font-mono utility. */
+  .disease-edit__codename-input {
+    font-family: var(--font-mono);
+    max-width: 32ch;
+  }
+
+  /* Dirty dot prepended to the h1 in the page-header card while in
+     edit mode + dirty state. The existing topbar save-status
+     controller flips body[data-edit-mode]=on; CSS hides the dot
+     outside edit mode. The dirty/clean visibility is driven by the
+     dataset.state on .dash-topbar__save-status (see workflow). */
+  .disease-edit__header-dirty {
+    display: none;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--icon-warning, var(--text-warning));
+    margin-right: var(--spacing-2x);
+    vertical-align: middle;
+  }
+  body[data-edit-mode="on"] .dash-topbar__save-status[data-state="dirty"] ~ * .disease-edit__header-dirty,
+  body[data-edit-mode="on"][data-dirty="on"] .disease-edit__header-dirty {
+    display: inline-block;
+  }
+
+  /* Custom Fields card — dashed surface signals "admin-added".
+     Local rule for now; can be promoted to .card--dashed in
+     styles/card.css when a second consumer needs it. */
+  .disease-edit__custom-fields {
+    border-style: dashed;
+  }
+  .disease-edit__custom-field + .disease-edit__custom-field {
+    margin-top: var(--spacing-4x);
+    padding-top: var(--spacing-4x);
+    border-top: var(--border-width-base) dashed var(--border-default-subtle);
+  }
+  .disease-edit__custom-field-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-2x);
+    margin-bottom: var(--spacing-2x);
+  }
+  .disease-edit__form-scope-hint {
+    margin-left: var(--spacing-2x);
+    font-weight: var(--font-weight-regular);
+    color: var(--text-default-subtle);
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .disease-edit__custom-field-add {
+    margin-top: var(--spacing-3x);
+    border-style: dashed;
+  }
+
+  /* Sticky save bar — present only in edit mode (gated by
+     .disease-edit__edit-only). Lives outside .app-shell so its
+     fixed position doesn't fight the shell's stacking context. */
+  .disease-edit__savebar {
+    position: fixed;
+    inset: auto 0 0 0;
+    z-index: 60;
+    background: var(--background-default);
+    border-top: var(--border-width-base) solid var(--border-default);
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.08);
+    padding: var(--spacing-3x) var(--space-page-x);
+  }
+  .disease-edit__savebar-inner {
+    max-width: 1220px;
+    margin: 0 auto;
+    padding-inline: var(--space-page-x);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-3x);
+    flex-wrap: wrap;
+  }
+  .disease-edit__savebar-status {
+    margin: 0;
+    font-size: var(--text-body);
+    color: var(--text-default-subtle);
+  }
+  .disease-edit__savebar-dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--icon-warning, var(--text-warning));
+    margin-right: var(--spacing-2x);
+    vertical-align: middle;
+  }
+  .disease-edit__savebar-sep {
+    margin: 0 var(--spacing-2x);
+    color: var(--text-default-minimal);
+  }
+  .disease-edit__savebar-actions {
+    display: inline-flex;
+    gap: var(--spacing-2x);
+    flex-wrap: wrap;
+  }
+  /* Leave room at the bottom of the main column when edit mode is
+     on so the fixed savebar doesn't cover the last card. */
+  body[data-edit-mode="on"] .app-shell__main {
+    padding-bottom: calc(var(--spacing-12x) + var(--spacing-6x));
+  }
+
+  /* Disease-stats rate body wrapper — gives the range row a small
+     amount of vertical breathing room under its helper line. */
+  .disease-edit__rate-body { display: block; }
+  .disease-edit__section-fields--rates {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4x);
+  }
 </style>
 </head>
 <body class="disease-edit--editor">
@@ -1888,19 +2055,65 @@
              aria-label="Disease — ASF">
       <div class="disease-edit__header-identity">
         <p class="admin-field-label">Codename</p>
-        <h1 class="admin-page-title" data-i18n="page.head.eyebrow">ASF</h1>
+        <h1 class="admin-page-title">
+          <span class="disease-edit__header-dirty" aria-hidden="true"></span>
+          <span data-i18n="page.head.eyebrow">ASF</span>
+        </h1>
         <div class="disease-edit__header-chips">
           <span class="badge is-safe">Active</span>
           <span class="badge is-warning">⚠ EN version incomplete</span>
           <span class="admin-caption">Last updated 2026-05-20 14:32</span>
           <span class="admin-caption">Created 2025-11-03</span>
+          <span class="admin-caption disease-edit__edit-only" data-last-saved>Last saved 14:32</span>
         </div>
       </div>
       <div class="disease-edit__header-actions">
-        <button type="button" class="btn btn--ghost btn--sm">✎ Edit</button>
-        <button type="button" class="btn btn--ghost btn--sm" data-modal-open="modal-deactivate-disease">Deactivate</button>
-        <button type="button" class="btn btn--ghost btn--sm">⟳ Sync to Chatbot</button>
-        <button type="button" class="btn btn--caution-ghost btn--sm" data-modal-open="modal-delete-disease">🗑 Delete</button>
+        <!-- DETAIL MODE — full action row -->
+        <div class="disease-edit__view-only" role="group" aria-label="Disease actions">
+          <button type="button" class="btn btn--ghost btn--sm" data-action="header-edit">
+            <span class="btn__leading" aria-hidden="true">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+            </span>
+            <span class="btn__label" data-i18n="btn.edit">Edit</span>
+          </button>
+          <button type="button" class="btn btn--ghost btn--sm" data-modal-open="modal-deactivate-disease">
+            <span class="btn__label" data-i18n="btn.deactivate">Deactivate</span>
+          </button>
+          <button type="button" class="btn btn--ghost btn--sm">
+            <span class="btn__leading" aria-hidden="true">⟳</span>
+            <span class="btn__label">Sync to Chatbot</span>
+          </button>
+          <button type="button" class="btn btn--caution-ghost btn--sm" data-modal-open="modal-delete-disease">
+            <span class="btn__leading" aria-hidden="true">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6 17.27 20.27A2 2 0 0 1 15.28 22H8.72a2 2 0 0 1-1.99-1.73L5 6"/><path d="M10 11v6M14 11v6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            </span>
+            <span class="btn__label">Delete</span>
+          </button>
+        </div>
+        <!-- EDIT MODE — Preview + overflow kebab -->
+        <div class="disease-edit__edit-only" role="group" aria-label="Editing actions">
+          <button type="button" class="btn btn--secondary btn--sm" data-i18n="btn.preview">Preview</button>
+          <div class="dropdown dropdown--sm" data-dropdown>
+            <button type="button" class="btn btn--ghost btn--sm btn--icon-only dropdown__trigger" aria-haspopup="menu" aria-expanded="false" aria-label="More actions">
+              <svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <circle cx="5" cy="12" r="1.5"/>
+                <circle cx="12" cy="12" r="1.5"/>
+                <circle cx="19" cy="12" r="1.5"/>
+              </svg>
+            </button>
+            <div class="dropdown__menu" role="menu">
+              <button type="button" class="dropdown__option" role="menuitem" data-modal-open="modal-deactivate-disease">
+                <span data-i18n="btn.deactivate">Deactivate</span>
+              </button>
+              <button type="button" class="dropdown__option" role="menuitem">
+                <span data-i18n="btn.sync">⟳ Sync to Chatbot</span>
+              </button>
+              <button type="button" class="dropdown__option" role="menuitem" data-modal-open="modal-delete-disease">
+                <span data-i18n="btn.deleteDisease">🗑 Delete</span>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </section><!-- /.disease-edit__header-card -->
 
@@ -1916,12 +2129,12 @@
           <div class="disease-edit__version-card-controls">
             <div class="dropdown dropdown--sm disease-edit__versions" id="version-picker" data-dropdown>
               <button type="button" class="dropdown__trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Switch version">
-                <span class="dropdown__value">v3.3</span>
+                <span class="dropdown__value">v3.3<span class="disease-edit__edit-only" data-i18n="version.editing"> (editing)</span></span>
                 <svg class="dropdown__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
               </button>
               <div class="dropdown__menu" role="listbox">
                 <button type="button" class="dropdown__option is-selected" role="option" data-value="v3.3" data-status="inactive">
-                  <span class="disease-edit__version-option">v3.3 <span class="badge is-warning" data-i18n="badge.inactive">Inactive</span></span>
+                  <span class="disease-edit__version-option">v3.3 <span class="badge is-warning" data-i18n="badge.inactive">Incomplete</span></span>
                   <svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>
                 </button>
                 <button type="button" class="dropdown__option" role="option" data-value="v3.2" data-status="active">
@@ -1929,22 +2142,25 @@
                   <svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>
                 </button>
                 <button type="button" class="dropdown__option" role="option" data-value="v3.1" data-status="inactive">
-                  <span class="disease-edit__version-option">v3.1 <span class="badge is-warning" data-i18n="badge.inactive">Inactive</span></span>
+                  <span class="disease-edit__version-option">v3.1 <span class="badge is-warning" data-i18n="badge.inactive">Incomplete</span></span>
                   <svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>
                 </button>
               </div>
             </div>
             <button type="button" class="btn btn--ghost btn--sm" data-modal-open="modal-new-version">+ Add Version</button>
-            <button type="button" class="btn btn--ghost btn--sm" data-modal-open="modal-set-live">Activate this version</button>
-            <button type="button" class="btn btn--caution-ghost btn--sm" data-modal-open="modal-delete-version">🗑 Delete</button>
+            <button type="button" class="btn btn--ghost btn--sm disease-edit__view-only" data-modal-open="modal-set-live">Activate this version</button>
           </div>
         </div>
-        <div class="disease-edit__version-card-cell">
+        <div class="disease-edit__version-card-cell disease-edit__version-card-cell--language">
           <p class="admin-field-label">Language</p>
-          <div class="tabs tabs--line tabs--sm" data-tabs>
-            <div class="tabs__list" role="tablist" aria-label="Language">
-              <button type="button" class="tabs__tab is-selected" role="tab" data-locale="vi" aria-selected="true" tabindex="0">Vietnamese</button>
-              <button type="button" class="tabs__tab" role="tab" data-locale="en" aria-selected="false" tabindex="-1">English</button>
+          <div class="tabs tabs--segmented tabs--md" data-tabs data-data-language>
+            <div class="tabs__list" role="tablist" aria-label="Data language">
+              <button type="button" class="tabs__tab is-selected" role="tab" data-locale="vi" aria-selected="true" tabindex="0">
+                <span class="tabs__label">Vietnamese</span>
+              </button>
+              <button type="button" class="tabs__tab" role="tab" data-locale="en" aria-selected="false" tabindex="-1">
+                <span class="tabs__label">English</span>
+              </button>
               <span class="tabs__indicator" aria-hidden="true"></span>
             </div>
           </div>
@@ -1976,8 +2192,8 @@
           <button type="button" class="btn btn--caution-ghost btn--sm" data-modal-open="modal-delete-form">🗑 Delete form</button>
         </div>
       </div>
-      <p class="disease-edit__form-switcher-hint admin-caption">
-        ▾ Fields below belong to the <strong>Acute</strong> form. Switch tabs to view or edit other forms.
+      <p class="disease-edit__form-switcher-hint admin-caption" data-i18n-template="form.switcher.hint">
+        ▾ Editing the <strong data-current-form>Acute</strong> form. Form-shared fields (Codename, Name, Description, Pig Types) apply across all forms.
       </p>
     </section><!-- /.disease-edit__form-switcher-card -->
 
@@ -1990,16 +2206,16 @@
       <ul class="disease-edit__completeness-list">
         <li><a href="#form-management">Prevention</a></li>
         <li><a href="#field-symptoms-dermatology">Symptoms · Dermatology</a></li>
-        <li><a href="#form-differential">Differential diagnosis</a></li>
+        <li><a href="#form-additional">Additional Info · Differential diagnosis</a></li>
       </ul>
     </div>
 
     <!-- ═════════════════ DISEASE · GENERAL INFO CARD ═════════════════ -->
-    <section class="card card--glass-frost disease-edit__card disease-edit__card--global"
+    <section class="card card--glass-frost disease-edit__card disease-edit__card--shared"
              id="form-general" data-form-id="general" aria-label="Disease — General information">
 
       <header class="disease-edit__form-head">
-        <h3 class="disease-edit__form-title" data-i18n="form.general.title">General information</h3>
+        <h3 class="admin-card-title" data-i18n="form.general.title">General information</h3>
         <div class="disease-edit__form-head-actions">
           <button type="button"
                   class="btn btn--ghost btn--sm btn--icon-only disease-edit__form-collapse"
@@ -2017,38 +2233,25 @@
           <div class="disease-edit__section-fields">
 
             <div class="field">
-              <span class="field__label" id="f-gen-name-label"><span data-i18n="field.name">Full Name</span> <span class="req" aria-label="required">*</span></span>
-              <div class="tabs tabs--line tabs--sm disease-edit__lang-tabs" data-tabs>
-                <div class="tabs__list" role="tablist" aria-label="Language">
-                  <button type="button" class="tabs__tab is-selected" role="tab" data-locale="en" aria-selected="true" tabindex="0">EN</button>
-                  <button type="button" class="tabs__tab"             role="tab" data-locale="vi" aria-selected="false" tabindex="-1">VI</button>
-                  <span class="tabs__indicator" aria-hidden="true"></span>
+              <span class="field__label" id="f-gen-name-label"><span data-i18n="field.name">Name</span> <span class="req" aria-label="required">*</span></span>
+              <p class="disease-edit__shared-hint" data-i18n="hint.formSharedMd">form-shared · markdown</p>
+              <div class="md-editor">
+                <div class="md-editor__toolbar" role="toolbar" aria-label="Formatting">
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Bold"><strong>B</strong></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Italic"><em>I</em></button>
+                  <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 2">H<span class="md-editor__sub">2</span></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Bullet list"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Link"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
                 </div>
+                <!-- TODO: data-binding swaps content from disease-edit__data-locale; single textarea, no per-field locale toggle. -->
+                <textarea class="input input--md textarea md-editor__textarea" rows="2" aria-labelledby="f-gen-name-label">African Swine Fever</textarea>
               </div>
-              <input data-locale="en" type="text" class="input input--md disease-edit__lang-input" aria-labelledby="f-gen-name-label" value="African Swine Fever" />
-              <input data-locale="vi" type="text" class="input input--md disease-edit__lang-input" aria-labelledby="f-gen-name-label" value="Bệnh dịch tả lợn châu Phi" hidden />
-            </div>
-
-            <div class="field">
-              <div class="chip-picker" data-chip-picker
-                   data-vocab="pig-types"
-                   data-picker-id="f-pig-types"
-                   data-label="Pig types affected"
-                   data-label-key="field.pigTypes"
-                   data-placeholder-key="chipPicker.searchPigTypes"
-                   data-addvocab-key="chipPicker.addVocabPigTypes"
-                   data-selected="All"></div>
             </div>
 
             <div class="field">
               <span class="field__label" id="f-gen-desc-label" data-i18n="field.description">Description</span>
-              <div class="tabs tabs--line tabs--sm disease-edit__lang-tabs" data-tabs>
-                <div class="tabs__list" role="tablist" aria-label="Language">
-                  <button type="button" class="tabs__tab is-selected" role="tab" data-locale="en" aria-selected="true" tabindex="0">EN</button>
-                  <button type="button" class="tabs__tab"             role="tab" data-locale="vi" aria-selected="false" tabindex="-1">VI</button>
-                  <span class="tabs__indicator" aria-hidden="true"></span>
-                </div>
-              </div>
+              <p class="disease-edit__shared-hint" data-i18n="hint.formSharedMd">form-shared · markdown</p>
               <div class="md-editor">
                 <div class="md-editor__toolbar" role="toolbar" aria-label="Formatting">
                   <button type="button" class="btn btn--ghost btn--sm" aria-label="Bold"><strong>B</strong></button>
@@ -2070,9 +2273,21 @@
                   <button type="button" class="btn btn--ghost btn--sm" aria-label="Redo"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/></svg></button>
                   <button type="button" class="btn btn--ghost btn--sm" aria-label="Clear"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
                 </div>
-                <textarea data-locale="en" class="input input--md textarea md-editor__textarea" rows="4" aria-labelledby="f-gen-desc-label"></textarea>
-                <textarea data-locale="vi" class="input input--md textarea md-editor__textarea" rows="4" aria-labelledby="f-gen-desc-label" hidden></textarea>
+                <!-- TODO: data-binding swaps content from data-language; single textarea, no per-field locale toggle. -->
+                <textarea class="input input--md textarea md-editor__textarea" rows="4" aria-labelledby="f-gen-desc-label"></textarea>
               </div>
+            </div>
+
+            <div class="field">
+              <div class="chip-picker" data-chip-picker
+                   data-vocab="pig-types"
+                   data-picker-id="f-pig-types"
+                   data-label="Pig types affected"
+                   data-label-key="field.pigTypes"
+                   data-placeholder-key="chipPicker.searchPigTypes"
+                   data-addvocab-key="chipPicker.addVocabPigTypes"
+                   data-selected="All"></div>
+              <p class="disease-edit__shared-hint" data-i18n="hint.formSharedToggle">form-shared · click to toggle</p>
             </div>
 
           </div>
@@ -2081,17 +2296,21 @@
 
       <!-- ───── General info card · read layout (view mode) ───── -->
       <div class="disease-edit__form-body disease-edit__form-body--view">
-        <dl class="disease-edit__view-dl">
-          <dt>Full name</dt>
-          <dd>African Swine Fever</dd>
-
-          <dt>Affected pig types</dt>
-          <dd><span class="badge badge--sm is-info">All</span></dd>
-        </dl>
-
-        <h4 class="disease-edit__view-subhead">Description</h4>
-        <div class="disease-edit__view-md">
-          <p class="disease-edit__view-val--empty" data-i18n="view.notProvided">Not provided</p>
+        <div class="disease-edit__view-md-block">
+          <h4 class="disease-edit__view-subhead" data-i18n="field.name">Name</h4>
+          <div class="disease-edit__view-md">
+            <p>African Swine Fever</p>
+          </div>
+        </div>
+        <div class="disease-edit__view-md-block">
+          <h4 class="disease-edit__view-subhead" data-i18n="field.description">Description</h4>
+          <div class="disease-edit__view-md">
+            <p class="disease-edit__view-val--empty" data-i18n="view.notProvided">Not provided</p>
+          </div>
+        </div>
+        <div class="disease-edit__view-md-block">
+          <h4 class="disease-edit__view-subhead" data-i18n="field.pigTypes">Pig types affected</h4>
+          <p><span class="badge badge--sm is-info">All</span></p>
         </div>
       </div><!-- /.disease-edit__form-body--view (general) -->
     </section><!-- /.disease-edit__card (general) -->
@@ -2104,7 +2323,7 @@
              id="form-stats" data-form-id="stats" aria-label="Disease stats">
 
       <header class="disease-edit__form-head">
-        <h3 class="disease-edit__form-title">Disease stats</h3>
+        <h3 class="admin-card-title">Disease stats</h3>
         <div class="disease-edit__form-head-actions">
           <button type="button"
                   class="btn btn--ghost btn--sm btn--icon-only disease-edit__form-collapse"
@@ -2117,19 +2336,62 @@
       </header>
 
       <div class="disease-edit__form-body disease-edit__form-body--edit" id="form-stats-body">
-        <div class="disease-edit__stats-grid">
-          <label class="field disease-edit__stat">
-            <span class="field__label">Mortality rate</span>
-            <input type="text" class="input input--md" value="30–80%" />
-          </label>
-          <label class="field disease-edit__stat">
-            <span class="field__label">Morbidity rate</span>
-            <input type="text" class="input input--md" value="90–100%" />
-          </label>
-          <label class="field disease-edit__stat">
-            <span class="field__label">Fever range</span>
-            <input type="text" class="input input--md" value="40.5–41.5 °C" />
-          </label>
+        <div class="disease-edit__section-fields disease-edit__section-fields--rates">
+
+          <div class="field">
+            <span class="field__label" id="f-stats-mortality-label" data-i18n="field.mortalityRate">Mortality rate</span>
+            <p class="field__helper" data-i18n="hint.rangePct">range, %</p>
+            <div class="disease-edit__rate-body">
+              <div class="disease-edit__range">
+                <div class="disease-edit__range-cell">
+                  <input type="number" class="input input--md" aria-labelledby="f-stats-mortality-label" value="30" />
+                  <span class="disease-edit__range-suffix">%</span>
+                </div>
+                <span class="disease-edit__range-dash" aria-hidden="true">–</span>
+                <div class="disease-edit__range-cell">
+                  <input type="number" class="input input--md" aria-labelledby="f-stats-mortality-label" value="80" />
+                  <span class="disease-edit__range-suffix">%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <span class="field__label" id="f-stats-morbidity-label" data-i18n="field.morbidityRate">Morbidity rate</span>
+            <p class="field__helper" data-i18n="hint.rangePct">range, %</p>
+            <div class="disease-edit__rate-body">
+              <div class="disease-edit__range">
+                <div class="disease-edit__range-cell">
+                  <input type="number" class="input input--md" aria-labelledby="f-stats-morbidity-label" value="90" />
+                  <span class="disease-edit__range-suffix">%</span>
+                </div>
+                <span class="disease-edit__range-dash" aria-hidden="true">–</span>
+                <div class="disease-edit__range-cell">
+                  <input type="number" class="input input--md" aria-labelledby="f-stats-morbidity-label" value="100" />
+                  <span class="disease-edit__range-suffix">%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <span class="field__label" id="f-stats-fever-label" data-i18n="field.feverRange">Fever</span>
+            <p class="field__helper" data-i18n="hint.rangeC">range, °C</p>
+            <div class="disease-edit__rate-body">
+              <div class="disease-edit__range">
+                <div class="disease-edit__range-cell">
+                  <input type="number" class="input input--md" aria-labelledby="f-stats-fever-label" value="40.5" step="0.1" />
+                  <span class="disease-edit__range-suffix">°C</span>
+                </div>
+                <span class="disease-edit__range-dash" aria-hidden="true">–</span>
+                <div class="disease-edit__range-cell">
+                  <input type="number" class="input input--md" aria-labelledby="f-stats-fever-label" value="41.5" step="0.1" />
+                  <span class="disease-edit__range-suffix">°C</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 
@@ -2159,7 +2421,7 @@
              id="form-symptoms" data-form-id="symptoms" aria-label="Symptoms">
 
       <header class="disease-edit__form-head">
-        <h3 class="disease-edit__form-title">Symptoms</h3>
+        <h3 class="admin-card-title">Symptoms</h3>
         <div class="disease-edit__form-head-actions">
           <button type="button"
                   class="btn btn--ghost btn--sm btn--icon-only disease-edit__form-collapse"
@@ -2197,10 +2459,16 @@
               <textarea class="input input--md textarea md-editor__textarea" rows="4" aria-label="Dermatology symptoms"></textarea>
             </div>
           </article>
-          <article class="disease-edit__symptom-card disease-edit__symptom-card--wide" id="field-symptoms-reproductive">
+          <article class="disease-edit__symptom-card" id="field-symptoms-reproductive">
             <h4 class="admin-subsection-title">Reproductive</h4>
             <div class="md-editor">
               <textarea class="input input--md textarea md-editor__textarea" rows="4" aria-label="Reproductive symptoms"></textarea>
+            </div>
+          </article>
+          <article class="disease-edit__symptom-card" id="field-symptoms-other">
+            <h4 class="admin-subsection-title">Other</h4>
+            <div class="md-editor">
+              <textarea class="input input--md textarea md-editor__textarea" rows="4" aria-label="Other symptoms"></textarea>
             </div>
           </article>
         </div>
@@ -2232,10 +2500,16 @@
               <p class="disease-edit__view-val--empty">Not provided</p>
             </div>
           </article>
-          <article class="disease-edit__symptom-card disease-edit__symptom-card--wide">
+          <article class="disease-edit__symptom-card">
             <h4 class="admin-subsection-title">Reproductive</h4>
             <div class="disease-edit__view-md">
               <p>Abortions in pregnant sows; stillbirths and mummified fetuses reported in outbreaks.</p>
+            </div>
+          </article>
+          <article class="disease-edit__symptom-card">
+            <h4 class="admin-subsection-title">Other</h4>
+            <div class="disease-edit__view-md">
+              <p class="disease-edit__view-val--empty">Not provided</p>
             </div>
           </article>
         </div>
@@ -2243,11 +2517,11 @@
     </section><!-- /.disease-edit__card (symptoms) -->
 
     <!-- ═════════════════ DISEASE · MANAGEMENT CARD ═════════════════ -->
-    <section class="card card--glass-frost disease-edit__card disease-edit__card--global"
+    <section class="card card--glass-frost disease-edit__card"
              id="form-management" data-form-id="management" aria-label="Disease — Management">
 
       <header class="disease-edit__form-head">
-        <h3 class="disease-edit__form-title" data-i18n="form.management.title">Management</h3>
+        <h3 class="admin-card-title" data-i18n="form.management.title">Management</h3>
         <div class="disease-edit__form-head-actions">
           <button type="button"
                   class="btn btn--ghost btn--sm btn--icon-only disease-edit__form-collapse"
@@ -2266,13 +2540,6 @@
 
             <div class="field">
               <span class="field__label" id="f-mgmt-vaccines-label">Vaccines</span>
-              <div class="tabs tabs--line tabs--sm disease-edit__lang-tabs" data-tabs>
-                <div class="tabs__list" role="tablist" aria-label="Language">
-                  <button type="button" class="tabs__tab is-selected" role="tab" data-locale="en" aria-selected="true" tabindex="0">EN</button>
-                  <button type="button" class="tabs__tab"             role="tab" data-locale="vi" aria-selected="false" tabindex="-1">VI</button>
-                  <span class="tabs__indicator" aria-hidden="true"></span>
-                </div>
-              </div>
               <div class="md-editor">
                   <div class="md-editor__toolbar" role="toolbar" aria-label="Formatting">
                     <button type="button" class="btn btn--ghost btn--sm" aria-label="Bold"><strong>B</strong></button>
@@ -2294,7 +2561,7 @@
                     <button type="button" class="btn btn--ghost btn--sm" aria-label="Redo"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/></svg></button>
                     <button type="button" class="btn btn--ghost btn--sm" aria-label="Clear"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
                   </div>
-                  <textarea data-locale="en" class="input input--md textarea md-editor__textarea" rows="8" aria-labelledby="f-mgmt-vaccines-label">Vietnam has commercialized African swine fever (ASF) vaccines (NAVET-ASFVAC, AVAC ASF LIVE). These are live attenuated vaccines.
+                  <textarea class="input input--md textarea md-editor__textarea" rows="8" aria-labelledby="f-mgmt-vaccines-label">Vietnam has commercialized African swine fever (ASF) vaccines (NAVET-ASFVAC, AVAC ASF LIVE). These are live attenuated vaccines.
 
 **Mechanism &amp; Risks: **Live attenuated vaccines carry risks of vaccine virus shedding into the environment or reversion to virulence if biosafety management and vaccination practices are inadequate.
 
@@ -2303,19 +2570,11 @@ Recommendations:
 - Use only in fattening pigs. Extreme caution is required, or vaccination should be avoided, in breeding sows (unless the latest official guidance from the Department of Animal Health confirms safety for pregnancy), due to the risk of embryonic/fetal effects and vertical transmission.
 - Vaccinate pigs at 4–8 weeks of age.
 - Closely monitor post-vaccination reactions within the first 72 hours.</textarea>
-                  <textarea data-locale="vi" class="input input--md textarea md-editor__textarea" rows="8" aria-labelledby="f-mgmt-vaccines-label" hidden></textarea>
               </div>
             </div>
 
             <div class="field">
               <span class="field__label" id="f-mgmt-treatment-label">Treatment</span>
-              <div class="tabs tabs--line tabs--sm disease-edit__lang-tabs" data-tabs>
-                <div class="tabs__list" role="tablist" aria-label="Language">
-                  <button type="button" class="tabs__tab is-selected" role="tab" data-locale="en" aria-selected="true" tabindex="0">EN</button>
-                  <button type="button" class="tabs__tab"             role="tab" data-locale="vi" aria-selected="false" tabindex="-1">VI</button>
-                  <span class="tabs__indicator" aria-hidden="true"></span>
-                </div>
-              </div>
               <div class="md-editor">
                   <div class="md-editor__toolbar" role="toolbar" aria-label="Formatting">
                     <button type="button" class="btn btn--ghost btn--sm" aria-label="Bold"><strong>B</strong></button>
@@ -2337,20 +2596,27 @@ Recommendations:
                     <button type="button" class="btn btn--ghost btn--sm" aria-label="Redo"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/></svg></button>
                     <button type="button" class="btn btn--ghost btn--sm" aria-label="Clear"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
                   </div>
-                  <textarea data-locale="en" class="input input--md textarea md-editor__textarea" rows="3" aria-labelledby="f-mgmt-treatment-label">No effective treatment exists; antibiotics and antipyretics are ineffective. Recommended actions include immediate reporting to veterinary authorities, culling of the herd, and implementing strict biosecurity and disinfection protocols.</textarea>
-                  <textarea data-locale="vi" class="input input--md textarea md-editor__textarea" rows="3" aria-labelledby="f-mgmt-treatment-label" hidden></textarea>
+                  <textarea class="input input--md textarea md-editor__textarea" rows="3" aria-labelledby="f-mgmt-treatment-label">No effective treatment exists; antibiotics and antipyretics are ineffective. Recommended actions include immediate reporting to veterinary authorities, culling of the herd, and implementing strict biosecurity and disinfection protocols.</textarea>
+              </div>
+            </div>
+
+            <div class="field">
+              <span class="field__label" id="f-mgmt-recommendation-label">Recommendation</span>
+              <div class="md-editor">
+                <div class="md-editor__toolbar" role="toolbar" aria-label="Formatting">
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Bold"><strong>B</strong></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Italic"><em>I</em></button>
+                  <span class="md-editor__toolbar-sep" aria-hidden="true"></span>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Heading 2">H<span class="md-editor__sub">2</span></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Bullet list"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
+                  <button type="button" class="btn btn--ghost btn--sm" aria-label="Link"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
+                </div>
+                <textarea class="input input--md textarea md-editor__textarea" rows="4" aria-labelledby="f-mgmt-recommendation-label" placeholder="Recommendation for herd management…"></textarea>
               </div>
             </div>
 
             <div class="field">
               <span class="field__label" id="f-mgmt-prevention-label" data-i18n="field.prevention">Prevention</span>
-              <div class="tabs tabs--line tabs--sm disease-edit__lang-tabs" data-tabs>
-                <div class="tabs__list" role="tablist" aria-label="Language">
-                  <button type="button" class="tabs__tab is-selected" role="tab" data-locale="en" aria-selected="true" tabindex="0">EN</button>
-                  <button type="button" class="tabs__tab"             role="tab" data-locale="vi" aria-selected="false" tabindex="-1">VI</button>
-                  <span class="tabs__indicator" aria-hidden="true"></span>
-                </div>
-              </div>
               <div class="md-editor">
                   <div class="md-editor__toolbar" role="toolbar" aria-label="Formatting">
                     <button type="button" class="btn btn--ghost btn--sm" aria-label="Bold"><strong>B</strong></button>
@@ -2372,7 +2638,7 @@ Recommendations:
                     <button type="button" class="btn btn--ghost btn--sm" aria-label="Redo"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/></svg></button>
                     <button type="button" class="btn btn--ghost btn--sm" aria-label="Clear"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
                   </div>
-                  <textarea data-locale="en" class="input input--md textarea md-editor__textarea" rows="8" aria-labelledby="f-mgmt-prevention-label">Currently, there is no treatment for this disease. In this case, the recommendations include:
+                  <textarea class="input input--md textarea md-editor__textarea" rows="8" aria-labelledby="f-mgmt-prevention-label">Currently, there is no treatment for this disease. In this case, the recommendations include:
 
 ### Immediate Disease Control
 
@@ -2413,7 +2679,6 @@ A comprehensive and strict ASF prevention and control procedure should be applie
 - Handling and disposal of problematic pigs: Includes steps for culling, isolation, destruction, and testing.
 - Farm hygiene: Regular and thorough disinfection after culling the infected herd.
 - Controlled restocking: Only proceed after the facility meets biosecurity standards and with the supervision of veterinary authorities.</textarea>
-                  <textarea data-locale="vi" class="input input--md textarea md-editor__textarea" rows="8" aria-labelledby="f-mgmt-prevention-label" hidden></textarea>
               </div>
             </div>
 
@@ -2446,6 +2711,13 @@ A comprehensive and strict ASF prevention and control procedure should be applie
           <h4 class="disease-edit__view-subhead">Treatment</h4>
           <div class="disease-edit__view-md">
             <p>No effective treatment exists; antibiotics and antipyretics are ineffective. Recommended actions include immediate reporting to veterinary authorities, culling of the herd, and implementing strict biosecurity and disinfection protocols.</p>
+          </div>
+        </div>
+
+        <div class="disease-edit__view-md-block">
+          <h4 class="disease-edit__view-subhead">Recommendation</h4>
+          <div class="disease-edit__view-md">
+            <p class="disease-edit__view-val--empty" data-i18n="view.notProvided">Not provided</p>
           </div>
         </div>
 
@@ -2499,37 +2771,33 @@ A comprehensive and strict ASF prevention and control procedure should be applie
     </section><!-- /.disease-edit__card (management) -->
 
 
-    <!-- ═════════════════ ADDITIONAL · IMMEDIATE ACTIONS CARD ═════════════════ -->
-    <section class="card card--glass-frost disease-edit__card disease-edit__card--global"
-             id="form-immediate" data-form-id="immediate" aria-label="Additional — Immediate Actions">
+    <!-- ═════════════════ ADDITIONAL INFORMATION CARD ═════════════════
+         Single card hosting Immediate Actions and Differential
+         Diagnosis as two fields, matching the Management card
+         pattern. -->
+    <section class="card card--glass-frost disease-edit__card"
+             id="form-additional" data-form-id="additional"
+             aria-label="Disease — Additional Information">
 
       <header class="disease-edit__form-head">
-        <h3 class="disease-edit__form-title" data-i18n="form.immediate.title">Immediate Actions</h3>
+        <h3 class="admin-card-title" data-i18n="form.additional.title">Additional Information</h3>
         <div class="disease-edit__form-head-actions">
           <button type="button"
                   class="btn btn--ghost btn--sm btn--icon-only disease-edit__form-collapse"
                   aria-expanded="true"
-                  aria-controls="form-immediate-body"
-                  aria-label="Collapse Immediate Actions">
+                  aria-controls="form-additional-body"
+                  aria-label="Collapse Additional Information">
             <svg class="icon disease-edit__form-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
         </div>
       </header>
 
-      <div class="disease-edit__form-body disease-edit__form-body--edit" id="form-immediate-body">
-      <form class="disease-edit__form" novalidate>
-
+      <div class="disease-edit__form-body disease-edit__form-body--edit" id="form-additional-body">
+        <form class="disease-edit__form" novalidate>
           <div class="disease-edit__section-fields">
 
             <div class="field">
               <span class="field__label" id="f-immediate-label">Immediate actions</span>
-              <div class="tabs tabs--line tabs--sm disease-edit__lang-tabs" data-tabs>
-                <div class="tabs__list" role="tablist" aria-label="Language">
-                  <button type="button" class="tabs__tab is-selected" role="tab" data-locale="en" aria-selected="true" tabindex="0">EN</button>
-                  <button type="button" class="tabs__tab"             role="tab" data-locale="vi" aria-selected="false" tabindex="-1">VI</button>
-                  <span class="tabs__indicator" aria-hidden="true"></span>
-                </div>
-              </div>
               <div class="md-editor">
                   <div class="md-editor__toolbar" role="toolbar" aria-label="Formatting">
                     <button type="button" class="btn btn--ghost btn--sm" aria-label="Bold"><strong>B</strong></button>
@@ -2551,7 +2819,7 @@ A comprehensive and strict ASF prevention and control procedure should be applie
                     <button type="button" class="btn btn--ghost btn--sm" aria-label="Redo"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/></svg></button>
                     <button type="button" class="btn btn--ghost btn--sm" aria-label="Clear"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
                   </div>
-                  <textarea data-locale="en" class="input input--md textarea md-editor__textarea" rows="8" aria-labelledby="f-immediate-label" placeholder="What to do in the first 24 hours…">In the event of suspected African Swine Fever (ASF), Classical Swine Fever (CSF), or other diseases for which treatment is prohibited, the following actions are mandatory:
+                  <textarea class="input input--md textarea md-editor__textarea" rows="8" aria-labelledby="f-immediate-label" placeholder="What to do in the first 24 hours…">In the event of suspected African Swine Fever (ASF), Classical Swine Fever (CSF), or other diseases for which treatment is prohibited, the following actions are mandatory:
 
 ## 1. Immediate Disease Control Measures
 
@@ -2591,92 +2859,11 @@ A comprehensive and strict ASF prevention and control procedure should be applie
 - All pigs on the farm may be culled according to national policy.
 - The farm will be disinfected under official supervision.
 - Enhanced biosecurity and movement restrictions will be implemented to contain the outbreak.</textarea>
-                  <textarea data-locale="vi" class="input input--md textarea md-editor__textarea" rows="8" aria-labelledby="f-immediate-label" placeholder="Cần làm gì trong 24 giờ đầu…" hidden></textarea>
               </div>
             </div>
 
-          </div>
-      </form>
-      </div><!-- /.disease-edit__form-body--edit (immediate) -->
-
-      <!-- ───── Immediate Actions card · read layout (view mode) ───── -->
-      <div class="disease-edit__form-body disease-edit__form-body--view">
-        <div class="disease-edit__view-md">
-          <p>In the event of suspected African Swine Fever (ASF), Classical Swine Fever (CSF), or other diseases for which treatment is prohibited, the following actions are mandatory:</p>
-          <h4>1. Immediate Disease Control Measures</h4>
-          <ul>
-            <li>Isolate all affected pigs immediately.</li>
-            <li>Halt all animal movement on and off the farm.</li>
-            <li>DO NOT treat the pigs further until the official veterinary authority arrives.</li>
-            <li>Monitor new cases closely for clinical signs (fever, off-feed/anorexia, lethargy, skin discoloration, diarrhea).</li>
-          </ul>
-          <h4>2. Official Notification</h4>
-          <ul>
-            <li>In Vietnam, contact the Sub-Department of Animal Health (Chi cục Thú y) or the Sub-Department of Livestock and Animal Health (Chi cục Chăn nuôi và Thú y) in your area.</li>
-            <li>African Swine Fever is a mandatory reportable disease under Vietnamese animal health law.</li>
-          </ul>
-          <h4>3. Sample Submission for Testing</h4>
-          <ul>
-            <li>Samples should be collected when pigs show clinical signs (e.g., fever).</li>
-            <li><strong>For testing.</strong> Do not perform full necropsies as this may spread contamination.</li>
-          </ul>
-          <h4>Sampling Targets</h4>
-          <ol>
-            <li>Pigs suspected of ASF: off-feed, sick, fever &gt;40°C, or dead.</li>
-            <li>F1, F2 generation pigs from suspected animals (collect 5–10 samples).</li>
-            <li>Blood samples for ASF surveillance.</li>
-          </ol>
-          <h4>Note on Testing</h4>
-          <ul>
-            <li>Samples can be pooled (maximum 5 samples per mix) for RT-PCR ASF testing.</li>
-            <li>Send samples to at least two laboratories for cross-validation.</li>
-          </ul>
-          <h4>Prohibited Actions (Do Nots)</h4>
-          <ul>
-            <li>Do not sell, slaughter, or bury pigs without government authorization.</li>
-            <li>Do not immediately disinfect the housing yourself — this can interfere with sample collection for testing.</li>
-          </ul>
-          <h4>If ASF is Confirmed</h4>
-          <ul>
-            <li>All pigs on the farm may be culled according to national policy.</li>
-            <li>The farm will be disinfected under official supervision.</li>
-            <li>Enhanced biosecurity and movement restrictions will be implemented to contain the outbreak.</li>
-          </ul>
-        </div>
-      </div><!-- /.disease-edit__form-body--view (immediate) -->
-    </section><!-- /.disease-edit__card (immediate) -->
-
-    <!-- ═════════════════ ADDITIONAL · DIFFERENTIAL DIAGNOSIS CARD ═════════════════ -->
-    <section class="card card--glass-frost disease-edit__card disease-edit__card--global"
-             id="form-differential" data-form-id="differential" aria-label="Additional — Differential diagnosis">
-
-      <header class="disease-edit__form-head">
-        <h3 class="disease-edit__form-title" data-i18n="form.differential.title">Differential diagnosis</h3>
-        <div class="disease-edit__form-head-actions">
-          <button type="button"
-                  class="btn btn--ghost btn--sm btn--icon-only disease-edit__form-collapse"
-                  aria-expanded="true"
-                  aria-controls="form-differential-body"
-                  aria-label="Collapse Differential diagnosis">
-            <svg class="icon disease-edit__form-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-          </button>
-        </div>
-      </header>
-
-      <div class="disease-edit__form-body disease-edit__form-body--edit" id="form-differential-body">
-      <form class="disease-edit__form" novalidate>
-
-          <div class="disease-edit__section-fields">
-
             <div class="field">
               <span class="field__label" id="f-differential-label">Differential diagnosis</span>
-              <div class="tabs tabs--line tabs--sm disease-edit__lang-tabs" data-tabs>
-                <div class="tabs__list" role="tablist" aria-label="Language">
-                  <button type="button" class="tabs__tab is-selected" role="tab" data-locale="en" aria-selected="true" tabindex="0">EN</button>
-                  <button type="button" class="tabs__tab"             role="tab" data-locale="vi" aria-selected="false" tabindex="-1">VI</button>
-                  <span class="tabs__indicator" aria-hidden="true"></span>
-                </div>
-              </div>
               <div class="md-editor">
                   <div class="md-editor__toolbar" role="toolbar" aria-label="Formatting">
                     <button type="button" class="btn btn--ghost btn--sm" aria-label="Bold"><strong>B</strong></button>
@@ -2698,7 +2885,7 @@ A comprehensive and strict ASF prevention and control procedure should be applie
                     <button type="button" class="btn btn--ghost btn--sm" aria-label="Redo"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/></svg></button>
                     <button type="button" class="btn btn--ghost btn--sm" aria-label="Clear"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
                   </div>
-                  <textarea data-locale="en" class="input input--md textarea md-editor__textarea" rows="8" aria-labelledby="f-differential-label" placeholder="Diseases to rule out…">| Disease | Mortality | Fever | Others | Notes |
+                  <textarea class="input input--md textarea md-editor__textarea" rows="8" aria-labelledby="f-differential-label" placeholder="Diseases to rule out…">| Disease | Mortality | Fever | Others | Notes |
 |---|---|---|---|---|
 | ASF | Sudden, high | Early transient | Cyanosis, rapid spread | High suspicion due to lesions, no vaccine. No blood from nose/mouth; no burnt smell in pen; uncommon to see hind limb paralysis. |
 | CSF | Moderate-high | Often present | Skin lesions, cyanosis | Could fit, but no confirmation. Not typical for 60–70 kg pigs and paralysis. |
@@ -2707,99 +2894,130 @@ A comprehensive and strict ASF prevention and control procedure should be applie
 | PRRS | Variable | Yes | Variable respiratory signs, eye swelling, wasting | Usually with fever, diarrhea, reproductive signs (abortions), cyanosis. |
 | Swine Erysipela | Sudden death | Yes | Cyanosis, skin lesions, anorexia | Usually slower spread; lesions often diamond-shaped. |
 | Streptococcus suis | Sudden death. Mortality can reach up to 20% without prophylactic treatment. | Variable | Cyanosis, limb paralysis, purple skin spots, arthritis, meningitis, eye inflammation | Usually causes meningitis, not footpad bruising &amp; neurologic signs, edema. May be early skin vasculitis or mild septicemia signs from S. suis. Subacute cases may not always show high fever. Reduced appetite common in early illness. S. suis is the most important bacterial pathogen in postweaned piglets and is an emerging zoonotic agent. Clinical signs of infection are observed mainly in weaned pigs (2–5 weeks after weaning), rarely in suckling and growing pigs, and almost never in adult animals. |</textarea>
-                  <textarea data-locale="vi" class="input input--md textarea md-editor__textarea" rows="8" aria-labelledby="f-differential-label" placeholder="Các bệnh cần loại trừ…" hidden></textarea>
               </div>
             </div>
 
           </div>
-      </form>
-      </div><!-- /.disease-edit__form-body--edit (differential) -->
+        </form>
+      </div><!-- /.disease-edit__form-body--edit (additional) -->
 
-      <!-- ───── Differential diagnosis card · read layout (view mode) ───── -->
+      <!-- ───── Additional Information card · read layout (view mode) ───── -->
       <div class="disease-edit__form-body disease-edit__form-body--view">
-        <div class="disease-edit__view-md">
-          <table>
-            <thead>
-              <tr>
-                <th>Disease</th>
-                <th>Mortality</th>
-                <th>Fever</th>
-                <th>Others</th>
-                <th>Notes</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>ASF</td>
-                <td>Sudden, high</td>
-                <td>Early transient</td>
-                <td>Cyanosis, rapid spread</td>
-                <td>High suspicion due to lesions, no vaccine. No blood from nose/mouth; no burnt smell in pen; uncommon to see hind limb paralysis.</td>
-              </tr>
-              <tr>
-                <td>CSF</td>
-                <td>Moderate-high</td>
-                <td>Often present</td>
-                <td>Skin lesions, cyanosis</td>
-                <td>Could fit, but no confirmation. Not typical for 60–70 kg pigs and paralysis.</td>
-              </tr>
-              <tr>
-                <td>Salmonella choleraesuis &amp; Salmonella Typhimurium</td>
-                <td>Septicemia, sudden death</td>
-                <td>Yes/Variable</td>
-                <td>Bloody or watery diarrhea/blood/mucus in feces</td>
-                <td>Can cause lameness &amp; enteritis, but usually with fever.</td>
-              </tr>
-              <tr>
-                <td>Actinobacillus pleuropneumoniae (APP)</td>
-                <td>Respiratory distress, hemorrhagic lungs</td>
-                <td>Yes</td>
-                <td>Hemorrhagic cough, dog-sitting, rapid spread</td>
-                <td>Would expect more respiratory signs and fever.</td>
-              </tr>
-              <tr>
-                <td>PRRS</td>
-                <td>Variable</td>
-                <td>Yes</td>
-                <td>Variable respiratory signs, eye swelling, wasting</td>
-                <td>Usually with fever, diarrhea, reproductive signs (abortions), cyanosis.</td>
-              </tr>
-              <tr>
-                <td>Swine Erysipela</td>
-                <td>Sudden death</td>
-                <td>Yes</td>
-                <td>Cyanosis, skin lesions, anorexia</td>
-                <td>Usually slower spread; lesions often diamond-shaped.</td>
-              </tr>
-              <tr>
-                <td>Streptococcus suis</td>
-                <td>Sudden death. Mortality can reach up to 20% without prophylactic treatment.</td>
-                <td>Variable</td>
-                <td>Cyanosis, limb paralysis, purple skin spots, arthritis, meningitis, eye inflammation</td>
-                <td>Usually causes meningitis, not footpad bruising &amp; neurologic signs, edema. May be early skin vasculitis or mild septicemia signs from S. suis. Subacute cases may not always show high fever. Reduced appetite common in early illness. S. suis is the most important bacterial pathogen in postweaned piglets and is an emerging zoonotic agent. Clinical signs of infection are observed mainly in weaned pigs (2–5 weeks after weaning), rarely in suckling and growing pigs, and almost never in adult animals.</td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="disease-edit__view-md-block">
+          <h4 class="disease-edit__view-subhead" data-i18n="form.immediate.title">Immediate Actions</h4>
+          <div class="disease-edit__view-md">
+            <p>In the event of suspected African Swine Fever (ASF), Classical Swine Fever (CSF), or other diseases for which treatment is prohibited, the following actions are mandatory:</p>
+            <h4>1. Immediate Disease Control Measures</h4>
+            <ul>
+              <li>Isolate all affected pigs immediately.</li>
+              <li>Halt all animal movement on and off the farm.</li>
+              <li>DO NOT treat the pigs further until the official veterinary authority arrives.</li>
+              <li>Monitor new cases closely for clinical signs (fever, off-feed/anorexia, lethargy, skin discoloration, diarrhea).</li>
+            </ul>
+            <h4>2. Official Notification</h4>
+            <ul>
+              <li>In Vietnam, contact the Sub-Department of Animal Health (Chi cục Thú y) or the Sub-Department of Livestock and Animal Health (Chi cục Chăn nuôi và Thú y) in your area.</li>
+              <li>African Swine Fever is a mandatory reportable disease under Vietnamese animal health law.</li>
+            </ul>
+            <h4>3. Sample Submission for Testing</h4>
+            <ul>
+              <li>Samples should be collected when pigs show clinical signs (e.g., fever).</li>
+              <li><strong>For testing.</strong> Do not perform full necropsies as this may spread contamination.</li>
+            </ul>
+            <h4>Sampling Targets</h4>
+            <ol>
+              <li>Pigs suspected of ASF: off-feed, sick, fever &gt;40°C, or dead.</li>
+              <li>F1, F2 generation pigs from suspected animals (collect 5–10 samples).</li>
+              <li>Blood samples for ASF surveillance.</li>
+            </ol>
+            <h4>Note on Testing</h4>
+            <ul>
+              <li>Samples can be pooled (maximum 5 samples per mix) for RT-PCR ASF testing.</li>
+              <li>Send samples to at least two laboratories for cross-validation.</li>
+            </ul>
+            <h4>Prohibited Actions (Do Nots)</h4>
+            <ul>
+              <li>Do not sell, slaughter, or bury pigs without government authorization.</li>
+              <li>Do not immediately disinfect the housing yourself — this can interfere with sample collection for testing.</li>
+            </ul>
+            <h4>If ASF is Confirmed</h4>
+            <ul>
+              <li>All pigs on the farm may be culled according to national policy.</li>
+              <li>The farm will be disinfected under official supervision.</li>
+              <li>Enhanced biosecurity and movement restrictions will be implemented to contain the outbreak.</li>
+            </ul>
+          </div>
         </div>
-      </div><!-- /.disease-edit__form-body--view (differential) -->
-    </section><!-- /.disease-edit__card (differential) -->
 
-    <!-- ═════════════════ FOOTER ACTIONS CARD ═════════════════
-         Back-to-list on the left; Cancel + primary CTA on the right. -->
-    <section class="card card--glass-frost disease-edit__card disease-edit__footer-actions"
-             aria-label="Disease actions">
-      <button type="button" class="btn btn--ghost btn--md">
-        <span class="btn__label">← Back to list</span>
-      </button>
-      <div class="disease-edit__footer-actions-right">
-        <button type="button" class="btn btn--ghost btn--md">
-          <span class="btn__label">Cancel</span>
-        </button>
-        <button type="button" class="btn btn--cta btn--md">
-          <span class="btn__label">✎ Edit this disease</span>
-        </button>
-      </div>
-    </section><!-- /.disease-edit__footer-actions -->
+        <div class="disease-edit__view-md-block">
+          <h4 class="disease-edit__view-subhead" data-i18n="form.differential.title">Differential diagnosis</h4>
+          <div class="disease-edit__view-md">
+            <table>
+              <thead>
+                <tr>
+                  <th>Disease</th>
+                  <th>Mortality</th>
+                  <th>Fever</th>
+                  <th>Others</th>
+                  <th>Notes</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>ASF</td>
+                  <td>Sudden, high</td>
+                  <td>Early transient</td>
+                  <td>Cyanosis, rapid spread</td>
+                  <td>High suspicion due to lesions, no vaccine. No blood from nose/mouth; no burnt smell in pen; uncommon to see hind limb paralysis.</td>
+                </tr>
+                <tr>
+                  <td>CSF</td>
+                  <td>Moderate-high</td>
+                  <td>Often present</td>
+                  <td>Skin lesions, cyanosis</td>
+                  <td>Could fit, but no confirmation. Not typical for 60–70 kg pigs and paralysis.</td>
+                </tr>
+                <tr>
+                  <td>Salmonella choleraesuis &amp; Salmonella Typhimurium</td>
+                  <td>Septicemia, sudden death</td>
+                  <td>Yes/Variable</td>
+                  <td>Bloody or watery diarrhea/blood/mucus in feces</td>
+                  <td>Can cause lameness &amp; enteritis, but usually with fever.</td>
+                </tr>
+                <tr>
+                  <td>Actinobacillus pleuropneumoniae (APP)</td>
+                  <td>Respiratory distress, hemorrhagic lungs</td>
+                  <td>Yes</td>
+                  <td>Hemorrhagic cough, dog-sitting, rapid spread</td>
+                  <td>Would expect more respiratory signs and fever.</td>
+                </tr>
+                <tr>
+                  <td>PRRS</td>
+                  <td>Variable</td>
+                  <td>Yes</td>
+                  <td>Variable respiratory signs, eye swelling, wasting</td>
+                  <td>Usually with fever, diarrhea, reproductive signs (abortions), cyanosis.</td>
+                </tr>
+                <tr>
+                  <td>Swine Erysipela</td>
+                  <td>Sudden death</td>
+                  <td>Yes</td>
+                  <td>Cyanosis, skin lesions, anorexia</td>
+                  <td>Usually slower spread; lesions often diamond-shaped.</td>
+                </tr>
+                <tr>
+                  <td>Streptococcus suis</td>
+                  <td>Sudden death. Mortality can reach up to 20% without prophylactic treatment.</td>
+                  <td>Variable</td>
+                  <td>Cyanosis, limb paralysis, purple skin spots, arthritis, meningitis, eye inflammation</td>
+                  <td>Usually causes meningitis, not footpad bruising &amp; neurologic signs, edema. May be early skin vasculitis or mild septicemia signs from S. suis. Subacute cases may not always show high fever. Reduced appetite common in early illness. S. suis is the most important bacterial pathogen in postweaned piglets and is an emerging zoonotic agent. Clinical signs of infection are observed mainly in weaned pigs (2–5 weeks after weaning), rarely in suckling and growing pigs, and almost never in adult animals.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div><!-- /.disease-edit__form-body--view (additional) -->
+    </section><!-- /.disease-edit__card (additional) -->
 
     </div><!-- /.disease-edit__main -->
 
@@ -2869,32 +3087,22 @@ A comprehensive and strict ASF prevention and control procedure should be applie
           <a class="disease-edit__toc-item is-current" href="#form-general">
             <span class="disease-edit__toc-status is-filled" aria-hidden="true"></span>
             <span>General Info</span>
-            <span></span>
           </a>
           <a class="disease-edit__toc-item" href="#form-stats">
             <span class="disease-edit__toc-status is-filled" aria-hidden="true"></span>
             <span>Disease Stats</span>
-            <span></span>
           </a>
           <a class="disease-edit__toc-item" href="#form-symptoms">
             <span class="disease-edit__toc-status is-partial" aria-hidden="true"></span>
             <span>Symptoms</span>
-            <span></span>
           </a>
           <a class="disease-edit__toc-item" href="#form-management">
             <span class="disease-edit__toc-status is-partial" aria-hidden="true"></span>
             <span>Management</span>
-            <span></span>
           </a>
-          <a class="disease-edit__toc-item" href="#form-immediate">
-            <span class="disease-edit__toc-status is-filled" aria-hidden="true"></span>
-            <span>Immediate Actions</span>
-            <span></span>
-          </a>
-          <a class="disease-edit__toc-item" href="#form-differential">
+          <a class="disease-edit__toc-item" href="#form-additional">
             <span class="disease-edit__toc-status is-partial" aria-hidden="true"></span>
-            <span>Differential diagnosis</span>
-            <span></span>
+            <span data-i18n="form.additional.title">Additional Information</span>
           </a>
         </nav>
       </aside>
@@ -2930,7 +3138,7 @@ A comprehensive and strict ASF prevention and control procedure should be applie
         <div class="modal__heading">
           <p class="modal__eyebrow">From v3.2 (Active)</p>
           <h3 class="modal__title" id="modal-new-version-title">Create a new version?</h3>
-          <p class="modal__description">A new Inactive version will be created with v3.2's content as its starting point. You'll open it in edit mode right away.</p>
+          <p class="modal__description">A new Incomplete version will be created with v3.2's content as its starting point. You'll open it in edit mode right away.</p>
         </div>
         <button type="button" class="modal__close" data-modal-close aria-label="Close dialog">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
@@ -2949,7 +3157,7 @@ A comprehensive and strict ASF prevention and control procedure should be applie
       <header class="modal__header">
         <div class="modal__heading">
           <h3 class="modal__title" id="modal-set-live-title">Make <span data-target-version>v3.3</span> the live version?</h3>
-          <p class="modal__description">v3.2 will become Inactive. End users on the chatbot and wiki will see <span data-target-version>v3.3</span>'s content immediately.</p>
+          <p class="modal__description">v3.2 will become Incomplete. End users on the chatbot and wiki will see <span data-target-version>v3.3</span>'s content immediately.</p>
         </div>
         <button type="button" class="modal__close" data-modal-close aria-label="Close dialog">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
@@ -3050,6 +3258,26 @@ A comprehensive and strict ASF prevention and control procedure should be applie
     </div>
   </div>
 </div>
+
+<!-- ═════════════════ STICKY SAVE BAR (EDIT MODE) ═════════════════
+     Fixed to the viewport bottom whenever body[data-edit-mode="on"].
+     Lives outside .app-shell so its position:fixed doesn't compete
+     with the shell's stacking context. -->
+<aside class="disease-edit__savebar disease-edit__edit-only" role="region" aria-label="Save changes">
+  <div class="disease-edit__savebar-inner">
+    <p class="disease-edit__savebar-status">
+      <span class="disease-edit__savebar-dot" aria-hidden="true"></span>
+      <span data-savebar-count>3</span><span data-i18n="savebar.unsaved"> unsaved changes</span>
+      <span class="disease-edit__savebar-sep" aria-hidden="true">·</span>
+      <span data-savebar-autosaved>auto-saved 2 min ago</span>
+    </p>
+    <div class="disease-edit__savebar-actions">
+      <button type="button" class="btn btn--caution-ghost btn--sm" id="savebar-discard" data-i18n="btn.discard">Discard</button>
+      <button type="button" class="btn btn--secondary btn--sm" id="savebar-save-draft" data-i18n="btn.saveDraft">Save draft</button>
+      <button type="button" class="btn btn--cta btn--sm" id="savebar-save-publish" data-i18n="btn.savePublish">Save &amp; publish</button>
+    </div>
+  </div>
+</aside>
 
 <script>
   // Rail compact dock — toggle .is-floating on the rail when the

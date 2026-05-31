@@ -261,3 +261,49 @@
   padding: var(--search-toolbar-menu-pad-y) var(--search-toolbar-menu-pad-x);
   border-top: var(--border-width-base) solid var(--border-default-subtle);
 }
+
+/* =========================================================
+   MODIFIER — segmented mode
+   When the toolbar hosts edit-in-place applied filters, applied
+   chips render as .chip--segmented and the popover can be
+   anchored to a chip segment instead of the +Add filter
+   trigger. The filters slot becomes the shared positioning
+   context (the prototype's approach — single anchor + computed
+   left/top — survives chip re-renders cleanly). The chip
+   visuals themselves live in chip.css; this section adds the
+   operator panel and the selected-row marker.
+   ========================================================= */
+.search-toolbar--segmented .search-toolbar__filters {
+  position: relative;
+}
+
+/* Operator panel — sibling of --facets / --values. Single-
+   select: rows are reused .search-toolbar__menu-option (NOT
+   --check) with a .is-selected marker on the active row.
+   The step-operator modifier on .search-toolbar__menu flips
+   which panel renders, matching the step-values pattern. */
+.search-toolbar__menu-panel--operator { display: none; }
+.search-toolbar__menu--step-operator .search-toolbar__menu-panel--facets { display: none; }
+.search-toolbar__menu--step-operator .search-toolbar__menu-panel--values  { display: none; }
+.search-toolbar__menu--step-operator .search-toolbar__menu-panel--operator { display: flex; }
+
+.search-toolbar__menu-option.is-selected {
+  background: var(--background-primary-subtle);
+  color: var(--text-primary-strong);
+  font-weight: var(--font-weight-medium);
+}
+.search-toolbar__menu-option.is-selected:hover {
+  background: color-mix(in srgb,
+                        var(--background-primary-subtle) 88%,
+                        var(--text-primary-strong));
+}
+
+/* Disabled property rows in the picker — used when a property
+   is already filtered on by another chip, or when re-picking
+   the chip's own current property would be a no-op. */
+.search-toolbar__menu-option.is-disabled,
+.search-toolbar__menu-option[aria-disabled="true"] {
+  color: var(--text-default-disabled);
+  cursor: not-allowed;
+  pointer-events: none;
+}

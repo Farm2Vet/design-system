@@ -148,6 +148,12 @@
         (single boolean) — none of which carry the right grammar for a
         stack of independent filter values.
       </p>
+      <p class="lede reveal">
+        A third variant, <code>.chip--segmented</code>, carries
+        multi-segment edit-in-place behaviour for applied filters; see
+        <a href="III-16-search-toolbar.html">III-16</a> for the toolbar
+        context that hosts it.
+      </p>
     </div>
 
     <dl class="meta-strip reveal">
@@ -260,6 +266,66 @@
         <dd><code>.chip__count</code> is the optional read-only trailing number — "if you toggled this, how many rows would match?" Renders in tabular numerals so columns of chips stay aligned. Skip the count when it's not knowable, not stable, or not useful.</dd>
       </dl>
     </div>
+
+    <p class="section-lede reveal" style="margin-top: var(--space-tier-6);">
+      The segmented variant carries a different anatomy. Property +
+      optional operator + value + close are independent click targets
+      inside one pill, each opening its own popover. Dividers between
+      segments are 1px white-alpha strokes; the inverse-surface fill
+      reads the chip as an "applied filter" object rather than a
+      toggle.
+    </p>
+
+    <div class="glass chip-anatomy reveal" aria-label="Segmented chip anatomy diagram">
+      <div class="chip-anatomy__diagram">
+        <span class="chip chip--segmented">
+          <button type="button" class="chip__seg chip__seg--property">
+            <span class="chip__seg-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+            </span>
+            <span class="chip__seg-text">Label</span>
+          </button>
+          <button type="button" class="chip__seg chip__seg--value">
+            <span class="chip__seg-text">CSF, PRRS</span>
+            <span class="chip__more">+3</span>
+          </button>
+          <button type="button" class="chip__seg chip__seg--close" aria-label="Remove Label filter">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
+        </span>
+        <span class="chip chip--segmented">
+          <button type="button" class="chip__seg chip__seg--property">
+            <span class="chip__seg-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
+            </span>
+            <span class="chip__seg-text">Last updated</span>
+          </button>
+          <button type="button" class="chip__seg chip__seg--operator">
+            <span class="chip__seg-text">is in the last</span>
+          </button>
+          <button type="button" class="chip__seg chip__seg--value chip__seg--value">
+            <span class="chip__seg-text">30 days</span>
+          </button>
+          <button type="button" class="chip__seg chip__seg--close" aria-label="Remove Last updated filter">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
+        </span>
+      </div>
+
+      <dl class="chip-anatomy__legend">
+        <dt>E · property</dt>
+        <dd><code>.chip__seg--property</code> carries a 16×16 line icon and the facet name (e.g. Label, Last updated). Clicking it opens the property picker; re-picking the same property is a no-op, and properties already used by other chips are disabled.</dd>
+
+        <dt>F · operator</dt>
+        <dd><code>.chip__seg--operator</code> is rendered only for time facets ("is in the last", "is before", "is after"). Single-select popover, current value rendered with <code>.is-selected</code>. Category facets skip this segment entirely.</dd>
+
+        <dt>G · value</dt>
+        <dd><code>.chip__seg--value</code> holds the current value(s) and truncates with ellipsis at <code>--chip-segmented-value-max-w</code>. Multi-select for category facets — the popover stays open across re-renders so users can toggle several without dismiss/reopen. The reused <code>.chip__more</code> element renders <code>+N</code> overflow when more values are selected than fit.</dd>
+
+        <dt>H · close</dt>
+        <dd><code>.chip__seg--close</code> dismisses the entire chip — not the same as toggling a value off. Hover and focus inherit the segment's overlay so the dismiss region reads as hot.</dd>
+      </dl>
+    </div>
   </section>
 
   <!-- ========================== 03 / VARIANTS ========================== -->
@@ -361,6 +427,27 @@
         <div class="meta"><span>.chip--removable</span><strong>dismiss × dismiss</strong></div>
       </article>
 
+      <article class="form-variant-card chip-variant-card">
+        <span class="label">Segmented · edit-in-place</span>
+        <div class="demo">
+          <span class="chip chip--segmented">
+            <button type="button" class="chip__seg chip__seg--property">
+              <span class="chip__seg-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+              </span>
+              <span class="chip__seg-text">Label</span>
+            </button>
+            <button type="button" class="chip__seg chip__seg--value">
+              <span class="chip__seg-text">CSF, PRRS</span>
+            </button>
+            <button type="button" class="chip__seg chip__seg--close" aria-label="Remove Label filter">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </button>
+          </span>
+        </div>
+        <div class="meta"><span>.chip--segmented</span><strong>property × value × close</strong></div>
+      </article>
+
     </div>
 
     <p class="usage-note usage-note--below reveal">
@@ -369,6 +456,14 @@
       × is implicit (click it again to turn it off). The removable chip
       <em>leaves the tray</em> when × is clicked. Mixing the two in the
       same row is an authoring error.
+    </p>
+
+    <p class="usage-note usage-note--below reveal">
+      <strong>Use segmented when filter values change often enough that
+      remove-and-redo would be noisy.</strong> Use removable when applied
+      filters are stable across a session. They are not interchangeable
+      mid-toolbar — pick one render mode per
+      <code>.search-toolbar</code> instance.
     </p>
   </section>
 
@@ -496,6 +591,146 @@
       keep the slot but suppress the tint, the chip stops reading as
       "on" — that combination is an authoring error.
     </p>
+
+    <p class="section-lede reveal" style="margin-top: var(--space-tier-6);">
+      Segmented states — each segment is an independent button, so
+      hover, focus, and active live per segment rather than per chip.
+      Placeholder and +N overflow are value-segment-only states.
+    </p>
+
+    <div class="form-version-stage reveal">
+
+      <article class="form-version-card">
+        <span class="label">Rest</span>
+        <div class="demo">
+          <span class="chip chip--segmented">
+            <button type="button" class="chip__seg chip__seg--property">
+              <span class="chip__seg-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+              </span>
+              <span class="chip__seg-text">Label</span>
+            </button>
+            <button type="button" class="chip__seg chip__seg--value chip__seg--value">
+              <span class="chip__seg-text">CSF, PRRS</span>
+            </button>
+            <button type="button" class="chip__seg chip__seg--close" aria-label="Remove">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </button>
+          </span>
+        </div>
+        <div class="meta"><span>chip--segmented</span><strong>resting</strong></div>
+      </article>
+
+      <article class="form-version-card">
+        <span class="label">Segment hover · simulated</span>
+        <div class="demo">
+          <span class="chip chip--segmented">
+            <button type="button" class="chip__seg chip__seg--property is-state-seg-hover">
+              <span class="chip__seg-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+              </span>
+              <span class="chip__seg-text">Label</span>
+            </button>
+            <button type="button" class="chip__seg chip__seg--value">
+              <span class="chip__seg-text">CSF, PRRS</span>
+            </button>
+            <button type="button" class="chip__seg chip__seg--close" aria-label="Remove">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </button>
+          </span>
+        </div>
+        <div class="meta"><span>.chip__seg:hover</span><strong>property hot</strong></div>
+      </article>
+
+      <article class="form-version-card">
+        <span class="label">Segment active · popover open</span>
+        <div class="demo">
+          <span class="chip chip--segmented">
+            <button type="button" class="chip__seg chip__seg--property">
+              <span class="chip__seg-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+              </span>
+              <span class="chip__seg-text">Label</span>
+            </button>
+            <button type="button" class="chip__seg chip__seg--value is-active">
+              <span class="chip__seg-text">CSF, PRRS</span>
+            </button>
+            <button type="button" class="chip__seg chip__seg--close" aria-label="Remove">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </button>
+          </span>
+        </div>
+        <div class="meta"><span>.is-active</span><strong>owns popover</strong></div>
+      </article>
+
+      <article class="form-version-card">
+        <span class="label">Placeholder · just-created</span>
+        <div class="demo">
+          <span class="chip chip--segmented">
+            <button type="button" class="chip__seg chip__seg--property">
+              <span class="chip__seg-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+              </span>
+              <span class="chip__seg-text">Label</span>
+            </button>
+            <button type="button" class="chip__seg chip__seg--value is-placeholder">
+              <span class="chip__seg-text">pick labels…</span>
+            </button>
+            <button type="button" class="chip__seg chip__seg--close" aria-label="Remove">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </button>
+          </span>
+        </div>
+        <div class="meta"><span>.is-placeholder</span><strong>no values yet</strong></div>
+      </article>
+
+      <article class="form-version-card">
+        <span class="label">+N overflow</span>
+        <div class="demo">
+          <span class="chip chip--segmented">
+            <button type="button" class="chip__seg chip__seg--property">
+              <span class="chip__seg-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+              </span>
+              <span class="chip__seg-text">Label</span>
+            </button>
+            <button type="button" class="chip__seg chip__seg--value">
+              <span class="chip__seg-text">CSF, PRRS</span>
+              <span class="chip__more" tabindex="0">+3</span>
+            </button>
+            <button type="button" class="chip__seg chip__seg--close" aria-label="Remove">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </button>
+          </span>
+        </div>
+        <div class="meta"><span>.chip__more</span><strong>3 hidden values</strong></div>
+      </article>
+
+      <article class="form-version-card">
+        <span class="label">Time facet · with operator</span>
+        <div class="demo">
+          <span class="chip chip--segmented">
+            <button type="button" class="chip__seg chip__seg--property">
+              <span class="chip__seg-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
+              </span>
+              <span class="chip__seg-text">Last updated</span>
+            </button>
+            <button type="button" class="chip__seg chip__seg--operator">
+              <span class="chip__seg-text">is in the last</span>
+            </button>
+            <button type="button" class="chip__seg chip__seg--value chip__seg--value">
+              <span class="chip__seg-text">30 days</span>
+            </button>
+            <button type="button" class="chip__seg chip__seg--close" aria-label="Remove">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </button>
+          </span>
+        </div>
+        <div class="meta"><span>.chip__seg--operator</span><strong>time only</strong></div>
+      </article>
+
+    </div>
   </section>
 
   <!-- ========================== 05 / IN-CONTEXT ========================== -->
@@ -628,6 +863,27 @@ const CHIP_TOKENS = [
   { group: 'Focus ring', tokens: [
     ['--chip-focus-ring', '0 0 0 3px var(--background-primary-subtle)'],
   ]},
+  { group: 'Segmented — shell', tokens: [
+    ['--chip-segmented-bg',       'var(--background-inverse)'],
+    ['--chip-segmented-fg',       'var(--text-on-inverse)'],
+    ['--chip-segmented-border',   'var(--background-inverse)'],
+    ['--chip-segmented-divider',  'var(--border-on-inverse-subtle)'],
+    ['--chip-segmented-radius',   'var(--radius-pill)'],
+    ['--chip-segmented-height',   'var(--chip-height)'],
+  ]},
+  { group: 'Segmented — segment', tokens: [
+    ['--chip-segmented-seg-pad-x',          'var(--spacing-3x)'],
+    ['--chip-segmented-seg-pad-y',          'var(--spacing-1x)'],
+    ['--chip-segmented-seg-gap',            'var(--spacing-1x)'],
+    ['--chip-segmented-seg-bg-hover',       'var(--background-on-inverse-hover)'],
+    ['--chip-segmented-seg-bg-active',      'var(--background-on-inverse-active)'],
+    ['--chip-segmented-seg-outline',        'var(--text-on-inverse)'],
+    ['--chip-segmented-seg-fg-placeholder', 'mix(text-on-inverse 55%, transparent)'],
+  ]},
+  { group: 'Segmented — value sizing', tokens: [
+    ['--chip-segmented-value-max-w',      '220px'],
+    ['--chip-segmented-value-solo-max-w', '170px'],
+  ]},
 ];
 
 function resolveCss(varName) {
@@ -698,6 +954,9 @@ function applyStaticStateStyles() {
     }
     .chip[aria-pressed="true"].is-state-active-hover {
       background: ${get('--chip-bg-active-hover')};
+    }
+    .chip__seg.is-state-seg-hover {
+      background: ${get('--chip-segmented-seg-bg-hover')};
     }
   `;
   document.head.appendChild(sheet);

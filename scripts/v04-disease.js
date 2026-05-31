@@ -17,7 +17,7 @@
       "banner.active":             "Active",
       "banner.lastEdited":         "Last edited",
       "badge.active":              "Active",
-      "badge.inactive":            "Inactive",
+      "badge.inactive":            "Incomplete",
       "btn.newVersion":            "New version",
       "page.codename.view":        "ASF",
       "page.codename.edit":        "Editing ASF",
@@ -94,7 +94,26 @@
       "form.duplicate":            "Duplicate",
       "form.delete":               "Delete",
       "form.collapse":             "Collapse",
-      "form.expand":               "Expand"
+      "form.expand":               "Expand",
+      "form.identification.title": "Identification",
+      "form.custom.title":         "Custom Fields",
+      "form.custom.scope":         "form-specific · admin-added",
+      "form.additional.title":     "Additional Information",
+      "form.switcher.hint":        "▾ Editing the {form} form. Form-shared fields (Codename, Name, Description, Pig Types) apply across all forms.",
+      "hint.codename":             "form-shared · unique",
+      "hint.formSharedMd":         "form-shared · markdown",
+      "hint.formSharedToggle":     "form-shared · click to toggle",
+      "hint.rangePct":             "range, %",
+      "hint.rangeC":               "range, °C",
+      "btn.preview":               "Preview",
+      "btn.removeField":           "Remove field",
+      "btn.addCustomField":        "+ Add custom field",
+      "btn.saveDraft":             "Save draft",
+      "btn.savePublish":           "Save & publish",
+      "btn.sync":                  "⟳ Sync to Chatbot",
+      "savebar.unsaved":           " unsaved changes",
+      "savebar.autosaved":         "auto-saved {n} min ago",
+      "version.editing":           " (editing)"
     },
     vi: {
       "breadcrumb.dataManagement": "Quản lý dữ liệu",
@@ -104,7 +123,7 @@
       "banner.active":             "Đang hoạt động",
       "banner.lastEdited":         "Sửa lần cuối",
       "badge.active":              "Đang hoạt động",
-      "badge.inactive":            "Chưa kích hoạt",
+      "badge.inactive":            "Chưa hoàn tất",
       "btn.newVersion":            "Phiên bản mới",
       "page.codename.view":        "ASF",
       "page.codename.edit":        "Đang chỉnh sửa ASF",
@@ -181,7 +200,26 @@
       "form.duplicate":            "Nhân bản",
       "form.delete":               "Xóa",
       "form.collapse":             "Thu gọn",
-      "form.expand":               "Mở rộng"
+      "form.expand":               "Mở rộng",
+      "form.identification.title": "Định danh",
+      "form.custom.title":         "Trường tùy chỉnh",
+      "form.custom.scope":         "theo thể bệnh · admin thêm",
+      "form.additional.title":     "Thông tin bổ sung",
+      "form.switcher.hint":        "▾ Đang chỉnh sửa thể {form}. Trường dùng chung (Mã, Tên, Mô tả, Loại lợn) áp dụng cho mọi thể.",
+      "hint.codename":             "dùng chung · duy nhất",
+      "hint.formSharedMd":         "dùng chung · markdown",
+      "hint.formSharedToggle":     "dùng chung · nhấp để chọn",
+      "hint.rangePct":             "khoảng, %",
+      "hint.rangeC":               "khoảng, °C",
+      "btn.preview":               "Xem trước",
+      "btn.removeField":           "Xóa trường",
+      "btn.addCustomField":        "+ Thêm trường tùy chỉnh",
+      "btn.saveDraft":             "Lưu nháp",
+      "btn.savePublish":           "Lưu & xuất bản",
+      "btn.sync":                  "⟳ Đồng bộ Chatbot",
+      "savebar.unsaved":           " thay đổi chưa lưu",
+      "savebar.autosaved":         "đã tự lưu {n} phút trước",
+      "version.editing":           " (đang sửa)"
     }
   };
 
@@ -198,51 +236,58 @@
   }
 
 
-  // Per-field EN/VI tabs — each .disease-edit__lang-tabs controls
-  // only the sibling [data-locale] inputs within its own .field.
-  // Positions .tabs__indicator on init and on tab click so the
-  // line variant's selected underline is visible.
+  // Per-field EN/VI tabs were removed in the V-04 rework — the
+  // single page-level data-language strip (in .disease-edit__
+  // version-card) is now the source of truth for which translation
+  // the inputs render. For the mockup, the controller below just
+  // stamps the chosen locale on <body> as data-active-data-locale;
+  // real data-binding lands with the schema work.
   (function () {
-    document.querySelectorAll('.disease-edit__lang-tabs').forEach(function (root) {
-      var list = root.querySelector('.tabs__list');
-      if (!list) return;
-      var field = root.closest('.field');
-      if (!field) return;
-      var tabs = list.querySelectorAll('.tabs__tab');
-      var indicator = list.querySelector('.tabs__indicator');
-      var inputs = field.querySelectorAll('[data-locale]');
+    var strip = document.querySelector('[data-data-language]');
+    if (!strip) return;
+    var list = strip.querySelector('.tabs__list');
+    var indicator = list && list.querySelector('.tabs__indicator');
+    var tabs = Array.prototype.slice.call(strip.querySelectorAll('.tabs__tab[data-locale]'));
 
-      function moveIndicator(tab) {
-        if (!indicator) return;
-        list.style.setProperty('--_x', tab.offsetLeft + 'px');
-        list.style.setProperty('--_w', tab.offsetWidth + 'px');
-      }
+    // The segmented variant in styles/tabs.css positions the sliding
+    // bubble from --_x / --_w on .tabs__list; without a controller
+    // writing those, the indicator collapses to width:0. Mirror the
+    // III-14-tabs.html init pattern so the bubble tracks .is-selected.
+    function moveIndicator(tab) {
+      if (!list || !indicator || !tab) return;
+      list.style.setProperty('--_x', tab.offsetLeft + 'px');
+      list.style.setProperty('--_w', tab.offsetWidth + 'px');
+    }
+    function select(tab) {
+      tabs.forEach(function (t) {
+        var on = t === tab;
+        t.classList.toggle('is-selected', on);
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.setAttribute('tabindex', on ? '0' : '-1');
+      });
+      moveIndicator(tab);
+    }
 
-      function selectTab(tab) {
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
         var locale = tab.getAttribute('data-locale');
-        tabs.forEach(function (t) {
-          var on = t === tab;
-          t.classList.toggle('is-selected', on);
-          t.setAttribute('aria-selected', on ? 'true' : 'false');
-          t.setAttribute('tabindex', on ? '0' : '-1');
-        });
-        inputs.forEach(function (i) {
-          i.hidden = i.getAttribute('data-locale') !== locale;
-        });
-        moveIndicator(tab);
-      }
-
-      // Seed the indicator on the initially-selected tab. Defer one
-      // frame so fonts/layout settle before measuring offsets.
-      var initial = list.querySelector('.tabs__tab.is-selected') || tabs[0];
-      if (initial) {
-        requestAnimationFrame(function () { moveIndicator(initial); });
-      }
-
-      tabs.forEach(function (tab) {
-        tab.addEventListener('click', function () { selectTab(tab); });
+        if (!locale) return;
+        document.body.setAttribute('data-active-data-locale', locale);
+        select(tab);
       });
     });
+
+    var initial = strip.querySelector('.tabs__tab.is-selected[data-locale]') || tabs[0];
+    if (initial) {
+      document.body.setAttribute('data-active-data-locale', initial.getAttribute('data-locale'));
+      // Paint the bubble on first run. setTimeout(...,0) instead of
+      // requestAnimationFrame so it still fires when the tab is
+      // backgrounded (rAF is throttled / suspended on hidden tabs,
+      // which would leave the indicator at width:0 until the user
+      // returns). Layout is settled by the time the macrotask runs
+      // because the script is deferred.
+      setTimeout(function () { moveIndicator(initial); }, 0);
+    }
   })();
 
   // Sticky TOC — highlight section in view.
@@ -303,7 +348,7 @@
     btn.addEventListener('click', function () {
       var card = btn.closest('.disease-edit__card');
       if (!card) return;
-      var titleEl = card.querySelector('.disease-edit__form-title');
+      var titleEl = card.querySelector('.admin-card-title');
       var name = titleEl ? titleEl.textContent.trim() : 'this';
       var modal = document.getElementById('modal-delete-form');
       if (!modal) return;
@@ -597,6 +642,13 @@
     window.__v04_exitEditMode = function () { setEditMode(false); };
     // Exposed for the audit accordion: a row click enters edit mode.
     window.setEditMode = setEditMode;
+
+    // Header-card Edit + footer "Edit this disease" — both flip into
+    // edit mode through the same controller. Keeps the dirty dot,
+    // savebar, and rail TOC in lockstep.
+    document.querySelectorAll('[data-action="header-edit"]').forEach(function (btn) {
+      btn.addEventListener('click', function () { setEditMode(true); });
+    });
   })();
 
 
@@ -1200,4 +1252,124 @@
     }, { rootMargin: '-25% 0px -65% 0px', threshold: 0 });
 
     targets.forEach(function (p) { io.observe(p.target); });
+  })();
+
+
+  /* =========================================================
+     CUSTOM FIELDS — admin can add a new form-specific field
+     (label collected via prompt() for the mockup) and remove
+     existing ones (confirm() guard). For the prod build, swap
+     the prompt/confirm out for proper modals.
+     ========================================================= */
+  (function () {
+    var list = document.querySelector('[data-custom-fields-list]');
+    var addBtn = document.querySelector('[data-action="add-custom-field"]');
+    if (!list || !addBtn) return;
+
+    function makeField(label) {
+      var wrap = document.createElement('div');
+      wrap.className = 'field disease-edit__custom-field';
+      wrap.setAttribute('data-custom-field', '');
+      wrap.innerHTML = ''
+        + '<div class="disease-edit__custom-field-head">'
+        +   '<span class="field__label"></span>'
+        +   '<button type="button" class="btn btn--caution-ghost btn--sm" data-action="remove-custom-field">'
+        +     '<span class="btn__label">🗑 Remove field</span>'
+        +   '</button>'
+        + '</div>'
+        + '<div class="md-editor">'
+        +   '<textarea class="input input--md textarea md-editor__textarea" rows="4"></textarea>'
+        + '</div>';
+      wrap.querySelector('.field__label').textContent = label;
+      wrap.querySelector('textarea').setAttribute('aria-label', label);
+      wrap.querySelector('[data-action="remove-custom-field"]')
+          .setAttribute('aria-label', 'Remove ' + label + ' field');
+      return wrap;
+    }
+
+    addBtn.addEventListener('click', function () {
+      // TODO: replace prompt() with a proper modal once Jack confirms
+      // whether labels come from a vocabulary or are free text.
+      var label = (window.prompt('Field label?') || '').trim();
+      if (!label) return;
+      list.appendChild(makeField(label));
+    });
+
+    list.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-action="remove-custom-field"]');
+      if (!btn) return;
+      var field = btn.closest('[data-custom-field]');
+      if (!field) return;
+      // TODO: replace confirm() with modal-delete-custom-field.
+      var label = (field.querySelector('.field__label') || {}).textContent || 'this field';
+      if (!window.confirm('Remove "' + label + '"? This cannot be undone.')) return;
+      field.remove();
+    });
+  })();
+
+
+  /* =========================================================
+     SAVEBAR — the edit-mode sticky save bar mirrors the
+     topbar save controller's dirty state and exposes Discard /
+     Save draft / Save & publish. For the mockup, save handlers
+     just clear the dirty flag and update the autosaved label;
+     publish additionally flips the disease status to Active.
+     ========================================================= */
+  (function () {
+    var bar           = document.querySelector('.disease-edit__savebar');
+    if (!bar) return;
+    var countEl       = bar.querySelector('[data-savebar-count]');
+    var autosavedEl   = bar.querySelector('[data-savebar-autosaved]');
+    var discardBtn    = document.getElementById('savebar-discard');
+    var draftBtn      = document.getElementById('savebar-save-draft');
+    var publishBtn    = document.getElementById('savebar-save-publish');
+    var statusEl      = document.querySelector('.dash-topbar__save-status');
+
+    function setSavebarDirty(dirty) {
+      [draftBtn, publishBtn].forEach(function (b) {
+        if (!b) return;
+        b.disabled = !dirty;
+      });
+      document.body.toggleAttribute('data-dirty', dirty);
+      if (dirty) document.body.setAttribute('data-dirty', 'on');
+    }
+
+    // Observe the topbar save-status attribute and mirror its state.
+    if (statusEl) {
+      var mo = new MutationObserver(function () {
+        setSavebarDirty(statusEl.getAttribute('data-state') === 'dirty');
+      });
+      mo.observe(statusEl, { attributes: true, attributeFilter: ['data-state'] });
+      setSavebarDirty(statusEl.getAttribute('data-state') === 'dirty');
+    }
+
+    function clearDirty() {
+      if (statusEl) statusEl.setAttribute('data-state', 'clean');
+      document.body.removeAttribute('data-dirty');
+      setSavebarDirty(false);
+      if (countEl) countEl.textContent = '0';
+      if (autosavedEl) autosavedEl.textContent = 'auto-saved just now';
+    }
+
+    if (discardBtn) discardBtn.addEventListener('click', function () {
+      var modal = document.getElementById('modal-unsaved-switch');
+      if (modal && window.__v04_openModal) {
+        modal.querySelectorAll('[data-current-version]').forEach(function (el) {
+          el.textContent = 'this version';
+        });
+        modal.querySelectorAll('[data-target-version]').forEach(function (el) {
+          el.textContent = 'the saved version';
+        });
+        window.__v04_openModal('modal-unsaved-switch');
+      } else {
+        if (window.confirm('Discard your changes?')) clearDirty();
+      }
+    });
+    if (draftBtn)   draftBtn.addEventListener('click', clearDirty);
+    if (publishBtn) publishBtn.addEventListener('click', function () {
+      clearDirty();
+      var badge = document.querySelector('.disease-edit__header-chips .badge.is-warning');
+      // No-op stub; the page already shows the disease as Active.
+      void badge;
+    });
   })();

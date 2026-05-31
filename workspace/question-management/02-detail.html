@@ -495,6 +495,117 @@
     margin-left: 4px;
   }
 
+  .detail-section__title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #111;
+    margin: 24px 0 4px;
+    letter-spacing: -0.005em;
+  }
+  .detail-section__count {
+    font-size: 12px;
+    font-weight: 500;
+    color: #8A8A8A;
+    margin-left: 6px;
+  }
+  .detail-section__hint {
+    font-size: 12px;
+    color: #6B6B6B;
+    margin: 0 0 14px;
+  }
+
+  .followup__body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed #ECECEC;
+  }
+  .followup__col .bilingual__lang {
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+  }
+
+  .sidepanel-scrim {
+    position: fixed;
+    inset: 0;
+    background: rgba(17, 17, 17, 0.32);
+    display: none;                       /* hidden by default */
+    justify-content: flex-end;
+    z-index: 50;
+  }
+  .sidepanel-scrim.is-open {
+    display: flex;                       /* shown when toggled */
+  }
+  .sidepanel {
+    width: min(560px, 96vw);
+    background: #FFFFFF;
+    border-left: 1px solid #E5E5E5;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    transform: translateX(16px);
+    opacity: 0;
+    transition: transform 160ms ease-out, opacity 160ms ease-out;
+  }
+  .sidepanel-scrim.is-open .sidepanel {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  body.has-sidepanel-open {
+    overflow: hidden;                    /* lock background scroll */
+  }
+  .sidepanel__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 22px 14px;
+    border-bottom: 1px solid #ECECEC;
+  }
+  .sidepanel__eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #8A8A8A;
+    margin: 0 0 4px;
+    font-weight: 600;
+  }
+  .sidepanel__parent {
+    font-size: 12px;
+    color: #4A4A4A;
+    margin: 0;
+    line-height: 1.5;
+  }
+  .sidepanel__body {
+    padding: 20px 22px 16px;
+    overflow-y: auto;
+    flex: 1 1 auto;
+  }
+  .sidepanel__title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111;
+    margin: 0 0 4px;
+    letter-spacing: -0.005em;
+  }
+  .sidepanel__hint {
+    font-size: 12px;
+    color: #6B6B6B;
+    margin: 0 0 18px;
+  }
+  .sidepanel__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 22px;
+    border-top: 1px solid #E5E5E5;
+    background: #FAFAFA;
+    flex: none;
+  }
+
   .bilingual {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1010,61 +1121,17 @@
 </style>
 
 <style>
-  .screennav {
-    max-width: 1360px;
-    margin: 0 auto 24px;
-    padding: 14px 40px;
-    display: flex; align-items: center; gap: 18px;
-    background: #FFFFFF;
-    border-bottom: 1px solid #E0E0E0;
-    font-size: 12px;
-    position: sticky; top: 0; z-index: 10;
+  /* Full-bleed: device is the page */
+  body { background: #FFFFFF; }
+  .device {
+    border: 0;
+    border-radius: 0;
+    min-height: 100vh;
   }
-  .screennav__brand {
-    font-weight: 600; color: #111; letter-spacing: -0.005em;
-    margin-right: 8px;
-  }
-  .screennav__brand small { color: #6B6B6B; font-weight: 400; margin-left: 6px; }
-  .screennav__sep { width: 1px; height: 14px; background: #E0E0E0; }
-  .screennav a {
-    color: #6B6B6B; text-decoration: none;
-    padding: 6px 10px; border-radius: 5px;
-    display: inline-flex; align-items: center; gap: 6px;
-  }
-  .screennav a:hover { background: #F4F4F4; color: #111; }
-  .screennav a.is-current { background: #2A2A2A; color: #FFFFFF; }
-  .screennav a code {
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 10px; color: inherit; opacity: 0.7;
-  }
-  .screennav__route {
-    margin-left: auto;
-    color: #8A8A8A;
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 11px;
-  }
-  .page--solo { padding-top: 24px; }
 </style>
 <title>02 · Question detail — FR-310 wireframes</title>
 </head>
 <body>
-
-<nav class="screennav">
-  <span class="screennav__brand">FR-310 wireframes <small>· lo-fi</small></span>
-  <span class="screennav__sep"></span>
-  <a href="./index.html">Index</a>
-  <span class="screennav__sep"></span>
-  <a href="./01-list.html" class=""><code>01</code>Question list</a><a href="./02-detail.html" class="is-current"><code>02</code>Question detail</a><a href="./03-create-edit.html" class=""><code>03</code>New question</a><a href="./04-batch-import.html" class=""><code>04</code>Batch import</a>
-  <span class="screennav__route">/admin/questions/{id}</span>
-</nav>
-
-<div class="page page--solo">
-<section class="frame">
-    <div class="frame__label">
-      <span class="frame__num">Screen 02</span>
-      <span class="frame__title">Question detail — bilingual read view</span>
-      <span class="frame__note">— UC-311 step 2: question, answer, supporting points, follow-ups</span>
-    </div>
 
     <div class="device">
       <aside class="sidebar">
@@ -1110,13 +1177,13 @@
             <div class="detail-head__main">
               <div class="detail-head__chips">
                 <span class="chip"><span class="chip__dot"></span>producer</span>
-                <span class="chip chip--sub">facilities</span>
+                <span class="chip">Facilities</span>
+                <span class="chip chip--sub">farm-to-residence distance</span>
               </div>
               <h1>What is the minimum required distance between a farm and residential areas to maintain environmental safety?</h1>
               <p class="vi">Chuồng trại cần cách xa khu dân cư tối thiểu bao nhiêu mét để đảm bảo an toàn môi trường?</p>
             </div>
             <div class="detail-head__actions">
-              <button class="btn"><span class="gl"></span>Duplicate</button>
               <button class="btn"><span class="gl"></span>Delete</button>
               <button class="btn btn--primary"><span class="gl"></span>Edit question</button>
             </div>
@@ -1146,13 +1213,9 @@
             </div>
           </div>
 
-          <!-- Tabs -->
-          <div class="tabs">
-            <div class="tabs__item is-active">Content</div>
-            <div class="tabs__item">Follow-ups<span class="count">3</span></div>
-            <div class="tabs__item">History</div>
-            <div class="tabs__item">Usage<span class="count">142</span></div>
-          </div>
+          <!-- Section A: Main question -->
+          <h2 class="detail-section__title">Main question</h2>
+          <p class="detail-section__hint">Bilingual question, answer, and supporting points.</p>
 
           <!-- Bilingual content -->
           <div class="bilingual">
@@ -1203,27 +1266,45 @@
             </div>
           </div>
 
-          <!-- Follow-ups -->
+          <!-- Section B: Follow-up questions -->
+          <h2 class="detail-section__title">Follow-up questions <span class="detail-section__count">3</span></h2>
+          <p class="detail-section__hint">Related questions a user is likely to ask next. Each has its own bilingual question and answer.</p>
+
           <div class="followups">
             <div class="followups__header">
-              <div class="followups__title">Follow-up questions · 3</div>
-              <button class="btn btn--sm"><span class="gl"></span>Add follow-up</button>
+              <div class="followups__title">&nbsp;</div>
+              <button class="btn btn--sm" data-action="open-followup-panel"><span class="gl"></span>Add follow-up</button>
             </div>
 
-            <div class="followup">
+            <div class="followup is-expanded">
               <div class="followup__row">
-                <div>
+                <div class="followup__heads">
                   <p class="followup__q">What happens if my farm was built before these regulations existed?</p>
                   <p class="followup__qvi">Nếu trang trại của tôi được xây trước khi có các quy định này thì sao?</p>
-                  <p class="followup__a">Existing farms have a 5-year compliance window to relocate or upgrade waste handling. Local authorities may grant extensions for verified hardship cases…</p>
                 </div>
                 <span class="followup__expand">collapse ▾</span>
+              </div>
+              <div class="followup__body">
+                <div class="followup__col">
+                  <div class="bilingual__lang">
+                    <span class="bilingual__lang-code">EN</span>
+                    <span class="bilingual__lang-name">English</span>
+                  </div>
+                  <p class="followup__a">Existing farms have a 5-year compliance window to relocate or upgrade waste handling. Local authorities may grant extensions for verified hardship cases…</p>
+                </div>
+                <div class="followup__col">
+                  <div class="bilingual__lang">
+                    <span class="bilingual__lang-code">VI</span>
+                    <span class="bilingual__lang-name">Tiếng Việt</span>
+                  </div>
+                  <p class="followup__a">Các trang trại hiện hữu có 5 năm để di dời hoặc nâng cấp hệ thống xử lý chất thải. Chính quyền địa phương có thể gia hạn cho các trường hợp khó khăn đã được xác minh…</p>
+                </div>
               </div>
             </div>
 
             <div class="followup">
               <div class="followup__row">
-                <div>
+                <div class="followup__heads">
                   <p class="followup__q">Who is responsible for measuring and certifying the distance?</p>
                   <p class="followup__qvi">Ai chịu trách nhiệm đo và xác nhận khoảng cách?</p>
                 </div>
@@ -1233,7 +1314,7 @@
 
             <div class="followup">
               <div class="followup__row">
-                <div>
+                <div class="followup__heads">
                   <p class="followup__q">Are there exceptions for organic or certified-low-emission farms?</p>
                   <p class="followup__qvi">Có ngoại lệ nào cho trang trại hữu cơ hoặc chứng nhận phát thải thấp không?</p>
                 </div>
@@ -1242,10 +1323,97 @@
             </div>
           </div>
 
+          <!-- Add-follow-up side panel (toggled via Add follow-up) -->
+          <div class="sidepanel-scrim" id="followup-scrim">
+            <aside class="sidepanel" aria-label="Add follow-up">
+              <div class="sidepanel__head">
+                <div>
+                  <p class="sidepanel__eyebrow">Adding to</p>
+                  <p class="sidepanel__parent">What is the minimum required distance between a farm and residential areas to maintain environmental safety?</p>
+                </div>
+                <button class="btn btn--icon" title="Close" data-action="close-followup-panel"><span class="gl"></span></button>
+              </div>
+
+              <div class="sidepanel__body">
+                <h2 class="sidepanel__title">New follow-up question</h2>
+                <p class="sidepanel__hint">Inherits Role, Topic, and Subtopic from the parent. Bilingual question and bilingual answer are required.</p>
+
+                <div class="input-group" style="margin-bottom:14px;">
+                  <label class="input-label">Question <span class="lang">EN</span> <span class="req">*</span></label>
+                  <div class="input input--placeholder">What happens if my farm was built before these regulations existed?</div>
+                </div>
+                <div class="input-group" style="margin-bottom:18px;">
+                  <label class="input-label">Câu hỏi <span class="lang">VI</span> <span class="req">*</span></label>
+                  <div class="input input--placeholder">Nếu trang trại của tôi được xây trước khi có các quy định này thì sao?</div>
+                </div>
+
+                <div class="input-group" style="margin-bottom:14px;">
+                  <label class="input-label">Answer <span class="lang">EN</span> <span class="req">*</span></label>
+                  <div class="textarea">
+                    <div class="textarea__toolbar">
+                      <span class="toolbtn">B</span><span class="toolbtn"><i>I</i></span><span class="toolbtn" style="text-decoration:underline;">U</span>
+                      <span class="toolsep"></span>
+                      <span class="toolbtn">•</span><span class="toolbtn">1.</span>
+                    </div>
+                    <div class="textarea__body is-placeholder" style="min-height:90px;">Draft the English answer…</div>
+                  </div>
+                </div>
+                <div class="input-group">
+                  <label class="input-label">Câu trả lời <span class="lang">VI</span> <span class="req">*</span></label>
+                  <div class="textarea">
+                    <div class="textarea__toolbar">
+                      <span class="toolbtn">B</span><span class="toolbtn"><i>I</i></span><span class="toolbtn" style="text-decoration:underline;">U</span>
+                      <span class="toolsep"></span>
+                      <span class="toolbtn">•</span><span class="toolbtn">1.</span>
+                    </div>
+                    <div class="textarea__body is-placeholder" style="min-height:90px;">Soạn câu trả lời tiếng Việt…</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="sidepanel__foot">
+                <button class="btn btn--ghost" data-action="close-followup-panel"><span class="gl"></span>Cancel</button>
+                <div style="display:flex; gap:10px;">
+                  <button class="btn"><span class="gl"></span>Save draft</button>
+                  <button class="btn btn--primary"><span class="gl"></span>Add follow-up</button>
+                </div>
+              </div>
+            </aside>
+          </div>
+
         </div>
       </div>
     </div>
-  </section>
-</div>
+
+<script>
+  (function () {
+    var scrim = document.getElementById('followup-scrim');
+    if (!scrim) return;
+
+    function open() {
+      scrim.classList.add('is-open');
+      document.body.classList.add('has-sidepanel-open');
+    }
+    function close() {
+      scrim.classList.remove('is-open');
+      document.body.classList.remove('has-sidepanel-open');
+    }
+
+    document.addEventListener('click', function (e) {
+      var t = e.target.closest('[data-action]');
+      if (t) {
+        if (t.dataset.action === 'open-followup-panel')  { open();  return; }
+        if (t.dataset.action === 'close-followup-panel') { close(); return; }
+      }
+      // Click on scrim background (but not on the panel itself) closes.
+      if (e.target === scrim) close();
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && scrim.classList.contains('is-open')) close();
+    });
+  })();
+</script>
+
 </body>
 </html>

@@ -1010,61 +1010,17 @@
 </style>
 
 <style>
-  .screennav {
-    max-width: 1360px;
-    margin: 0 auto 24px;
-    padding: 14px 40px;
-    display: flex; align-items: center; gap: 18px;
-    background: #FFFFFF;
-    border-bottom: 1px solid #E0E0E0;
-    font-size: 12px;
-    position: sticky; top: 0; z-index: 10;
+  /* Full-bleed: device is the page */
+  body { background: #FFFFFF; }
+  .device {
+    border: 0;
+    border-radius: 0;
+    min-height: 100vh;
   }
-  .screennav__brand {
-    font-weight: 600; color: #111; letter-spacing: -0.005em;
-    margin-right: 8px;
-  }
-  .screennav__brand small { color: #6B6B6B; font-weight: 400; margin-left: 6px; }
-  .screennav__sep { width: 1px; height: 14px; background: #E0E0E0; }
-  .screennav a {
-    color: #6B6B6B; text-decoration: none;
-    padding: 6px 10px; border-radius: 5px;
-    display: inline-flex; align-items: center; gap: 6px;
-  }
-  .screennav a:hover { background: #F4F4F4; color: #111; }
-  .screennav a.is-current { background: #2A2A2A; color: #FFFFFF; }
-  .screennav a code {
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 10px; color: inherit; opacity: 0.7;
-  }
-  .screennav__route {
-    margin-left: auto;
-    color: #8A8A8A;
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 11px;
-  }
-  .page--solo { padding-top: 24px; }
 </style>
 <title>03 · New question — FR-310 wireframes</title>
 </head>
 <body>
-
-<nav class="screennav">
-  <span class="screennav__brand">FR-310 wireframes <small>· lo-fi</small></span>
-  <span class="screennav__sep"></span>
-  <a href="./index.html">Index</a>
-  <span class="screennav__sep"></span>
-  <a href="./01-list.html" class=""><code>01</code>Question list</a><a href="./02-detail.html" class=""><code>02</code>Question detail</a><a href="./03-create-edit.html" class="is-current"><code>03</code>New question</a><a href="./04-batch-import.html" class=""><code>04</code>Batch import</a>
-  <span class="screennav__route">/admin/question-input</span>
-</nav>
-
-<div class="page page--solo">
-<section class="frame">
-    <div class="frame__label">
-      <span class="frame__num">Screen 03</span>
-      <span class="frame__title">New question — create / edit form</span>
-      <span class="frame__note">— UC-312: topic, bilingual Q/A, supporting points, follow-ups</span>
-    </div>
 
     <div class="device">
       <aside class="sidebar">
@@ -1111,9 +1067,9 @@
               <p>Add a bilingual question to the knowledge base. Required fields are marked.</p>
             </div>
             <div class="pagehead__actions">
-              <button class="btn btn--ghost">Cancel</button>
-              <button class="btn">Save draft</button>
-              <button class="btn btn--primary">Publish</button>
+              <button class="btn btn--ghost"><span class="gl"></span>Cancel</button>
+              <button class="btn"><span class="gl"></span>Save draft</button>
+              <button class="btn btn--primary"><span class="gl"></span>Publish</button>
             </div>
           </div>
 
@@ -1124,22 +1080,22 @@
                 <span class="form-section__index">1</span>
                 <div>
                   <p class="form-section__title">Categorization</p>
-                  <p class="form-section__hint">Where this question sits in the knowledge tree. Topic is required; subtopic is optional but recommended.</p>
+                  <p class="form-section__hint">Role tells the assistant who is asking. Topic picks from the knowledge tree. Subtopic is a free-text label to narrow the topic.</p>
                 </div>
               </div>
             </div>
             <div class="form-row form-row--3">
               <div class="input-group">
-                <label class="input-label">Topic <span class="req">*</span></label>
+                <label class="input-label">Role <span class="req">*</span></label>
                 <div class="input input--select"><span>producer</span><span class="chev"></span></div>
               </div>
               <div class="input-group">
-                <label class="input-label">Subtopic</label>
-                <div class="input input--select"><span>facilities</span><span class="chev"></span></div>
+                <label class="input-label">Topic <span class="req">*</span></label>
+                <div class="input input--select"><span>Facilities</span><span class="chev"></span></div>
               </div>
               <div class="input-group">
-                <label class="input-label">Audience</label>
-                <div class="input input--select"><span>Farm operators</span><span class="chev"></span></div>
+                <label class="input-label">Subtopic</label>
+                <div class="input"><span>farm-to-residence distance</span></div>
               </div>
             </div>
           </div>
@@ -1338,16 +1294,14 @@
           <div class="actionbar">
             <div class="actionbar__hint">Draft auto-saved · 2 min ago</div>
             <div class="actionbar__right">
-              <button class="btn btn--ghost">Cancel</button>
-              <button class="btn">Save draft</button>
-              <button class="btn btn--primary">Publish question</button>
+              <button class="btn btn--ghost"><span class="gl"></span>Cancel</button>
+              <button class="btn"><span class="gl"></span>Save draft</button>
+              <button class="btn btn--primary"><span class="gl"></span>Publish question</button>
             </div>
           </div>
 
         </div>
       </div>
     </div>
-  </section>
-</div>
 </body>
 </html>
