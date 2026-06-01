@@ -1,36 +1,21 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Wireframe · Image Management · Create</title>
-<link rel="stylesheet" href="wireframe.css?v=forest" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Diseases · empty states — Farm2Vet Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="wireframe.css?v=forest-2" />
 <link rel="stylesheet" href="../../_glass-sidebar.css?v=glass" />
 <script src="../../_glass-sidebar.js?v=glass" defer></script>
 </head>
 <body>
 
-<div class="wf-banner">
-  <div class="wf-banner__crumbs">
-    <span>Wireframe</span>
-    <span>·</span>
-    <strong>Image Management</strong>
-    <span>·</span>
-    <span>UC-332 — Create / upload</span>
-  </div>
-  <div class="wf-banner__nav">
-    <a href="index.html">Index</a>
-    <a href="01-list.html">List</a>
-    <a href="02-list-empty.html">Empty</a>
-    <a href="03-list-unauthorized.html">Unauthorized</a>
-    <a href="04-edit.html">Edit</a>
-    <a href="05-create.html" class="is-current">Create</a>
-    <a href="06-create-uploading.html">Uploading</a>
-  </div>
-</div>
+<div class="wf-shell">
 
-<div class="app">
-
+  <!-- ───────────────── Sidebar ───────────────── -->
   <aside class="sidebar" aria-label="Primary">
     <header class="sidebar__header">
       <a href="#" class="sidebar__brand" aria-label="Farm2Vet dashboard home">
@@ -45,7 +30,7 @@
     <nav class="sidebar__nav" aria-label="Primary destinations">
       <ul class="sidebar__list">
         <li class="sidebar__item">
-          <a class="sidebar__link" href="#">
+          <a class="sidebar__link" href="../../dashboard/dashboard.html">
             <span class="sidebar__icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
             </span>
@@ -62,17 +47,17 @@
             <span class="sidebar__trailing"><svg class="sidebar__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></span>
           </button>
           <ul class="sidebar__sublist">
-            <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Disease</span></a></li>
-            <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Question</span></a></li>
-            <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Conversation</span></a></li>
-            <li class="sidebar__item"><a class="sidebar__link is-current" href="#" aria-current="page"><span class="sidebar__label">Image</span></a></li>
+            <li class="sidebar__item"><a class="sidebar__link is-current" href="disease-list.html" aria-current="page"><span class="sidebar__label">Disease</span></a></li>
+            <li class="sidebar__item"><a class="sidebar__link" href="../question/01-list.html"><span class="sidebar__label">Question</span></a></li>
+            <li class="sidebar__item"><a class="sidebar__link" href="../conversation/conversation-list.html"><span class="sidebar__label">Conversation</span></a></li>
+            <li class="sidebar__item"><a class="sidebar__link" href="../images/01-list.html"><span class="sidebar__label">Image</span></a></li>
             <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Resource</span></a></li>
             <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">PDF Input</span></a></li>
           </ul>
         </li>
 
         <li class="sidebar__item">
-          <a class="sidebar__link" href="#">
+          <a class="sidebar__link" href="../../automated-testing/testsuite/testsuite-list.html">
             <span class="sidebar__icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
             </span>
@@ -93,9 +78,9 @@
     <div class="sidebar__footer">
       <div class="sidebar__profile-wrap">
         <div class="sidebar__profile">
-          <span class="sidebar__avatar" aria-hidden="true">AU</span>
+          <span class="sidebar__avatar" aria-hidden="true">MB</span>
           <span class="sidebar__profile-text">
-            <span class="sidebar__profile-name">Admin user</span>
+            <span class="sidebar__profile-name">Minh Bùi</span>
             <span class="sidebar__profile-role">Admin</span>
           </span>
           <button type="button" class="sidebar__overflow" aria-label="Account menu" aria-haspopup="menu" aria-expanded="false">
@@ -137,109 +122,110 @@
     </div>
   </aside>
 
-  <div class="main">
+  <!-- ───────────────── Main ───────────────── -->
+  <div class="wf-main">
 
-    <header class="topbar">
-      <div class="topbar__path">
-        Admin
-        <span class="sep">/</span>
-        <a href="01-list.html" style="text-decoration:none;color:inherit;">Domain Images</a>
-        <span class="sep">/</span>
-        <strong>Add image</strong>
-      </div>
-      <div class="topbar__cluster">
-        <div class="topbar__lang" role="group" aria-label="Interface language">
-          <button type="button" aria-pressed="true">EN</button>
-          <button type="button" aria-pressed="false">VI</button>
+    <header class="wf-topbar">
+      <nav class="wf-crumbs" aria-label="Breadcrumb">
+        <a href="#">Data management</a>
+        <span class="wf-crumbs__sep">/</span>
+        <a href="disease-list.html">Diseases</a>
+        <span class="wf-crumbs__sep">/</span>
+        <span class="wf-crumbs__here">Empty states</span>
+      </nav>
+      <div class="wf-topbar__cluster">
+        <span class="wf-muted" style="font-size:12px;">Preview state</span>
+        <div class="wf-seg" data-seg-group data-seg-scope-sel="[data-seg-scope]" role="group" aria-label="Preview empty state">
+          <button class="wf-seg__opt is-on" type="button" data-seg="noresults">No results</button>
+          <button class="wf-seg__opt" type="button" data-seg="nodata">No data</button>
+          <button class="wf-seg__opt" type="button" data-seg="error">Error</button>
         </div>
       </div>
-      <a href="#" class="topbar__chip" aria-label="Admin version">Farm2Vet · v1.0</a>
     </header>
 
-    <div class="content">
+    <main class="wf-page" data-seg-scope>
 
-      <div class="crumb">
-        <a href="01-list.html">← Back to all images</a>
-      </div>
-
-      <div class="page-head">
+      <div class="wf-page-head">
         <div>
-          <h1 class="page-head__title">Add a new image</h1>
-          <p class="page-head__sub">
-            Upload a clinical reference image and annotate it for the diagnostic knowledge base.
-          </p>
+          <h1 class="wf-page-title">Diseases</h1>
+          <p class="wf-page-sub">List states when there's nothing to show. Switch the preview in the top bar.</p>
         </div>
+        <a class="wf-btn wf-btn--primary" href="disease-create.html">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          New disease
+        </a>
       </div>
 
-      <form class="form-layout" onsubmit="event.preventDefault();">
-
-        <!-- Upload column -->
-        <div class="form-layout__media">
-
-          <div class="dropzone">
-            <div class="dropzone__glyph">↑</div>
-            <div class="dropzone__title">Drop an image here</div>
-            <div class="dropzone__sub">or <a href="#" style="color: var(--w-ink-1); font-weight: 600;">browse from your computer</a></div>
-            <div class="dropzone__hint">JPG, PNG or WebP · up to 10 MB · 1000 × 750 px or larger recommended</div>
+      <!-- Toolbar (kept visible to frame the result) -->
+      <section class="wf-card" aria-label="Filters and search">
+        <div class="wf-card__body wf-card__body--tight wf-flex wf-flex--wrap" style="gap:10px;">
+          <div class="wf-input wf-input--search" style="flex:1; min-width:240px;">
+            <span class="wf-input__icon" aria-hidden="true"></span>
+            <input type="text" placeholder="Search diseases by name or codename…" value="leptospira" aria-label="Search diseases" />
           </div>
-
-          <div class="help-note">
-            <strong style="color: var(--w-ink-2);">Tip:</strong> use the clearest available
-            clinical image. The uploaded file is shown to clinicians during diagnosis, so
-            framing and focus matter as much as the label text.
-          </div>
-
+          <span class="wf-facet is-active">Status <span class="wf-facet__count">1</span></span>
+          <span class="wf-facet is-active">Completeness <span class="wf-facet__count">1</span></span>
         </div>
-
-        <!-- Fields column -->
-        <div class="fields">
-
-          <div class="field">
-            <label class="field__label">Disease <span class="req">required</span></label>
-            <div class="input-wrap">
-              <input class="input" placeholder="Start typing a disease name…" />
-              <span class="input-wrap__caret"></span>
-            </div>
-            <span class="field__help">Pick from the existing disease list. Add a new disease in <em>Diseases</em>.</span>
-          </div>
-
-          <div class="field">
-            <label class="field__label">English description <span class="req">required</span></label>
-            <textarea class="textarea" rows="3" placeholder="e.g. Hyperemia (reddening) of the extremities of a pig with African swine fever."></textarea>
-            <span class="field__help">A single descriptive sentence shown to clinicians.</span>
-          </div>
-
-          <div class="field">
-            <label class="field__label">Vietnamese description <span class="req">required</span></label>
-            <textarea class="textarea" rows="3" placeholder="Mô tả lâm sàng bằng tiếng Việt…"></textarea>
-            <span class="field__help">Mirror the English description. Use clinical terminology where possible.</span>
-          </div>
-
-          <div class="field">
-            <label class="field__label">Source <span class="req">required</span></label>
-            <input class="input" placeholder="Source title — e.g. Merck Veterinary Manual" />
-            <input class="input" placeholder="Source URL (optional)" style="margin-top:6px;" />
-            <div class="help-note">
-              Enter the human-readable title in the first field, and an optional URL in the
-              second. The system will render them as a hyperlink — no raw
-              <code>&lt;a href&gt;</code> markup needed.
-            </div>
-          </div>
-
+        <div class="wf-card__body wf-card__body--tight wf-filter-summary" style="border-top:1px solid var(--wf-line);">
+          <span class="wf-filter-summary__label">Filters</span>
+          <span class="wf-chip wf-chip--strong">Search: “leptospira” <span class="wf-chip__x">×</span></span>
+          <span class="wf-chip wf-chip--strong">Status: Active <span class="wf-chip__x">×</span></span>
+          <span class="wf-chip wf-chip--strong">Incomplete <span class="wf-chip__x">×</span></span>
+          <button class="wf-btn wf-btn--ghost wf-btn--sm" type="button">Clear all</button>
         </div>
+      </section>
 
-        <!-- Sticky footer -->
-        <div class="action-bar action-bar--sticky" style="grid-column: 1 / -1;">
-          <button type="button" class="btn">Cancel</button>
-          <button type="button" class="btn btn--ghost">Save and add another</button>
-          <button type="submit" class="btn btn--primary" disabled>Submit</button>
+      <!-- State: No results (default) -->
+      <section class="wf-card" data-pane="noresults" style="margin-top:16px;">
+        <div class="wf-empty">
+          <span class="wf-empty__glyph">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          </span>
+          <h2 class="wf-empty__title">No diseases match these filters</h2>
+          <p class="wf-empty__body">Nothing matches “leptospira” with the Active + Incomplete filters. Try removing a filter chip above or broadening your search.</p>
+          <div class="wf-empty__actions">
+            <button class="wf-btn" type="button">Clear all filters</button>
+            <a class="wf-btn wf-btn--primary" href="disease-create.html">+ New disease</a>
+          </div>
         </div>
+      </section>
 
-      </form>
+      <!-- State: No data -->
+      <section class="wf-card wf-hidden" data-pane="nodata" style="margin-top:16px;">
+        <div class="wf-empty">
+          <span class="wf-empty__glyph">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-7l-2-2H5a2 2 0 0 0-2 2Z"/><path d="M12 11v5M9.5 13.5h5"/></svg>
+          </span>
+          <h2 class="wf-empty__title">No diseases yet</h2>
+          <p class="wf-empty__body">The knowledge base has no diseases. Add the first one to start training the assistant.</p>
+          <div class="wf-empty__actions">
+            <a class="wf-btn wf-btn--primary" href="disease-create.html">+ Add the first disease</a>
+          </div>
+        </div>
+      </section>
 
-    </div>
+      <!-- State: Error -->
+      <section class="wf-card wf-hidden" data-pane="error" style="margin-top:16px;">
+        <div class="wf-empty">
+          <span class="wf-empty__glyph" style="color:var(--wf-danger); background:var(--wf-danger-bg); border-color:var(--wf-danger-line);">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/></svg>
+          </span>
+          <h2 class="wf-empty__title">Couldn't load diseases</h2>
+          <p class="wf-empty__body">The server didn't respond. Check your connection and try again.</p>
+          <div class="wf-empty__actions">
+            <button class="wf-btn wf-btn--primary" type="button" data-toast="Retrying…">Retry</button>
+            <a class="wf-btn" href="disease-list.html">Back to list</a>
+          </div>
+          <p class="wf-mono wf-muted" style="font-size:11px; margin-top:8px;">Error 503 · GET /admin/diseases · request id 8f2c1a</p>
+        </div>
+      </section>
+
+      <p class="wf-note">Each state is centred, with one forest-tinted icon and exactly one primary next action.</p>
+
+    </main>
   </div>
 </div>
 
+<script src="wireframe.js"></script>
 </body>
 </html>

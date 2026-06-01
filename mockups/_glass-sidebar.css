@@ -1,0 +1,290 @@
+/* ============================================================
+   GLASS SIDEBAR — shared rail for all wireframe mockups.
+   Ported verbatim from workspace/dashboard-forest-glass-sidebar.html
+   (SoT III-12 sidebar, forest-tinted). Self-contained: all forest
+   palette values are baked in as hex so it works regardless of which
+   token system (--w-*, --wf-*, hardcoded) a consuming page uses.
+
+   A frosted forest-green rail floating over the earthsky wash;
+   white-on-forest items; the active row paints as a solid white pill
+   with forest text. Collapsible, with disclosure sub-menus and a
+   profile overflow popover (behaviour in _glass-sidebar.js).
+
+   Load this AFTER the page's own stylesheet/<style> so it wins the
+   cascade over the page's legacy .sidebar / .wf-side rules.
+   ============================================================ */
+
+:root {
+  --sb-rail-w:        280px;
+  --sb-rail-w-rail:   72px;
+  --sb-pad-x:         12px;
+  --sb-pad-y:         16px;
+  --sb-gap:           4px;
+  --sb-group-gap:     22px;
+  --sb-item-h:        44px;
+  --sb-icon:          20px;
+
+  --sb-radius-sm:     6px;
+  --sb-radius:        10px;
+  --sb-radius-lg:     16px;
+  --sb-font:          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+
+  /* Frosted forest glass — opaque enough for white text,
+     translucent enough to let the wash bleed + blur through. */
+  --sb-bg:            color-mix(in srgb, #398c36 84%, transparent);
+  --sb-border:        rgba(255,255,255,0.22);
+  --sb-blur:          blur(20px) saturate(150%);
+  --sb-shadow:        0 12px 40px rgba(16,58,39,0.18), 0 4px 12px rgba(16,58,39,0.10);
+  --sb-shadow-hover:  0 20px 56px rgba(16,58,39,0.22), 0 6px 18px rgba(16,58,39,0.12);
+  --sb-inset:         inset 0 1px 0 rgba(255,255,255,0.30), inset 0 -1px 0 rgba(16,58,39,0.12);
+
+  --sb-item-fg:       rgba(255,255,255,0.88);
+  --sb-item-bg-hover: rgba(255,255,255,0.16);
+  --sb-item-bg-cur:   #fff;
+  --sb-item-fg-cur:   #2a6b27;
+  --sb-icon-fg:       rgba(255,255,255,0.82);
+  --sb-icon-cur:      #398c36;
+  --sb-hairline:      rgba(255,255,255,0.18);
+}
+
+/* Wrapper normalization — the floating 280px rail needs an `auto`
+   first track and an unclipped wrapper. Covers every shell class used
+   across the mockups (.app / .device / .wf-shell). */
+.app,
+.device,
+.wf-shell {
+  grid-template-columns: auto 1fr;
+  overflow: visible;
+}
+
+/* Rail container — floating frosted-glass column */
+.sidebar {
+  position: sticky;
+  top: 16px;
+  align-self: start;
+  width: var(--sb-rail-w);
+  height: calc(100vh - 32px);
+  margin: 16px 0 16px 16px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--sb-radius-lg);
+  background: var(--sb-bg);
+  border: 1px solid var(--sb-border);
+  box-shadow: var(--sb-shadow), var(--sb-inset);
+  -webkit-backdrop-filter: var(--sb-blur);
+          backdrop-filter: var(--sb-blur);
+  transition: width .22s cubic-bezier(.2,.8,.2,1), box-shadow .22s ease;
+  color: #fff;
+}
+.sidebar:hover { box-shadow: var(--sb-shadow-hover), var(--sb-inset); }
+.sidebar--collapsed { width: var(--sb-rail-w-rail); }
+
+/* Header slot — brand + collapse toggle */
+.sidebar__header {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px;
+  padding: 12px var(--sb-pad-x);
+  border-bottom: 1px solid var(--sb-hairline);
+  min-height: 56px;
+}
+.sidebar__brand {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-weight: 700; font-size: 16px; color: #fff;
+  text-decoration: none; overflow: hidden; white-space: nowrap;
+  height: auto; border: 0; margin: 0; background: none;
+}
+.sidebar__brand-mark { width: 28px; height: 28px; flex-shrink: 0; display: block; object-fit: contain; }
+.sidebar--collapsed .sidebar__brand { display: none; }
+.sidebar--collapsed .sidebar__header { justify-content: center; }
+.sidebar__collapse {
+  width: 32px; height: 32px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: transparent; border: none;
+  color: rgba(255,255,255,0.82);
+  border-radius: var(--sb-radius-sm); cursor: pointer; flex-shrink: 0;
+  transition: background-color .18s ease, color .18s ease;
+}
+.sidebar__collapse:hover { background: rgba(255,255,255,0.16); color: #fff; }
+.sidebar__collapse svg { width: 16px; height: 16px; transition: transform .22s ease; }
+.sidebar--collapsed .sidebar__collapse svg { transform: rotate(180deg); }
+
+/* Nav region — scrolls internally */
+.sidebar__nav {
+  flex: 1 1 auto; overflow-y: auto; overflow-x: hidden;
+  padding: var(--sb-pad-y) var(--sb-pad-x);
+  display: flex; flex-direction: column; gap: var(--sb-group-gap);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.35) transparent;
+}
+.sidebar__nav::-webkit-scrollbar { width: 6px; }
+.sidebar__nav::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 999px; }
+.sidebar__nav::-webkit-scrollbar-track { background: transparent; }
+.sidebar__list {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; flex-direction: column; gap: var(--sb-gap);
+}
+.sidebar__item { position: relative; }
+
+/* Item link */
+.sidebar__link {
+  display: grid;
+  grid-template-columns: var(--sb-icon) 1fr auto;
+  align-items: center; gap: 12px;
+  padding: 12px;
+  min-height: var(--sb-item-h);
+  border-radius: var(--sb-radius-sm);
+  font-family: var(--sb-font);
+  font-size: 13.5px; font-weight: 500;
+  color: var(--sb-item-fg);
+  text-decoration: none; background: transparent; border: none;
+  cursor: pointer; width: 100%; text-align: left;
+  transition: background-color .15s ease, color .15s ease;
+}
+.sidebar__link:hover { background: var(--sb-item-bg-hover); color: #fff; }
+.sidebar__link:hover .sidebar__icon { color: #fff; }
+.sidebar__link.is-current { background: var(--sb-item-bg-cur); color: var(--sb-item-fg-cur); font-weight: 600; }
+.sidebar__link.is-current .sidebar__icon { color: var(--sb-icon-cur); }
+.sidebar__icon {
+  width: var(--sb-icon); height: var(--sb-icon);
+  color: var(--sb-icon-fg); flex-shrink: 0; display: inline-flex;
+}
+.sidebar__icon svg { width: 100%; height: 100%; }
+.sidebar__label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sidebar__trailing { color: rgba(255,255,255,0.8); display: inline-flex; align-items: center; gap: 8px; }
+
+/* Disclosure (sub-items) */
+.sidebar__chev { width: 14px; height: 14px; transition: transform .18s ease; color: rgba(255,255,255,0.8); }
+.sidebar__item.is-open > .sidebar__link .sidebar__chev { transform: rotate(90deg); }
+.sidebar__sublist {
+  list-style: none; margin: 4px 0 0 0;
+  padding: 0 0 0 calc(var(--sb-icon) + 12px);
+  border-left: 1px solid var(--sb-hairline);
+  margin-left: calc(12px + (var(--sb-icon) / 2));
+  display: flex; flex-direction: column; gap: var(--sb-gap);
+}
+.sidebar__sublist .sidebar__link { grid-template-columns: 1fr auto; font-size: 13px; }
+.sidebar__sublist .sidebar__icon { display: none; }
+.sidebar__item:not(.is-open) > .sidebar__sublist { display: none; }
+
+/* Footer slot — profile cluster + overflow menu */
+.sidebar__footer {
+  padding: 12px;
+  border-top: 1px solid var(--sb-hairline);
+  display: flex; flex-direction: column; gap: var(--sb-gap);
+}
+.sidebar__profile-wrap { position: relative; }
+.sidebar__profile {
+  display: flex; align-items: center; gap: 12px;
+  width: 100%; min-width: 0; text-decoration: none; color: inherit;
+}
+.sidebar__avatar {
+  width: 36px; height: 36px; flex-shrink: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: #fff; color: #2a6b27;
+  border-radius: 999px;
+  box-shadow: 0 1px 2px rgba(16,58,39,0.18), inset 0 0 0 1px rgba(255,255,255,0.6);
+  font-weight: 700; font-size: 13px; overflow: hidden;
+}
+.sidebar__avatar img, .sidebar__avatar svg { width: 100%; height: 100%; object-fit: cover; }
+.sidebar__profile-text { flex: 1 1 auto; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.sidebar__profile-name {
+  font-weight: 600; font-size: 13.5px; color: #fff; line-height: 1.2;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.sidebar__profile-role {
+  font-size: 12px; color: rgba(255,255,255,0.78); line-height: 1.2;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.sidebar__overflow {
+  width: 32px; height: 32px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: transparent; border: none; color: rgba(255,255,255,0.82);
+  border-radius: var(--sb-radius-sm); cursor: pointer; flex-shrink: 0;
+  transition: background-color .18s ease, color .18s ease;
+}
+.sidebar__overflow:hover { background: rgba(255,255,255,0.16); color: #fff; }
+.sidebar__overflow svg { width: 16px; height: 16px; }
+.sidebar--collapsed .sidebar__profile-text,
+.sidebar--collapsed .sidebar__overflow { display: none; }
+
+/* Collapsed (rail) — center tiles, hide labels, tooltip on hover */
+.sidebar--collapsed .sidebar__nav { padding-inline: 0; }
+.sidebar--collapsed .sidebar__link {
+  display: flex; align-items: center; justify-content: center;
+  width: var(--sb-item-h); height: var(--sb-item-h);
+  margin-inline: auto; padding: 0;
+}
+.sidebar--collapsed .sidebar__label,
+.sidebar--collapsed .sidebar__trailing,
+.sidebar--collapsed .sidebar__chev,
+.sidebar--collapsed .sidebar__sublist { display: none; }
+.sidebar--collapsed .sidebar__item { width: var(--sb-item-h); margin-inline: auto; }
+.sidebar--collapsed .sidebar__item:hover .sidebar__label {
+  position: absolute; left: calc(100% + 12px); top: 50%;
+  transform: translateY(-50%);
+  background: #1e251c; color: #fff;
+  padding: 4px 12px; border-radius: var(--sb-radius-sm);
+  white-space: nowrap; font-size: 13px; font-weight: 500;
+  pointer-events: none; z-index: 70; display: inline-flex;
+}
+
+/* Popover menu — raised from the profile overflow, opens upward.
+   Light frosted glass for legibility against the forest rail. */
+.sidebar__menu {
+  position: absolute; left: 0; right: 0; bottom: calc(100% + 8px);
+  min-width: 240px;
+  background: color-mix(in srgb, #fff 82%, transparent);
+  border: 1px solid rgba(255,255,255,0.6);
+  border-radius: var(--sb-radius);
+  box-shadow: 0 12px 40px rgba(16,58,39,0.18), inset 0 1px 0 rgba(255,255,255,0.6);
+  -webkit-backdrop-filter: blur(22px) saturate(180%);
+          backdrop-filter: blur(22px) saturate(180%);
+  padding: 4px; z-index: 70;
+  opacity: 0; transform: translateY(4px) scale(.98);
+  transform-origin: bottom center; visibility: hidden; pointer-events: none;
+  transition: opacity .14s ease, transform .14s ease, visibility 0s linear .14s;
+}
+.sidebar__profile-wrap.is-open .sidebar__menu {
+  opacity: 1; transform: translateY(0) scale(1);
+  visibility: visible; pointer-events: auto;
+  transition: opacity .14s ease, transform .14s ease, visibility 0s;
+}
+.sidebar__menu-header {
+  display: block; padding: 8px 12px;
+  font-size: 12px; color: #7c8c73;
+  border-bottom: 1px solid #e2e7dc; margin-bottom: 4px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.sidebar__menu-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.sidebar__menu-item {
+  display: flex; align-items: center; gap: 12px; width: 100%;
+  padding: 8px 12px; border: none; background: transparent;
+  border-radius: var(--sb-radius-sm);
+  font-family: var(--sb-font);
+  font-size: 13.5px; font-weight: 500; color: #1e251c;
+  text-align: left; text-decoration: none; cursor: pointer;
+  transition: background-color .12s ease, color .12s ease;
+}
+.sidebar__menu-item:hover, .sidebar__menu-item:focus-visible { background: #ebf5ea; color: #2a6b27; }
+.sidebar__menu-icon { width: 18px; height: 18px; color: #7c8c73; flex-shrink: 0; }
+.sidebar__menu-item--divider { height: 1px; background: #e2e7dc; margin: 4px 0; padding: 0; pointer-events: none; }
+.sidebar--collapsed .sidebar__menu {
+  left: calc(100% + 8px); right: auto; bottom: 0;
+  transform-origin: bottom left; transform: translateX(-4px) scale(.98);
+}
+.sidebar--collapsed .sidebar__profile-wrap.is-open .sidebar__menu { transform: translateX(0) scale(1); }
+
+/* Mobile — hide the rail (matches dashboard-forest behaviour) */
+@media (max-width: 720px) {
+  .app,
+  .device,
+  .wf-shell { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+}
+
+/* Fallback for browsers without backdrop-filter */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .sidebar { background: #3a8c37; }
+}

@@ -5,128 +5,143 @@
 <meta name="viewport" content="width=1320" />
 <title>Profile SP-109 · Anthrax — RUN-204 · FR-385 wireframes</title>
 <style>
+  /* forest theme */
   *, *::before, *::after { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
   body {
     font-family: -apple-system, "Inter", system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    color: #111; background: #FFFFFF;
+    color: #1e251c; background: transparent;
     -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
     font-size: 13px; line-height: 1.45;
   }
-  .device { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
+  /* exact dashboard-forest bg + islands + sidebar-fit */
+  body::before {
+    content:''; position:fixed; z-index:-2; inset:-25%;
+    background:
+      radial-gradient(ellipse 70% 110% at 0% 50%,
+        color-mix(in srgb,#f2faea 85%,transparent) 0%,
+        color-mix(in srgb,#e4f4d7 55%,transparent) 35%, transparent 70%),
+      radial-gradient(ellipse 75% 110% at 100% 50%,
+        color-mix(in srgb,#ebf5ea 90%,transparent) 0%,
+        color-mix(in srgb,#d9ebd8 70%,transparent) 40%, transparent 75%),
+      #ffffff;
+    filter: blur(50px) saturate(1.5);
+  }
+  .device { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; background: transparent; }
 
-  /* Sidebar */
-  .sidebar { background: #FAFAFA; border-right: 1px solid #E5E5E5; padding: 18px 0; }
-  .sidebar__brand { display: flex; align-items: center; gap: 10px; padding: 4px 18px 22px; border-bottom: 1px solid #ECECEC; margin-bottom: 14px; }
-  .sidebar__logo { width: 28px; height: 28px; border-radius: 6px; background: #E5E5E5; display: grid; place-items: center; font-size: 11px; color: #6B6B6B; font-weight: 600; }
-  .sidebar__brand-text { font-weight: 600; font-size: 13px; color: #2A2A2A; }
-  .sidebar__brand-sub { font-size: 10px; color: #8A8A8A; margin-top: 1px; }
-  .sidebar__group { padding: 0 12px; margin-bottom: 18px; }
-  .sidebar__group-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8A8A; padding: 0 8px 8px; }
-  .sidebar__item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 6px; color: #4A4A4A; font-size: 13px; line-height: 1; margin-bottom: 2px; text-decoration: none; }
-  .sidebar__item-glyph { width: 16px; height: 16px; background: #E5E5E5; border-radius: 3px; flex: none; }
-  .sidebar__item.is-active { background: #E9E9E9; color: #111; font-weight: 600; }
-  .sidebar__item.is-active .sidebar__item-glyph { background: #BFBFBF; }
-  .sidebar__count { margin-left: auto; font-size: 11px; color: #6B6B6B; background: #FFFFFF; border: 1px solid #DDDDDD; border-radius: 99px; padding: 1px 7px; }
+  /* Sidebar styling now provided by shared _glass-sidebar.css */
+  .topbar__cluster { min-height: 48px; box-sizing: border-box; display: inline-flex; align-items: center; gap: 10px; padding: 6px 10px; border-radius: 999px; background: rgba(255,255,255,0.5); -webkit-backdrop-filter: blur(22px) saturate(190%); backdrop-filter: blur(22px) saturate(190%); border: 1px solid rgba(255,255,255,0.6); box-shadow: 0 4px 10px rgba(16,38,22,0.07), 0 14px 28px rgba(16,38,22,0.09), inset 0 1px 0 rgba(255,255,255,0.6); }
+  .topbar__chip { min-height: 48px; box-sizing: border-box; display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px; border-radius: 999px; background: rgba(255,255,255,0.5); -webkit-backdrop-filter: blur(22px) saturate(190%); backdrop-filter: blur(22px) saturate(190%); border: 1px solid rgba(255,255,255,0.6); box-shadow: 0 4px 10px rgba(16,38,22,0.07), 0 14px 28px rgba(16,38,22,0.09), inset 0 1px 0 rgba(255,255,255,0.6); color: #3b4537; text-decoration: none; font-size: 13px; font-weight: 500; }
+  .topbar__chip:hover { color: #2a6b27; }
+  .topbar__divider { width: 1px; height: 22px; background: #e2e7dc; margin: 0 2px; }
+  .topbar__lang { display: inline-flex; gap: 2px; padding: 3px; background: #f5f7f3; border-radius: 999px; }
+  .topbar__lang button { border: 0; background: transparent; padding: 5px 12px; border-radius: 999px; font: inherit; font-size: 12px; font-weight: 500; color: #7c8c73; cursor: pointer; min-width: 40px; }
+  .topbar__lang button:hover { color: #1e251c; }
+  .topbar__lang button[aria-pressed="true"] { background: #398c36; color: #fff; }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .topbar__cluster, .topbar__chip { background: rgba(255,255,255,0.92); } }
 
   /* Main / topbar */
-  .main { display: flex; flex-direction: column; min-width: 0; }
-  .topbar { display: flex; align-items: center; gap: 16px; height: 52px; padding: 0 24px; border-bottom: 1px solid #ECECEC; background: #FFFFFF; flex: none; }
-  .crumb { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #6B6B6B; }
+  .main { display: flex; flex-direction: column; min-width: 0; background: transparent; }
+  /* exact dashboard-forest bg + islands + sidebar-fit — header islands */
+  .topbar { position: sticky; top: 0; z-index: 5; padding: 16px 28px; background: transparent; border: 0; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; display: flex; align-items: center; gap: 16px; }
+  .crumb, .topbar__right { min-height: 48px; box-sizing: border-box; display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px; border-radius: 999px; background: rgba(255,255,255,0.5); -webkit-backdrop-filter: blur(22px) saturate(190%); backdrop-filter: blur(22px) saturate(190%); border: 1px solid rgba(255,255,255,0.6); box-shadow: 0 4px 10px rgba(16,38,22,0.07), 0 14px 28px rgba(16,38,22,0.09), inset 0 1px 0 rgba(255,255,255,0.6); }
+  .crumb { margin-right: auto; font-size: 12px; color: #7c8c73; }
   .crumb a, .crumb span { color: inherit; text-decoration: none; }
-  .crumb .sep { color: #C5C5C5; }
-  .crumb .here { color: #111; font-weight: 500; }
-  .topbar__right { margin-left: auto; display: flex; align-items: center; gap: 10px; color: #6B6B6B; font-size: 12px; }
-  .avatar { width: 28px; height: 28px; border-radius: 50%; background: #E0E0E0; border: 1px solid #D0D0D0; }
-  .content { padding: 28px 32px 56px; flex: 1 1 auto; }
+  .crumb .sep { color: #aab4a4; }
+  .crumb .here { color: #1e251c; font-weight: 500; }
+  .topbar__right { color: #7c8c73; font-size: 12px; }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .crumb, .topbar__right { background: rgba(255,255,255,0.92); } }
+  .avatar { width: 28px; height: 28px; border-radius: 50%; background: #e2e7dc; border: 1px solid #aab4a4; }
+  .content { padding: 28px 32px 56px; flex: 1 1 auto; background: transparent; }
 
   /* Buttons */
-  .btn { display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 14px; font-size: 13px; line-height: 1; border-radius: 6px; border: 1px solid #C5C5C5; background: #FFFFFF; color: #111; cursor: pointer; white-space: nowrap; text-decoration: none; }
-  .btn--ghost { background: transparent; border-color: transparent; color: #4A4A4A; padding-left: 0; }
-  .btn--primary { background: #2A2A2A; border-color: #2A2A2A; color: #FFFFFF; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 14px; font-size: 13px; line-height: 1; border-radius: 6px; border: 1px solid #e2e7dc; background: #FFFFFF; color: #1e251c; cursor: pointer; white-space: nowrap; text-decoration: none; }
+  .btn--ghost { background: transparent; border-color: transparent; color: #3b4537; padding-left: 0; }
+  .btn--primary { background: #398c36; border-color: #398c36; color: #FFFFFF; }
+  .btn--primary:hover { background: #2a6b27; border-color: #2a6b27; }
 
   /* Back link */
-  .backlink { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: #6B6B6B; text-decoration: none; margin-bottom: 14px; }
-  .backlink:hover { color: #2A2A2A; }
+  .backlink { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: #7c8c73; text-decoration: none; margin-bottom: 14px; }
+  .backlink:hover { color: #398c36; }
 
   /* Detail head */
   .detail-head { display: flex; align-items: flex-start; gap: 24px; margin-bottom: 22px; }
   .detail-head__main { flex: 1; min-width: 0; }
   .detail-head__chips { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
-  .detail-head h1 { font-size: 22px; line-height: 1.3; font-weight: 600; letter-spacing: -0.005em; margin: 0 0 6px; color: #111; }
-  .detail-head .sub { font-size: 13px; color: #6B6B6B; margin: 0; }
+  .detail-head h1 { font-size: 22px; line-height: 1.3; font-weight: 600; letter-spacing: -0.005em; margin: 0 0 6px; color: #1e251c; }
+  .detail-head .sub { font-size: 13px; color: #7c8c73; margin: 0; }
   .detail-head__actions { display: flex; gap: 8px; flex: none; }
 
   /* Chips */
-  .chip { display: inline-flex; align-items: center; gap: 6px; height: 22px; padding: 0 9px; border-radius: 99px; font-size: 11px; background: #EFEFEF; color: #4A4A4A; border: 1px solid #E0E0E0; white-space: nowrap; }
-  .chip__dot { width: 6px; height: 6px; border-radius: 50%; background: #9B9B9B; }
-  .chip--sub { background: #F6F6F6; color: #6B6B6B; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; height: 22px; padding: 0 9px; border-radius: 99px; font-size: 11px; background: #f5f7f3; color: #3b4537; border: 1px solid #e2e7dc; white-space: nowrap; }
+  .chip__dot { width: 6px; height: 6px; border-radius: 50%; background: #aab4a4; }
+  .chip--sub { background: #f5f7f3; color: #7c8c73; }
   .chip--mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; padding: 0 7px; }
-  .chip--ok { background: #ECEFEC; color: #3A5A3A; border-color: #D6DDD6; }
-  .chip--ok .chip__dot { background: #6E9070; }
+  .chip--ok { background: #d9ebd8; color: #2a6b27; border-color: #aacca9; }
+  .chip--ok .chip__dot { background: #398c36; }
 
   /* Tabs */
-  .tabs { display: flex; gap: 0; border-bottom: 1px solid #E5E5E5; margin-bottom: 20px; }
-  .tabs__item { padding: 10px 4px; margin-right: 24px; font-size: 13px; color: #6B6B6B; border-bottom: 2px solid transparent; margin-bottom: -1px; cursor: pointer; user-select: none; }
-  .tabs__item.is-active { color: #111; font-weight: 600; border-bottom-color: #2A2A2A; }
+  .tabs { display: flex; gap: 0; border-bottom: 1px solid #e2e7dc; margin-bottom: 20px; }
+  .tabs__item { padding: 10px 4px; margin-right: 24px; font-size: 13px; color: #7c8c73; border-bottom: 2px solid transparent; margin-bottom: -1px; cursor: pointer; user-select: none; }
+  .tabs__item.is-active { color: #398c36; font-weight: 600; border-bottom-color: #398c36; }
   .tabpanel { display: none; }
   .tabpanel.is-active { display: block; }
 
   /* Section / card */
-  .section { border: 1px solid #E5E5E5; border-radius: 8px; background: #FFFFFF; padding: 22px 24px; margin-bottom: 16px; }
+  .section { border: 1px solid #e2e7dc; border-radius: 8px; background: #FFFFFF; padding: 22px 24px; margin-bottom: 16px; }
   .section__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
-  .section__title { font-size: 14px; font-weight: 600; color: #111; margin: 0 0 4px; }
-  .section__hint { font-size: 12px; color: #6B6B6B; margin: 0; max-width: 640px; }
-  .section-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8A8A; margin: 18px 0 8px; font-weight: 600; }
+  .section__title { font-size: 14px; font-weight: 600; color: #1e251c; margin: 0 0 4px; }
+  .section__hint { font-size: 12px; color: #7c8c73; margin: 0; max-width: 640px; }
+  .section-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #7c8c73; margin: 18px 0 8px; font-weight: 600; }
   .section-label:first-of-type { margin-top: 0; }
 
   /* Label block (Overview) */
   .labelblock { display: flex; align-items: center; gap: 14px; }
-  .labelblock__badge { display: inline-flex; align-items: center; height: 30px; padding: 0 12px; border-radius: 6px; background: #2A2A2A; color: #FFFFFF; font-size: 13px; font-weight: 600; letter-spacing: 0.02em; }
-  .labelblock__name { font-size: 15px; color: #111; font-weight: 500; }
-  .labelblock__sub { font-size: 12px; color: #8A8A8A; }
+  .labelblock__badge { display: inline-flex; align-items: center; height: 30px; padding: 0 12px; border-radius: 6px; background: #398c36; color: #FFFFFF; font-size: 13px; font-weight: 600; letter-spacing: 0.02em; }
+  .labelblock__name { font-size: 15px; color: #1e251c; font-weight: 500; }
+  .labelblock__sub { font-size: 12px; color: #7c8c73; }
 
   /* Scorecards */
   .scorecards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 4px; }
-  .scorecard { border: 1px solid #E5E5E5; border-radius: 8px; background: #FFFFFF; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px; }
-  .scorecard__label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8A8A; font-weight: 600; }
+  .scorecard { border: 1px solid #e2e7dc; border-radius: 8px; background: #FFFFFF; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px; }
+  .scorecard__label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #7c8c73; font-weight: 600; }
   .scorecard__row { display: flex; align-items: baseline; gap: 6px; }
-  .scorecard__num { font-size: 28px; font-weight: 600; color: #111; letter-spacing: -0.015em; line-height: 1; }
-  .scorecard__den { font-size: 13px; color: #8A8A8A; font-weight: 500; margin-left: 2px; }
-  .scorecard__bar { height: 4px; border-radius: 2px; background: #ECECEC; overflow: hidden; }
-  .scorecard__bar > span { display: block; height: 100%; border-radius: 2px; background: #1F7A43; }
-  .scorecard__bar > span.is-mid { background: #9A5B00; }
-  .scorecard__bar > span.is-low { background: #B23B3B; }
+  .scorecard__num { font-size: 28px; font-weight: 600; color: #1e251c; letter-spacing: -0.015em; line-height: 1; }
+  .scorecard__den { font-size: 13px; color: #7c8c73; font-weight: 500; margin-left: 2px; }
+  .scorecard__bar { height: 4px; border-radius: 2px; background: #e2e7dc; overflow: hidden; }
+  .scorecard__bar > span { display: block; height: 100%; border-radius: 2px; background: #398c36; }
+  .scorecard__bar > span.is-mid { background: #b8761c; }
+  .scorecard__bar > span.is-low { background: #b3322a; }
 
   /* Judge rationale */
   .rationale { margin-top: 16px; }
-  .rationale__item { padding: 12px 0; border-top: 1px solid #ECECEC; display: grid; grid-template-columns: 110px 1fr; gap: 14px; }
-  .rationale__k { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: #8A8A8A; font-weight: 600; padding-top: 2px; }
-  .rationale__v { font-size: 12.5px; line-height: 1.6; color: #2A2A2A; }
+  .rationale__item { padding: 12px 0; border-top: 1px solid #e2e7dc; display: grid; grid-template-columns: 110px 1fr; gap: 14px; }
+  .rationale__k { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: #7c8c73; font-weight: 600; padding-top: 2px; }
+  .rationale__v { font-size: 12.5px; line-height: 1.6; color: #3b4537; }
 
   /* Profile evidences */
   .kv { display: grid; grid-template-columns: 190px 1fr; row-gap: 12px; column-gap: 24px; }
-  .kv > dt { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #8A8A8A; font-weight: 600; padding-top: 2px; }
-  .kv > dd { margin: 0; font-size: 13px; color: #111; line-height: 1.55; }
-  .kv > dd.is-empty { color: #9B9B9B; font-style: italic; }
+  .kv > dt { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #7c8c73; font-weight: 600; padding-top: 2px; }
+  .kv > dd { margin: 0; font-size: 13px; color: #1e251c; line-height: 1.55; }
+  .kv > dd.is-empty { color: #aab4a4; font-style: italic; }
   .field-row { display: flex; flex-wrap: wrap; gap: 18px 28px; }
   .field { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
-  .field__label { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: #8A8A8A; font-weight: 600; }
-  .field__val { font-size: 13px; color: #111; }
+  .field__label { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: #7c8c73; font-weight: 600; }
+  .field__val { font-size: 13px; color: #1e251c; }
   .chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
 
   /* ---------- Generic sortable data table (.dtable) ---------- */
-  .dtable { border: 1px solid #E5E5E5; border-radius: 8px; background: #FFFFFF; overflow: hidden; }
-  .dtable__head, .dtable__row { display: grid; align-items: center; gap: 12px; padding: 9px 14px; border-bottom: 1px solid #ECECEC; }
-  .dtable__head { background: #FAFAFA; }
+  .dtable { border: 1px solid #e2e7dc; border-radius: 8px; background: #FFFFFF; overflow: hidden; }
+  .dtable__head, .dtable__row { display: grid; align-items: center; gap: 12px; padding: 9px 14px; border-bottom: 1px solid #e2e7dc; }
+  .dtable__head { background: #f5f7f3; }
   .dtable__row:last-child { border-bottom: 0; }
-  .dtable__row:hover { background: #FAFAFA; }
-  .dtable__th { appearance: none; background: transparent; border: 0; margin: 0; padding: 0; font: inherit; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: #6B6B6B; display: inline-flex; align-items: center; gap: 4px; cursor: pointer; user-select: none; min-width: 0; }
+  .dtable__row:hover { background: #ebf5ea; }
+  .dtable__th { appearance: none; background: transparent; border: 0; margin: 0; padding: 0; font: inherit; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: #7c8c73; display: inline-flex; align-items: center; gap: 4px; cursor: pointer; user-select: none; min-width: 0; }
   .dtable__th--num { justify-content: flex-end; text-align: right; }
-  .dtable__th:hover { color: #2A2A2A; }
-  .dtable__ind { font-size: 9px; color: #C5C5C5; }
-  .dtable__th.is-asc .dtable__ind, .dtable__th.is-desc .dtable__ind { color: #2A2A2A; }
-  .dtable__cell { font-size: 12px; color: #2A2A2A; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .dtable__th:hover { color: #398c36; }
+  .dtable__ind { font-size: 9px; color: #aab4a4; }
+  .dtable__th.is-asc .dtable__ind, .dtable__th.is-desc .dtable__ind { color: #398c36; }
+  .dtable__cell { font-size: 12px; color: #3b4537; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .dtable__cell--num { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; text-align: right; }
   .dtable--modlat .dtable__head, .dtable--modlat .dtable__row { grid-template-columns: 1fr 80px 90px; }
   .dtable--modlat .dtable__cell:first-child { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
@@ -135,82 +150,167 @@
   .chat { display: flex; flex-direction: column; }
   .cturn { display: grid; grid-template-columns: 26px 1fr; gap: 0 12px; position: relative; }
   .cturn__rail { position: relative; display: flex; justify-content: center; }
-  .cturn__rail::before { content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 1.5px; background: #E5E5E5; transform: translateX(-50%); }
+  .cturn__rail::before { content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 1.5px; background: #e2e7dc; transform: translateX(-50%); }
   .cturn:first-child .cturn__rail::before { top: 6px; }
   .cturn:last-child .cturn__rail::before { bottom: auto; height: 6px; }
-  .cdot { position: relative; z-index: 1; width: 11px; height: 11px; border-radius: 50%; margin-top: 2px; background: #FFFFFF; border: 2px solid #BFBFBF; }
-  .cdot--bot { background: #2A2A2A; border-color: #2A2A2A; }
-  .cdot--user { background: #FFFFFF; border-color: #9B9B9B; }
+  .cdot { position: relative; z-index: 1; width: 11px; height: 11px; border-radius: 50%; margin-top: 2px; background: #FFFFFF; border: 2px solid #aab4a4; }
+  .cdot--bot { background: #398c36; border-color: #398c36; }
+  .cdot--user { background: #FFFFFF; border-color: #aab4a4; }
   .cturn__body { padding-bottom: 16px; min-width: 0; }
-  .cturn__head { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; color: #8A8A8A; margin-bottom: 6px; }
-  .cturn__head .step { color: #4A4A4A; font-weight: 600; }
-  .cbubble { border: 1px solid #E5E5E5; border-radius: 8px; padding: 10px 13px; font-size: 13px; line-height: 1.55; color: #2A2A2A; }
-  .cbubble--user { background: #FAFAFA; }
+  .cturn__head { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; color: #7c8c73; margin-bottom: 6px; }
+  .cturn__head .step { color: #3b4537; font-weight: 600; }
+  .cbubble { border: 1px solid #e2e7dc; border-radius: 8px; padding: 10px 13px; font-size: 13px; line-height: 1.55; color: #3b4537; }
+  .cbubble--user { background: #f5f7f3; }
   .cbubble--bot { background: #FFFFFF; }
-  .cbubble__role { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8A8A; font-weight: 600; margin-bottom: 5px; }
+  .cbubble__role { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #7c8c73; font-weight: 600; margin-bottom: 5px; }
   .cbubble__sugg { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; }
-  .csugg { font-size: 11px; color: #6B6B6B; background: #F2F2F2; border: 1px solid #E5E5E5; border-radius: 99px; padding: 2px 9px; }
+  .csugg { font-size: 11px; color: #7c8c73; background: #f5f7f3; border: 1px solid #e2e7dc; border-radius: 99px; padding: 2px 9px; }
 
   /* Thought drawer */
   .cthought { margin: 0 0 10px; }
-  .cthought__sum { display: flex; align-items: center; gap: 10px; cursor: pointer; list-style: none; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; color: #6B6B6B; padding: 5px 0; }
+  .cthought__sum { display: flex; align-items: center; gap: 10px; cursor: pointer; list-style: none; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; color: #7c8c73; padding: 5px 0; }
   .cthought__sum::-webkit-details-marker { display: none; }
-  .cthought__chev { flex: none; width: 7px; height: 7px; border-right: 1.5px solid #9B9B9B; border-bottom: 1.5px solid #9B9B9B; transform: rotate(45deg); transition: transform 0.15s ease; }
+  .cthought__chev { flex: none; width: 7px; height: 7px; border-right: 1.5px solid #aab4a4; border-bottom: 1.5px solid #aab4a4; transform: rotate(45deg); transition: transform 0.15s ease; }
   .cthought[open] .cthought__chev { transform: rotate(225deg); }
-  .cthought__label { color: #4A4A4A; }
-  .cthought__tokens { margin-left: auto; color: #9B9B9B; }
-  .cthought__body { border-left: 1.5px dashed #DCDCDC; margin-left: 3px; padding: 4px 0 6px 16px; display: flex; flex-direction: column; gap: 13px; }
+  .cthought__label { color: #3b4537; }
+  .cthought__tokens { margin-left: auto; color: #aab4a4; }
+  .cthought__body { border-left: 1.5px dashed #e2e7dc; margin-left: 3px; padding: 4px 0 6px 16px; display: flex; flex-direction: column; gap: 13px; }
 
   /* Module rows */
-  .cmod__head { display: flex; align-items: center; gap: 8px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11.5px; color: #2A2A2A; }
-  .cmod__glyph { flex: none; color: #BFBFBF; }
-  .cmod--hyp .cmod__glyph { color: #2A2A2A; }
+  .cmod__head { display: flex; align-items: center; gap: 8px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11.5px; color: #3b4537; }
+  .cmod__glyph { flex: none; color: #aab4a4; }
+  .cmod--hyp .cmod__glyph { color: #398c36; }
   .cmod__name { font-weight: 500; white-space: nowrap; }
-  .cmod__dots { flex: 1 1 auto; border-bottom: 1px dotted #D0D0D0; height: 1px; margin: 0 2px; min-width: 16px; }
-  .cmod__time { flex: none; color: #6B6B6B; }
-  .cmod__tag { flex: none; font-size: 9px; letter-spacing: 0.06em; color: #7A6118; background: #F1ECDB; border: 1px solid #E3D9B7; border-radius: 3px; padding: 1px 5px; }
+  .cmod__dots { flex: 1 1 auto; border-bottom: 1px dotted #e2e7dc; height: 1px; margin: 0 2px; min-width: 16px; }
+  .cmod__time { flex: none; color: #7c8c73; }
+  .cmod__tag { flex: none; font-size: 9px; letter-spacing: 0.06em; color: #b8761c; background: #fbf0d8; border: 1px solid #e8d4a8; border-radius: 3px; padding: 1px 5px; }
   .cmod__io { margin: 5px 0 0 17px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; display: grid; grid-template-columns: 76px 1fr; gap: 3px 10px; }
-  .cmod__io dt { color: #9B9B9B; text-transform: uppercase; letter-spacing: 0.06em; }
-  .cmod__io dd { margin: 0; color: #4A4A4A; line-height: 1.5; }
+  .cmod__io dt { color: #aab4a4; text-transform: uppercase; letter-spacing: 0.06em; }
+  .cmod__io dd { margin: 0; color: #3b4537; line-height: 1.5; }
 
   /* Hypothesis update */
-  .chyp { margin: 9px 0 0 17px; border: 1px solid #E5E5E5; border-radius: 6px; background: #FAFAFA; padding: 10px 12px; }
-  .chyp__title { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8A8A; font-weight: 600; margin-bottom: 9px; }
+  .chyp { margin: 9px 0 0 17px; border: 1px solid #e2e7dc; border-radius: 6px; background: #f5f7f3; padding: 10px 12px; }
+  .chyp__title { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #7c8c73; font-weight: 600; margin-bottom: 9px; }
   .chyp__row { display: grid; grid-template-columns: 150px 1fr 38px 42px; align-items: center; gap: 10px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; margin-bottom: 5px; }
   .chyp__row:last-child { margin-bottom: 0; }
-  .chyp__name { color: #2A2A2A; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .chyp__track { height: 8px; background: #ECECEC; border-radius: 2px; overflow: hidden; }
-  .chyp__fill { height: 100%; background: #2A2A2A; border-radius: 2px; }
-  .chyp__score { text-align: right; color: #2A2A2A; }
+  .chyp__name { color: #3b4537; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .chyp__track { height: 8px; background: #e2e7dc; border-radius: 2px; overflow: hidden; }
+  .chyp__fill { height: 100%; background: #398c36; border-radius: 2px; }
+  .chyp__score { text-align: right; color: #3b4537; }
   .chyp__delta { text-align: right; }
-  .chyp__delta--up { color: #1F7A43; }
-  .chyp__delta--down { color: #B23B3B; }
-  .chyp__delta--flat { color: #9B9B9B; }
+  .chyp__delta--up { color: #398c36; }
+  .chyp__delta--down { color: #b3322a; }
+  .chyp__delta--flat { color: #aab4a4; }
 </style>
+<link rel="stylesheet" href="../../_glass-sidebar.css?v=glass" />
+<script src="../../_glass-sidebar.js?v=glass" defer></script>
 </head>
 <body>
 <div class="device">
-  <aside class="sidebar">
-    <div class="sidebar__brand">
-      <div class="sidebar__logo">F2V</div>
-      <div>
-        <div class="sidebar__brand-text">Farm2Vet</div>
-        <div class="sidebar__brand-sub">Admin console</div>
+  <!-- ───────────────── Sidebar (GLASS) ───────────────── -->
+  <aside class="sidebar" aria-label="Primary">
+    <header class="sidebar__header">
+      <a href="#" class="sidebar__brand" aria-label="Farm2Vet dashboard home">
+        <img class="sidebar__brand-mark" src="../../../f2v-design-system-sot/logo/logo-emblem-white.svg" alt="" aria-hidden="true" />
+        <span class="sidebar__brand-text">Farm2Vet</span>
+      </a>
+      <button type="button" class="sidebar__collapse" aria-label="Collapse sidebar" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6"/></svg>
+      </button>
+    </header>
+
+    <nav class="sidebar__nav" aria-label="Primary destinations">
+      <ul class="sidebar__list">
+        <li class="sidebar__item">
+          <a class="sidebar__link" href="#">
+            <span class="sidebar__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+            </span>
+            <span class="sidebar__label">Overview</span>
+          </a>
+        </li>
+
+        <li class="sidebar__item">
+          <button type="button" class="sidebar__link" aria-expanded="false">
+            <span class="sidebar__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/></svg>
+            </span>
+            <span class="sidebar__label">Data management</span>
+            <span class="sidebar__trailing"><svg class="sidebar__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></span>
+          </button>
+          <ul class="sidebar__sublist">
+            <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Disease</span></a></li>
+            <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Question</span></a></li>
+            <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Conversation</span></a></li>
+            <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Image</span></a></li>
+            <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Resource</span></a></li>
+            <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">PDF Input</span></a></li>
+          </ul>
+        </li>
+
+        <li class="sidebar__item">
+          <a class="sidebar__link is-current" href="#" aria-current="page">
+            <span class="sidebar__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
+            </span>
+            <span class="sidebar__label">Automated testing</span>
+          </a>
+        </li>
+        <li class="sidebar__item">
+          <a class="sidebar__link" href="#">
+            <span class="sidebar__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            </span>
+            <span class="sidebar__label">Sync database</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="sidebar__footer">
+      <div class="sidebar__profile-wrap">
+        <div class="sidebar__profile">
+          <span class="sidebar__avatar" aria-hidden="true">MB</span>
+          <span class="sidebar__profile-text">
+            <span class="sidebar__profile-name">Minh Bùi</span>
+            <span class="sidebar__profile-role">Admin</span>
+          </span>
+          <button type="button" class="sidebar__overflow" aria-label="Account menu" aria-haspopup="menu" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+          </button>
+        </div>
+
+        <div class="sidebar__menu" role="menu" aria-label="Account">
+          <span class="sidebar__menu-header">farm2vets.tech@gmail.com</span>
+          <ul class="sidebar__menu-list">
+            <li role="none">
+              <a class="sidebar__menu-item" role="menuitem" href="#">
+                <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                <span>Settings</span>
+              </a>
+            </li>
+            <li role="none">
+              <a class="sidebar__menu-item" role="menuitem" href="#">
+                <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                <span>Language</span>
+              </a>
+            </li>
+            <li role="none">
+              <a class="sidebar__menu-item" role="menuitem" href="#">
+                <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <span>Get Help</span>
+              </a>
+            </li>
+            <li role="none" class="sidebar__menu-item--divider" aria-hidden="true"></li>
+            <li role="none">
+              <a class="sidebar__menu-item" role="menuitem" href="#">
+                <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                <span>Logout</span>
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
-    <div class="sidebar__group">
-      <div class="sidebar__group-label">Workspace</div>
-      <a class="sidebar__item" href="#"><span class="sidebar__item-glyph"></span>Dashboard</a>
-      <a class="sidebar__item" href="#"><span class="sidebar__item-glyph"></span>Questions<span class="sidebar__count">393</span></a>
-      <a class="sidebar__item" href="#"><span class="sidebar__item-glyph"></span>Diseases<span class="sidebar__count">47</span></a>
-      <a class="sidebar__item" href="#"><span class="sidebar__item-glyph"></span>Synthetic profiles<span class="sidebar__count">86</span></a>
-      <a class="sidebar__item is-active" href="#"><span class="sidebar__item-glyph"></span>Testing<span class="sidebar__count">24</span></a>
-    </div>
-    <div class="sidebar__group">
-      <div class="sidebar__group-label">Operations</div>
-      <a class="sidebar__item" href="#"><span class="sidebar__item-glyph"></span>Users</a>
-      <a class="sidebar__item" href="#"><span class="sidebar__item-glyph"></span>Reports</a>
-      <a class="sidebar__item" href="#"><span class="sidebar__item-glyph"></span>Settings</a>
     </div>
   </aside>
   <div class="main">
@@ -220,16 +320,19 @@
         <span class="sep">/</span>
         <span>Testing</span>
         <span class="sep">/</span>
-        <a href="./06-executions.html" style="color:#6B6B6B;">Executions</a>
+        <a href="./06-executions.html" style="color:#7c8c73;">Executions</a>
         <span class="sep">/</span>
-        <a href="./04-results.html" style="color:#6B6B6B;">RUN-204</a>
+        <a href="./04-results.html" style="color:#7c8c73;">RUN-204</a>
         <span class="sep">/</span>
         <span class="here">SP-109</span>
       </div>
-      <div class="topbar__right">
-        <span>Minh Bùi</span>
-        <span class="avatar"></span>
-      </div>
+          <div class="topbar__cluster">
+            <div class="topbar__lang" role="group" aria-label="Interface language">
+              <button type="button" aria-pressed="true">EN</button>
+              <button type="button" aria-pressed="false">VI</button>
+            </div>
+          </div>
+          <a href="#" class="topbar__chip" aria-label="Admin version">Farm2Vet · v1.0</a>
     </div>
     <div class="content">
 
@@ -392,7 +495,7 @@
             </div>
           </div>
           <div class="chat">
-            <div class="cturn"><div class="cturn__rail"><span class="cdot cdot--bot"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 01</span> &middot; t+6.2s</div><details class="cthought"><summary class="cthought__sum"><span class="cthought__chev"></span><span class="cthought__label">Thought for 6.2s &middot; 2 modules</span><span class="cthought__tokens">&Sigma; tokens 1408/111</span></summary><div class="cthought__body"><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">0:greet_and_describe</span><span class="cmod__dots"></span><span class="cmod__time">2.84s</span></div></div><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">1:producer_agent</span><span class="cmod__dots"></span><span class="cmod__time">3.32s</span></div></div></div></details><div class="cbubble cbubble--bot"><div class="cbubble__role">Chatbot</div><div class="cbubble__text">Hi there! How can I assist you today?</div></div></div></div><div class="cturn"><div class="cturn__rail"><span class="cdot cdot--user"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 02</span> &middot; t+6.2s</div><div class="cbubble cbubble--user"><div class="cbubble__role">Synthetic profile</div><div class="cbubble__text">Lost one of my sows today, it happened really fast and I'm worried.</div></div></div></div><div class="cturn"><div class="cturn__rail"><span class="cdot cdot--bot"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 03</span> &middot; t+14.4s</div><details class="cthought"><summary class="cthought__sum"><span class="cthought__chev"></span><span class="cthought__label">Thought for 8.3s &middot; 3 modules</span><span class="cthought__tokens">&Sigma; tokens 3668/312</span></summary><div class="cthought__body"><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">1:step1_transition</span><span class="cmod__dots"></span><span class="cmod__time">1.17s</span></div></div><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">2:extract_and_collect_general</span><span class="cmod__dots"></span><span class="cmod__time">4.22s</span></div></div><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">2:producer_agent</span><span class="cmod__dots"></span><span class="cmod__time">2.89s</span></div></div></div></details><div class="cbubble cbubble--bot"><div class="cbubble__role">Chatbot</div><div class="cbubble__text">How many pigs do you have in total?</div></div></div></div><div class="cturn"><div class="cturn__rail"><span class="cdot cdot--user"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 04</span> &middot; t+14.4s</div><div class="cbubble cbubble--user"><div class="cbubble__role">Synthetic profile</div><div class="cbubble__text">About 40.</div></div></div></div><div class="cturn"><div class="cturn__rail"><span class="cdot cdot--bot"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 05</span> &middot; t+27.3s</div><details class="cthought"><summary class="cthought__sum"><span class="cthought__chev"></span><span class="cthought__label">Thought for 12.8s &middot; 3 modules</span><span class="cthought__tokens">&Sigma; tokens 5394/587</span></summary><div class="cthought__body"><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">2:extract_and_collect_general</span><span class="cmod__dots"></span><span class="cmod__time">4.02s</span></div></div><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">2:producer_agent</span><span class="cmod__dots"></span><span class="cmod__time">3.99s</span></div></div><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">2:extract_and_collect_general</span><span class="cmod__dots"></span><span class="cmod__time">4.83s</span></div></div></div></details><div class="cbubble cbubble--bot"><div class="cbubble__role">Chatbot</div><div class="cbubble__text">How many pigs are currently sick?</div></div></div></div><div class="cturn"><div class="cturn__rail"><span class="cdot cdot--user"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 06</span> &middot; t+27.3s</div><div class="cbubble cbubble--user"><div class="cbubble__role">Synthetic profile</div><div class="cbubble__text">Just the one that died. None of the others seem sick right now.</div></div></div></div><div class="cturn"><div class="cturn__rail"><span class="cdot cdot--bot"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 07</span> &middot; t+34.1s</div><details class="cthought"><summary class="cthought__sum"><span class="cthought__chev"></span><span class="cthought__label">Thought for 6.8s &middot; 2 modules</span><span class="cthought__tokens">&Sigma; tokens 3544/307</span></summary><div class="cthought__body"><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">2:producer_agent</span><span class="cmod__dots"></span><span class="cmod__time">3.00s</span></div></div><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">2:extract_and_collect_general</span><span class="cmod__dots"></span><span class="cmod__time">3.83s</span></div></div></div></details><div class="cbubble cbubble--bot"><div class="cbubble__role">Chatbot</div><div class="cbubble__text">Did the sow show any signs of fever before dying? Please choose from the choices below.</div><div class="cbubble__sugg"><span class="csugg">very high fever (&gt;42°C)</span><span class="csugg">high fever (40-42°C)</span><span class="csugg">mild fever (39.5-40°C)</span><span class="csugg">no fever</span><span class="csugg">unsure</span></div></div></div></div><div class="cturn"><div class="cturn__rail"><span class="cdot cdot--user"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 08</span> &middot; t+34.1s</div><div class="cbubble cbubble--user"><div class="cbubble__role">Synthetic profile</div><div class="cbubble__text">High fever (40-42°C)</div></div></div></div><div class="cturn"><div class="cturn__rail"><span class="cdot cdot--bot"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 09</span> &middot; t+45.0s</div><details class="cthought"><summary class="cthought__sum"><span class="cthought__chev"></span><span class="cthought__label">Thought for 10.9s &middot; 3 modules</span><span class="cthought__tokens">&Sigma; tokens 12273/337</span></summary><div class="cthought__body"><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">2→3:preprocess_farmer</span><span class="cmod__dots"></span><span class="cmod__time">3.21s</span></div></div><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">2→3:formula_match</span><span class="cmod__dots"></span><span class="cmod__time">0.00s</span></div></div><div class="cmod cmod--hyp"><div class="cmod__head"><span class="cmod__glyph">&#9670;</span><span class="cmod__name">2→3:rerank_hypothesis</span><span class="cmod__dots"></span><span class="cmod__time">7.66s</span><span class="cmod__tag">&#10209; HYPOTH</span></div><dl class="cmod__io"><dt>reasoning</dt><dd>The top 3 (Anthrax, APP, SE) need to be separated from lower-ranked diseases. Respiratory signs are a major differentiator: APP has dramatic peracute respiratory signs (dyspnea, blood-frothy discharge), Anthrax has limited respiratory involvement, and SE has dyspnea/nasal discharge. Since the death was rapid, respiratory signs would strongly point toward APP vs. others.</dd></dl><div class="chyp"><div class="chyp__title">Hypothesis update</div><div class="chyp__row"><span class="chyp__name">Anthrax</span><div class="chyp__track"><div class="chyp__fill" style="width:92%;"></div></div><span class="chyp__score">0.92</span><span class="chyp__delta chyp__delta--up">&#9650;20</span></div><div class="chyp__row"><span class="chyp__name">APP</span><div class="chyp__track"><div class="chyp__fill" style="width:82%;"></div></div><span class="chyp__score">0.82</span><span class="chyp__delta chyp__delta--up">&#9650;20</span></div><div class="chyp__row"><span class="chyp__name">SE</span><div class="chyp__track"><div class="chyp__fill" style="width:58%;"></div></div><span class="chyp__score">0.58</span><span class="chyp__delta chyp__delta--flat">&#9644;00</span></div><div class="chyp__row"><span class="chyp__name">Pasteurellosis</span><div class="chyp__track"><div class="chyp__fill" style="width:48%;"></div></div><span class="chyp__score">0.48</span><span class="chyp__delta chyp__delta--flat">&#9644;00</span></div><div class="chyp__row"><span class="chyp__name" style="color:#8A8A8A;">Other (6)</span><div class="chyp__track"><div class="chyp__fill" style="width:100%;background:#BFBFBF;"></div></div><span class="chyp__score">2.00</span><span class="chyp__delta chyp__delta--down">&#9660;70</span></div></div></div></div></details><div class="cbubble cbubble--bot"><div class="cbubble__role">Chatbot</div><div class="cbubble__text">Did the sow show any respiratory signs before dying?</div><div class="cbubble__sugg"><span class="csugg">Severe difficulty breathing or gasping for air</span><span class="csugg">Open-mouth breathing</span><span class="csugg">Nasal discharge (possibly bloody or frothy)</span><span class="csugg">Coughing</span><span class="csugg">Rapid breathing</span><span class="csugg">None</span><span class="csugg">Not sure</span></div></div></div></div><div class="cturn"><div class="cturn__rail"><span class="cdot cdot--user"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 10</span> &middot; t+45.0s</div><div class="cbubble cbubble--user"><div class="cbubble__role">Synthetic profile</div><div class="cbubble__text">Severe difficulty breathing or gasping for air — her throat was all swollen up and she just couldn't get air.</div></div></div></div><div class="cturn"><div class="cturn__rail"><span class="cdot cdot--bot"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 11</span> &middot; t+64.9s</div><details class="cthought"><summary class="cthought__sum"><span class="cthought__chev"></span><span class="cthought__label">Thought for 19.9s &middot; 3 modules</span><span class="cthought__tokens">&Sigma; tokens 11422/635</span></summary><div class="cthought__body"><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">3:collect_clinical_evidences</span><span class="cmod__dots"></span><span class="cmod__time">5.73s</span></div></div><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">3:producer_agent</span><span class="cmod__dots"></span><span class="cmod__time">3.83s</span></div></div><div class="cmod cmod--hyp"><div class="cmod__head"><span class="cmod__glyph">&#9670;</span><span class="cmod__name">3:extract_and_update_hypothesis</span><span class="cmod__dots"></span><span class="cmod__time">10.32s</span><span class="cmod__tag">&#10209; HYPOTH</span></div><dl class="cmod__io"><dt>reasoning</dt><dd>The top 3 (Anthrax 92%, APP 82%, SE 58%) are ahead of the rest. The throat swelling/respiratory signs already collected strongly suggest Anthrax. To further separate the top 3, I should ask about neurological signs — Anthrax shows incoordination, SE shows frenzied behavior/tremors/head pressing, while APP shows no neurological symptoms. This is a strong differentiator.</dd></dl><div class="chyp"><div class="chyp__title">Hypothesis update</div><div class="chyp__row"><span class="chyp__name">Anthrax</span><div class="chyp__track"><div class="chyp__fill" style="width:100%;"></div></div><span class="chyp__score">1.00</span><span class="chyp__delta chyp__delta--up">&#9650;08</span></div><div class="chyp__row"><span class="chyp__name">APP</span><div class="chyp__track"><div class="chyp__fill" style="width:72%;"></div></div><span class="chyp__score">0.72</span><span class="chyp__delta chyp__delta--down">&#9660;10</span></div><div class="chyp__row"><span class="chyp__name">SE</span><div class="chyp__track"><div class="chyp__fill" style="width:58%;"></div></div><span class="chyp__score">0.58</span><span class="chyp__delta chyp__delta--flat">&#9644;00</span></div><div class="chyp__row"><span class="chyp__name">Pasteurellosis</span><div class="chyp__track"><div class="chyp__fill" style="width:38%;"></div></div><span class="chyp__score">0.38</span><span class="chyp__delta chyp__delta--down">&#9660;10</span></div><div class="chyp__row"><span class="chyp__name" style="color:#8A8A8A;">Other (4)</span><div class="chyp__track"><div class="chyp__fill" style="width:100%;background:#BFBFBF;"></div></div><span class="chyp__score">1.02</span><span class="chyp__delta chyp__delta--down">&#9660;40</span></div></div></div></div></details><div class="cbubble cbubble--bot"><div class="cbubble__role">Chatbot</div><div class="cbubble__text">Did the sow show any neurological signs before dying?</div><div class="cbubble__sugg"><span class="csugg">Incoordination or stumbling</span><span class="csugg">Tremors or shaking</span><span class="csugg">Frenzied or aggressive behavior</span><span class="csugg">Head pressing</span><span class="csugg">Sudden collapse</span><span class="csugg">None</span><span class="csugg">Not sure</span></div></div></div></div><div class="cturn"><div class="cturn__rail"><span class="cdot cdot--user"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 12</span> &middot; t+64.9s</div><div class="cbubble cbubble--user"><div class="cbubble__role">Synthetic profile</div><div class="cbubble__text">Sudden collapse</div></div></div></div><div class="cturn"><div class="cturn__rail"><span class="cdot cdot--bot"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 13</span> &middot; t+74.8s</div><details class="cthought"><summary class="cthought__sum"><span class="cthought__chev"></span><span class="cthought__label">Thought for 9.9s &middot; 2 modules</span><span class="cthought__tokens">&Sigma; tokens 5032/255</span></summary><div class="cthought__body"><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">3:collect_clinical_evidences</span><span class="cmod__dots"></span><span class="cmod__time">5.54s</span></div></div><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">3:producer_agent</span><span class="cmod__dots"></span><span class="cmod__time">4.36s</span></div></div><div class="cmod cmod--hyp"><div class="cmod__head"><span class="cmod__glyph">&#9670;</span><span class="cmod__name">hypothesis_update</span><span class="cmod__dots"></span><span class="cmod__tag">&#10209; HYPOTH</span></div><dl class="cmod__io"><dt>reasoning</dt><dd>Anthrax is far ahead at 100%, but digestive and dermatology are both uncollected. Anthrax has distinctive digestive signs (bloody diarrhea) while APP/SE/ASF have their own patterns. Dermatology also differentiates well — Anthrax has no skin changes, while APP shows cyanosis, SE shows polygonal skin lesions, and ASF shows hemorrhagic marks. Dermatology is a strong differentiator between top diseases. I'll ask about digestive signs first as bloody diarrhea is a key Anthrax indicator that also differs meaningfully across the top diseases.</dd></dl><div class="chyp"><div class="chyp__title">Hypothesis update</div><div class="chyp__row"><span class="chyp__name">Anthrax</span><div class="chyp__track"><div class="chyp__fill" style="width:100%;"></div></div><span class="chyp__score">1.00</span><span class="chyp__delta chyp__delta--flat">&#9644;00</span></div><div class="chyp__row"><span class="chyp__name">APP</span><div class="chyp__track"><div class="chyp__fill" style="width:82%;"></div></div><span class="chyp__score">0.82</span><span class="chyp__delta chyp__delta--up">&#9650;10</span></div><div class="chyp__row"><span class="chyp__name">SE</span><div class="chyp__track"><div class="chyp__fill" style="width:48%;"></div></div><span class="chyp__score">0.48</span><span class="chyp__delta chyp__delta--down">&#9660;10</span></div><div class="chyp__row"><span class="chyp__name">ASF</span><div class="chyp__track"><div class="chyp__fill" style="width:45%;"></div></div><span class="chyp__score">0.45</span><span class="chyp__delta chyp__delta--up">&#9650;10</span></div><div class="chyp__row"><span class="chyp__name" style="color:#8A8A8A;">Other (2)</span><div class="chyp__track"><div class="chyp__fill" style="width:43%;background:#BFBFBF;"></div></div><span class="chyp__score">0.43</span><span class="chyp__delta chyp__delta--down">&#9660;20</span></div></div></div></div></details><div class="cbubble cbubble--bot"><div class="cbubble__role">Chatbot</div><div class="cbubble__text">Did the sow show any digestive signs before dying?</div><div class="cbubble__sugg"><span class="csugg">Anorexia or loss of appetite</span><span class="csugg">Vomiting</span><span class="csugg">Bloody diarrhea</span><span class="csugg">Constipation with dry hard feces</span><span class="csugg">Diarrhea (not bloody)</span><span class="csugg">None</span><span class="csugg">Not sure</span></div></div></div></div><div class="cturn"><div class="cturn__rail"><span class="cdot cdot--user"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 14</span> &middot; t+74.8s</div><div class="cbubble cbubble--user"><div class="cbubble__role">Synthetic profile</div><div class="cbubble__text">Anorexia or loss of appetite; Vomiting — she was throwing up blood right before she went.</div></div></div></div><div class="cturn"><div class="cturn__rail"><span class="cdot cdot--bot"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 15</span> &middot; t+91.6s</div><details class="cthought"><summary class="cthought__sum"><span class="cthought__chev"></span><span class="cthought__label">Thought for 16.8s &middot; 3 modules</span><span class="cthought__tokens">&Sigma; tokens 11289/652</span></summary><div class="cthought__body"><div class="cmod cmod--hyp"><div class="cmod__head"><span class="cmod__glyph">&#9670;</span><span class="cmod__name">3:extract_and_update_hypothesis</span><span class="cmod__dots"></span><span class="cmod__time">6.08s</span></div></div><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">3:collect_clinical_evidences</span><span class="cmod__dots"></span><span class="cmod__time">6.18s</span></div></div><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">3:producer_agent</span><span class="cmod__dots"></span><span class="cmod__time">4.57s</span></div></div></div></details><div class="cbubble cbubble--bot"><div class="cbubble__role">Chatbot</div><div class="cbubble__text">Which vaccines have your pigs received?</div><div class="cbubble__sugg"><span class="csugg">PRRS vaccine (live/inactivated)</span><span class="csugg">Mycoplasma hyopneumoniae vaccine (M. hyo)</span><span class="csugg">PCV2 vaccine</span><span class="csugg">APP + Pasteurella vaccine</span><span class="csugg">Not vaccinated for any disease</span></div></div></div></div><div class="cturn"><div class="cturn__rail"><span class="cdot cdot--user"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 16</span> &middot; t+91.6s</div><div class="cbubble cbubble--user"><div class="cbubble__role">Synthetic profile</div><div class="cbubble__text">Not sure, I don't really keep track of that stuff.</div></div></div></div><div class="cturn"><div class="cturn__rail"><span class="cdot cdot--bot"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 17</span> &middot; t+104.1s</div><details class="cthought"><summary class="cthought__sum"><span class="cthought__chev"></span><span class="cthought__label">Thought for 12.5s &middot; 3 modules</span><span class="cthought__tokens">&Sigma; tokens 7646/463</span></summary><div class="cthought__body"><div class="cmod cmod--hyp"><div class="cmod__head"><span class="cmod__glyph">&#9670;</span><span class="cmod__name">3:extract_and_update_hypothesis</span><span class="cmod__dots"></span><span class="cmod__time">7.03s</span></div></div><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">4:collect_vaccine_evidences</span><span class="cmod__dots"></span><span class="cmod__time">3.11s</span></div></div><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">4:producer_agent</span><span class="cmod__dots"></span><span class="cmod__time">2.36s</span></div></div></div></details><div class="cbubble cbubble--bot"><div class="cbubble__role">Chatbot</div><div class="cbubble__text">Have you used any antibiotics to treat the affected pigs?</div></div></div></div><div class="cturn"><div class="cturn__rail"><span class="cdot cdot--user"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 18</span> &middot; t+104.1s</div><div class="cbubble cbubble--user"><div class="cbubble__role">Synthetic profile</div><div class="cbubble__text">No, she went so fast there was no time to do anything.</div></div></div></div><div class="cturn"><div class="cturn__rail"><span class="cdot cdot--bot"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 19</span> &middot; t+113.7s</div><details class="cthought"><summary class="cthought__sum"><span class="cthought__chev"></span><span class="cthought__label">Thought for 9.6s &middot; 3 modules</span><span class="cthought__tokens">&Sigma; tokens 2899/290</span></summary><div class="cthought__body"><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">4:collect_treatment_evidences</span><span class="cmod__dots"></span><span class="cmod__time">2.12s</span></div></div><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">5:producer_agent</span><span class="cmod__dots"></span><span class="cmod__time">4.69s</span></div></div><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">5:give_final_diagnosis</span><span class="cmod__dots"></span><span class="cmod__time">2.75s</span></div></div></div></details><div class="cbubble cbubble--bot"><div class="cbubble__role">Chatbot</div><div class="cbubble__text">Based on the described symptoms, it is highly likely your pig(s) have <strong>Anthrax</strong>. These symptoms can also be seen in <strong>Actinobacillus Pleuropneumoniae</strong> (APP), <strong>Swine Erysipelas</strong> (SE).</div></div></div></div>
+            <div class="cturn"><div class="cturn__rail"><span class="cdot cdot--bot"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 01</span> &middot; t+6.2s</div><details class="cthought"><summary class="cthought__sum"><span class="cthought__chev"></span><span class="cthought__label">Thought for 6.2s &middot; 2 modules</span><span class="cthought__tokens">&Sigma; tokens 1408/111</span></summary><div class="cthought__body"><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">0:greet_and_describe</span><span class="cmod__dots"></span><span class="cmod__time">2.84s</span></div></div><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">1:producer_agent</span><span class="cmod__dots"></span><span class="cmod__time">3.32s</span></div></div></div></details><div class="cbubble cbubble--bot"><div class="cbubble__role">Chatbot</div><div class="cbubble__text">Hi there! How can I assist you today?</div></div></div></div><div class="cturn"><div class="cturn__rail"><span class="cdot cdot--user"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 02</span> &middot; t+6.2s</div><div class="cbubble cbubble--user"><div class="cbubble__role">Synthetic profile</div><div class="cbubble__text">Lost one of my sows today, it happened really fast and I'm worried.</div></div></div></div><div class="cturn"><div class="cturn__rail"><span class="cdot cdot--bot"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 03</span> &middot; t+14.4s</div><details class="cthought"><summary class="cthought__sum"><span class="cthought__chev"></span><span class="cthought__label">Thought for 8.3s &middot; 3 modules</span><span class="cthought__tokens">&Sigma; tokens 3668/312</span></summary><div class="cthought__body"><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">1:step1_transition</span><span class="cmod__dots"></span><span class="cmod__time">1.17s</span></div></div><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">2:extract_and_collect_general</span><span class="cmod__dots"></span><span class="cmod__time">4.22s</span></div></div><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">2:producer_agent</span><span class="cmod__dots"></span><span class="cmod__time">2.89s</span></div></div></div></details><div class="cbubble cbubble--bot"><div class="cbubble__role">Chatbot</div><div class="cbubble__text">How many pigs do you have in total?</div></div></div></div><div class="cturn"><div class="cturn__rail"><span class="cdot cdot--user"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 04</span> &middot; t+14.4s</div><div class="cbubble cbubble--user"><div class="cbubble__role">Synthetic profile</div><div class="cbubble__text">About 40.</div></div></div></div><div class="cturn"><div class="cturn__rail"><span class="cdot cdot--bot"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 05</span> &middot; t+27.3s</div><details class="cthought"><summary class="cthought__sum"><span class="cthought__chev"></span><span class="cthought__label">Thought for 12.8s &middot; 3 modules</span><span class="cthought__tokens">&Sigma; tokens 5394/587</span></summary><div class="cthought__body"><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">2:extract_and_collect_general</span><span class="cmod__dots"></span><span class="cmod__time">4.02s</span></div></div><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">2:producer_agent</span><span class="cmod__dots"></span><span class="cmod__time">3.99s</span></div></div><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">2:extract_and_collect_general</span><span class="cmod__dots"></span><span class="cmod__time">4.83s</span></div></div></div></details><div class="cbubble cbubble--bot"><div class="cbubble__role">Chatbot</div><div class="cbubble__text">How many pigs are currently sick?</div></div></div></div><div class="cturn"><div class="cturn__rail"><span class="cdot cdot--user"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 06</span> &middot; t+27.3s</div><div class="cbubble cbubble--user"><div class="cbubble__role">Synthetic profile</div><div class="cbubble__text">Just the one that died. None of the others seem sick right now.</div></div></div></div><div class="cturn"><div class="cturn__rail"><span class="cdot cdot--bot"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 07</span> &middot; t+34.1s</div><details class="cthought"><summary class="cthought__sum"><span class="cthought__chev"></span><span class="cthought__label">Thought for 6.8s &middot; 2 modules</span><span class="cthought__tokens">&Sigma; tokens 3544/307</span></summary><div class="cthought__body"><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">2:producer_agent</span><span class="cmod__dots"></span><span class="cmod__time">3.00s</span></div></div><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">2:extract_and_collect_general</span><span class="cmod__dots"></span><span class="cmod__time">3.83s</span></div></div></div></details><div class="cbubble cbubble--bot"><div class="cbubble__role">Chatbot</div><div class="cbubble__text">Did the sow show any signs of fever before dying? Please choose from the choices below.</div><div class="cbubble__sugg"><span class="csugg">very high fever (&gt;42°C)</span><span class="csugg">high fever (40-42°C)</span><span class="csugg">mild fever (39.5-40°C)</span><span class="csugg">no fever</span><span class="csugg">unsure</span></div></div></div></div><div class="cturn"><div class="cturn__rail"><span class="cdot cdot--user"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 08</span> &middot; t+34.1s</div><div class="cbubble cbubble--user"><div class="cbubble__role">Synthetic profile</div><div class="cbubble__text">High fever (40-42°C)</div></div></div></div><div class="cturn"><div class="cturn__rail"><span class="cdot cdot--bot"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 09</span> &middot; t+45.0s</div><details class="cthought"><summary class="cthought__sum"><span class="cthought__chev"></span><span class="cthought__label">Thought for 10.9s &middot; 3 modules</span><span class="cthought__tokens">&Sigma; tokens 12273/337</span></summary><div class="cthought__body"><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">2→3:preprocess_farmer</span><span class="cmod__dots"></span><span class="cmod__time">3.21s</span></div></div><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">2→3:formula_match</span><span class="cmod__dots"></span><span class="cmod__time">0.00s</span></div></div><div class="cmod cmod--hyp"><div class="cmod__head"><span class="cmod__glyph">&#9670;</span><span class="cmod__name">2→3:rerank_hypothesis</span><span class="cmod__dots"></span><span class="cmod__time">7.66s</span><span class="cmod__tag">&#10209; HYPOTH</span></div><dl class="cmod__io"><dt>reasoning</dt><dd>The top 3 (Anthrax, APP, SE) need to be separated from lower-ranked diseases. Respiratory signs are a major differentiator: APP has dramatic peracute respiratory signs (dyspnea, blood-frothy discharge), Anthrax has limited respiratory involvement, and SE has dyspnea/nasal discharge. Since the death was rapid, respiratory signs would strongly point toward APP vs. others.</dd></dl><div class="chyp"><div class="chyp__title">Hypothesis update</div><div class="chyp__row"><span class="chyp__name">Anthrax</span><div class="chyp__track"><div class="chyp__fill" style="width:92%;"></div></div><span class="chyp__score">0.92</span><span class="chyp__delta chyp__delta--up">&#9650;20</span></div><div class="chyp__row"><span class="chyp__name">APP</span><div class="chyp__track"><div class="chyp__fill" style="width:82%;"></div></div><span class="chyp__score">0.82</span><span class="chyp__delta chyp__delta--up">&#9650;20</span></div><div class="chyp__row"><span class="chyp__name">SE</span><div class="chyp__track"><div class="chyp__fill" style="width:58%;"></div></div><span class="chyp__score">0.58</span><span class="chyp__delta chyp__delta--flat">&#9644;00</span></div><div class="chyp__row"><span class="chyp__name">Pasteurellosis</span><div class="chyp__track"><div class="chyp__fill" style="width:48%;"></div></div><span class="chyp__score">0.48</span><span class="chyp__delta chyp__delta--flat">&#9644;00</span></div><div class="chyp__row"><span class="chyp__name" style="color:#7c8c73;">Other (6)</span><div class="chyp__track"><div class="chyp__fill" style="width:100%;background:#aab4a4;"></div></div><span class="chyp__score">2.00</span><span class="chyp__delta chyp__delta--down">&#9660;70</span></div></div></div></div></details><div class="cbubble cbubble--bot"><div class="cbubble__role">Chatbot</div><div class="cbubble__text">Did the sow show any respiratory signs before dying?</div><div class="cbubble__sugg"><span class="csugg">Severe difficulty breathing or gasping for air</span><span class="csugg">Open-mouth breathing</span><span class="csugg">Nasal discharge (possibly bloody or frothy)</span><span class="csugg">Coughing</span><span class="csugg">Rapid breathing</span><span class="csugg">None</span><span class="csugg">Not sure</span></div></div></div></div><div class="cturn"><div class="cturn__rail"><span class="cdot cdot--user"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 10</span> &middot; t+45.0s</div><div class="cbubble cbubble--user"><div class="cbubble__role">Synthetic profile</div><div class="cbubble__text">Severe difficulty breathing or gasping for air — her throat was all swollen up and she just couldn't get air.</div></div></div></div><div class="cturn"><div class="cturn__rail"><span class="cdot cdot--bot"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 11</span> &middot; t+64.9s</div><details class="cthought"><summary class="cthought__sum"><span class="cthought__chev"></span><span class="cthought__label">Thought for 19.9s &middot; 3 modules</span><span class="cthought__tokens">&Sigma; tokens 11422/635</span></summary><div class="cthought__body"><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">3:collect_clinical_evidences</span><span class="cmod__dots"></span><span class="cmod__time">5.73s</span></div></div><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">3:producer_agent</span><span class="cmod__dots"></span><span class="cmod__time">3.83s</span></div></div><div class="cmod cmod--hyp"><div class="cmod__head"><span class="cmod__glyph">&#9670;</span><span class="cmod__name">3:extract_and_update_hypothesis</span><span class="cmod__dots"></span><span class="cmod__time">10.32s</span><span class="cmod__tag">&#10209; HYPOTH</span></div><dl class="cmod__io"><dt>reasoning</dt><dd>The top 3 (Anthrax 92%, APP 82%, SE 58%) are ahead of the rest. The throat swelling/respiratory signs already collected strongly suggest Anthrax. To further separate the top 3, I should ask about neurological signs — Anthrax shows incoordination, SE shows frenzied behavior/tremors/head pressing, while APP shows no neurological symptoms. This is a strong differentiator.</dd></dl><div class="chyp"><div class="chyp__title">Hypothesis update</div><div class="chyp__row"><span class="chyp__name">Anthrax</span><div class="chyp__track"><div class="chyp__fill" style="width:100%;"></div></div><span class="chyp__score">1.00</span><span class="chyp__delta chyp__delta--up">&#9650;08</span></div><div class="chyp__row"><span class="chyp__name">APP</span><div class="chyp__track"><div class="chyp__fill" style="width:72%;"></div></div><span class="chyp__score">0.72</span><span class="chyp__delta chyp__delta--down">&#9660;10</span></div><div class="chyp__row"><span class="chyp__name">SE</span><div class="chyp__track"><div class="chyp__fill" style="width:58%;"></div></div><span class="chyp__score">0.58</span><span class="chyp__delta chyp__delta--flat">&#9644;00</span></div><div class="chyp__row"><span class="chyp__name">Pasteurellosis</span><div class="chyp__track"><div class="chyp__fill" style="width:38%;"></div></div><span class="chyp__score">0.38</span><span class="chyp__delta chyp__delta--down">&#9660;10</span></div><div class="chyp__row"><span class="chyp__name" style="color:#7c8c73;">Other (4)</span><div class="chyp__track"><div class="chyp__fill" style="width:100%;background:#aab4a4;"></div></div><span class="chyp__score">1.02</span><span class="chyp__delta chyp__delta--down">&#9660;40</span></div></div></div></div></details><div class="cbubble cbubble--bot"><div class="cbubble__role">Chatbot</div><div class="cbubble__text">Did the sow show any neurological signs before dying?</div><div class="cbubble__sugg"><span class="csugg">Incoordination or stumbling</span><span class="csugg">Tremors or shaking</span><span class="csugg">Frenzied or aggressive behavior</span><span class="csugg">Head pressing</span><span class="csugg">Sudden collapse</span><span class="csugg">None</span><span class="csugg">Not sure</span></div></div></div></div><div class="cturn"><div class="cturn__rail"><span class="cdot cdot--user"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 12</span> &middot; t+64.9s</div><div class="cbubble cbubble--user"><div class="cbubble__role">Synthetic profile</div><div class="cbubble__text">Sudden collapse</div></div></div></div><div class="cturn"><div class="cturn__rail"><span class="cdot cdot--bot"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 13</span> &middot; t+74.8s</div><details class="cthought"><summary class="cthought__sum"><span class="cthought__chev"></span><span class="cthought__label">Thought for 9.9s &middot; 2 modules</span><span class="cthought__tokens">&Sigma; tokens 5032/255</span></summary><div class="cthought__body"><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">3:collect_clinical_evidences</span><span class="cmod__dots"></span><span class="cmod__time">5.54s</span></div></div><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">3:producer_agent</span><span class="cmod__dots"></span><span class="cmod__time">4.36s</span></div></div><div class="cmod cmod--hyp"><div class="cmod__head"><span class="cmod__glyph">&#9670;</span><span class="cmod__name">hypothesis_update</span><span class="cmod__dots"></span><span class="cmod__tag">&#10209; HYPOTH</span></div><dl class="cmod__io"><dt>reasoning</dt><dd>Anthrax is far ahead at 100%, but digestive and dermatology are both uncollected. Anthrax has distinctive digestive signs (bloody diarrhea) while APP/SE/ASF have their own patterns. Dermatology also differentiates well — Anthrax has no skin changes, while APP shows cyanosis, SE shows polygonal skin lesions, and ASF shows hemorrhagic marks. Dermatology is a strong differentiator between top diseases. I'll ask about digestive signs first as bloody diarrhea is a key Anthrax indicator that also differs meaningfully across the top diseases.</dd></dl><div class="chyp"><div class="chyp__title">Hypothesis update</div><div class="chyp__row"><span class="chyp__name">Anthrax</span><div class="chyp__track"><div class="chyp__fill" style="width:100%;"></div></div><span class="chyp__score">1.00</span><span class="chyp__delta chyp__delta--flat">&#9644;00</span></div><div class="chyp__row"><span class="chyp__name">APP</span><div class="chyp__track"><div class="chyp__fill" style="width:82%;"></div></div><span class="chyp__score">0.82</span><span class="chyp__delta chyp__delta--up">&#9650;10</span></div><div class="chyp__row"><span class="chyp__name">SE</span><div class="chyp__track"><div class="chyp__fill" style="width:48%;"></div></div><span class="chyp__score">0.48</span><span class="chyp__delta chyp__delta--down">&#9660;10</span></div><div class="chyp__row"><span class="chyp__name">ASF</span><div class="chyp__track"><div class="chyp__fill" style="width:45%;"></div></div><span class="chyp__score">0.45</span><span class="chyp__delta chyp__delta--up">&#9650;10</span></div><div class="chyp__row"><span class="chyp__name" style="color:#7c8c73;">Other (2)</span><div class="chyp__track"><div class="chyp__fill" style="width:43%;background:#aab4a4;"></div></div><span class="chyp__score">0.43</span><span class="chyp__delta chyp__delta--down">&#9660;20</span></div></div></div></div></details><div class="cbubble cbubble--bot"><div class="cbubble__role">Chatbot</div><div class="cbubble__text">Did the sow show any digestive signs before dying?</div><div class="cbubble__sugg"><span class="csugg">Anorexia or loss of appetite</span><span class="csugg">Vomiting</span><span class="csugg">Bloody diarrhea</span><span class="csugg">Constipation with dry hard feces</span><span class="csugg">Diarrhea (not bloody)</span><span class="csugg">None</span><span class="csugg">Not sure</span></div></div></div></div><div class="cturn"><div class="cturn__rail"><span class="cdot cdot--user"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 14</span> &middot; t+74.8s</div><div class="cbubble cbubble--user"><div class="cbubble__role">Synthetic profile</div><div class="cbubble__text">Anorexia or loss of appetite; Vomiting — she was throwing up blood right before she went.</div></div></div></div><div class="cturn"><div class="cturn__rail"><span class="cdot cdot--bot"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 15</span> &middot; t+91.6s</div><details class="cthought"><summary class="cthought__sum"><span class="cthought__chev"></span><span class="cthought__label">Thought for 16.8s &middot; 3 modules</span><span class="cthought__tokens">&Sigma; tokens 11289/652</span></summary><div class="cthought__body"><div class="cmod cmod--hyp"><div class="cmod__head"><span class="cmod__glyph">&#9670;</span><span class="cmod__name">3:extract_and_update_hypothesis</span><span class="cmod__dots"></span><span class="cmod__time">6.08s</span></div></div><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">3:collect_clinical_evidences</span><span class="cmod__dots"></span><span class="cmod__time">6.18s</span></div></div><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">3:producer_agent</span><span class="cmod__dots"></span><span class="cmod__time">4.57s</span></div></div></div></details><div class="cbubble cbubble--bot"><div class="cbubble__role">Chatbot</div><div class="cbubble__text">Which vaccines have your pigs received?</div><div class="cbubble__sugg"><span class="csugg">PRRS vaccine (live/inactivated)</span><span class="csugg">Mycoplasma hyopneumoniae vaccine (M. hyo)</span><span class="csugg">PCV2 vaccine</span><span class="csugg">APP + Pasteurella vaccine</span><span class="csugg">Not vaccinated for any disease</span></div></div></div></div><div class="cturn"><div class="cturn__rail"><span class="cdot cdot--user"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 16</span> &middot; t+91.6s</div><div class="cbubble cbubble--user"><div class="cbubble__role">Synthetic profile</div><div class="cbubble__text">Not sure, I don't really keep track of that stuff.</div></div></div></div><div class="cturn"><div class="cturn__rail"><span class="cdot cdot--bot"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 17</span> &middot; t+104.1s</div><details class="cthought"><summary class="cthought__sum"><span class="cthought__chev"></span><span class="cthought__label">Thought for 12.5s &middot; 3 modules</span><span class="cthought__tokens">&Sigma; tokens 7646/463</span></summary><div class="cthought__body"><div class="cmod cmod--hyp"><div class="cmod__head"><span class="cmod__glyph">&#9670;</span><span class="cmod__name">3:extract_and_update_hypothesis</span><span class="cmod__dots"></span><span class="cmod__time">7.03s</span></div></div><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">4:collect_vaccine_evidences</span><span class="cmod__dots"></span><span class="cmod__time">3.11s</span></div></div><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">4:producer_agent</span><span class="cmod__dots"></span><span class="cmod__time">2.36s</span></div></div></div></details><div class="cbubble cbubble--bot"><div class="cbubble__role">Chatbot</div><div class="cbubble__text">Have you used any antibiotics to treat the affected pigs?</div></div></div></div><div class="cturn"><div class="cturn__rail"><span class="cdot cdot--user"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 18</span> &middot; t+104.1s</div><div class="cbubble cbubble--user"><div class="cbubble__role">Synthetic profile</div><div class="cbubble__text">No, she went so fast there was no time to do anything.</div></div></div></div><div class="cturn"><div class="cturn__rail"><span class="cdot cdot--bot"></span></div><div class="cturn__body"><div class="cturn__head"><span class="step">step 19</span> &middot; t+113.7s</div><details class="cthought"><summary class="cthought__sum"><span class="cthought__chev"></span><span class="cthought__label">Thought for 9.6s &middot; 3 modules</span><span class="cthought__tokens">&Sigma; tokens 2899/290</span></summary><div class="cthought__body"><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">4:collect_treatment_evidences</span><span class="cmod__dots"></span><span class="cmod__time">2.12s</span></div></div><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">5:producer_agent</span><span class="cmod__dots"></span><span class="cmod__time">4.69s</span></div></div><div class="cmod"><div class="cmod__head"><span class="cmod__glyph">&#9671;</span><span class="cmod__name">5:give_final_diagnosis</span><span class="cmod__dots"></span><span class="cmod__time">2.75s</span></div></div></div></details><div class="cbubble cbubble--bot"><div class="cbubble__role">Chatbot</div><div class="cbubble__text">Based on the described symptoms, it is highly likely your pig(s) have <strong>Anthrax</strong>. These symptoms can also be seen in <strong>Actinobacillus Pleuropneumoniae</strong> (APP), <strong>Swine Erysipelas</strong> (SE).</div></div></div></div>
           </div>
         </div>
       </div><!-- /Chat -->

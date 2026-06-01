@@ -4,7 +4,21 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=1320" />
 <title>Admin dashboard — FR-300 interactive wireframe</title>
-<link rel="stylesheet" href="./wireframe.css" />
+<link rel="stylesheet" href="./wireframe.css?v=forest" />
+<link rel="stylesheet" href="../_glass-sidebar.css?v=glass" />
+<script src="../_glass-sidebar.js?v=glass" defer></script>
+<style>
+  /* Dashboard is a FRAMED device (not a full-viewport app): keep the
+     rounded-corner clip and fit the glass rail inside the frame instead
+     of floating it at viewport height. */
+  .device { overflow: hidden; grid-template-columns: auto 1fr; }
+  .device > .sidebar {
+    position: static;
+    height: auto;
+    align-self: stretch;
+    margin: 16px 0 16px 16px;
+  }
+</style>
 </head>
 <body data-demo="default">
 
@@ -12,7 +26,7 @@
   <header class="doc-head">
     <p class="eyebrow">FR-300 / Admin Console</p>
     <h1>Lo-fi wireframe — admin dashboard</h1>
-    <p>Single interactive wireframe. Click the state switcher to jump between the four canonical states, or use the in-page buttons (Run sync, Cancel, Retry, Rebuild index) to drive live state transitions. Grayscale only — no glass, no shadow, no brand color.</p>
+    <p>Single interactive wireframe. Click the state switcher to jump between the four canonical states, or use the in-page buttons (Run sync, Cancel, Retry, Rebuild index) to drive live state transitions. Themed with the design system's forest palette, earthsky background and frosted-glass header.</p>
     <p class="meta">
       <span>Author: Cowork (Claude) for Jack</span>
       <span>Status: design exploration · pre-spec</span>
@@ -33,45 +47,158 @@
   <!-- ============== Device frame ============== -->
   <div class="device">
 
-    <!-- ============== Sidebar ============== -->
-    <aside class="sidebar">
-      <div class="sidebar__brand">
-        <div class="sidebar__logo">F2V</div>
-        <div>
-          <div class="sidebar__brand-text">Farm2Vet</div>
-          <div class="sidebar__brand-sub">Admin console</div>
+    <!-- ============== Sidebar (glass rail — _glass-sidebar.css/.js) ============== -->
+    <aside class="sidebar" aria-label="Primary">
+      <header class="sidebar__header">
+        <a href="#" class="sidebar__brand" aria-label="Farm2Vet dashboard home">
+          <img class="sidebar__brand-mark" src="../../f2v-design-system-sot/logo/logo-emblem-white.svg" alt="" aria-hidden="true" />
+          <span class="sidebar__brand-text">Farm2Vet</span>
+        </a>
+        <button type="button" class="sidebar__collapse" aria-label="Collapse sidebar" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6"/></svg>
+        </button>
+      </header>
+
+      <nav class="sidebar__nav" aria-label="Primary destinations">
+        <ul class="sidebar__list">
+          <li class="sidebar__item">
+            <a class="sidebar__link is-current" href="#" aria-current="page">
+              <span class="sidebar__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+              </span>
+              <span class="sidebar__label">Overview</span>
+            </a>
+          </li>
+
+          <li class="sidebar__item is-open">
+            <button type="button" class="sidebar__link" aria-expanded="true">
+              <span class="sidebar__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/></svg>
+              </span>
+              <span class="sidebar__label">Data management</span>
+              <span class="sidebar__trailing"><svg class="sidebar__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></span>
+            </button>
+            <ul class="sidebar__sublist">
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Disease</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Question</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Conversation</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Image</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Resource</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">PDF Input</span></a></li>
+            </ul>
+          </li>
+
+          <li class="sidebar__item">
+            <a class="sidebar__link" href="#">
+              <span class="sidebar__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
+              </span>
+              <span class="sidebar__label">Automated testing</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a class="sidebar__link" href="#">
+              <span class="sidebar__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              </span>
+              <span class="sidebar__label">Sync database</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="sidebar__footer">
+        <div class="sidebar__profile-wrap">
+          <div class="sidebar__profile">
+            <span class="sidebar__avatar" aria-hidden="true">JM</span>
+            <span class="sidebar__profile-text">
+              <span class="sidebar__profile-name">Jack Miller</span>
+              <span class="sidebar__profile-role">Admin</span>
+            </span>
+            <button type="button" class="sidebar__overflow" aria-label="Account menu" aria-haspopup="menu" aria-expanded="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+            </button>
+          </div>
+
+          <div class="sidebar__menu" role="menu" aria-label="Account">
+            <span class="sidebar__menu-header">farm2vets.tech@gmail.com</span>
+            <ul class="sidebar__menu-list">
+              <li role="none">
+                <a class="sidebar__menu-item" role="menuitem" href="#">
+                  <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                  <span>Settings</span>
+                </a>
+              </li>
+              <li role="none">
+                <a class="sidebar__menu-item" role="menuitem" href="#">
+                  <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                  <span>Language</span>
+                </a>
+              </li>
+              <li role="none">
+                <a class="sidebar__menu-item" role="menuitem" href="#">
+                  <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                  <span>Get Help</span>
+                </a>
+              </li>
+              <li role="none" class="sidebar__menu-item--divider" aria-hidden="true"></li>
+              <li role="none">
+                <a class="sidebar__menu-item" role="menuitem" href="#">
+                  <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                  <span>Logout</span>
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
-      <div class="sidebar__group">
-        <div class="sidebar__group-label">Workspace</div>
-        <div class="sidebar__item is-active"><span class="sidebar__item-glyph"></span>Dashboard</div>
-        <div class="sidebar__item"><span class="sidebar__item-glyph"></span>Questions<span class="sidebar__count" data-count="questions">393</span></div>
-        <div class="sidebar__item"><span class="sidebar__item-glyph"></span>Diseases<span class="sidebar__count" data-count="diseases">47</span></div>
-        <div class="sidebar__item"><span class="sidebar__item-glyph"></span>Synthetic profiles<span class="sidebar__count" data-count="profiles">86</span></div>
-        <div class="sidebar__item"><span class="sidebar__item-glyph"></span>Testing<span class="sidebar__count" data-count="testing">24</span></div>
-      </div>
-      <div class="sidebar__group">
-        <div class="sidebar__group-label">Operations</div>
-        <div class="sidebar__item"><span class="sidebar__item-glyph"></span>Users</div>
-        <div class="sidebar__item"><span class="sidebar__item-glyph"></span>Reports</div>
-        <div class="sidebar__item"><span class="sidebar__item-glyph"></span>Settings</div>
       </div>
     </aside>
 
     <!-- ============== Main column ============== -->
     <div class="main">
-      <div class="topbar">
-        <div class="crumb">
-          <span>Admin</span>
-          <span class="sep">/</span>
-          <span class="here">Dashboard</span>
+      <header class="topbar" aria-label="Admin chrome">
+        <div class="topbar__inner">
+
+          <!-- Island 1 — Breadcrumb pill -->
+          <nav class="topbar__crumbs" aria-label="Breadcrumb">
+            <a href="#">Admin</a>
+            <span class="topbar__crumb-sep" aria-hidden="true">›</span>
+            <span class="topbar__crumb-tail" aria-current="page">Overview</span>
+          </nav>
+
+          <!-- Island 2 — Search + notification + language cluster pill -->
+          <div class="topbar__cluster">
+            <label class="topbar__search">
+              <span class="topbar__search-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="7"/>
+                  <path d="m21 21-4.3-4.3"/>
+                </svg>
+              </span>
+              <input type="search" placeholder="Search…" aria-label="Search the admin console" />
+            </label>
+
+            <span class="topbar__divider" aria-hidden="true"></span>
+
+            <button type="button" class="topbar__icon-btn" aria-label="Notifications, 3 unread">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+              </svg>
+              <span class="topbar__dot" aria-hidden="true"></span>
+            </button>
+
+            <div class="topbar__lang" role="group" aria-label="Interface language">
+              <button type="button" aria-pressed="true">EN</button>
+              <button type="button" aria-pressed="false">VI</button>
+            </div>
+          </div>
+
+          <!-- Island 3 — Version chip -->
+          <a href="#" class="topbar__chip" aria-label="Admin version">v1.4.2</a>
+
         </div>
-        <div class="topbar__right">
-          <!-- single slot; JS rewrites this when the global state changes -->
-          <span data-topbar-status><span>Minh · Admin</span></span>
-          <span class="avatar"></span>
-        </div>
-      </div>
+      </header>
 
       <div class="content">
 
@@ -338,11 +465,11 @@
                   <p class="panel__hint">Records missing required fields.</p>
                 </div>
               </header>
-              <div class="panel__body" style="display:grid;place-items:center;color:#8A8A8A;font-size:12px;text-align:center;padding:32px 18px;">
+              <div class="panel__body" style="display:grid;place-items:center;color:#7c8c73;font-size:12px;text-align:center;padding:32px 18px;">
                 <div>
-                  <div style="width:40px;height:40px;border:1.5px dashed #C5C5C5;border-radius:8px;margin:0 auto 10px;"></div>
+                  <div style="width:40px;height:40px;border:1.5px dashed #aab4a4;border-radius:8px;margin:0 auto 10px;"></div>
                   No diseases in the catalogue yet.<br/>
-                  <a href="#" style="color:#2A2A2A;font-weight:500;text-decoration:none;">Add disease →</a>
+                  <a href="#" style="color:#398c36;font-weight:500;text-decoration:none;">Add disease →</a>
                 </div>
               </div>
             </div>
@@ -394,11 +521,11 @@
                   <p class="panel__hint">Latest suite, run against each KB / model release.</p>
                 </div>
               </header>
-              <div class="panel__body" style="display:grid;place-items:center;color:#8A8A8A;font-size:12px;text-align:center;padding:32px 18px;">
+              <div class="panel__body" style="display:grid;place-items:center;color:#7c8c73;font-size:12px;text-align:center;padding:32px 18px;">
                 <div>
-                  <div style="width:40px;height:40px;border:1.5px dashed #C5C5C5;border-radius:8px;margin:0 auto 10px;"></div>
+                  <div style="width:40px;height:40px;border:1.5px dashed #aab4a4;border-radius:8px;margin:0 auto 10px;"></div>
                   No test suite has been run yet.<br/>
-                  <a href="#" style="color:#2A2A2A;font-weight:500;text-decoration:none;">Create test suite →</a>
+                  <a href="#" style="color:#398c36;font-weight:500;text-decoration:none;">Create test suite →</a>
                 </div>
               </div>
             </div>
@@ -452,9 +579,9 @@
   </div>
 
   <div class="legend">
-    <h3>Wireframe conventions</h3>
-    Grayscale rail only — no brand color, no shadow, no glass.
-    Components shown as boxy approximations (<code>.btn</code>, <code>.chip</code>, <code>.stat</code>, <code>.panel</code>).
+    <h3>Mockup conventions</h3>
+    Forest theme — brand color, soft shadow and a frosted-glass header, ported from the design system.
+    Components use canonical classes (<code>.btn</code>, <code>.chip</code>, <code>.stat</code>, <code>.panel</code>).
     Status uses chip variants (<code>chip--ok</code> / <code>chip--run</code> / <code>chip--warn</code> / <code>chip--err</code> / <code>chip--idle</code>).
     Running rows use a progress strip with monospace meta. Score trend is a placeholder polyline — production will use the canonical chart.
     Names, numbers and disease IDs are illustrative.
@@ -635,7 +762,9 @@
   };
 
   function setTopbar(html) {
-    $('[data-topbar-status]').innerHTML = html;
+    // The forest header has no per-state status slot; no-op when absent.
+    const el = $('[data-topbar-status]');
+    if (el) el.innerHTML = html;
   }
   function setPageheadSub(text) {
     $('[data-pagehead-sub]').textContent = text;
@@ -787,6 +916,26 @@
           break;
       }
     }
+  });
+
+  // ─────────────────────────── sidebar nav (forest behaviour) ───────────────────────────
+  // Expand/collapse the Data management group
+  document.querySelectorAll('.nav__item--parent').forEach(parent => {
+    parent.addEventListener('click', e => {
+      e.preventDefault();
+      const group = parent.closest('.nav__group');
+      const open = group.classList.toggle('is-open');
+      parent.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  });
+
+  // Active state for any clickable nav item (skip the parent toggle)
+  document.querySelectorAll('.nav__item:not(.nav__item--parent)').forEach(item => {
+    item.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelectorAll('.nav__item').forEach(i => i.classList.remove('is-active'));
+      item.classList.add('is-active');
+    });
   });
 
   // Boot in Default

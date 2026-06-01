@@ -4,7 +4,9 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Wireframe · Image Management · Empty</title>
-<link rel="stylesheet" href="wireframe.css" />
+<link rel="stylesheet" href="wireframe.css?v=forest" />
+<link rel="stylesheet" href="../../_glass-sidebar.css?v=glass" />
+<script src="../../_glass-sidebar.js?v=glass" defer></script>
 </head>
 <body>
 
@@ -29,20 +31,109 @@
 
 <div class="app">
 
-  <aside class="sidebar">
-    <div class="sidebar__brand">[ Brand / logo ]</div>
-    <div class="sidebar__group">
-      <div class="sidebar__label">Knowledge Base</div>
-      <div class="sidebar__item"><span class="dot"></span>Diseases</div>
-      <div class="sidebar__item is-active"><span class="dot"></span>Domain Images</div>
-      <div class="sidebar__item"><span class="dot"></span>Sources</div>
-      <div class="sidebar__item"><span class="dot"></span>Translations</div>
-    </div>
-    <div class="sidebar__group">
-      <div class="sidebar__label">Admin</div>
-      <div class="sidebar__item"><span class="dot"></span>Users</div>
-      <div class="sidebar__item"><span class="dot"></span>Audit log</div>
-      <div class="sidebar__item"><span class="dot"></span>Settings</div>
+  <aside class="sidebar" aria-label="Primary">
+    <header class="sidebar__header">
+      <a href="#" class="sidebar__brand" aria-label="Farm2Vet dashboard home">
+        <img class="sidebar__brand-mark" src="../../../f2v-design-system-sot/logo/logo-emblem-white.svg" alt="" aria-hidden="true" />
+        <span class="sidebar__brand-text">Farm2Vet</span>
+      </a>
+      <button type="button" class="sidebar__collapse" aria-label="Collapse sidebar" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6"/></svg>
+      </button>
+    </header>
+
+    <nav class="sidebar__nav" aria-label="Primary destinations">
+      <ul class="sidebar__list">
+        <li class="sidebar__item">
+          <a class="sidebar__link" href="#">
+            <span class="sidebar__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+            </span>
+            <span class="sidebar__label">Overview</span>
+          </a>
+        </li>
+
+        <li class="sidebar__item is-open">
+          <button type="button" class="sidebar__link" aria-expanded="true">
+            <span class="sidebar__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/></svg>
+            </span>
+            <span class="sidebar__label">Data management</span>
+            <span class="sidebar__trailing"><svg class="sidebar__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></span>
+          </button>
+          <ul class="sidebar__sublist">
+            <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Disease</span></a></li>
+            <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Question</span></a></li>
+            <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Conversation</span></a></li>
+            <li class="sidebar__item"><a class="sidebar__link is-current" href="#" aria-current="page"><span class="sidebar__label">Image</span></a></li>
+            <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Resource</span></a></li>
+            <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">PDF Input</span></a></li>
+          </ul>
+        </li>
+
+        <li class="sidebar__item">
+          <a class="sidebar__link" href="#">
+            <span class="sidebar__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
+            </span>
+            <span class="sidebar__label">Automated testing</span>
+          </a>
+        </li>
+        <li class="sidebar__item">
+          <a class="sidebar__link" href="#">
+            <span class="sidebar__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            </span>
+            <span class="sidebar__label">Sync database</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="sidebar__footer">
+      <div class="sidebar__profile-wrap">
+        <div class="sidebar__profile">
+          <span class="sidebar__avatar" aria-hidden="true">AU</span>
+          <span class="sidebar__profile-text">
+            <span class="sidebar__profile-name">Admin user</span>
+            <span class="sidebar__profile-role">Admin</span>
+          </span>
+          <button type="button" class="sidebar__overflow" aria-label="Account menu" aria-haspopup="menu" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+          </button>
+        </div>
+
+        <div class="sidebar__menu" role="menu" aria-label="Account">
+          <span class="sidebar__menu-header">farm2vets.tech@gmail.com</span>
+          <ul class="sidebar__menu-list">
+            <li role="none">
+              <a class="sidebar__menu-item" role="menuitem" href="#">
+                <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                <span>Settings</span>
+              </a>
+            </li>
+            <li role="none">
+              <a class="sidebar__menu-item" role="menuitem" href="#">
+                <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                <span>Language</span>
+              </a>
+            </li>
+            <li role="none">
+              <a class="sidebar__menu-item" role="menuitem" href="#">
+                <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <span>Get Help</span>
+              </a>
+            </li>
+            <li role="none" class="sidebar__menu-item--divider" aria-hidden="true"></li>
+            <li role="none">
+              <a class="sidebar__menu-item" role="menuitem" href="#">
+                <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                <span>Logout</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   </aside>
 
@@ -52,10 +143,13 @@
       <div class="topbar__path">
         Admin <span class="sep">/</span> <strong>Domain Images</strong>
       </div>
-      <div class="topbar__user">
-        <span>Admin user</span>
-        <div class="topbar__avatar"></div>
+      <div class="topbar__cluster">
+        <div class="topbar__lang" role="group" aria-label="Interface language">
+          <button type="button" aria-pressed="true">EN</button>
+          <button type="button" aria-pressed="false">VI</button>
+        </div>
       </div>
+      <a href="#" class="topbar__chip" aria-label="Admin version">Farm2Vet · v1.0</a>
     </header>
 
     <div class="content">

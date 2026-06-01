@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Diseases — Farm2Vet Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="wireframe.css?v=forest-2" />
+<link rel="stylesheet" href="../../_glass-sidebar.css?v=glass" />
+<script src="../../_glass-sidebar.js?v=glass" defer></script>
+</head>
+<body>
+
+<div class="wf-shell">
+
+  <!-- ───────────────── Sidebar ───────────────── -->
+  <aside class="sidebar" aria-label="Primary">
+    <header class="sidebar__header">
+      <a href="#" class="sidebar__brand" aria-label="Farm2Vet dashboard home">
+        <img class="sidebar__brand-mark" src="../../../f2v-design-system-sot/logo/logo-emblem-white.svg" alt="" aria-hidden="true" />
+        <span class="sidebar__brand-text">Farm2Vet</span>
+      </a>
+      <button type="button" class="sidebar__collapse" aria-label="Collapse sidebar" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6"/></svg>
+      </button>
+    </header>
+
+    <nav class="sidebar__nav" aria-label="Primary destinations">
+      <ul class="sidebar__list">
+        <li class="sidebar__item">
+          <a class="sidebar__link" href="../../dashboard/dashboard.html">
+            <span class="sidebar__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+            </span>
+            <span class="sidebar__label">Overview</span>
+          </a>
+        </li>
+
+        <li class="sidebar__item is-open">
+          <button type="button" class="sidebar__link" aria-expanded="true">
+            <span class="sidebar__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/></svg>
+            </span>
+            <span class="sidebar__label">Data management</span>
+            <span class="sidebar__trailing"><svg class="sidebar__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></span>
+          </button>
+          <ul class="sidebar__sublist">
+            <li class="sidebar__item"><a class="sidebar__link is-current" href="disease-list.html" aria-current="page"><span class="sidebar__label">Disease</span></a></li>
+            <li class="sidebar__item"><a class="sidebar__link" href="../question/01-list.html"><span class="sidebar__label">Question</span></a></li>
+            <li class="sidebar__item"><a class="sidebar__link" href="../conversation/conversation-list.html"><span class="sidebar__label">Conversation</span></a></li>
+            <li class="sidebar__item"><a class="sidebar__link" href="../images/01-list.html"><span class="sidebar__label">Image</span></a></li>
+            <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Resource</span></a></li>
+            <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">PDF Input</span></a></li>
+          </ul>
+        </li>
+
+        <li class="sidebar__item">
+          <a class="sidebar__link" href="../../automated-testing/testsuite/testsuite-list.html">
+            <span class="sidebar__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
+            </span>
+            <span class="sidebar__label">Automated testing</span>
+          </a>
+        </li>
+        <li class="sidebar__item">
+          <a class="sidebar__link" href="#">
+            <span class="sidebar__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            </span>
+            <span class="sidebar__label">Sync database</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="sidebar__footer">
+      <div class="sidebar__profile-wrap">
+        <div class="sidebar__profile">
+          <span class="sidebar__avatar" aria-hidden="true">MB</span>
+          <span class="sidebar__profile-text">
+            <span class="sidebar__profile-name">Minh Bùi</span>
+            <span class="sidebar__profile-role">Admin</span>
+          </span>
+          <button type="button" class="sidebar__overflow" aria-label="Account menu" aria-haspopup="menu" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+          </button>
+        </div>
+
+        <div class="sidebar__menu" role="menu" aria-label="Account">
+          <span class="sidebar__menu-header">farm2vets.tech@gmail.com</span>
+          <ul class="sidebar__menu-list">
+            <li role="none">
+              <a class="sidebar__menu-item" role="menuitem" href="#">
+                <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                <span>Settings</span>
+              </a>
+            </li>
+            <li role="none">
+              <a class="sidebar__menu-item" role="menuitem" href="#">
+                <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                <span>Language</span>
+              </a>
+            </li>
+            <li role="none">
+              <a class="sidebar__menu-item" role="menuitem" href="#">
+                <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <span>Get Help</span>
+              </a>
+            </li>
+            <li role="none" class="sidebar__menu-item--divider" aria-hidden="true"></li>
+            <li role="none">
+              <a class="sidebar__menu-item" role="menuitem" href="#">
+                <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                <span>Logout</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ───────────────── Main ───────────────── -->
+  <div class="wf-main">
+
+    <header class="wf-topbar">
+      <nav class="wf-crumbs" aria-label="Breadcrumb">
+        <a href="#">Data management</a>
+        <span class="wf-crumbs__sep">/</span>
+        <span class="wf-crumbs__here">Diseases</span>
+      </nav>
+      <div class="wf-topbar__cluster">
+        <div class="wf-input wf-input--search" style="width:260px;">
+          <span class="wf-input__icon" aria-hidden="true"></span>
+          <input type="text" placeholder="Search the knowledge base" aria-label="Search the knowledge base" />
+        </div>
+        <div class="wf-seg" role="group" aria-label="Interface language">
+          <button class="wf-seg__opt is-on" type="button">EN</button>
+          <button class="wf-seg__opt" type="button">VI</button>
+        </div>
+        <a class="wf-btn wf-btn--primary" href="disease-create.html">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          New disease
+        </a>
+      </div>
+    </header>
+
+    <main class="wf-page">
+
+      <!-- Page hero -->
+      <div class="wf-page-head">
+        <div>
+          <h1 class="wf-page-title">Diseases</h1>
+          <p class="wf-page-sub"><strong>47</strong> diseases · <strong>5</strong> incomplete · last synced to chatbot 12 min ago.</p>
+        </div>
+        <div class="wf-topbar__cluster" style="background:transparent; box-shadow:none; border:0; backdrop-filter:none; -webkit-backdrop-filter:none; padding:0;">
+          <button class="wf-btn" type="button" data-modal-open="sync-modal">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+            Sync to chatbot
+          </button>
+          <a class="wf-btn wf-btn--primary" href="disease-create.html">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+            New disease
+          </a>
+        </div>
+      </div>
+
+      <!-- Filter toolbar -->
+      <section class="wf-card" aria-label="Filters and search">
+        <div class="wf-card__body wf-card__body--tight wf-flex wf-flex--wrap" style="gap:10px;">
+          <div class="wf-input wf-input--search" style="flex:1; min-width:240px;">
+            <span class="wf-input__icon" aria-hidden="true"></span>
+            <input type="text" placeholder="Search diseases by name or codename…" aria-label="Search diseases" />
+          </div>
+
+          <!-- Facet: Status -->
+          <div class="wf-menu" data-facet-menu>
+            <button class="wf-facet" type="button" data-menu-toggle data-facet>
+              Status
+              <span class="wf-facet__count wf-hidden" data-facet-count>0</span>
+            </button>
+            <div class="wf-menu__panel wf-menu__panel--left">
+              <div class="wf-menu__label">Filter by status</div>
+              <button class="wf-menu__item" type="button" data-facet-opt="active" data-facet-label="Status: Active"><svg class="wf-menu__check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Active</button>
+              <button class="wf-menu__item" type="button" data-facet-opt="inactive" data-facet-label="Status: Inactive"><svg class="wf-menu__check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Inactive</button>
+            </div>
+          </div>
+
+          <!-- Facet: Completeness -->
+          <div class="wf-menu" data-facet-menu>
+            <button class="wf-facet" type="button" data-menu-toggle data-facet>
+              Completeness
+              <span class="wf-facet__count wf-hidden" data-facet-count>0</span>
+            </button>
+            <div class="wf-menu__panel wf-menu__panel--left">
+              <div class="wf-menu__label">Filter by completeness</div>
+              <button class="wf-menu__item" type="button" data-facet-opt="complete" data-facet-label="Complete"><svg class="wf-menu__check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Complete</button>
+              <button class="wf-menu__item" type="button" data-facet-opt="incomplete" data-facet-label="Incomplete"><svg class="wf-menu__check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Incomplete</button>
+            </div>
+          </div>
+
+          <!-- Facet: Language coverage -->
+          <div class="wf-menu" data-facet-menu>
+            <button class="wf-facet" type="button" data-menu-toggle data-facet>
+              Language
+              <span class="wf-facet__count wf-hidden" data-facet-count>0</span>
+            </button>
+            <div class="wf-menu__panel wf-menu__panel--left">
+              <div class="wf-menu__label">Translation coverage</div>
+              <button class="wf-menu__item" type="button" data-facet-opt="vi-missing" data-facet-label="VI missing"><svg class="wf-menu__check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Vietnamese missing</button>
+              <button class="wf-menu__item" type="button" data-facet-opt="en-missing" data-facet-label="EN missing"><svg class="wf-menu__check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>English missing</button>
+              <button class="wf-menu__item" type="button" data-facet-opt="both" data-facet-label="Both languages"><svg class="wf-menu__check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Both complete</button>
+            </div>
+          </div>
+
+          <span class="wf-spacer"></span>
+
+          <!-- Sort -->
+          <div class="wf-menu" data-facet-menu="false">
+            <button class="wf-select wf-select--sm" type="button" data-menu-toggle style="height:36px;">Sort: Last updated ↓</button>
+            <div class="wf-menu__panel">
+              <div class="wf-menu__label">Sort by</div>
+              <button class="wf-menu__item is-selected" type="button"><svg class="wf-menu__check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Last updated <span class="wf-menu__meta">newest</span></button>
+              <button class="wf-menu__item" type="button"><svg class="wf-menu__check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Codename <span class="wf-menu__meta">A–Z</span></button>
+              <button class="wf-menu__item" type="button"><svg class="wf-menu__check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Name <span class="wf-menu__meta">A–Z</span></button>
+            </div>
+          </div>
+
+          <!-- Density -->
+          <div class="wf-seg" data-seg-group data-density-target="#disease-table" role="group" aria-label="Row density">
+            <button class="wf-seg__opt is-on" type="button" data-seg="comfortable" title="Comfortable" aria-label="Comfortable density">≡</button>
+            <button class="wf-seg__opt" type="button" data-seg="compact" title="Compact" aria-label="Compact density">☰</button>
+          </div>
+        </div>
+
+        <!-- Active-filter summary (revealed when ≥1 facet is active) -->
+        <div class="wf-card__body wf-card__body--tight wf-filter-summary wf-hidden" data-filter-summary style="border-top:1px solid var(--wf-line);">
+          <span class="wf-filter-summary__label">Filters</span>
+          <span data-filter-chips style="display:contents;"></span>
+          <button class="wf-btn wf-btn--ghost wf-btn--sm" type="button" data-filter-clear>Clear all</button>
+        </div>
+      </section>
+
+      <!-- Bulk-selection contextual island -->
+      <div class="wf-bulkbar" data-bulkbar style="margin-top:16px;">
+        <span class="wf-bulkbar__count">0 diseases selected</span>
+        <span style="opacity:.4;">·</span>
+        <button class="wf-btn wf-btn--sm" type="button" data-toast="Activated selected diseases">Activate</button>
+        <button class="wf-btn wf-btn--sm" type="button" data-toast="Deactivated selected diseases">Deactivate</button>
+        <button class="wf-btn wf-btn--sm" type="button" data-toast="Synced selected diseases to chatbot">Sync</button>
+        <button class="wf-btn wf-btn--sm" type="button" data-modal-open="delete-modal">Delete…</button>
+        <span class="wf-bulkbar__spacer"></span>
+        <button class="wf-btn wf-btn--sm wf-btn--ghost" type="button" data-bulk-clear style="color:#fff;">Clear selection</button>
+      </div>
+
+      <!-- Diseases table -->
+      <section class="wf-card" aria-label="All diseases" style="margin-top:16px; overflow:hidden;">
+        <div class="wf-card__head">
+          <div class="wf-flex">
+            <h2 class="wf-card__title">All diseases</h2>
+            <span class="wf-card__sub" data-result-count>47 results</span>
+          </div>
+          <span class="wf-card__sub">Click a row to open · default sort: last updated</span>
+        </div>
+
+        <div style="overflow-x:auto;">
+        <table class="wf-table" id="disease-table" data-selectable aria-label="Diseases">
+          <thead>
+            <tr>
+              <th style="width:40px;"><span class="wf-check" data-check-all role="checkbox" aria-label="Select all diseases" tabindex="0"></span></th>
+              <th><button class="wf-th-sort is-active" data-sort="name" data-dir="none" type="button">Disease</button></th>
+              <th style="width:130px;"><button class="wf-th-sort" data-sort="codename" data-dir="none" type="button">Codename</button></th>
+              <th style="width:170px;"><button class="wf-th-sort" data-sort="status" data-dir="none" type="button">Status</button></th>
+              <th style="width:150px;">Active version</th>
+              <th style="width:140px;"><button class="wf-th-sort is-active" data-sort="last updated" data-dir="desc" type="button">Updated <span class="wf-th-sort__arrow">▼</span></button></th>
+              <th style="width:120px; text-align:right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <!-- Row: PRRS -->
+            <tr data-row-href="disease-detail.html">
+              <td><span class="wf-check" data-row-check role="checkbox" aria-label="Select PRRS" tabindex="0"></span></td>
+              <td>
+                <span class="wf-table__name">Porcine Reproductive &amp; Respiratory Syndrome</span>
+                <span class="wf-table__meta">
+                  <span class="wf-warnflag" title="Missing in English: prevention, dermatology symptoms">EN incomplete</span>
+                  <span>7 pig types · 3 forms</span>
+                </span>
+              </td>
+              <td><span class="wf-table__code">PRRS</span></td>
+              <td>
+                <span class="wf-switch is-on" data-switch data-label-on="Active" data-label-off="Inactive"
+                      data-confirm="deactivate-modal" data-toast-off="Deactivated PRRS" role="switch" aria-checked="true">
+                  <span class="wf-switch__track"><span class="wf-switch__thumb"></span></span>
+                  <span class="wf-switch__label">Active</span>
+                </span>
+              </td>
+              <td>
+                <div class="wf-menu" data-facet-menu="false">
+                  <button class="wf-select wf-select--sm" type="button" data-menu-toggle>v3.2 · Live</button>
+                  <div class="wf-menu__panel">
+                    <div class="wf-menu__label">Switch version (opens detail)</div>
+                    <a class="wf-menu__item is-selected" href="disease-detail.html"><svg class="wf-menu__check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>v3.2 <span class="wf-menu__meta">Live</span></a>
+                    <a class="wf-menu__item" href="disease-detail.html"><svg class="wf-menu__check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>v3.1 <span class="wf-menu__meta">Archived</span></a>
+                    <a class="wf-menu__item" href="disease-detail.html"><svg class="wf-menu__check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>v4.0 <span class="wf-menu__meta">Draft</span></a>
+                  </div>
+                </div>
+              </td>
+              <td>20 May 2026</td>
+              <td style="text-align:right;">
+                <span class="wf-row-actions">
+                  <a class="wf-btn wf-btn--ghost wf-btn--sm" href="disease-edit.html" aria-label="Edit PRRS">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                  </a>
+                  <div class="wf-menu" data-facet-menu="false">
+                    <button class="wf-btn wf-btn--ghost wf-btn--icon wf-btn--sm" type="button" data-menu-toggle aria-label="More actions">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg>
+                    </button>
+                    <div class="wf-menu__panel">
+                      <a class="wf-menu__item" href="disease-detail.html">View detail</a>
+                      <button class="wf-menu__item" type="button" data-toast="Duplicated PRRS as a draft">Duplicate</button>
+                      <a class="wf-menu__item" href="disease-detail.html#versions">Manage versions</a>
+                      <div class="wf-menu__sep"></div>
+                      <button class="wf-menu__item wf-menu__item--danger" type="button" data-modal-open="delete-modal">Delete…</button>
+                    </div>
+                  </div>
+                </span>
+              </td>
+            </tr>
+
+            <!-- Row: ASF -->
+            <tr data-row-href="disease-detail.html">
+              <td><span class="wf-check" data-row-check role="checkbox" aria-label="Select ASF" tabindex="0"></span></td>
+              <td>
+                <span class="wf-table__name">African Swine Fever</span>
+                <span class="wf-table__meta"><span>8 pig types · 2 forms</span></span>
+              </td>
+              <td><span class="wf-table__code">ASF</span></td>
+              <td>
+                <span class="wf-switch is-on" data-switch data-label-on="Active" data-label-off="Inactive" data-confirm="deactivate-modal" data-toast-off="Deactivated ASF" role="switch" aria-checked="true">
+                  <span class="wf-switch__track"><span class="wf-switch__thumb"></span></span>
+                  <span class="wf-switch__label">Active</span>
+                </span>
+              </td>
+              <td>
+                <div class="wf-menu" data-facet-menu="false">
+                  <button class="wf-select wf-select--sm" type="button" data-menu-toggle>v2.0 · Live</button>
+                  <div class="wf-menu__panel">
+                    <div class="wf-menu__label">Switch version (opens detail)</div>
+                    <a class="wf-menu__item is-selected" href="disease-detail.html"><svg class="wf-menu__check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>v2.0 <span class="wf-menu__meta">Live</span></a>
+                    <a class="wf-menu__item" href="disease-detail.html"><svg class="wf-menu__check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>v1.5 <span class="wf-menu__meta">Archived</span></a>
+                  </div>
+                </div>
+              </td>
+              <td>18 May 2026</td>
+              <td style="text-align:right;">
+                <span class="wf-row-actions">
+                  <a class="wf-btn wf-btn--ghost wf-btn--sm" href="disease-edit.html" aria-label="Edit ASF">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                  </a>
+                  <div class="wf-menu" data-facet-menu="false">
+                    <button class="wf-btn wf-btn--ghost wf-btn--icon wf-btn--sm" type="button" data-menu-toggle aria-label="More actions">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg>
+                    </button>
+                    <div class="wf-menu__panel">
+                      <a class="wf-menu__item" href="disease-detail.html">View detail</a>
+                      <button class="wf-menu__item" type="button" data-toast="Duplicated ASF as a draft">Duplicate</button>
+                      <a class="wf-menu__item" href="disease-detail.html#versions">Manage versions</a>
+                      <div class="wf-menu__sep"></div>
+                      <button class="wf-menu__item wf-menu__item--danger" type="button" data-modal-open="delete-modal">Delete…</button>
+                    </div>
+                  </div>
+                </span>
+              </td>
+            </tr>
+
+            <!-- Row: CSF -->
+            <tr data-row-href="disease-detail.html">
+              <td><span class="wf-check" data-row-check role="checkbox" aria-label="Select CSF" tabindex="0"></span></td>
+              <td>
+                <span class="wf-table__name">Classical Swine Fever</span>
+                <span class="wf-table__meta"><span>6 pig types · 2 forms</span></span>
+              </td>
+              <td><span class="wf-table__code">CSF</span></td>
+              <td>
+                <span class="wf-switch is-on" data-switch data-label-on="Active" data-label-off="Inactive" data-confirm="deactivate-modal" data-toast-off="Deactivated CSF" role="switch" aria-checked="true">
+                  <span class="wf-switch__track"><span class="wf-switch__thumb"></span></span>
+                  <span class="wf-switch__label">Active</span>
+                </span>
+              </td>
+              <td>
+                <div class="wf-menu" data-facet-menu="false">
+                  <button class="wf-select wf-select--sm" type="button" data-menu-toggle>v1.4 · Live</button>
+                  <div class="wf-menu__panel">
+                    <div class="wf-menu__label">Switch version (opens detail)</div>
+                    <a class="wf-menu__item is-selected" href="disease-detail.html"><svg class="wf-menu__check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>v1.4 <span class="wf-menu__meta">Live</span></a>
+                    <a class="wf-menu__item" href="disease-detail.html"><svg class="wf-menu__check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>v1.3 <span class="wf-menu__meta">Archived</span></a>
+                  </div>
+                </div>
+              </td>
+              <td>11 May 2026</td>
+              <td style="text-align:right;">
+                <span class="wf-row-actions">
+                  <a class="wf-btn wf-btn--ghost wf-btn--sm" href="disease-edit.html" aria-label="Edit CSF">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                  </a>
+                  <div class="wf-menu" data-facet-menu="false">
+                    <button class="wf-btn wf-btn--ghost wf-btn--icon wf-btn--sm" type="button" data-menu-toggle aria-label="More actions">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg>
+                    </button>
+                    <div class="wf-menu__panel">
+                      <a class="wf-menu__item" href="disease-detail.html">View detail</a>
+                      <button class="wf-menu__item" type="button" data-toast="Duplicated CSF as a draft">Duplicate</button>
+                      <a class="wf-menu__item" href="disease-detail.html#versions">Manage versions</a>
+                      <div class="wf-menu__sep"></div>
+                      <button class="wf-menu__item wf-menu__item--danger" type="button" data-modal-open="delete-modal">Delete…</button>
+                    </div>
+                  </div>
+                </span>
+              </td>
+            </tr>
+
+            <!-- Row: FMD (inactive) -->
+            <tr data-row-href="disease-detail.html" class="is-inactive">
+              <td><span class="wf-check" data-row-check role="checkbox" aria-label="Select FMD" tabindex="0"></span></td>
+              <td>
+                <span class="wf-table__name">Foot-and-Mouth Disease</span>
+                <span class="wf-table__meta"><span>7 pig types · 1 form</span></span>
+              </td>
+              <td><span class="wf-table__code">FMD</span></td>
+              <td>
+                <span class="wf-switch" data-switch data-label-on="Active" data-label-off="Inactive" data-toast-on="Activated FMD" role="switch" aria-checked="false">
+                  <span class="wf-switch__track"><span class="wf-switch__thumb"></span></span>
+                  <span class="wf-switch__label">Inactive</span>
+                </span>
+              </td>
+              <td>
+                <div class="wf-menu" data-facet-menu="false">
+                  <button class="wf-select wf-select--sm" type="button" data-menu-toggle>v2.1 · Draft</button>
+                  <div class="wf-menu__panel">
+                    <div class="wf-menu__label">Switch version (opens detail)</div>
+                    <a class="wf-menu__item is-selected" href="disease-detail.html"><svg class="wf-menu__check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>v2.1 <span class="wf-menu__meta">Draft</span></a>
+                    <a class="wf-menu__item" href="disease-detail.html"><svg class="wf-menu__check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>v2.0 <span class="wf-menu__meta">Archived</span></a>
+                  </div>
+                </div>
+              </td>
+              <td>9 May 2026</td>
+              <td style="text-align:right;">
+                <span class="wf-row-actions">
+                  <a class="wf-btn wf-btn--ghost wf-btn--sm" href="disease-edit.html" aria-label="Edit FMD">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                  </a>
+                  <div class="wf-menu" data-facet-menu="false">
+                    <button class="wf-btn wf-btn--ghost wf-btn--icon wf-btn--sm" type="button" data-menu-toggle aria-label="More actions">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg>
+                    </button>
+                    <div class="wf-menu__panel">
+                      <a class="wf-menu__item" href="disease-detail.html">View detail</a>
+                      <button class="wf-menu__item" type="button" data-toast="Duplicated FMD as a draft">Duplicate</button>
+                      <a class="wf-menu__item" href="disease-detail.html#versions">Manage versions</a>
+                      <div class="wf-menu__sep"></div>
+                      <button class="wf-menu__item wf-menu__item--danger" type="button" data-modal-open="delete-modal">Delete…</button>
+                    </div>
+                  </div>
+                </span>
+              </td>
+            </tr>
+
+            <!-- Row: PED (VI missing) -->
+            <tr data-row-href="disease-detail.html">
+              <td><span class="wf-check" data-row-check role="checkbox" aria-label="Select PED" tabindex="0"></span></td>
+              <td>
+                <span class="wf-table__name">Porcine Epidemic Diarrhea</span>
+                <span class="wf-table__meta">
+                  <span class="wf-warnflag" title="Missing Vietnamese translation">VI missing</span>
+                  <span>4 pig types · 1 form</span>
+                </span>
+              </td>
+              <td><span class="wf-table__code">PED</span></td>
+              <td>
+                <span class="wf-switch is-on" data-switch data-label-on="Active" data-label-off="Inactive" data-confirm="deactivate-modal" data-toast-off="Deactivated PED" role="switch" aria-checked="true">
+                  <span class="wf-switch__track"><span class="wf-switch__thumb"></span></span>
+                  <span class="wf-switch__label">Active</span>
+                </span>
+              </td>
+              <td>
+                <div class="wf-menu" data-facet-menu="false">
+                  <button class="wf-select wf-select--sm" type="button" data-menu-toggle>v1.2 · Live</button>
+                  <div class="wf-menu__panel">
+                    <div class="wf-menu__label">Switch version (opens detail)</div>
+                    <a class="wf-menu__item is-selected" href="disease-detail.html"><svg class="wf-menu__check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>v1.2 <span class="wf-menu__meta">Live</span></a>
+                    <a class="wf-menu__item" href="disease-detail.html"><svg class="wf-menu__check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>v1.1 <span class="wf-menu__meta">Archived</span></a>
+                  </div>
+                </div>
+              </td>
+              <td>2 May 2026</td>
+              <td style="text-align:right;">
+                <span class="wf-row-actions">
+                  <a class="wf-btn wf-btn--ghost wf-btn--sm" href="disease-edit.html" aria-label="Edit PED">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                  </a>
+                  <div class="wf-menu" data-facet-menu="false">
+                    <button class="wf-btn wf-btn--ghost wf-btn--icon wf-btn--sm" type="button" data-menu-toggle aria-label="More actions">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg>
+                    </button>
+                    <div class="wf-menu__panel">
+                      <a class="wf-menu__item" href="disease-detail.html">View detail</a>
+                      <button class="wf-menu__item" type="button" data-toast="Duplicated PED as a draft">Duplicate</button>
+                      <a class="wf-menu__item" href="disease-detail.html#versions">Manage versions</a>
+                      <div class="wf-menu__sep"></div>
+                      <button class="wf-menu__item wf-menu__item--danger" type="button" data-modal-open="delete-modal">Delete…</button>
+                    </div>
+                  </div>
+                </span>
+              </td>
+            </tr>
+
+            <!-- Row: PCV2 (draft, inactive, incomplete) -->
+            <tr data-row-href="disease-detail.html" class="is-inactive">
+              <td><span class="wf-check" data-row-check role="checkbox" aria-label="Select PCV2" tabindex="0"></span></td>
+              <td>
+                <span class="wf-table__name">Porcine Circovirus type 2</span>
+                <span class="wf-table__meta">
+                  <span class="wf-warnflag" title="Missing required fields in both languages">Incomplete</span>
+                  <span>5 pig types · 1 form</span>
+                </span>
+              </td>
+              <td><span class="wf-table__code">PCV2</span></td>
+              <td>
+                <span class="wf-switch" data-switch data-label-on="Active" data-label-off="Inactive" data-toast-on="Activated PCV2" role="switch" aria-checked="false">
+                  <span class="wf-switch__track"><span class="wf-switch__thumb"></span></span>
+                  <span class="wf-switch__label">Inactive</span>
+                </span>
+              </td>
+              <td><span class="wf-muted" style="font-size:12px;">No live version</span></td>
+              <td>28 Apr 2026</td>
+              <td style="text-align:right;">
+                <span class="wf-row-actions">
+                  <a class="wf-btn wf-btn--ghost wf-btn--sm" href="disease-edit.html" aria-label="Edit PCV2">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                  </a>
+                  <div class="wf-menu" data-facet-menu="false">
+                    <button class="wf-btn wf-btn--ghost wf-btn--icon wf-btn--sm" type="button" data-menu-toggle aria-label="More actions">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg>
+                    </button>
+                    <div class="wf-menu__panel">
+                      <a class="wf-menu__item" href="disease-detail.html">View detail</a>
+                      <button class="wf-menu__item" type="button" data-toast="Duplicated PCV2 as a draft">Duplicate</button>
+                      <a class="wf-menu__item" href="disease-detail.html#versions">Manage versions</a>
+                      <div class="wf-menu__sep"></div>
+                      <button class="wf-menu__item wf-menu__item--danger" type="button" data-modal-open="delete-modal">Delete…</button>
+                    </div>
+                  </div>
+                </span>
+              </td>
+            </tr>
+
+            <!-- Row: SE -->
+            <tr data-row-href="disease-detail.html">
+              <td><span class="wf-check" data-row-check role="checkbox" aria-label="Select SE" tabindex="0"></span></td>
+              <td>
+                <span class="wf-table__name">Swine Erysipelas</span>
+                <span class="wf-table__meta"><span>5 pig types · 2 forms</span></span>
+              </td>
+              <td><span class="wf-table__code">SE</span></td>
+              <td>
+                <span class="wf-switch is-on" data-switch data-label-on="Active" data-label-off="Inactive" data-confirm="deactivate-modal" data-toast-off="Deactivated SE" role="switch" aria-checked="true">
+                  <span class="wf-switch__track"><span class="wf-switch__thumb"></span></span>
+                  <span class="wf-switch__label">Active</span>
+                </span>
+              </td>
+              <td>
+                <div class="wf-menu" data-facet-menu="false">
+                  <button class="wf-select wf-select--sm" type="button" data-menu-toggle>v1.1 · Live</button>
+                  <div class="wf-menu__panel">
+                    <div class="wf-menu__label">Switch version (opens detail)</div>
+                    <a class="wf-menu__item is-selected" href="disease-detail.html"><svg class="wf-menu__check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>v1.1 <span class="wf-menu__meta">Live</span></a>
+                    <a class="wf-menu__item" href="disease-detail.html"><svg class="wf-menu__check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>v1.0 <span class="wf-menu__meta">Archived</span></a>
+                  </div>
+                </div>
+              </td>
+              <td>21 Apr 2026</td>
+              <td style="text-align:right;">
+                <span class="wf-row-actions">
+                  <a class="wf-btn wf-btn--ghost wf-btn--sm" href="disease-edit.html" aria-label="Edit SE">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                  </a>
+                  <div class="wf-menu" data-facet-menu="false">
+                    <button class="wf-btn wf-btn--ghost wf-btn--icon wf-btn--sm" type="button" data-menu-toggle aria-label="More actions">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg>
+                    </button>
+                    <div class="wf-menu__panel">
+                      <a class="wf-menu__item" href="disease-detail.html">View detail</a>
+                      <button class="wf-menu__item" type="button" data-toast="Duplicated SE as a draft">Duplicate</button>
+                      <a class="wf-menu__item" href="disease-detail.html#versions">Manage versions</a>
+                      <div class="wf-menu__sep"></div>
+                      <button class="wf-menu__item wf-menu__item--danger" type="button" data-modal-open="delete-modal">Delete…</button>
+                    </div>
+                  </div>
+                </span>
+              </td>
+            </tr>
+
+            <!-- Row: APP -->
+            <tr data-row-href="disease-detail.html">
+              <td><span class="wf-check" data-row-check role="checkbox" aria-label="Select APP" tabindex="0"></span></td>
+              <td>
+                <span class="wf-table__name">Actinobacillus Pleuropneumoniae</span>
+                <span class="wf-table__meta"><span>4 pig types · 2 forms</span></span>
+              </td>
+              <td><span class="wf-table__code">APP</span></td>
+              <td>
+                <span class="wf-switch is-on" data-switch data-label-on="Active" data-label-off="Inactive" data-confirm="deactivate-modal" data-toast-off="Deactivated APP" role="switch" aria-checked="true">
+                  <span class="wf-switch__track"><span class="wf-switch__thumb"></span></span>
+                  <span class="wf-switch__label">Active</span>
+                </span>
+              </td>
+              <td>
+                <div class="wf-menu" data-facet-menu="false">
+                  <button class="wf-select wf-select--sm" type="button" data-menu-toggle>v1.0 · Live</button>
+                  <div class="wf-menu__panel">
+                    <div class="wf-menu__label">Switch version (opens detail)</div>
+                    <a class="wf-menu__item is-selected" href="disease-detail.html"><svg class="wf-menu__check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>v1.0 <span class="wf-menu__meta">Live</span></a>
+                  </div>
+                </div>
+              </td>
+              <td>15 Apr 2026</td>
+              <td style="text-align:right;">
+                <span class="wf-row-actions">
+                  <a class="wf-btn wf-btn--ghost wf-btn--sm" href="disease-edit.html" aria-label="Edit APP">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                  </a>
+                  <div class="wf-menu" data-facet-menu="false">
+                    <button class="wf-btn wf-btn--ghost wf-btn--icon wf-btn--sm" type="button" data-menu-toggle aria-label="More actions">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg>
+                    </button>
+                    <div class="wf-menu__panel">
+                      <a class="wf-menu__item" href="disease-detail.html">View detail</a>
+                      <button class="wf-menu__item" type="button" data-toast="Duplicated APP as a draft">Duplicate</button>
+                      <a class="wf-menu__item" href="disease-detail.html#versions">Manage versions</a>
+                      <div class="wf-menu__sep"></div>
+                      <button class="wf-menu__item wf-menu__item--danger" type="button" data-modal-open="delete-modal">Delete…</button>
+                    </div>
+                  </div>
+                </span>
+              </td>
+            </tr>
+
+            <!-- Row: MYC -->
+            <tr data-row-href="disease-detail.html">
+              <td><span class="wf-check" data-row-check role="checkbox" aria-label="Select MYC" tabindex="0"></span></td>
+              <td>
+                <span class="wf-table__name">Mycoplasma — Enzootic Pneumonia</span>
+                <span class="wf-table__meta"><span>3 pig types · 1 form</span></span>
+              </td>
+              <td><span class="wf-table__code">MYC</span></td>
+              <td>
+                <span class="wf-switch is-on" data-switch data-label-on="Active" data-label-off="Inactive" data-confirm="deactivate-modal" data-toast-off="Deactivated MYC" role="switch" aria-checked="true">
+                  <span class="wf-switch__track"><span class="wf-switch__thumb"></span></span>
+                  <span class="wf-switch__label">Active</span>
+                </span>
+              </td>
+              <td>
+                <div class="wf-menu" data-facet-menu="false">
+                  <button class="wf-select wf-select--sm" type="button" data-menu-toggle>v2.3 · Live</button>
+                  <div class="wf-menu__panel">
+                    <div class="wf-menu__label">Switch version (opens detail)</div>
+                    <a class="wf-menu__item is-selected" href="disease-detail.html"><svg class="wf-menu__check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>v2.3 <span class="wf-menu__meta">Live</span></a>
+                    <a class="wf-menu__item" href="disease-detail.html"><svg class="wf-menu__check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>v2.2 <span class="wf-menu__meta">Archived</span></a>
+                  </div>
+                </div>
+              </td>
+              <td>10 Apr 2026</td>
+              <td style="text-align:right;">
+                <span class="wf-row-actions">
+                  <a class="wf-btn wf-btn--ghost wf-btn--sm" href="disease-edit.html" aria-label="Edit MYC">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                  </a>
+                  <div class="wf-menu" data-facet-menu="false">
+                    <button class="wf-btn wf-btn--ghost wf-btn--icon wf-btn--sm" type="button" data-menu-toggle aria-label="More actions">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg>
+                    </button>
+                    <div class="wf-menu__panel">
+                      <a class="wf-menu__item" href="disease-detail.html">View detail</a>
+                      <button class="wf-menu__item" type="button" data-toast="Duplicated MYC as a draft">Duplicate</button>
+                      <a class="wf-menu__item" href="disease-detail.html#versions">Manage versions</a>
+                      <div class="wf-menu__sep"></div>
+                      <button class="wf-menu__item wf-menu__item--danger" type="button" data-modal-open="delete-modal">Delete…</button>
+                    </div>
+                  </div>
+                </span>
+              </td>
+            </tr>
+
+            <!-- Row: SS2 (draft, inactive, incomplete) -->
+            <tr data-row-href="disease-detail.html" class="is-inactive">
+              <td><span class="wf-check" data-row-check role="checkbox" aria-label="Select SS2" tabindex="0"></span></td>
+              <td>
+                <span class="wf-table__name">Streptococcus suis type 2</span>
+                <span class="wf-table__meta">
+                  <span class="wf-warnflag" title="Missing required fields in both languages">Incomplete</span>
+                  <span>2 pig types · 1 form</span>
+                </span>
+              </td>
+              <td><span class="wf-table__code">SS2</span></td>
+              <td>
+                <span class="wf-switch" data-switch data-label-on="Active" data-label-off="Inactive" data-toast-on="Activated SS2" role="switch" aria-checked="false">
+                  <span class="wf-switch__track"><span class="wf-switch__thumb"></span></span>
+                  <span class="wf-switch__label">Inactive</span>
+                </span>
+              </td>
+              <td><span class="wf-muted" style="font-size:12px;">No live version</span></td>
+              <td>30 Mar 2026</td>
+              <td style="text-align:right;">
+                <span class="wf-row-actions">
+                  <a class="wf-btn wf-btn--ghost wf-btn--sm" href="disease-edit.html" aria-label="Edit SS2">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                  </a>
+                  <div class="wf-menu" data-facet-menu="false">
+                    <button class="wf-btn wf-btn--ghost wf-btn--icon wf-btn--sm" type="button" data-menu-toggle aria-label="More actions">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg>
+                    </button>
+                    <div class="wf-menu__panel">
+                      <a class="wf-menu__item" href="disease-detail.html">View detail</a>
+                      <button class="wf-menu__item" type="button" data-toast="Duplicated SS2 as a draft">Duplicate</button>
+                      <a class="wf-menu__item" href="disease-detail.html#versions">Manage versions</a>
+                      <div class="wf-menu__sep"></div>
+                      <button class="wf-menu__item wf-menu__item--danger" type="button" data-modal-open="delete-modal">Delete…</button>
+                    </div>
+                  </div>
+                </span>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+        </div>
+
+        <!-- Footer: count + pager + rows-per-page -->
+        <div class="wf-card__foot">
+          <span class="wf-card__sub">Showing <strong>1–10</strong> of <strong>47</strong></span>
+          <div class="wf-pager" data-pager aria-label="Pagination">
+            <button class="wf-pager__btn" type="button" disabled aria-label="First page">«</button>
+            <button class="wf-pager__btn" type="button" disabled aria-label="Previous page">‹</button>
+            <button class="wf-pager__btn is-current" type="button" data-page="1">1</button>
+            <button class="wf-pager__btn" type="button" data-page="2">2</button>
+            <button class="wf-pager__btn" type="button" data-page="3">3</button>
+            <span class="wf-pager__ellipsis">…</span>
+            <button class="wf-pager__btn" type="button" data-page="5">5</button>
+            <button class="wf-pager__btn" type="button" aria-label="Next page">›</button>
+            <button class="wf-pager__btn" type="button" aria-label="Last page">»</button>
+            <span class="wf-pager__jump">Go to <input type="text" value="1" aria-label="Page number" /> / 5</span>
+          </div>
+          <div class="wf-flex">
+            <span class="wf-card__sub">Rows per page</span>
+            <div class="wf-menu" data-facet-menu="false">
+              <button class="wf-select wf-select--sm" type="button" data-menu-toggle>10</button>
+              <div class="wf-menu__panel">
+                <button class="wf-menu__item is-selected" type="button">10</button>
+                <button class="wf-menu__item" type="button">25</button>
+                <button class="wf-menu__item" type="button">50</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <p class="wf-note">Use case coverage: UC-376-01 list · 02 search · 03 filter · 04 sort · 05 open detail · 06 activate/deactivate · 07 switch version · 08 paginate.</p>
+
+    </main>
+  </div>
+</div>
+
+<!-- ───────────────── Modals ───────────────── -->
+
+<!-- Sync to chatbot (FR-375) -->
+<div class="wf-modal" id="sync-modal" role="dialog" aria-modal="true" aria-labelledby="sync-title">
+  <div class="wf-modal__scrim"></div>
+  <div class="wf-modal__dialog">
+    <button class="wf-modal__close" type="button" data-modal-close aria-label="Close">✕</button>
+    <div class="wf-modal__head">
+      <span class="wf-modal__icon wf-modal__icon--info">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+      </span>
+      <div>
+        <h2 class="wf-modal__title" id="sync-title">Sync disease data to chatbot</h2>
+        <p class="wf-modal__sub">Rebuilds the chatbot's retrieval embeddings from all <strong>active</strong> diseases.</p>
+      </div>
+    </div>
+    <div class="wf-modal__body">
+      <p>This integrates the latest live versions into the assistant's knowledge base. <strong>42 active diseases</strong> will be embedded; 5 incomplete or inactive diseases will be skipped.</p>
+      <div class="wf-banner wf-banner--info" style="margin-top:12px;">
+        <span class="wf-banner__ico">i</span>
+        <div class="wf-banner__body">Embedding usually completes in under a minute. The current chatbot stays live until the new index is ready.</div>
+      </div>
+    </div>
+    <div class="wf-modal__foot">
+      <button class="wf-btn" type="button" data-modal-close>Cancel</button>
+      <button class="wf-btn wf-btn--primary" type="button" data-modal-close data-toast="Sync started — embedding 42 diseases">Start sync</button>
+    </div>
+  </div>
+</div>
+
+<!-- Deactivate confirmation (switch exception) -->
+<div class="wf-modal" id="deactivate-modal" role="dialog" aria-modal="true" aria-labelledby="deact-title">
+  <div class="wf-modal__scrim"></div>
+  <div class="wf-modal__dialog">
+    <button class="wf-modal__close" type="button" data-modal-close aria-label="Close">✕</button>
+    <div class="wf-modal__head">
+      <span class="wf-modal__icon wf-modal__icon--danger">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/></svg>
+      </span>
+      <div>
+        <h2 class="wf-modal__title" id="deact-title">Deactivate this disease?</h2>
+        <p class="wf-modal__sub">It has a live version the chatbot is currently using.</p>
+      </div>
+    </div>
+    <div class="wf-modal__body">
+      Deactivating removes this disease from the chatbot's answers on the next sync. The content is kept and can be reactivated at any time.
+    </div>
+    <div class="wf-modal__foot">
+      <button class="wf-btn" type="button" data-modal-close>Keep active</button>
+      <button class="wf-btn wf-btn--danger-solid" type="button" data-confirm-proceed>Deactivate</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete confirmation -->
+<div class="wf-modal" id="delete-modal" role="dialog" aria-modal="true" aria-labelledby="del-title">
+  <div class="wf-modal__scrim"></div>
+  <div class="wf-modal__dialog">
+    <button class="wf-modal__close" type="button" data-modal-close aria-label="Close">✕</button>
+    <div class="wf-modal__head">
+      <span class="wf-modal__icon wf-modal__icon--danger">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M10 11v6M14 11v6"/></svg>
+      </span>
+      <div>
+        <h2 class="wf-modal__title" id="del-title">Delete disease?</h2>
+        <p class="wf-modal__sub">This permanently removes the disease and all of its versions.</p>
+      </div>
+    </div>
+    <div class="wf-modal__body">
+      Deleting removes <strong>all versions and both languages</strong> from the knowledge base. This cannot be undone.
+      <div class="wf-confirm-field">
+        <label class="wf-field__label" for="del-confirm">Type the codename <code class="wf-mono">PRRS</code> to confirm</label>
+        <input class="wf-textinput wf-textinput--mono" id="del-confirm" type="text" placeholder="PRRS" data-confirm-type data-confirm-word="PRRS" data-autofocus autocomplete="off" />
+      </div>
+    </div>
+    <div class="wf-modal__foot">
+      <button class="wf-btn" type="button" data-modal-close>Cancel</button>
+      <button class="wf-btn wf-btn--danger-solid is-disabled" type="button" disabled data-confirm-gate data-modal-close data-toast="Disease deleted">Delete permanently</button>
+    </div>
+  </div>
+</div>
+
+<script src="wireframe.js"></script>
+</body>
+</html>

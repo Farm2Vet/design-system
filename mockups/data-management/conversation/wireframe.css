@@ -6,30 +6,35 @@
    ========================================================================== */
 
 :root {
+  /* forest theme — grayscale token values remapped to forest palette */
   /* Surfaces */
-  --wf-bg:           #f6f6f7;
+  --wf-bg:           #f6f8f3;
   --wf-surface:      #ffffff;
-  --wf-surface-2:    #f1f1f2;
-  --wf-surface-3:    #e9e9eb;
+  --wf-surface-2:    #f5f7f3;
+  --wf-surface-3:    #e6ebe3;
 
   /* Lines */
-  --wf-line:         #e4e4e7;
-  --wf-line-strong:  #cdcdd1;
-  --wf-line-dashed:  #c2c2c6;
+  --wf-line:         #e2e7dc;
+  --wf-line-strong:  #c2cabb;
+  --wf-line-dashed:  #cdd4c6;
 
   /* Placeholder fills */
-  --wf-fill-1:       #ececef;
-  --wf-fill-2:       #e0e0e3;
-  --wf-fill-3:       #c8c8cc;
+  --wf-fill-1:       #eef2ea;
+  --wf-fill-2:       #e2e7dc;
+  --wf-fill-3:       #aab4a4;
 
   /* Text */
-  --wf-ink:          #19191c;
-  --wf-ink-2:        #4a4a51;
-  --wf-ink-3:        #76767d;
-  --wf-ink-4:        #9a9aa1;
+  --wf-ink:          #1e251c;
+  --wf-ink-2:        #3b4537;
+  --wf-ink-3:        #7c8c73;
+  --wf-ink-4:        #aab4a4;
 
-  /* Annotation accent (still grayscale — slightly cooler dark) */
-  --wf-mark:         #1f1f24;
+  /* Annotation accent (forest green) */
+  --wf-mark:         #398c36;
+
+  /* forest theme — brand tokens */
+  --wf-forest:       #398c36;
+  --wf-forest-hover: #2a6b27;
 
   /* Shape */
   --wf-r-sm:         4px;
@@ -62,13 +67,30 @@ html, body { height: 100%; }
 
 body {
   margin: 0;
-  background: var(--wf-bg);
+  background: transparent;
   color: var(--wf-ink);
   font-family: var(--wf-font);
   font-size: 14px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* exact dashboard-forest bg + islands + sidebar-fit */
+body::before {
+  content: '';
+  position: fixed;
+  z-index: -2;
+  inset: -25%;
+  background:
+    radial-gradient(ellipse 70% 110% at 0% 50%,
+      color-mix(in srgb, #f2faea 85%, transparent) 0%,
+      color-mix(in srgb, #e4f4d7 55%, transparent) 35%, transparent 70%),
+    radial-gradient(ellipse 75% 110% at 100% 50%,
+      color-mix(in srgb, #ebf5ea 90%, transparent) 0%,
+      color-mix(in srgb, #d9ebd8 70%, transparent) 40%, transparent 75%),
+    #ffffff;
+  filter: blur(50px) saturate(1.5);
 }
 
 a { color: inherit; text-decoration: none; }
@@ -80,11 +102,13 @@ button { font: inherit; cursor: pointer; }
   display: grid;
   grid-template-columns: var(--wf-side-w) 1fr;
   min-height: 100vh;
+  background: transparent;
 }
 
+/* forest theme — sidebar/rail in forest green; spans the full page height */
 .wf-side {
-  background: var(--wf-surface);
-  border-right: 1px solid var(--wf-line);
+  background: #398c36;
+  border-right: 1px solid rgba(255, 255, 255, 0.22);
   display: flex;
   flex-direction: column;
   align-self: stretch;
@@ -95,23 +119,25 @@ button { font: inherit; cursor: pointer; }
   align-items: center;
   gap: var(--wf-s-3);
   padding: var(--wf-s-5) var(--wf-s-5) var(--wf-s-5);
-  border-bottom: 1px solid var(--wf-line);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.22);
 }
 .wf-side__brand-mark {
   width: 28px; height: 28px;
   border-radius: 6px;
-  background: var(--wf-fill-3);
+  background: rgba(255, 255, 255, 0.28);
 }
 .wf-side__brand-text {
   font-weight: 600;
   font-size: 15px;
   letter-spacing: 0.2px;
+  color: #fff;
 }
 
 .wf-side__nav {
-  flex: 1;
+  flex: 1 1 auto;
+  min-height: 0;
   padding: var(--wf-s-4) var(--wf-s-3);
-  overflow: auto;
+  overflow-y: auto;
 }
 .wf-side__group {
   margin-bottom: var(--wf-s-5);
@@ -120,7 +146,7 @@ button { font: inherit; cursor: pointer; }
   text-transform: uppercase;
   font-size: 10px;
   letter-spacing: 0.12em;
-  color: var(--wf-ink-4);
+  color: rgba(255, 255, 255, 0.78);
   padding: 0 var(--wf-s-3) var(--wf-s-2);
 }
 
@@ -130,20 +156,27 @@ button { font: inherit; cursor: pointer; }
   gap: var(--wf-s-3);
   padding: var(--wf-s-2) var(--wf-s-3);
   border-radius: var(--wf-r-sm);
-  color: var(--wf-ink-2);
+  color: rgba(255, 255, 255, 0.92);
   font-size: 13px;
   margin-bottom: 2px;
 }
+.wf-side__item:hover {
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+}
 .wf-side__item-icon {
   width: 16px; height: 16px;
-  background: var(--wf-fill-2);
+  background: rgba(255, 255, 255, 0.28);
   border-radius: 3px;
   flex: none;
 }
 .wf-side__item.is-active {
-  background: var(--wf-surface-3);
-  color: var(--wf-ink);
-  font-weight: 500;
+  background: #fff;
+  color: #4f9027;
+  font-weight: 600;
+}
+.wf-side__item.is-active .wf-side__item-icon {
+  background: #e4f4d7;
 }
 .wf-side__item--child {
   padding-left: var(--wf-s-7);
@@ -152,8 +185,9 @@ button { font: inherit; cursor: pointer; }
 .wf-side__item--child .wf-side__item-icon { display: none; }
 
 .wf-side__footer {
+  margin-top: auto;
   padding: var(--wf-s-4) var(--wf-s-3);
-  border-top: 1px solid var(--wf-line);
+  border-top: 1px solid rgba(255, 255, 255, 0.22);
   display: flex;
   align-items: center;
   gap: var(--wf-s-3);
@@ -161,15 +195,15 @@ button { font: inherit; cursor: pointer; }
 .wf-side__avatar {
   width: 32px; height: 32px;
   border-radius: 50%;
-  background: var(--wf-fill-3);
+  background: rgba(255, 255, 255, 0.28);
 }
 .wf-side__who {
   display: flex; flex-direction: column;
   gap: 2px;
   font-size: 12px;
 }
-.wf-side__who-name { font-weight: 500; color: var(--wf-ink); }
-.wf-side__who-role { color: var(--wf-ink-3); }
+.wf-side__who-name { font-weight: 500; color: #fff; }
+.wf-side__who-role { color: rgba(255, 255, 255, 0.78); }
 
 /* ─────────────────────────── Topbar ─────────────────────────── */
 
@@ -177,37 +211,55 @@ button { font: inherit; cursor: pointer; }
   display: flex;
   flex-direction: column;
   min-width: 0;
+  background: transparent;
 }
 
+/* forest theme — transparent bar, floating frosted-glass islands */
 .wf-topbar {
-  height: var(--wf-topbar-h);
-  background: var(--wf-surface);
-  border-bottom: 1px solid var(--wf-line);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--wf-s-5);
-  padding: 0 var(--wf-s-6);
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 5;
+  padding: 16px 28px;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.wf-crumbs,
+.wf-topbar__cluster {
+  min-height: 48px;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.5);
+  -webkit-backdrop-filter: blur(22px) saturate(190%);
+  backdrop-filter: blur(22px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow:
+    0 4px 10px rgba(16, 38, 22, 0.07),
+    0 14px 28px rgba(16, 38, 22, 0.09),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .wf-crumbs,
+  .wf-topbar__cluster { background: rgba(255, 255, 255, 0.92); }
 }
 
 .wf-crumbs {
-  display: flex;
-  align-items: center;
-  gap: var(--wf-s-2);
+  margin-right: auto;
   font-size: 13px;
   color: var(--wf-ink-3);
 }
 .wf-crumbs__sep { color: var(--wf-ink-4); }
 .wf-crumbs__here { color: var(--wf-ink); font-weight: 500; }
-
-.wf-topbar__cluster {
-  display: flex;
-  align-items: center;
-  gap: var(--wf-s-3);
-}
 
 /* ─────────────────────────── Page body ─────────────────────────── */
 
@@ -295,9 +347,13 @@ button { font: inherit; cursor: pointer; }
   white-space: nowrap;
 }
 .wf-btn--primary {
-  background: var(--wf-ink);
+  background: var(--wf-forest);
   color: #fff;
-  border-color: var(--wf-ink);
+  border-color: var(--wf-forest);
+}
+.wf-btn--primary:hover {
+  background: var(--wf-forest-hover);
+  border-color: var(--wf-forest-hover);
 }
 .wf-btn--danger {
   color: var(--wf-ink);
@@ -411,7 +467,7 @@ button { font: inherit; cursor: pointer; }
   border-radius: 3px;
 }
 .wf-seg__opt.is-on {
-  background: var(--wf-ink);
+  background: var(--wf-forest);
   color: #fff;
 }
 
@@ -643,7 +699,7 @@ button { font: inherit; cursor: pointer; }
   width: 6px; height: 6px; border-radius: 50%;
   background: var(--wf-fill-3);
 }
-.wf-savebar__dot.is-dirty { background: var(--wf-ink); }
+.wf-savebar__dot.is-dirty { background: var(--wf-forest); }
 
 /* Annotations (wireframe callouts) */
 .wf-note {

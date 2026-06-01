@@ -4,20 +4,20 @@
    ============================================================ */
 
 :root {
-  /* Greyscale rail — wireframes only, no brand */
+  /* forest theme — remapped from greyscale to forest palette */
   --w-bg:        #ffffff;
-  --w-surface:   #fafafa;
-  --w-surface-2: #f3f3f3;
-  --w-line-1:    #d6d6d6;
-  --w-line-2:    #e8e8e8;
-  --w-line-3:    #b8b8b8;
-  --w-ink-1:     #1a1a1a;
-  --w-ink-2:     #4a4a4a;
-  --w-ink-3:     #777777;
-  --w-ink-4:     #9a9a9a;
-  --w-accent:    #2a2a2a;     /* "primary" treatment in greyscale */
+  --w-surface:   #f5f7f3;
+  --w-surface-2: #f5f7f3;
+  --w-line-1:    #e2e7dc;
+  --w-line-2:    #e2e7dc;
+  --w-line-3:    #aab4a4;
+  --w-ink-1:     #1e251c;
+  --w-ink-2:     #3b4537;
+  --w-ink-3:     #7c8c73;
+  --w-ink-4:     #aab4a4;
+  --w-accent:    #398c36;     /* forest primary */
   --w-accent-ink:#ffffff;
-  --w-danger:    #6a3030;     /* for error states, kept desaturated */
+  --w-danger:    #b3322a;     /* error states */
 
   /* Type */
   --w-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -34,12 +34,26 @@
 html, body {
   margin: 0;
   padding: 0;
-  background: var(--w-surface-2);
+  background: transparent;
   color: var(--w-ink-1);
   font-family: var(--w-font);
   font-size: 14px;
   line-height: 1.45;
   -webkit-font-smoothing: antialiased;
+}
+
+/* exact dashboard-forest bg + islands + sidebar-fit */
+body::before {
+  content: ''; position: fixed; z-index: -2; inset: -25%;
+  background:
+    radial-gradient(ellipse 70% 110% at 0% 50%,
+      color-mix(in srgb,#f2faea 85%,transparent) 0%,
+      color-mix(in srgb,#e4f4d7 55%,transparent) 35%, transparent 70%),
+    radial-gradient(ellipse 75% 110% at 100% 50%,
+      color-mix(in srgb,#ebf5ea 90%,transparent) 0%,
+      color-mix(in srgb,#d9ebd8 70%,transparent) 40%, transparent 75%),
+    #ffffff;
+  filter: blur(50px) saturate(1.5);
 }
 
 a { color: inherit; }
@@ -49,7 +63,7 @@ a { color: inherit; }
    reviewers know it's a wireframe and which screen it is.
    ------------------------------------------------------------ */
 .wf-banner {
-  background: var(--w-ink-1);
+  background: #398c36; /* forest theme — accent fill */
   color: #fff;
   padding: 10px 24px;
   font-size: 11px;
@@ -76,20 +90,57 @@ a { color: inherit; }
   display: grid;
   grid-template-columns: 220px 1fr;
   min-height: calc(100vh - 38px);
-  background: var(--w-bg);
+  background: transparent;
 }
 
+/* Old grayscale/forest-rail sidebar rules removed — the glass rail
+   (mockups/_glass-sidebar.css, linked after this file) now owns every
+   .sidebar* selector. These legacy rules (.sidebar base padding,
+   .sidebar__brand dashed box, .sidebar__item flex/padding, .sidebar__foot*)
+   share class names with the glass markup and would otherwise distort it.
+   Kept commented for reference rather than deleted.
 .sidebar {
-  background: var(--w-surface);
-  border-right: 1px solid var(--w-line-2);
+  background: #398c36;
+  border-right: 1px solid rgba(255,255,255,0.22);
   padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
 }
+.sidebar__foot {
+  margin-top: auto;
+  border-top: 1px solid rgba(255,255,255,0.22);
+  padding-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sidebar__foot-avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: #fff;
+  color: #4f9027;
+  display: grid; place-items: center;
+  font-size: 12px; font-weight: 700;
+  flex: none;
+}
+.sidebar__foot-meta { flex: 1; min-width: 0; }
+.sidebar__foot-name { color: #fff; font-size: 13px; font-weight: 600; line-height: 1.25; }
+.sidebar__foot-role { color: rgba(255,255,255,0.82); font-size: 12px; }
+.sidebar__settings {
+  width: 32px; height: 32px;
+  display: grid; place-items: center;
+  background: transparent; border: 0; border-radius: 999px;
+  color: rgba(255,255,255,0.85);
+  cursor: pointer; flex: none;
+}
+.sidebar__settings:hover { background: rgba(255,255,255,0.18); color: #fff; }
+.sidebar__settings svg { width: 16px; height: 16px; display: block; }
 .sidebar__brand {
   height: 36px;
-  border: 1px dashed var(--w-line-3);
+  border: 1px dashed rgba(255,255,255,0.4);
   border-radius: var(--w-r-md);
   display: flex; align-items: center; justify-content: center;
-  color: var(--w-ink-3);
+  color: #fff;
   font-size: 12px;
   margin-bottom: 24px;
 }
@@ -98,28 +149,30 @@ a { color: inherit; }
   text-transform: uppercase;
   font-size: 10px;
   letter-spacing: 0.1em;
-  color: var(--w-ink-4);
+  color: rgba(255,255,255,0.78);
   padding: 0 10px 6px;
 }
 .sidebar__item {
   display: flex; align-items: center; gap: 10px;
   padding: 8px 10px;
   border-radius: var(--w-r-md);
-  color: var(--w-ink-2);
+  color: rgba(255,255,255,0.92);
   font-size: 13px;
   cursor: default;
 }
+.sidebar__item:hover { background: rgba(255,255,255,0.18); color: #fff; }
 .sidebar__item .dot {
   width: 14px; height: 14px;
-  border: 1px solid var(--w-line-3);
+  border: 1px solid rgba(255,255,255,0.4);
   border-radius: 3px;
 }
 .sidebar__item.is-active {
-  background: var(--w-surface-2);
-  color: var(--w-ink-1);
+  background: #fff;
+  color: #4f9027;
   font-weight: 600;
 }
-.sidebar__item.is-active .dot { background: var(--w-ink-2); border-color: var(--w-ink-2); }
+.sidebar__item.is-active .dot { background: #4f9027; border-color: #4f9027; }
+*/
 
 .main {
   display: flex;
@@ -127,26 +180,73 @@ a { color: inherit; }
   min-width: 0;
 }
 
+/* forest theme — transparent bar, floating frosted-glass islands */
 .topbar {
-  height: 56px;
-  border-bottom: 1px solid var(--w-line-2);
-  padding: 0 32px;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  padding: 16px 28px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  background: var(--w-bg);
+  gap: 16px;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
 }
-.topbar__path { color: var(--w-ink-3); font-size: 13px; display: flex; gap: 8px; align-items: center; }
+.topbar__path,
+.topbar__cluster,
+.topbar__chip {
+  min-height: 48px;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.5);
+  -webkit-backdrop-filter: blur(22px) saturate(190%);
+  backdrop-filter: blur(22px) saturate(190%);
+  border: 1px solid rgba(255,255,255,0.6);
+  box-shadow:
+    0 4px 10px rgba(16,38,22,0.07),
+    0 14px 28px rgba(16,38,22,0.09),
+    inset 0 1px 0 rgba(255,255,255,0.6);
+}
+.topbar__path { margin-right: auto; color: var(--w-ink-3); font-size: 13px; }
 .topbar__path strong { color: var(--w-ink-1); font-weight: 600; }
 .topbar__path .sep { color: var(--w-ink-4); }
-.topbar__user {
-  display: flex; gap: 12px; align-items: center;
-  color: var(--w-ink-3); font-size: 13px;
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .topbar__path,
+  .topbar__cluster,
+  .topbar__chip { background: rgba(255,255,255,0.92); }
 }
-.topbar__avatar {
-  width: 28px; height: 28px; border-radius: 50%;
-  background: var(--w-surface-2); border: 1px solid var(--w-line-2);
+
+/* Island 2 — utility cluster (language toggle + page actions) */
+.topbar__cluster { gap: 10px; padding: 6px 10px; }
+.topbar__divider { width: 1px; height: 22px; background: var(--w-line-2); margin: 0 2px; }
+.topbar__lang {
+  display: inline-flex; gap: 2px; padding: 3px;
+  background: var(--w-surface-2); border-radius: 999px;
 }
+.topbar__lang button {
+  border: 0; background: transparent;
+  padding: 5px 12px; border-radius: 999px;
+  font: inherit; font-size: 12px; font-weight: 500;
+  color: var(--w-ink-3); cursor: pointer; min-width: 40px;
+}
+.topbar__lang button:hover { color: var(--w-ink-1); }
+.topbar__lang button[aria-pressed="true"] { background: #398c36; color: #fff; }
+/* page-specific action buttons sit inside the cluster pill */
+.topbar__cluster .btn { white-space: nowrap; }
+
+/* Island 3 — version chip */
+.topbar__chip {
+  color: var(--w-ink-2); text-decoration: none;
+  font-size: 13px; font-weight: 500;
+}
+.topbar__chip:hover { color: #2a6b27; }
 
 .content {
   padding: 32px;
@@ -191,7 +291,7 @@ a { color: inherit; }
   border-color: var(--w-accent);
   color: var(--w-accent-ink);
 }
-.btn--primary:hover { background: #000; }
+.btn--primary:hover { background: #2a6b27; border-color: #2a6b27; }
 .btn--ghost { border-color: transparent; background: transparent; color: var(--w-ink-2); }
 .btn--ghost:hover { background: var(--w-surface); color: var(--w-ink-1); }
 .btn--sm { padding: 6px 11px; font-size: 12px; }
@@ -271,7 +371,7 @@ a { color: inherit; }
   background: var(--w-bg);
   cursor: default;
 }
-.chip.is-on { background: var(--w-ink-1); color: #fff; border-color: var(--w-ink-1); }
+.chip.is-on { background: #398c36; color: #fff; border-color: #398c36; }
 .chip__x { opacity: 0.6; font-size: 11px; }
 
 .toolbar__spacer { flex: 1; }
@@ -379,7 +479,7 @@ a { color: inherit; }
   background: var(--w-bg);
   padding: 0 8px;
 }
-.pager__pg.is-current { background: var(--w-ink-1); color: #fff; border-color: var(--w-ink-1); }
+.pager__pg.is-current { background: #398c36; color: #fff; border-color: #398c36; }
 
 /* ------------------------------------------------------------
    Empty / fault states
@@ -505,7 +605,7 @@ a { color: inherit; }
   color: var(--w-ink-1);
   outline: none;
 }
-.input:focus, .textarea:focus { border-color: var(--w-ink-2); }
+.input:focus, .textarea:focus { border-color: #398c36; }
 .textarea { resize: vertical; min-height: 80px; }
 .input.has-error, .textarea.has-error { border-color: var(--w-danger); }
 
@@ -554,7 +654,7 @@ a { color: inherit; }
 }
 .file-row__progress > span {
   display: block; height: 100%;
-  background: var(--w-ink-2);
+  background: #398c36;
 }
 .file-row__cancel {
   width: 28px; height: 28px;

@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PRRS — Disease detail — Farm2Vet Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="wireframe.css?v=forest-2" />
+<link rel="stylesheet" href="../../_glass-sidebar.css?v=glass" />
+<script src="../../_glass-sidebar.js?v=glass" defer></script>
+</head>
+<body data-lang-scope-root>
+
+<div class="wf-shell">
+
+  <!-- ───────────────── Sidebar ───────────────── -->
+  <aside class="sidebar" aria-label="Primary">
+    <header class="sidebar__header">
+      <a href="#" class="sidebar__brand" aria-label="Farm2Vet dashboard home">
+        <img class="sidebar__brand-mark" src="../../../f2v-design-system-sot/logo/logo-emblem-white.svg" alt="" aria-hidden="true" />
+        <span class="sidebar__brand-text">Farm2Vet</span>
+      </a>
+      <button type="button" class="sidebar__collapse" aria-label="Collapse sidebar" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6"/></svg>
+      </button>
+    </header>
+
+    <nav class="sidebar__nav" aria-label="Primary destinations">
+      <ul class="sidebar__list">
+        <li class="sidebar__item">
+          <a class="sidebar__link" href="../../dashboard/dashboard.html">
+            <span class="sidebar__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+            </span>
+            <span class="sidebar__label">Overview</span>
+          </a>
+        </li>
+
+        <li class="sidebar__item is-open">
+          <button type="button" class="sidebar__link" aria-expanded="true">
+            <span class="sidebar__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/></svg>
+            </span>
+            <span class="sidebar__label">Data management</span>
+            <span class="sidebar__trailing"><svg class="sidebar__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></span>
+          </button>
+          <ul class="sidebar__sublist">
+            <li class="sidebar__item"><a class="sidebar__link is-current" href="disease-list.html" aria-current="page"><span class="sidebar__label">Disease</span></a></li>
+            <li class="sidebar__item"><a class="sidebar__link" href="../question/01-list.html"><span class="sidebar__label">Question</span></a></li>
+            <li class="sidebar__item"><a class="sidebar__link" href="../conversation/conversation-list.html"><span class="sidebar__label">Conversation</span></a></li>
+            <li class="sidebar__item"><a class="sidebar__link" href="../images/01-list.html"><span class="sidebar__label">Image</span></a></li>
+            <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Resource</span></a></li>
+            <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">PDF Input</span></a></li>
+          </ul>
+        </li>
+
+        <li class="sidebar__item">
+          <a class="sidebar__link" href="../../automated-testing/testsuite/testsuite-list.html">
+            <span class="sidebar__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
+            </span>
+            <span class="sidebar__label">Automated testing</span>
+          </a>
+        </li>
+        <li class="sidebar__item">
+          <a class="sidebar__link" href="#">
+            <span class="sidebar__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            </span>
+            <span class="sidebar__label">Sync database</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="sidebar__footer">
+      <div class="sidebar__profile-wrap">
+        <div class="sidebar__profile">
+          <span class="sidebar__avatar" aria-hidden="true">MB</span>
+          <span class="sidebar__profile-text">
+            <span class="sidebar__profile-name">Minh Bùi</span>
+            <span class="sidebar__profile-role">Admin</span>
+          </span>
+          <button type="button" class="sidebar__overflow" aria-label="Account menu" aria-haspopup="menu" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+          </button>
+        </div>
+
+        <div class="sidebar__menu" role="menu" aria-label="Account">
+          <span class="sidebar__menu-header">farm2vets.tech@gmail.com</span>
+          <ul class="sidebar__menu-list">
+            <li role="none">
+              <a class="sidebar__menu-item" role="menuitem" href="#">
+                <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                <span>Settings</span>
+              </a>
+            </li>
+            <li role="none">
+              <a class="sidebar__menu-item" role="menuitem" href="#">
+                <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                <span>Language</span>
+              </a>
+            </li>
+            <li role="none">
+              <a class="sidebar__menu-item" role="menuitem" href="#">
+                <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <span>Get Help</span>
+              </a>
+            </li>
+            <li role="none" class="sidebar__menu-item--divider" aria-hidden="true"></li>
+            <li role="none">
+              <a class="sidebar__menu-item" role="menuitem" href="#">
+                <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                <span>Logout</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ───────────────── Main ───────────────── -->
+  <div class="wf-main">
+
+    <header class="wf-topbar">
+      <nav class="wf-crumbs" aria-label="Breadcrumb">
+        <a href="#">Data management</a>
+        <span class="wf-crumbs__sep">/</span>
+        <a href="disease-list.html">Diseases</a>
+        <span class="wf-crumbs__sep">/</span>
+        <span class="wf-crumbs__here wf-mono">PRRS</span>
+      </nav>
+      <div class="wf-topbar__cluster" data-lang-switch data-lang-scope="[data-lang-scope-root]">
+        <div class="wf-seg" role="group" aria-label="Content language">
+          <button class="wf-seg__opt is-on" type="button" data-lang="en">EN</button>
+          <button class="wf-seg__opt" type="button" data-lang="vi">VI</button>
+        </div>
+        <span class="wf-divider-v"></span>
+        <button class="wf-btn" type="button" data-modal-open="sync-modal">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+          Sync
+        </button>
+        <a class="wf-btn wf-btn--primary" href="disease-edit.html">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+          Edit
+        </a>
+        <div class="wf-menu" data-facet-menu="false">
+          <button class="wf-btn wf-btn--icon" type="button" data-menu-toggle aria-label="More actions">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg>
+          </button>
+          <div class="wf-menu__panel">
+            <button class="wf-menu__item" type="button" data-modal-open="addver-modal">Add version…</button>
+            <button class="wf-menu__item" type="button" data-toast="Duplicated PRRS as a draft">Duplicate disease</button>
+            <a class="wf-menu__item" href="disease-list.html">Back to list</a>
+            <div class="wf-menu__sep"></div>
+            <button class="wf-menu__item wf-menu__item--danger" type="button" data-modal-open="delete-disease-modal">Delete disease…</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="wf-page">
+
+      <a class="wf-back" href="disease-list.html">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
+        All diseases
+      </a>
+
+      <!-- Identity / hero card -->
+      <section class="wf-card" aria-label="Disease identity">
+        <div class="wf-card__body" style="display:grid; grid-template-columns: 1fr 300px; gap:32px;">
+          <div>
+            <div class="wf-eyebrow">Disease · <span class="wf-mono">PRRS</span></div>
+            <h1 class="wf-page-title" style="font-size:24px; margin-bottom:10px;">
+              <span data-locale="en">Porcine Reproductive &amp; Respiratory Syndrome</span>
+              <span data-locale="vi" class="wf-hidden">Hội chứng rối loạn sinh sản và hô hấp ở lợn</span>
+            </h1>
+            <div class="wf-flex wf-flex--wrap" style="gap:8px; margin-bottom:16px;">
+              <span class="wf-status wf-status--on"><span class="wf-status__dot"></span>Active</span>
+              <span class="wf-chip">7 pig types</span>
+              <span class="wf-chip">3 clinical forms</span>
+              <span class="wf-chip wf-chip--lang">EN</span>
+              <span class="wf-chip wf-chip--lang">VI</span>
+            </div>
+            <div class="wf-flex wf-flex--wrap" style="gap:20px;">
+              <span class="wf-meter">
+                <span class="wf-meter__locale">VI</span>
+                <span class="wf-meter__track"><span class="wf-meter__fill" style="width:100%;"></span></span>
+                <span class="wf-meter__pct">100%</span>
+              </span>
+              <span class="wf-meter">
+                <span class="wf-meter__locale">EN</span>
+                <span class="wf-meter__track"><span class="wf-meter__fill wf-meter__fill--warn" style="width:88%;"></span></span>
+                <span class="wf-meter__pct">88%</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- Version + meta panel -->
+          <div style="border-left:1px solid var(--wf-line); padding-left:32px; display:flex; flex-direction:column; gap:14px;">
+            <div>
+              <div class="wf-eyebrow" style="margin-bottom:6px;">Version</div>
+              <div class="wf-flex" style="gap:8px;">
+                <div class="wf-menu" data-facet-menu="false">
+                  <button class="wf-select" type="button" data-menu-toggle>v3.2 · Live</button>
+                  <div class="wf-menu__panel wf-menu__panel--left">
+                    <div class="wf-menu__label">Versions</div>
+                    <button class="wf-menu__item is-selected" type="button"><svg class="wf-menu__check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>v3.2 <span class="wf-menu__meta">Live</span></button>
+                    <button class="wf-menu__item" type="button"><svg class="wf-menu__check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>v4.0 <span class="wf-menu__meta">Draft</span></button>
+                    <button class="wf-menu__item" type="button"><svg class="wf-menu__check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>v3.1 <span class="wf-menu__meta">Archived</span></button>
+                    <div class="wf-menu__sep"></div>
+                    <button class="wf-menu__item" type="button" data-modal-open="addver-modal">+ Add version</button>
+                  </div>
+                </div>
+              </div>
+              <div class="wf-reason" style="margin-top:8px;">Viewing the live version. Activation lives in Version&nbsp;history below.</div>
+            </div>
+            <div style="font-size:12px; color:var(--wf-ink-3); display:flex; flex-direction:column; gap:7px;">
+              <div><strong style="color:var(--wf-ink); font-weight:500;">Created</strong> · 2025-11-03 by Linh</div>
+              <div><strong style="color:var(--wf-ink); font-weight:500;">Last updated</strong> · 2026-05-20 by Jack</div>
+              <div><strong style="color:var(--wf-ink); font-weight:500;">Activated</strong> · 2026-05-20, cloned from v3.1</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Completeness warning -->
+      <div class="wf-banner wf-banner--warn" style="margin-top:16px;" role="status">
+        <span class="wf-banner__ico">!</span>
+        <div class="wf-banner__body">
+          <div class="wf-banner__title">English version is 88% complete</div>
+          2 required clinical fields are empty in English (Vietnamese is complete):
+          <a href="#derm-acute" style="text-decoration:underline; color:inherit;">Dermatology symptoms</a> ·
+          <a href="#management-acute" style="text-decoration:underline; color:inherit;">Prevention</a>.
+          Complete them before this version is relied on by the chatbot.
+        </div>
+        <div class="wf-banner__actions">
+          <a class="wf-btn wf-btn--sm" href="disease-edit.html">Fix in editor</a>
+        </div>
+      </div>
+
+      <!-- Document: content + scrollspy rail -->
+      <div class="wf-doc" style="margin-top:24px;">
+
+        <div class="wf-doc__main">
+
+          <!-- Shared overview -->
+          <section class="wf-card wf-doc-section" id="overview" aria-label="Overview">
+            <div class="wf-card__head"><h2 class="wf-card__title">Overview</h2><span class="wf-card__sub">Shared across all forms</span></div>
+            <div class="wf-card__body">
+              <div class="wf-prose" style="max-width:72ch;">
+                <span data-locale="en"><p>PRRS is a viral disease caused by <strong>PRRSV</strong>, an arterivirus. It causes <strong>reproductive failure</strong> in breeding herds and <strong>respiratory disease</strong> in growing pigs, and is among the most economically damaging diseases in modern pig production.</p></span>
+                <span data-locale="vi" class="wf-hidden"><p>PRRS là bệnh do <strong>virus PRRSV</strong> (thuộc nhóm arterivirus) gây ra. Bệnh gây <strong>rối loạn sinh sản</strong> trên đàn nái và <strong>bệnh hô hấp</strong> trên lợn đang lớn, là một trong những bệnh gây thiệt hại kinh tế lớn nhất trong chăn nuôi lợn hiện đại.</p></span>
+              </div>
+              <div class="wf-section-label" style="margin-top:18px;">Possible pig types</div>
+              <div class="wf-flex wf-flex--wrap" style="gap:8px;">
+                <span class="wf-chip wf-chip--strong">Sows</span>
+                <span class="wf-chip wf-chip--strong">Gilts</span>
+                <span class="wf-chip wf-chip--strong">Boars</span>
+                <span class="wf-chip wf-chip--strong">Suckling piglets</span>
+                <span class="wf-chip wf-chip--strong">Weaners</span>
+                <span class="wf-chip wf-chip--strong">Growers</span>
+                <span class="wf-chip wf-chip--strong">Finishers</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- Clinical form tabs -->
+          <div class="wf-section-label" id="forms">Clinical form</div>
+          <div class="wf-tabs" data-tabs-group="forms" role="tablist" aria-label="Clinical form">
+            <button class="wf-tab is-on" type="button" data-tab="acute" role="tab">Acute</button>
+            <button class="wf-tab" type="button" data-tab="chronic" role="tab">Chronic</button>
+            <button class="wf-tab" type="button" data-tab="subclinical" role="tab">Subclinical <span class="wf-tab__badge" role="img" aria-label="Incomplete">⚠</span></button>
+            <span class="wf-spacer"></span>
+            <button class="wf-tab wf-tab--add" type="button" data-modal-open="addform-modal">+ Add form</button>
+          </div>
+
+          <!-- ACUTE panel -->
+          <div class="wf-tabpanel is-on" data-tabpanel="acute" data-tabs-group="forms" role="tabpanel" style="margin-top:16px;">
+
+            <section class="wf-card wf-doc-section" id="stats-acute" aria-label="Disease stats (acute)">
+              <div class="wf-card__head"><h2 class="wf-card__title">Disease stats</h2></div>
+              <div class="wf-card__body">
+                <div class="wf-stats">
+                  <div class="wf-stat">
+                    <div class="wf-stat__label">Mortality rate</div>
+                    <div class="wf-stat__value">5–20<span class="wf-stat__unit">%</span></div>
+                    <div class="wf-stat__bar"><span class="wf-stat__bar-fill" style="left:5%; width:15%;"></span></div>
+                  </div>
+                  <div class="wf-stat">
+                    <div class="wf-stat__label">Morbidity rate</div>
+                    <div class="wf-stat__value">90–100<span class="wf-stat__unit">%</span></div>
+                    <div class="wf-stat__bar"><span class="wf-stat__bar-fill" style="left:90%; width:10%;"></span></div>
+                  </div>
+                  <div class="wf-stat">
+                    <div class="wf-stat__label">Fever</div>
+                    <div class="wf-stat__value">40.0–41.5<span class="wf-stat__unit">°C</span></div>
+                    <div class="wf-stat__bar"><span class="wf-stat__bar-fill" style="left:50%; width:30%;"></span></div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section class="wf-card wf-doc-section" id="symptoms-acute" aria-label="Symptoms (acute)">
+              <div class="wf-card__head"><h2 class="wf-card__title">Symptoms</h2><span class="wf-card__sub">Clustered by body system</span></div>
+              <div class="wf-card__body">
+                <div class="wf-clusters">
+                  <div class="wf-cluster wf-doc-section" id="resp-acute">
+                    <div class="wf-cluster__head"><span class="wf-cluster__title">Respiratory</span></div>
+                    <div class="wf-prose">
+                      <span data-locale="en">Laboured “thumping” breathing, coughing, and interstitial pneumonia — most marked in nursery and grow-finish pigs.</span>
+                      <span data-locale="vi" class="wf-hidden">Thở khó kiểu “thúc bụng”, ho và viêm phổi kẽ — rõ nhất ở lợn cai sữa và lợn thịt.</span>
+                    </div>
+                  </div>
+                  <div class="wf-cluster wf-doc-section" id="dig-acute">
+                    <div class="wf-cluster__head"><span class="wf-cluster__title">Digestive</span></div>
+                    <div class="wf-prose">
+                      <span data-locale="en">Reduced feed intake and anorexia during the febrile phase.</span>
+                      <span data-locale="vi" class="wf-hidden">Giảm ăn và bỏ ăn trong giai đoạn sốt.</span>
+                    </div>
+                  </div>
+                  <div class="wf-cluster wf-doc-section" id="neuro-acute">
+                    <div class="wf-cluster__head"><span class="wf-cluster__title">Neurological</span></div>
+                    <div class="wf-prose">
+                      <span data-locale="en">Lethargy and depression; overt neurological signs are uncommon.</span>
+                      <span data-locale="vi" class="wf-hidden">Lờ đờ, ủ rũ; dấu hiệu thần kinh rõ rệt hiếm gặp.</span>
+                    </div>
+                  </div>
+                  <div class="wf-cluster wf-doc-section" id="derm-acute">
+                    <div class="wf-cluster__head">
+                      <span class="wf-cluster__title">Dermatology</span>
+                      <span class="wf-warnflag" data-locale="en" title="Empty in English">EN empty</span>
+                    </div>
+                    <div class="wf-prose">
+                      <span data-locale="en" class="wf-prose--empty">— Not yet written in English —</span>
+                      <span data-locale="vi" class="wf-hidden">Tím tái thoáng qua ở tai và đầu chi (dấu hiệu “tai xanh”), thường thoáng qua.</span>
+                    </div>
+                  </div>
+                  <div class="wf-cluster wf-doc-section wf-cluster--wide" id="repro-acute">
+                    <div class="wf-cluster__head"><span class="wf-cluster__title">Reproductive</span></div>
+                    <div class="wf-prose">
+                      <span data-locale="en">Late-term abortions, increased stillbirths, mummified and weak-born piglets, and delayed return to oestrus.</span>
+                      <span data-locale="vi" class="wf-hidden">Sảy thai cuối kỳ, tăng tỷ lệ thai chết lưu, thai gỗ và lợn con sinh ra yếu, chậm động dục trở lại.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section class="wf-card wf-doc-section" id="management-acute" aria-label="Management (acute)">
+              <div class="wf-card__head"><h2 class="wf-card__title">Management</h2></div>
+              <div class="wf-card__body">
+                <div class="wf-prose" style="max-width:72ch;">
+                  <h4>Vaccines</h4>
+                  <span data-locale="en"><p>Modified-live (MLV) and killed vaccines are available. Vaccinate breeding stock pre-service and acclimatise incoming gilts before herd entry.</p></span>
+                  <span data-locale="vi" class="wf-hidden"><p>Có vắc-xin nhược độc (MLV) và vô hoạt. Tiêm cho đàn giống trước khi phối và làm quen hậu bị trước khi nhập đàn.</p></span>
+                  <h4>Treatment</h4>
+                  <span data-locale="en"><p>No specific antiviral therapy. Provide supportive care and broad-spectrum antibiotics to control secondary bacterial infection.</p></span>
+                  <span data-locale="vi" class="wf-hidden"><p>Không có thuốc kháng virus đặc hiệu. Chăm sóc hỗ trợ và dùng kháng sinh phổ rộng để kiểm soát nhiễm khuẩn kế phát.</p></span>
+                  <h4>Recommendation</h4>
+                  <span data-locale="en"><p>Practise herd closure and gilt acclimatisation; apply McREBEL piglet management to limit lateral spread in farrowing.</p></span>
+                  <span data-locale="vi" class="wf-hidden"><p>Áp dụng đóng đàn và làm quen hậu bị; áp dụng quản lý lợn con McREBEL để hạn chế lây lan ngang khi đẻ.</p></span>
+                  <h4>Prevention <span class="wf-warnflag" data-locale="en">EN empty</span></h4>
+                  <span data-locale="en" class="wf-prose--empty"><p>— Not yet written in English —</p></span>
+                  <span data-locale="vi" class="wf-hidden"><p>An toàn sinh học nghiêm ngặt, cùng vào–cùng ra, giám sát huyết thanh định kỳ và kiểm soát con giống nhập.</p></span>
+                </div>
+              </div>
+            </section>
+
+            <section class="wf-card wf-doc-section" id="additional-acute" aria-label="Additional information (acute)">
+              <div class="wf-card__head"><h2 class="wf-card__title">Additional information</h2></div>
+              <div class="wf-card__body">
+                <div class="wf-prose" style="max-width:72ch;">
+                  <h4>Immediate actions</h4>
+                  <span data-locale="en"><p>Isolate affected groups, notify the herd veterinarian, and stabilise the breeding herd through controlled exposure or vaccination.</p></span>
+                  <span data-locale="vi" class="wf-hidden"><p>Cách ly nhóm bị bệnh, báo bác sĩ thú y phụ trách đàn và ổn định đàn giống bằng phơi nhiễm có kiểm soát hoặc tiêm phòng.</p></span>
+                  <h4>Differential diagnosis</h4>
+                  <span data-locale="en"><p>Differentiate from PCV2-systemic disease, swine influenza, and Aujeszky's disease; given the abortions, rule out classical and African swine fever.</p></span>
+                  <span data-locale="vi" class="wf-hidden"><p>Chẩn đoán phân biệt với bệnh do PCV2, cúm lợn và bệnh Aujeszky; do có sảy thai, cần loại trừ dịch tả lợn cổ điển và châu Phi.</p></span>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <!-- CHRONIC panel -->
+          <div class="wf-tabpanel" data-tabpanel="chronic" data-tabs-group="forms" role="tabpanel" style="margin-top:16px;">
+            <section class="wf-card wf-doc-section" id="stats-chronic">
+              <div class="wf-card__head"><h2 class="wf-card__title">Disease stats</h2></div>
+              <div class="wf-card__body">
+                <div class="wf-stats">
+                  <div class="wf-stat"><div class="wf-stat__label">Mortality rate</div><div class="wf-stat__value">2–8<span class="wf-stat__unit">%</span></div><div class="wf-stat__bar"><span class="wf-stat__bar-fill" style="left:2%; width:6%;"></span></div></div>
+                  <div class="wf-stat"><div class="wf-stat__label">Morbidity rate</div><div class="wf-stat__value">30–60<span class="wf-stat__unit">%</span></div><div class="wf-stat__bar"><span class="wf-stat__bar-fill" style="left:30%; width:30%;"></span></div></div>
+                  <div class="wf-stat"><div class="wf-stat__label">Fever</div><div class="wf-stat__value">39.5–40.5<span class="wf-stat__unit">°C</span></div><div class="wf-stat__bar"><span class="wf-stat__bar-fill" style="left:30%; width:25%;"></span></div></div>
+                </div>
+              </div>
+            </section>
+            <section class="wf-card wf-doc-section" id="symptoms-chronic">
+              <div class="wf-card__head"><h2 class="wf-card__title">Symptoms</h2></div>
+              <div class="wf-card__body">
+                <div class="wf-clusters">
+                  <div class="wf-cluster"><div class="wf-cluster__head"><span class="wf-cluster__title">Respiratory</span></div>
+                    <div class="wf-prose"><span data-locale="en">Persistent low-grade cough, poor growth, and increased susceptibility to secondary respiratory pathogens (PRDC).</span><span data-locale="vi" class="wf-hidden">Ho dai dẳng mức độ nhẹ, chậm lớn và dễ mắc các tác nhân hô hấp kế phát (PRDC).</span></div></div>
+                  <div class="wf-cluster"><div class="wf-cluster__head"><span class="wf-cluster__title">Reproductive</span></div>
+                    <div class="wf-prose"><span data-locale="en">Irregular returns to oestrus and mildly reduced farrowing rates.</span><span data-locale="vi" class="wf-hidden">Động dục trở lại không đều và giảm nhẹ tỷ lệ đẻ.</span></div></div>
+                  <div class="wf-cluster wf-cluster--empty"><div class="wf-cluster__head"><span class="wf-cluster__title">Digestive</span></div><div class="wf-prose wf-prose--empty">— empty —</div></div>
+                  <div class="wf-cluster wf-cluster--empty"><div class="wf-cluster__head"><span class="wf-cluster__title">Neurological</span></div><div class="wf-prose wf-prose--empty">— empty —</div></div>
+                </div>
+              </div>
+            </section>
+            <section class="wf-card wf-doc-section" id="management-chronic">
+              <div class="wf-card__head"><h2 class="wf-card__title">Management</h2></div>
+              <div class="wf-card__body"><div class="wf-prose" style="max-width:72ch;">
+                <h4>Recommendation</h4>
+                <span data-locale="en"><p>Stabilise the herd and monitor with regular serology; cull animals that shed persistently.</p></span>
+                <span data-locale="vi" class="wf-hidden"><p>Ổn định đàn và giám sát huyết thanh định kỳ; loại thải con vật bài thải virus kéo dài.</p></span>
+              </div></div>
+            </section>
+          </div>
+
+          <!-- SUBCLINICAL panel -->
+          <div class="wf-tabpanel" data-tabpanel="subclinical" data-tabs-group="forms" role="tabpanel" style="margin-top:16px;">
+            <div class="wf-banner wf-banner--info" style="margin-bottom:16px;">
+              <span class="wf-banner__ico">i</span>
+              <div class="wf-banner__body">
+                <span data-locale="en">Subclinical infection: the virus circulates with no overt clinical signs and is detected only on routine serological or PCR monitoring.</span>
+                <span data-locale="vi" class="wf-hidden">Nhiễm thể ẩn: virus lưu hành mà không có dấu hiệu lâm sàng rõ, chỉ phát hiện qua giám sát huyết thanh hoặc PCR định kỳ.</span>
+              </div>
+            </div>
+            <section class="wf-card wf-doc-section" id="stats-subclinical">
+              <div class="wf-card__head"><h2 class="wf-card__title">Disease stats</h2></div>
+              <div class="wf-card__body">
+                <div class="wf-stats">
+                  <div class="wf-stat"><div class="wf-stat__label">Mortality rate</div><div class="wf-stat__value">&lt;1<span class="wf-stat__unit">%</span></div><div class="wf-stat__bar"><span class="wf-stat__bar-fill" style="left:0; width:1%;"></span></div></div>
+                  <div class="wf-stat"><div class="wf-stat__label">Morbidity rate</div><div class="wf-stat__value">5–15<span class="wf-stat__unit">%</span></div><div class="wf-stat__bar"><span class="wf-stat__bar-fill" style="left:5%; width:10%;"></span></div></div>
+                  <div class="wf-stat"><div class="wf-stat__label">Fever</div><div class="wf-stat__value wf-muted" style="font-size:15px;">Not recorded</div></div>
+                </div>
+              </div>
+            </section>
+            <section class="wf-card wf-doc-section" id="symptoms-subclinical">
+              <div class="wf-card__head"><h2 class="wf-card__title">Symptoms</h2><span class="wf-card__sub">Largely asymptomatic</span></div>
+              <div class="wf-card__body">
+                <div class="wf-clusters">
+                  <div class="wf-cluster wf-cluster--empty"><div class="wf-cluster__head"><span class="wf-cluster__title">Respiratory</span></div><div class="wf-prose wf-prose--empty">— empty —</div></div>
+                  <div class="wf-cluster wf-cluster--empty"><div class="wf-cluster__head"><span class="wf-cluster__title">Digestive</span></div><div class="wf-prose wf-prose--empty">— empty —</div></div>
+                  <div class="wf-cluster wf-cluster--empty"><div class="wf-cluster__head"><span class="wf-cluster__title">Neurological</span></div><div class="wf-prose wf-prose--empty">— empty —</div></div>
+                  <div class="wf-cluster wf-cluster--empty"><div class="wf-cluster__head"><span class="wf-cluster__title">Reproductive</span></div><div class="wf-prose wf-prose--empty">— empty —</div></div>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <!-- Version history (shared) -->
+          <div class="wf-section-label" id="versions">Version history</div>
+          <section class="wf-card" aria-label="Version history">
+            <table class="wf-table">
+              <thead>
+                <tr><th>Version</th><th>Status</th><th>Updated</th><th>Author</th><th style="text-align:right;">Actions</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="wf-mono" style="font-weight:500;">v3.2</span></td>
+                  <td><span class="wf-status wf-status--on"><span class="wf-status__dot"></span>Live</span></td>
+                  <td>2026-05-20</td>
+                  <td>Jack</td>
+                  <td style="text-align:right;">
+                    <span class="wf-flex" style="justify-content:flex-end; gap:6px;">
+                      <span class="wf-reason">Currently live</span>
+                      <button class="wf-btn wf-btn--sm" type="button" disabled title="Activate another version first">Delete</button>
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="wf-mono" style="font-weight:500;">v4.0</span></td>
+                  <td><span class="wf-status"><span class="wf-status__dot"></span>Draft</span></td>
+                  <td>2026-05-28</td>
+                  <td>Minh</td>
+                  <td style="text-align:right;">
+                    <span class="wf-flex" style="justify-content:flex-end; gap:6px;">
+                      <button class="wf-btn wf-btn--sm" type="button" data-toast="v4.0 set as live — synced on next chatbot update">Set as live</button>
+                      <a class="wf-btn wf-btn--sm" href="disease-edit.html">Edit</a>
+                      <button class="wf-btn wf-btn--sm wf-btn--danger" type="button" data-modal-open="delete-version-modal">Delete</button>
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="wf-mono" style="font-weight:500;">v3.1</span></td>
+                  <td><span class="wf-status"><span class="wf-status__dot"></span>Archived</span></td>
+                  <td>2026-02-14</td>
+                  <td>Jack</td>
+                  <td style="text-align:right;">
+                    <span class="wf-flex" style="justify-content:flex-end; gap:6px;">
+                      <button class="wf-btn wf-btn--sm" type="button" data-toast="Restored v3.1 as a new draft">Restore as draft</button>
+                      <button class="wf-btn wf-btn--sm wf-btn--danger" type="button" data-modal-open="delete-version-modal">Delete</button>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+        </div>
+
+        <!-- Scrollspy rail (one per form, swapped with the tabs) -->
+        <aside class="wf-doc__rail" aria-label="On this page">
+          <div class="wf-tabpanel is-on" data-tabpanel="acute" data-tabs-group="forms">
+            <div class="wf-toc__title">On this page · Acute</div>
+            <nav data-toc>
+              <a class="wf-toc__link is-active" href="#overview">Overview</a>
+              <a class="wf-toc__link" href="#stats-acute">Disease stats</a>
+              <a class="wf-toc__link" href="#symptoms-acute">Symptoms</a>
+              <a class="wf-toc__link wf-toc__link--child" href="#resp-acute">Respiratory</a>
+              <a class="wf-toc__link wf-toc__link--child" href="#dig-acute">Digestive</a>
+              <a class="wf-toc__link wf-toc__link--child" href="#neuro-acute">Neurological</a>
+              <a class="wf-toc__link wf-toc__link--child" href="#derm-acute">Dermatology <span class="wf-toc__dot wf-toc__dot--warn"></span></a>
+              <a class="wf-toc__link wf-toc__link--child" href="#repro-acute">Reproductive</a>
+              <a class="wf-toc__link" href="#management-acute">Management <span class="wf-toc__dot wf-toc__dot--warn"></span></a>
+              <a class="wf-toc__link" href="#additional-acute">Additional info</a>
+              <a class="wf-toc__link" href="#versions">Version history</a>
+            </nav>
+          </div>
+          <div class="wf-tabpanel" data-tabpanel="chronic" data-tabs-group="forms">
+            <div class="wf-toc__title">On this page · Chronic</div>
+            <nav data-toc>
+              <a class="wf-toc__link" href="#overview">Overview</a>
+              <a class="wf-toc__link" href="#stats-chronic">Disease stats</a>
+              <a class="wf-toc__link" href="#symptoms-chronic">Symptoms</a>
+              <a class="wf-toc__link" href="#management-chronic">Management</a>
+              <a class="wf-toc__link" href="#versions">Version history</a>
+            </nav>
+          </div>
+          <div class="wf-tabpanel" data-tabpanel="subclinical" data-tabs-group="forms">
+            <div class="wf-toc__title">On this page · Subclinical</div>
+            <nav data-toc>
+              <a class="wf-toc__link" href="#overview">Overview</a>
+              <a class="wf-toc__link" href="#stats-subclinical">Disease stats</a>
+              <a class="wf-toc__link" href="#symptoms-subclinical">Symptoms <span class="wf-toc__dot wf-toc__dot--warn"></span></a>
+              <a class="wf-toc__link" href="#versions">Version history</a>
+            </nav>
+          </div>
+        </aside>
+
+      </div>
+
+      <p class="wf-note">FR coverage: FR-373 read · FR-372 EN/VI toggle · UC-376-05 open detail · UC-376-07 switch &amp; activate version · FR-374 delete · FR-375 sync.</p>
+
+    </main>
+  </div>
+</div>
+
+<!-- ───────────────── Modals ───────────────── -->
+
+<!-- Add version -->
+<div class="wf-modal" id="addver-modal" role="dialog" aria-modal="true" aria-labelledby="addver-title">
+  <div class="wf-modal__scrim"></div>
+  <div class="wf-modal__dialog">
+    <button class="wf-modal__close" type="button" data-modal-close aria-label="Close">✕</button>
+    <div class="wf-modal__head">
+      <span class="wf-modal__icon wf-modal__icon--info">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+      </span>
+      <div>
+        <h2 class="wf-modal__title" id="addver-title">Add a new version</h2>
+        <p class="wf-modal__sub">Clones the current content into a new editable draft.</p>
+      </div>
+    </div>
+    <div class="wf-modal__body">
+      <div class="wf-field">
+        <label class="wf-field__label" for="addver-from">Clone from</label>
+        <div class="wf-menu" data-facet-menu="false" style="align-self:flex-start;">
+          <button class="wf-select" type="button" data-menu-toggle id="addver-from">v3.2 · Live</button>
+          <div class="wf-menu__panel"><button class="wf-menu__item is-selected" type="button">v3.2 · Live</button><button class="wf-menu__item" type="button">v3.1 · Archived</button><button class="wf-menu__item" type="button">Empty version</button></div>
+        </div>
+        <span class="wf-field__hint">The new draft starts as <strong>v4.1</strong> and is not live until you activate it.</span>
+      </div>
+    </div>
+    <div class="wf-modal__foot">
+      <button class="wf-btn" type="button" data-modal-close>Cancel</button>
+      <a class="wf-btn wf-btn--primary" href="disease-edit.html">Create draft &amp; edit</a>
+    </div>
+  </div>
+</div>
+
+<!-- Add clinical form -->
+<div class="wf-modal" id="addform-modal" role="dialog" aria-modal="true" aria-labelledby="addform-title">
+  <div class="wf-modal__scrim"></div>
+  <div class="wf-modal__dialog">
+    <button class="wf-modal__close" type="button" data-modal-close aria-label="Close">✕</button>
+    <div class="wf-modal__head">
+      <span class="wf-modal__icon wf-modal__icon--info">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+      </span>
+      <div>
+        <h2 class="wf-modal__title" id="addform-title">Add a clinical form</h2>
+        <p class="wf-modal__sub">Form-specific fields are clustered under their own tab.</p>
+      </div>
+    </div>
+    <div class="wf-modal__body">
+      <div class="wf-field">
+        <label class="wf-field__label" for="addform-name">Form name</label>
+        <input class="wf-textinput" id="addform-name" type="text" placeholder="e.g. Peracute, Nervous, Cutaneous" data-autofocus />
+        <span class="wf-field__hint">Editing happens in the disease editor.</span>
+      </div>
+    </div>
+    <div class="wf-modal__foot">
+      <button class="wf-btn" type="button" data-modal-close>Cancel</button>
+      <a class="wf-btn wf-btn--primary" href="disease-edit.html">Add form &amp; edit</a>
+    </div>
+  </div>
+</div>
+
+<!-- Delete version (blocks live) -->
+<div class="wf-modal" id="delete-version-modal" role="dialog" aria-modal="true" aria-labelledby="delver-title">
+  <div class="wf-modal__scrim"></div>
+  <div class="wf-modal__dialog">
+    <button class="wf-modal__close" type="button" data-modal-close aria-label="Close">✕</button>
+    <div class="wf-modal__head">
+      <span class="wf-modal__icon wf-modal__icon--danger">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M10 11v6M14 11v6"/></svg>
+      </span>
+      <div>
+        <h2 class="wf-modal__title" id="delver-title">Delete version v4.0?</h2>
+        <p class="wf-modal__sub">This draft has 4 fields across both languages.</p>
+      </div>
+    </div>
+    <div class="wf-modal__body">
+      Deleting a version cannot be undone. The live version (v3.2) is unaffected.
+      <div class="wf-banner wf-banner--info" style="margin-top:12px;">
+        <span class="wf-banner__ico">i</span>
+        <div class="wf-banner__body">You can only delete non-live versions. To remove the live version, set another version live first.</div>
+      </div>
+    </div>
+    <div class="wf-modal__foot">
+      <button class="wf-btn" type="button" data-modal-close>Cancel</button>
+      <button class="wf-btn wf-btn--danger-solid" type="button" data-modal-close data-toast="Version v4.0 deleted">Delete version</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete disease (type-to-confirm) -->
+<div class="wf-modal" id="delete-disease-modal" role="dialog" aria-modal="true" aria-labelledby="deldis-title">
+  <div class="wf-modal__scrim"></div>
+  <div class="wf-modal__dialog">
+    <button class="wf-modal__close" type="button" data-modal-close aria-label="Close">✕</button>
+    <div class="wf-modal__head">
+      <span class="wf-modal__icon wf-modal__icon--danger">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M10 11v6M14 11v6"/></svg>
+      </span>
+      <div>
+        <h2 class="wf-modal__title" id="deldis-title">Delete PRRS?</h2>
+        <p class="wf-modal__sub">Permanently removes the disease and all 3 versions in both languages.</p>
+      </div>
+    </div>
+    <div class="wf-modal__body">
+      This disease is <strong>active</strong> and used by the chatbot. Deleting cannot be undone.
+      <div class="wf-confirm-field">
+        <label class="wf-field__label" for="deldis-confirm">Type the codename <code class="wf-mono">PRRS</code> to confirm</label>
+        <input class="wf-textinput wf-textinput--mono" id="deldis-confirm" type="text" placeholder="PRRS" data-confirm-type data-confirm-word="PRRS" data-autofocus autocomplete="off" />
+      </div>
+    </div>
+    <div class="wf-modal__foot">
+      <button class="wf-btn" type="button" data-modal-close>Cancel</button>
+      <button class="wf-btn wf-btn--danger-solid is-disabled" type="button" disabled data-confirm-gate data-modal-close data-toast="PRRS deleted">Delete permanently</button>
+    </div>
+  </div>
+</div>
+
+<!-- Sync to chatbot -->
+<div class="wf-modal" id="sync-modal" role="dialog" aria-modal="true" aria-labelledby="sync-title">
+  <div class="wf-modal__scrim"></div>
+  <div class="wf-modal__dialog">
+    <button class="wf-modal__close" type="button" data-modal-close aria-label="Close">✕</button>
+    <div class="wf-modal__head">
+      <span class="wf-modal__icon wf-modal__icon--info">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+      </span>
+      <div>
+        <h2 class="wf-modal__title" id="sync-title">Sync PRRS to chatbot</h2>
+        <p class="wf-modal__sub">Re-embeds the live version (v3.2) into the assistant's knowledge base.</p>
+      </div>
+    </div>
+    <div class="wf-modal__body">
+      The English version is 88% complete — empty fields are skipped. Sync anyway?
+    </div>
+    <div class="wf-modal__foot">
+      <button class="wf-btn" type="button" data-modal-close>Cancel</button>
+      <button class="wf-btn wf-btn--primary" type="button" data-modal-close data-toast="Sync started for PRRS">Sync now</button>
+    </div>
+  </div>
+</div>
+
+<script src="wireframe.js"></script>
+</body>
+</html>

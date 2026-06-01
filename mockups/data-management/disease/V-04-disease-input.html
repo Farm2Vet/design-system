@@ -14,9 +14,9 @@
      root where styles/ and scripts/ actually live. -->
 
 <!-- Foundations -->
-<link rel="stylesheet" href="../../styles/tokens.css" />
-<link rel="stylesheet" href="../../styles/base.css" />
-<link rel="stylesheet" href="../../styles/typography.css" />
+<link rel="stylesheet" href="../../../f2v-design-system-sot/styles/tokens.css" />
+<link rel="stylesheet" href="../../../f2v-design-system-sot/styles/base.css" />
+<link rel="stylesheet" href="../../../f2v-design-system-sot/styles/typography.css" />
 
 <!-- Canonical components (consumed, never re-implemented) -->
 <!-- dropdown.css loads before button.css so that .btn rules win
@@ -24,32 +24,32 @@
      (icon-only kebab, overflow menu in a table row). See the
      load-order note at the top of the trigger section in
      styles/dropdown.css. -->
-<link rel="stylesheet" href="../../styles/dropdown.css" />
-<link rel="stylesheet" href="../../styles/button.css" />
-<link rel="stylesheet" href="../../styles/form.css" />
-<link rel="stylesheet" href="../../styles/badge.css" />
-<link rel="stylesheet" href="../../styles/card.css" />
-<link rel="stylesheet" href="../../styles/sidebar.css" />
-<link rel="stylesheet" href="../../styles/chip.css" />
-<link rel="stylesheet" href="../../styles/tabs.css" />
-<link rel="stylesheet" href="../../styles/switch.css" />
-<link rel="stylesheet" href="../../styles/alert.css" />
-<link rel="stylesheet" href="../../styles/modal.css" />
-<link rel="stylesheet" href="../../styles/chip-picker.css" />
+<link rel="stylesheet" href="../../../f2v-design-system-sot/styles/dropdown.css" />
+<link rel="stylesheet" href="../../../f2v-design-system-sot/styles/button.css" />
+<link rel="stylesheet" href="../../../f2v-design-system-sot/styles/form.css" />
+<link rel="stylesheet" href="../../../f2v-design-system-sot/styles/badge.css" />
+<link rel="stylesheet" href="../../../f2v-design-system-sot/styles/card.css" />
+<link rel="stylesheet" href="../../../f2v-design-system-sot/styles/sidebar.css" />
+<link rel="stylesheet" href="../../../f2v-design-system-sot/styles/chip.css" />
+<link rel="stylesheet" href="../../../f2v-design-system-sot/styles/tabs.css" />
+<link rel="stylesheet" href="../../../f2v-design-system-sot/styles/switch.css" />
+<link rel="stylesheet" href="../../../f2v-design-system-sot/styles/alert.css" />
+<link rel="stylesheet" href="../../../f2v-design-system-sot/styles/modal.css" />
+<link rel="stylesheet" href="../../../f2v-design-system-sot/styles/chip-picker.css" />
 
 <!-- Provides the .global-nav / .global-nav__inner / .global-nav__list
      base used by the dash-topbar islands pattern. The .dash-topbar
      overrides below re-skin those classes for admin page chrome. -->
-<link rel="stylesheet" href="../../styles/global-nav.css" />
+<link rel="stylesheet" href="../../../f2v-design-system-sot/styles/global-nav.css" />
 
 <!-- Reuse the admin shell scaffolding established by V-01 -->
-<link rel="stylesheet" href="../../styles/brand-bg.css" />
-<link rel="stylesheet" href="../../styles/page-V-01.css" />
+<link rel="stylesheet" href="../../../f2v-design-system-sot/styles/brand-bg.css" />
+<link rel="stylesheet" href="../../../f2v-design-system-sot/styles/page-V-01.css" />
 
-<script src="../../scripts/dropdown.js" defer></script>
-<script src="../../scripts/sidebar.js" defer></script>
-<script src="../../scripts/switch.js" defer></script>
-<script src="../../scripts/v04-disease.js" defer></script>
+<script src="../../../f2v-design-system-sot/scripts/dropdown.js" defer></script>
+<script src="../../../f2v-design-system-sot/scripts/sidebar.js" defer></script>
+<script src="../../../f2v-design-system-sot/scripts/switch.js" defer></script>
+<script src="../../../f2v-design-system-sot/scripts/v04-disease.js" defer></script>
 
 <style>
   /* =========================================================
@@ -80,13 +80,35 @@
      (16px). Body copy is --text-body.
      ========================================================= */
 
-  /* Re-enable the ambient drift bg for the disease editor.
-     page-V-01.css disables it for the wiki catalog page (which
-     doesn't need it) but V-04 has heavy glass chrome (sidebar,
-     topbar islands, every card) that needs an ambient backdrop
-     to refract against. Override page-V-01.css's two lines. */
-  body { background: var(--background-default); }
-  body::before { content: ''; }
+  /* exact dashboard-forest bg + islands + sidebar-fit */
+
+  /* EXACT earthsky wash for the disease editor. V-04 has heavy
+     glass chrome (sidebar, topbar islands, every card) that needs
+     an ambient backdrop to refract against. This replaces the
+     plain --background-default override and the empty body::before
+     with the canonical dashboard-forest wash. Painting it on
+     body::before (z-index:-2) keeps it behind the .f2v-bg slot
+     (z-index:0) and all page content (z-index:1). */
+  body { background: transparent; }
+  body::before {
+    content: '';
+    position: fixed;
+    z-index: -2;
+    inset: -25%;
+    background:
+      radial-gradient(ellipse 70% 110% at 0% 50%, color-mix(in srgb,#f2faea 85%,transparent) 0%, color-mix(in srgb,#e4f4d7 55%,transparent) 35%, transparent 70%),
+      radial-gradient(ellipse 75% 110% at 100% 50%, color-mix(in srgb,#ebf5ea 90%,transparent) 0%, color-mix(in srgb,#d9ebd8 70%,transparent) 40%, transparent 75%),
+      #ffffff;
+    filter: blur(50px) saturate(1.5);
+  }
+
+  /* Neutralize the brand-bg contour-ring slot for THIS page so the
+     earthsky wash reads cleanly. brand-bg.css paints .f2v-bg as a
+     fixed, z-index:0 layer of forest contour rings (markup present
+     in <body>); on V-04 those rings would sit on top of the wash.
+     Hide the slot here, page-scoped, instead of touching the shared
+     stylesheet or the markup. */
+  .f2v-bg { display: none; }
 
   /* Lift V-04's main content above the .f2v-bg slot AND let the
      slot read through it (Spec E). page-V-01.css paints solid

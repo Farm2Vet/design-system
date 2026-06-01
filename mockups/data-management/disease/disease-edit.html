@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Edit PRRS — Farm2Vet Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="wireframe.css?v=forest-2" />
+<link rel="stylesheet" href="../../_glass-sidebar.css?v=glass" />
+<script src="../../_glass-sidebar.js?v=glass" defer></script>
+</head>
+<body data-lang-scope-root>
+
+<div class="wf-shell">
+
+  <!-- ───────────────── Sidebar ───────────────── -->
+  <aside class="sidebar" aria-label="Primary">
+    <header class="sidebar__header">
+      <a href="#" class="sidebar__brand" aria-label="Farm2Vet dashboard home">
+        <img class="sidebar__brand-mark" src="../../../f2v-design-system-sot/logo/logo-emblem-white.svg" alt="" aria-hidden="true" />
+        <span class="sidebar__brand-text">Farm2Vet</span>
+      </a>
+      <button type="button" class="sidebar__collapse" aria-label="Collapse sidebar" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6"/></svg>
+      </button>
+    </header>
+
+    <nav class="sidebar__nav" aria-label="Primary destinations">
+      <ul class="sidebar__list">
+        <li class="sidebar__item">
+          <a class="sidebar__link" href="../../dashboard/dashboard.html">
+            <span class="sidebar__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+            </span>
+            <span class="sidebar__label">Overview</span>
+          </a>
+        </li>
+
+        <li class="sidebar__item is-open">
+          <button type="button" class="sidebar__link" aria-expanded="true">
+            <span class="sidebar__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/></svg>
+            </span>
+            <span class="sidebar__label">Data management</span>
+            <span class="sidebar__trailing"><svg class="sidebar__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></span>
+          </button>
+          <ul class="sidebar__sublist">
+            <li class="sidebar__item"><a class="sidebar__link is-current" href="disease-list.html" aria-current="page"><span class="sidebar__label">Disease</span></a></li>
+            <li class="sidebar__item"><a class="sidebar__link" href="../question/01-list.html"><span class="sidebar__label">Question</span></a></li>
+            <li class="sidebar__item"><a class="sidebar__link" href="../conversation/conversation-list.html"><span class="sidebar__label">Conversation</span></a></li>
+            <li class="sidebar__item"><a class="sidebar__link" href="../images/01-list.html"><span class="sidebar__label">Image</span></a></li>
+            <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Resource</span></a></li>
+            <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">PDF Input</span></a></li>
+          </ul>
+        </li>
+
+        <li class="sidebar__item">
+          <a class="sidebar__link" href="../../automated-testing/testsuite/testsuite-list.html">
+            <span class="sidebar__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
+            </span>
+            <span class="sidebar__label">Automated testing</span>
+          </a>
+        </li>
+        <li class="sidebar__item">
+          <a class="sidebar__link" href="#">
+            <span class="sidebar__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            </span>
+            <span class="sidebar__label">Sync database</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="sidebar__footer">
+      <div class="sidebar__profile-wrap">
+        <div class="sidebar__profile">
+          <span class="sidebar__avatar" aria-hidden="true">MB</span>
+          <span class="sidebar__profile-text">
+            <span class="sidebar__profile-name">Minh Bùi</span>
+            <span class="sidebar__profile-role">Admin</span>
+          </span>
+          <button type="button" class="sidebar__overflow" aria-label="Account menu" aria-haspopup="menu" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+          </button>
+        </div>
+
+        <div class="sidebar__menu" role="menu" aria-label="Account">
+          <span class="sidebar__menu-header">farm2vets.tech@gmail.com</span>
+          <ul class="sidebar__menu-list">
+            <li role="none">
+              <a class="sidebar__menu-item" role="menuitem" href="#">
+                <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                <span>Settings</span>
+              </a>
+            </li>
+            <li role="none">
+              <a class="sidebar__menu-item" role="menuitem" href="#">
+                <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                <span>Language</span>
+              </a>
+            </li>
+            <li role="none">
+              <a class="sidebar__menu-item" role="menuitem" href="#">
+                <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <span>Get Help</span>
+              </a>
+            </li>
+            <li role="none" class="sidebar__menu-item--divider" aria-hidden="true"></li>
+            <li role="none">
+              <a class="sidebar__menu-item" role="menuitem" href="#">
+                <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                <span>Logout</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ───────────────── Main ───────────────── -->
+  <div class="wf-main">
+
+    <header class="wf-topbar">
+      <nav class="wf-crumbs" aria-label="Breadcrumb">
+        <a href="#">Data management</a>
+        <span class="wf-crumbs__sep">/</span>
+        <a href="disease-list.html">Diseases</a>
+        <span class="wf-crumbs__sep">/</span>
+        <a href="disease-detail.html" class="wf-mono">PRRS</a>
+        <span class="wf-crumbs__sep">/</span>
+        <span class="wf-crumbs__here">Edit</span>
+      </nav>
+      <div class="wf-topbar__cluster" data-lang-switch data-lang-scope="[data-lang-scope-root]">
+        <span class="wf-savebar__state"><span class="wf-savebar__dot is-dirty"></span><span data-save-text>Unsaved changes</span></span>
+        <span class="wf-divider-v"></span>
+        <span class="wf-muted" style="font-size:12px;">Editing</span>
+        <div class="wf-seg" role="group" aria-label="Editing language">
+          <button class="wf-seg__opt is-on" type="button" data-lang="en">EN</button>
+          <button class="wf-seg__opt" type="button" data-lang="vi">VI</button>
+        </div>
+        <span class="wf-divider-v"></span>
+        <a class="wf-btn" href="disease-detail.html">Discard</a>
+        <button class="wf-btn wf-btn--primary" type="button" data-save-btn data-toast="Changes saved to draft v4.0">Save changes</button>
+      </div>
+    </header>
+
+    <main class="wf-page" style="padding-bottom:96px;">
+
+      <div class="wf-page-head" style="align-items:center;">
+        <div>
+          <div class="wf-eyebrow">Editing · <span class="wf-mono">PRRS</span> · draft v4.0</div>
+          <h1 class="wf-page-title" style="font-size:22px;">Edit disease</h1>
+          <p class="wf-page-sub">Created 2025-11-03 by Linh · last saved 4 min ago by Minh.</p>
+        </div>
+      </div>
+
+      <!-- Draft-safety banner -->
+      <div class="wf-banner wf-banner--info" style="margin-bottom:16px;">
+        <span class="wf-banner__ico">i</span>
+        <div class="wf-banner__body">
+          You're editing <strong>draft v4.0</strong> (cloned from v3.2). The live version <strong>v3.2</strong> stays untouched until you activate v4.0 in
+          <a href="disease-detail.html#versions" style="text-decoration:underline; color:inherit;">Version history</a>.
+        </div>
+      </div>
+
+      <!-- Completeness (non-blocking, blocks Activate not Save) -->
+      <div class="wf-banner wf-banner--warn" style="margin-bottom:20px;">
+        <span class="wf-banner__ico">!</span>
+        <div class="wf-banner__body">
+          <div class="wf-banner__title">English is 88% complete — you can save, but can't activate until it's done</div>
+          2 required fields are empty in English:
+          <a href="#derm-acute-field" style="text-decoration:underline; color:inherit;">Dermatology</a> ·
+          <a href="#prevention-acute-field" style="text-decoration:underline; color:inherit;">Prevention</a>.
+        </div>
+      </div>
+
+      <form class="wf-doc" data-form onsubmit="return false;">
+
+        <div class="wf-doc__main">
+
+          <!-- Identity -->
+          <section class="wf-card wf-doc-section" id="identity">
+            <div class="wf-card__head"><h2 class="wf-card__title">Identity</h2><span class="wf-card__sub">Shared across all forms &amp; languages</span></div>
+            <div class="wf-card__body" style="display:grid; gap:20px;">
+
+              <div class="wf-grid-2">
+                <div class="wf-field">
+                  <label class="wf-field__label" for="e-code">Codename <span class="wf-req">*</span></label>
+                  <input class="wf-textinput wf-textinput--mono" id="e-code" type="text" value="PRRS" autocomplete="off" />
+                  <span class="wf-field__hint">Changing the codename updates URLs and chatbot references.</span>
+                </div>
+                <div class="wf-field">
+                  <div class="wf-field__top">
+                    <label class="wf-field__label" for="e-name">Name <span class="wf-req">*</span></label>
+                    <span class="wf-pip wf-pip--ok"><span class="wf-pip__dot"></span>EN · VI ✓</span>
+                  </div>
+                  <input class="wf-textinput" id="e-name" type="text" data-locale="en" value="Porcine Reproductive &amp; Respiratory Syndrome" />
+                  <input class="wf-textinput wf-hidden" type="text" data-locale="vi" value="Hội chứng rối loạn sinh sản và hô hấp ở lợn" />
+                </div>
+              </div>
+
+              <div class="wf-field">
+                <div class="wf-field__top">
+                  <label class="wf-field__label">Description</label>
+                  <span class="wf-pip wf-pip--ok"><span class="wf-pip__dot"></span>EN · VI ✓</span>
+                </div>
+                <div class="wf-toolbar" aria-label="Format">
+                  <button class="wf-toolbar__btn" type="button" title="Heading">H2</button>
+                  <button class="wf-toolbar__btn" type="button" title="Bold">B</button>
+                  <button class="wf-toolbar__btn" type="button" title="Italic"><em>I</em></button>
+                  <span class="wf-toolbar__sep"></span>
+                  <button class="wf-toolbar__btn" type="button" title="Bulleted list">•</button>
+                  <button class="wf-toolbar__btn" type="button" title="Numbered list">1.</button>
+                  <button class="wf-toolbar__btn" type="button" title="Link">↗</button>
+                  <span class="wf-toolbar__spacer"></span>
+                  <span class="wf-toolbar__hint">Markdown supported</span>
+                </div>
+                <div class="wf-editor" contenteditable="true" data-locale="en">PRRS is a viral disease caused by **PRRSV**, an arterivirus. It causes reproductive failure in breeding herds and respiratory disease in growing pigs, and is among the most economically damaging diseases in modern pig production.</div>
+                <div class="wf-editor wf-hidden" contenteditable="true" data-locale="vi">PRRS là bệnh do **virus PRRSV** (thuộc nhóm arterivirus) gây ra. Bệnh gây rối loạn sinh sản trên đàn nái và bệnh hô hấp trên lợn đang lớn, là một trong những bệnh gây thiệt hại kinh tế lớn nhất trong chăn nuôi lợn hiện đại.</div>
+              </div>
+
+              <div class="wf-field">
+                <label class="wf-field__label">Possible pig types</label>
+                <div class="wf-flex wf-flex--wrap" style="gap:8px;">
+                  <button class="wf-tog is-on" type="button" data-tog><svg class="wf-tog__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Sows</button>
+                  <button class="wf-tog is-on" type="button" data-tog><svg class="wf-tog__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Gilts</button>
+                  <button class="wf-tog is-on" type="button" data-tog><svg class="wf-tog__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Boars</button>
+                  <button class="wf-tog is-on" type="button" data-tog><svg class="wf-tog__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Suckling piglets</button>
+                  <button class="wf-tog is-on" type="button" data-tog><svg class="wf-tog__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Weaners</button>
+                  <button class="wf-tog is-on" type="button" data-tog><svg class="wf-tog__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Growers</button>
+                  <button class="wf-tog is-on" type="button" data-tog><svg class="wf-tog__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Finishers</button>
+                  <button class="wf-btn wf-btn--ghost wf-btn--sm" type="button" data-toast="Add a custom pig type">+ Add type</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Clinical forms -->
+          <div class="wf-section-label">Clinical forms</div>
+
+          <!-- Acute (expanded) -->
+          <article class="wf-formgroup" data-collapsible id="form-acute">
+            <header class="wf-formgroup__head">
+              <button class="wf-formgroup__caret" type="button" data-collapse-toggle aria-label="Collapse form">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+              </button>
+              <input class="wf-formgroup__name" value="Acute" aria-label="Form name" />
+              <span class="wf-formgroup__badge">Default</span>
+              <span class="wf-spacer"></span>
+              <div class="wf-menu" data-facet-menu="false">
+                <button class="wf-btn wf-btn--ghost wf-btn--icon wf-btn--sm" type="button" data-menu-toggle aria-label="Form actions">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg>
+                </button>
+                <div class="wf-menu__panel">
+                  <button class="wf-menu__item" type="button" data-toast="Renaming — type in the form name field">Rename</button>
+                  <button class="wf-menu__item" type="button" data-toast="Duplicated the Acute form">Duplicate</button>
+                  <div class="wf-menu__sep"></div>
+                  <button class="wf-menu__item wf-menu__item--danger" type="button" data-modal-open="delete-form-modal">Delete form…</button>
+                </div>
+              </div>
+            </header>
+            <div class="wf-formgroup__body">
+
+              <!-- Disease stats -->
+              <div class="wf-fieldset wf-doc-section" id="stats-acute">
+                <div class="wf-fieldset__title">Disease stats</div>
+                <div class="wf-grid-3">
+                  <div class="wf-field">
+                    <label class="wf-field__label">Mortality rate</label>
+                    <div class="wf-range__inputs">
+                      <input class="wf-textinput" type="text" value="5" aria-label="Mortality min" />
+                      <span class="wf-range__dash">–</span>
+                      <input class="wf-textinput" type="text" value="20" aria-label="Mortality max" />
+                      <span class="wf-range__unit">%</span>
+                    </div>
+                  </div>
+                  <div class="wf-field">
+                    <label class="wf-field__label">Morbidity rate</label>
+                    <div class="wf-range__inputs">
+                      <input class="wf-textinput" type="text" value="90" aria-label="Morbidity min" />
+                      <span class="wf-range__dash">–</span>
+                      <input class="wf-textinput" type="text" value="100" aria-label="Morbidity max" />
+                      <span class="wf-range__unit">%</span>
+                    </div>
+                  </div>
+                  <div class="wf-field">
+                    <label class="wf-field__label">Fever</label>
+                    <div class="wf-range__inputs">
+                      <input class="wf-textinput" type="text" value="40.0" aria-label="Fever min" />
+                      <span class="wf-range__dash">–</span>
+                      <input class="wf-textinput" type="text" value="41.5" aria-label="Fever max" />
+                      <span class="wf-range__unit">°C</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Symptoms -->
+              <div class="wf-fieldset wf-doc-section" id="symptoms-acute">
+                <div class="wf-fieldset__title">Symptoms · free text, clustered by body system</div>
+                <div class="wf-grid-2">
+                  <div class="wf-field">
+                    <div class="wf-field__top"><label class="wf-field__label">Respiratory</label><span class="wf-pip wf-pip--ok"><span class="wf-pip__dot"></span>VI ✓</span></div>
+                    <textarea class="wf-textarea" rows="2" data-locale="en">Laboured "thumping" breathing, coughing, and interstitial pneumonia — most marked in nursery and grow-finish pigs.</textarea>
+                    <textarea class="wf-textarea wf-hidden" rows="2" data-locale="vi">Thở khó kiểu "thúc bụng", ho và viêm phổi kẽ — rõ nhất ở lợn cai sữa và lợn thịt.</textarea>
+                  </div>
+                  <div class="wf-field">
+                    <div class="wf-field__top"><label class="wf-field__label">Digestive</label><span class="wf-pip wf-pip--ok"><span class="wf-pip__dot"></span>VI ✓</span></div>
+                    <textarea class="wf-textarea" rows="2" data-locale="en">Reduced feed intake and anorexia during the febrile phase.</textarea>
+                    <textarea class="wf-textarea wf-hidden" rows="2" data-locale="vi">Giảm ăn và bỏ ăn trong giai đoạn sốt.</textarea>
+                  </div>
+                  <div class="wf-field">
+                    <div class="wf-field__top"><label class="wf-field__label">Neurological</label><span class="wf-pip wf-pip--ok"><span class="wf-pip__dot"></span>VI ✓</span></div>
+                    <textarea class="wf-textarea" rows="2" data-locale="en">Lethargy and depression; overt neurological signs are uncommon.</textarea>
+                    <textarea class="wf-textarea wf-hidden" rows="2" data-locale="vi">Lờ đờ, ủ rũ; dấu hiệu thần kinh rõ rệt hiếm gặp.</textarea>
+                  </div>
+                  <div class="wf-field" id="derm-acute-field">
+                    <div class="wf-field__top"><label class="wf-field__label">Dermatology</label><span class="wf-pip wf-pip--warn" data-locale="en"><span class="wf-pip__dot"></span>EN empty · VI ✓</span><span class="wf-pip wf-pip--ok wf-hidden" data-locale="vi"><span class="wf-pip__dot"></span>VI ✓</span></div>
+                    <textarea class="wf-textarea" rows="2" data-locale="en" placeholder="Describe dermatological signs in English…"></textarea>
+                    <textarea class="wf-textarea wf-hidden" rows="2" data-locale="vi">Tím tái thoáng qua ở tai và đầu chi (dấu hiệu "tai xanh"), thường thoáng qua.</textarea>
+                  </div>
+                  <div class="wf-field" style="grid-column:1 / -1;">
+                    <div class="wf-field__top"><label class="wf-field__label">Reproductive</label><span class="wf-pip wf-pip--ok"><span class="wf-pip__dot"></span>VI ✓</span></div>
+                    <textarea class="wf-textarea" rows="2" data-locale="en">Late-term abortions, increased stillbirths, mummified and weak-born piglets, and delayed return to oestrus.</textarea>
+                    <textarea class="wf-textarea wf-hidden" rows="2" data-locale="vi">Sảy thai cuối kỳ, tăng tỷ lệ thai chết lưu, thai gỗ và lợn con sinh ra yếu, chậm động dục trở lại.</textarea>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Management -->
+              <div class="wf-fieldset wf-doc-section" id="management-acute">
+                <div class="wf-fieldset__title">Management · markdown</div>
+                <div class="wf-field">
+                  <div class="wf-field__top"><label class="wf-field__label">Vaccines</label><span class="wf-pip wf-pip--ok"><span class="wf-pip__dot"></span>VI ✓</span></div>
+                  <div class="wf-toolbar"><button class="wf-toolbar__btn" type="button">B</button><button class="wf-toolbar__btn" type="button"><em>I</em></button><span class="wf-toolbar__sep"></span><button class="wf-toolbar__btn" type="button">•</button><button class="wf-toolbar__btn" type="button">1.</button><span class="wf-toolbar__spacer"></span><span class="wf-toolbar__hint">Markdown supported</span></div>
+                  <div class="wf-editor" contenteditable="true" data-locale="en">Modified-live (MLV) and killed vaccines are available. Vaccinate breeding stock pre-service and acclimatise incoming gilts before herd entry.</div>
+                  <div class="wf-editor wf-hidden" contenteditable="true" data-locale="vi">Có vắc-xin nhược độc (MLV) và vô hoạt. Tiêm cho đàn giống trước khi phối và làm quen hậu bị trước khi nhập đàn.</div>
+                </div>
+                <div class="wf-field">
+                  <div class="wf-field__top"><label class="wf-field__label">Treatment</label><span class="wf-pip wf-pip--ok"><span class="wf-pip__dot"></span>VI ✓</span></div>
+                  <div class="wf-toolbar"><button class="wf-toolbar__btn" type="button">B</button><button class="wf-toolbar__btn" type="button"><em>I</em></button><span class="wf-toolbar__sep"></span><button class="wf-toolbar__btn" type="button">•</button><button class="wf-toolbar__btn" type="button">1.</button><span class="wf-toolbar__spacer"></span><span class="wf-toolbar__hint">Markdown supported</span></div>
+                  <div class="wf-editor" contenteditable="true" data-locale="en">No specific antiviral therapy. Provide supportive care and broad-spectrum antibiotics to control secondary bacterial infection.</div>
+                  <div class="wf-editor wf-hidden" contenteditable="true" data-locale="vi">Không có thuốc kháng virus đặc hiệu. Chăm sóc hỗ trợ và dùng kháng sinh phổ rộng để kiểm soát nhiễm khuẩn kế phát.</div>
+                </div>
+                <div class="wf-grid-2">
+                  <div class="wf-field">
+                    <div class="wf-field__top"><label class="wf-field__label">Recommendation</label><span class="wf-pip wf-pip--ok"><span class="wf-pip__dot"></span>VI ✓</span></div>
+                    <textarea class="wf-textarea" rows="3" data-locale="en">Practise herd closure and gilt acclimatisation; apply McREBEL piglet management to limit lateral spread in farrowing.</textarea>
+                    <textarea class="wf-textarea wf-hidden" rows="3" data-locale="vi">Áp dụng đóng đàn và làm quen hậu bị; áp dụng quản lý lợn con McREBEL để hạn chế lây lan ngang khi đẻ.</textarea>
+                  </div>
+                  <div class="wf-field" id="prevention-acute-field">
+                    <div class="wf-field__top"><label class="wf-field__label">Prevention</label><span class="wf-pip wf-pip--warn" data-locale="en"><span class="wf-pip__dot"></span>EN empty · VI ✓</span><span class="wf-pip wf-pip--ok wf-hidden" data-locale="vi"><span class="wf-pip__dot"></span>VI ✓</span></div>
+                    <textarea class="wf-textarea" rows="3" data-locale="en" placeholder="Describe prevention in English…"></textarea>
+                    <textarea class="wf-textarea wf-hidden" rows="3" data-locale="vi">An toàn sinh học nghiêm ngặt, cùng vào–cùng ra, giám sát huyết thanh định kỳ và kiểm soát con giống nhập.</textarea>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Additional information -->
+              <div class="wf-fieldset wf-doc-section" id="additional-acute">
+                <div class="wf-fieldset__title">Additional information · free text</div>
+                <div class="wf-grid-2">
+                  <div class="wf-field">
+                    <div class="wf-field__top"><label class="wf-field__label">Immediate actions</label><span class="wf-pip wf-pip--ok"><span class="wf-pip__dot"></span>VI ✓</span></div>
+                    <textarea class="wf-textarea" rows="3" data-locale="en">Isolate affected groups, notify the herd veterinarian, and stabilise the breeding herd through controlled exposure or vaccination.</textarea>
+                    <textarea class="wf-textarea wf-hidden" rows="3" data-locale="vi">Cách ly nhóm bị bệnh, báo bác sĩ thú y phụ trách đàn và ổn định đàn giống bằng phơi nhiễm có kiểm soát hoặc tiêm phòng.</textarea>
+                  </div>
+                  <div class="wf-field">
+                    <div class="wf-field__top"><label class="wf-field__label">Differential diagnosis</label><span class="wf-pip wf-pip--ok"><span class="wf-pip__dot"></span>VI ✓</span></div>
+                    <textarea class="wf-textarea" rows="3" data-locale="en">Differentiate from PCV2-systemic disease, swine influenza, and Aujeszky's disease; given the abortions, rule out classical and African swine fever.</textarea>
+                    <textarea class="wf-textarea wf-hidden" rows="3" data-locale="vi">Chẩn đoán phân biệt với bệnh do PCV2, cúm lợn và bệnh Aujeszky; do có sảy thai, cần loại trừ dịch tả lợn cổ điển và châu Phi.</textarea>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </article>
+
+          <!-- Chronic (collapsed) -->
+          <article class="wf-formgroup is-collapsed" data-collapsible>
+            <header class="wf-formgroup__head">
+              <button class="wf-formgroup__caret" type="button" data-collapse-toggle aria-label="Expand form">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+              </button>
+              <input class="wf-formgroup__name" value="Chronic" aria-label="Form name" />
+              <span class="wf-spacer"></span>
+              <span class="wf-muted" style="font-size:12px;">3 fields filled</span>
+              <div class="wf-menu" data-facet-menu="false">
+                <button class="wf-btn wf-btn--ghost wf-btn--icon wf-btn--sm" type="button" data-menu-toggle aria-label="Form actions">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg>
+                </button>
+                <div class="wf-menu__panel">
+                  <button class="wf-menu__item" type="button" data-toast="Renaming — type in the form name field">Rename</button>
+                  <button class="wf-menu__item" type="button" data-toast="Duplicated the Chronic form">Duplicate</button>
+                  <div class="wf-menu__sep"></div>
+                  <button class="wf-menu__item wf-menu__item--danger" type="button" data-modal-open="delete-form-modal">Delete form…</button>
+                </div>
+              </div>
+            </header>
+            <div class="wf-formgroup__body">
+              <p class="wf-muted" style="margin:0;">Expand to edit the chronic form's stats, symptoms, and management fields.</p>
+            </div>
+          </article>
+
+          <!-- Subclinical (collapsed) -->
+          <article class="wf-formgroup is-collapsed" data-collapsible>
+            <header class="wf-formgroup__head">
+              <button class="wf-formgroup__caret" type="button" data-collapse-toggle aria-label="Expand form">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+              </button>
+              <input class="wf-formgroup__name" value="Subclinical" aria-label="Form name" />
+              <span class="wf-spacer"></span>
+              <span class="wf-warnflag">mostly empty</span>
+              <div class="wf-menu" data-facet-menu="false">
+                <button class="wf-btn wf-btn--ghost wf-btn--icon wf-btn--sm" type="button" data-menu-toggle aria-label="Form actions">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg>
+                </button>
+                <div class="wf-menu__panel">
+                  <button class="wf-menu__item" type="button" data-toast="Renaming — type in the form name field">Rename</button>
+                  <button class="wf-menu__item" type="button" data-toast="Duplicated the Subclinical form">Duplicate</button>
+                  <div class="wf-menu__sep"></div>
+                  <button class="wf-menu__item wf-menu__item--danger" type="button" data-modal-open="delete-form-modal">Delete form…</button>
+                </div>
+              </div>
+            </header>
+            <div class="wf-formgroup__body">
+              <p class="wf-muted" style="margin:0;">Expand to edit the subclinical form's fields.</p>
+            </div>
+          </article>
+
+          <button class="wf-add-block" type="button" data-toast="New clinical form added" style="margin-top:16px;">+ Add clinical form</button>
+
+          <!-- Danger zone -->
+          <section class="wf-card" aria-label="Danger zone" style="margin-top:24px; border-color:var(--wf-danger-line);">
+            <div class="wf-card__head" style="border-bottom-color:var(--wf-danger-line);">
+              <h2 class="wf-card__title" style="color:var(--wf-danger);">Danger zone</h2>
+              <span class="wf-card__sub">Permanent actions</span>
+            </div>
+            <div class="wf-card__body wf-flex" style="justify-content:space-between; gap:24px;">
+              <div>
+                <div style="font-weight:500; margin-bottom:4px;">Delete this disease</div>
+                <div style="font-size:12px; color:var(--wf-ink-3);">Removes all versions and both languages from the knowledge base. This cannot be undone.</div>
+              </div>
+              <button class="wf-btn wf-btn--danger" type="button" data-modal-open="delete-disease-modal">Delete disease…</button>
+            </div>
+          </section>
+
+        </div>
+
+        <!-- Scrollspy rail -->
+        <aside class="wf-doc__rail" aria-label="On this page">
+          <div class="wf-toc__title">On this page</div>
+          <nav data-toc>
+            <a class="wf-toc__link is-active" href="#identity">Identity</a>
+            <a class="wf-toc__link" href="#stats-acute">Acute · Stats</a>
+            <a class="wf-toc__link wf-toc__link--child" href="#symptoms-acute">Symptoms</a>
+            <a class="wf-toc__link wf-toc__link--child" href="#management-acute">Management <span class="wf-toc__dot wf-toc__dot--warn"></span></a>
+            <a class="wf-toc__link wf-toc__link--child" href="#additional-acute">Additional info</a>
+          </nav>
+        </aside>
+
+      </form>
+
+    </main>
+
+    <!-- Sticky save bar -->
+    <div class="wf-savebar" data-save-state data-state="dirty">
+      <div class="wf-savebar__state">
+        <span class="wf-savebar__dot is-dirty"></span>
+        <span data-save-text>Unsaved changes</span> · last saved 4 min ago
+      </div>
+      <div class="wf-savebar__actions">
+        <a class="wf-btn" href="disease-detail.html">Discard</a>
+        <button class="wf-btn" type="button" disabled title="Complete English fields to activate">Save &amp; activate</button>
+        <button class="wf-btn wf-btn--primary" type="button" data-save-btn data-toast="Changes saved to draft v4.0">Save changes</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Delete form confirmation -->
+<div class="wf-modal" id="delete-form-modal" role="dialog" aria-modal="true" aria-labelledby="delform-title">
+  <div class="wf-modal__scrim"></div>
+  <div class="wf-modal__dialog">
+    <button class="wf-modal__close" type="button" data-modal-close aria-label="Close">✕</button>
+    <div class="wf-modal__head">
+      <span class="wf-modal__icon wf-modal__icon--danger">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M10 11v6M14 11v6"/></svg>
+      </span>
+      <div>
+        <h2 class="wf-modal__title" id="delform-title">Delete this clinical form?</h2>
+        <p class="wf-modal__sub">This removes the form and all of its clustered fields.</p>
+      </div>
+    </div>
+    <div class="wf-modal__body">Fields in this form will be discarded. Other clinical forms are unaffected.</div>
+    <div class="wf-modal__foot">
+      <button class="wf-btn" type="button" data-modal-close>Keep form</button>
+      <button class="wf-btn wf-btn--danger-solid" type="button" data-modal-close data-toast="Form deleted">Delete form</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete disease (type-to-confirm) -->
+<div class="wf-modal" id="delete-disease-modal" role="dialog" aria-modal="true" aria-labelledby="deldis-title">
+  <div class="wf-modal__scrim"></div>
+  <div class="wf-modal__dialog">
+    <button class="wf-modal__close" type="button" data-modal-close aria-label="Close">✕</button>
+    <div class="wf-modal__head">
+      <span class="wf-modal__icon wf-modal__icon--danger">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M10 11v6M14 11v6"/></svg>
+      </span>
+      <div>
+        <h2 class="wf-modal__title" id="deldis-title">Delete PRRS?</h2>
+        <p class="wf-modal__sub">Permanently removes the disease and all 3 versions in both languages.</p>
+      </div>
+    </div>
+    <div class="wf-modal__body">
+      This cannot be undone.
+      <div class="wf-confirm-field">
+        <label class="wf-field__label" for="edeldis-confirm">Type the codename <code class="wf-mono">PRRS</code> to confirm</label>
+        <input class="wf-textinput wf-textinput--mono" id="edeldis-confirm" type="text" placeholder="PRRS" data-confirm-type data-confirm-word="PRRS" data-autofocus autocomplete="off" />
+      </div>
+    </div>
+    <div class="wf-modal__foot">
+      <button class="wf-btn" type="button" data-modal-close>Cancel</button>
+      <button class="wf-btn wf-btn--danger-solid is-disabled" type="button" disabled data-confirm-gate data-modal-close data-toast="PRRS deleted">Delete permanently</button>
+    </div>
+  </div>
+</div>
+
+<script src="wireframe.js"></script>
+</body>
+</html>
