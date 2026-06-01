@@ -69,6 +69,34 @@
     color:  color-mix(in srgb, var(--accent-500) 45%, transparent);
 }
 
+/* =========================================================
+   VARIANT — EARTHSKY WASH
+   An alternative backdrop for the admin / mockup product family:
+   a painterly two-pole colour wash (lime upper-left, forest
+   lower-right) softened by a heavy blur, instead of the default
+   contour-ring clusters. Opt in by adding the --earthsky modifier
+   to the slot; no inner cluster markup is needed.
+
+       <div class="f2v-bg f2v-bg--earthsky" aria-hidden="true"></div>
+
+   The gradient is the semantic --background-earthsky token (which
+   sources the brand ramps); the blur + saturate is the painterly
+   filter that turns the hard radials into a soft wash. inset:-25%
+   over-bleeds the slot so the blurred edges never reveal a seam.
+
+   z-index: -1 — unlike the default contour slot (z-index:0, which
+   relies on the consuming page elevating its content to z-index:1),
+   the earthsky wash is a full-bleed backdrop that sits BEHIND normal
+   in-flow content with no per-page opt-in. Without this it paints a
+   fixed, near-opaque layer OVER static page content and blanks it. */
+.f2v-bg--earthsky {
+    inset: -25%;
+    z-index: -1;
+    background: var(--background-earthsky);
+    filter: blur(50px) saturate(1.5);
+}
+.f2v-bg--earthsky .f2v-bg__cluster { display: none; }
+
 /* Reduced-transparency: backdrop is decorative; hide it for
    users who've opted out of transparency effects. Page still
    reads on the cream + ambient backdrop alone. */

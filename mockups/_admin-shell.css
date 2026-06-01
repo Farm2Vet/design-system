@@ -1,0 +1,60 @@
+/* ============================================================
+   ADMIN SHELL — page composition for the forest wireframes.
+   LAYOUT ONLY. Zero visual styling of its own: every value is a
+   DS token (f2v-design-system-sot/styles/tokens.css). It positions
+   the canonical DS sidebar component (sidebar.css, .sidebar--tone-forest)
+   as a floating inset rail and normalizes the page grid, the way the
+   canonical dashboard-forest-glass-sidebar reference lays it out.
+
+   Load order on each page:
+     tokens.css → sidebar.css → brand-bg.css → _admin-shell.css
+   (the shim must follow sidebar.css so its placement overrides win
+   over the component's intrinsic full-height column defaults.)
+   ============================================================ */
+
+/* Page grid — leading auto track for the rail, content fills the rest.
+   Covers every wrapper class used across the mockup regimes.
+   Selectors are doubled (.app.app) to raise specificity above a page's
+   own single-class inline `.device { grid-template-columns: … }` rule,
+   so this shim wins regardless of stylesheet/inline <style> load order
+   (some pages link the shim before their inline <style>). */
+.app.app,
+.device.device,
+.wf-shell.wf-shell {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  min-height: 100vh;
+  overflow: visible;
+}
+
+/* Float the DS rail inset — sticky, inset by one tier on three edges,
+   sized to the viewport minus its top+bottom margins. This is page
+   placement, not a component change; the rail's surface, width, and
+   glass anatomy all come from sidebar.css / .sidebar--tone-forest. */
+.app.app > .sidebar,
+.device.device > .sidebar,
+.wf-shell.wf-shell > .sidebar {
+  position: sticky;
+  top: var(--space-tier-4);              /* 16 */
+  align-self: start;
+  height: calc(100vh - (var(--space-tier-4) * 2));
+  min-height: 0;
+  margin: var(--space-tier-4) 0 var(--space-tier-4) var(--space-tier-4);
+}
+
+/* Main column never lets content force horizontal overflow. */
+.app.app > .main,
+.device.device > .main,
+.wf-shell.wf-shell > .wf-main {
+  min-width: 0;
+}
+
+/* Mobile — drop the rail, single column (matches canonical behaviour). */
+@media (max-width: 720px) {
+  .app.app,
+  .device.device,
+  .wf-shell.wf-shell { grid-template-columns: 1fr; }
+  .app.app > .sidebar,
+  .device.device > .sidebar,
+  .wf-shell.wf-shell > .sidebar { display: none; }
+}

@@ -4,6 +4,9 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=1320" />
 <title>03 · New / edit test suite — FR-384 wireframes</title>
+<link rel="stylesheet" href="../../../f2v-design-system-sot/styles/tokens.css" />
+<link rel="stylesheet" href="../../../f2v-design-system-sot/styles/sidebar.css" />
+<link rel="stylesheet" href="../../../f2v-design-system-sot/styles/brand-bg.css" />
 <style>
   /* forest theme */
   /* ---------- Reset / page ---------- */
@@ -18,19 +21,7 @@
     font-size: 13px;
     line-height: 1.45;
   }
-  /* exact dashboard-forest bg + islands + sidebar-fit */
-  body::before {
-    content:''; position:fixed; z-index:-2; inset:-25%;
-    background:
-      radial-gradient(ellipse 70% 110% at 0% 50%,
-        color-mix(in srgb,#f2faea 85%,transparent) 0%,
-        color-mix(in srgb,#e4f4d7 55%,transparent) 35%, transparent 70%),
-      radial-gradient(ellipse 75% 110% at 100% 50%,
-        color-mix(in srgb,#ebf5ea 90%,transparent) 0%,
-        color-mix(in srgb,#d9ebd8 70%,transparent) 40%, transparent 75%),
-      #ffffff;
-    filter: blur(50px) saturate(1.5);
-  }
+  /* earthsky wash now provided by DS .f2v-bg--earthsky (brand-bg.css) */
 
   /* ---------- Page wrapper ---------- */
   .page { max-width: 1360px; margin: 0 auto; padding: 48px 40px 96px; }
@@ -53,7 +44,7 @@
     min-height: 720px;
   }
 
-  /* Sidebar styling now provided by shared _glass-sidebar.css */
+  /* Sidebar styling now provided by DS sidebar.css */
 
   /* ---------- Main column ---------- */
   .main { display: flex; flex-direction: column; min-width: 0; background: transparent; }
@@ -639,13 +630,16 @@
   .switch.is-on .switch__track::after { transform: translateX(18px); }
   .switch__label { font-size: 12px; color: #3b4537; }
 </style>
-<link rel="stylesheet" href="../../_glass-sidebar.css?v=glass" />
-<script src="../../_glass-sidebar.js?v=glass" defer></script>
+<link rel="stylesheet" href="../../_admin-shell.css?v=ds" />
+<script src="../../../f2v-design-system-sot/scripts/sidebar.js" defer></script>
 </head>
 <body>
+
+<div class="f2v-bg f2v-bg--earthsky" aria-hidden="true"></div>
+
 <div class="device">
-      <!-- ───────────────── Sidebar (GLASS) ───────────────── -->
-      <aside class="sidebar" aria-label="Primary">
+      <!-- ───────────────── Sidebar (DS component) ───────────────── -->
+      <aside class="sidebar sidebar--tone-forest" aria-label="Primary">
         <header class="sidebar__header">
           <a href="#" class="sidebar__brand" aria-label="Farm2Vet dashboard home">
             <img class="sidebar__brand-mark" src="../../../f2v-design-system-sot/logo/logo-emblem-white.svg" alt="" aria-hidden="true" />

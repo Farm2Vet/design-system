@@ -1,30 +1,30 @@
 <!-- ============================================================
-     GLASS SIDEBAR markup reference (NOT a page; do not link).
-     Canonical F2V admin nav, ported from
-     workspace/dashboard-forest-glass-sidebar.html.
+     CANONICAL SIDEBAR markup reference (NOT a page; do not link).
+     Built from the DS component: f2v-design-system-sot/styles/sidebar.css
+     with the .sidebar--tone-forest modifier. Pair on each page with:
+       <link> tokens.css → sidebar.css → brand-bg.css → _admin-shell.css
+       <script defer> _glass-sidebar.js   (collapse / disclosure / menu)
+     and an earthsky backdrop as the FIRST child of <body>:
+       <div class="f2v-bg f2v-bg--earthsky" aria-hidden="true"></div>
 
-     PER-PAGE ADJUSTMENTS when pasting into a page:
+     PER-PAGE ADJUSTMENTS:
        1. {{LOGO_SRC}} → relative path to
           f2v-design-system-sot/logo/logo-emblem-white.svg
-          (depth-1 page e.g. mockups/dashboard/ → ../../f2v-design-system-sot/...;
-           depth-2 page e.g. mockups/data-management/images/ → ../../../f2v-design-system-sot/...)
-       2. ACTIVE STATE — put `is-current` (+ aria-current="page") on the ONE
-          link for this page, and remove it from Overview. If the active link
-          is a Data-management child, keep that parent <li> `is-open` with its
-          button aria-expanded="true"; otherwise you MAY collapse it (remove
-          is-open + set aria-expanded="false"). Mapping:
-            Overview            → images?no. dashboard → Overview
-            Data management ▸ Disease/Question/Conversation/Image → matching child
-            Automated testing   → testsuite / executions / synthetic-profile pages
-       3. {{USER_NAME}} / {{USER_INITIALS}} / {{USER_ROLE}} / {{USER_EMAIL}}
-          → reuse the page's existing footer/user identity if it had one,
-          else Jack Miller / JM / Admin / farm2vets.tech@gmail.com.
+          (depth-1 e.g. mockups/dashboard/      → ../../f2v-design-system-sot/...
+           depth-2 e.g. mockups/data-management/images/ → ../../../f2v-design-system-sot/...)
+       2. ACTIVE STATE — add `is-current` (+ aria-current="page") to the ONE
+          link for this page; remove it from Overview. If the active link is a
+          Data-management child, keep that parent <li> `is-open` + button
+          aria-expanded="true"; else collapse it (drop is-open, aria-expanded="false").
+       3. {{USER_*}} → reuse the page's existing identity, else
+          Jack Miller / JM / Admin / farm2vets.tech@gmail.com
+       4. Real cross-page hrefs (disease set) replace the href="#" placeholders.
      ============================================================ -->
-<aside class="sidebar" aria-label="Primary">
+<aside class="sidebar sidebar--tone-forest" aria-label="Primary">
   <header class="sidebar__header">
     <a href="#" class="sidebar__brand" aria-label="Farm2Vet dashboard home">
       <img class="sidebar__brand-mark" src="{{LOGO_SRC}}" alt="" aria-hidden="true" />
-      <span class="sidebar__brand-text">Farm2Vet</span>
+      <span>Farm2Vet</span>
     </a>
     <button type="button" class="sidebar__collapse" aria-label="Collapse sidebar" aria-pressed="false">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6"/></svg>

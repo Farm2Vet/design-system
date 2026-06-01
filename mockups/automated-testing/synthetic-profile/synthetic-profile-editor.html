@@ -7,9 +7,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../../../f2v-design-system-sot/styles/tokens.css" />
+<link rel="stylesheet" href="../../../f2v-design-system-sot/styles/sidebar.css" />
+<link rel="stylesheet" href="../../../f2v-design-system-sot/styles/brand-bg.css" />
 <link rel="stylesheet" href="../../data-management/conversation/wireframe.css?v=forest" />
-<link rel="stylesheet" href="../../_glass-sidebar.css?v=glass" />
-<script src="../../_glass-sidebar.js?v=glass" defer></script>
+<link rel="stylesheet" href="../../_admin-shell.css?v=ds" />
+<script src="../../../f2v-design-system-sot/scripts/sidebar.js" defer></script>
 <style>
 /* forest theme */
 .wf-page-hero { display: flex; flex-direction: column; gap: var(--wf-s-3); margin-bottom: var(--wf-s-6); }
@@ -108,9 +111,12 @@
   .wf-danger { flex-direction: column; align-items: flex-start; }
 }
 
-/* forest theme — earthsky wash + shell overrides */
+/* forest theme — earthsky wash + shell overrides.
+   The page wash is now provided by the DS brand-bg layer
+   (.f2v-bg.f2v-bg--earthsky in brand-bg.css); the bespoke body::before
+   wash below is disabled so it can't double-paint over it. */
 body { background: transparent; }
-body::before {
+/* body::before {
   content:''; position:fixed; z-index:-2; inset:-25%;
   background:
     radial-gradient(ellipse 70% 110% at 0% 50%,
@@ -121,12 +127,13 @@ body::before {
       color-mix(in srgb,#d9ebd8 70%,transparent) 40%, transparent 75%),
     #ffffff;
   filter: blur(50px) saturate(1.5);
-}
+} */
 .wf-shell { background: transparent; }
 .wf-main { background: transparent; }
 
-/* forest theme — sidebar / rail */
-.wf-side { background: #398c36; color: #fff; }
+/* forest theme — bespoke .wf-side rail. Disabled: the rail is now the DS
+   sidebar component (.sidebar + sidebar--tone-forest, themed by sidebar.css). */
+/* .wf-side { background: #398c36; color: #fff; }
 .wf-side__brand-text { color: #fff; }
 .wf-side__group-title { color: rgba(255,255,255,.78); }
 .wf-side__item { color: rgba(255,255,255,.92); }
@@ -134,7 +141,7 @@ body::before {
 .wf-side__item.is-active { background: #fff; color: #4f9027; font-weight: 600; }
 .wf-side__footer { border-top-color: rgba(255,255,255,.22); }
 .wf-side__who-name { color: #fff; }
-.wf-side__who-role { color: rgba(255,255,255,.78); }
+.wf-side__who-role { color: rgba(255,255,255,.78); } */
 
 /* exact dashboard-forest bg + islands + sidebar-fit — transparent bar;
    the frosted pills come from the linked conversation wireframe.css */
@@ -148,9 +155,11 @@ body::before {
 </head>
 <body>
 
+<div class="f2v-bg f2v-bg--earthsky" aria-hidden="true"></div>
+
 <div class="wf-shell">
-  <!-- ───────────────── Sidebar (GLASS) ───────────────── -->
-  <aside class="sidebar" aria-label="Primary">
+  <!-- ───────────────── Sidebar ───────────────── -->
+  <aside class="sidebar sidebar--tone-forest" aria-label="Primary">
     <header class="sidebar__header">
       <a href="#" class="sidebar__brand" aria-label="Farm2Vet dashboard home">
         <img class="sidebar__brand-mark" src="../../../f2v-design-system-sot/logo/logo-emblem-white.svg" alt="" aria-hidden="true" />

@@ -4,6 +4,9 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=1320" />
 <title>04 · Run results — FR-385 wireframes</title>
+<link rel="stylesheet" href="../../../f2v-design-system-sot/styles/tokens.css" />
+<link rel="stylesheet" href="../../../f2v-design-system-sot/styles/sidebar.css" />
+<link rel="stylesheet" href="../../../f2v-design-system-sot/styles/brand-bg.css" />
 <style>
   /* ---------- Reset / page ---------- */
   *, *::before, *::after { box-sizing: border-box; }
@@ -17,19 +20,7 @@
     font-size: 13px;
     line-height: 1.45;
   }
-  /* forest theme */
-  body::before {
-    content: ''; position: fixed; z-index: -2; inset: -25%;
-    background:
-      radial-gradient(ellipse 70% 110% at 0% 50%,
-        color-mix(in srgb,#f2faea 85%,transparent) 0%,
-        color-mix(in srgb,#e4f4d7 55%,transparent) 35%, transparent 70%),
-      radial-gradient(ellipse 75% 110% at 100% 50%,
-        color-mix(in srgb,#ebf5ea 90%,transparent) 0%,
-        color-mix(in srgb,#d9ebd8 70%,transparent) 40%, transparent 75%),
-      #ffffff;
-    filter: blur(50px) saturate(1.5);
-  }
+  /* earthsky wash now provided by DS .f2v-bg--earthsky (brand-bg.css) */
 
   /* ---------- Page wrapper ---------- */
   .page { max-width: 1360px; margin: 0 auto; padding: 48px 40px 96px; }
@@ -52,7 +43,7 @@
     min-height: 100vh;
   }
 
-  /* ---------- Sidebar: now provided by ../../_glass-sidebar.css (old forest rail neutralized) ---------- */
+  /* ---------- Sidebar: now provided by DS sidebar.css (old forest rail neutralized) ---------- */
   /* .sidebar { background: #398c36; color: #fff; border-right: 1px solid rgba(255,255,255,.22); padding: 18px 0; display: flex; flex-direction: column; } */
   /* .sidebar__foot { margin: auto 12px 0; border-top: 1px solid rgba(255,255,255,0.22); padding-top: 14px; display: flex; align-items: center; gap: 10px; } */
   /* .sidebar__foot-avatar { width: 32px; height: 32px; border-radius: 50%; background: #fff; color: #4f9027; display: grid; place-items: center; font-size: 12px; font-weight: 700; flex: none; } */
@@ -70,9 +61,9 @@
   .topbar__lang button:hover { color: #1e251c; }
   .topbar__lang button[aria-pressed="true"] { background: #398c36; color: #fff; }
   @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .topbar__cluster, .topbar__chip { background: rgba(255,255,255,0.92); } }
-  /* Old grayscale-rail sidebar element rules neutralized — the glass rail
-     (../../_glass-sidebar.css) owns .sidebar__brand / .sidebar__item etc.
-     These legacy rules would otherwise layer onto the new glass markup.
+  /* Old grayscale-rail sidebar element rules neutralized — the DS rail
+     (DS sidebar.css) owns .sidebar__brand / .sidebar__item etc.
+     These legacy rules would otherwise layer onto the new DS markup.
   .sidebar__brand {
     display: flex; align-items: center; gap: 10px;
     padding: 4px 18px 22px; border-bottom: 1px solid rgba(255,255,255,.22); margin-bottom: 14px;
@@ -962,12 +953,15 @@
   .tabpanel { display: none; }
   .tabpanel.is-active { display: block; }
 </style>
-<link rel="stylesheet" href="../../_glass-sidebar.css?v=glass" />
-<script src="../../_glass-sidebar.js?v=glass" defer></script>
+<link rel="stylesheet" href="../../_admin-shell.css?v=ds" />
+<script src="../../../f2v-design-system-sot/scripts/sidebar.js" defer></script>
 </head>
 <body>
+
+<div class="f2v-bg f2v-bg--earthsky" aria-hidden="true"></div>
+
 <div class="device">
-      <aside class="sidebar" aria-label="Primary">
+      <aside class="sidebar sidebar--tone-forest" aria-label="Primary">
   <header class="sidebar__header">
     <a href="#" class="sidebar__brand" aria-label="Farm2Vet dashboard home">
       <img class="sidebar__brand-mark" src="../../../f2v-design-system-sot/logo/logo-emblem-white.svg" alt="" aria-hidden="true" />
@@ -1007,8 +1001,8 @@
         </ul>
       </li>
 
-      <li class="sidebar__item is-current">
-        <a class="sidebar__link" href="#" aria-current="page">
+      <li class="sidebar__item">
+        <a class="sidebar__link is-current" href="#" aria-current="page">
           <span class="sidebar__icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
           </span>

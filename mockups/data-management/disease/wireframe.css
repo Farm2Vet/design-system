@@ -99,8 +99,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Forest backdrop — soft radial wash, identical to sibling mockups */
-body::before {
+/* Forest backdrop — now provided by the DS brand-bg layer
+   (.f2v-bg.f2v-bg--earthsky in brand-bg.css). The bespoke body::before
+   wash is disabled to avoid double-painting over the DS background. */
+/* body::before {
   content: '';
   position: fixed;
   z-index: -2;
@@ -114,7 +116,7 @@ body::before {
       color-mix(in srgb, #d9ebd8 70%, transparent) 40%, transparent 75%),
     #ffffff;
   filter: blur(50px) saturate(1.5);
-}
+} */
 
 a { color: inherit; text-decoration: none; }
 button { font: inherit; cursor: pointer; }

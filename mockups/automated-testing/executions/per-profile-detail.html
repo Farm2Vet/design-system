@@ -4,6 +4,9 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=1320" />
 <title>Profile SP-109 · Anthrax — RUN-204 · FR-385 wireframes</title>
+<link rel="stylesheet" href="../../../f2v-design-system-sot/styles/tokens.css" />
+<link rel="stylesheet" href="../../../f2v-design-system-sot/styles/sidebar.css" />
+<link rel="stylesheet" href="../../../f2v-design-system-sot/styles/brand-bg.css" />
 <style>
   /* forest theme */
   *, *::before, *::after { box-sizing: border-box; }
@@ -14,22 +17,10 @@
     -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
     font-size: 13px; line-height: 1.45;
   }
-  /* exact dashboard-forest bg + islands + sidebar-fit */
-  body::before {
-    content:''; position:fixed; z-index:-2; inset:-25%;
-    background:
-      radial-gradient(ellipse 70% 110% at 0% 50%,
-        color-mix(in srgb,#f2faea 85%,transparent) 0%,
-        color-mix(in srgb,#e4f4d7 55%,transparent) 35%, transparent 70%),
-      radial-gradient(ellipse 75% 110% at 100% 50%,
-        color-mix(in srgb,#ebf5ea 90%,transparent) 0%,
-        color-mix(in srgb,#d9ebd8 70%,transparent) 40%, transparent 75%),
-      #ffffff;
-    filter: blur(50px) saturate(1.5);
-  }
+  /* earthsky wash now provided by DS .f2v-bg--earthsky (brand-bg.css) */
   .device { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; background: transparent; }
 
-  /* Sidebar styling now provided by shared _glass-sidebar.css */
+  /* Sidebar styling now provided by DS sidebar.css */
   .topbar__cluster { min-height: 48px; box-sizing: border-box; display: inline-flex; align-items: center; gap: 10px; padding: 6px 10px; border-radius: 999px; background: rgba(255,255,255,0.5); -webkit-backdrop-filter: blur(22px) saturate(190%); backdrop-filter: blur(22px) saturate(190%); border: 1px solid rgba(255,255,255,0.6); box-shadow: 0 4px 10px rgba(16,38,22,0.07), 0 14px 28px rgba(16,38,22,0.09), inset 0 1px 0 rgba(255,255,255,0.6); }
   .topbar__chip { min-height: 48px; box-sizing: border-box; display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px; border-radius: 999px; background: rgba(255,255,255,0.5); -webkit-backdrop-filter: blur(22px) saturate(190%); backdrop-filter: blur(22px) saturate(190%); border: 1px solid rgba(255,255,255,0.6); box-shadow: 0 4px 10px rgba(16,38,22,0.07), 0 14px 28px rgba(16,38,22,0.09), inset 0 1px 0 rgba(255,255,255,0.6); color: #3b4537; text-decoration: none; font-size: 13px; font-weight: 500; }
   .topbar__chip:hover { color: #2a6b27; }
@@ -202,13 +193,16 @@
   .chyp__delta--down { color: #b3322a; }
   .chyp__delta--flat { color: #aab4a4; }
 </style>
-<link rel="stylesheet" href="../../_glass-sidebar.css?v=glass" />
-<script src="../../_glass-sidebar.js?v=glass" defer></script>
+<link rel="stylesheet" href="../../_admin-shell.css?v=ds" />
+<script src="../../../f2v-design-system-sot/scripts/sidebar.js" defer></script>
 </head>
 <body>
+
+<div class="f2v-bg f2v-bg--earthsky" aria-hidden="true"></div>
+
 <div class="device">
-  <!-- ───────────────── Sidebar (GLASS) ───────────────── -->
-  <aside class="sidebar" aria-label="Primary">
+  <!-- ───────────────── Sidebar (DS component) ───────────────── -->
+  <aside class="sidebar sidebar--tone-forest" aria-label="Primary">
     <header class="sidebar__header">
       <a href="#" class="sidebar__brand" aria-label="Farm2Vet dashboard home">
         <img class="sidebar__brand-mark" src="../../../f2v-design-system-sot/logo/logo-emblem-white.svg" alt="" aria-hidden="true" />

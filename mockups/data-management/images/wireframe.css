@@ -42,19 +42,9 @@ html, body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* exact dashboard-forest bg + islands + sidebar-fit */
-body::before {
-  content: ''; position: fixed; z-index: -2; inset: -25%;
-  background:
-    radial-gradient(ellipse 70% 110% at 0% 50%,
-      color-mix(in srgb,#f2faea 85%,transparent) 0%,
-      color-mix(in srgb,#e4f4d7 55%,transparent) 35%, transparent 70%),
-    radial-gradient(ellipse 75% 110% at 100% 50%,
-      color-mix(in srgb,#ebf5ea 90%,transparent) 0%,
-      color-mix(in srgb,#d9ebd8 70%,transparent) 40%, transparent 75%),
-    #ffffff;
-  filter: blur(50px) saturate(1.5);
-}
+/* Page wash is now sourced from the DS: .f2v-bg--earthsky
+   (brand-bg.css → --background-earthsky token). Each page carries
+   <div class="f2v-bg f2v-bg--earthsky"> as the first body child. */
 
 a { color: inherit; }
 

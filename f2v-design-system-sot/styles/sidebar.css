@@ -174,6 +174,69 @@
 }
 
 /* =========================================================
+   TONE MODIFIER — forest
+   The brand-accent product rail: a solid forest-green glass
+   column for the admin / mockup family, where the rail should
+   read as the brand's primary navigation surface rather than a
+   translucent pane over imagery. Re-resolves the rail's glass
+   tokens to the FOREST tone (accent ramp, rail density) and
+   inverts item colour for white-on-forest legibility — the same
+   moves --tone-dark makes, one ramp over.
+
+   Active row: unlike --tone-dark (which tints), the forest rail's
+   selected destination paints as a SOLID WHITE PILL with forest
+   text — the canonical dashboard-forest treatment, high-contrast
+   and unmistakable as the current page. White-on-forest items
+   clear WCAG AA; forest-on-white active clears AAA.
+   ========================================================= */
+.sidebar--tone-forest {
+  --sidebar-bg:           var(--glass-forest-light-bg);
+  --sidebar-bg-hover:     var(--glass-forest-light-bg-hover);
+  --sidebar-bg-pressed:   var(--glass-forest-light-bg-pressed);
+  --sidebar-border:       var(--glass-forest-light-border);
+  --sidebar-blur:         var(--glass-forest-light-blur);
+  --sidebar-shadow:       var(--glass-shadow-floating);
+  --sidebar-shadow-hover: var(--glass-shadow-floating-hover);
+  --sidebar-inset:        var(--glass-inset-dark-soft);
+
+  --sidebar-item-fg:           var(--text-inverted-subtle);
+  --sidebar-item-fg-hover:     var(--text-inverted);
+  --sidebar-item-bg-hover:     color-mix(in srgb, var(--white-base) 16%, transparent);
+  --sidebar-item-fg-current:   var(--text-accent-strong);
+  --sidebar-item-bg-current:   var(--white-base);
+  --sidebar-item-fg-disabled:  color-mix(in srgb, var(--white-base) 25%, transparent);
+  --sidebar-item-icon:         var(--icon-inverted-subtle);
+  --sidebar-item-icon-hover:   var(--icon-inverted);
+  --sidebar-item-icon-current: var(--icon-accent-strong);
+
+  --sidebar-header-border:     color-mix(in srgb, var(--white-base) 16%, transparent);
+  --sidebar-footer-border:     color-mix(in srgb, var(--white-base) 16%, transparent);
+  --sidebar-group-label-color: color-mix(in srgb, var(--white-base) 78%, transparent);
+
+  /* Sub-list disclosure rail + popover menu read on the forest surface */
+  --sidebar-sublist-rail:      color-mix(in srgb, var(--white-base) 18%, transparent);
+}
+.sidebar--tone-forest .sidebar__brand { color: var(--text-inverted); }
+.sidebar--tone-forest .sidebar__brand-mark { content: url("logo/logo-emblem-white.svg"); }
+.sidebar--tone-forest .sidebar__collapse,
+.sidebar--tone-forest .sidebar__overflow { color: var(--icon-inverted-subtle); }
+.sidebar--tone-forest .sidebar__collapse:hover,
+.sidebar--tone-forest .sidebar__overflow:hover {
+  background: color-mix(in srgb, var(--white-base) 16%, transparent);
+  color: var(--icon-inverted);
+}
+.sidebar--tone-forest .sidebar__profile-name,
+.sidebar--tone-forest .sidebar__profile-role { color: var(--text-inverted); }
+.sidebar--tone-forest .sidebar__profile-role { color: var(--text-inverted-subtle); }
+/* Active row is a solid white pill — forest emblem chip on the avatar */
+.sidebar--tone-forest .sidebar__avatar {
+  background: var(--white-base);
+  border-color: color-mix(in srgb, var(--white-base) 60%, transparent);
+  box-shadow: var(--glass-shadow-raised), var(--glass-inset-light-soft);
+  color: var(--text-accent-strong);
+}
+
+/* =========================================================
    TONE MODIFIER — anchored
    A structural column rail for data-dense product pages
    (admin dashboards, wikis, consoles) where the floating

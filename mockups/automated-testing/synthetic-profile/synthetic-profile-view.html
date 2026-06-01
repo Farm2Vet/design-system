@@ -23,9 +23,12 @@
        3. Hero is page-header text (eyebrow + H1 + summary + chips), not
           a card — the v1 audit sidebar duplicated the topbar freshness
           and the audit-footer record. -->
+<link rel="stylesheet" href="../../../f2v-design-system-sot/styles/tokens.css" />
+<link rel="stylesheet" href="../../../f2v-design-system-sot/styles/sidebar.css" />
+<link rel="stylesheet" href="../../../f2v-design-system-sot/styles/brand-bg.css" />
 <link rel="stylesheet" href="../../data-management/conversation/wireframe.css?v=forest" />
-<link rel="stylesheet" href="../../_glass-sidebar.css?v=glass" />
-<script src="../../_glass-sidebar.js?v=glass" defer></script>
+<link rel="stylesheet" href="../../_admin-shell.css?v=ds" />
+<script src="../../../f2v-design-system-sot/scripts/sidebar.js" defer></script>
 
 <style>
 /* ========================================================================
@@ -38,7 +41,10 @@
    is themed in the linked conversation wireframe.css; here we only own the
    page-local wash + profile content extensions. */
 body { background: transparent; }
-body::before {
+/* Page wash now provided by the DS brand-bg layer
+   (.f2v-bg.f2v-bg--earthsky in brand-bg.css); bespoke body::before disabled
+   so it can't double-paint over it. */
+/* body::before {
   content: ''; position: fixed; z-index: -2; inset: -25%;
   background:
     radial-gradient(ellipse 70% 110% at 0% 50%,
@@ -49,7 +55,7 @@ body::before {
       color-mix(in srgb, #d9ebd8 70%, transparent) 40%, transparent 75%),
     #ffffff;
   filter: blur(50px) saturate(1.5);
-}
+} */
 .wf-shell { background: transparent; }
 
 /* Two-column key / value grid. Same shape as the hifi .profile-kv but
@@ -159,11 +165,12 @@ body::before {
 </head>
 <body>
 
+<div class="f2v-bg f2v-bg--earthsky" aria-hidden="true"></div>
+
 <div class="wf-shell">
 
-  <!-- ───────────────── Sidebar — Automated testing > Profiles active ───────────────── -->
-  <!-- ───────────────── Sidebar (GLASS) ───────────────── -->
-  <aside class="sidebar" aria-label="Primary">
+  <!-- ───────────────── Sidebar — Automated testing active ───────────────── -->
+  <aside class="sidebar sidebar--tone-forest" aria-label="Primary">
     <header class="sidebar__header">
       <a href="#" class="sidebar__brand" aria-label="Farm2Vet dashboard home">
         <img class="sidebar__brand-mark" src="../../../f2v-design-system-sot/logo/logo-emblem-white.svg" alt="" aria-hidden="true" />

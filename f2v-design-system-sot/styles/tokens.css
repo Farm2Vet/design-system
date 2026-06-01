@@ -295,6 +295,24 @@
             transparent 70%);
     /* deliberate: no trailing var(--white-base) — body paints cream beneath */
 
+    /* ---------- Earthsky — admin product page wash ----------
+       A painterly two-pole backdrop for the admin / mockup family:
+       lime upper-left, forest lower-right, over white. Sources the
+       brand ramps — primary (lime) on the LEFT pole, accent (forest)
+       on the RIGHT — so it re-tints automatically with the palette.
+       This is the gradient only; the carrying layer pairs it with a
+       blur + saturate filter (see .f2v-bg--earthsky in brand-bg.css). */
+    --background-earthsky:
+        radial-gradient(ellipse 70% 110% at 0% 50%,
+            color-mix(in srgb, var(--primary-50)  85%, transparent) 0%,
+            color-mix(in srgb, var(--primary-100) 55%, transparent) 35%,
+            transparent 70%),
+        radial-gradient(ellipse 75% 110% at 100% 50%,
+            color-mix(in srgb, var(--accent-50)  90%, transparent) 0%,
+            color-mix(in srgb, var(--accent-100) 70%, transparent) 40%,
+            transparent 75%),
+        var(--white-base);
+
     /* ---------- Text ---------- */
     --text-default:          var(--neutral-950);
     --text-default-subtle:   color-mix(in srgb, var(--neutral-700) 60%, var(--neutral-600) 40%);
@@ -370,6 +388,9 @@
 
     --icon-primary:        var(--primary-400);
     --icon-primary-strong: var(--primary-500);
+
+    --icon-accent:        var(--accent-400);
+    --icon-accent-strong: var(--accent-500);
 
     --icon-info:     var(--secondary-500);
     --icon-warning:  var(--warning-500);
@@ -630,6 +651,42 @@
     --glass-dark-thick-border:       color-mix(in srgb, var(--white-base) 22%, transparent);
     --glass-dark-thick-border-hover: color-mix(in srgb, var(--white-base) 40%, transparent);
     --glass-dark-thick-blur:         var(--blur-2xl);
+
+    /* ---------- Tone: FOREST (inverted — brand-accent rail) ----------
+       A heavier, accent-tinted (forest) sibling of the DARK tone, for
+       the admin product chrome where the rail reads as a solid brand
+       column rather than a translucent pane — opaque enough to carry
+       white text, translucent enough that the page wash still bleeds +
+       blurs through. Built on the accent (forest) ramp; mirrors the
+       four-frost structure of every other tone. White-base borders /
+       rim, identical to the dark tone. */
+    --glass-forest-clear-bg:           color-mix(in srgb, var(--accent-500) 60%, transparent);
+    --glass-forest-clear-bg-hover:     color-mix(in srgb, var(--accent-500) 70%, transparent);
+    --glass-forest-clear-bg-pressed:   color-mix(in srgb, var(--accent-500) 78%, transparent);
+    --glass-forest-clear-border:       color-mix(in srgb, var(--white-base) 16%, transparent);
+    --glass-forest-clear-border-hover: color-mix(in srgb, var(--white-base) 28%, transparent);
+    --glass-forest-clear-blur:         var(--blur-md);
+
+    --glass-forest-light-bg:           color-mix(in srgb, var(--accent-500) 84%, transparent);
+    --glass-forest-light-bg-hover:     color-mix(in srgb, var(--accent-500) 90%, transparent);
+    --glass-forest-light-bg-pressed:   color-mix(in srgb, var(--accent-500) 94%, transparent);
+    --glass-forest-light-border:       color-mix(in srgb, var(--white-base) 22%, transparent);
+    --glass-forest-light-border-hover: color-mix(in srgb, var(--white-base) 35%, transparent);
+    --glass-forest-light-blur:         var(--blur-lg);
+
+    --glass-forest-regular-bg:           color-mix(in srgb, var(--accent-500) 90%, transparent);
+    --glass-forest-regular-bg-hover:     color-mix(in srgb, var(--accent-500) 94%, transparent);
+    --glass-forest-regular-bg-pressed:   color-mix(in srgb, var(--accent-500) 96%, transparent);
+    --glass-forest-regular-border:       color-mix(in srgb, var(--white-base) 22%, transparent);
+    --glass-forest-regular-border-hover: color-mix(in srgb, var(--white-base) 35%, transparent);
+    --glass-forest-regular-blur:         var(--blur-xl);
+
+    --glass-forest-thick-bg:           color-mix(in srgb, var(--accent-600) 94%, transparent);
+    --glass-forest-thick-bg-hover:     color-mix(in srgb, var(--accent-600) 97%, transparent);
+    --glass-forest-thick-bg-pressed:   color-mix(in srgb, var(--accent-600) 98%, transparent);
+    --glass-forest-thick-border:       color-mix(in srgb, var(--white-base) 24%, transparent);
+    --glass-forest-thick-border-hover: color-mix(in srgb, var(--white-base) 42%, transparent);
+    --glass-forest-thick-blur:         var(--blur-2xl);
 
     /* ---------- Elevation — outer shadow tiers ----------
        Glass elevation is shadow-only; the surface itself never gains
@@ -1557,6 +1614,16 @@
         --glass-dark-light-blur:   var(--blur-none);
         --glass-dark-regular-blur: var(--blur-none);
         --glass-dark-thick-blur:   var(--blur-none);
+
+        /* forest family flattens to the accent-500 brand green */
+        --glass-forest-clear-bg:   var(--accent-500);
+        --glass-forest-light-bg:   var(--accent-500);
+        --glass-forest-regular-bg: var(--accent-500);
+        --glass-forest-thick-bg:   var(--accent-600);
+        --glass-forest-clear-blur:   var(--blur-none);
+        --glass-forest-light-blur:   var(--blur-none);
+        --glass-forest-regular-blur: var(--blur-none);
+        --glass-forest-thick-blur:   var(--blur-none);
     }
 }
 
@@ -1572,5 +1639,9 @@
         --glass-dark-light-bg:    var(--primary-900);
         --glass-dark-regular-bg:  var(--primary-900);
         --glass-dark-thick-bg:    var(--primary-900);
+        --glass-forest-clear-bg:   var(--accent-500);
+        --glass-forest-light-bg:   var(--accent-500);
+        --glass-forest-regular-bg: var(--accent-500);
+        --glass-forest-thick-bg:   var(--accent-600);
     }
 }

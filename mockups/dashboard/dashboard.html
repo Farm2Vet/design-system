@@ -4,15 +4,19 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=1320" />
 <title>Admin dashboard — FR-300 interactive wireframe</title>
+<link rel="stylesheet" href="../../f2v-design-system-sot/styles/tokens.css" />
+<link rel="stylesheet" href="../../f2v-design-system-sot/styles/sidebar.css" />
 <link rel="stylesheet" href="./wireframe.css?v=forest" />
-<link rel="stylesheet" href="../_glass-sidebar.css?v=glass" />
-<script src="../_glass-sidebar.js?v=glass" defer></script>
+<script src="../../f2v-design-system-sot/scripts/sidebar.js" defer></script>
 <style>
-  /* Dashboard is a FRAMED device (not a full-viewport app): keep the
-     rounded-corner clip and fit the glass rail inside the frame instead
-     of floating it at viewport height. */
-  .device { overflow: hidden; grid-template-columns: auto 1fr; }
-  .device > .sidebar {
+  /* Dashboard is a FRAMED device (not a full-viewport app), and it carries
+     its own earthsky wash on .device::before — so it does NOT use the page
+     -fixed _admin-shell.css / .f2v-bg backdrop. The DS sidebar component
+     (sidebar.css + .sidebar--tone-forest) supplies the rail; this override
+     fits that rail inside the rounded frame instead of floating it at
+     viewport height. Doubled-class for specificity over wireframe.css. */
+  .device.device { display: grid; grid-template-columns: auto 1fr; overflow: hidden; }
+  .device.device > .sidebar {
     position: static;
     height: auto;
     align-self: stretch;
@@ -47,8 +51,8 @@
   <!-- ============== Device frame ============== -->
   <div class="device">
 
-    <!-- ============== Sidebar (glass rail — _glass-sidebar.css/.js) ============== -->
-    <aside class="sidebar" aria-label="Primary">
+    <!-- ============== Sidebar — DS component (sidebar.css) + forest tone ============== -->
+    <aside class="sidebar sidebar--tone-forest" aria-label="Primary">
       <header class="sidebar__header">
         <a href="#" class="sidebar__brand" aria-label="Farm2Vet dashboard home">
           <img class="sidebar__brand-mark" src="../../f2v-design-system-sot/logo/logo-emblem-white.svg" alt="" aria-hidden="true" />
