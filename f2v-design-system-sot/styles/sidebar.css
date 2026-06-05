@@ -175,13 +175,13 @@
 
 /* =========================================================
    TONE MODIFIER — forest
-   The brand-accent product rail: a solid forest-green glass
+   The brand-primary product rail: a solid forest-green glass
    column for the admin / mockup family, where the rail should
    read as the brand's primary navigation surface rather than a
    translucent pane over imagery. Re-resolves the rail's glass
-   tokens to the FOREST tone (accent ramp, rail density) and
+   tokens to the FOREST tone (primary ramp, rail density) and
    inverts item colour for white-on-forest legibility — the same
-   moves --tone-dark makes, one ramp over.
+   moves --tone-dark makes, now on the same forest ramp.
 
    Active row: unlike --tone-dark (which tints), the forest rail's
    selected destination paints as a SOLID WHITE PILL with forest
@@ -202,12 +202,12 @@
   --sidebar-item-fg:           var(--text-inverted-subtle);
   --sidebar-item-fg-hover:     var(--text-inverted);
   --sidebar-item-bg-hover:     color-mix(in srgb, var(--white-base) 16%, transparent);
-  --sidebar-item-fg-current:   var(--text-accent-strong);
+  --sidebar-item-fg-current:   var(--text-primary-strong);
   --sidebar-item-bg-current:   var(--white-base);
   --sidebar-item-fg-disabled:  color-mix(in srgb, var(--white-base) 25%, transparent);
   --sidebar-item-icon:         var(--icon-inverted-subtle);
   --sidebar-item-icon-hover:   var(--icon-inverted);
-  --sidebar-item-icon-current: var(--icon-accent-strong);
+  --sidebar-item-icon-current: var(--icon-primary-strong);
 
   --sidebar-header-border:     color-mix(in srgb, var(--white-base) 16%, transparent);
   --sidebar-footer-border:     color-mix(in srgb, var(--white-base) 16%, transparent);
@@ -233,7 +233,7 @@
   background: var(--white-base);
   border-color: color-mix(in srgb, var(--white-base) 60%, transparent);
   box-shadow: var(--glass-shadow-raised), var(--glass-inset-light-soft);
-  color: var(--text-accent-strong);
+  color: var(--text-primary-strong);
 }
 
 /* =========================================================
@@ -291,12 +291,13 @@
    with inverted text + icon. Markup, slots, and every other
    state (resting, hover, disabled) are untouched.
 
-   Contrast note: lime + white runs ~2.2:1 on Farm2Vet's
-   `--primary-500`, below WCAG AA. The treatment is an explicit
-   designer call for product admin density — apply it only to
-   surfaces that warrant the trade-off (the `/workspace/*`
-   admin family). Documentation pages, marketing mockups, and
-   v1 stay on the canonical default.
+   Contrast note: with forest now on `--primary-500`, the solid
+   pill (white on forest) clears WCAG AA for large / UI text — a
+   marked lift from the old lime primary, which sat at ~2.2:1.
+   The treatment remains an explicit designer call for product
+   admin density; apply it where the density is warranted (the
+   `/workspace/*` admin family). Documentation pages, marketing
+   mockups, and v1 stay on the canonical default.
    ========================================================= */
 .sidebar--active-solid {
   --sidebar-item-bg-current:   var(--primary-500);

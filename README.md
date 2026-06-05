@@ -1,7 +1,7 @@
 Color: 398c36, 6ec13e
-- Primary: 6ec13e
+- Primary: 398c36
 - Secondary: 5c3a1a
-- Accent: 398c36
+- Accent: 6ec13e
 - Background: fafdf7 
 - Slate: 
 
