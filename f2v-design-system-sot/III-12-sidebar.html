@@ -7,7 +7,6 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
 
 <!-- Design system: shared, reusable foundation -->
 <link rel="stylesheet" href="styles/tokens.css" />
@@ -24,6 +23,8 @@
 <!-- Reuse: spec-list, state-grid, behaviour-table, pre.code, anatomy diagram chrome -->
 <link rel="stylesheet" href="styles/page-III-10.css" />
 <link rel="stylesheet" href="styles/sidebar.css" />
+<link rel="stylesheet" href="styles/app-shell.css" />
+<link rel="stylesheet" href="styles/page-III-12.css" />
 
 <script src="scripts/global-nav.js" defer></script>
 <script src="scripts/sidebar.js" defer></script>
@@ -995,6 +996,146 @@
       </thead>
       <tbody id="sidebarTokenTable"></tbody>
     </table>
+  </section>
+
+  <!-- ========================== 05 / APP SHELL ========================== -->
+  <section class="chunk" id="app-shell">
+    <header class="chunk-head reveal">
+      <span class="num-tag">05 / App shell</span>
+      <h2 class="h2">The shell the rail lives in.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      The sidebar is a <em>product</em> primitive — built for the admin
+      application, not the documentation site. Its canonical home is
+      <code>.app-shell</code> (a distinct component,
+      <code>styles/app-shell.css</code>): a two-column grid that anchors the
+      rail on the leading edge and carries a sticky glass topbar over a
+      scrolling content region. A data-rich product page is built on this
+      shell; a documentation page is built on <code>.shell</code>
+      (<code>shell.css</code>). A page uses one, never both.
+    </p>
+
+    <!-- Live embedded demo: a real .sidebar hosted in .app-shell, scoped to
+         a bounded scroll stage so the sticky rail + topbar can be shown. -->
+    <div class="app-shell-stage reveal" aria-label="App shell — embedded demo">
+      <div class="app-shell app-shell--embedded">
+
+        <div class="app-shell__sidebar">
+          <aside class="sidebar" aria-label="Sample product navigation">
+            <header class="sidebar__header">
+              <a href="#" class="sidebar__brand">
+                <img class="sidebar__brand-mark" src="logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
+                <span class="sidebar__brand-text">Farm2Vet</span>
+              </a>
+            </header>
+            <nav class="sidebar__nav" aria-label="Sample destinations">
+              <ul class="sidebar__list">
+                <li class="sidebar__item"><a class="sidebar__link" href="#" title="Overview Dashboard"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span><span class="sidebar__label">Overview Dashboard</span></a></li>
+                <li class="sidebar__item"><a class="sidebar__link is-current" href="#" aria-current="page" title="Data Management"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/></svg></span><span class="sidebar__label">Data Management</span></a></li>
+                <li class="sidebar__item"><a class="sidebar__link" href="#" title="Automated Testing"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg></span><span class="sidebar__label">Automated Testing</span></a></li>
+                <li class="sidebar__item"><a class="sidebar__link" href="#" title="Sync database"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></span><span class="sidebar__label">Sync database</span></a></li>
+              </ul>
+            </nav>
+          </aside>
+        </div>
+
+        <div class="app-shell__main">
+          <header class="app-shell__topbar">
+            <div class="app-shell__topbar-lead">
+              <span class="admin-card-title">Data Management</span>
+            </div>
+            <div class="app-shell__topbar-actions">
+              <span class="admin-caption">farm2vets.tech</span>
+            </div>
+          </header>
+
+          <div class="app-shell__content">
+            <div class="app-shell-demo__head">
+              <h3 class="admin-page-title">Diseases</h3>
+            </div>
+            <div class="app-shell-demo__grid">
+              <div class="app-shell-demo__tile"><span class="admin-field-label">Diseases</span><span class="admin-stat-value">47</span></div>
+              <div class="app-shell-demo__tile"><span class="admin-field-label">Conversations</span><span class="admin-stat-value">1,284</span></div>
+              <div class="app-shell-demo__tile"><span class="admin-field-label">Test runs</span><span class="admin-stat-value">312</span></div>
+            </div>
+            <div class="app-shell-demo__block">
+              <span class="admin-card-title">Recent activity</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <p class="caption reveal" style="margin-top: var(--space-tier-6);">
+      Schematic: the shell is a full-viewport layout shown here inside a
+      bounded, scrolling stage so the sticky rail and topbar are visible.
+      The body content also demonstrates the data/admin type scale
+      (<code>.admin-*</code>).
+    </p>
+
+    <!-- Canonical markup skeleton -->
+    <pre class="markup-skeleton reveal" aria-label="App shell markup skeleton">&lt;body data-surface="admin"&gt;
+  &lt;div class="f2v-bg f2v-bg--earthsky" aria-hidden="true"&gt;&lt;/div&gt;
+
+  &lt;div class="app-shell"&gt;
+    &lt;div class="app-shell__sidebar"&gt;
+      &lt;aside class="sidebar"&gt; … &lt;/aside&gt;          &lt;!-- the product rail --&gt;
+    &lt;/div&gt;
+
+    &lt;div class="app-shell__main"&gt;
+      &lt;header class="app-shell__topbar"&gt;
+        &lt;div class="app-shell__topbar-lead"&gt; … &lt;/div&gt;
+        &lt;div class="app-shell__topbar-actions"&gt; … &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;div class="app-shell__content"&gt; … the page … &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;</pre>
+
+    <table class="token-table reveal" aria-label="App shell component tokens">
+      <thead>
+        <tr><th>Token</th><th>References</th><th>Purpose</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>--app-shell-inset</code></td><td><code>var(--space-tier-4)</code></td><td>Float margin off the viewport edges (both columns).</td></tr>
+        <tr><td><code>--app-shell-gap</code></td><td><code>var(--space-tier-4)</code></td><td>Gap between the rail and the main column.</td></tr>
+        <tr><td><code>--app-shell-main-gap</code></td><td><code>var(--space-tier-4)</code></td><td>Gap between the topbar and the content region.</td></tr>
+        <tr><td><code>--app-shell-content-pad-x</code></td><td><code>var(--space-page-x)</code></td><td>Content gutter, horizontal.</td></tr>
+        <tr><td><code>--app-shell-content-pad-y</code></td><td><code>var(--space-tier-3)</code></td><td>Content gutter, vertical.</td></tr>
+        <tr><td><code>--app-shell-content-max</code></td><td><code>1280px</code></td><td>Readable cap on content width; <code>.app-shell__content--wide</code> removes it for data grids.</td></tr>
+        <tr><td><code>--app-shell-topbar-bg</code></td><td><code>var(--glass-light-light-bg)</code></td><td>Sticky topbar glass fill (paired with blur + saturate).</td></tr>
+        <tr><td><code>--app-shell-topbar-shadow</code></td><td><code>var(--glass-shadow-raised)</code></td><td>Topbar elevation.</td></tr>
+        <tr><td><code>--app-shell-topbar-z</code></td><td><code>60</code></td><td>Topbar stacking above scrolling content.</td></tr>
+        <tr><td><code>--app-shell-collapse</code></td><td><code>900px</code></td><td>Breakpoint at/below which the grid drops to one column and the rail overlays.</td></tr>
+      </tbody>
+    </table>
+
+    <p class="usage-note reveal">
+      <strong>global-nav and the sidebar are not interchangeable.</strong>
+      <code>global-nav</code> is the design-system <em>site</em> chrome — the
+      top bar that navigates this documentation. The <code>.sidebar</code>
+      inside <code>.app-shell</code> is the <em>product</em> chrome that
+      navigates the application. A product page built on the app shell does
+      not render global-nav; a docs page does not render the sidebar.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>The app shell pairs with the admin surface.</strong> Set
+      <code>&lt;body data-surface="admin"&gt;</code> so the marketing aurora
+      is dropped (see <code>base.css</code>) and add a
+      <code>.f2v-bg--earthsky</code> element so the calm earthsky wash carries
+      the page. The two backdrops never stack.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>Two shells, one job each.</strong> <code>shell.css</code>
+      (<code>.shell</code>) is the centred reading column for documentation
+      and marketing; <code>app-shell.css</code> (<code>.app-shell</code>) is
+      the sidebar + topbar + main layout for data-rich product. Choose by the
+      surface, and use exactly one.
+    </p>
   </section>
 
   <!-- ========================== FOOTER ========================== -->

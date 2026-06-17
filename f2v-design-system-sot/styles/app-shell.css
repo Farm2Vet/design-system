@@ -1,0 +1,169 @@
+/* =========================================================
+   COMPONENT — APP SHELL
+   The canonical layout for admin / data-rich PRODUCT pages
+   (dashboards, tables, CRUD editors). A two-column grid: the
+   persistent .sidebar rail on the leading edge, and a main
+   column carrying a sticky glass topbar over a scrolling
+   content region. This is the *home* the sidebar component
+   was built for.
+
+   Relationship to the other shells:
+     · shell.css (.shell)   — the DOCUMENTATION shell: a single
+       centred reading column for the design-system pages
+       (hero / chunk / footer). Marketing/editorial rhythm.
+     · app-shell.css (.app-shell) — the PRODUCT shell: sidebar +
+       topbar + main. Data-rich admin rhythm.
+   A page uses one or the other, never both.
+
+   Navigation contract (global-nav vs sidebar):
+     · global-nav  → the design-system SITE chrome (the top bar
+       on every docs page). It navigates the documentation.
+     · .sidebar    → the PRODUCT chrome inside .app-shell. It
+       navigates the application's destinations.
+     A product page built on .app-shell does not render
+     global-nav; a docs page does not render .sidebar.
+
+   Component tokens (--app-shell-*) reference semantic + glass
+   tokens strictly (raw px only for layout widths, as in
+   sidebar.css). Pairs with <body data-surface="admin"> so the
+   marketing aurora is dropped (see base.css) and the calm
+   earthsky wash carries the page.
+   Depends on: tokens.css, sidebar.css
+   ========================================================= */
+:root {
+  /* ---------- Frame — float + rhythm ---------- */
+  --app-shell-inset:          var(--space-tier-4);   /* 16 — float margin off the viewport edges */
+  --app-shell-gap:            var(--space-tier-4);   /* 16 — sidebar ↔ main column gap            */
+  --app-shell-main-gap:       var(--space-tier-4);   /* 16 — topbar ↔ content vertical gap        */
+
+  /* ---------- Content region ---------- */
+  --app-shell-content-pad-x:  var(--space-page-x);   /* 32 — content gutter X */
+  --app-shell-content-pad-y:  var(--space-tier-3);   /* 24 — content gutter Y */
+  --app-shell-content-max:    1280px;                /* readable cap; admin pages may override to none */
+
+  /* ---------- Topbar — sticky glass bar ---------- */
+  --app-shell-topbar-pad-x:   var(--space-tier-3);   /* 24 */
+  --app-shell-topbar-pad-y:   var(--space-tier-5);   /* 12 */
+  --app-shell-topbar-gap:     var(--space-gap-default);
+  --app-shell-topbar-radius:  var(--glass-radius);
+  --app-shell-topbar-bg:      var(--glass-light-light-bg);
+  --app-shell-topbar-border:  var(--glass-light-light-border);
+  --app-shell-topbar-blur:    var(--glass-light-light-blur);
+  --app-shell-topbar-sat:     var(--glass-saturate);
+  --app-shell-topbar-shadow:  var(--glass-shadow-raised);
+  --app-shell-topbar-inset:   var(--glass-inset-light-soft);
+
+  /* ---------- Stacking ---------- */
+  --app-shell-topbar-z:       60;
+  --app-shell-sidebar-z:      50;
+
+  /* ---------- Responsive ---------- */
+  --app-shell-collapse:       900px;                 /* ≤ this → single column, sidebar overlays */
+}
+
+/* =========================================================
+   FRAME — two-column grid, both columns floated off the edges
+   ========================================================= */
+.app-shell {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);  /* sidebar sizes itself; main fills, can shrink */
+  align-items: start;
+  gap: var(--app-shell-gap);
+  min-height: 100vh;
+  padding: var(--app-shell-inset);
+}
+
+/* =========================================================
+   SIDEBAR SLOT — sticky column that holds the .sidebar rail
+   ========================================================= */
+.app-shell__sidebar {
+  position: sticky;
+  top: var(--app-shell-inset);
+  align-self: start;
+  height: calc(100vh - var(--app-shell-inset) * 2);
+  z-index: var(--app-shell-sidebar-z);
+}
+/* the rail fills its sticky slot so the footer pins to the bottom */
+.app-shell__sidebar > .sidebar {
+  height: 100%;
+}
+
+/* =========================================================
+   MAIN COLUMN — topbar over scrolling content
+   ========================================================= */
+.app-shell__main {
+  min-width: 0;                /* let wide tables scroll instead of blowing out the grid */
+  display: flex;
+  flex-direction: column;
+  gap: var(--app-shell-main-gap);
+}
+
+/* ---------- Topbar — the product's in-app bar ---------- */
+.app-shell__topbar {
+  position: sticky;
+  top: var(--app-shell-inset);
+  z-index: var(--app-shell-topbar-z);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--app-shell-topbar-gap);
+  padding: var(--app-shell-topbar-pad-y) var(--app-shell-topbar-pad-x);
+  border-radius: var(--app-shell-topbar-radius);
+  background: var(--app-shell-topbar-bg);
+  border: var(--border-width-base) solid var(--app-shell-topbar-border);
+  box-shadow: var(--app-shell-topbar-shadow), var(--app-shell-topbar-inset);
+  -webkit-backdrop-filter: var(--app-shell-topbar-blur) var(--app-shell-topbar-sat);
+          backdrop-filter: var(--app-shell-topbar-blur) var(--app-shell-topbar-sat);
+}
+/* leading (title / breadcrumb) and trailing (actions) clusters */
+.app-shell__topbar-lead,
+.app-shell__topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-gap-snug);
+  min-width: 0;
+}
+.app-shell__topbar-lead { flex: 1 1 auto; }
+
+/* ---------- Content — the scrolling page body ---------- */
+.app-shell__content {
+  width: 100%;
+  max-width: var(--app-shell-content-max);
+  margin-inline: auto;
+  padding: var(--app-shell-content-pad-y) var(--app-shell-content-pad-x);
+}
+/* full-bleed variant for data grids that want every pixel */
+.app-shell__content--wide { max-width: none; }
+
+/* =========================================================
+   RESPONSIVE — collapse to a single column; the .sidebar
+   component's own overlay mode (sidebar.js) takes over the
+   off-canvas behaviour, so the shell only drops the column.
+   ========================================================= */
+@media (max-width: 900px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+  .app-shell__sidebar {
+    /* the rail goes off-canvas; sidebar.css/.js positions it when open */
+    position: fixed;
+    inset-block: var(--app-shell-inset);
+    inset-inline-start: var(--app-shell-inset);
+    height: calc(100vh - var(--app-shell-inset) * 2);
+    z-index: var(--sidebar-z-overlay);
+  }
+}
+
+/* =========================================================
+   EMBEDDED — for documenting the shell inside a bounded demo
+   stage (a component page). Heights resolve against the demo
+   container instead of the viewport so the sticky sidebar /
+   topbar can be shown within a scrollable box.
+   ========================================================= */
+.app-shell--embedded {
+  min-height: 0;
+  height: 100%;
+}
+.app-shell--embedded .app-shell__sidebar {
+  height: calc(100% - var(--app-shell-inset) * 2);
+}

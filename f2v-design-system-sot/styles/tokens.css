@@ -8,6 +8,13 @@
      3. Component tokens — component-scoped, reference semantics only
    ========================================================= */
 
+/* Brand fonts — loaded once here. tokens.css is the first stylesheet every
+   page links, so no page needs its own font <link> (and new pages get the
+   fonts for free — no per-page propagation to forget). Plus Jakarta Sans
+   (--font-sans / --font-display) + JetBrains Mono (--font-mono); both ship a
+   vietnamese subset for bilingual EN/VI. Must precede all style rules. */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
 /* =========================================================
    1. PRIMITIVE TOKENS
    ========================================================= */
@@ -121,8 +128,19 @@
     --spacing-16x:     64px;
     --spacing-25x:     100px;
 
-    /* ---------- Type families ---------- */
-    --font-sans:    'Poppins', 'Helvetica', sans-serif;
+    /* ---------- Type families — display / body / data split ----------
+       --font-display TITLE / HEADING / LABEL rail — the brand voice. Plus
+                      Jakarta Sans (loaded via the Google Fonts @import above;
+                      ships a vietnamese subset for bilingual EN/VI). Bound to
+                      .h1–.h6 and the .admin-* title/label classes in
+                      typography.css.
+       --font-sans    BODY rail — the per-OS system UI font (San Francisco /
+                      Segoe UI / Roboto), NOT a webfont: paragraphs, ledes,
+                      captions, field values. All ship Vietnamese, so body
+                      renders natively with zero font download and no reflow.
+       --font-mono    DATA rail — JetBrains Mono. ids, scores, costs, counts. */
+    --font-display: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --font-sans:    system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --font-mono:    'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
 
     /* ---------- Type scale (primitive)
@@ -162,9 +180,11 @@
     --text-data-3xl:  2.125rem;   /* 34px — rare display / splash KPI     */
 
     /* ---------- Font weights ---------- */
-    --font-weight-regular:  400;
-    --font-weight-medium:   500;
-    --font-weight-semibold: 600;
+    --font-weight-regular:   400;
+    --font-weight-medium:    500;
+    --font-weight-semibold:  600;
+    --font-weight-bold:      700;
+    --font-weight-extrabold: 800;   /* numbered section headings (display rail) */
 
     /* ---------- Line heights ---------- */
     --line-height-display: 1.04;
@@ -333,6 +353,15 @@
             color-mix(in srgb, var(--accent-100) 70%, transparent) 40%,
             transparent 75%),
         var(--white-base);
+
+    /* ---------- Page backdrop selector (body-level) ----------
+       The body paints ONE ambient layer over the cream base. This
+       indirection lets a page swap that layer without editing base.css:
+       default is the marketing aurora; admin / data-rich product pages
+       set it to `none` (via body[data-surface="admin"] in base.css) and
+       instead carry the calm earthsky wash on a .f2v-bg--earthsky element,
+       so the two backdrops never stack and double-paint. */
+    --background-page-ambient: var(--background-ambient);
 
     /* ---------- Text ---------- */
     --text-default:          var(--neutral-950);

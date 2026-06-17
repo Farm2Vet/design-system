@@ -30,13 +30,21 @@ body {
     line-height: var(--line-height-body);
     color: var(--text-default);
     background:
-        var(--background-ambient),
+        var(--background-page-ambient),
         var(--background-default);
     background-attachment: fixed;
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     overflow-x: hidden;
+}
+
+/* Admin / data-rich product pages opt out of the marketing aurora and
+   carry the calm earthsky wash on a .f2v-bg--earthsky element instead.
+   Zeroing the body ambient layer here stops the two backdrops from
+   stacking and double-painting. Opt in with <body data-surface="admin">. */
+body[data-surface="admin"] {
+    --background-page-ambient: none;
 }
 
 /* =========================================================
