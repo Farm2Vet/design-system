@@ -92,7 +92,7 @@
               <ul class="global-nav__panel-list">
                 <li><a href="IV-01-logo.html"><span class="global-nav__index">01</span><span>Logo</span></a></li>
                 <li><a href="IV-02-icons.html"><span class="global-nav__index">02</span><span>Icons</span></a></li>
-                <li><a href="IV-03-images.html" class="is-placeholder"><span class="global-nav__index">03</span><span>Images</span></a></li>
+                <li><a href="IV-03-images.html"><span class="global-nav__index">03</span><span>Backgrounds &amp; Motion</span></a></li>
               </ul>
             </div>
           </div>
@@ -267,7 +267,7 @@
         <dd><code>.tabs__tab</code> with <code>role="tab"</code>, <code>aria-selected</code>, and <code>aria-controls</code> pointing to its panel. Optional <code>.tabs__icon</code>, <code>.tabs__label</code>, and <code>.tabs__badge</code> sit inside in fixed order so screen readers always announce the same sequence.</dd>
 
         <dt>D · indicator</dt>
-        <dd><code>.tabs__indicator</code> is the moving primary marker. The controller writes <code>--_x</code> / <code>--_w</code> (horizontal) or <code>--_y</code> / <code>--_h-active</code> (vertical) onto the host so the indicator transitions between tabs without re-rendering the DOM. Hidden in Pill and Enclosed variants.</dd>
+        <dd><code>.tabs__indicator</code> is the moving primary marker. The controller writes <code>--_x</code> / <code>--_w</code> (horizontal) or <code>--_y</code> / <code>--_h-active</code> (vertical) onto the host so the indicator transitions between tabs without re-rendering the DOM. Hidden in Pill, Enclosed, and Vertical variants — Vertical is a section-nav rail where each row carries its own left accent bar instead of a shared moving marker.</dd>
 
         <dt>E · panel</dt>
         <dd><code>.tabs__panel</code> with <code>role="tabpanel"</code>, an <code>id</code> matching the controlling tab's <code>aria-controls</code>, and <code>tabindex="0"</code> so the panel itself is focusable for screen readers. Exactly one panel per tab; orphan tabs are an authoring error.</dd>
@@ -303,7 +303,7 @@
       <dt>Segmented</dt>
       <dd>For tab strips of three to five short labels inside a toolbar.</dd>
       <dt>Vertical</dt>
-      <dd>For settings panels and long-form documentation, where labels are long enough to justify the column.</dd>
+      <dd>A section-nav rail (after the disease-detail right rail in the admin app): a column on a thin spine, the active row marked by its own accent bar on the inline-start edge. For settings panels and long-form / on-this-page navigation.</dd>
     </dl>
 
     <div class="form-variant-grid reveal">
@@ -964,9 +964,9 @@ const TABS_TOKENS = [
     ['--tabs-segmented-radius',        'var(--radius-md)'],
   ]},
   { group: 'Variant — Vertical', tokens: [
-    ['--tabs-vertical-list-border',  'var(--border-default)'],
-    ['--tabs-vertical-indicator-bg', 'var(--background-primary)'],
-    ['--tabs-vertical-indicator-w',  '2px'],
+    ['--tabs-vertical-list-border',   'var(--border-default)'],
+    ['--tabs-vertical-rail-bar',      'var(--border-primary)'],
+    ['--tabs-vertical-rail-bar-width','2px'],
   ]},
   { group: 'Indicator motion', tokens: [
     ['--tabs-indicator-duration', '220ms'],

@@ -575,52 +575,45 @@
 
 /* =========================================================
    ENTER / EXIT MOTION — liquid glass
-   The frosted pane MATERIALISES: it fades + scales up from
-   small while its own blur clears (the glass sharpening into
-   focus), with a gel overshoot from the spring easing. On
-   dismiss it DISPERSES — scales up and blurs out as it
-   evaporates (scaling up + blurring, not sliding, is what reads
-   as the glass breaking apart). Animating the toast's own
-   filter:blur() is what sells it. JS adds .is-entering as the
-   start state (removed to play the enter) and .is-dismissed
-   to leave.
+   Ported 1:1 from the farm2vet-core admin toast (which was
+   itself derived from this file), so the source of truth and
+   the production app share one motion. The frosted pane
+   MATERIALISES: fades + scales up from small while its own
+   blur clears (the glass sharpening into focus), with a 2%
+   gel overshoot at the 55% mark before it settles. On dismiss
+   it briefly TENSES (scale 1.05) then DISPERSES outward (scale
+   up + heavy blur) and evaporates — scaling up + blurring (not
+   sliding) is what reads as the glass breaking apart.
+   Driven by JS classes: .is-entering plays the enter,
+   .is-leaving / .is-dismissed play the exit (in core these
+   map to radix data-state="open" / "closed"). Static demo
+   toasts carry none of these classes, so they rest unanimated.
    ========================================================= */
-.toast {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    filter: blur(0);
-    transition:
-        background-color .18s ease,
-        border-color .18s ease,
-        box-shadow .18s ease,
-        opacity .28s ease,
-        transform .44s cubic-bezier(0.34, 1.56, 0.64, 1),
-        filter .4s ease;
-}
-/* Start state: small, blurred, lifted — the glass not yet condensed. */
 .toast.is-entering {
-    opacity: 0;
-    transform: translateY(14px) scale(0.84);
-    filter: blur(8px);
+    animation: toast-in .44s cubic-bezier(0.2, 0.72, 0.18, 1) both;
 }
-/* Leave: tense outward and disperse into a heavy blur. */
-.toast.is-dismissed,
-.toast.is-leaving {
-    opacity: 0;
-    transform: scale(1.18);
-    filter: blur(22px);
+.toast.is-leaving,
+.toast.is-dismissed {
     pointer-events: none;
-    transition:
-        opacity .5s ease,
-        transform .5s cubic-bezier(0.45, 0, 0.65, 0.25),
-        filter .5s cubic-bezier(0.45, 0, 0.65, 0.25);
+    animation: toast-out .5s cubic-bezier(0.45, 0, 0.65, 0.25) both;
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .toast { transition: opacity .2s ease; transform: none; filter: none; }
-    .toast.is-entering,
-    .toast.is-dismissed,
-    .toast.is-leaving { transform: none; filter: none; }
+/* Materialise: fade + scale up from small with a thick blur
+   that clears as it focuses, plus a 2% gel overshoot before
+   settling. */
+@keyframes toast-in {
+    0%   { opacity: 0; transform: translateY(14px) scale(0.84); filter: blur(8px); }
+    55%  { opacity: 1; transform: translateY(-2px) scale(1.02); filter: blur(0); }
+    100% { opacity: 1; transform: translateY(0)    scale(1);    filter: blur(0); }
+}
+/* Shatter + dissolve: the pane TENSES (scale 1.05) then
+   DISPERSES (scale 1.18, heavy blur) and fades. Opacity alone
+   carries the fade — no brightness boost, which would blow the
+   light frosted surface out to white. */
+@keyframes toast-out {
+    0%   { opacity: 1; transform: scale(1);    filter: blur(0); }
+    28%  { opacity: 1; transform: scale(1.05); filter: blur(2px); }
+    100% { opacity: 0; transform: scale(1.18); filter: blur(22px); }
 }
 
 /* =========================================================
@@ -717,12 +710,11 @@
 
 /* =========================================================
    STATES
+   The dismiss visual lives in the ENTER / EXIT MOTION section
+   above (the `toast-out` keyframe via .is-dismissed); don't
+   re-declare a transform/opacity here or it overrides the
+   liquid disperse.
    ========================================================= */
-.toast.is-dismissed {
-    opacity: 0;
-    transform: translateY(-4px) scale(.98);
-    pointer-events: none;
-}
 .toast[role="alert"]:focus-visible,
 .toast:focus-visible {
     outline: var(--toast-focus-outline-width) solid var(--toast-focus-outline);
@@ -743,7 +735,10 @@
     .toast__action,
     .toast__close,
     .toast--snackbar { transition: none; }
-    .toast.is-dismissed { transform: none; }
+    /* No liquid blur/scale; enter is instant, exit fades out in place. */
+    .toast.is-entering { animation: none; }
+    .toast.is-leaving,
+    .toast.is-dismissed { animation: none; opacity: 0; }
     .toast__progress::after { animation: none; transform: scaleX(0); }
     .toast__spinner { animation-duration: 2.4s; }
 }

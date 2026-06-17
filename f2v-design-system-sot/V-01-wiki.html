@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Disease wiki — Farm2Vet Admin</title>
+<title>Diseases — Farm2Vet Admin</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -21,14 +21,16 @@
 <link rel="stylesheet" href="styles/card.css" />
 <link rel="stylesheet" href="styles/sidebar.css" />
 <link rel="stylesheet" href="styles/chip.css" />
+<link rel="stylesheet" href="styles/switch.css" />
 <link rel="stylesheet" href="styles/search-toolbar.css" />
 <link rel="stylesheet" href="styles/table.css" />
 <link rel="stylesheet" href="styles/tabs.css" />
 <link rel="stylesheet" href="styles/modal.css" />
 
-<!-- Page-specific layout (V-01 layout grid + page header + modal form;
-     V-02 contributes the earthy-glass surface + list-toolbar +
-     disease-list scaffolding on top) -->
+<!-- Page-specific layout (V-01 layout grid + page header +
+     disease list-view scaffolding: facet chips, sort cluster,
+     table column tracks, row checkbox, version-select pill,
+     footer rail; V-02 contributes the earthy-glass surface) -->
 <link rel="stylesheet" href="styles/page-V-01.css" />
 <link rel="stylesheet" href="styles/page-V-02.css" />
 
@@ -148,22 +150,19 @@
   <!-- ───── Main ───── -->
   <main class="app-shell__main">
 
-    <!-- ───── Page header (breadcrumb · title · lede · primary action) ───── -->
+    <!-- ───── Page header (breadcrumb · title · primary action) ───── -->
     <header class="app-shell__page-header">
       <nav class="app-shell__breadcrumb" aria-label="Breadcrumb">
-        <a class="app-shell__breadcrumb-link" href="#">Data Management</a>
+        <a class="app-shell__breadcrumb-link" href="#">Admin</a>
         <span class="app-shell__breadcrumb-sep" aria-hidden="true">›</span>
-        <a class="app-shell__breadcrumb-link" href="#">Disease wiki</a>
+        <a class="app-shell__breadcrumb-link" href="#">Data management</a>
         <span class="app-shell__breadcrumb-sep" aria-hidden="true">›</span>
-        <span class="app-shell__breadcrumb-tail" aria-current="page">Catalogue</span>
+        <span class="app-shell__breadcrumb-tail" aria-current="page">Disease</span>
       </nav>
 
       <div class="app-shell__page-header-row">
         <div class="app-shell__page-header-text">
-          <h1 class="app-shell__page-title">Disease catalogue.</h1>
-          <p class="app-shell__page-lede">
-            Codenames, versions, and lifecycle state for every disease entry the chatbot can reference.
-          </p>
+          <h1 class="app-shell__page-title">Diseases</h1>
         </div>
         <button type="button" class="btn btn--cta btn--md">
           <span class="btn__leading" aria-hidden="true">
@@ -174,32 +173,78 @@
       </div>
     </header>
 
-    <!-- ───── List toolbar — search · quick filters · sort cluster ───── -->
-    <div class="list-toolbar" role="toolbar" aria-label="Search, filter, sort">
+    <!-- ───── Search toolbar — search · facet filters · sort cluster ───── -->
+    <div class="search-toolbar" role="toolbar" aria-label="Search, filter, sort">
 
-      <label class="search-field list-toolbar__search">
+      <label class="search-field search-toolbar__search">
         <span class="search-field__icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
         </span>
-        <input type="search" class="input input--sm search-field__input" placeholder="Search by codename or name…" />
+        <input type="search" class="input input--sm search-field__input" placeholder="Search diseases by name or codename…" />
+        <button type="button" class="search-field__clear" aria-label="Clear search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
       </label>
 
-      <div class="list-toolbar__filters" role="group" aria-label="Quick filters">
-        <button type="button" class="chip list-toolbar__chip--warn" aria-pressed="true" aria-label="Toggle Incomplete filter">
-          <span class="chip__label">Incomplete</span>
+      <div class="search-toolbar__filters" role="group" aria-label="Filters">
+
+        <button type="button" class="chip disease-facet" aria-haspopup="menu" aria-expanded="false">
+          <span class="chip__leading" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
+          </span>
+          <span class="chip__label">
+            <span class="chip__facet">Status:</span>
+            <span class="chip__values">All</span>
+          </span>
+          <svg class="disease-facet__chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 5 6 8 9 5"/></svg>
         </button>
-        <button type="button" class="chip list-toolbar__chip--quiet" aria-pressed="false" aria-label="Toggle Deactivated filter">
-          <span class="chip__label">Deactivated</span>
+
+        <button type="button" class="chip disease-facet" aria-haspopup="menu" aria-expanded="false">
+          <span class="chip__leading" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>
+          </span>
+          <span class="chip__label">
+            <span class="chip__facet">Completeness:</span>
+            <span class="chip__values">All</span>
+          </span>
+          <svg class="disease-facet__chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 5 6 8 9 5"/></svg>
         </button>
+
+        <button type="button" class="chip disease-facet" aria-haspopup="menu" aria-expanded="false">
+          <span class="chip__leading" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg>
+          </span>
+          <span class="chip__label">
+            <span class="chip__facet">Language:</span>
+            <span class="chip__values">All</span>
+          </span>
+          <svg class="disease-facet__chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 5 6 8 9 5"/></svg>
+        </button>
+
       </div>
 
-      <div class="list-toolbar__sort">
-        <button type="button" class="list-toolbar__sort-trigger" aria-haspopup="menu" aria-expanded="false">
-          <span class="list-toolbar__sort-label">Sort by:</span>
-          <span class="list-toolbar__sort-value">Last updated</span>
-          <svg class="list-toolbar__sort-chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 5 6 8 9 5"/></svg>
-        </button>
-        <button type="button" class="list-toolbar__direction" aria-label="Sort direction: descending" aria-pressed="false">
+      <div class="disease-sort">
+        <div class="dropdown dropdown--sm disease-sort__field" data-dropdown>
+          <button type="button" class="dropdown__trigger" aria-haspopup="listbox" aria-expanded="false">
+            <span class="dropdown__value">Last updated</span>
+            <svg class="dropdown__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="dropdown__menu" role="listbox">
+            <button type="button" class="dropdown__option is-selected" role="option" data-value="updated">
+              Last updated
+              <svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>
+            </button>
+            <button type="button" class="dropdown__option" role="option" data-value="name">
+              Name
+              <svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>
+            </button>
+            <button type="button" class="dropdown__option" role="option" data-value="label">
+              Label
+              <svg class="dropdown__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>
+            </button>
+          </div>
+        </div>
+        <button type="button" class="disease-sort__dir" aria-label="Sort direction: descending" aria-pressed="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M12 5v14"/>
             <path d="m19 12-7 7-7-7"/>
@@ -211,243 +256,335 @@
 
     <div class="app-shell__data-region">
 
-    <!-- ───── List panel — disease list inside a glass-frost card ───── -->
-    <section class="card card--glass-frost wiki-card" aria-label="Disease catalogue panel">
+    <!-- ───── List panel — canonical .table inside a glass-frost card ───── -->
+    <section class="card card--glass-frost wiki-card" aria-label="Disease list">
 
-      <!-- Disease list — page-scoped scaffolding hosting canonical bits inside. -->
-      <ul class="disease-list" role="list">
+      <table class="table table--boxed disease-table" aria-label="Diseases">
+        <thead class="table__head">
+          <tr class="table__head-row">
+            <th class="table__head-cell disease-table__check-cell" scope="col">
+              <label class="row-check">
+                <input type="checkbox" class="row-check__input" aria-label="Select all diseases" />
+                <span class="row-check__box" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>
+                </span>
+              </label>
+            </th>
+            <th class="table__head-cell" scope="col">Disease</th>
+            <th class="table__head-cell disease-table__code-cell" scope="col">Codename</th>
+            <th class="table__head-cell disease-table__status-cell" scope="col">Status</th>
+            <th class="table__head-cell disease-table__version-cell" scope="col">Active version</th>
+            <th class="table__head-cell disease-table__updated-cell" scope="col">Updated</th>
+            <th class="table__head-cell disease-table__actions-cell" scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="table__body">
 
-        <li class="disease-list__item">
-          <div class="disease-list__text">
-            <h3 class="disease-list__title">
-              <span class="disease-list__title-code">PRRS</span>
-              <span class="disease-list__title-name">Porcine Reproductive and Respiratory Syndrome</span>
-            </h3>
-            <p class="disease-list__meta">Updated 2 h ago</p>
-          </div>
-          <div class="disease-list__trail">
-            <button type="button" class="disease-list__version" aria-haspopup="menu" aria-expanded="false" aria-label="Switch version, currently v3.2">
-              v3.2
-              <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 5 6 8 9 5"/></svg>
-            </button>
-            <span class="disease-list__status disease-list__status--activated">Activated</span>
-            <button type="button" class="disease-list__overflow" aria-haspopup="menu" aria-expanded="false" aria-label="More actions">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>
-              </svg>
-            </button>
-          </div>
-        </li>
+          <tr class="table__row">
+            <td class="table__cell disease-table__check-cell">
+              <label class="row-check">
+                <input type="checkbox" class="row-check__input" aria-label="Select PRRS" />
+                <span class="row-check__box" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>
+                </span>
+              </label>
+            </td>
+            <td class="table__cell">Porcine Reproductive &amp; Respiratory Syndrome</td>
+            <td class="table__cell table__cell--mono">PRRS</td>
+            <td class="table__cell">
+              <button class="switch switch--sm is-on" role="switch" aria-checked="true" aria-label="PRRS status: active"><span class="switch__thumb"></span></button>
+            </td>
+            <td class="table__cell">
+              <button type="button" class="version-select" aria-haspopup="menu" aria-expanded="false">
+                <span class="version-select__num">v3.2</span>
+                <span class="version-select__sep" aria-hidden="true">·</span>
+                <span class="version-select__state version-select__state--live">Live</span>
+                <svg class="version-select__chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 5 6 8 9 5"/></svg>
+              </button>
+            </td>
+            <td class="table__cell table__cell--num">20 May 2026</td>
+            <td class="table__cell disease-table__actions-cell">
+              <div class="disease-actions">
+                <button type="button" class="btn btn--ghost btn--icon-only btn--sm" aria-label="View PRRS">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+                <button type="button" class="btn btn--ghost btn--icon-only btn--sm" aria-label="Edit PRRS">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+                </button>
+              </div>
+            </td>
+          </tr>
 
-        <li class="disease-list__item">
-          <div class="disease-list__text">
-            <h3 class="disease-list__title">
-              <span class="disease-list__title-code">ASF</span>
-              <span class="disease-list__title-name">African Swine Fever</span>
-              <span class="disease-list__title-warn" title="Some required details are missing">Incomplete</span>
-            </h3>
-            <p class="disease-list__meta">Updated 5 h ago</p>
-          </div>
-          <div class="disease-list__trail">
-            <button type="button" class="disease-list__version" aria-haspopup="menu" aria-expanded="false" aria-label="Switch version, currently v2.1">
-              v2.1
-              <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 5 6 8 9 5"/></svg>
-            </button>
-            <span class="disease-list__status disease-list__status--activated">Activated</span>
-            <button type="button" class="disease-list__overflow" aria-haspopup="menu" aria-expanded="false" aria-label="More actions">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>
-              </svg>
-            </button>
-          </div>
-        </li>
+          <tr class="table__row">
+            <td class="table__cell disease-table__check-cell">
+              <label class="row-check">
+                <input type="checkbox" class="row-check__input" aria-label="Select ASF" />
+                <span class="row-check__box" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>
+                </span>
+              </label>
+            </td>
+            <td class="table__cell">African Swine Fever</td>
+            <td class="table__cell table__cell--mono">ASF</td>
+            <td class="table__cell">
+              <button class="switch switch--sm is-on" role="switch" aria-checked="true" aria-label="ASF status: active"><span class="switch__thumb"></span></button>
+            </td>
+            <td class="table__cell">
+              <button type="button" class="version-select" aria-haspopup="menu" aria-expanded="false">
+                <span class="version-select__num">v2.1</span>
+                <span class="version-select__sep" aria-hidden="true">·</span>
+                <span class="version-select__state version-select__state--live">Live</span>
+                <svg class="version-select__chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 5 6 8 9 5"/></svg>
+              </button>
+            </td>
+            <td class="table__cell table__cell--num">18 May 2026</td>
+            <td class="table__cell disease-table__actions-cell">
+              <div class="disease-actions">
+                <button type="button" class="btn btn--ghost btn--icon-only btn--sm" aria-label="View ASF">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+                <button type="button" class="btn btn--ghost btn--icon-only btn--sm" aria-label="Edit ASF">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+                </button>
+              </div>
+            </td>
+          </tr>
 
-        <li class="disease-list__item">
-          <div class="disease-list__text">
-            <h3 class="disease-list__title">
-              <span class="disease-list__title-code">PED</span>
-              <span class="disease-list__title-name">Porcine Epidemic Diarrhea</span>
-            </h3>
-            <p class="disease-list__meta">Updated 1 d ago</p>
-          </div>
-          <div class="disease-list__trail">
-            <button type="button" class="disease-list__version" aria-haspopup="menu" aria-expanded="false" aria-label="Switch version, currently v1.4">
-              v1.4
-              <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 5 6 8 9 5"/></svg>
-            </button>
-            <span class="disease-list__status disease-list__status--activated">Activated</span>
-            <button type="button" class="disease-list__overflow" aria-haspopup="menu" aria-expanded="false" aria-label="More actions">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>
-              </svg>
-            </button>
-          </div>
-        </li>
+          <tr class="table__row">
+            <td class="table__cell disease-table__check-cell">
+              <label class="row-check">
+                <input type="checkbox" class="row-check__input" aria-label="Select PED" />
+                <span class="row-check__box" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>
+                </span>
+              </label>
+            </td>
+            <td class="table__cell">Porcine Epidemic Diarrhea</td>
+            <td class="table__cell table__cell--mono">PED</td>
+            <td class="table__cell">
+              <button class="switch switch--sm is-on" role="switch" aria-checked="true" aria-label="PED status: active"><span class="switch__thumb"></span></button>
+            </td>
+            <td class="table__cell">
+              <button type="button" class="version-select" aria-haspopup="menu" aria-expanded="false">
+                <span class="version-select__num">v1.4</span>
+                <span class="version-select__sep" aria-hidden="true">·</span>
+                <span class="version-select__state version-select__state--live">Live</span>
+                <svg class="version-select__chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 5 6 8 9 5"/></svg>
+              </button>
+            </td>
+            <td class="table__cell table__cell--num">14 May 2026</td>
+            <td class="table__cell disease-table__actions-cell">
+              <div class="disease-actions">
+                <button type="button" class="btn btn--ghost btn--icon-only btn--sm" aria-label="View PED">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+                <button type="button" class="btn btn--ghost btn--icon-only btn--sm" aria-label="Edit PED">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+                </button>
+              </div>
+            </td>
+          </tr>
 
-        <li class="disease-list__item">
-          <div class="disease-list__text">
-            <h3 class="disease-list__title">
-              <span class="disease-list__title-code">CSF</span>
-              <span class="disease-list__title-name">Classical Swine Fever</span>
-            </h3>
-            <p class="disease-list__meta">Updated 2 d ago</p>
-          </div>
-          <div class="disease-list__trail">
-            <button type="button" class="disease-list__version" aria-haspopup="menu" aria-expanded="false" aria-label="Switch version, currently v1.0">
-              v1.0
-              <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 5 6 8 9 5"/></svg>
-            </button>
-            <span class="disease-list__status disease-list__status--deactivated">Deactivated</span>
-            <button type="button" class="disease-list__overflow" aria-haspopup="menu" aria-expanded="false" aria-label="More actions">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>
-              </svg>
-            </button>
-          </div>
-        </li>
+          <tr class="table__row table__row--dim">
+            <td class="table__cell disease-table__check-cell">
+              <label class="row-check">
+                <input type="checkbox" class="row-check__input" aria-label="Select CSF" />
+                <span class="row-check__box" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>
+                </span>
+              </label>
+            </td>
+            <td class="table__cell">Classical Swine Fever</td>
+            <td class="table__cell table__cell--mono">CSF</td>
+            <td class="table__cell">
+              <button class="switch switch--sm" role="switch" aria-checked="false" aria-label="CSF status: inactive"><span class="switch__thumb"></span></button>
+            </td>
+            <td class="table__cell">
+              <button type="button" class="version-select" aria-haspopup="menu" aria-expanded="false">
+                <span class="version-select__num">v1.0</span>
+                <span class="version-select__sep" aria-hidden="true">·</span>
+                <span class="version-select__state version-select__state--draft">Draft</span>
+                <svg class="version-select__chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 5 6 8 9 5"/></svg>
+              </button>
+            </td>
+            <td class="table__cell table__cell--num">9 May 2026</td>
+            <td class="table__cell disease-table__actions-cell">
+              <div class="disease-actions">
+                <button type="button" class="btn btn--ghost btn--icon-only btn--sm" aria-label="View CSF">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+                <button type="button" class="btn btn--ghost btn--icon-only btn--sm" aria-label="Edit CSF">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+                </button>
+              </div>
+            </td>
+          </tr>
 
-        <li class="disease-list__item">
-          <div class="disease-list__text">
-            <h3 class="disease-list__title">
-              <span class="disease-list__title-code">FMD</span>
-              <span class="disease-list__title-name">Foot and Mouth Disease</span>
-            </h3>
-            <p class="disease-list__meta">Updated 3 d ago</p>
-          </div>
-          <div class="disease-list__trail">
-            <button type="button" class="disease-list__version" aria-haspopup="menu" aria-expanded="false" aria-label="Switch version, currently v2.5">
-              v2.5
-              <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 5 6 8 9 5"/></svg>
-            </button>
-            <span class="disease-list__status disease-list__status--activated">Activated</span>
-            <button type="button" class="disease-list__overflow" aria-haspopup="menu" aria-expanded="false" aria-label="More actions">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>
-              </svg>
-            </button>
-          </div>
-        </li>
+          <tr class="table__row">
+            <td class="table__cell disease-table__check-cell">
+              <label class="row-check">
+                <input type="checkbox" class="row-check__input" aria-label="Select FMD" />
+                <span class="row-check__box" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>
+                </span>
+              </label>
+            </td>
+            <td class="table__cell">Foot &amp; Mouth Disease</td>
+            <td class="table__cell table__cell--mono">FMD</td>
+            <td class="table__cell">
+              <button class="switch switch--sm is-on" role="switch" aria-checked="true" aria-label="FMD status: active"><span class="switch__thumb"></span></button>
+            </td>
+            <td class="table__cell">
+              <button type="button" class="version-select" aria-haspopup="menu" aria-expanded="false">
+                <span class="version-select__num">v2.5</span>
+                <span class="version-select__sep" aria-hidden="true">·</span>
+                <span class="version-select__state version-select__state--live">Live</span>
+                <svg class="version-select__chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 5 6 8 9 5"/></svg>
+              </button>
+            </td>
+            <td class="table__cell table__cell--num">2 May 2026</td>
+            <td class="table__cell disease-table__actions-cell">
+              <div class="disease-actions">
+                <button type="button" class="btn btn--ghost btn--icon-only btn--sm" aria-label="View FMD">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+                <button type="button" class="btn btn--ghost btn--icon-only btn--sm" aria-label="Edit FMD">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+                </button>
+              </div>
+            </td>
+          </tr>
 
-        <li class="disease-list__item">
-          <div class="disease-list__text">
-            <h3 class="disease-list__title">
-              <span class="disease-list__title-code">PCV2</span>
-              <span class="disease-list__title-name">Porcine Circovirus Type 2</span>
-            </h3>
-            <p class="disease-list__meta">Updated 5 d ago</p>
-          </div>
-          <div class="disease-list__trail">
-            <button type="button" class="disease-list__version" aria-haspopup="menu" aria-expanded="false" aria-label="Switch version, currently v1.3">
-              v1.3
-              <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 5 6 8 9 5"/></svg>
-            </button>
-            <span class="disease-list__status disease-list__status--activated">Activated</span>
-            <button type="button" class="disease-list__overflow" aria-haspopup="menu" aria-expanded="false" aria-label="More actions">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>
-              </svg>
-            </button>
-          </div>
-        </li>
+          <tr class="table__row">
+            <td class="table__cell disease-table__check-cell">
+              <label class="row-check">
+                <input type="checkbox" class="row-check__input" aria-label="Select PCV2" />
+                <span class="row-check__box" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>
+                </span>
+              </label>
+            </td>
+            <td class="table__cell">Porcine Circovirus Type 2</td>
+            <td class="table__cell table__cell--mono">PCV2</td>
+            <td class="table__cell">
+              <button class="switch switch--sm is-on" role="switch" aria-checked="true" aria-label="PCV2 status: active"><span class="switch__thumb"></span></button>
+            </td>
+            <td class="table__cell">
+              <button type="button" class="version-select" aria-haspopup="menu" aria-expanded="false">
+                <span class="version-select__num">v1.3</span>
+                <span class="version-select__sep" aria-hidden="true">·</span>
+                <span class="version-select__state version-select__state--live">Live</span>
+                <svg class="version-select__chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 5 6 8 9 5"/></svg>
+              </button>
+            </td>
+            <td class="table__cell table__cell--num">28 Apr 2026</td>
+            <td class="table__cell disease-table__actions-cell">
+              <div class="disease-actions">
+                <button type="button" class="btn btn--ghost btn--icon-only btn--sm" aria-label="View PCV2">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+                <button type="button" class="btn btn--ghost btn--icon-only btn--sm" aria-label="Edit PCV2">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+                </button>
+              </div>
+            </td>
+          </tr>
 
-      </ul>
+          <tr class="table__row table__row--dim">
+            <td class="table__cell disease-table__check-cell">
+              <label class="row-check">
+                <input type="checkbox" class="row-check__input" aria-label="Select SVD" />
+                <span class="row-check__box" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>
+                </span>
+              </label>
+            </td>
+            <td class="table__cell">Swine Vesicular Disease</td>
+            <td class="table__cell table__cell--mono">SVD</td>
+            <td class="table__cell">
+              <button class="switch switch--sm" role="switch" aria-checked="false" aria-label="SVD status: inactive"><span class="switch__thumb"></span></button>
+            </td>
+            <td class="table__cell">
+              <button type="button" class="version-select" aria-haspopup="menu" aria-expanded="false">
+                <span class="version-select__num">v1.0</span>
+                <span class="version-select__sep" aria-hidden="true">·</span>
+                <span class="version-select__state version-select__state--draft">Draft</span>
+                <svg class="version-select__chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 5 6 8 9 5"/></svg>
+              </button>
+            </td>
+            <td class="table__cell table__cell--num">21 Apr 2026</td>
+            <td class="table__cell disease-table__actions-cell">
+              <div class="disease-actions">
+                <button type="button" class="btn btn--ghost btn--icon-only btn--sm" aria-label="View SVD">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+                <button type="button" class="btn btn--ghost btn--icon-only btn--sm" aria-label="Edit SVD">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+                </button>
+              </div>
+            </td>
+          </tr>
 
-      <!-- Pager — lives inside the same glass card as the list -->
-      <div class="wiki-card__footer">
-        <nav class="pagination" aria-label="Pagination">
-          <button type="button" class="pagination__step" data-direction="first" aria-label="First page">«</button>
-          <button type="button" class="pagination__step" data-direction="prev"  aria-label="Previous page">‹</button>
-          <ol class="pagination__list">
-            <li><a class="pagination__page" href="#">1</a></li>
-            <li><a class="pagination__page" href="#">2</a></li>
-            <li><a class="pagination__page" href="#">3</a></li>
-            <li><a class="pagination__page is-current" href="#" aria-current="page">4</a></li>
-            <li><a class="pagination__page" href="#">5</a></li>
-            <li><a class="pagination__page" href="#">6</a></li>
-            <li><span class="pagination__ellipsis" aria-hidden="true">…</span></li>
-            <li><a class="pagination__page" href="#">15</a></li>
-          </ol>
-          <button type="button" class="pagination__step" data-direction="next" aria-label="Next page">›</button>
-          <button type="button" class="pagination__step" data-direction="last" aria-label="Last page">»</button>
-          <form class="pagination__jump" data-pagination-jump action="#" role="search" aria-label="Go to page">
-            <span class="pagination__jump-label">Go to</span>
-            <input type="text" name="p" class="pagination__jump-input" min="1" max="15" value="" />
-            <span class="pagination__jump-of">of 15</span>
-          </form>
+          <tr class="table__row">
+            <td class="table__cell disease-table__check-cell">
+              <label class="row-check">
+                <input type="checkbox" class="row-check__input" aria-label="Select APP" />
+                <span class="row-check__box" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>
+                </span>
+              </label>
+            </td>
+            <td class="table__cell">Actinobacillus Pleuropneumonia</td>
+            <td class="table__cell table__cell--mono">APP</td>
+            <td class="table__cell">
+              <button class="switch switch--sm is-on" role="switch" aria-checked="true" aria-label="APP status: active"><span class="switch__thumb"></span></button>
+            </td>
+            <td class="table__cell">
+              <button type="button" class="version-select" aria-haspopup="menu" aria-expanded="false">
+                <span class="version-select__num">v1.1</span>
+                <span class="version-select__sep" aria-hidden="true">·</span>
+                <span class="version-select__state version-select__state--live">Live</span>
+                <svg class="version-select__chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 5 6 8 9 5"/></svg>
+              </button>
+            </td>
+            <td class="table__cell table__cell--num">15 Apr 2026</td>
+            <td class="table__cell disease-table__actions-cell">
+              <div class="disease-actions">
+                <button type="button" class="btn btn--ghost btn--icon-only btn--sm" aria-label="View APP">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+                <button type="button" class="btn btn--ghost btn--icon-only btn--sm" aria-label="Edit APP">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+                </button>
+              </div>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+
+      <!-- Footer rail — count · pager · rows-per-page, inside the same card -->
+      <div class="disease-foot">
+        <p class="disease-foot__count">Showing <strong>1–8</strong> of <strong>64</strong></p>
+
+        <nav class="disease-foot__pager app-pager" aria-label="Pagination">
+          <a class="app-pager__page is-current" href="#" aria-current="page">1</a>
+          <a class="app-pager__page" href="#">2</a>
+          <a class="app-pager__page" href="#">3</a>
+          <span class="app-pager__ellipsis" aria-hidden="true">…</span>
+          <a class="app-pager__page" href="#">7</a>
         </nav>
+
+        <div class="disease-foot__rows">
+          <span class="disease-foot__rows-label">Rows per page</span>
+          <button type="button" class="version-select disease-foot__rows-select" aria-haspopup="menu" aria-expanded="false">
+            <span class="version-select__num">25</span>
+            <svg class="version-select__chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 5 6 8 9 5"/></svg>
+          </button>
+        </div>
       </div>
 
     </section>
-
-    <!-- ───── Floating modal — "Add new disease" ───── -->
-    <div class="app-shell__modal-layer" aria-hidden="false">
-      <div class="modal modal--md" id="add-disease" role="dialog" aria-modal="true" aria-labelledby="add-disease-title">
-        <div class="modal__surface">
-
-          <header class="modal__header">
-            <div class="modal__heading">
-              <h3 class="modal__title" id="add-disease-title">Add new disease</h3>
-            </div>
-            <button type="button" class="modal__close" aria-label="Close dialog">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
-            </button>
-          </header>
-
-          <div class="modal__body">
-            <form class="add-disease-form" onsubmit="return false;">
-
-              <div class="field field--cover">
-                <div class="cover-tile" aria-hidden="true">
-                  <div class="cover-tile__square">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 4v3M12 17v3M4 12h3M17 12h3M6 6l2 2M16 16l2 2M6 18l2-2M16 8l2-2"/></svg>
-                  </div>
-                  <span class="cover-tile__edit">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
-                  </span>
-                </div>
-              </div>
-
-              <div class="field field--codename">
-                <label class="field__label" for="add-disease-codename">Codename</label>
-                <input type="text" id="add-disease-codename" class="input" value="ASF" />
-              </div>
-
-              <div class="field field--fullname">
-                <label class="field__label" for="add-disease-fullname">Full name</label>
-                <input type="text" id="add-disease-fullname" class="input" value="African Swine Fever" />
-              </div>
-
-              <div class="field field--species">
-                <label class="field__label" for="add-disease-species">Species</label>
-                <input type="text" id="add-disease-species" class="input" value="Swine" />
-              </div>
-
-              <div class="field field--pathogen">
-                <label class="field__label" for="add-disease-pathogen">Pathogen type</label>
-                <input type="text" id="add-disease-pathogen" class="input" value="Viral" />
-              </div>
-
-              <div class="field field--aliases">
-                <label class="field__label" for="add-disease-aliases">Aliases</label>
-                <input type="text" id="add-disease-aliases" class="input" value="Pig plague, African pig disease" />
-              </div>
-
-              <div class="field field--desc">
-                <label class="field__label" for="add-disease-desc">Short description</label>
-                <textarea id="add-disease-desc" class="input textarea" rows="3">A highly contagious haemorrhagic disease of pigs caused by African swine fever virus. No vaccine is available; control depends on surveillance and biosecurity.</textarea>
-              </div>
-
-            </form>
-          </div>
-
-          <footer class="modal__footer">
-            <button type="button" class="btn btn--ghost btn--md">Cancel</button>
-            <button type="button" class="btn btn--cta btn--md">Save</button>
-          </footer>
-
-        </div>
-      </div>
-    </div>
 
     </div>
 

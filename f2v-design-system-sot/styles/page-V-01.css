@@ -315,3 +315,235 @@ body::before { content: none; }
     box-shadow: var(--shadow-sm);
 }
 .cover-tile__edit svg { width: 14px; height: 14px; }
+
+/* =========================================================
+   DISEASE LIST VIEW (admin v2) — page-scoped scaffolding
+   that wraps canonical components (.table, .search-field,
+   .chip, .dropdown, .switch, .btn) for the disease list.
+   These classes name the gaps the components don't cover:
+   facet-chip chevron, the sort cluster, table column widths,
+   the row checkbox, the active-version select pill, the
+   row-action group, and the frosted footer rail.
+   Surface + colour come only from semantic/component tokens.
+   ========================================================= */
+
+/* ---- Filter facet chip — single-select dropdown-style.
+   The base .chip hides .chip__leading unless the chip is
+   pressed; these facet chips are never pressed (they open a
+   menu), so re-show the leading facet icon and add a trailing
+   chevron. */
+.disease-facet .chip__leading { display: inline-flex; }
+.disease-facet__chev {
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+    color: var(--text-default-minimal);
+}
+
+/* ---- Sort cluster — canonical .dropdown + square direction
+   toggle. Pinned to the trailing edge of the toolbar. */
+.disease-sort {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-gap-micro);
+    margin-left: auto;
+    flex-shrink: 0;
+}
+.disease-sort__field { min-width: 150px; }
+.disease-sort__dir {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    padding: 0;
+    border: var(--border-width-base) solid var(--border-default);
+    border-radius: var(--radius-sm);
+    background: var(--background-default);
+    color: var(--text-default-subtle);
+    cursor: pointer;
+    transition: background-color .15s ease, color .15s ease;
+}
+.disease-sort__dir:hover {
+    background: var(--background-default-hover);
+    color: var(--text-default);
+}
+.disease-sort__dir svg { width: 16px; height: 16px; }
+.disease-sort__dir[aria-pressed="false"] svg { transform: rotate(180deg); }
+
+/* ---- Table column widths — the .table component owns its
+   visuals; these only constrain column tracks for the list. */
+.disease-table { width: 100%; table-layout: fixed; }
+.disease-table__check-cell   { width: 52px; }
+.disease-table__code-cell    { width: 150px; }
+.disease-table__status-cell  { width: 110px; }
+.disease-table__version-cell { width: 150px; }
+.disease-table__updated-cell { width: 140px; }
+.disease-table__actions-cell { width: 120px; text-align: right; }
+
+/* ---- Row / select-all checkbox — no checkbox component
+   exists; this is the page-scoped square check affordance. */
+.row-check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.row-check__input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+.row-check__box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border: var(--border-width-base) solid var(--border-default);
+    border-radius: var(--radius-sm);
+    background: var(--background-default);
+    color: transparent;
+    transition: background-color .15s ease, border-color .15s ease, color .15s ease;
+}
+.row-check__box svg { width: 12px; height: 12px; }
+.row-check:hover .row-check__box { border-color: var(--background-primary); }
+.row-check__input:checked + .row-check__box {
+    background: var(--background-primary);
+    border-color: var(--background-primary);
+    color: var(--text-inverted);
+}
+.row-check__input:focus-visible + .row-check__box {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--background-primary-subtle);
+}
+
+/* ---- Active-version select pill — a select-styled trigger
+   showing the live/draft version. No "version picker"
+   component exists; this is page-scoped chrome. */
+.version-select {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-gap-micro);
+    height: 28px;
+    padding: 0 var(--spacing-2x);
+    border: var(--border-width-base) solid var(--border-default);
+    border-radius: var(--radius-pill);
+    background: var(--background-default);
+    color: var(--text-default);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color .15s ease, border-color .15s ease;
+}
+.version-select:hover {
+    background: var(--background-default-hover);
+    border-color: var(--border-default);
+}
+.version-select:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--background-primary-subtle);
+}
+.version-select__num {
+    font-family: var(--font-mono);
+    font-weight: var(--font-weight-medium);
+    font-variant-numeric: tabular-nums;
+}
+.version-select__sep { color: var(--text-default-disabled); }
+.version-select__state {
+    font-size: var(--text-eyebrow);
+    font-weight: var(--font-weight-medium);
+    text-transform: uppercase;
+    letter-spacing: .02em;
+}
+.version-select__state--live  { color: var(--text-safe); }
+.version-select__state--draft { color: var(--text-warning); }
+.version-select__chev {
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+    color: var(--text-default-minimal);
+}
+
+/* ---- Row-action group — canonical ghost icon buttons. */
+.disease-actions {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-gap-micro);
+}
+
+/* ---- Footer rail — frosted, accent-tinted glass bar with a
+   top border, inside the same card as the table. Hosts the
+   row count, the pager, and the rows-per-page select. */
+.disease-foot {
+    display: flex;
+    align-items: center;
+    gap: var(--space-gap-default);
+    padding: var(--space-container-y) var(--space-container-x-lg);
+    border-top: var(--border-width-base) solid var(--border-default-subtle);
+    background: var(--background-accent-subtle);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+.disease-foot__count {
+    margin: 0;
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: var(--text-body-sm);
+    color: var(--text-default-subtle);
+}
+.disease-foot__count strong {
+    color: var(--text-default);
+    font-weight: var(--font-weight-medium);
+    font-variant-numeric: tabular-nums;
+}
+.disease-foot__pager { flex: 0 0 auto; }
+.disease-foot__rows {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-gap-micro);
+    flex: 1 1 auto;
+    justify-content: flex-end;
+    min-width: 0;
+    font-size: var(--text-body-sm);
+    color: var(--text-default-subtle);
+}
+.disease-foot__rows-select { height: 28px; }
+
+/* ---- Pager page links — reuse the .app-pager flex row; add a
+   page-link cell that mirrors the .app-pager__ellipsis box. */
+.app-pager__page {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 32px;
+    padding: 0 var(--spacing-2x);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    font-variant-numeric: tabular-nums;
+    color: var(--text-default-subtle);
+    text-decoration: none;
+    transition: background-color .15s ease, color .15s ease;
+}
+.app-pager__page:hover {
+    background: var(--background-default-hover);
+    color: var(--text-default);
+}
+.app-pager__page.is-current {
+    background: var(--background-primary);
+    color: var(--text-inverted);
+    font-weight: var(--font-weight-medium);
+}

@@ -349,11 +349,15 @@
 }
 
 /* =========================================================
-   VARIANT — VERTICAL
-   The list becomes a column, the indicator paints on the
-   inline-start edge. Use in settings panels or doc
-   layouts where labels are long enough to justify the
-   vertical column.
+   VARIANT — VERTICAL (section-nav rail)
+   Ported from the disease-detail right rail in farm2vet-core.
+   The list is a column with a 1px spine on the inline-start
+   edge; every row hangs its own 2px accent bar over that spine
+   (transparent until selected). The active row colours its bar
+   --border-primary and its label --text-primary-strong — there
+   is no moving indicator. Flat rows (no radius, no hover fill),
+   quiet --text-default-minimal labels. Use for settings panels
+   and long-form / section navigation.
    ========================================================= */
 .tabs--vertical {
     flex-direction: row;
@@ -363,27 +367,39 @@
 .tabs--vertical .tabs__list {
     flex-direction: column;
     align-items: stretch;
-    gap: var(--spacing-1x);
+    gap: 1px;
     border-bottom: none;
-    border-right: var(--border-width-base) solid var(--tabs-vertical-list-border);
+    border-left: var(--border-width-base) solid var(--tabs-vertical-list-border);
     min-width: 220px;
-    padding-right: var(--spacing-3x);
 }
 .tabs--vertical .tabs__tab {
     justify-content: flex-start;
-    border-radius: var(--tabs-tab-radius);
-    padding: var(--_pad-y) var(--_pad-x);
-    margin: 0;
+    /* Pull the row left by the spine width so its accent bar
+       sits ON the spine rather than beside it. */
+    margin-left: calc(var(--border-width-base) * -1);
+    border: 0;
+    border-left: var(--tabs-vertical-rail-bar-width) solid transparent;
+    border-radius: 0;
+    background: none;
+    padding: var(--spacing-1x) var(--spacing-3x);
+    min-height: 0;
+    color: var(--text-default-minimal);
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-medium);
+    transition: color .15s ease, border-color .15s ease;
 }
-.tabs--vertical .tabs__indicator {
-    top: 0;
-    right: calc(var(--spacing-3x) * -1 - var(--tabs-vertical-indicator-w) / 2);
-    width: var(--tabs-vertical-indicator-w);
-    height: var(--_h-active, 0px);
-    background: var(--tabs-vertical-indicator-bg);
-    border-radius: var(--tabs-vertical-indicator-w);
-    transform: translateY(var(--_y, 0));
+.tabs--vertical .tabs__tab:hover:not([disabled]):not(.is-disabled) {
+    background: none;
+    color: var(--text-default);
 }
+.tabs--vertical .tabs__tab.is-selected,
+.tabs--vertical .tabs__tab[aria-selected="true"] {
+    border-left-color: var(--tabs-vertical-rail-bar);
+    color: var(--text-primary-strong);
+}
+/* The active row's own left bar is the marker, so the shared
+   moving indicator is not used in this variant. */
+.tabs--vertical .tabs__indicator { display: none; }
 .tabs--vertical .tabs__panel {
     flex: 1 1 0;
     padding: 0;

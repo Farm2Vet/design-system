@@ -75,7 +75,7 @@ NAV_BLOCK = '''<!-- ========================== GLOBAL NAV ======================
               <ul class="global-nav__panel-list">
                 <li><a href="IV-01-logo.html"><span class="global-nav__index">01</span><span>Logo</span></a></li>
                 <li><a href="IV-02-icons.html"><span class="global-nav__index">02</span><span>Icons</span></a></li>
-                <li><a href="IV-03-images.html" class="is-placeholder"><span class="global-nav__index">03</span><span>Images</span></a></li>
+                <li><a href="IV-03-images.html"><span class="global-nav__index">03</span><span>Backgrounds &amp; Motion</span></a></li>
               </ul>
             </div>
           </div>
@@ -110,23 +110,8 @@ NAV_BLOCK = '''<!-- ========================== GLOBAL NAV ======================
 
 
 PLACEHOLDERS = [
-    {
-        'file': 'IV-03-images.html',
-        'title': 'Images',
-        'section_eyebrow': 'Section 03 / Assets',
-        'h1': 'Images.',
-        'lede': (
-            'Reserved page. The image library — aspect ratios, crop rules, '
-            'colour treatment, and the per-context manifest — will be '
-            'published here once authored.'
-        ),
-        'todo': [
-            ['Aspect ratios', '1:1 · 4:3 · 16:9 · 21:9.'],
-            ['Treatments', 'Full colour, duotone, desaturated.'],
-            ['Crops', 'Subject-safe area rules.'],
-            ['Manifest', 'Hero, card, illustration libraries.'],
-        ],
-    },
+    # IV-03 was a placeholder ("Images"); it is now the real
+    # "Backgrounds & motion." assets page, so it is no longer regenerated here.
     {
         'file': 'V-02-chatbot.html',
         'title': 'Chatbot',

@@ -1554,14 +1554,16 @@
     --tabs-segmented-active-fg:       var(--text-primary-strong);
     --tabs-segmented-active-shadow:   var(--shadow-sm);
 
-    /* ---------- Vertical orientation ----------
-       Same colour vocabulary as the horizontal Line
-       variant; only the indicator axis flips. The list
-       itself becomes a column and the indicator paints
-       on the inline-start edge. */
-    --tabs-vertical-list-border:    var(--border-default);
-    --tabs-vertical-indicator-bg:   var(--background-primary);
-    --tabs-vertical-indicator-w:    2px;
+    /* ---------- Vertical orientation (section-nav rail) ----------
+       Styled after the disease-detail right rail in
+       farm2vet-core: the list is a column with a 1px spine on
+       the inline-start edge, and each row hangs its own accent
+       bar over that spine — transparent until selected, then
+       --border-primary. There is no moving indicator; the
+       active row's own left bar IS the marker. */
+    --tabs-vertical-list-border:    var(--border-default);   /* the rail spine */
+    --tabs-vertical-rail-bar:       var(--border-primary);   /* active row accent bar */
+    --tabs-vertical-rail-bar-width: 2px;
 
     /* ---------- Indicator motion ----------
        Sliding-indicator easing for Line, Vertical, and

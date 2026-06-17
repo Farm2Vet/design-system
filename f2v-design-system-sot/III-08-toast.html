@@ -93,7 +93,7 @@
               <ul class="global-nav__panel-list">
                 <li><a href="IV-01-logo.html"><span class="global-nav__index">01</span><span>Logo</span></a></li>
                 <li><a href="IV-02-icons.html"><span class="global-nav__index">02</span><span>Icons</span></a></li>
-                <li><a href="IV-03-images.html" class="is-placeholder"><span class="global-nav__index">03</span><span>Images</span></a></li>
+                <li><a href="IV-03-images.html"><span class="global-nav__index">03</span><span>Backgrounds &amp; Motion</span></a></li>
               </ul>
             </div>
           </div>
@@ -978,11 +978,13 @@ function initDismiss() {
     const close = e.target.closest('.toast .toast__close');
     if (!close) return;
     const toastEl = close.closest('.toast');
-    // Static demo toasts on the page hide visually so the
-    // demo doesn't disappear from the documentation; live
-    // spawned toasts are removed from the DOM.
+    // The × on the static documentation toasts is MOCK ONLY — it
+    // shows the affordance (hover state, sizing) but must never
+    // remove or hide the demo from the page. Only live toasts
+    // spawned by the trigger buttons are actually dismissable.
     const isLive = toastEl && toastEl.closest('.toast-region.is-live');
-    dismissToast(toastEl, !!isLive);
+    if (!isLive) return;
+    dismissToast(toastEl, true);
   });
 }
 
@@ -1150,19 +1152,29 @@ function buildLiveToast(opts) {
   return t;
 }
 
+/* Drop the .is-entering trigger once the `toast-in` keyframe
+   finishes, returning the toast to its resting state (and
+   letting a later dismiss play `toast-out` cleanly). */
+function clearEnteringOnSettle(el) {
+  el.addEventListener('animationend', function onEnter(e) {
+    if (e.animationName !== 'toast-in') return;
+    el.classList.remove('is-entering');
+    el.removeEventListener('animationend', onEnter);
+  });
+}
+
 /* Spawn a toast from an options bag. */
 function spawnLiveToast(opts) {
   const position = opts.position || 'top-right';
   const region   = getOrCreateLiveRegion(position);
   const toast    = buildLiveToast(opts);
 
-  // Entry animation — class added before mount, removed
-  // on the next frame so the transition runs.
+  // Entry animation — add .is-entering before mount (no flash
+  // of the resting state) so the `toast-in` keyframe plays as
+  // the toast renders; the class is dropped once it settles.
   toast.classList.add('is-entering');
   region.appendChild(toast);
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => toast.classList.remove('is-entering'));
-  });
+  clearEnteringOnSettle(toast);
 
   const lifetime = (opts.lifetime != null) ? opts.lifetime : 5000;
   let dismissTimer = lifetime > 0
@@ -1175,11 +1187,9 @@ function spawnLiveToast(opts) {
   if (opts.layout === 'promise' && opts.promiseResolve) {
     setTimeout(() => {
       const settled = buildLiveToast(Object.assign({}, opts.promiseResolve, { position }));
-      region.replaceChild(settled, toast);
       settled.classList.add('is-entering');
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => settled.classList.remove('is-entering'));
-      });
+      region.replaceChild(settled, toast);
+      clearEnteringOnSettle(settled);
       const settledLife = (opts.promiseResolve.lifetime != null) ? opts.promiseResolve.lifetime : 5000;
       if (settledLife > 0) setTimeout(() => dismissToast(settled), settledLife);
     }, opts.promiseResolveAt || 2200);
