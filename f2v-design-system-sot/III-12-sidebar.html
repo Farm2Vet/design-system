@@ -515,13 +515,13 @@
       </div>
     </div>
 
-    <!-- DARK PREVIEW — same shape as light, .sidebar--tone-dark only -->
-    <div class="mode-preview reveal" aria-label="Sidebar — dark tone over imagery">
-      <span class="mode-preview__label">Dark · over imagery</span>
-      <div class="mode-preview__stage mode-preview__stage--dark">
+    <!-- ADMIN-V2 PREVIEW — collapsed forest rail with the radial fly-out -->
+    <div class="mode-preview reveal" aria-label="Sidebar — admin v2 collapsed fly-out">
+      <span class="mode-preview__label">Admin v2 · collapsed fly-out</span>
+      <div class="mode-preview__stage mode-preview__stage--light" style="justify-content: space-between;">
 
-        <!-- Compact (rail) -->
-        <aside class="sidebar sidebar--collapsed sidebar--tone-dark" aria-label="Sample dark compact">
+        <!-- Compact (rail) — hover or click a group to fan its children onto an arc -->
+        <aside class="sidebar sidebar--collapsed sidebar--tone-forest" aria-label="Admin v2 collapsed rail">
           <header class="sidebar__header">
             <a href="#" class="sidebar__brand" aria-label="Farm2Vet">
               <img class="sidebar__brand-mark" src="logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
@@ -530,12 +530,45 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6"/></svg>
             </button>
           </header>
-          <nav class="sidebar__nav" aria-label="Sample dark compact destinations">
+          <nav class="sidebar__nav" aria-label="Admin v2 collapsed destinations">
             <ul class="sidebar__list">
-              <li class="sidebar__item"><a class="sidebar__link" href="#" title="Overview Dashboard"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span><span class="sidebar__label">Overview Dashboard</span></a></li>
-              <li class="sidebar__item"><a class="sidebar__link" href="#" title="Data Management"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/></svg></span><span class="sidebar__label">Data Management</span></a></li>
-              <li class="sidebar__item"><a class="sidebar__link" href="#" title="Automated Testing"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg></span><span class="sidebar__label">Automated Testing</span></a></li>
-              <li class="sidebar__item"><a class="sidebar__link" href="#" title="Sync database"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></span><span class="sidebar__label">Sync database</span></a></li>
+              <li class="sidebar__item">
+                <a class="sidebar__link is-current" href="#" title="Overview" aria-current="page">
+                  <span class="sidebar__shine"></span>
+                  <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span>
+                  <span class="sidebar__label">Overview</span>
+                </a>
+              </li>
+              <!-- Group: its hidden sub-list is the data source the fan reads -->
+              <li class="sidebar__item sidebar__item--has-fan">
+                <button type="button" class="sidebar__link" aria-haspopup="menu" title="Data Management">
+                  <span class="sidebar__shine"></span>
+                  <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/></svg></span>
+                  <span class="sidebar__label">Data Management</span>
+                </button>
+                <ul class="sidebar__sublist">
+                  <li class="sidebar__item"><a class="sidebar__link is-current" href="#" aria-current="page"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span><span class="sidebar__label">Disease</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span><span class="sidebar__label">Question</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><span class="sidebar__label">Conversation</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.6-3.6a2 2 0 0 0-2.8 0L6 21"/></svg></span><span class="sidebar__label">Image</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span><span class="sidebar__label">Resource</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span><span class="sidebar__label">PDF Input</span></a></li>
+                </ul>
+              </li>
+              <li class="sidebar__item">
+                <a class="sidebar__link" href="#" title="Automated Testing">
+                  <span class="sidebar__shine"></span>
+                  <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg></span>
+                  <span class="sidebar__label">Automated Testing</span>
+                </a>
+              </li>
+              <li class="sidebar__item">
+                <a class="sidebar__link" href="#" title="Sync database">
+                  <span class="sidebar__shine"></span>
+                  <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></span>
+                  <span class="sidebar__label">Sync database</span>
+                </a>
+              </li>
             </ul>
           </nav>
           <div class="sidebar__footer">
@@ -599,7 +632,7 @@
         </aside>
 
         <!-- Expanded -->
-        <aside class="sidebar sidebar--tone-dark" aria-label="Sample dark expanded">
+        <aside class="sidebar sidebar--tone-forest" aria-label="Admin v2 expanded rail">
           <header class="sidebar__header">
             <a href="#" class="sidebar__brand">
               <img class="sidebar__brand-mark" src="logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
@@ -609,26 +642,27 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6"/></svg>
             </button>
           </header>
-          <nav class="sidebar__nav" aria-label="Sample dark expanded destinations">
+          <nav class="sidebar__nav" aria-label="Admin v2 expanded destinations">
             <ul class="sidebar__list">
-              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span><span class="sidebar__label">Overview Dashboard</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__shine"></span><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span><span class="sidebar__label">Overview Dashboard</span></a></li>
               <li class="sidebar__item is-open">
                 <button type="button" class="sidebar__link" aria-expanded="true">
+                  <span class="sidebar__shine"></span>
                   <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/></svg></span>
                   <span class="sidebar__label">Data Management</span>
                   <span class="sidebar__trailing"><svg class="sidebar__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></span>
                 </button>
                 <ul class="sidebar__sublist">
-                  <li class="sidebar__item"><a class="sidebar__link is-current" href="#" aria-current="page"><span class="sidebar__label">Disease</span></a></li>
-                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Question</span></a></li>
-                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Conversation</span></a></li>
-                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Image</span></a></li>
-                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Resource</span></a></li>
-                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">PDF Input</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link is-current" href="#" aria-current="page"><span class="sidebar__shine"></span><span class="sidebar__label">Disease</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__shine"></span><span class="sidebar__label">Question</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__shine"></span><span class="sidebar__label">Conversation</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__shine"></span><span class="sidebar__label">Image</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__shine"></span><span class="sidebar__label">Resource</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__shine"></span><span class="sidebar__label">PDF Input</span></a></li>
                 </ul>
               </li>
-              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg></span><span class="sidebar__label">Automated Testing</span></a></li>
-              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></span><span class="sidebar__label">Sync database</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__shine"></span><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg></span><span class="sidebar__label">Automated Testing</span></a></li>
+              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__shine"></span><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></span><span class="sidebar__label">Sync database</span></a></li>
             </ul>
           </nav>
           <div class="sidebar__footer">
@@ -703,8 +737,8 @@
 
       </div>
       <div class="mode-preview__meta">
-        <span><code>.sidebar--tone-dark</code></span>
-        <span>Same anatomy as light · tone-only delta</span>
+        <span><code>.sidebar__item--has-fan</code> · hover / click a collapsed group</span>
+        <span>Children spring onto a half-circle arc · click-pin · Esc</span>
       </div>
     </div>
 
@@ -838,13 +872,16 @@
     </p>
 
     <p class="usage-note reveal">
-      <strong>Pick the tone by what the rail sits over, not by
-      user preference.</strong> Light is the default. Dark is
-      selected by the application when the rail mounts over an
-      image, a hero photograph, or a dark-themed shell. A
-      user-controlled dark mode swaps both the rail and the page
-      beneath it through the system's theme rail, not through
-      this modifier.
+      <strong>Pick the tone by what the rail sits over.</strong>
+      Light is the documentation default. <strong>Forest</strong>
+      (<code>.sidebar--tone-forest</code>, paired with
+      <code>.sidebar--active-solid</code>) is the admin / product
+      rail shown above — a solid brand-primary column with
+      white-on-forest rows, a shine sweep, and the collapsed
+      fly-out. <strong>Dark</strong> (<code>.sidebar--tone-dark</code>)
+      is for a rail mounted over imagery or a dark shell. A
+      user-controlled dark mode swaps both rail and page through
+      the system's theme rail, not through this modifier.
     </p>
 
     <p class="usage-note reveal">
@@ -1254,6 +1291,24 @@ const SIDEBAR_TOKENS = [
     ['chevron transition',  'transform .18s ease'],
     ['collapse rotation',   'rotate(180deg)'],
   ]},
+  { group: 'Shine sweep (admin v2)', tokens: [
+    ['--sidebar-shine-color',    'color-mix(in srgb, var(--white-base) 40%, transparent)'],
+    ['--sidebar-shine-width',    '60%'],
+    ['--sidebar-shine-skew',     '45deg'],
+    ['--sidebar-shine-from',     '-125%'],
+    ['--sidebar-shine-to',       '150%'],
+    ['--sidebar-shine-duration', '.6s'],
+    ['--sidebar-shine-easing',   'ease-out'],
+  ]},
+  { group: 'Collapsed fly-out · fan (admin v2)', tokens: [
+    ['--sidebar-fan-z',                 'var(--sidebar-z-overlay)'],
+    ['--sidebar-fan-item-size',         '44px'],
+    ['--sidebar-fan-icon-size',         '20px'],
+    ['--sidebar-fan-pop-duration',      '.42s'],
+    ['--sidebar-fan-pop-easing',        'cubic-bezier(.34,1.56,.64,1)'],
+    ['--sidebar-fan-stagger',           '.04s'],
+    ['--sidebar-fan-collapse-duration', '.2s'],
+  ]},
 ];
 
 /* =========================================================
@@ -1381,6 +1436,137 @@ function initProfileMenu() {
 }
 
 /* =========================================================
+   COLLAPSED-RAIL FLY-OUT (radial fan) — the admin v2 behaviour.
+   When the rail is collapsed, hovering / clicking a group
+   (.sidebar__item--has-fan) springs its children out along a
+   half-circle arc anchored on the group icon. Geometry (cos/sin)
+   is computed here and handed to each chip as --tx/--ty/--fan-i;
+   the .sidebar__fan layer is appended to <body> and positioned
+   fixed at the trigger centre so the rail's overflow never clips
+   it. Hover-intent keep-zone + grace delay, click-to-pin, Escape.
+   ========================================================= */
+function initFanout() {
+    const RADIUS = 104, OFFSET_X = 64, STEP = 36, SPREAD_MAX = 180;
+    const GRACE_MS = 300, COLLAPSE_MS = 200;
+    const KEEP_RADIUS = RADIUS + 50, KEEP_LEFT = 24;
+
+    const fanLayout = (count) => {
+        if (count <= 0) return [];
+        if (count === 1) return [{ tx: OFFSET_X + RADIUS, ty: 0 }];
+        const spread = Math.min(SPREAD_MAX, STEP * (count - 1));
+        const start = -spread / 2, step = spread / (count - 1);
+        const round = (n) => Math.round(n * 10) / 10;
+        return Array.from({ length: count }, (_, i) => {
+            const rad = ((start + i * step) * Math.PI) / 180;
+            return { tx: round(OFFSET_X + RADIUS * Math.cos(rad)), ty: round(RADIUS * Math.sin(rad)) };
+        });
+    };
+
+    let layer = null, pos = null, pinned = false, trigger = null, timer = null, closing = false;
+    const clearTimer = () => { if (timer) { clearTimeout(timer); timer = null; } };
+
+    const buildLayer = (group) => {
+        const kids = group.querySelectorAll(':scope > .sidebar__sublist > .sidebar__item > .sidebar__link');
+        const layout = fanLayout(kids.length);
+        const el = document.createElement('div');
+        el.className = 'sidebar__fan';
+        el.setAttribute('role', 'menu');
+        el.dataset.open = 'true';
+        kids.forEach((kid, i) => {
+            const label = (kid.querySelector('.sidebar__label')?.textContent || '').trim();
+            const cur = kid.classList.contains('is-current');
+            const a = document.createElement('a');
+            a.className = 'sidebar__fan-item' + (cur ? ' sidebar__fan-item--current' : '');
+            a.href = kid.getAttribute('href') || '#';
+            a.setAttribute('role', 'menuitem');
+            a.setAttribute('aria-label', label);
+            a.title = label;
+            if (cur) a.setAttribute('aria-current', 'page');
+            a.style.setProperty('--tx', layout[i].tx + 'px');
+            a.style.setProperty('--ty', layout[i].ty + 'px');
+            a.style.setProperty('--fan-i', String(i));
+            const icon = document.createElement('span');
+            icon.className = 'sidebar__fan-icon';
+            icon.setAttribute('aria-hidden', 'true');
+            const svg = kid.querySelector('.sidebar__icon svg');
+            if (svg) icon.appendChild(svg.cloneNode(true));
+            const lab = document.createElement('span');
+            lab.className = 'sidebar__fan-label';
+            lab.textContent = label;
+            a.append(icon, lab);
+            a.addEventListener('click', closeNow);
+            el.appendChild(a);
+        });
+        return el;
+    };
+
+    function openFan(group, el) {
+        clearTimer();
+        if (layer) layer.remove();
+        const r = el.getBoundingClientRect();
+        pos = { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+        trigger = el;
+        closing = false;
+        layer = buildLayer(group);
+        layer.style.left = pos.x + 'px';
+        layer.style.top = pos.y + 'px';
+        document.body.appendChild(layer);
+        el.setAttribute('aria-expanded', 'true');
+    }
+    function removeLayer() {
+        if (layer) layer.remove();
+        if (trigger) trigger.setAttribute('aria-expanded', 'false');
+        layer = pos = trigger = null; pinned = closing = false;
+    }
+    function beginClose() {
+        clearTimer(); pinned = false;
+        if (!layer) return;
+        closing = true;
+        layer.dataset.open = 'false';
+        timer = setTimeout(removeLayer, COLLAPSE_MS);
+    }
+    function closeNow() { clearTimer(); removeLayer(); }
+
+    const inRegion = (x, y) => {
+        if (!pos) return false;
+        const dx = x - (pos.x + OFFSET_X), dy = y - pos.y;
+        return x >= pos.x - KEEP_LEFT && dx * dx + dy * dy <= KEEP_RADIUS * KEEP_RADIUS;
+    };
+    const scheduleClose = () => { if (pinned || timer) return; timer = setTimeout(beginClose, GRACE_MS); };
+    const cancelClose = () => { clearTimer(); if (layer && closing) { layer.dataset.open = 'true'; closing = false; } };
+
+    document.querySelectorAll('.sidebar__item--has-fan').forEach((group) => {
+        const el = group.querySelector(':scope > .sidebar__link');
+        if (!el) return;
+        const collapsed = () => !!group.closest('.sidebar--collapsed');
+        el.addEventListener('mouseenter', () => { if (collapsed()) openFan(group, el); });
+        el.addEventListener('mouseleave', (e) => { if (collapsed() && !inRegion(e.clientX, e.clientY)) scheduleClose(); });
+        el.addEventListener('click', (e) => {
+            if (!collapsed()) return;
+            e.preventDefault();
+            if (layer && pinned && trigger === el) beginClose();
+            else { openFan(group, el); pinned = true; }
+        });
+    });
+
+    window.addEventListener('pointermove', (e) => {
+        if (!layer || pinned) return;
+        if (inRegion(e.clientX, e.clientY)) cancelClose();
+        else scheduleClose();
+    }, { passive: true });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && layer) { beginClose(); trigger?.focus(); } });
+    document.addEventListener('click', (e) => {
+        if (!layer) return;
+        if (trigger?.contains(e.target) || layer.contains(e.target)) return;
+        beginClose();
+    });
+    window.addEventListener('scroll', () => { if (layer) beginClose(); }, true);
+    window.addEventListener('resize', () => { if (layer) beginClose(); });
+    document.querySelectorAll('.sidebar__collapse').forEach((b) =>
+        b.addEventListener('click', () => { if (layer) closeNow(); }));
+}
+
+/* =========================================================
    REVEAL — fade-up content as it scrolls into view.
    Mirrors the behaviour used on every other section page.
    ========================================================= */
@@ -1406,6 +1592,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initCollapseDemo();
     initDisclosureDemo();
     initProfileMenu();
+    initFanout();
     initReveal();
 });
 </script>

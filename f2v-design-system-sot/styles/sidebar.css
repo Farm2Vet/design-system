@@ -217,7 +217,7 @@
   --sidebar-sublist-rail:      color-mix(in srgb, var(--white-base) 18%, transparent);
 }
 .sidebar--tone-forest .sidebar__brand { color: var(--text-inverted); }
-.sidebar--tone-forest .sidebar__brand-mark { content: url("logo/logo-emblem-white.svg"); }
+.sidebar--tone-forest .sidebar__brand-mark { content: url("../logo/logo-emblem-white.svg"); }
 .sidebar--tone-forest .sidebar__collapse,
 .sidebar--tone-forest .sidebar__overflow { color: var(--icon-inverted-subtle); }
 .sidebar--tone-forest .sidebar__collapse:hover,
@@ -235,6 +235,34 @@
   box-shadow: var(--glass-shadow-raised), var(--glass-inset-light-soft);
   color: var(--text-primary-strong);
 }
+
+/* Admin v2 interactive states — frosted translucent-white glass chips on the
+   solid forest rail. Hover frosts + lifts the row; the current row is a
+   stronger frosted chip with a diagonal gloss and an accent-400 ring + halo.
+   The .sidebar__shine sweep rides over the top. These replace the flat
+   color-mix hover and the solid-white current pill so the forest rail reads
+   like the admin v2 product chrome. */
+.sidebar--tone-forest .sidebar__link:hover {
+  background: color-mix(in srgb, var(--white-base) 16%, transparent);
+  -webkit-backdrop-filter: blur(8px) saturate(150%);
+          backdrop-filter: blur(8px) saturate(150%);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--white-base) 22%, transparent);
+}
+.sidebar--tone-forest .sidebar__link.is-current,
+.sidebar--tone-forest .sidebar__link.is-current:hover {
+  background: color-mix(in srgb, var(--white-base) 24%, transparent);
+  background-image: linear-gradient(135deg,
+    color-mix(in srgb, var(--white-base) 45%, transparent), transparent 45%);
+  color: var(--text-inverted);
+  -webkit-backdrop-filter: blur(10px) saturate(155%);
+          backdrop-filter: blur(10px) saturate(155%);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--white-base) 30%, transparent),
+    0 2px 10px color-mix(in srgb, var(--glass-shadow-ink) 22%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--primary-400) 55%, transparent),
+    0 0 16px color-mix(in srgb, var(--primary-400) 45%, transparent);
+}
+.sidebar--tone-forest .sidebar__link.is-current .sidebar__icon { color: var(--icon-inverted); }
 
 /* =========================================================
    TONE MODIFIER — anchored
@@ -335,7 +363,7 @@
   object-fit: contain;
 }
 .sidebar--tone-dark .sidebar__brand-mark {
-  content: url("logo/logo-emblem-white.svg");
+  content: url("../logo/logo-emblem-white.svg");
 }
 .sidebar--collapsed .sidebar__brand { display: none; }
 .sidebar--collapsed .sidebar__header { justify-content: center; }
@@ -851,6 +879,173 @@
 .sidebar--collapsed .sidebar__profile-wrap.is-open .sidebar__menu {
   transform: translateX(0) scale(1);
 }
+
+/* =========================================================
+   ADMIN-V2 ADOPTION — shine sweep
+   A skewed translucent-white specular band parked off-canvas
+   that sweeps across a row / the avatar on hover (and one-shot
+   when a row becomes current). It rides a dedicated
+   .sidebar__shine layer that owns its own overflow:hidden, so it
+   clips to the row's rounded corners without clipping the
+   collapsed-rail tooltip. Port of the admin v2 rail's sheen.
+   ========================================================= */
+:root {
+  --sidebar-shine-color:    color-mix(in srgb, var(--white-base) 40%, transparent);
+  --sidebar-shine-width:    60%;
+  --sidebar-shine-skew:     45deg;
+  --sidebar-shine-from:     -125%;
+  --sidebar-shine-to:       150%;
+  --sidebar-shine-duration: .6s;
+  --sidebar-shine-easing:   ease-out;
+}
+.sidebar__link,
+.sidebar__avatar { position: relative; }
+.sidebar__shine {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.sidebar__shine::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: var(--sidebar-shine-from);
+  width: var(--sidebar-shine-width);
+  height: 100%;
+  background: var(--sidebar-shine-color);
+  transform: skew(var(--sidebar-shine-skew));
+  transition: left var(--sidebar-shine-duration) var(--sidebar-shine-easing);
+}
+.sidebar__link:hover .sidebar__shine::before,
+.sidebar__link.is-current .sidebar__shine::before,
+.sidebar__avatar:hover .sidebar__shine::before {
+  left: var(--sidebar-shine-to);
+}
+@media (prefers-reduced-motion: reduce) {
+  .sidebar__shine::before { transition: none; }
+}
+
+/* =========================================================
+   ADMIN-V2 ADOPTION — collapsed-rail group fly-out (radial fan)
+   When the rail is collapsed a group's children are unreachable,
+   so hovering / clicking the group icon springs them out along a
+   half-circle arc anchored on the icon, just outside the rail.
+   The arc layer is positioned `fixed` at the trigger centre (JS
+   writes each chip's --tx/--ty/--fan-i from cos/sin), so the
+   rail's overflow:hidden never clips it. Port of the admin v2
+   collapsed-rail fly-out.
+
+   Geometry lives in JS; these tokens drive the chip shape and the
+   staggered spring-pop / collapse-back. The fan replaces the text
+   tooltip for collapsed groups that own one.
+   ========================================================= */
+:root {
+  --sidebar-fan-z:                 var(--sidebar-z-overlay);
+  --sidebar-fan-item-size:         44px;
+  --sidebar-fan-icon-size:         20px;
+  --sidebar-fan-pop-duration:      .42s;
+  --sidebar-fan-pop-easing:        cubic-bezier(.34, 1.56, .64, 1);  /* spring overshoot */
+  --sidebar-fan-stagger:           .04s;
+  --sidebar-fan-collapse-duration: .2s;
+}
+.sidebar__fan {
+  position: fixed;
+  z-index: var(--sidebar-fan-z);
+  width: 0;
+  height: 0;
+  pointer-events: none;             /* anchor only; chips re-enable */
+}
+.sidebar__fan-item {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--sidebar-fan-item-size);
+  height: var(--sidebar-fan-item-size);
+  border-radius: var(--radius-pill);
+  background: var(--background-primary);
+  color: var(--text-inverted);
+  border: var(--border-width-base) solid color-mix(in srgb, var(--white-base) 22%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--white-base) 28%, transparent),
+    0 8px 22px color-mix(in srgb, var(--glass-shadow-ink) 26%, transparent);
+  text-decoration: none;
+  pointer-events: auto;
+  /* Resting (open) placement — per-item --tx/--ty written from JS. */
+  transform: translate(-50%, -50%) translate(var(--tx, 0), var(--ty, 0)) scale(var(--fan-s, 1));
+  transition:
+    background-color .16s ease,
+    box-shadow .16s ease,
+    transform .16s var(--sidebar-fan-pop-easing);
+}
+.sidebar__fan-item:hover,
+.sidebar__fan-item:focus-visible {
+  --fan-s: 1.12;
+  background: color-mix(in srgb, var(--white-base) 10%, var(--background-primary));
+  outline: none;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--white-base) 34%, transparent),
+    0 10px 26px color-mix(in srgb, var(--glass-shadow-ink) 32%, transparent),
+    0 0 0 3px color-mix(in srgb, var(--primary-400) 35%, transparent);
+}
+.sidebar__fan-item--current {
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--white-base) 34%, transparent),
+    0 8px 22px color-mix(in srgb, var(--glass-shadow-ink) 26%, transparent),
+    0 0 0 2px color-mix(in srgb, var(--primary-400) 60%, transparent);
+}
+.sidebar__fan-icon {
+  display: inline-flex;
+  width: var(--sidebar-fan-icon-size);
+  height: var(--sidebar-fan-icon-size);
+}
+.sidebar__fan-icon svg { width: 100%; height: 100%; }
+.sidebar__fan-label {
+  position: absolute;
+  left: calc(100% + var(--spacing-2x));
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  background: var(--sidebar-tip-bg);
+  color: var(--sidebar-tip-fg);
+  padding: var(--sidebar-tip-pad-y) var(--sidebar-tip-pad-x);
+  border-radius: var(--sidebar-tip-radius);
+  font-size: var(--text-body-sm);
+  font-weight: var(--font-weight-medium);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .14s ease;
+}
+.sidebar__fan-item:hover .sidebar__fan-label,
+.sidebar__fan-item:focus-visible .sidebar__fan-label { opacity: 1; }
+
+/* Staggered spring-out on open; collapse-back on close. */
+.sidebar__fan[data-open="true"] .sidebar__fan-item {
+  animation: sidebar-fan-pop var(--sidebar-fan-pop-duration) var(--sidebar-fan-pop-easing) backwards;
+  animation-delay: calc(var(--fan-i, 0) * var(--sidebar-fan-stagger));
+}
+.sidebar__fan[data-open="false"] .sidebar__fan-item {
+  animation: sidebar-fan-collapse var(--sidebar-fan-collapse-duration) ease-in forwards;
+  pointer-events: none;
+}
+@keyframes sidebar-fan-pop {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(.3); }
+  to   { opacity: 1; transform: translate(-50%, -50%) translate(var(--tx, 0), var(--ty, 0)) scale(1); }
+}
+@keyframes sidebar-fan-collapse {
+  from { opacity: 1; transform: translate(-50%, -50%) translate(var(--tx, 0), var(--ty, 0)) scale(1); }
+  to   { opacity: 0; transform: translate(-50%, -50%) scale(.3); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sidebar__fan[data-open] .sidebar__fan-item { animation: none; }
+}
+
+/* The fan replaces the hover tooltip for collapsed groups that own one. */
+.sidebar--collapsed .sidebar__item--has-fan:hover .sidebar__label { display: none; }
 
 /* =========================================================
    PAGE — DEMONSTRATION SCAFFOLDING

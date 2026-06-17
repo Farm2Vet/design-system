@@ -1,0 +1,56 @@
+/* =========================================================
+   COMPONENT — PROGRESS BAR
+   A determinate 4px track + fill (0..1). Drives upload
+   progress, completeness meters, and any "X of Y" ratio.
+   The fill width is set per-instance: either inline
+   (style="width:62%") or via the --progress-value custom
+   property on the fill. Component tokens reference semantics.
+   Markup carries the ARIA: role="progressbar" + aria-valuenow.
+   Depends on: tokens.css
+   ========================================================= */
+:root {
+  --progress-height:      var(--spacing-1x);   /* 4px */
+  --progress-radius:      var(--radius-pill);
+  --progress-track:       var(--background-default-minimal);
+  --progress-fill:        var(--background-primary);
+  --progress-fill-warning: var(--background-warning-strong);
+  --progress-fill-critical: var(--background-critical-strong);
+  --progress-transition:  width .2s ease;
+}
+
+.progress {
+  height: var(--progress-height);
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--progress-radius);
+  background: var(--progress-track);
+}
+
+.progress__fill {
+  height: 100%;
+  width: var(--progress-value, 0%);   /* inline style="width:…" overrides */
+  border-radius: var(--progress-radius);
+  background: var(--progress-fill);
+  transition: var(--progress-transition);
+}
+
+/* Severity tones — for score-banded / threshold meters. */
+.progress--warning  .progress__fill { background: var(--progress-fill-warning); }
+.progress--critical .progress__fill { background: var(--progress-fill-critical); }
+
+/* Indeterminate — unknown duration (e.g. AI generating): a fixed-width
+   fill sweeps across the track on a loop. This is the running-animation
+   form; determinate bars just transition their width. */
+@keyframes progress-indeterminate {
+  0%   { transform: translateX(-120%); }
+  100% { transform: translateX(440%); }
+}
+.progress--indeterminate .progress__fill {
+  width: 22%;
+  animation: progress-indeterminate 1.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progress__fill { transition: none; }
+  .progress--indeterminate .progress__fill { animation: none; width: 100%; }
+}

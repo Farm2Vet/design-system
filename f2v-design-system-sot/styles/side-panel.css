@@ -1,0 +1,159 @@
+/* =========================================================
+   COMPONENT — SIDE PANEL (drawer)
+   A glass drawer that slides in from the trailing edge over a
+   blurred scrim — for detail / edit views and filter panels
+   beside a list (the "…-sp-detail" pattern). Formerly a modal
+   drawer variant; now its own component, sharing the modal's
+   scrim + glass conventions but anchored full-height to an edge
+   and sliding on translateX.
+
+   Anatomy:
+     .side-panel               overlay (scrim host, anchors the surface)
+       .side-panel__scrim      click-to-close blurred backdrop
+       .side-panel__surface    the sliding glass drawer
+         .side-panel__header   (__eyebrow · __title · __close)
+         .side-panel__body     scrolls
+         .side-panel__footer   actions (__footer-aux for a left link)
+   .side-panel--left anchors to the leading edge. Toggle .is-open.
+   Depends on: tokens.css
+   ========================================================= */
+:root {
+  --side-panel-width:      480px;
+  --side-panel-z:          90;
+  --side-panel-pad:        var(--spacing-5x);          /* 20 */
+  --side-panel-bg:         var(--glass-light-thick-bg);
+  --side-panel-border:     var(--glass-light-thick-border);
+  --side-panel-blur:       var(--glass-light-thick-blur);
+  --side-panel-shadow:     var(--glass-shadow-overlay);
+  --side-panel-inset:      var(--glass-inset-light-strong);
+  --side-panel-scrim:      var(--glass-scrim);
+  --side-panel-scrim-blur: var(--glass-scrim-blur);
+  --side-panel-enter:      .26s cubic-bezier(.2, .8, .2, 1);
+}
+
+/* ---------- Overlay ---------- */
+.side-panel {
+  position: fixed;
+  inset: 0;
+  z-index: var(--side-panel-z);
+  display: flex;
+  justify-content: flex-end;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .2s ease, visibility 0s linear .2s;
+}
+.side-panel.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity .2s ease;
+}
+.side-panel--left { justify-content: flex-start; }
+
+/* ---------- Scrim ---------- */
+.side-panel__scrim {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  background: var(--side-panel-scrim);
+  -webkit-backdrop-filter: var(--side-panel-scrim-blur);
+          backdrop-filter: var(--side-panel-scrim-blur);
+}
+
+/* ---------- Drawer surface ---------- */
+.side-panel__surface {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: var(--side-panel-width);
+  height: 100%;
+  background: var(--side-panel-bg);
+  border-left: var(--border-width-base) solid var(--side-panel-border);
+  box-shadow: var(--side-panel-shadow), var(--side-panel-inset);
+  -webkit-backdrop-filter: var(--side-panel-blur) var(--glass-saturate);
+          backdrop-filter: var(--side-panel-blur) var(--glass-saturate);
+  transform: translateX(100%);                 /* off-canvas, slides in */
+  transition: transform var(--side-panel-enter);
+}
+.side-panel.is-open .side-panel__surface { transform: none; }
+.side-panel--left .side-panel__surface {
+  border-left: 0;
+  border-right: var(--border-width-base) solid var(--side-panel-border);
+  transform: translateX(-100%);
+}
+
+/* ---------- Header ---------- */
+.side-panel__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-tier-5);
+  padding: var(--side-panel-pad);
+  border-bottom: var(--border-width-base) solid var(--border-default-subtle);
+}
+.side-panel__eyebrow {
+  margin: 0 0 var(--space-tier-7);
+  font-family: var(--font-mono);
+  font-size: var(--text-eyebrow);
+  letter-spacing: var(--letter-spacing-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-default-minimal);
+}
+.side-panel__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-admin-card-title);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-default);
+}
+
+/* ---------- Close ---------- */
+.side-panel__close {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-default-minimal);
+  cursor: pointer;
+  transition: background-color .15s ease, color .15s ease;
+}
+.side-panel__close:hover { background: var(--background-default-hover); color: var(--text-default); }
+.side-panel__close:focus-visible { outline: 2px solid var(--outline-focus); outline-offset: 2px; }
+.side-panel__close svg { width: 16px; height: 16px; }
+
+/* ---------- Body (scrolls) ---------- */
+.side-panel__body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: var(--side-panel-pad);
+  font-size: var(--text-body-sm);
+  line-height: var(--line-height-body);
+  color: var(--text-default-subtle);
+}
+
+/* ---------- Footer ---------- */
+.side-panel__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-gap-snug);
+  padding: var(--space-tier-4) var(--side-panel-pad);
+  background: var(--background-default-subtle);
+  border-top: var(--border-width-base) solid var(--border-default);
+}
+.side-panel__footer-aux { margin-right: auto; font-size: var(--text-body-sm); color: var(--text-default-minimal); }
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .side-panel__surface { transition: none; }
+}
