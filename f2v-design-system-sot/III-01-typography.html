@@ -444,6 +444,43 @@
     </div>
   </section>
 
+  <!-- ========================== 07 — DATA / ADMIN TIER ========================== -->
+  <section class="chunk" id="data-admin">
+    <header class="chunk-head reveal">
+      <div>
+        <span class="num-tag">07 / Data &amp; admin tier</span>
+        <h2 class="h2">A separate scale for data-rich pages.</h2>
+      </div>
+    </header>
+
+    <p class="spec-intro reveal">
+      Admin and data-rich product surfaces — dashboards, tables, CRUD
+      forms — read at a denser, quieter volume than the marketing rail.
+      They opt into a <em>separate</em> type scale: a dedicated primitive
+      ramp, <code>--text-data-2xs</code>–<code>--text-data-3xl</code>,
+      anchored at <code>--text-data-base = 14px</code> and independent of
+      the marketing ramp (<code>--text-xs</code>–<code>--text-7xl</code>).
+      Semantic roles (<code>--text-admin-*</code>) alias the data ramp;
+      component classes (<code>.admin-*</code>) bind the roles. The two
+      scales never cross — a page reads on the marketing rail or the
+      admin rail, not both.
+    </p>
+
+    <table class="spec-table reveal" aria-label="Admin typography tokens">
+      <thead>
+        <tr>
+          <th scope="col">Token</th>
+          <th scope="col">Aliases</th>
+          <th scope="col">Px</th>
+          <th scope="col">Use for</th>
+        </tr>
+      </thead>
+      <tbody id="adminTable"></tbody>
+    </table>
+
+    <div class="component-stack" id="adminStack"></div>
+  </section>
+
   <!-- ========================== FOOTER ========================== -->
   <footer>
     <span>END OF SECTION</span>
@@ -481,6 +518,28 @@ const COMPONENTS = [
   { cls: 'eyebrow', role: 'eyebrow',    note: 'Uppercase mono label that prefixes a heading or section.', sample: 'Combatting AMR on the Farm Frontier' },
 ];
 
+/* Admin / data tier — the separate density rail. Semantic roles
+   (--text-admin-*) alias the data primitive ramp (--text-data-*). */
+const ADMIN_TOKENS = [
+  ['--text-admin-page-title',       '--text-data-xl',   '22', 'Page H1 on an admin page. Apply via .admin-page-title.'],
+  ['--text-admin-stat-value',       '--text-data-lg',   '18', 'KPI / stat-tile value. Apply via .admin-stat-value.'],
+  ['--text-admin-card-title',       '--text-data-md',   '16', 'Section / card head. Apply via .admin-card-title.'],
+  ['--text-admin-body',             '--text-data-base', '14', 'Field value, paragraph copy. Apply via .admin-field-value.'],
+  ['--text-admin-subsection-title', '--text-data-sm',   '13', 'Sub-card head. Apply via .admin-subsection-title.'],
+  ['--text-admin-caption',          '--text-data-xs',   '12', 'Meta line, timestamp, helper. Apply via .admin-caption.'],
+  ['--text-admin-field-label',      '--text-data-2xs',  '11', 'Uppercase label above a value. Apply via .admin-field-label.'],
+];
+
+const ADMIN_COMPONENTS = [
+  { cls: 'admin-page-title',       role: 'page title',   note: 'Page H1 on an admin / data page.',                  sample: 'Diseases' },
+  { cls: 'admin-stat-value',       role: 'stat value',   note: 'KPI tile value; pairs with a field label above.',   sample: '1,284' },
+  { cls: 'admin-card-title',       role: 'card title',   note: 'Section or card head; uppercase, tracked.',         sample: 'Clinical overview' },
+  { cls: 'admin-subsection-title', role: 'subsection',   note: 'Sub-card head within a section.',                   sample: 'Symptoms' },
+  { cls: 'admin-field-value',      role: 'body / value', note: 'Field value and paragraph copy at 14px.',           sample: 'Porcine Reproductive &amp; Respiratory Syndrome' },
+  { cls: 'admin-field-label',      role: 'field label',  note: 'Uppercase mono label above a read-only value.',     sample: 'Codename' },
+  { cls: 'admin-caption',          role: 'caption',      note: 'Meta line, timestamp, helper text.',                sample: 'Updated 3 days ago' },
+];
+
 /* =========================================================
    RENDER — semantic token table
    ========================================================= */
@@ -502,6 +561,37 @@ function renderSemanticTable() {
 function renderComponents() {
   const stack = document.getElementById('componentStack');
   stack.innerHTML = COMPONENTS.map(({cls, role, note, sample}) => `
+    <article class="component-row">
+      <div class="component-meta">
+        <code class="component-class">.${cls}</code>
+        <span class="component-role">${role}</span>
+        <p class="component-note">${note}</p>
+      </div>
+      <div class="component-preview">
+        <span class="${cls}">${sample}</span>
+      </div>
+    </article>
+  `).join('');
+}
+
+/* =========================================================
+   RENDER — admin / data tier (mirrors the marketing renderers)
+   ========================================================= */
+function renderAdminTable() {
+  const tbody = document.getElementById('adminTable');
+  tbody.innerHTML = ADMIN_TOKENS.map(([token, alias, px, use]) => `
+    <tr>
+      <td class="var-name">${token}</td>
+      <td class="var-value">${alias}</td>
+      <td class="var-px">${px}px</td>
+      <td class="spec-use">${use}</td>
+    </tr>
+  `).join('');
+}
+
+function renderAdminComponents() {
+  const stack = document.getElementById('adminStack');
+  stack.innerHTML = ADMIN_COMPONENTS.map(({cls, role, note, sample}) => `
     <article class="component-row">
       <div class="component-meta">
         <code class="component-class">.${cls}</code>
@@ -541,6 +631,8 @@ function initReveal() {
 document.addEventListener('DOMContentLoaded', () => {
   renderSemanticTable();
   renderComponents();
+  renderAdminTable();
+  renderAdminComponents();
   initReveal();
 });
 </script>

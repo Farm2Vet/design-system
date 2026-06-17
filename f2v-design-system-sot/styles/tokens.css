@@ -142,6 +142,25 @@
     --text-6xl:  3.583rem;     /* 57.34px — base × 1.2⁷ */
     --text-7xl:  4.300rem;     /* 68.80px — base × 1.2⁸ */
 
+    /* ---------- Type scale — DATA / ADMIN (primitive)
+       A SECOND, density-tuned primitive ramp for data-rich admin
+       surfaces (dashboards, tables, CRUD forms). Independent of the
+       marketing ramp above: anchored at --text-data-base = 14px and
+       hand-tuned at the small end (≈2px steps, where a strict modular
+       ratio reads awkwardly), opening to larger steps at the top.
+       Pure scale positions; no role implied by these names. Components
+       must NOT reference these directly — they reference the
+       --text-admin-* semantic roles (Section 2), which alias this ramp. */
+    --text-data-2xs:  0.6875rem;  /* 11px — micro / uppercase field label */
+    --text-data-xs:   0.75rem;    /* 12px — caption, meta, table 2nd line */
+    --text-data-sm:   0.8125rem;  /* 13px — subsection head, dense body   */
+    --text-data-base: 0.875rem;   /* 14px — anchor: admin body / value    */
+    --text-data-md:   1rem;       /* 16px — card / section title          */
+    --text-data-lg:   1.125rem;   /* 18px — KPI / stat value              */
+    --text-data-xl:   1.375rem;   /* 22px — page title                    */
+    --text-data-2xl:  1.75rem;    /* 28px — dashboard hero / large stat   */
+    --text-data-3xl:  2.125rem;   /* 34px — rare display / splash KPI     */
+
     /* ---------- Font weights ---------- */
     --font-weight-regular:  400;
     --font-weight-medium:   500;
@@ -203,17 +222,19 @@
     --text-h1:          var(--text-5xl);    /* 47.78px */
 
     /* ---------- Typography — admin tier (opt-in) ----------
-       Density-tuned rail for admin / data-rich product surfaces.
-       Marketing rail (--text-body, --text-h1..--text-h6) is unchanged.
-       Reference only from .admin-* component classes — never remap
-       the marketing rail through these. */
-    --text-admin-page-title:        var(--text-2xl);   /* 27.65px — page H1     */
-    --text-admin-card-title:        var(--text-base);  /* 16.00px — section eyebrow-rank head */
-    --text-admin-subsection-title:  var(--text-sm);    /* 13.33px — sub-card head            */
-    --text-admin-field-label:       var(--text-xs);    /* 11.10px — uppercase field label    */
-    --text-admin-body:              var(--text-sm);    /* 13.33px — field value, paragraph   */
-    --text-admin-caption:           var(--text-xs);    /* 11.10px — meta line, helper        */
-    --text-admin-stat-value:        var(--text-lg);    /* 19.20px — KPI value                */
+       Density-tuned semantic roles for admin / data-rich product
+       surfaces. These alias the DATA primitive ramp (--text-data-*),
+       NOT the marketing ramp — the two scales are independent. The
+       marketing rail (--text-body, --text-h1..--text-h6) is unchanged.
+       Reference only from .admin-* component classes; never remap the
+       marketing rail through these. */
+    --text-admin-page-title:        var(--text-data-xl);    /* 22px — page H1               */
+    --text-admin-card-title:        var(--text-data-md);    /* 16px — section / card head   */
+    --text-admin-subsection-title:  var(--text-data-sm);    /* 13px — sub-card head         */
+    --text-admin-field-label:       var(--text-data-2xs);   /* 11px — uppercase field label */
+    --text-admin-body:              var(--text-data-base);  /* 14px — field value, paragraph*/
+    --text-admin-caption:           var(--text-data-xs);    /* 12px — meta line, helper     */
+    --text-admin-stat-value:        var(--text-data-lg);    /* 18px — KPI value             */
 
     /* DEPRECATED — alias retained for backward compatibility while
        legacy CSS is migrated to --text-eyebrow. Do not introduce new
