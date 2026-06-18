@@ -1,0 +1,398 @@
+/* =========================================================
+   COMPONENT — CHAT INPUT (transcript editor)
+   The admin conversation-transcript builder. A vertical list
+   of role-coloured "turn" cards; each card is one chat message
+   you can edit, reorder (drag handle or Up/Down), and remove.
+   Below the list, a dashed "Add entry" row appends a new turn.
+
+   Two roles tint the whole card:
+     · producer (.chat-input__turn--producer) — PRIMARY / green
+     · vet      (.chat-input__turn--vet)      — INFO / blue
+
+   Faithful port of farm2vet-core's MessageEditor. The source
+   uses @dnd-kit; the DS ships the plain-CSS shell + state hooks
+   (.is-dragging, .chat-input__turn--overlay) and the consuming
+   page wires the pointer drag in vanilla JS.
+
+   Depends on: tokens.css
+   ========================================================= */
+:root {
+  /* ---------- List — rhythm ---------- */
+  --chat-gap:            var(--space-gap-default);
+
+  /* ---------- Turn card — shape ---------- */
+  --chat-turn-radius:    var(--radius-md);
+  --chat-turn-pad:       var(--space-container-y-sm);
+  --chat-turn-gap:       var(--space-gap-snug);
+  --chat-turn-shadow:    var(--shadow-sm);
+  --chat-turn-border-w:  var(--border-width-base);
+  --chat-turn-transition: background-color .15s ease,
+                          border-color .15s ease,
+                          color .15s ease,
+                          box-shadow .15s ease,
+                          transform .15s ease;
+
+  /* ---------- Role: default (neutral fallback) ----------
+     Per-role modifiers below override the --chat-turn-* trio;
+     these are the rest values so a turn with no role modifier
+     still renders coherently. */
+  --chat-turn-bg:        var(--background-default);
+  --chat-turn-border:    var(--border-default);
+  --chat-turn-accent:    var(--text-default);
+
+  /* ---------- Role: producer — PRIMARY / green ---------- */
+  --chat-producer-bg:     var(--background-primary-subtle);
+  --chat-producer-border: var(--border-primary);
+  --chat-producer-accent: var(--text-primary-strong);
+
+  /* ---------- Role: vet — INFO / blue ---------- */
+  --chat-vet-bg:     var(--background-info);
+  --chat-vet-border: var(--border-info);
+  --chat-vet-accent: var(--text-info-strong);
+
+  /* ---------- Toolbar ---------- */
+  --chat-bar-gap:        var(--space-gap-snug);
+  --chat-handle-fg:      var(--icon-default-subtle);
+  --chat-handle-fg-hover:var(--icon-default);
+  --chat-icon-size:      16px;
+
+  /* ---------- Role control ---------- */
+  --chat-role-radius:    var(--radius-sm);
+  --chat-role-pad-x:     var(--space-tier-6);
+  --chat-role-pad-y:     var(--space-tier-7);
+  --chat-role-gap:       var(--space-gap-micro);
+  --chat-role-bg-hover:  var(--background-default-hover);
+
+  /* ---------- Turn number (mono label) ---------- */
+  --chat-turn-no-fg:     var(--text-default-minimal);
+  --chat-turn-no-size:   var(--text-eyebrow);
+
+  /* ---------- Action icon buttons ---------- */
+  --chat-action-size:        28px;
+  --chat-action-radius:      var(--radius-sm);
+  --chat-action-fg:          var(--icon-default-subtle);
+  --chat-action-fg-hover:    var(--icon-default);
+  --chat-action-bg-hover:    var(--background-default-hover);
+  --chat-action-fg-disabled: var(--icon-default-disabled);
+  --chat-action-remove-fg-hover: var(--text-critical);
+  --chat-action-remove-bg-hover: var(--background-critical);
+
+  /* ---------- Field (textarea) ---------- */
+  --chat-field-radius:     var(--radius-sm);
+  --chat-field-pad-y:      var(--space-control-y-md);
+  --chat-field-pad-x:      var(--space-control-x-md);
+  --chat-field-min-h:      72px;
+  --chat-field-font-size:  var(--text-admin-body);
+  --chat-field-fg:         var(--text-default);
+  --chat-field-bg:         var(--background-default);
+  --chat-field-border:     var(--border-default-input);
+  /* Match the form rail's focus treatment so the message field
+     reads as a first-class input: semantic primary border +
+     a 25%-mixed ring, never a raw primitive. */
+  --chat-field-border-focus: var(--border-primary);
+  --chat-field-ring-focus: color-mix(in srgb, var(--border-primary) 25%, transparent);
+  --chat-field-placeholder: var(--text-default-minimal);
+
+  /* ---------- Add-entry row ---------- */
+  --chat-add-height:       40px;
+  --chat-add-radius:       var(--radius-md);
+  --chat-add-fg:           var(--text-default-minimal);
+  --chat-add-border:       var(--border-default-strong);
+  --chat-add-fg-hover:     var(--text-primary-strong);
+  --chat-add-bg-hover:     var(--background-primary-subtle);
+  --chat-add-border-hover: var(--border-primary);
+
+  /* ---------- Drag — lifted overlay ---------- */
+  --chat-overlay-shadow:   var(--shadow-lg);
+  --chat-overlay-transform: scale(1.03) rotate(-1.5deg);
+  --chat-dragging-opacity: .4;
+}
+
+/* =========================================================
+   BLOCK — the editor list
+   ========================================================= */
+.chat-input {
+  display: flex;
+  flex-direction: column;
+  gap: var(--chat-gap);
+}
+
+/* =========================================================
+   TURN CARD
+   ========================================================= */
+.chat-input__turn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--chat-turn-gap);
+  padding: var(--chat-turn-pad);
+  border-radius: var(--chat-turn-radius);
+  background: var(--chat-turn-bg);
+  border: var(--chat-turn-border-w) solid var(--chat-turn-border);
+  box-shadow: var(--chat-turn-shadow);
+  transition: var(--chat-turn-transition);
+}
+
+/* ---------- Role modifiers — re-point the --chat-turn-* trio ---------- */
+.chat-input__turn--producer {
+  --chat-turn-bg:     var(--chat-producer-bg);
+  --chat-turn-border: var(--chat-producer-border);
+  --chat-turn-accent: var(--chat-producer-accent);
+}
+.chat-input__turn--vet {
+  --chat-turn-bg:     var(--chat-vet-bg);
+  --chat-turn-border: var(--chat-vet-border);
+  --chat-turn-accent: var(--chat-vet-accent);
+}
+
+/* ---------- State — dragging (in-place source dims) ---------- */
+.chat-input__turn.is-dragging {
+  opacity: var(--chat-dragging-opacity);
+}
+
+/* ---------- Modifier — overlay (the lifted floating clone) ----------
+   The page JS clones the dragged card, fixes it to the pointer,
+   and flags it --overlay. Carries elevation + a slight lift so
+   it reads as "picked up". */
+.chat-input__turn--overlay {
+  box-shadow: var(--chat-overlay-shadow);
+  transform: var(--chat-overlay-transform);
+  cursor: grabbing;
+  pointer-events: none;
+}
+
+/* =========================================================
+   TOOLBAR (one row)
+   ========================================================= */
+.chat-input__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--chat-bar-gap);
+}
+
+/* ---------- Drag handle (grip) ---------- */
+.chat-input__handle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--chat-action-size);
+  height: var(--chat-action-size);
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--chat-handle-fg);
+  border-radius: var(--chat-action-radius);
+  cursor: grab;
+  touch-action: none;
+  -webkit-appearance: none;
+       appearance: none;
+  transition: color .15s ease, background-color .15s ease;
+}
+.chat-input__handle:hover { color: var(--chat-handle-fg-hover); }
+.chat-input__handle:active { cursor: grabbing; }
+.chat-input__handle:focus-visible {
+  outline: 2px solid var(--outline-focus);
+  outline-offset: 1px;
+}
+.chat-input__handle svg {
+  width: var(--chat-icon-size);
+  height: var(--chat-icon-size);
+  display: block;
+}
+
+/* ---------- Role control (icon + label + chevron) ---------- */
+.chat-input__role {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--chat-role-gap);
+  padding: var(--chat-role-pad-y) var(--chat-role-pad-x);
+  border: none;
+  background: transparent;
+  color: var(--chat-turn-accent);
+  border-radius: var(--chat-role-radius);
+  font-family: var(--font-sans);
+  font-size: var(--text-admin-caption);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1;
+  cursor: pointer;
+  -webkit-appearance: none;
+       appearance: none;
+  transition: background-color .15s ease;
+}
+.chat-input__role:hover { background: var(--chat-role-bg-hover); }
+.chat-input__role:focus-visible {
+  outline: 2px solid var(--outline-focus);
+  outline-offset: 1px;
+}
+.chat-input__role-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--chat-icon-size);
+  height: var(--chat-icon-size);
+  flex-shrink: 0;
+}
+.chat-input__role-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.chat-input__role-label { display: inline-flex; align-items: center; }
+.chat-input__role-chev {
+  display: inline-flex;
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  opacity: .7;
+}
+.chat-input__role-chev svg { width: 100%; height: 100%; display: block; }
+
+/* ---------- Turn number (mono, tabular) ---------- */
+.chat-input__turn-no {
+  font-family: var(--font-mono);
+  font-size: var(--chat-turn-no-size);
+  letter-spacing: var(--letter-spacing-mono);
+  text-transform: uppercase;
+  color: var(--chat-turn-no-fg);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* ---------- Actions (right-aligned cluster) ---------- */
+.chat-input__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-gap-micro);
+  margin-left: auto;
+}
+
+.chat-input__action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--chat-action-size);
+  height: var(--chat-action-size);
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--chat-action-fg);
+  border-radius: var(--chat-action-radius);
+  cursor: pointer;
+  -webkit-appearance: none;
+       appearance: none;
+  transition: color .15s ease, background-color .15s ease;
+}
+.chat-input__action:hover {
+  color: var(--chat-action-fg-hover);
+  background: var(--chat-action-bg-hover);
+}
+.chat-input__action:focus-visible {
+  outline: 2px solid var(--outline-focus);
+  outline-offset: 1px;
+}
+.chat-input__action svg {
+  width: var(--chat-icon-size);
+  height: var(--chat-icon-size);
+  display: block;
+}
+.chat-input__action[disabled],
+.chat-input__action.is-disabled {
+  color: var(--chat-action-fg-disabled);
+  background: transparent;
+  cursor: not-allowed;
+}
+
+/* Remove action hovers to critical so the destructive target
+   reads hot only on intent. */
+.chat-input__action--remove:hover {
+  color: var(--chat-action-remove-fg-hover);
+  background: var(--chat-action-remove-bg-hover);
+}
+.chat-input__action--remove[disabled]:hover,
+.chat-input__action--remove.is-disabled:hover {
+  color: var(--chat-action-fg-disabled);
+  background: transparent;
+}
+
+/* =========================================================
+   FIELD — message textarea
+   ========================================================= */
+.chat-input__field {
+  width: 100%;
+  min-height: var(--chat-field-min-h);
+  resize: vertical;
+  padding: var(--chat-field-pad-y) var(--chat-field-pad-x);
+  border-radius: var(--chat-field-radius);
+  background: var(--chat-field-bg);
+  color: var(--chat-field-fg);
+  border: var(--border-width-base) solid var(--chat-field-border);
+  font-family: var(--font-sans);
+  font-size: var(--chat-field-font-size);
+  line-height: var(--line-height-body);
+  transition: border-color .15s ease, box-shadow .15s ease;
+  -webkit-appearance: none;
+       appearance: none;
+}
+.chat-input__field::placeholder {
+  color: var(--chat-field-placeholder);
+  opacity: 1;
+}
+.chat-input__field:focus-visible,
+.chat-input__field:focus {
+  outline: none;
+  border-color: var(--chat-field-border-focus);
+  box-shadow: 0 0 0 3px var(--chat-field-ring-focus);
+}
+
+/* =========================================================
+   ADD-ENTRY ROW (dashed, full width)
+   ========================================================= */
+.chat-input__add {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-gap-snug);
+  width: 100%;
+  height: var(--chat-add-height);
+  padding: 0;
+  border: var(--border-width-base) dashed var(--chat-add-border);
+  border-radius: var(--chat-add-radius);
+  background: transparent;
+  color: var(--chat-add-fg);
+  font-family: var(--font-sans);
+  font-size: var(--text-admin-body);
+  font-weight: var(--font-weight-medium);
+  line-height: 1;
+  cursor: pointer;
+  -webkit-appearance: none;
+       appearance: none;
+  transition: color .15s ease, background-color .15s ease, border-color .15s ease;
+}
+.chat-input__add:hover {
+  color: var(--chat-add-fg-hover);
+  background: var(--chat-add-bg-hover);
+  border-color: var(--chat-add-border-hover);
+}
+.chat-input__add:focus-visible {
+  outline: 2px solid var(--outline-focus);
+  outline-offset: 2px;
+}
+.chat-input__add-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--chat-icon-size);
+  height: var(--chat-icon-size);
+  flex-shrink: 0;
+}
+.chat-input__add-icon svg { width: 100%; height: 100%; display: block; }
+
+/* =========================================================
+   REDUCED MOTION — no transforms, no slide
+   Respect the user's preference: the lifted overlay drops the
+   scale/rotate (it still gains shadow so the lift still reads),
+   and card transitions collapse.
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+  .chat-input__turn { transition: none; }
+  .chat-input__turn--overlay { transform: none; }
+}

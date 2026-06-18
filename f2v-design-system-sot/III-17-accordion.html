@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Farm2Vet · Accordion — Design System</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+<!-- Design system: shared, reusable foundation -->
+<link rel="stylesheet" href="styles/tokens.css" />
+<link rel="stylesheet" href="styles/base.css" />
+<link rel="stylesheet" href="styles/typography.css" />
+<link rel="stylesheet" href="styles/shell.css" />
+<link rel="stylesheet" href="styles/global-nav.css" />
+<!-- Component -->
+<link rel="stylesheet" href="styles/accordion.css" />
+<!-- Reuse: variant grid + usage-note pattern + preview stages -->
+<link rel="stylesheet" href="styles/page-III-03.css" />
+<!-- Reuse: token-table styling -->
+<link rel="stylesheet" href="styles/page-III-02.css" />
+<!-- Page-specific: anatomy, part legend, demo stages -->
+<link rel="stylesheet" href="styles/page-III-17.css" />
+
+<script src="scripts/global-nav.js" defer></script>
+
+</head>
+<body data-page="III-17-accordion">
+
+<!-- ========================== GLOBAL NAV ========================== -->
+<header class="global-nav" aria-label="Design system navigation">
+  <div class="global-nav__inner">
+
+    <a href="index.html" class="global-nav__brand" aria-label="Farm2Vet design system home">
+      <img src="logo/logo-wordmark-color.svg" alt="Farm2Vet" class="global-nav__logo" />
+      <small>Design System</small>
+    </a>
+
+    <nav class="global-nav__sections" aria-label="Design system sections">
+      <ul class="global-nav__list">
+        <li class="global-nav__item">
+          <a class="global-nav__link" href="I-primitives.html">I. Primitives</a>
+        </li>
+        <li class="global-nav__item">
+          <a class="global-nav__link" href="II-semantics.html">II. Semantics</a>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="components">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-components">
+            III. Components
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-components" class="global-nav__panel" role="region" aria-label="Components">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="III-01-typography.html"><span class="global-nav__index">01</span><span>Typography</span></a></li>
+                <li><a href="III-02-buttons.html"><span class="global-nav__index">02</span><span>Buttons</span></a></li>
+                <li><a href="III-03-form.html"><span class="global-nav__index">03</span><span>Form</span></a></li>
+                <li><a href="III-04-dropdowns.html"><span class="global-nav__index">04</span><span>Dropdowns</span></a></li>
+                <li><a href="III-05-cards.html"><span class="global-nav__index">05</span><span>Cards</span></a></li>
+                <li><a href="III-06-modal.html"><span class="global-nav__index">06</span><span>Modal Dialog</span></a></li>
+                <li><a href="III-07-side-panel.html"><span class="global-nav__index">07</span><span>Side Panel</span></a></li>
+                <li><a href="III-08-toast.html"><span class="global-nav__index">08</span><span>Toast</span></a></li>
+                <li><a href="III-09-alert-badges.html"><span class="global-nav__index">09</span><span>Alert &amp; Badge</span></a></li>
+                <li><a href="III-10-header-navigation.html"><span class="global-nav__index">10</span><span>Header &amp; Nav Bar</span></a></li>
+                <li><a href="III-11-switch.html"><span class="global-nav__index">11</span><span>Switch</span></a></li>
+                <li><a href="III-12-sidebar.html"><span class="global-nav__index">12</span><span>Sidebar</span></a></li>
+                <li><a href="III-13-chip.html"><span class="global-nav__index">13</span><span>Chip</span></a></li>
+                <li><a href="III-14-tabs.html"><span class="global-nav__index">14</span><span>Tabs</span></a></li>
+                <li><a href="III-15-table.html"><span class="global-nav__index">15</span><span>Table</span></a></li>
+                <li><a href="III-16-search-toolbar.html"><span class="global-nav__index">16</span><span>Search Toolbar</span></a></li>
+                <li><a href="III-17-accordion.html"><span class="global-nav__index">17</span><span>Accordion</span></a></li>
+                <li><a href="III-18-chat-input.html"><span class="global-nav__index">18</span><span>Chat Input</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="assets">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-assets">
+            IV. Assets
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-assets" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Assets">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="IV-01-logo.html"><span class="global-nav__index">01</span><span>Logo</span></a></li>
+                <li><a href="IV-02-icons.html"><span class="global-nav__index">02</span><span>Icons</span></a></li>
+                <li><a href="IV-03-images.html"><span class="global-nav__index">03</span><span>Backgrounds &amp; Motion</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="mockups">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-mockups">
+            V. Mockups
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-mockups" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Mockups">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="V-01-wiki.html"><span class="global-nav__index">01</span><span>Wiki</span></a></li>
+                <li><a href="V-02-chatbot.html" class="is-placeholder"><span class="global-nav__index">02</span><span>Chatbot</span></a></li>
+                <li><a href="V-03-hero.html"    class="is-placeholder"><span class="global-nav__index">03</span><span>Hero</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+      </ul>
+    </nav>
+
+    <a href="#" class="global-nav__chip" aria-label="Design system version">v1.0</a>
+
+  </div>
+</header>
+<main class="shell" id="top">
+
+  <!-- ========================== HERO ========================== -->
+  <section class="hero">
+    <div>
+      <h1 class="h1 reveal">
+        <span class="num">III-17 / Components</span>
+        Accordion.
+      </h1>
+    </div>
+    <div>
+      <p class="lede reveal">
+        A vertical stack of independent disclosures. Each item is a
+        bordered card whose header is a real
+        <code>&lt;button&gt;</code> carrying <code>aria-expanded</code>;
+        clicking it reveals a body that animates open with the
+        <code>grid-template-rows: 0fr → 1fr</code> technique — no
+        magic max-height to overshoot or clip. Items are independent:
+        any number can be open at once.
+      </p>
+      <p class="lede reveal">
+        This is the one disclosure idiom the admin product reuses
+        everywhere — the thought drawer, the judgment list, the
+        follow-up editor all render this same trigger, a chevron that
+        rotates 180° on open, and a grid-rows body. Reach for it to
+        hide secondary detail behind a label; reach for
+        <a href="III-14-tabs.html"><code>.tabs</code></a> when the
+        sections are peer views the user switches <em>between</em>
+        rather than detail they expand <em>in place</em>.
+      </p>
+    </div>
+
+    <dl class="meta-strip reveal">
+      <div><dt>Component</dt><dd>Accordion</dd></div>
+      <div><dt>Selection</dt><dd>Multi · independent</dd></div>
+      <div><dt>Motion</dt><dd>grid-rows 0fr→1fr</dd></div>
+      <div><dt>Pattern</dt><dd>aria-expanded toggle</dd></div>
+    </dl>
+  </section>
+
+  <!-- ========================== 01 / SCOPE ========================== -->
+  <section class="chunk" id="scope">
+    <header class="chunk-head reveal">
+      <span class="num-tag">01 / Accordion — Scope</span>
+      <h2 class="h2">Scope.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      Reach for an accordion when a surface carries secondary detail
+      that should stay collapsed until asked for — a clinical record's
+      sub-sections, a question editor's optional fields, a thought
+      drawer's reasoning trace. The header is a real
+      <code>&lt;button&gt;</code>; the body expands in place beneath
+      it. Each item is independent, so multiple can be open at once.
+    </p>
+
+    <p class="usage-note reveal">
+      <strong>Disclosure expands detail in place; tabs switch between
+      peer views.</strong> If the sections are alternatives the user
+      moves <em>between</em> — one visible at a time, always one
+      selected — use <a href="III-14-tabs.html"><code>.tabs</code></a>.
+      If they are detail the user expands <em>alongside</em> what's
+      already on screen, and "nothing expanded" is a valid resting
+      state, use the accordion.
+    </p>
+  </section>
+
+  <!-- ========================== 02 / ANATOMY ========================== -->
+  <section class="chunk" id="anatomy">
+    <header class="chunk-head reveal">
+      <span class="num-tag">02 / Accordion — Anatomy</span>
+      <h2 class="h2">Anatomy.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      One item is a bordered card holding a header
+      <code>.accordion__trigger</code> and an animated
+      <code>.accordion__panel</code>. The trigger pairs a
+      <code>.accordion__title</code> with a trailing
+      <code>.accordion__chevron</code>; the panel wraps a clipping
+      <code>.accordion__body</code> around the padded
+      <code>.accordion__content</code>. The
+      <code>.is-open</code> flag on the item flips the chevron and
+      expands the panel's grid row.
+    </p>
+
+    <div class="glass accordion-anatomy reveal" aria-label="Accordion anatomy diagram">
+      <div class="accordion-anatomy__diagram">
+        <div class="accordion">
+          <div class="accordion__item is-open">
+            <button type="button" class="accordion__trigger" aria-expanded="true">
+              <span class="accordion__title">Clinical signs</span>
+              <span class="accordion__chevron" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </span>
+            </button>
+            <div class="accordion__panel">
+              <div class="accordion__body">
+                <div class="accordion__content">
+                  <p>Pyrexia (40.5–41.5 °C), anorexia, huddling, and reddened
+                  skin over the ears, abdomen, and inner thighs. Constipation
+                  followed by diarrhoea; some animals show a staggering,
+                  ataxic gait in the late acute phase.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <dl class="accordion-anatomy__legend">
+        <dt>A · item</dt>
+        <dd><code>.accordion__item</code> is one disclosure — a bordered card (<code>--border-default</code>, <code>--radius-md</code>, <code>--background-default</code>). The <code>.is-open</code> state flag is the single source of truth: it flips the chevron and expands the panel. Items are independent, so several can carry <code>.is-open</code> at once.</dd>
+
+        <dt>B · trigger</dt>
+        <dd><code>.accordion__trigger</code> is the full-width header <code>&lt;button&gt;</code> carrying <code>aria-expanded</code>. Transparent at rest, it tints to <code>--background-row-hover</code> on hover and shows a focus ring on <code>:focus-visible</code>. Left-aligned flex row — the title grows, the chevron pins to the trailing edge.</dd>
+
+        <dt>C · chevron</dt>
+        <dd><code>.accordion__chevron</code> holds a ChevronDown svg that rotates 180° when the item opens (<code>.accordion__item.is-open .accordion__chevron</code>). It's a reinforcement of the open state, not the only signal — the expanded body carries that.</dd>
+
+        <dt>D · panel</dt>
+        <dd><code>.accordion__panel</code> is the animated wrapper: <code>display:grid; grid-template-rows:0fr</code>, transitioning to <code>1fr</code> on open. The <code>0fr → 1fr</code> row resolves to the body's intrinsic height, so the panel grows to exactly the content height — no max-height guesswork.</dd>
+
+        <dt>E · body</dt>
+        <dd><code>.accordion__body</code> is the clipping wrapper: <code>min-height:0; overflow:hidden</code>. It lets the grid row collapse below the content's min-content height and clips the content while the row animates. It wraps <code>.accordion__content</code>, which holds the padded inner copy.</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ========================== 03 / VARIANTS ========================== -->
+  <section class="chunk" id="variants">
+    <header class="chunk-head reveal">
+      <span class="num-tag">03 / Accordion — Variants</span>
+      <h2 class="h2">Variants.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      Three shapes share the same block. The default bordered card is
+      the workhorse; the rail variant adds a coloured stripe for
+      flagged or categorised items; the flush variant strips the card
+      chrome to hairlines for dense inline-detail lists.
+    </p>
+
+    <div class="form-variant-grid reveal">
+
+      <article class="form-variant-card accordion-demo-card">
+        <span class="label">Default · bordered card</span>
+        <div class="demo">
+          <div class="accordion js-accordion">
+            <div class="accordion__item">
+              <button type="button" class="accordion__trigger" aria-expanded="false">
+                <span class="accordion__title">Differential diagnoses</span>
+                <span class="accordion__chevron" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </span>
+              </button>
+              <div class="accordion__panel">
+                <div class="accordion__body">
+                  <div class="accordion__content">
+                    <p>African swine fever, erysipelas, salmonellosis, and acute
+                    pasteurellosis present overlapping pyrexia and skin lesions —
+                    rule out by PCR before culling decisions.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="accordion__item is-open">
+              <button type="button" class="accordion__trigger" aria-expanded="true">
+                <span class="accordion__title">Treatment protocol</span>
+                <span class="accordion__chevron" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </span>
+              </button>
+              <div class="accordion__panel">
+                <div class="accordion__body">
+                  <div class="accordion__content">
+                    <p>No specific antiviral; supportive care only. Notifiable
+                    disease — isolate, restrict movement, and report to the
+                    district veterinary office within 24 hours.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="meta"><span>.accordion__item</span><strong>bordered card</strong></div>
+      </article>
+
+      <article class="form-variant-card accordion-demo-card">
+        <span class="label">Rail · stripe variant</span>
+        <div class="demo">
+          <div class="accordion js-accordion">
+            <div class="accordion__item accordion__item--rail accordion__item--rail-warning">
+              <button type="button" class="accordion__trigger" aria-expanded="false">
+                <span class="accordion__title">Withdrawal warning</span>
+                <span class="accordion__chevron" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </span>
+              </button>
+              <div class="accordion__panel">
+                <div class="accordion__body">
+                  <div class="accordion__content">
+                    <p>Oxytetracycline: 28-day meat withdrawal at this dose.
+                    Do not slaughter treated animals before the interval
+                    elapses.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="accordion__item accordion__item--rail accordion__item--rail-safe is-open">
+              <button type="button" class="accordion__trigger" aria-expanded="true">
+                <span class="accordion__title">Recovery indicators</span>
+                <span class="accordion__chevron" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </span>
+              </button>
+              <div class="accordion__panel">
+                <div class="accordion__body">
+                  <div class="accordion__content">
+                    <p>Return of appetite within 48 h, temperature back below
+                    39.5 °C, and resolution of skin discolouration signal
+                    response to supportive care.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="meta"><span>.accordion__item--rail</span><strong>tone stripe</strong></div>
+      </article>
+
+      <article class="form-variant-card accordion-demo-card">
+        <span class="label">Flush · hairline list</span>
+        <div class="demo">
+          <div class="accordion accordion--flush js-accordion">
+            <div class="accordion__item">
+              <button type="button" class="accordion__trigger" aria-expanded="false">
+                <span class="accordion__title">Transmission route</span>
+                <span class="accordion__chevron" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </span>
+              </button>
+              <div class="accordion__panel">
+                <div class="accordion__body">
+                  <div class="accordion__content">
+                    <p>Direct contact, contaminated feed and water, and
+                    mechanical spread via fomites — boots, vehicles, shared
+                    equipment between pens.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="accordion__item">
+              <button type="button" class="accordion__trigger" aria-expanded="false">
+                <span class="accordion__title">Incubation period</span>
+                <span class="accordion__chevron" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </span>
+              </button>
+              <div class="accordion__panel">
+                <div class="accordion__body">
+                  <div class="accordion__content">
+                    <p>Typically 5–15 days under natural conditions; as short
+                    as 2–4 days in high-virulence outbreaks.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="meta"><span>.accordion--flush</span><strong>hairline only</strong></div>
+      </article>
+
+    </div>
+
+    <p class="usage-note usage-note--below reveal">
+      <strong>The rail tone is a flag, not the open-state signal.</strong>
+      <code>--rail-info</code>, <code>--rail-safe</code>, and
+      <code>--rail-warning</code> re-point only the 4px left border so an
+      item reads as categorised (info / safe / warning) at a glance. They
+      don't change the trigger fill or the open animation — the chevron
+      and expanded body still carry the disclosure state.
+    </p>
+  </section>
+
+  <!-- ========================== 04 / STATES ========================== -->
+  <section class="chunk" id="states">
+    <header class="chunk-head reveal">
+      <span class="num-tag">04 / Accordion — States</span>
+      <h2 class="h2">States.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      Five discrete states. Rest and open are the contract; hover and
+      focus belong to the trigger; disabled mutes the trigger and drops
+      the pointer affordance. The hover and focus cards below pin the
+      visual statically — the live component produces them from
+      <code>:hover</code> and <code>:focus-visible</code>.
+    </p>
+
+    <div class="form-version-stage reveal">
+
+      <article class="form-version-card accordion-demo-card">
+        <span class="label">Rest · collapsed</span>
+        <div class="demo">
+          <div class="accordion js-accordion">
+            <div class="accordion__item">
+              <button type="button" class="accordion__trigger" aria-expanded="false">
+                <span class="accordion__title">Clinical signs</span>
+                <span class="accordion__chevron" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </span>
+              </button>
+              <div class="accordion__panel">
+                <div class="accordion__body">
+                  <div class="accordion__content">
+                    <p>Pyrexia, anorexia, and reddened skin over the ears and
+                    abdomen.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="meta"><span>aria-expanded="false"</span><strong>closed</strong></div>
+      </article>
+
+      <article class="form-version-card accordion-demo-card">
+        <span class="label">Open · expanded</span>
+        <div class="demo">
+          <div class="accordion js-accordion">
+            <div class="accordion__item is-open">
+              <button type="button" class="accordion__trigger" aria-expanded="true">
+                <span class="accordion__title">Clinical signs</span>
+                <span class="accordion__chevron" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </span>
+              </button>
+              <div class="accordion__panel">
+                <div class="accordion__body">
+                  <div class="accordion__content">
+                    <p>Pyrexia, anorexia, and reddened skin over the ears and
+                    abdomen. Chevron rotated, panel grid-row at 1fr.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="meta"><span>.is-open</span><strong>chevron flipped</strong></div>
+      </article>
+
+      <article class="form-version-card accordion-demo-card">
+        <span class="label">Hover · simulated</span>
+        <div class="demo">
+          <div class="accordion">
+            <div class="accordion__item">
+              <button type="button" class="accordion__trigger is-state-hover" aria-expanded="false">
+                <span class="accordion__title">Clinical signs</span>
+                <span class="accordion__chevron" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </span>
+              </button>
+              <div class="accordion__panel">
+                <div class="accordion__body">
+                  <div class="accordion__content"><p>Trigger tinted on pointer-over.</p></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="meta"><span>.accordion__trigger:hover</span><strong>row tint</strong></div>
+      </article>
+
+      <article class="form-version-card accordion-demo-card">
+        <span class="label">Focus-visible</span>
+        <div class="demo">
+          <div class="accordion">
+            <div class="accordion__item">
+              <button type="button" class="accordion__trigger is-state-focus" aria-expanded="false">
+                <span class="accordion__title">Clinical signs</span>
+                <span class="accordion__chevron" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </span>
+              </button>
+              <div class="accordion__panel">
+                <div class="accordion__body">
+                  <div class="accordion__content"><p>Inset focus ring traces the card.</p></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="meta"><span>:focus-visible</span><strong>keyboard ring</strong></div>
+      </article>
+
+      <article class="form-version-card accordion-demo-card">
+        <span class="label">Disabled</span>
+        <div class="demo">
+          <div class="accordion">
+            <div class="accordion__item">
+              <button type="button" class="accordion__trigger" aria-expanded="false" aria-disabled="true" disabled>
+                <span class="accordion__title">Lab results · pending</span>
+                <span class="accordion__chevron" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </span>
+              </button>
+              <div class="accordion__panel">
+                <div class="accordion__body">
+                  <div class="accordion__content"><p>Not yet expandable.</p></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="meta"><span>[aria-disabled]</span><strong>muted · inert</strong></div>
+      </article>
+
+    </div>
+
+    <p class="usage-note usage-note--below reveal">
+      <strong>The chevron reinforces the open state; it doesn't carry
+      it alone.</strong> The expanded body and the
+      <code>aria-expanded="true"</code> on the trigger are the real
+      signals — the 180° chevron flip is a visual echo. If you suppress
+      the body animation, keep <code>aria-expanded</code> truthful so
+      assistive tech still reads the state.
+    </p>
+  </section>
+
+  <!-- ========================== 05 / IN-CONTEXT ========================== -->
+  <section class="chunk" id="examples">
+    <header class="chunk-head reveal">
+      <span class="num-tag">05 / Accordion — In context</span>
+      <h2 class="h2">Disease record.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      The pattern the conversation and question editors reach for: a
+      record's secondary sections collapsed behind labels, expanded in
+      place when the vet wants the detail. Try it — each item toggles
+      independently, so you can keep several open while you read across.
+    </p>
+
+    <div class="accordion js-accordion reveal" style="max-width: 720px;" aria-label="Classical swine fever record">
+      <div class="accordion__item is-open">
+        <button type="button" class="accordion__trigger" aria-expanded="true">
+          <span class="accordion__title">Clinical signs</span>
+          <span class="accordion__chevron" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
+        </button>
+        <div class="accordion__panel">
+          <div class="accordion__body">
+            <div class="accordion__content">
+              <p>Pyrexia (40.5–41.5 °C), anorexia, huddling, and reddened skin
+              over the ears, abdomen, and inner thighs. Constipation followed
+              by diarrhoea; ataxic, staggering gait in the late acute phase.
+              Conjunctivitis with sticky ocular discharge is common.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion__item">
+        <button type="button" class="accordion__trigger" aria-expanded="false">
+          <span class="accordion__title">Differential diagnoses</span>
+          <span class="accordion__chevron" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
+        </button>
+        <div class="accordion__panel">
+          <div class="accordion__body">
+            <div class="accordion__content">
+              <p>African swine fever (clinically indistinguishable — confirm by
+              PCR), erysipelas, acute salmonellosis, and pasteurellosis. The
+              overlap of pyrexia with skin lesions makes laboratory
+              confirmation essential before any culling decision.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion__item accordion__item--rail accordion__item--rail-warning">
+        <button type="button" class="accordion__trigger" aria-expanded="false">
+          <span class="accordion__title">Treatment protocol</span>
+          <span class="accordion__chevron" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
+        </button>
+        <div class="accordion__panel">
+          <div class="accordion__body">
+            <div class="accordion__content">
+              <p>No specific antiviral exists; care is supportive only.
+              Classical swine fever is a notifiable disease — isolate affected
+              animals, restrict all movement on and off the holding, and
+              report to the district veterinary office within 24 hours.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================== 06 / TOKENS ========================== -->
+  <section class="chunk" id="tokens">
+    <header class="chunk-head reveal">
+      <span class="num-tag">06 / Accordion — Component tokens</span>
+      <h2 class="h2">Tokens.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      The full <code>--accordion-*</code> map. Component tokens
+      reference semantics only; if a primitive looks necessary, that's
+      usually a sign a semantic is missing — file the gap rather than
+      reaching across the tier.
+    </p>
+
+    <table class="token-table reveal" aria-label="Accordion component tokens">
+      <thead>
+        <tr>
+          <th>Component token</th>
+          <th>References</th>
+          <th>Resolves to</th>
+          <th>Preview</th>
+        </tr>
+      </thead>
+      <tbody id="accordionTokenTable"></tbody>
+    </table>
+  </section>
+
+  <!-- ========================== FOOTER ========================== -->
+  <footer>
+    <span>END OF SECTION</span>
+  </footer>
+
+</main>
+
+<script>
+/* =========================================================
+   COMPONENT TOKEN DATA — Accordion
+   ========================================================= */
+const ACCORDION_TOKENS = [
+  { group: 'Container — item card', tokens: [
+    ['--accordion-gap',    'var(--space-gap-snug)'],
+    ['--accordion-radius', 'var(--radius-md)'],
+    ['--accordion-border', 'var(--border-default)'],
+    ['--accordion-bg',     'var(--background-default)'],
+  ]},
+  { group: 'Trigger — header button', tokens: [
+    ['--accordion-trigger-pad-y',      'var(--space-control-y-lg)'],
+    ['--accordion-trigger-pad-x',      'var(--space-tier-4)'],
+    ['--accordion-trigger-gap',        'var(--space-gap-snug)'],
+    ['--accordion-trigger-fg',         'var(--text-default)'],
+    ['--accordion-trigger-font',       'var(--font-display)'],
+    ['--accordion-trigger-size',       'var(--text-body)'],
+    ['--accordion-trigger-weight',     'var(--font-weight-medium)'],
+    ['--accordion-trigger-bg-hover',   'var(--background-row-hover)'],
+    ['--accordion-trigger-focus-ring', '0 0 0 2px var(--outline-focus)'],
+  ]},
+  { group: 'Chevron', tokens: [
+    ['--accordion-chevron-size', '18px'],
+    ['--accordion-chevron-fg',   'var(--icon-default-subtle)'],
+  ]},
+  { group: 'Panel — animated body', tokens: [
+    ['--accordion-body-pad-y', 'var(--space-tier-4)'],
+    ['--accordion-body-pad-x', 'var(--space-tier-4)'],
+    ['--accordion-content-fg', 'var(--text-default-subtle)'],
+  ]},
+  { group: 'Motion', tokens: [
+    ['--accordion-panel-transition',   'grid-template-rows .28s cubic-bezier(.2,.8,.2,1)'],
+    ['--accordion-chevron-transition', 'transform .2s ease'],
+  ]},
+  { group: 'Rail modifier — the stripe', tokens: [
+    ['--accordion-rail-width',   '4px'],
+    ['--accordion-rail-color',   'var(--border-primary)'],
+    ['--accordion-rail-info',    'var(--border-info)'],
+    ['--accordion-rail-safe',    'var(--border-safe)'],
+    ['--accordion-rail-warning', 'var(--border-warning)'],
+  ]},
+  { group: 'Disabled', tokens: [
+    ['--accordion-fg-disabled', 'var(--text-default-disabled)'],
+  ]},
+];
+
+function resolveCss(varName) {
+  const styles = getComputedStyle(document.documentElement);
+  return styles.getPropertyValue(varName).trim();
+}
+function isColorish(value) {
+  if (!value) return false;
+  const v = value.toLowerCase();
+  return v.startsWith('#') || v.startsWith('rgb') || v.startsWith('hsl') ||
+         v.startsWith('color-mix') || v.startsWith('linear-gradient') ||
+         v.startsWith('radial-gradient') || v === 'transparent' ||
+         /^[a-z]+$/.test(v);
+}
+function renderTokenTable() {
+  const tbody = document.getElementById('accordionTokenTable');
+  if (!tbody) return;
+  let html = '';
+  ACCORDION_TOKENS.forEach(group => {
+    html += `<tr class="group-row"><td colspan="4">${group.group}</td></tr>`;
+    group.tokens.forEach(([name, ref]) => {
+      const resolved = resolveCss(name) || '—';
+      const isColor = isColorish(resolved);
+      /* Render the swatch as a bare span (NOT a component class) so
+         the .tk-swatch rules from page-III-02.css don't collide with
+         the accordion component on this page. */
+      const swatch = isColor
+        ? `<span class="tk-tile" style="background:${resolved}"></span>`
+        : `<span class="tk-tile tk-tile--noncolor"></span>`;
+      html += `<tr>
+        <td class="tk-name">${name}</td>
+        <td class="tk-ref">${ref.replace(/</g,'&lt;')}</td>
+        <td class="tk-resolved">${resolved.length > 60 ? resolved.slice(0,57)+'…' : resolved}</td>
+        <td class="tk-swatch">${swatch}</td>
+      </tr>`;
+    });
+  });
+  tbody.innerHTML = html;
+}
+
+/* =========================================================
+   STATE-DEMO HOOKS
+   The .is-state-* classes pin a state for the static demo —
+   they're not part of the accordion's contract, they only
+   force the visual that the corresponding pseudo-class would
+   produce in the live component. Resolved token values are
+   fed into a one-shot stylesheet so the token chain isn't
+   re-declared in page-III-17.css.
+   ========================================================= */
+function applyStaticStateStyles() {
+  const root = document.documentElement;
+  const get = (name) => getComputedStyle(root).getPropertyValue(name).trim();
+  const sheet = document.createElement('style');
+  sheet.textContent = `
+    .accordion__trigger.is-state-hover {
+      background: ${get('--accordion-trigger-bg-hover')};
+    }
+    .accordion__trigger.is-state-focus {
+      box-shadow: ${get('--accordion-trigger-focus-ring')};
+      outline: none;
+      outline-offset: -2px;
+    }
+  `;
+  document.head.appendChild(sheet);
+}
+
+/* =========================================================
+   TOGGLE — the live disclosure behaviour
+   Each .js-accordion delegates clicks on its triggers. Items
+   are independent: a click flips .is-open on the clicked
+   item only and syncs aria-expanded. Disabled triggers
+   (aria-disabled / :disabled) are ignored.
+   ========================================================= */
+function initAccordions() {
+  document.querySelectorAll('.js-accordion').forEach(group => {
+    group.addEventListener('click', (e) => {
+      const trigger = e.target.closest('.accordion__trigger');
+      if (!trigger || !group.contains(trigger)) return;
+      if (trigger.disabled || trigger.getAttribute('aria-disabled') === 'true') return;
+      const item = trigger.closest('.accordion__item');
+      if (!item) return;
+      const open = item.classList.toggle('is-open');
+      trigger.setAttribute('aria-expanded', String(open));
+    });
+  });
+}
+
+/* =========================================================
+   REVEAL ON SCROLL
+   ========================================================= */
+function initReveal() {
+  const items = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    items.forEach(el => el.classList.add('in'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        en.target.classList.add('in');
+        io.unobserve(en.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(el => io.observe(el));
+}
+
+/* =========================================================
+   BOOT
+   ========================================================= */
+document.addEventListener('DOMContentLoaded', () => {
+  renderTokenTable();
+  applyStaticStateStyles();
+  initAccordions();
+  initReveal();
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,107 @@
+/* =========================================================
+   PAGE — COMPONENT · ACCORDION
+   Styles unique to III-17-accordion.html: the anatomy diagram
+   + part-vocabulary legend, the variant / state demo stages,
+   and the token-table swatch tile.
+   Reuses .form-variant-card, .form-version-card, .usage-note
+   and .preview-stage from page-III-03.css, plus .token-table
+   from page-III-02.css. The accordion itself lives in
+   accordion.css; this file only scaffolds the demos around it.
+   Depends on: tokens.css, base.css, shell.css, accordion.css,
+               page-III-03.css, page-III-02.css
+   ========================================================= */
+
+/* =========================================================
+   ACCORDION ANATOMY — labelled item with part vocabulary
+   Same shape as .chip-anatomy on page-III-13.css.
+   ========================================================= */
+.accordion-anatomy {
+    padding: var(--space-tier-2);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-tier-2);
+}
+.accordion-anatomy__diagram {
+    padding: var(--space-tier-3);
+    border: var(--border-width-base) dashed var(--border-default);
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--background-default-subtle) 60%, transparent);
+}
+/* The diagram hosts a real .accordion — keep it from stretching
+   edge-to-edge so the card reads as a single component, not a
+   full-bleed bar. */
+.accordion-anatomy__diagram .accordion {
+    max-width: 520px;
+    margin-inline: auto;
+}
+.accordion-anatomy__legend {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: var(--space-tier-6) var(--spacing-5x);
+    margin: 0;
+}
+.accordion-anatomy__legend dt {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-primary-strong);
+    font-weight: var(--font-weight-medium);
+    padding-top: 2px;
+}
+.accordion-anatomy__legend dd {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    line-height: var(--line-height-body);
+    color: var(--text-default-subtle);
+    margin: 0 0 var(--space-tier-6);
+}
+
+/* =========================================================
+   VARIANT / STATE DEMO — accordions keep a comfortable width
+   The variant + state cards reuse .form-variant-card /
+   .form-version-card from page-III-03.css. Their .demo column
+   centres a fixed-width control; an accordion wants the full
+   demo width so the trigger row + body read at product scale.
+   ========================================================= */
+.accordion-demo-card .demo {
+    align-items: stretch;
+    max-width: none;
+    width: 100%;
+}
+.accordion-demo-card .demo .accordion {
+    width: 100%;
+}
+
+/* =========================================================
+   STATE-PIN HELPERS
+   The .is-state-* classes pin a single visual state for the
+   static demo — they are NOT part of the accordion contract.
+   They only force the visual the matching pseudo-class would
+   produce live. The resolved values are mirrored from the
+   accordion tokens by a one-shot stylesheet in the page's
+   trailing <script>, so the token chain isn't re-declared here.
+   ========================================================= */
+
+/* =========================================================
+   TOKEN-TABLE SWATCH TILE
+   The token-table on page-III-02.css uses .tk-swatch .chip for
+   its colour preview tile, which would collide with component
+   classes on a component page. Use a local .tk-tile and
+   replicate the swatch geometry, matching page-III-13.css.
+   ========================================================= */
+.tk-swatch .tk-tile {
+    display: inline-block;
+    width: 100%;
+    height: var(--space-tier-3);
+    border-radius: var(--radius-sm);
+    border: var(--border-width-base) solid var(--border-swatch, var(--border-default));
+}
+.tk-swatch .tk-tile--noncolor {
+    background: repeating-linear-gradient(
+        45deg,
+        var(--neutral-100) 0 6px,
+        var(--neutral-50)  6px 12px
+    );
+    opacity: .6;
+}

@@ -1,0 +1,268 @@
+/* =========================================================
+   COMPONENT — ACCORDION
+   A vertical stack of independent disclosures. Each item is a
+   bordered card whose header is a real <button> carrying
+   aria-expanded; clicking it reveals the body. Items are
+   independent — any number can be open at once.
+
+   The body animates open with the grid-template-rows 0fr → 1fr
+   technique rather than max-height: a 0fr → 1fr grid row resolves
+   to the body's intrinsic height, so the panel grows to exactly
+   the content height with no magic max-height to overshoot or
+   clip. An inner .accordion__body wrapper sets min-height:0 +
+   overflow:hidden so the collapsing row clips its content
+   cleanly. The chevron rotates 180° on open.
+
+   This is the one disclosure idiom the admin product uses
+   everywhere — the thought drawer, the judgment list, the
+   follow-up editor all render this same trigger + chevron +
+   grid-rows body. Documented on III-17-accordion.html.
+
+   Modifiers:
+   · .accordion__item--rail — a 4px accent left border (the
+     "stripe" variant). Re-point the rail colour with the
+     tone modifiers (--rail-info / --rail-safe / --rail-warning).
+   · .accordion__item--flush — hairline-only variant: no card
+     border / fill, just a top hairline between items, for dense
+     inline-detail lists.
+
+   Depends on: tokens.css
+   ========================================================= */
+:root {
+  /* ---------- Container — item card ---------- */
+  --accordion-gap:            var(--space-gap-snug);
+  --accordion-radius:         var(--radius-md);
+  --accordion-border:         var(--border-default);
+  --accordion-bg:             var(--background-default);
+
+  /* ---------- Trigger — header button ---------- */
+  --accordion-trigger-pad-y:    var(--space-control-y-lg);
+  --accordion-trigger-pad-x:    var(--space-tier-4);
+  --accordion-trigger-gap:      var(--space-gap-snug);
+  --accordion-trigger-fg:       var(--text-default);
+  --accordion-trigger-font:     var(--font-display);
+  --accordion-trigger-size:     var(--text-body);
+  --accordion-trigger-weight:   var(--font-weight-medium);
+  --accordion-trigger-bg-hover: var(--background-row-hover);
+  --accordion-trigger-focus-ring: 0 0 0 2px var(--outline-focus);
+
+  /* ---------- Chevron ---------- */
+  --accordion-chevron-size: 18px;
+  --accordion-chevron-fg:   var(--icon-default-subtle);
+
+  /* ---------- Panel — animated body ---------- */
+  --accordion-body-pad-y: var(--space-tier-4);
+  --accordion-body-pad-x: var(--space-tier-4);
+  --accordion-content-fg: var(--text-default-subtle);
+
+  /* ---------- Motion ----------
+     The disclosure animation runs on grid-template-rows, NOT
+     max-height — the 0fr → 1fr row resolves to the body's
+     intrinsic height, so the panel never overshoots or clips
+     at the wrong height. The chevron flips on its own shorter
+     curve so it leads the body open. */
+  --accordion-panel-transition:   grid-template-rows .28s cubic-bezier(.2, .8, .2, 1);
+  --accordion-chevron-transition: transform .2s ease;
+
+  /* ---------- Rail modifier (the JudgmentList stripe) ---------- */
+  --accordion-rail-width:   4px;
+  --accordion-rail-color:   var(--border-primary);
+  --accordion-rail-info:    var(--border-info);
+  --accordion-rail-safe:    var(--border-safe);
+  --accordion-rail-warning: var(--border-warning);
+
+  /* ---------- Disabled ---------- */
+  --accordion-fg-disabled: var(--text-default-disabled);
+}
+
+/* =========================================================
+   BLOCK — stack of items
+   ========================================================= */
+.accordion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--accordion-gap);
+}
+
+/* =========================================================
+   ELEMENT — item (one disclosure card)
+   ========================================================= */
+.accordion__item {
+  border: var(--border-width-base) solid var(--accordion-border);
+  border-radius: var(--accordion-radius);
+  background: var(--accordion-bg);
+  overflow: hidden;
+}
+
+/* =========================================================
+   ELEMENT — trigger (the header button)
+   Full-width, left-aligned flex row: title grows to fill, the
+   chevron pins to the trailing edge. Transparent fill at rest;
+   the row hover tint reads as "this whole bar is clickable."
+   ========================================================= */
+.accordion__trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--accordion-trigger-gap);
+  width: 100%;
+  padding: var(--accordion-trigger-pad-y) var(--accordion-trigger-pad-x);
+  margin: 0;
+  text-align: left;
+  background: transparent;
+  border: none;
+  color: var(--accordion-trigger-fg);
+  font-family: var(--accordion-trigger-font);
+  font-size: var(--accordion-trigger-size);
+  font-weight: var(--accordion-trigger-weight);
+  line-height: var(--line-height-h6);
+  cursor: pointer;
+  -webkit-appearance: none;
+       appearance: none;
+  transition: background-color .15s ease;
+}
+.accordion__trigger:hover {
+  background: var(--accordion-trigger-bg-hover);
+}
+.accordion__trigger:focus-visible {
+  outline: none;
+  box-shadow: var(--accordion-trigger-focus-ring);
+  /* Inset the ring so it traces inside the item's rounded
+     corners rather than spilling outside the card. */
+  outline-offset: -2px;
+}
+
+/* ---------- Title (the label) ---------- */
+.accordion__title {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* =========================================================
+   ELEMENT — chevron
+   A ChevronDown svg that rotates 180° when the item opens.
+   Sizing + colour are owned here; the svg fills the slot.
+   ========================================================= */
+.accordion__chevron {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--accordion-chevron-size);
+  height: var(--accordion-chevron-size);
+  color: var(--accordion-chevron-fg);
+  transition: var(--accordion-chevron-transition);
+}
+.accordion__chevron svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.accordion__item.is-open .accordion__chevron {
+  transform: rotate(180deg);
+}
+
+/* =========================================================
+   ELEMENT — panel (the animated wrapper)
+   The grid-template-rows trick: 0fr collapses the single row
+   to zero, 1fr expands it to the body's intrinsic height. The
+   transition runs on that row track, so the body grows to
+   exactly its content height with no max-height guesswork.
+   ========================================================= */
+.accordion__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: var(--accordion-panel-transition);
+}
+.accordion__item.is-open .accordion__panel {
+  grid-template-rows: 1fr;
+}
+
+/* =========================================================
+   ELEMENT — body (the clipping wrapper)
+   min-height:0 lets the grid row shrink below the content's
+   min-content height; overflow:hidden clips the content while
+   the row track animates between 0fr and 1fr.
+   ========================================================= */
+.accordion__body {
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* =========================================================
+   ELEMENT — content (the padded inner surface)
+   ========================================================= */
+.accordion__content {
+  padding: var(--accordion-body-pad-y) var(--accordion-body-pad-x);
+  color: var(--accordion-content-fg);
+  font-family: var(--font-sans);
+  font-size: var(--text-body-sm);
+  line-height: var(--line-height-body);
+}
+.accordion__content > :first-child { margin-top: 0; }
+.accordion__content > :last-child  { margin-bottom: 0; }
+
+/* =========================================================
+   STATE — disabled
+   aria-disabled (kept focusable but inert) or :disabled
+   (removed from the tab order). Both read muted and drop the
+   pointer affordance.
+   ========================================================= */
+.accordion__trigger[aria-disabled="true"],
+.accordion__trigger:disabled {
+  color: var(--accordion-fg-disabled);
+  cursor: not-allowed;
+}
+.accordion__trigger[aria-disabled="true"]:hover,
+.accordion__trigger:disabled:hover {
+  background: transparent;
+}
+.accordion__trigger[aria-disabled="true"] .accordion__chevron,
+.accordion__trigger:disabled .accordion__chevron {
+  color: var(--accordion-fg-disabled);
+}
+
+/* =========================================================
+   MODIFIER — rail (the JudgmentList stripe)
+   A 4px accent left border that reads the item as a flagged /
+   categorised disclosure. The default rail is primary; the
+   tone modifiers re-point only the rail colour, leaving the
+   card border + fill untouched.
+   ========================================================= */
+.accordion__item--rail {
+  border-left: var(--accordion-rail-width) solid var(--accordion-rail-color);
+}
+.accordion__item--rail-info    { border-left-color: var(--accordion-rail-info); }
+.accordion__item--rail-safe    { border-left-color: var(--accordion-rail-safe); }
+.accordion__item--rail-warning { border-left-color: var(--accordion-rail-warning); }
+
+/* =========================================================
+   MODIFIER — flush (hairline-only)
+   Strips the card chrome: no per-item border, no fill, no
+   radius — just a top hairline between items, for dense
+   inline-detail lists where bordered cards would feel heavy.
+   ========================================================= */
+.accordion--flush {
+  gap: 0;
+}
+.accordion--flush .accordion__item,
+.accordion__item--flush {
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  border-top: var(--border-width-base) solid var(--accordion-border);
+}
+.accordion--flush .accordion__item:last-child {
+  border-bottom: var(--border-width-base) solid var(--accordion-border);
+}
+
+/* =========================================================
+   REDUCED MOTION
+   Pin the body open/closed and the chevron rotation without
+   the height / transform tween for users who opt out.
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+  .accordion__panel,
+  .accordion__chevron {
+    transition: none;
+  }
+}

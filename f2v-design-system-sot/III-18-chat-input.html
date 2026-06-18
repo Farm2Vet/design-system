@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Farm2Vet · Chat Input — Design System</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+<!-- Design system: shared, reusable foundation -->
+<link rel="stylesheet" href="styles/tokens.css" />
+<link rel="stylesheet" href="styles/base.css" />
+<link rel="stylesheet" href="styles/typography.css" />
+<link rel="stylesheet" href="styles/shell.css" />
+<link rel="stylesheet" href="styles/global-nav.css" />
+<!-- Component -->
+<link rel="stylesheet" href="styles/chat-input.css" />
+<!-- Reuse: usage-note + preview stage pattern -->
+<link rel="stylesheet" href="styles/page-III-03.css" />
+<!-- Reuse: token-table styling -->
+<link rel="stylesheet" href="styles/page-III-02.css" />
+<!-- Page-specific: demo stage, role compare, state grid, anatomy -->
+<link rel="stylesheet" href="styles/page-III-18.css" />
+
+<script src="scripts/global-nav.js" defer></script>
+
+</head>
+<body data-page="III-18-chat-input">
+
+<!-- ========================== GLOBAL NAV ========================== -->
+<header class="global-nav" aria-label="Design system navigation">
+  <div class="global-nav__inner">
+
+    <a href="index.html" class="global-nav__brand" aria-label="Farm2Vet design system home">
+      <img src="logo/logo-wordmark-color.svg" alt="Farm2Vet" class="global-nav__logo" />
+      <small>Design System</small>
+    </a>
+
+    <nav class="global-nav__sections" aria-label="Design system sections">
+      <ul class="global-nav__list">
+        <li class="global-nav__item">
+          <a class="global-nav__link" href="I-primitives.html">I. Primitives</a>
+        </li>
+        <li class="global-nav__item">
+          <a class="global-nav__link" href="II-semantics.html">II. Semantics</a>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="components">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-components">
+            III. Components
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-components" class="global-nav__panel" role="region" aria-label="Components">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="III-01-typography.html"><span class="global-nav__index">01</span><span>Typography</span></a></li>
+                <li><a href="III-02-buttons.html"><span class="global-nav__index">02</span><span>Buttons</span></a></li>
+                <li><a href="III-03-form.html"><span class="global-nav__index">03</span><span>Form</span></a></li>
+                <li><a href="III-04-dropdowns.html"><span class="global-nav__index">04</span><span>Dropdowns</span></a></li>
+                <li><a href="III-05-cards.html"><span class="global-nav__index">05</span><span>Cards</span></a></li>
+                <li><a href="III-06-modal.html"><span class="global-nav__index">06</span><span>Modal Dialog</span></a></li>
+                <li><a href="III-07-side-panel.html"><span class="global-nav__index">07</span><span>Side Panel</span></a></li>
+                <li><a href="III-08-toast.html"><span class="global-nav__index">08</span><span>Toast</span></a></li>
+                <li><a href="III-09-alert-badges.html"><span class="global-nav__index">09</span><span>Alert &amp; Badge</span></a></li>
+                <li><a href="III-10-header-navigation.html"><span class="global-nav__index">10</span><span>Header &amp; Nav Bar</span></a></li>
+                <li><a href="III-11-switch.html"><span class="global-nav__index">11</span><span>Switch</span></a></li>
+                <li><a href="III-12-sidebar.html"><span class="global-nav__index">12</span><span>Sidebar</span></a></li>
+                <li><a href="III-13-chip.html"><span class="global-nav__index">13</span><span>Chip</span></a></li>
+                <li><a href="III-14-tabs.html"><span class="global-nav__index">14</span><span>Tabs</span></a></li>
+                <li><a href="III-15-table.html"><span class="global-nav__index">15</span><span>Table</span></a></li>
+                <li><a href="III-16-search-toolbar.html"><span class="global-nav__index">16</span><span>Search Toolbar</span></a></li>
+                <li><a href="III-17-accordion.html"><span class="global-nav__index">17</span><span>Accordion</span></a></li>
+                <li><a href="III-18-chat-input.html"><span class="global-nav__index">18</span><span>Chat Input</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="assets">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-assets">
+            IV. Assets
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-assets" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Assets">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="IV-01-logo.html"><span class="global-nav__index">01</span><span>Logo</span></a></li>
+                <li><a href="IV-02-icons.html"><span class="global-nav__index">02</span><span>Icons</span></a></li>
+                <li><a href="IV-03-images.html"><span class="global-nav__index">03</span><span>Backgrounds &amp; Motion</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="mockups">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-mockups">
+            V. Mockups
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-mockups" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Mockups">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="V-01-wiki.html"><span class="global-nav__index">01</span><span>Wiki</span></a></li>
+                <li><a href="V-02-chatbot.html" class="is-placeholder"><span class="global-nav__index">02</span><span>Chatbot</span></a></li>
+                <li><a href="V-03-hero.html"    class="is-placeholder"><span class="global-nav__index">03</span><span>Hero</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+      </ul>
+    </nav>
+
+    <a href="#" class="global-nav__chip" aria-label="Design system version">v1.0</a>
+
+  </div>
+</header>
+<main class="shell" id="top">
+
+  <!-- ========================== HERO ========================== -->
+  <section class="hero">
+    <div>
+      <h1 class="h1 reveal">
+        <span class="num">III-18 / Components</span>
+        Chat input.
+      </h1>
+    </div>
+    <div>
+      <p class="lede reveal">
+        The transcript builder behind the admin conversation editor.
+        A vertical stack of role-coloured turn cards — each a single
+        chat message you can edit, reorder, and remove. Producer turns
+        tint <strong>primary green</strong>; vet turns tint
+        <strong>info blue</strong>, so the back-and-forth of a
+        conversation reads at a glance.
+      </p>
+      <p class="lede reveal">
+        Reorder a turn by dragging its grip handle, or with the
+        per-card Up / Down buttons. The dashed
+        <em>Add entry</em> row appends a new producer turn; the role
+        control on each card cycles producer ↔ vet. This is an editor,
+        not a renderer — for the read-only chat surface see
+        <a href="V-02-chatbot.html">V-02</a>.
+      </p>
+    </div>
+
+    <dl class="meta-strip reveal">
+      <div><dt>Component</dt><dd>Chat Input</dd></div>
+      <div><dt>Roles</dt><dd>Producer · Vet</dd></div>
+      <div><dt>Reorder</dt><dd>Drag · Up/Down</dd></div>
+      <div><dt>Pattern</dt><dd>Editable transcript</dd></div>
+    </dl>
+  </section>
+
+  <!-- ========================== 01 / ANATOMY ========================== -->
+  <section class="chunk" id="anatomy">
+    <header class="chunk-head reveal">
+      <span class="num-tag">01 / Chat Input — Anatomy</span>
+      <h2 class="h2">Anatomy.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      One turn card is a toolbar row over a message field. The toolbar
+      carries — left to right — a drag handle, a role control, the
+      zero-padded turn number, and a right-aligned action cluster
+      (move up, move down, remove). Below the list sits the dashed
+      add-entry row. Two roles tint the whole card.
+    </p>
+
+    <div class="glass chat-input-anatomy reveal" aria-label="Chat input anatomy diagram">
+      <div class="chat-input-anatomy__diagram">
+        <div class="chat-input">
+
+          <div class="chat-input__turn chat-input__turn--producer">
+            <div class="chat-input__bar">
+              <button type="button" class="chat-input__handle" aria-label="Drag to reorder">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="18" r="1"/></svg>
+              </button>
+              <button type="button" class="chat-input__role">
+                <span class="chat-input__role-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </span>
+                <span class="chat-input__role-label">Producer</span>
+                <span class="chat-input__role-chev" aria-hidden="true">
+                  <svg viewBox="0 0 12 12"><path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+              </button>
+              <span class="chat-input__turn-no">TURN 01</span>
+              <div class="chat-input__actions">
+                <button type="button" class="chat-input__action" aria-label="Move up" disabled>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>
+                </button>
+                <button type="button" class="chat-input__action" aria-label="Move down">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+                </button>
+                <button type="button" class="chat-input__action chat-input__action--remove" aria-label="Remove turn">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+                </button>
+              </div>
+            </div>
+            <textarea class="chat-input__field" placeholder="Message content…">My piglets are off feed and lethargic — what should I check first?</textarea>
+          </div>
+
+          <div class="chat-input__turn chat-input__turn--vet">
+            <div class="chat-input__bar">
+              <button type="button" class="chat-input__handle" aria-label="Drag to reorder">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="18" r="1"/></svg>
+              </button>
+              <button type="button" class="chat-input__role">
+                <span class="chat-input__role-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3"/><path d="M8 15v1a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6v-4"/><circle cx="20" cy="10" r="2"/></svg>
+                </span>
+                <span class="chat-input__role-label">Vet</span>
+                <span class="chat-input__role-chev" aria-hidden="true">
+                  <svg viewBox="0 0 12 12"><path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+              </button>
+              <span class="chat-input__turn-no">TURN 02</span>
+              <div class="chat-input__actions">
+                <button type="button" class="chat-input__action" aria-label="Move up">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>
+                </button>
+                <button type="button" class="chat-input__action" aria-label="Move down" disabled>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+                </button>
+                <button type="button" class="chat-input__action chat-input__action--remove" aria-label="Remove turn">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+                </button>
+              </div>
+            </div>
+            <textarea class="chat-input__field" placeholder="Message content…">Check water intake and temperature first. Off-feed plus lethargy in piglets often points to early enteric or respiratory disease.</textarea>
+          </div>
+
+        </div>
+      </div>
+
+      <dl class="chat-input-anatomy__legend">
+        <dt>A · turn card</dt>
+        <dd><code>.chat-input__turn</code> is one chat message. The role modifier (<code>--producer</code> / <code>--vet</code>) re-points the <code>--chat-turn-*</code> trio so border, background, and accent text all tint together.</dd>
+
+        <dt>B · handle</dt>
+        <dd><code>.chat-input__handle</code> is the grip. <code>cursor: grab</code> at rest, <code>grabbing</code> while held. Drag it vertically to reorder; <code>touch-action: none</code> keeps the pointer drag from scrolling the page.</dd>
+
+        <dt>C · role control</dt>
+        <dd><code>.chat-input__role</code> pairs the role icon, role label, and a small chevron. Click cycles producer ↔ vet, re-tinting the card and swapping the icon + label.</dd>
+
+        <dt>D · turn number</dt>
+        <dd><code>.chat-input__turn-no</code> renders the zero-padded, tabular mono index ("TURN 01"). It re-syncs after every reorder, add, and remove.</dd>
+
+        <dt>E · actions</dt>
+        <dd><code>.chat-input__actions</code> is the <code>margin-left:auto</code> cluster: <em>move up</em> (disabled on the first card), <em>move down</em> (disabled on the last), and <em>remove</em> (<code>--remove</code>, hovers critical, disabled when only one card remains).</dd>
+
+        <dt>F · field</dt>
+        <dd><code>.chat-input__field</code> is the message textarea — full width, resize-y, with the form focus ring.</dd>
+
+        <dt>G · add entry</dt>
+        <dd><code>.chat-input__add</code> is the dashed full-width row below the list; it appends a producer turn and tints primary on hover.</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ========================== 02 / ROLES ========================== -->
+  <section class="chunk" id="roles">
+    <header class="chunk-head reveal">
+      <span class="num-tag">02 / Chat Input — Roles</span>
+      <h2 class="h2">Roles.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      Two roles, two colour families. <strong>Producer</strong> carries
+      the user (farmer) voice and tints primary green; <strong>vet</strong>
+      carries the clinician voice and tints info blue. The whole card
+      tints — border, fill, and accent text — so a long transcript reads
+      as alternating speakers without per-line labels.
+    </p>
+
+    <div class="chat-input-roles reveal">
+
+      <div class="chat-input-roles__col">
+        <span class="chat-input-roles__label">Producer · primary / green</span>
+        <div class="chat-input">
+          <div class="chat-input__turn chat-input__turn--producer">
+            <div class="chat-input__bar">
+              <button type="button" class="chat-input__handle" aria-label="Drag to reorder" tabindex="-1">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="18" r="1"/></svg>
+              </button>
+              <button type="button" class="chat-input__role" tabindex="-1">
+                <span class="chat-input__role-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </span>
+                <span class="chat-input__role-label">Producer</span>
+                <span class="chat-input__role-chev" aria-hidden="true">
+                  <svg viewBox="0 0 12 12"><path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+              </button>
+              <span class="chat-input__turn-no">TURN 01</span>
+            </div>
+            <textarea class="chat-input__field" placeholder="Message content…" tabindex="-1">My piglets are off feed and lethargic.</textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-input-roles__col">
+        <span class="chat-input-roles__label">Vet · info / blue</span>
+        <div class="chat-input">
+          <div class="chat-input__turn chat-input__turn--vet">
+            <div class="chat-input__bar">
+              <button type="button" class="chat-input__handle" aria-label="Drag to reorder" tabindex="-1">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="18" r="1"/></svg>
+              </button>
+              <button type="button" class="chat-input__role" tabindex="-1">
+                <span class="chat-input__role-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3"/><path d="M8 15v1a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6v-4"/><circle cx="20" cy="10" r="2"/></svg>
+                </span>
+                <span class="chat-input__role-label">Vet</span>
+                <span class="chat-input__role-chev" aria-hidden="true">
+                  <svg viewBox="0 0 12 12"><path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+              </button>
+              <span class="chat-input__turn-no">TURN 02</span>
+            </div>
+            <textarea class="chat-input__field" placeholder="Message content…" tabindex="-1">Check water intake and temperature first.</textarea>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <p class="usage-note usage-note--below reveal">
+      <strong>The role tint is the only speaker signal — keep both
+      roles in play.</strong> A transcript that's all one role reads as
+      a monologue, not a conversation. The role control exists so an
+      author can fix a mistyped speaker in place; don't repurpose it as
+      a generic "category" toggle.
+    </p>
+  </section>
+
+  <!-- ========================== 03 / STATES ========================== -->
+  <section class="chunk" id="states">
+    <header class="chunk-head reveal">
+      <span class="num-tag">03 / Chat Input — States</span>
+      <h2 class="h2">States.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      Rest, the lifted drag preview, the focused field, and the
+      disabled action edges (first card can't move up, last can't move
+      down, a lone card can't be removed). The dragging source dims to
+      <code>opacity: .4</code> while its clone floats.
+    </p>
+
+    <div class="chat-input-state-grid reveal">
+
+      <div class="chat-input-state-card">
+        <span class="label">Rest</span>
+        <div class="chat-input">
+          <div class="chat-input__turn chat-input__turn--producer">
+            <div class="chat-input__bar">
+              <button type="button" class="chat-input__handle" aria-label="Drag to reorder" tabindex="-1">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="18" r="1"/></svg>
+              </button>
+              <button type="button" class="chat-input__role" tabindex="-1">
+                <span class="chat-input__role-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </span>
+                <span class="chat-input__role-label">Producer</span>
+                <span class="chat-input__role-chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </button>
+              <span class="chat-input__turn-no">TURN 01</span>
+            </div>
+            <textarea class="chat-input__field" placeholder="Message content…" tabindex="-1">Resting turn card.</textarea>
+          </div>
+        </div>
+        <div class="meta"><span>.chat-input__turn</span><strong>idle</strong></div>
+      </div>
+
+      <div class="chat-input-state-card">
+        <span class="label">Dragging · lifted preview</span>
+        <div class="chat-input">
+          <div class="chat-input__turn chat-input__turn--vet chat-input__turn--overlay">
+            <div class="chat-input__bar">
+              <button type="button" class="chat-input__handle" aria-label="Drag to reorder" tabindex="-1">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="18" r="1"/></svg>
+              </button>
+              <button type="button" class="chat-input__role" tabindex="-1">
+                <span class="chat-input__role-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3"/><path d="M8 15v1a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6v-4"/><circle cx="20" cy="10" r="2"/></svg>
+                </span>
+                <span class="chat-input__role-label">Vet</span>
+                <span class="chat-input__role-chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </button>
+              <span class="chat-input__turn-no">TURN 02</span>
+            </div>
+            <textarea class="chat-input__field" placeholder="Message content…" tabindex="-1">Picked up and floating.</textarea>
+          </div>
+        </div>
+        <div class="meta"><span>--overlay</span><strong>shadow + lift</strong></div>
+      </div>
+
+      <div class="chat-input-state-card">
+        <span class="label">Source · dimmed</span>
+        <div class="chat-input">
+          <div class="chat-input__turn chat-input__turn--vet is-dragging">
+            <div class="chat-input__bar">
+              <button type="button" class="chat-input__handle" aria-label="Drag to reorder" tabindex="-1">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="18" r="1"/></svg>
+              </button>
+              <button type="button" class="chat-input__role" tabindex="-1">
+                <span class="chat-input__role-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3"/><path d="M8 15v1a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6v-4"/><circle cx="20" cy="10" r="2"/></svg>
+                </span>
+                <span class="chat-input__role-label">Vet</span>
+                <span class="chat-input__role-chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </button>
+              <span class="chat-input__turn-no">TURN 02</span>
+            </div>
+            <textarea class="chat-input__field" placeholder="Message content…" tabindex="-1">Source slot while dragging.</textarea>
+          </div>
+        </div>
+        <div class="meta"><span>.is-dragging</span><strong>opacity .4</strong></div>
+      </div>
+
+      <div class="chat-input-state-card">
+        <span class="label">Field · focused</span>
+        <div class="chat-input">
+          <div class="chat-input__turn chat-input__turn--producer">
+            <div class="chat-input__bar">
+              <button type="button" class="chat-input__handle" aria-label="Drag to reorder" tabindex="-1">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="18" r="1"/></svg>
+              </button>
+              <button type="button" class="chat-input__role" tabindex="-1">
+                <span class="chat-input__role-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </span>
+                <span class="chat-input__role-label">Producer</span>
+                <span class="chat-input__role-chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </button>
+              <span class="chat-input__turn-no">TURN 03</span>
+            </div>
+            <textarea class="chat-input__field chat-input__field--focus-demo" placeholder="Message content…" tabindex="-1">Editing this message.</textarea>
+          </div>
+        </div>
+        <div class="meta"><span>:focus</span><strong>accent ring</strong></div>
+      </div>
+
+      <div class="chat-input-state-card">
+        <span class="label">Actions · disabled edges</span>
+        <div class="chat-input">
+          <div class="chat-input__turn chat-input__turn--producer">
+            <div class="chat-input__bar">
+              <span class="chat-input__turn-no">TURN 01 · only</span>
+              <div class="chat-input__actions">
+                <button type="button" class="chat-input__action" aria-label="Move up" tabindex="-1" disabled>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>
+                </button>
+                <button type="button" class="chat-input__action" aria-label="Move down" tabindex="-1" disabled>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+                </button>
+                <button type="button" class="chat-input__action chat-input__action--remove" aria-label="Remove turn" tabindex="-1" disabled>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+                </button>
+              </div>
+            </div>
+            <textarea class="chat-input__field" placeholder="Message content…" tabindex="-1">A lone turn: every reorder + remove disabled.</textarea>
+          </div>
+        </div>
+        <div class="meta"><span>[disabled]</span><strong>edge of list</strong></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================== 04 / LIVE DEMO ========================== -->
+  <section class="chunk" id="demo">
+    <header class="chunk-head reveal">
+      <span class="num-tag">04 / Chat Input — Live</span>
+      <h2 class="h2">Try it.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      A working editor seeded with three turns. Drag a handle to
+      reorder, use Up / Down, click a role control to flip the speaker,
+      remove a turn, or add a new one. Turn numbers re-sync after every
+      change.
+    </p>
+
+    <div class="chat-input-stage reveal">
+      <div class="chat-input" id="chatInputDemo" aria-label="Conversation transcript editor"></div>
+      <button type="button" class="chat-input__add" id="chatInputAdd">
+        <span class="chat-input__add-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+        </span>
+        Add entry
+      </button>
+    </div>
+
+    <p class="usage-note usage-note--below reveal">
+      <strong>Reorder by the handle or by Up / Down — never by drag on
+      the field.</strong> The textarea owns text selection and the
+      caret; hijacking pointer-down there for drag would steal the
+      author's ability to edit. Drag lives on the grip alone.
+    </p>
+  </section>
+
+  <!-- ========================== 05 / TOKENS ========================== -->
+  <section class="chunk" id="tokens">
+    <header class="chunk-head reveal">
+      <span class="num-tag">05 / Chat Input — Component tokens</span>
+      <h2 class="h2">Tokens.</h2>
+    </header>
+
+    <p class="section-lede reveal">
+      The full <code>--chat-*</code> map. Component tokens reference
+      semantics only; the role modifiers re-point the
+      <code>--chat-turn-*</code> trio rather than re-declaring rules,
+      so producer and vet share one card shape.
+    </p>
+
+    <table class="token-table reveal" aria-label="Chat input component tokens">
+      <thead>
+        <tr>
+          <th>Component token</th>
+          <th>References</th>
+          <th>Resolves to</th>
+          <th>Preview</th>
+        </tr>
+      </thead>
+      <tbody id="chatTokenTable"></tbody>
+    </table>
+  </section>
+
+  <!-- ========================== FOOTER ========================== -->
+  <footer>
+    <span>END OF SECTION</span>
+  </footer>
+
+</main>
+
+<script>
+/* =========================================================
+   COMPONENT TOKEN DATA — Chat Input
+   ========================================================= */
+const CHAT_TOKENS = [
+  { group: 'List + turn — shape', tokens: [
+    ['--chat-gap',           'var(--space-gap-default)'],
+    ['--chat-turn-radius',   'var(--radius-md)'],
+    ['--chat-turn-pad',      'var(--space-container-y-sm)'],
+    ['--chat-turn-gap',      'var(--space-gap-snug)'],
+    ['--chat-turn-shadow',   'var(--shadow-sm)'],
+  ]},
+  { group: 'Role — producer (PRIMARY)', tokens: [
+    ['--chat-producer-bg',     'var(--background-primary-subtle)'],
+    ['--chat-producer-border', 'var(--border-primary)'],
+    ['--chat-producer-accent', 'var(--text-primary-strong)'],
+  ]},
+  { group: 'Role — vet (INFO)', tokens: [
+    ['--chat-vet-bg',     'var(--background-info)'],
+    ['--chat-vet-border', 'var(--border-info)'],
+    ['--chat-vet-accent', 'var(--text-info-strong)'],
+  ]},
+  { group: 'Toolbar + handle', tokens: [
+    ['--chat-bar-gap',         'var(--space-gap-snug)'],
+    ['--chat-handle-fg',       'var(--icon-default-subtle)'],
+    ['--chat-handle-fg-hover', 'var(--icon-default)'],
+    ['--chat-icon-size',       '16px'],
+  ]},
+  { group: 'Role control', tokens: [
+    ['--chat-role-radius',    'var(--radius-sm)'],
+    ['--chat-role-pad-x',     'var(--space-tier-6)'],
+    ['--chat-role-pad-y',     'var(--space-tier-7)'],
+    ['--chat-role-bg-hover',  'var(--background-default-hover)'],
+  ]},
+  { group: 'Turn number', tokens: [
+    ['--chat-turn-no-fg',   'var(--text-default-minimal)'],
+    ['--chat-turn-no-size', 'var(--text-eyebrow)'],
+  ]},
+  { group: 'Action buttons', tokens: [
+    ['--chat-action-size',           '28px'],
+    ['--chat-action-fg',             'var(--icon-default-subtle)'],
+    ['--chat-action-fg-hover',       'var(--icon-default)'],
+    ['--chat-action-bg-hover',       'var(--background-default-hover)'],
+    ['--chat-action-fg-disabled',    'var(--icon-default-disabled)'],
+    ['--chat-action-remove-fg-hover','var(--text-critical)'],
+    ['--chat-action-remove-bg-hover','var(--background-critical)'],
+  ]},
+  { group: 'Field — textarea', tokens: [
+    ['--chat-field-radius',       'var(--radius-sm)'],
+    ['--chat-field-min-h',        '72px'],
+    ['--chat-field-font-size',    'var(--text-admin-body)'],
+    ['--chat-field-fg',           'var(--text-default)'],
+    ['--chat-field-bg',           'var(--background-default)'],
+    ['--chat-field-border',       'var(--border-default-input)'],
+    ['--chat-field-border-focus', 'var(--border-primary)'],
+    ['--chat-field-ring-focus',   'mix(border-primary 25%, transparent)'],
+    ['--chat-field-placeholder',  'var(--text-default-minimal)'],
+  ]},
+  { group: 'Add-entry row', tokens: [
+    ['--chat-add-height',       '40px'],
+    ['--chat-add-fg',           'var(--text-default-minimal)'],
+    ['--chat-add-border',       'var(--border-default-strong)'],
+    ['--chat-add-fg-hover',     'var(--text-primary-strong)'],
+    ['--chat-add-bg-hover',     'var(--background-primary-subtle)'],
+    ['--chat-add-border-hover', 'var(--border-primary)'],
+  ]},
+  { group: 'Drag — lifted overlay', tokens: [
+    ['--chat-overlay-shadow',    'var(--shadow-lg)'],
+    ['--chat-overlay-transform', 'scale(1.03) rotate(-1.5deg)'],
+    ['--chat-dragging-opacity',  '.4'],
+  ]},
+];
+
+function resolveCss(varName) {
+  const styles = getComputedStyle(document.documentElement);
+  return styles.getPropertyValue(varName).trim();
+}
+function isColorish(value) {
+  if (!value) return false;
+  const v = value.toLowerCase();
+  return v.startsWith('#') || v.startsWith('rgb') || v.startsWith('hsl') ||
+         v.startsWith('color-mix') || v.startsWith('linear-gradient') ||
+         v.startsWith('radial-gradient') || v === 'transparent' ||
+         /^[a-z]+$/.test(v);
+}
+function renderTokenTable() {
+  const tbody = document.getElementById('chatTokenTable');
+  if (!tbody) return;
+  let html = '';
+  CHAT_TOKENS.forEach(group => {
+    html += `<tr class="group-row"><td colspan="4">${group.group}</td></tr>`;
+    group.tokens.forEach(([name, ref]) => {
+      const resolved = resolveCss(name) || '—';
+      const isColor = isColorish(resolved);
+      const swatch = isColor
+        ? `<span class="tk-tile" style="background:${resolved}"></span>`
+        : `<span class="tk-tile tk-tile--noncolor"></span>`;
+      html += `<tr>
+        <td class="tk-name">${name}</td>
+        <td class="tk-ref">${ref.replace(/</g,'&lt;')}</td>
+        <td class="tk-resolved">${resolved.length > 60 ? resolved.slice(0,57)+'…' : resolved}</td>
+        <td class="tk-swatch">${swatch}</td>
+      </tr>`;
+    });
+  });
+  tbody.innerHTML = html;
+}
+
+/* =========================================================
+   FOCUS-DEMO HOOK
+   Pin the field-focus ring for the static state tile without
+   actually focusing the input (which would scroll the page).
+   ========================================================= */
+function applyStaticStateStyles() {
+  const get = (name) => resolveCss(name);
+  const sheet = document.createElement('style');
+  sheet.textContent = `
+    .chat-input__field--focus-demo {
+      border-color: ${get('--chat-field-border-focus')};
+      box-shadow: 0 0 0 3px ${get('--chat-field-ring-focus')};
+    }
+  `;
+  document.head.appendChild(sheet);
+}
+
+/* =========================================================
+   ICON LIBRARY — inline SVG strings
+   ========================================================= */
+const ICONS = {
+  grip: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="18" r="1"/></svg>',
+  chevron: '<svg viewBox="0 0 12 12"><path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  up: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>',
+  down: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>',
+  remove: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+  producer: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
+  vet: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3"/><path d="M8 15v1a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6v-4"/><circle cx="20" cy="10" r="2"/></svg>',
+};
+const ROLE_LABEL = { producer: 'Producer', vet: 'Vet' };
+const nextRole = (r) => (r === 'producer' ? 'vet' : 'producer');
+const pad2 = (n) => String(n).padStart(2, '0');
+
+/* =========================================================
+   LIVE EDITOR — vanilla state + render
+   ========================================================= */
+const ChatEditor = (() => {
+  let state = [];
+  let uid = 0;
+  let listEl = null;
+
+  function seed() {
+    state = [
+      { id: ++uid, role: 'producer', text: 'My piglets are off feed and lethargic — what should I check first?' },
+      { id: ++uid, role: 'vet', text: 'Check water intake and rectal temperature first. Off-feed plus lethargy in young piglets often points to early enteric or respiratory disease.' },
+      { id: ++uid, role: 'producer', text: 'Water looks normal but two of them feel hot. Should I separate them?' },
+    ];
+  }
+
+  /* Build one card DOM node from a turn object + its index. */
+  function buildTurn(turn, index, count) {
+    const card = document.createElement('div');
+    card.className = `chat-input__turn chat-input__turn--${turn.role}`;
+    card.dataset.id = String(turn.id);
+
+    const bar = document.createElement('div');
+    bar.className = 'chat-input__bar';
+
+    const handle = document.createElement('button');
+    handle.type = 'button';
+    handle.className = 'chat-input__handle';
+    handle.setAttribute('aria-label', 'Drag to reorder');
+    handle.innerHTML = ICONS.grip;
+
+    const role = document.createElement('button');
+    role.type = 'button';
+    role.className = 'chat-input__role';
+    role.innerHTML =
+      `<span class="chat-input__role-icon" aria-hidden="true">${ICONS[turn.role]}</span>` +
+      `<span class="chat-input__role-label">${ROLE_LABEL[turn.role]}</span>` +
+      `<span class="chat-input__role-chev" aria-hidden="true">${ICONS.chevron}</span>`;
+
+    const no = document.createElement('span');
+    no.className = 'chat-input__turn-no';
+    no.textContent = `TURN ${pad2(index + 1)}`;
+
+    const actions = document.createElement('div');
+    actions.className = 'chat-input__actions';
+
+    const upBtn = document.createElement('button');
+    upBtn.type = 'button';
+    upBtn.className = 'chat-input__action';
+    upBtn.setAttribute('aria-label', 'Move up');
+    upBtn.innerHTML = ICONS.up;
+    upBtn.disabled = index === 0;
+
+    const downBtn = document.createElement('button');
+    downBtn.type = 'button';
+    downBtn.className = 'chat-input__action';
+    downBtn.setAttribute('aria-label', 'Move down');
+    downBtn.innerHTML = ICONS.down;
+    downBtn.disabled = index === count - 1;
+
+    const removeBtn = document.createElement('button');
+    removeBtn.type = 'button';
+    removeBtn.className = 'chat-input__action chat-input__action--remove';
+    removeBtn.setAttribute('aria-label', 'Remove turn');
+    removeBtn.innerHTML = ICONS.remove;
+    removeBtn.disabled = count <= 1;
+
+    actions.append(upBtn, downBtn, removeBtn);
+    bar.append(handle, role, no, actions);
+
+    const field = document.createElement('textarea');
+    field.className = 'chat-input__field';
+    field.placeholder = 'Message content…';
+    field.value = turn.text;
+
+    card.append(bar, field);
+
+    /* ---- Wire interactions ---- */
+    field.addEventListener('input', () => { turn.text = field.value; });
+    role.addEventListener('click', () => { turn.role = nextRole(turn.role); render(); });
+    upBtn.addEventListener('click', () => move(turn.id, -1));
+    downBtn.addEventListener('click', () => move(turn.id, +1));
+    removeBtn.addEventListener('click', () => remove(turn.id));
+    handle.addEventListener('pointerdown', (e) => startDrag(e, turn.id, card));
+
+    return card;
+  }
+
+  function render() {
+    if (!listEl) return;
+    listEl.textContent = '';
+    const count = state.length;
+    state.forEach((turn, i) => listEl.appendChild(buildTurn(turn, i, count)));
+  }
+
+  function indexOfId(id) {
+    return state.findIndex(t => t.id === id);
+  }
+
+  function move(id, delta) {
+    const i = indexOfId(id);
+    const j = i + delta;
+    if (i < 0 || j < 0 || j >= state.length) return;
+    const [item] = state.splice(i, 1);
+    state.splice(j, 0, item);
+    render();
+  }
+
+  function remove(id) {
+    if (state.length <= 1) return;
+    const i = indexOfId(id);
+    if (i < 0) return;
+    state.splice(i, 1);
+    render();
+  }
+
+  function add() {
+    state.push({ id: ++uid, role: 'producer', text: '' });
+    render();
+    /* Focus the new field for immediate typing. */
+    const last = listEl.lastElementChild;
+    if (last) {
+      const ta = last.querySelector('.chat-input__field');
+      if (ta) ta.focus();
+    }
+  }
+
+  /* =========================================================
+     POINTER DRAG — reorder via the handle
+     Lift a fixed-position clone that follows pointer Y, dim
+     the source, compute insertion index from sibling
+     midpoints, commit on pointerup.
+     ========================================================= */
+  function startDrag(e, id, card) {
+    /* Primary button / touch / pen only. */
+    if (e.button !== undefined && e.button !== 0) return;
+    e.preventDefault();
+
+    const startIndex = indexOfId(id);
+    if (startIndex < 0) return;
+
+    const rect = card.getBoundingClientRect();
+    const grabOffsetY = e.clientY - rect.top;
+
+    /* Floating clone pinned to the viewport. */
+    const clone = card.cloneNode(true);
+    clone.classList.add('chat-input__turn--overlay');
+    clone.style.position = 'fixed';
+    clone.style.left = rect.left + 'px';
+    clone.style.top = (e.clientY - grabOffsetY) + 'px';
+    clone.style.width = rect.width + 'px';
+    clone.style.margin = '0';
+    clone.style.zIndex = '9999';
+    document.body.appendChild(clone);
+
+    /* Dim the in-place source. */
+    card.classList.add('is-dragging');
+    document.body.style.userSelect = 'none';
+
+    let targetIndex = startIndex;
+
+    function computeIndex(clientY) {
+      /* Cards currently in the list, in DOM order. The dragged
+         source is still present (dimmed); use midpoints of every
+         card to find where the pointer sits. */
+      const cards = Array.from(listEl.querySelectorAll('.chat-input__turn'));
+      let idx = cards.length - 1;
+      for (let k = 0; k < cards.length; k++) {
+        const r = cards[k].getBoundingClientRect();
+        const mid = r.top + r.height / 2;
+        if (clientY < mid) { idx = k; break; }
+      }
+      return idx;
+    }
+
+    function onMove(ev) {
+      clone.style.top = (ev.clientY - grabOffsetY) + 'px';
+      targetIndex = computeIndex(ev.clientY);
+    }
+
+    function onUp() {
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerup', onUp);
+      window.removeEventListener('pointercancel', onUp);
+      if (clone.parentNode) clone.parentNode.removeChild(clone);
+      card.classList.remove('is-dragging');
+      document.body.style.userSelect = '';
+
+      /* Commit the reorder. targetIndex is computed against the
+         current list (source still in place), so removing the
+         source first then inserting at the clamped target lands
+         it correctly for both up and down moves. */
+      const from = indexOfId(id);
+      if (from < 0) { render(); return; }
+      const [item] = state.splice(from, 1);
+      let to = targetIndex;
+      if (to > from) to -= 1;              /* account for removed source above target */
+      to = Math.max(0, Math.min(to, state.length));
+      state.splice(to, 0, item);
+      render();
+    }
+
+    window.addEventListener('pointermove', onMove);
+    window.addEventListener('pointerup', onUp);
+    window.addEventListener('pointercancel', onUp);
+  }
+
+  function init(listSelector, addSelector) {
+    listEl = document.querySelector(listSelector);
+    if (!listEl) return;
+    seed();
+    render();
+    const addBtn = document.querySelector(addSelector);
+    if (addBtn) addBtn.addEventListener('click', add);
+  }
+
+  return { init };
+})();
+
+/* =========================================================
+   REVEAL ON SCROLL
+   ========================================================= */
+function initReveal() {
+  const items = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    items.forEach(el => el.classList.add('in'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        en.target.classList.add('in');
+        io.unobserve(en.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(el => io.observe(el));
+}
+
+/* =========================================================
+   BOOT
+   ========================================================= */
+document.addEventListener('DOMContentLoaded', () => {
+  renderTokenTable();
+  applyStaticStateStyles();
+  ChatEditor.init('#chatInputDemo', '#chatInputAdd');
+  initReveal();
+});
+</script>
+
+</body>
+</html>
