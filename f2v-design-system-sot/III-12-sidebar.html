@@ -8,22 +8,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-<!-- Design system: shared, reusable foundation -->
 <link rel="stylesheet" href="styles/tokens.css" />
 <link rel="stylesheet" href="styles/base.css" />
 <link rel="stylesheet" href="styles/typography.css" />
 <link rel="stylesheet" href="styles/shell.css" />
 <link rel="stylesheet" href="styles/global-nav.css" />
-<!-- Reuse: usage-note pattern + variant grid surfaces -->
-<link rel="stylesheet" href="styles/page-III-03.css" />
-<!-- Reuse: token-table styling + preview stages -->
-<link rel="stylesheet" href="styles/page-III-02.css" />
-<!-- Reuse: card-callout pattern -->
-<link rel="stylesheet" href="styles/page-III-05.css" />
-<!-- Reuse: spec-list, state-grid, behaviour-table, pre.code, anatomy diagram chrome -->
-<link rel="stylesheet" href="styles/page-III-10.css" />
 <link rel="stylesheet" href="styles/sidebar.css" />
-<link rel="stylesheet" href="styles/app-shell.css" />
 <link rel="stylesheet" href="styles/page-III-12.css" />
 
 <script src="scripts/global-nav.js" defer></script>
@@ -129,6 +119,7 @@
 
   </div>
 </header>
+
 <main class="shell" id="top">
 
   <!-- ========================== HERO ========================== -->
@@ -141,196 +132,24 @@
     </div>
     <div>
       <p class="lede reveal">
-        The persistent in-app navigation surface for a single
-        product instance. A glass rail anchored to the
-        viewport's leading edge, exposing the top-level
-        destinations available to the signed-in user.
-      </p>
-    </div>
-
-    <dl class="meta-strip reveal">
-      <div><dt>Modes</dt><dd>2</dd></div>
-      <div><dt>Slots</dt><dd>4</dd></div>
-      <div><dt>Viewports</dt><dd>2</dd></div>
-    </dl>
-  </section>
-
-  <!-- ========================== ARCHITECTURAL CALLOUTS ========================== -->
-  <section class="chunk" style="padding-top: var(--spacing-8x); padding-bottom: 0;">
-    <div class="card-callout reveal" role="note">
-      <span class="label">Architectural note · scope boundaries</span>
-      <p>
-        <strong>The sidebar is the product-level navigation surface.</strong>
-        It exposes the destinations of an application
-        consuming this design system — the Wiki, the Chatbot,
-        the Hero mockups, or any future product. The Header
-        &amp; Navigation Bar (Section 10) exposes the
-        documentation system itself and is rendered above
-        every page in this repository; it is not a sidebar
-        and does not collapse to a rail. The Side Panel
-        (Section 07) is a transient drawer raised from a
-        trigger to hold a focused sub-task; it is not a
-        navigation surface and does not persist between
-        routes.
-      </p>
-    </div>
-
-    <div class="card-callout reveal" role="note" style="margin-top: var(--spacing-4x);">
-      <span class="label">Architectural note · single active item</span>
-      <p>
-        <strong>One item, and only one, carries
-        <code>.is-current</code> at any time.</strong>
-        The active state reflects the application's current
-        route. Highlighting two items at once — typically
-        because a parent group and a child sub-item are both
-        marked active — produces an ambiguous reading of
-        location and erodes the rail's usefulness as a
-        wayfinding device. When a sub-item is active, mark
-        only the sub-item; the parent group's
-        <code>.is-open</code> state already communicates that
-        the active route belongs to that group.
+        The admin v2 forest rail. A brand-primary glass column
+        with frosted interactive states and a radial fly-out for
+        collapsed group navigation. Use the button below to preview
+        it live on this page.
       </p>
     </div>
   </section>
 
-  <!-- ========================== 01 / ANATOMY ========================== -->
-  <section class="chunk" id="anatomy">
-    <header class="chunk-head reveal">
-      <span class="num-tag">01 / Anatomy</span>
-      <h2 class="h2">Anatomy.</h2>
-    </header>
+  <!-- ========================== STATE PREVIEWS ========================== -->
+  <section class="chunk">
 
-    <p class="section-lede reveal">
-      Width, item height, and icon size are fixed component-token
-      values. Above the responsive breakpoint the rail is persistent
-      and the user toggles between expanded and compact; below it,
-      the rail detaches and renders as an overlay drawer. Everything
-      else — header height, item row, icon size, padding, avatar —
-      is identical across viewports.
-    </p>
+    <!-- ── FLOATING RAIL ──────────────────────────────────────── -->
+    <div class="mode-preview reveal" aria-label="Sidebar — floating glass rail">
+      <span class="mode-preview__label">Floating glass rail · collapsed &amp; expanded</span>
+      <div class="mode-preview__stage mode-preview__stage--light mode-preview__stage--floating">
 
-    <div class="anatomy-stage reveal" aria-label="Sidebar anatomy specifications">
-
-      <table class="anatomy-specs" aria-label="Sidebar dimensions across viewports">
-        <thead>
-          <tr>
-            <th scope="col">Dimension</th>
-            <th scope="col">Persistent ≥ 720 px</th>
-            <th scope="col">Overlay ≤ 719 px</th>
-            <th scope="col">Token</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">Mode</th>
-            <td>Expanded · user-collapsible to compact</td>
-            <td>Overlay drawer</td>
-            <td><span class="anatomy-cell-empty">—</span></td>
-          </tr>
-          <tr>
-            <th scope="row">Width</th>
-            <td>280 px · 64 px when compact</td>
-            <td>280 px (raised) · 0 px at rest</td>
-            <td><code>--sidebar-width-expanded</code><br><code>--sidebar-width-rail</code></td>
-          </tr>
-          <tr>
-            <th scope="row">Height</th>
-            <td>100 vh</td>
-            <td>100 vh (when raised)</td>
-            <td><code>min-height: 100vh</code></td>
-          </tr>
-          <tr>
-            <th scope="row">Min · max width</th>
-            <td>min 64 · max 280</td>
-            <td>min 0 · max 280</td>
-            <td>—</td>
-          </tr>
-          <tr>
-            <th scope="row">Header</th>
-            <td colspan="2">56 px min height · brand mark left · collapse trigger right (centred in compact)</td>
-            <td><code>--sidebar-header-pad-y</code></td>
-          </tr>
-          <tr>
-            <th scope="row">Item row</th>
-            <td colspan="2">44 px tall · 44 × 44 square in compact</td>
-            <td><code>--sidebar-item-height</code></td>
-          </tr>
-          <tr>
-            <th scope="row">Icon</th>
-            <td colspan="2">20 px stroke icon · centred inside the row</td>
-            <td><code>--sidebar-item-icon-size</code></td>
-          </tr>
-          <tr>
-            <th scope="row">Padding</th>
-            <td colspan="2">12 px inline · 16 px block · 4 px between rows</td>
-            <td><code>--sidebar-padding-x · -y · -gap</code></td>
-          </tr>
-          <tr>
-            <th scope="row">Avatar</th>
-            <td colspan="2">36 px · pill radius · seven-layer glass</td>
-            <td>see <a href="II-semantics.html#glass">II / Glass</a></td>
-          </tr>
-          <tr>
-            <th scope="row">Trigger</th>
-            <td>Collapse / expand toggle in header</td>
-            <td>Raised from page top-bar trigger</td>
-            <td>—</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <p class="anatomy-note">
-        Icon stroke and grid live with the icon set itself; once
-        <a href="IV-02-icons.html">IV-02 / Icons</a> is authored the
-        <strong>20 px</strong> rail icon will reference that page's
-        canonical icon scale. Until then the sidebar's icon size is
-        authored locally as <code>--sidebar-item-icon-size</code>.
-      </p>
-    </div>
-
-    <p class="usage-note reveal">
-      <strong>The rail always fills the viewport's height.</strong>
-      The component declares <code>min-height: 100vh</code>; the
-      application's shell layout supplies any outer padding or
-      margin (a header above, a margin around the page) and the
-      rail stretches to whatever's left. The rail's height does not
-      change when an item is disclosed, when the user collapses to
-      compact, or when the route changes.
-    </p>
-
-    <p class="usage-note reveal">
-      <strong>Width is fixed per mode; the rail does not fluid-scale
-      between breakpoints.</strong> Expanded is 280 px, compact is
-      64 px, overlay raises to 280 px. The viewport selects the
-      mode; the mode selects the width. There is no intermediate
-      width and no resize handle. A fluid rail would shift the
-      column boundaries the main content is laid out against and
-      would invalidate the page grid at every viewport resize.
-    </p>
-  </section>
-
-  <!-- ========================== 02 / MODES ========================== -->
-  <section class="chunk" id="modes">
-    <header class="chunk-head reveal">
-      <span class="num-tag">02 / Modes</span>
-      <h2 class="h2">Modes.</h2>
-    </header>
-
-    <p class="section-lede reveal">
-      The rail resolves into one of two persistent modes.
-        Expanded is the default at desktop widths and renders the
-        icon plus the label. Compact narrows the rail to the icon
-        column and exposes the label as a tooltip on hover; the
-        choice persists per user as an application preference.
-    </p>
-
-    <!-- LIGHT PREVIEW — brand header, profile in footer -->
-    <div class="mode-preview reveal" aria-label="Sidebar — light tone">
-      <span class="mode-preview__label">Light · default surface</span>
-      <div class="mode-preview__stage mode-preview__stage--light">
-
-        <!-- Compact (rail) -->
-        <aside class="sidebar sidebar--collapsed" aria-label="Sample light compact">
+        <!-- Collapsed icon rail -->
+        <aside class="sidebar sidebar--collapsed sidebar--tone-forest" aria-label="Collapsed floating rail">
           <header class="sidebar__header">
             <a href="#" class="sidebar__brand" aria-label="Farm2Vet">
               <img class="sidebar__brand-mark" src="logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
@@ -339,302 +158,61 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6"/></svg>
             </button>
           </header>
-          <nav class="sidebar__nav" aria-label="Sample light compact destinations">
-            <ul class="sidebar__list">
-              <li class="sidebar__item"><a class="sidebar__link" href="#" title="Overview Dashboard"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span><span class="sidebar__label">Overview Dashboard</span></a></li>
-              <li class="sidebar__item"><a class="sidebar__link" href="#" title="Data Management"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/></svg></span><span class="sidebar__label">Data Management</span></a></li>
-              <li class="sidebar__item"><a class="sidebar__link" href="#" title="Automated Testing"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg></span><span class="sidebar__label">Automated Testing</span></a></li>
-              <li class="sidebar__item"><a class="sidebar__link" href="#" title="Sync database"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></span><span class="sidebar__label">Sync database</span></a></li>
-            </ul>
-          </nav>
-          <div class="sidebar__footer">
-            <div class="sidebar__profile-wrap">
-              <button type="button"
-                      class="sidebar__profile"
-                      aria-label="Account menu — Minh, Admin"
-                      aria-haspopup="menu"
-                      aria-expanded="false"
-                      style="cursor: pointer; background: transparent; border: none; padding: 0;">
-                <span class="sidebar__avatar" aria-hidden="true">M</span>
-              </button>
-
-              <div class="sidebar__menu" role="menu" aria-label="Account">
-                <span class="sidebar__menu-header">farm2vets.tech@gmail.com</span>
-                <ul class="sidebar__menu-list">
-                  <li role="none">
-                    <a class="sidebar__menu-item" role="menuitem" href="#">
-                      <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <circle cx="12" cy="12" r="3"/>
-                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-                      </svg>
-                      <span>Settings</span>
-                    </a>
-                  </li>
-                  <li role="none">
-                    <a class="sidebar__menu-item" role="menuitem" href="#">
-                      <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <circle cx="12" cy="12" r="10"/>
-                        <line x1="2" y1="12" x2="22" y2="12"/>
-                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-                      </svg>
-                      <span>Language</span>
-                    </a>
-                  </li>
-                  <li role="none">
-                    <a class="sidebar__menu-item" role="menuitem" href="#">
-                      <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <circle cx="12" cy="12" r="10"/>
-                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-                        <line x1="12" y1="17" x2="12.01" y2="17"/>
-                      </svg>
-                      <span>Get Help</span>
-                    </a>
-                  </li>
-                  <li role="none" class="sidebar__menu-item--divider" aria-hidden="true"></li>
-                  <li role="none">
-                    <a class="sidebar__menu-item" role="menuitem" href="#">
-                      <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                        <polyline points="16 17 21 12 16 7"/>
-                        <line x1="21" y1="12" x2="9" y2="12"/>
-                      </svg>
-                      <span>Logout</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </aside>
-
-        <!-- Expanded -->
-        <aside class="sidebar" aria-label="Sample light expanded">
-          <header class="sidebar__header">
-            <a href="#" class="sidebar__brand">
-              <img class="sidebar__brand-mark" src="logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
-              <span class="sidebar__brand-text">Farm2Vet</span>
-            </a>
-            <button type="button" class="sidebar__collapse" aria-label="Collapse sidebar" aria-pressed="false">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6"/></svg>
-            </button>
-          </header>
-          <nav class="sidebar__nav" aria-label="Sample light expanded destinations">
-            <ul class="sidebar__list">
-              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span><span class="sidebar__label">Overview Dashboard</span></a></li>
-              <li class="sidebar__item is-open">
-                <button type="button" class="sidebar__link" aria-expanded="true">
-                  <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/></svg></span>
-                  <span class="sidebar__label">Data Management</span>
-                  <span class="sidebar__trailing"><svg class="sidebar__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></span>
-                </button>
-                <ul class="sidebar__sublist">
-                  <li class="sidebar__item"><a class="sidebar__link is-current" href="#" aria-current="page"><span class="sidebar__label">Disease</span></a></li>
-                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Question</span></a></li>
-                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Conversation</span></a></li>
-                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Image</span></a></li>
-                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Resource</span></a></li>
-                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">PDF Input</span></a></li>
-                </ul>
-              </li>
-              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg></span><span class="sidebar__label">Automated Testing</span></a></li>
-              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></span><span class="sidebar__label">Sync database</span></a></li>
-            </ul>
-          </nav>
-          <div class="sidebar__footer">
-            <div class="sidebar__profile-wrap">
-              <div class="sidebar__profile">
-                <span class="sidebar__avatar" aria-hidden="true">M</span>
-                <span class="sidebar__profile-text">
-                  <span class="sidebar__profile-name">Minh</span>
-                  <span class="sidebar__profile-role">Admin</span>
-                </span>
-                <button type="button"
-                        class="sidebar__overflow"
-                        aria-label="Account menu"
-                        aria-haspopup="menu"
-                        aria-expanded="false">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <circle cx="12" cy="5" r="1"/>
-                    <circle cx="12" cy="12" r="1"/>
-                    <circle cx="12" cy="19" r="1"/>
-                  </svg>
-                </button>
-              </div>
-
-              <div class="sidebar__menu" role="menu" aria-label="Account">
-                <span class="sidebar__menu-header">farm2vets.tech@gmail.com</span>
-                <ul class="sidebar__menu-list">
-                  <li role="none">
-                    <a class="sidebar__menu-item" role="menuitem" href="#">
-                      <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <circle cx="12" cy="12" r="3"/>
-                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-                      </svg>
-                      <span>Settings</span>
-                    </a>
-                  </li>
-                  <li role="none">
-                    <a class="sidebar__menu-item" role="menuitem" href="#">
-                      <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <circle cx="12" cy="12" r="10"/>
-                        <line x1="2" y1="12" x2="22" y2="12"/>
-                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-                      </svg>
-                      <span>Language</span>
-                    </a>
-                  </li>
-                  <li role="none">
-                    <a class="sidebar__menu-item" role="menuitem" href="#">
-                      <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <circle cx="12" cy="12" r="10"/>
-                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-                        <line x1="12" y1="17" x2="12.01" y2="17"/>
-                      </svg>
-                      <span>Get Help</span>
-                    </a>
-                  </li>
-                  <li role="none" class="sidebar__menu-item--divider" aria-hidden="true"></li>
-                  <li role="none">
-                    <a class="sidebar__menu-item" role="menuitem" href="#">
-                      <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                        <polyline points="16 17 21 12 16 7"/>
-                        <line x1="21" y1="12" x2="9" y2="12"/>
-                      </svg>
-                      <span>Logout</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </aside>
-
-      </div>
-      <div class="mode-preview__meta">
-        <span><code>--sidebar-width-rail</code> 64 px</span>
-        <span><code>--sidebar-width-expanded</code> 280 px</span>
-      </div>
-    </div>
-
-    <!-- ADMIN-V2 PREVIEW — collapsed forest rail with the radial fly-out -->
-    <div class="mode-preview reveal" aria-label="Sidebar — admin v2 collapsed fly-out">
-      <span class="mode-preview__label">Admin v2 · collapsed fly-out</span>
-      <div class="mode-preview__stage mode-preview__stage--light" style="justify-content: space-between;">
-
-        <!-- Compact (rail) — hover or click a group to fan its children onto an arc -->
-        <aside class="sidebar sidebar--collapsed sidebar--tone-forest" aria-label="Admin v2 collapsed rail">
-          <header class="sidebar__header">
-            <a href="#" class="sidebar__brand" aria-label="Farm2Vet">
-              <img class="sidebar__brand-mark" src="logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
-            </a>
-            <button type="button" class="sidebar__collapse" aria-label="Expand sidebar" aria-pressed="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6"/></svg>
-            </button>
-          </header>
-          <nav class="sidebar__nav" aria-label="Admin v2 collapsed destinations">
+          <nav class="sidebar__nav" aria-label="Primary destinations">
             <ul class="sidebar__list">
               <li class="sidebar__item">
                 <a class="sidebar__link is-current" href="#" title="Overview" aria-current="page">
-                  <span class="sidebar__shine"></span>
                   <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span>
                   <span class="sidebar__label">Overview</span>
                 </a>
               </li>
-              <!-- Group: its hidden sub-list is the data source the fan reads -->
               <li class="sidebar__item sidebar__item--has-fan">
                 <button type="button" class="sidebar__link" aria-haspopup="menu" title="Data Management">
-                  <span class="sidebar__shine"></span>
-                  <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/></svg></span>
+                  <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg></span>
                   <span class="sidebar__label">Data Management</span>
                 </button>
                 <ul class="sidebar__sublist">
-                  <li class="sidebar__item"><a class="sidebar__link is-current" href="#" aria-current="page"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span><span class="sidebar__label">Disease</span></a></li>
-                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span><span class="sidebar__label">Question</span></a></li>
-                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><span class="sidebar__label">Conversation</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span><span class="sidebar__label">Disease</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span><span class="sidebar__label">Question</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v5z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/></svg></span><span class="sidebar__label">Conversation</span></a></li>
                   <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.6-3.6a2 2 0 0 0-2.8 0L6 21"/></svg></span><span class="sidebar__label">Image</span></a></li>
-                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span><span class="sidebar__label">Resource</span></a></li>
-                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span><span class="sidebar__label">PDF Input</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17H7A5 5 0 0 1 7 7h2"/><path d="M15 7h2a5 5 0 1 1 0 10h-2"/><line x1="8" y1="12" x2="16" y2="12"/></svg></span><span class="sidebar__label">Resource</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span><span class="sidebar__label">Files</span></a></li>
                 </ul>
               </li>
-              <li class="sidebar__item">
-                <a class="sidebar__link" href="#" title="Automated Testing">
-                  <span class="sidebar__shine"></span>
+              <li class="sidebar__item sidebar__item--has-fan">
+                <button type="button" class="sidebar__link" aria-haspopup="menu" title="Automated Testing">
                   <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg></span>
                   <span class="sidebar__label">Automated Testing</span>
-                </a>
-              </li>
-              <li class="sidebar__item">
-                <a class="sidebar__link" href="#" title="Sync database">
-                  <span class="sidebar__shine"></span>
-                  <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></span>
-                  <span class="sidebar__label">Sync database</span>
-                </a>
+                </button>
+                <ul class="sidebar__sublist">
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><span class="sidebar__label">Synthetic Profiles</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 7 2 2 4-4"/><path d="m3 12 2 2 4-4"/><path d="m3 17 2 2 4-4"/><path d="M11 8h10"/><path d="M11 13h10"/><path d="M11 18h10"/></svg></span><span class="sidebar__label">Test Suites</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg></span><span class="sidebar__label">Executions</span></a></li>
+                </ul>
               </li>
             </ul>
           </nav>
           <div class="sidebar__footer">
             <div class="sidebar__profile-wrap">
-              <button type="button"
-                      class="sidebar__profile"
-                      aria-label="Account menu — Minh, Admin"
-                      aria-haspopup="menu"
-                      aria-expanded="false"
-                      style="cursor: pointer; background: transparent; border: none; padding: 0;">
+              <button type="button" class="sidebar__profile" aria-label="Account menu — Minh, Admin" aria-haspopup="menu" aria-expanded="false" style="cursor:pointer;background:transparent;border:none;padding:0;">
                 <span class="sidebar__avatar" aria-hidden="true">M</span>
               </button>
-
               <div class="sidebar__menu" role="menu" aria-label="Account">
                 <span class="sidebar__menu-header">farm2vets.tech@gmail.com</span>
                 <ul class="sidebar__menu-list">
-                  <li role="none">
-                    <a class="sidebar__menu-item" role="menuitem" href="#">
-                      <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <circle cx="12" cy="12" r="3"/>
-                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-                      </svg>
-                      <span>Settings</span>
-                    </a>
-                  </li>
-                  <li role="none">
-                    <a class="sidebar__menu-item" role="menuitem" href="#">
-                      <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <circle cx="12" cy="12" r="10"/>
-                        <line x1="2" y1="12" x2="22" y2="12"/>
-                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-                      </svg>
-                      <span>Language</span>
-                    </a>
-                  </li>
-                  <li role="none">
-                    <a class="sidebar__menu-item" role="menuitem" href="#">
-                      <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <circle cx="12" cy="12" r="10"/>
-                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-                        <line x1="12" y1="17" x2="12.01" y2="17"/>
-                      </svg>
-                      <span>Get Help</span>
-                    </a>
-                  </li>
+                  <li role="none"><a class="sidebar__menu-item" role="menuitem" href="#"><svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Settings</span></a></li>
+                  <li role="none"><a class="sidebar__menu-item" role="menuitem" href="#"><svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>Help</span></a></li>
                   <li role="none" class="sidebar__menu-item--divider" aria-hidden="true"></li>
-                  <li role="none">
-                    <a class="sidebar__menu-item" role="menuitem" href="#">
-                      <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                        <polyline points="16 17 21 12 16 7"/>
-                        <line x1="21" y1="12" x2="9" y2="12"/>
-                      </svg>
-                      <span>Logout</span>
-                    </a>
-                  </li>
+                  <li role="none"><a class="sidebar__menu-item" role="menuitem" href="#"><svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>Logout</span></a></li>
                 </ul>
               </div>
             </div>
           </div>
         </aside>
 
-        <!-- Expanded -->
-        <aside class="sidebar sidebar--tone-forest" aria-label="Admin v2 expanded rail">
+        <!-- Expanded rail, Data Management open -->
+        <aside class="sidebar sidebar--tone-forest" aria-label="Expanded floating rail">
           <header class="sidebar__header">
             <a href="#" class="sidebar__brand">
               <img class="sidebar__brand-mark" src="logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
@@ -644,27 +222,41 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6"/></svg>
             </button>
           </header>
-          <nav class="sidebar__nav" aria-label="Admin v2 expanded destinations">
+          <nav class="sidebar__nav" aria-label="Primary destinations">
             <ul class="sidebar__list">
-              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__shine"></span><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span><span class="sidebar__label">Overview Dashboard</span></a></li>
+              <li class="sidebar__item">
+                <a class="sidebar__link" href="#">
+                  <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span>
+                  <span class="sidebar__label">Overview</span>
+                </a>
+              </li>
               <li class="sidebar__item is-open">
                 <button type="button" class="sidebar__link" aria-expanded="true">
-                  <span class="sidebar__shine"></span>
-                  <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/></svg></span>
+                  <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg></span>
                   <span class="sidebar__label">Data Management</span>
                   <span class="sidebar__trailing"><svg class="sidebar__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></span>
                 </button>
                 <ul class="sidebar__sublist">
-                  <li class="sidebar__item"><a class="sidebar__link is-current" href="#" aria-current="page"><span class="sidebar__shine"></span><span class="sidebar__label">Disease</span></a></li>
-                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__shine"></span><span class="sidebar__label">Question</span></a></li>
-                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__shine"></span><span class="sidebar__label">Conversation</span></a></li>
-                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__shine"></span><span class="sidebar__label">Image</span></a></li>
-                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__shine"></span><span class="sidebar__label">Resource</span></a></li>
-                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__shine"></span><span class="sidebar__label">PDF Input</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link is-current" href="#" aria-current="page"><span class="sidebar__label">Disease</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Question</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Conversation</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Image</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Resource</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Files</span></a></li>
                 </ul>
               </li>
-              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__shine"></span><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg></span><span class="sidebar__label">Automated Testing</span></a></li>
-              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__shine"></span><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></span><span class="sidebar__label">Sync database</span></a></li>
+              <li class="sidebar__item">
+                <button type="button" class="sidebar__link" aria-expanded="false">
+                  <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg></span>
+                  <span class="sidebar__label">Automated Testing</span>
+                  <span class="sidebar__trailing"><svg class="sidebar__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></span>
+                </button>
+                <ul class="sidebar__sublist">
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Synthetic Profiles</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Test Suites</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Executions</span></a></li>
+                </ul>
+              </li>
             </ul>
           </nav>
           <div class="sidebar__footer">
@@ -675,82 +267,100 @@
                   <span class="sidebar__profile-name">Minh</span>
                   <span class="sidebar__profile-role">Admin</span>
                 </span>
-                <button type="button"
-                        class="sidebar__overflow"
-                        aria-label="Account menu"
-                        aria-haspopup="menu"
-                        aria-expanded="false">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <circle cx="12" cy="5" r="1"/>
-                    <circle cx="12" cy="12" r="1"/>
-                    <circle cx="12" cy="19" r="1"/>
-                  </svg>
+                <button type="button" class="sidebar__overflow" aria-label="Account menu" aria-haspopup="menu" aria-expanded="false">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
                 </button>
               </div>
-
               <div class="sidebar__menu" role="menu" aria-label="Account">
                 <span class="sidebar__menu-header">farm2vets.tech@gmail.com</span>
                 <ul class="sidebar__menu-list">
-                  <li role="none">
-                    <a class="sidebar__menu-item" role="menuitem" href="#">
-                      <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <circle cx="12" cy="12" r="3"/>
-                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-                      </svg>
-                      <span>Settings</span>
-                    </a>
-                  </li>
-                  <li role="none">
-                    <a class="sidebar__menu-item" role="menuitem" href="#">
-                      <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <circle cx="12" cy="12" r="10"/>
-                        <line x1="2" y1="12" x2="22" y2="12"/>
-                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-                      </svg>
-                      <span>Language</span>
-                    </a>
-                  </li>
-                  <li role="none">
-                    <a class="sidebar__menu-item" role="menuitem" href="#">
-                      <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <circle cx="12" cy="12" r="10"/>
-                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-                        <line x1="12" y1="17" x2="12.01" y2="17"/>
-                      </svg>
-                      <span>Get Help</span>
-                    </a>
-                  </li>
+                  <li role="none"><a class="sidebar__menu-item" role="menuitem" href="#"><svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Settings</span></a></li>
+                  <li role="none"><a class="sidebar__menu-item" role="menuitem" href="#"><svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>Help</span></a></li>
                   <li role="none" class="sidebar__menu-item--divider" aria-hidden="true"></li>
-                  <li role="none">
-                    <a class="sidebar__menu-item" role="menuitem" href="#">
-                      <svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                        <polyline points="16 17 21 12 16 7"/>
-                        <line x1="21" y1="12" x2="9" y2="12"/>
-                      </svg>
-                      <span>Logout</span>
-                    </a>
-                  </li>
+                  <li role="none"><a class="sidebar__menu-item" role="menuitem" href="#"><svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>Logout</span></a></li>
                 </ul>
               </div>
             </div>
           </div>
         </aside>
 
-      </div>
+      </div><!-- /.mode-preview__stage -->
       <div class="mode-preview__meta">
-        <span><code>.sidebar__item--has-fan</code> · hover / click a collapsed group</span>
-        <span>Children spring onto a half-circle arc · click-pin · Esc</span>
+        <span><code>.sidebar--tone-forest</code> · rounded corners, four-sided floating shadow</span>
+        <span>Hover a collapsed group icon to open the radial fan</span>
       </div>
-    </div>
+    </div><!-- /.mode-preview (floating) -->
 
-    <!-- ACTIVE-SOLID PREVIEW — same anatomy, .sidebar--active-solid only on the right -->
-    <div class="mode-preview reveal" aria-label="Sidebar — active-state prominence">
-      <span class="mode-preview__label">Active state · canonical vs solid</span>
-      <div class="mode-preview__stage mode-preview__stage--light">
+    <!-- ── ANCHORED RAIL ──────────────────────────────────────── -->
+    <div class="mode-preview reveal" aria-label="Sidebar — anchored structural rail">
+      <span class="mode-preview__label">Anchored structural rail · collapsed &amp; expanded</span>
+      <div class="mode-preview__stage mode-preview__stage--light mode-preview__stage--anchored">
 
-        <!-- Left — canonical (pale tint) -->
-        <aside class="sidebar" aria-label="Sample canonical active state">
+        <!-- Collapsed anchored rail -->
+        <aside class="sidebar sidebar--collapsed sidebar--tone-forest sidebar--anchored" aria-label="Collapsed anchored rail">
+          <header class="sidebar__header">
+            <a href="#" class="sidebar__brand" aria-label="Farm2Vet">
+              <img class="sidebar__brand-mark" src="logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
+            </a>
+            <button type="button" class="sidebar__collapse" aria-label="Expand sidebar" aria-pressed="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6"/></svg>
+            </button>
+          </header>
+          <nav class="sidebar__nav" aria-label="Primary destinations">
+            <ul class="sidebar__list">
+              <li class="sidebar__item">
+                <a class="sidebar__link is-current" href="#" title="Overview" aria-current="page">
+                  <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span>
+                  <span class="sidebar__label">Overview</span>
+                </a>
+              </li>
+              <li class="sidebar__item sidebar__item--has-fan">
+                <button type="button" class="sidebar__link" aria-haspopup="menu" title="Data Management">
+                  <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg></span>
+                  <span class="sidebar__label">Data Management</span>
+                </button>
+                <ul class="sidebar__sublist">
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span><span class="sidebar__label">Disease</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span><span class="sidebar__label">Question</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v5z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/></svg></span><span class="sidebar__label">Conversation</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.6-3.6a2 2 0 0 0-2.8 0L6 21"/></svg></span><span class="sidebar__label">Image</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17H7A5 5 0 0 1 7 7h2"/><path d="M15 7h2a5 5 0 1 1 0 10h-2"/><line x1="8" y1="12" x2="16" y2="12"/></svg></span><span class="sidebar__label">Resource</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span><span class="sidebar__label">Files</span></a></li>
+                </ul>
+              </li>
+              <li class="sidebar__item sidebar__item--has-fan">
+                <button type="button" class="sidebar__link" aria-haspopup="menu" title="Automated Testing">
+                  <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg></span>
+                  <span class="sidebar__label">Automated Testing</span>
+                </button>
+                <ul class="sidebar__sublist">
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><span class="sidebar__label">Synthetic Profiles</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 7 2 2 4-4"/><path d="m3 12 2 2 4-4"/><path d="m3 17 2 2 4-4"/><path d="M11 8h10"/><path d="M11 13h10"/><path d="M11 18h10"/></svg></span><span class="sidebar__label">Test Suites</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg></span><span class="sidebar__label">Executions</span></a></li>
+                </ul>
+              </li>
+            </ul>
+          </nav>
+          <div class="sidebar__footer">
+            <div class="sidebar__profile-wrap">
+              <button type="button" class="sidebar__profile" aria-label="Account menu — Minh, Admin" aria-haspopup="menu" aria-expanded="false" style="cursor:pointer;background:transparent;border:none;padding:0;">
+                <span class="sidebar__avatar" aria-hidden="true">M</span>
+              </button>
+              <div class="sidebar__menu" role="menu" aria-label="Account">
+                <span class="sidebar__menu-header">farm2vets.tech@gmail.com</span>
+                <ul class="sidebar__menu-list">
+                  <li role="none"><a class="sidebar__menu-item" role="menuitem" href="#"><svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Settings</span></a></li>
+                  <li role="none"><a class="sidebar__menu-item" role="menuitem" href="#"><svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>Help</span></a></li>
+                  <li role="none" class="sidebar__menu-item--divider" aria-hidden="true"></li>
+                  <li role="none"><a class="sidebar__menu-item" role="menuitem" href="#"><svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>Logout</span></a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Expanded anchored rail, Data Management open -->
+        <aside class="sidebar sidebar--tone-forest sidebar--anchored" aria-label="Expanded anchored rail">
           <header class="sidebar__header">
             <a href="#" class="sidebar__brand">
               <img class="sidebar__brand-mark" src="logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
@@ -760,12 +370,17 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6"/></svg>
             </button>
           </header>
-          <nav class="sidebar__nav" aria-label="Sample canonical destinations">
+          <nav class="sidebar__nav" aria-label="Primary destinations">
             <ul class="sidebar__list">
-              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span><span class="sidebar__label">Overview Dashboard</span></a></li>
+              <li class="sidebar__item">
+                <a class="sidebar__link" href="#">
+                  <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span>
+                  <span class="sidebar__label">Overview</span>
+                </a>
+              </li>
               <li class="sidebar__item is-open">
                 <button type="button" class="sidebar__link" aria-expanded="true">
-                  <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/></svg></span>
+                  <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg></span>
                   <span class="sidebar__label">Data Management</span>
                   <span class="sidebar__trailing"><svg class="sidebar__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></span>
                 </button>
@@ -775,406 +390,55 @@
                   <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Conversation</span></a></li>
                   <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Image</span></a></li>
                   <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Resource</span></a></li>
-                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">PDF Input</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Files</span></a></li>
                 </ul>
               </li>
-              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg></span><span class="sidebar__label">Automated Testing</span></a></li>
-              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></span><span class="sidebar__label">Sync database</span></a></li>
-            </ul>
-          </nav>
-          <div class="sidebar__footer">
-            <div class="sidebar__profile">
-              <span class="sidebar__avatar" aria-hidden="true">M</span>
-              <span class="sidebar__profile-text">
-                <span class="sidebar__profile-name">Minh</span>
-                <span class="sidebar__profile-role">Admin</span>
-              </span>
-            </div>
-          </div>
-        </aside>
-
-        <!-- Right — .sidebar--active-solid -->
-        <aside class="sidebar sidebar--active-solid" aria-label="Sample active-solid destinations">
-          <header class="sidebar__header">
-            <a href="#" class="sidebar__brand">
-              <img class="sidebar__brand-mark" src="logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
-              <span class="sidebar__brand-text">Farm2Vet</span>
-            </a>
-            <button type="button" class="sidebar__collapse" aria-label="Collapse sidebar" aria-pressed="false">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6"/></svg>
-            </button>
-          </header>
-          <nav class="sidebar__nav" aria-label="Sample active-solid destinations">
-            <ul class="sidebar__list">
-              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span><span class="sidebar__label">Overview Dashboard</span></a></li>
-              <li class="sidebar__item is-open">
-                <button type="button" class="sidebar__link" aria-expanded="true">
-                  <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/></svg></span>
-                  <span class="sidebar__label">Data Management</span>
+              <li class="sidebar__item">
+                <button type="button" class="sidebar__link" aria-expanded="false">
+                  <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg></span>
+                  <span class="sidebar__label">Automated Testing</span>
                   <span class="sidebar__trailing"><svg class="sidebar__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></span>
                 </button>
                 <ul class="sidebar__sublist">
-                  <li class="sidebar__item"><a class="sidebar__link is-current" href="#" aria-current="page"><span class="sidebar__label">Disease</span></a></li>
-                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Question</span></a></li>
-                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Conversation</span></a></li>
-                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Image</span></a></li>
-                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Resource</span></a></li>
-                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">PDF Input</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Synthetic Profiles</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Test Suites</span></a></li>
+                  <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Executions</span></a></li>
                 </ul>
               </li>
-              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg></span><span class="sidebar__label">Automated Testing</span></a></li>
-              <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></span><span class="sidebar__label">Sync database</span></a></li>
             </ul>
           </nav>
           <div class="sidebar__footer">
-            <div class="sidebar__profile">
-              <span class="sidebar__avatar" aria-hidden="true">M</span>
-              <span class="sidebar__profile-text">
-                <span class="sidebar__profile-name">Minh</span>
-                <span class="sidebar__profile-role">Admin</span>
-              </span>
+            <div class="sidebar__profile-wrap">
+              <div class="sidebar__profile">
+                <span class="sidebar__avatar" aria-hidden="true">M</span>
+                <span class="sidebar__profile-text">
+                  <span class="sidebar__profile-name">Minh</span>
+                  <span class="sidebar__profile-role">Admin</span>
+                </span>
+                <button type="button" class="sidebar__overflow" aria-label="Account menu" aria-haspopup="menu" aria-expanded="false">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                </button>
+              </div>
+              <div class="sidebar__menu" role="menu" aria-label="Account">
+                <span class="sidebar__menu-header">farm2vets.tech@gmail.com</span>
+                <ul class="sidebar__menu-list">
+                  <li role="none"><a class="sidebar__menu-item" role="menuitem" href="#"><svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Settings</span></a></li>
+                  <li role="none"><a class="sidebar__menu-item" role="menuitem" href="#"><svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>Help</span></a></li>
+                  <li role="none" class="sidebar__menu-item--divider" aria-hidden="true"></li>
+                  <li role="none"><a class="sidebar__menu-item" role="menuitem" href="#"><svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>Logout</span></a></li>
+                </ul>
+              </div>
             </div>
           </div>
         </aside>
 
-      </div>
+      </div><!-- /.mode-preview__stage -->
       <div class="mode-preview__meta">
-        <span><code>.sidebar--active-solid</code></span>
-        <span>Same anatomy · active-state delta only</span>
+        <span><code>.sidebar--tone-forest.sidebar--anchored</code> · zero radius, trailing-edge shadow</span>
+        <span>Forest glass surface retained · structural full-height column</span>
       </div>
-    </div>
+    </div><!-- /.mode-preview (anchored) -->
 
-    <p class="usage-note reveal">
-      <strong>Active-state prominence is opt-in.</strong> The
-      canonical <code>.is-current</code> reads as a quiet primary
-      tint — appropriate for documentation, marketing, and the
-      wiki rail where the sidebar is one element among many.
-      Dense product admin surfaces add
-      <code>.sidebar--active-solid</code> to paint the active row
-      as a solid primary pill. With forest now the primary, white
-      on the pill clears WCAG AA for large / UI text — a lift from
-      the old lime primary's ~2.2:1. Apply where the density is
-      warranted (the <code>/workspace/*</code> admin family).
-    </p>
-
-    <p class="usage-note reveal">
-      <strong>Compact is a user preference, not a layout
-      breakpoint.</strong> The user opts into the compact rail
-      via the collapse trigger. Overlay (described in §05) is
-      selected by the application below the responsive breakpoint
-      and is not a desktop affordance.
-    </p>
-
-    <p class="usage-note reveal">
-      <strong>The label is never removed from the DOM in compact
-      mode.</strong> The compact rail clips the label visually
-      but keeps it in the link's accessible name. Substituting
-      <code>aria-label</code> on the icon duplicates the label in
-      screen-reader output when the rail re-expands.
-    </p>
-
-    <p class="usage-note reveal">
-      <strong>Pick the tone by what the rail sits over.</strong>
-      Light is the documentation default. <strong>Forest</strong>
-      (<code>.sidebar--tone-forest</code>, paired with
-      <code>.sidebar--active-solid</code>) is the admin / product
-      rail shown above — a solid brand-primary column with
-      white-on-forest rows, a shine sweep, and the collapsed
-      fly-out. <strong>Dark</strong> (<code>.sidebar--tone-dark</code>)
-      is for a rail mounted over imagery or a dark shell. A
-      user-controlled dark mode swaps both rail and page through
-      the system's theme rail, not through this modifier.
-    </p>
-
-    <p class="usage-note reveal">
-      <strong>Count pips persist into compact mode.</strong> A
-      badge marked <code>.sidebar__badge--pip</code> stays
-      visible when the rail is collapsed, repositioned as a small
-      numeric dot at the top-right of the leading icon. Use this
-      only for <em>time-sensitive, unread</em> counts (notifications,
-      chat, alerts). Routine trailing counts (e.g. <em>Visits 6</em>)
-      omit the modifier and hide cleanly when the rail collapses.
-    </p>
-  </section>
-
-  <!-- ========================== 03 / STATES ========================== -->
-  <section class="chunk" id="states">
-    <header class="chunk-head reveal">
-      <span class="num-tag">03 / States</span>
-      <h2 class="h2">States.</h2>
-    </header>
-
-    <p class="section-lede reveal">
-      Item rows resolve into four interactive states. The
-        active state — applied to exactly one row at a time —
-        reuses the system's primary-tinted convention so the
-        rail's selection language matches the header bar's
-        and the dropdown menu's. Hover is the neutral
-        background-default-hover; rest is transparent.
-    </p>
-
-    <div class="state-grid reveal" aria-label="Sidebar item states">
-
-      <article class="state-card">
-        <span class="label">Rest</span>
-        <div class="demo demo--row">
-          <a class="sidebar__link" href="#" tabindex="-1">
-            <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg></span>
-            <span class="sidebar__label">Dashboard</span>
-          </a>
-        </div>
-        <div class="meta"><span>color</span><strong>--text-default-subtle</strong></div>
-      </article>
-
-      <article class="state-card">
-        <span class="label">Hover / focus</span>
-        <div class="demo demo--row">
-          <a class="sidebar__link" href="#" tabindex="-1" style="background: var(--sidebar-item-bg-hover); color: var(--sidebar-item-fg-hover);">
-            <span class="sidebar__icon" aria-hidden="true" style="color: var(--sidebar-item-icon-hover);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg></span>
-            <span class="sidebar__label">Dashboard</span>
-          </a>
-        </div>
-        <div class="meta"><span>background</span><strong>--background-default-hover</strong></div>
-      </article>
-
-      <article class="state-card">
-        <span class="label">Current</span>
-        <div class="demo demo--row">
-          <a class="sidebar__link is-current" href="#" tabindex="-1" aria-current="page">
-            <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg></span>
-            <span class="sidebar__label">Dashboard</span>
-          </a>
-        </div>
-        <div class="meta"><span>token</span><strong>--background-primary-subtle</strong></div>
-      </article>
-
-      <article class="state-card">
-        <span class="label">Disabled</span>
-        <div class="demo demo--row">
-          <a class="sidebar__link is-disabled" href="#" tabindex="-1" aria-disabled="true">
-            <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
-            <span class="sidebar__label">Reports</span>
-          </a>
-        </div>
-        <div class="meta"><span>color</span><strong>--text-default-disabled</strong></div>
-      </article>
-
-      <article class="state-card">
-        <span class="label">With count badge</span>
-        <div class="demo demo--row">
-          <a class="sidebar__link" href="#" tabindex="-1">
-            <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg></span>
-            <span class="sidebar__label">Visits</span>
-            <span class="sidebar__trailing"><span class="sidebar__badge">6</span></span>
-          </a>
-        </div>
-        <div class="meta"><span>slot</span><strong>.sidebar__badge</strong></div>
-      </article>
-
-      <article class="state-card">
-        <span class="label">With status dot</span>
-        <div class="demo demo--row">
-          <a class="sidebar__link" href="#" tabindex="-1">
-            <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></span>
-            <span class="sidebar__label">Health alerts</span>
-            <span class="sidebar__trailing"><span class="sidebar__badge sidebar__badge--dot" aria-label="New"></span></span>
-          </a>
-        </div>
-        <div class="meta"><span>slot</span><strong>.sidebar__badge--dot</strong></div>
-      </article>
-
-    </div>
-
-    <p class="usage-note reveal" style="margin-top: var(--spacing-8x);">
-      <strong>Disabled is for routes the user cannot reach
-      from the current context.</strong> A route is not
-      disabled because it has no data — it is disabled
-      because the user lacks permission, the feature is
-      gated, or a prerequisite step has not been completed.
-      For an empty state, route to the destination and let
-      the page render its empty view.
-    </p>
-
-    <p class="usage-note reveal">
-      <strong>Badge tone follows the system's status
-      semantics.</strong> Neutral counts use the default
-      <code>.sidebar__badge</code>. <code>--info</code> for
-      advisory counts (drafts, pending). <code>--critical</code>
-      for unresolved alerts that need action. The dot variant
-      replaces a badge when the precise count is not
-      meaningful — only that something new has arrived.
-    </p>
-  </section>
-
-  <!-- ========================== 04 / TOKENS ========================== -->
-  <section class="chunk" id="tokens">
-    <header class="chunk-head reveal">
-      <span class="num-tag">04 / Component tokens</span>
-      <h2 class="h2">Component tokens.</h2>
-    </header>
-
-    <p class="section-lede reveal">
-      The rail introduces its own
-        <code>--sidebar-*</code> token namespace, scoped to
-        this component. Every value resolves to a semantic
-        token; no primitive
-        (<code>--neutral-*</code>, <code>--primary-*</code>)
-        is referenced directly. Renaming any consumed
-        semantic token propagates through the rail in step
-        with the rest of the system.
-    </p>
-
-    <table class="token-table reveal" aria-label="Sidebar component tokens">
-      <thead>
-        <tr>
-          <th>Slot</th>
-          <th>References</th>
-          <th>Resolves to</th>
-          <th>Preview</th>
-        </tr>
-      </thead>
-      <tbody id="sidebarTokenTable"></tbody>
-    </table>
-  </section>
-
-  <!-- ========================== 05 / APP SHELL ========================== -->
-  <section class="chunk" id="app-shell">
-    <header class="chunk-head reveal">
-      <span class="num-tag">05 / App shell</span>
-      <h2 class="h2">The shell the rail lives in.</h2>
-    </header>
-
-    <p class="section-lede reveal">
-      The sidebar is a <em>product</em> primitive — built for the admin
-      application, not the documentation site. Its canonical home is
-      <code>.app-shell</code> (a distinct component,
-      <code>styles/app-shell.css</code>): a two-column grid that anchors the
-      rail on the leading edge and carries a sticky glass topbar over a
-      scrolling content region. A data-rich product page is built on this
-      shell; a documentation page is built on <code>.shell</code>
-      (<code>shell.css</code>). A page uses one, never both.
-    </p>
-
-    <!-- Live embedded demo: a real .sidebar hosted in .app-shell, scoped to
-         a bounded scroll stage so the sticky rail + topbar can be shown. -->
-    <div class="app-shell-stage reveal" aria-label="App shell — embedded demo">
-      <div class="app-shell app-shell--embedded">
-
-        <div class="app-shell__sidebar">
-          <aside class="sidebar" aria-label="Sample product navigation">
-            <header class="sidebar__header">
-              <a href="#" class="sidebar__brand">
-                <img class="sidebar__brand-mark" src="logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
-                <span class="sidebar__brand-text">Farm2Vet</span>
-              </a>
-            </header>
-            <nav class="sidebar__nav" aria-label="Sample destinations">
-              <ul class="sidebar__list">
-                <li class="sidebar__item"><a class="sidebar__link" href="#" title="Overview Dashboard"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span><span class="sidebar__label">Overview Dashboard</span></a></li>
-                <li class="sidebar__item"><a class="sidebar__link is-current" href="#" aria-current="page" title="Data Management"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/></svg></span><span class="sidebar__label">Data Management</span></a></li>
-                <li class="sidebar__item"><a class="sidebar__link" href="#" title="Automated Testing"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg></span><span class="sidebar__label">Automated Testing</span></a></li>
-                <li class="sidebar__item"><a class="sidebar__link" href="#" title="Sync database"><span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></span><span class="sidebar__label">Sync database</span></a></li>
-              </ul>
-            </nav>
-          </aside>
-        </div>
-
-        <div class="app-shell__main">
-          <header class="app-shell__topbar">
-            <div class="app-shell__topbar-lead">
-              <span class="admin-card-title">Data Management</span>
-            </div>
-            <div class="app-shell__topbar-actions">
-              <span class="admin-caption">farm2vets.tech</span>
-            </div>
-          </header>
-
-          <div class="app-shell__content">
-            <div class="app-shell-demo__head">
-              <h3 class="admin-page-title">Diseases</h3>
-            </div>
-            <div class="app-shell-demo__grid">
-              <div class="app-shell-demo__tile"><span class="admin-field-label">Diseases</span><span class="admin-stat-value">47</span></div>
-              <div class="app-shell-demo__tile"><span class="admin-field-label">Conversations</span><span class="admin-stat-value">1,284</span></div>
-              <div class="app-shell-demo__tile"><span class="admin-field-label">Test runs</span><span class="admin-stat-value">312</span></div>
-            </div>
-            <div class="app-shell-demo__block">
-              <span class="admin-card-title">Recent activity</span>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <p class="caption reveal" style="margin-top: var(--space-tier-6);">
-      Schematic: the shell is a full-viewport layout shown here inside a
-      bounded, scrolling stage so the sticky rail and topbar are visible.
-      The body content also demonstrates the data/admin type scale
-      (<code>.admin-*</code>).
-    </p>
-
-    <!-- Canonical markup skeleton -->
-    <pre class="markup-skeleton reveal" aria-label="App shell markup skeleton">&lt;body data-surface="admin"&gt;
-  &lt;div class="f2v-bg f2v-bg--earthsky" aria-hidden="true"&gt;&lt;/div&gt;
-
-  &lt;div class="app-shell"&gt;
-    &lt;div class="app-shell__sidebar"&gt;
-      &lt;aside class="sidebar"&gt; … &lt;/aside&gt;          &lt;!-- the product rail --&gt;
-    &lt;/div&gt;
-
-    &lt;div class="app-shell__main"&gt;
-      &lt;header class="app-shell__topbar"&gt;
-        &lt;div class="app-shell__topbar-lead"&gt; … &lt;/div&gt;
-        &lt;div class="app-shell__topbar-actions"&gt; … &lt;/div&gt;
-      &lt;/header&gt;
-      &lt;div class="app-shell__content"&gt; … the page … &lt;/div&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
-&lt;/body&gt;</pre>
-
-    <table class="token-table reveal" aria-label="App shell component tokens">
-      <thead>
-        <tr><th>Token</th><th>References</th><th>Purpose</th></tr>
-      </thead>
-      <tbody>
-        <tr><td><code>--app-shell-inset</code></td><td><code>var(--space-tier-4)</code></td><td>Float margin off the viewport edges (both columns).</td></tr>
-        <tr><td><code>--app-shell-gap</code></td><td><code>var(--space-tier-4)</code></td><td>Gap between the rail and the main column.</td></tr>
-        <tr><td><code>--app-shell-main-gap</code></td><td><code>var(--space-tier-4)</code></td><td>Gap between the topbar and the content region.</td></tr>
-        <tr><td><code>--app-shell-content-pad-x</code></td><td><code>var(--space-page-x)</code></td><td>Content gutter, horizontal.</td></tr>
-        <tr><td><code>--app-shell-content-pad-y</code></td><td><code>var(--space-tier-3)</code></td><td>Content gutter, vertical.</td></tr>
-        <tr><td><code>--app-shell-content-max</code></td><td><code>1280px</code></td><td>Readable cap on content width; <code>.app-shell__content--wide</code> removes it for data grids.</td></tr>
-        <tr><td><code>--app-shell-topbar-bg</code></td><td><code>var(--glass-light-light-bg)</code></td><td>Sticky topbar glass fill (paired with blur + saturate).</td></tr>
-        <tr><td><code>--app-shell-topbar-shadow</code></td><td><code>var(--glass-shadow-raised)</code></td><td>Topbar elevation.</td></tr>
-        <tr><td><code>--app-shell-topbar-z</code></td><td><code>60</code></td><td>Topbar stacking above scrolling content.</td></tr>
-        <tr><td><code>--app-shell-collapse</code></td><td><code>900px</code></td><td>Breakpoint at/below which the grid drops to one column and the rail overlays.</td></tr>
-      </tbody>
-    </table>
-
-    <p class="usage-note reveal">
-      <strong>global-nav and the sidebar are not interchangeable.</strong>
-      <code>global-nav</code> is the design-system <em>site</em> chrome — the
-      top bar that navigates this documentation. The <code>.sidebar</code>
-      inside <code>.app-shell</code> is the <em>product</em> chrome that
-      navigates the application. A product page built on the app shell does
-      not render global-nav; a docs page does not render the sidebar.
-    </p>
-
-    <p class="usage-note reveal">
-      <strong>The app shell pairs with the admin surface.</strong> Set
-      <code>&lt;body data-surface="admin"&gt;</code> so the marketing aurora
-      is dropped (see <code>base.css</code>) and add a
-      <code>.f2v-bg--earthsky</code> element so the calm earthsky wash carries
-      the page. The two backdrops never stack.
-    </p>
-
-    <p class="usage-note reveal">
-      <strong>Two shells, one job each.</strong> <code>shell.css</code>
-      (<code>.shell</code>) is the centred reading column for documentation
-      and marketing; <code>app-shell.css</code> (<code>.app-shell</code>) is
-      the sidebar + topbar + main layout for data-rich product. Choose by the
-      surface, and use exactly one.
-    </p>
   </section>
 
   <!-- ========================== FOOTER ========================== -->
@@ -1184,418 +448,316 @@
 
 </main>
 
+<!-- ========================== LIVE SIDEBAR OVERLAY ========================== -->
+<div class="sidebar-live" id="sidebar-live" aria-hidden="true" aria-label="Live sidebar preview">
+  <div class="sidebar-live__scrim" id="sidebar-live-scrim"></div>
+  <aside class="sidebar sidebar--tone-forest" id="sidebar-live-rail" aria-label="Live preview sidebar">
+    <header class="sidebar__header">
+      <a href="#" class="sidebar__brand">
+        <img class="sidebar__brand-mark" src="logo/logo-emblem-color.svg" alt="" aria-hidden="true" />
+        <span class="sidebar__brand-text">Farm2Vet</span>
+      </a>
+      <button type="button" class="sidebar__collapse" aria-label="Collapse sidebar" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18 9 12l6-6"/></svg>
+      </button>
+    </header>
+    <nav class="sidebar__nav" aria-label="Primary destinations">
+      <ul class="sidebar__list">
+        <li class="sidebar__item">
+          <a class="sidebar__link is-current" href="#" aria-current="page">
+            <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span>
+            <span class="sidebar__label">Overview</span>
+          </a>
+        </li>
+        <li class="sidebar__item is-open">
+          <button type="button" class="sidebar__link" aria-expanded="true">
+            <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg></span>
+            <span class="sidebar__label">Data Management</span>
+            <span class="sidebar__trailing"><svg class="sidebar__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></span>
+          </button>
+          <ul class="sidebar__sublist">
+            <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Disease</span></a></li>
+            <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Question</span></a></li>
+            <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Conversation</span></a></li>
+            <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Image</span></a></li>
+            <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Resource</span></a></li>
+            <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Files</span></a></li>
+          </ul>
+        </li>
+        <li class="sidebar__item">
+          <button type="button" class="sidebar__link" aria-expanded="false">
+            <span class="sidebar__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6L4.5 16.5A3 3 0 0 0 7 21h10a3 3 0 0 0 2.5-4.5L15 8V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg></span>
+            <span class="sidebar__label">Automated Testing</span>
+            <span class="sidebar__trailing"><svg class="sidebar__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></span>
+          </button>
+          <ul class="sidebar__sublist">
+            <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Synthetic Profiles</span></a></li>
+            <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Test Suites</span></a></li>
+            <li class="sidebar__item"><a class="sidebar__link" href="#"><span class="sidebar__label">Executions</span></a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+    <div class="sidebar__footer">
+      <div class="sidebar__profile-wrap">
+        <div class="sidebar__profile">
+          <span class="sidebar__avatar" aria-hidden="true">M</span>
+          <span class="sidebar__profile-text">
+            <span class="sidebar__profile-name">Minh</span>
+            <span class="sidebar__profile-role">Admin</span>
+          </span>
+          <button type="button" class="sidebar__overflow" aria-label="Account menu" aria-haspopup="menu" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+          </button>
+        </div>
+        <div class="sidebar__menu" role="menu" aria-label="Account">
+          <span class="sidebar__menu-header">farm2vets.tech@gmail.com</span>
+          <ul class="sidebar__menu-list">
+            <li role="none"><a class="sidebar__menu-item" role="menuitem" href="#"><svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Settings</span></a></li>
+            <li role="none"><a class="sidebar__menu-item" role="menuitem" href="#"><svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>Help</span></a></li>
+            <li role="none" class="sidebar__menu-item--divider" aria-hidden="true"></li>
+            <li role="none"><a class="sidebar__menu-item" role="menuitem" href="#"><svg class="sidebar__menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>Logout</span></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<!-- ========================== LIVE PREVIEW FAB ========================== -->
+<button type="button" class="sidebar-preview-btn" id="sidebar-preview-toggle" aria-label="Toggle live sidebar preview">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+  <span class="sidebar-preview-btn__label">Preview sidebar</span>
+</button>
+
 <script>
-/* =========================================================
-   COMPONENT TOKEN DATA — Sidebar
-   The rail introduces a dedicated --sidebar-* namespace;
-   each entry below records the slot, the component-scoped
-   token name, and the semantic token it dereferences. The
-   resolved column reads the live computed value so the
-   table stays accurate against whatever token set is
-   active on the page.
-   ========================================================= */
-const SIDEBAR_TOKENS = [
-  { group: 'Container', tokens: [
-    ['--sidebar-width-expanded',   '280px'],
-    ['--sidebar-width-rail',       '64px'],
-    ['--sidebar-radius',           'var(--glass-radius-lg)'],
-    ['--sidebar-padding-x',        'var(--spacing-3x)'],
-    ['--sidebar-padding-y',        'var(--spacing-4x)'],
-    ['--sidebar-gap',              'var(--spacing-1x)'],
-    ['--sidebar-group-gap',        'var(--spacing-6x)'],
-    ['--sidebar-shadow-overlay',   'var(--shadow-lg)'],
-    ['--sidebar-z-overlay',        '70'],
-  ]},
-  { group: 'Glass', tokens: [
-    ['--sidebar-bg',               'var(--glass-light-light-bg)'],
-    ['--sidebar-bg-hover',         'var(--glass-light-light-bg-hover)'],
-    ['--sidebar-bg-pressed',       'var(--glass-light-light-bg-pressed)'],
-    ['--sidebar-border',           'var(--glass-light-light-border)'],
-    ['--sidebar-blur',             'var(--glass-light-light-blur)'],
-    ['--sidebar-saturate',         'var(--glass-saturate)'],
-    ['--sidebar-shadow',           'var(--glass-shadow-floating)'],
-    ['--sidebar-shadow-hover',     'var(--glass-shadow-floating-hover)'],
-    ['--sidebar-inset',            'var(--glass-inset-light-soft)'],
-  ]},
-  { group: 'Header slot', tokens: [
-    ['--sidebar-header-pad-y',     'var(--spacing-3x)'],
-    ['--sidebar-header-border',    'var(--border-default-subtle)'],
-  ]},
-  { group: 'Item · shape', tokens: [
-    ['--sidebar-item-radius',      'var(--radius-md)'],
-    ['--sidebar-item-gap',         'var(--spacing-3x)'],
-    ['--sidebar-item-padding-x',   'var(--spacing-3x)'],
-    ['--sidebar-item-padding-y',   'var(--spacing-3x)'],
-    ['--sidebar-item-height',      '44px'],
-    ['--sidebar-item-icon-size',   '20px'],
-  ]},
-  { group: 'Item · colour', tokens: [
-    ['--sidebar-item-fg',           'var(--text-default-subtle)'],
-    ['--sidebar-item-fg-hover',     'var(--text-default)'],
-    ['--sidebar-item-bg-hover',     'var(--background-default-hover)'],
-    ['--sidebar-item-fg-current',   'var(--text-primary-strong)'],
-    ['--sidebar-item-bg-current',   'var(--background-primary-subtle)'],
-    ['--sidebar-item-fg-disabled',  'var(--text-default-disabled)'],
-    ['--sidebar-item-icon',         'var(--icon-default-subtle)'],
-    ['--sidebar-item-icon-hover',   'var(--icon-default)'],
-    ['--sidebar-item-icon-current', 'var(--icon-primary-strong)'],
-  ]},
-  { group: 'Group label', tokens: [
-    ['--sidebar-group-label-font',     'var(--font-mono)'],
-    ['--sidebar-group-label-size',     'var(--text-eyebrow)'],
-    ['--sidebar-group-label-tracking', 'var(--letter-spacing-eyebrow)'],
-    ['--sidebar-group-label-color',    'var(--text-default-minimal)'],
-    ['--sidebar-group-label-pad-x',    'var(--spacing-3x)'],
-    ['--sidebar-group-label-pad-y',    'var(--spacing-2x)'],
-  ]},
-  { group: 'Sub-list (disclosure)', tokens: [
-    ['--sidebar-sublist-indent', 'calc(var(--sidebar-item-icon-size) + var(--sidebar-item-gap))'],
-    ['--sidebar-sublist-rail',   'var(--border-default-subtle)'],
-  ]},
-  { group: 'Trailing slot', tokens: [
-    ['--sidebar-trailing-color',   'var(--text-default-minimal)'],
-    ['--sidebar-chevron-size',     '14px'],
-    ['--sidebar-chevron-rotation', '90deg'],
-  ]},
-  { group: 'Footer slot', tokens: [
-    ['--sidebar-footer-bg',     'transparent'],
-    ['--sidebar-footer-border', 'var(--border-default-subtle)'],
-    ['--sidebar-footer-pad',    'var(--spacing-3x)'],
-  ]},
-  { group: 'Tooltip (rail mode)', tokens: [
-    ['--sidebar-tip-bg',     'var(--background-toast)'],
-    ['--sidebar-tip-fg',     'var(--text-inverted)'],
-    ['--sidebar-tip-radius', 'var(--radius-sm)'],
-    ['--sidebar-tip-pad-x',  'var(--spacing-3x)'],
-    ['--sidebar-tip-pad-y',  'var(--spacing-1x)'],
-    ['--sidebar-tip-offset', 'var(--spacing-3x)'],
-  ]},
-  { group: 'Popover menu', tokens: [
-    ['--sidebar-menu-bg',          'var(--glass-light-regular-bg)'],
-    ['--sidebar-menu-border',      'var(--glass-light-regular-border)'],
-    ['--sidebar-menu-blur',        'var(--glass-light-regular-blur)'],
-    ['--sidebar-menu-shadow',      'var(--glass-shadow-floating)'],
-    ['--sidebar-menu-inset',       'var(--glass-inset-light-soft)'],
-    ['--sidebar-menu-radius',      'var(--radius-md)'],
-    ['--sidebar-menu-min-width',   '240px'],
-    ['--sidebar-menu-offset',      'var(--spacing-2x)'],
-    ['--sidebar-menu-item-fg',     'var(--text-default)'],
-    ['--sidebar-menu-item-bg-hover','var(--background-default-hover)'],
-    ['--sidebar-menu-item-icon',   'var(--icon-default-subtle)'],
-  ]},
-  { group: 'Overlay', tokens: [
-    ['--sidebar-overlay-scrim', 'var(--background-overlay)'],
-  ]},
-  { group: 'Motion', tokens: [
-    ['width transition',    '.22s cubic-bezier(.2,.8,.2,1)'],
-    ['transform transition','.22s cubic-bezier(.2,.8,.2,1)'],
-    ['link transition',     'background-color .15s ease, color .15s ease'],
-    ['chevron transition',  'transform .18s ease'],
-    ['collapse rotation',   'rotate(180deg)'],
-  ]},
-  { group: 'Shine sweep (admin v2)', tokens: [
-    ['--sidebar-shine-color',    'color-mix(in srgb, var(--white-base) 40%, transparent)'],
-    ['--sidebar-shine-width',    '60%'],
-    ['--sidebar-shine-skew',     '45deg'],
-    ['--sidebar-shine-from',     '-125%'],
-    ['--sidebar-shine-to',       '150%'],
-    ['--sidebar-shine-duration', '.6s'],
-    ['--sidebar-shine-easing',   'ease-out'],
-  ]},
-  { group: 'Collapsed fly-out · fan (admin v2)', tokens: [
-    ['--sidebar-fan-z',                 'var(--sidebar-z-overlay)'],
-    ['--sidebar-fan-item-size',         '44px'],
-    ['--sidebar-fan-icon-size',         '20px'],
-    ['--sidebar-fan-pop-duration',      '.42s'],
-    ['--sidebar-fan-pop-easing',        'cubic-bezier(.34,1.56,.64,1)'],
-    ['--sidebar-fan-stagger',           '.04s'],
-    ['--sidebar-fan-collapse-duration', '.2s'],
-  ]},
-];
-
-/* =========================================================
-   RESOLVED VALUES — read each var(--…) reference off the
-   document root so the resolved column reflects whatever
-   the running token set evaluates to.
-   ========================================================= */
-function resolveCss(value) {
-    if (!value) return '';
-    const match = String(value).match(/^var\((--[^)]+)\)$/);
-    if (!match) return String(value).trim();
-    const v = getComputedStyle(document.documentElement)
-        .getPropertyValue(match[1]).trim();
-    return v || String(value).trim();
-}
-function isColorish(v) {
-    if (!v) return false;
-    return v.startsWith('#')
-        || v.startsWith('rgb')
-        || v.startsWith('hsl')
-        || v.startsWith('color-mix')
-        || v === 'transparent'
-        || /^[a-z]+$/.test(v);
-}
-
-function renderTokenTable() {
-    const tbody = document.getElementById('sidebarTokenTable');
-    if (!tbody) return;
-    let html = '';
-    SIDEBAR_TOKENS.forEach(group => {
-        html += `<tr class="group-row"><td colspan="4">${group.group}</td></tr>`;
-        group.tokens.forEach(([name, ref]) => {
-            const resolved = resolveCss(ref) || '—';
-            const isColor = isColorish(resolved);
-            const chip = isColor
-                ? `<span class="chip" style="background:${resolved}"></span>`
-                : `<span class="chip" style="background: repeating-linear-gradient(45deg, var(--neutral-100) 0 6px, var(--neutral-50) 6px 12px); opacity:.6"></span>`;
-            html += `
-                <tr>
-                  <td class="tk-name">${name}</td>
-                  <td class="tk-ref">${ref.replace(/</g,'&lt;')}</td>
-                  <td class="tk-resolved">${resolved.length > 60 ? resolved.slice(0,57)+'…' : resolved}</td>
-                  <td class="tk-swatch">${chip}</td>
-                </tr>`;
-        });
-    });
-    tbody.innerHTML = html;
-}
-
-/* =========================================================
-   COLLAPSE DEMO — the anatomy stage hosts a real
-   .sidebar__collapse trigger. Wire it on this page so the
-   rail next to the live preview can be toggled, exercising
-   the same class hooks an application runtime would set.
-   ========================================================= */
 function initCollapseDemo() {
-    document.querySelectorAll('.sidebar__collapse').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const rail = btn.closest('.sidebar');
-            if (!rail) return;
-            const next = !rail.classList.contains('sidebar--collapsed');
-            rail.classList.toggle('sidebar--collapsed', next);
-            btn.setAttribute('aria-pressed', String(next));
-            btn.setAttribute('aria-label', next ? 'Expand sidebar' : 'Collapse sidebar');
-        });
+  document.querySelectorAll('.sidebar__collapse').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const rail = btn.closest('.sidebar');
+      if (!rail) return;
+      const next = !rail.classList.contains('sidebar--collapsed');
+      rail.classList.toggle('sidebar--collapsed', next);
+      btn.setAttribute('aria-pressed', String(next));
+      btn.setAttribute('aria-label', next ? 'Expand sidebar' : 'Collapse sidebar');
     });
+  });
 }
 
-/* =========================================================
-   DISCLOSURE DEMO — toggle the parent .sidebar__item.is-open
-   class on click of any disclosure trigger button. Mirrors
-   the application runtime's contract for sub-list expansion.
-   ========================================================= */
 function initDisclosureDemo() {
-    document.querySelectorAll('.sidebar__link[aria-expanded]').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            const item = btn.closest('.sidebar__item');
-            if (!item) return;
-            const next = !item.classList.contains('is-open');
-            item.classList.toggle('is-open', next);
-            btn.setAttribute('aria-expanded', String(next));
-        });
+  document.querySelectorAll('.sidebar__link[aria-expanded]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      const item = btn.closest('.sidebar__item');
+      if (!item) return;
+      const next = !item.classList.contains('is-open');
+      item.classList.toggle('is-open', next);
+      btn.setAttribute('aria-expanded', String(next));
     });
+  });
 }
 
-/* =========================================================
-   PROFILE MENU — toggle the .sidebar__profile-wrap.is-open
-   class on click of the overflow trigger (expanded mode) or
-   the avatar button (compact mode). Click-outside and Esc
-   dismiss.
-   ========================================================= */
 function initProfileMenu() {
-    const wraps = document.querySelectorAll('.sidebar__profile-wrap');
-    wraps.forEach(wrap => {
-        const trigger = wrap.querySelector('.sidebar__overflow, button.sidebar__profile');
-        if (!trigger) return;
-        trigger.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const next = !wrap.classList.contains('is-open');
-            wraps.forEach(w => {
-                w.classList.remove('is-open');
-                const t = w.querySelector('.sidebar__overflow, button.sidebar__profile');
-                if (t) t.setAttribute('aria-expanded', 'false');
-            });
-            wrap.classList.toggle('is-open', next);
-            trigger.setAttribute('aria-expanded', String(next));
-        });
+  const wraps = document.querySelectorAll('.sidebar__profile-wrap');
+  wraps.forEach(wrap => {
+    const trigger = wrap.querySelector('.sidebar__overflow, button.sidebar__profile');
+    if (!trigger) return;
+    trigger.addEventListener('click', e => {
+      e.stopPropagation();
+      const next = !wrap.classList.contains('is-open');
+      wraps.forEach(w => {
+        w.classList.remove('is-open');
+        const t = w.querySelector('.sidebar__overflow, button.sidebar__profile');
+        if (t) t.setAttribute('aria-expanded', 'false');
+      });
+      wrap.classList.toggle('is-open', next);
+      trigger.setAttribute('aria-expanded', String(next));
     });
-    document.addEventListener('click', () => {
-        wraps.forEach(w => {
-            w.classList.remove('is-open');
-            const t = w.querySelector('.sidebar__overflow, button.sidebar__profile');
-            if (t) t.setAttribute('aria-expanded', 'false');
-        });
+  });
+  document.addEventListener('click', () => {
+    wraps.forEach(w => {
+      w.classList.remove('is-open');
+      const t = w.querySelector('.sidebar__overflow, button.sidebar__profile');
+      if (t) t.setAttribute('aria-expanded', 'false');
     });
-    document.addEventListener('keydown', (e) => {
-        if (e.key !== 'Escape') return;
-        wraps.forEach(w => {
-            w.classList.remove('is-open');
-            const t = w.querySelector('.sidebar__overflow, button.sidebar__profile');
-            if (t) t.setAttribute('aria-expanded', 'false');
-        });
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    wraps.forEach(w => {
+      w.classList.remove('is-open');
+      const t = w.querySelector('.sidebar__overflow, button.sidebar__profile');
+      if (t) t.setAttribute('aria-expanded', 'false');
     });
+  });
 }
 
-/* =========================================================
-   COLLAPSED-RAIL FLY-OUT (radial fan) — the admin v2 behaviour.
-   When the rail is collapsed, hovering / clicking a group
-   (.sidebar__item--has-fan) springs its children out along a
-   half-circle arc anchored on the group icon. Geometry (cos/sin)
-   is computed here and handed to each chip as --tx/--ty/--fan-i;
-   the .sidebar__fan layer is appended to <body> and positioned
-   fixed at the trigger centre so the rail's overflow never clips
-   it. Hover-intent keep-zone + grace delay, click-to-pin, Escape.
-   ========================================================= */
 function initFanout() {
-    const RADIUS = 104, OFFSET_X = 64, STEP = 36, SPREAD_MAX = 180;
-    const GRACE_MS = 300, COLLAPSE_MS = 200;
-    const KEEP_RADIUS = RADIUS + 50, KEEP_LEFT = 24;
+  const RADIUS = 104, OFFSET_X = 64, STEP = 36, SPREAD_MAX = 180;
+  const GRACE_MS = 300, COLLAPSE_MS = 200;
+  const KEEP_RADIUS = RADIUS + 50, KEEP_LEFT = 24;
 
-    const fanLayout = (count) => {
-        if (count <= 0) return [];
-        if (count === 1) return [{ tx: OFFSET_X + RADIUS, ty: 0 }];
-        const spread = Math.min(SPREAD_MAX, STEP * (count - 1));
-        const start = -spread / 2, step = spread / (count - 1);
-        const round = (n) => Math.round(n * 10) / 10;
-        return Array.from({ length: count }, (_, i) => {
-            const rad = ((start + i * step) * Math.PI) / 180;
-            return { tx: round(OFFSET_X + RADIUS * Math.cos(rad)), ty: round(RADIUS * Math.sin(rad)) };
-        });
-    };
-
-    let layer = null, pos = null, pinned = false, trigger = null, timer = null, closing = false;
-    const clearTimer = () => { if (timer) { clearTimeout(timer); timer = null; } };
-
-    const buildLayer = (group) => {
-        const kids = group.querySelectorAll(':scope > .sidebar__sublist > .sidebar__item > .sidebar__link');
-        const layout = fanLayout(kids.length);
-        const el = document.createElement('div');
-        el.className = 'sidebar__fan';
-        el.setAttribute('role', 'menu');
-        el.dataset.open = 'true';
-        kids.forEach((kid, i) => {
-            const label = (kid.querySelector('.sidebar__label')?.textContent || '').trim();
-            const cur = kid.classList.contains('is-current');
-            const a = document.createElement('a');
-            a.className = 'sidebar__fan-item' + (cur ? ' sidebar__fan-item--current' : '');
-            a.href = kid.getAttribute('href') || '#';
-            a.setAttribute('role', 'menuitem');
-            a.setAttribute('aria-label', label);
-            a.title = label;
-            if (cur) a.setAttribute('aria-current', 'page');
-            a.style.setProperty('--tx', layout[i].tx + 'px');
-            a.style.setProperty('--ty', layout[i].ty + 'px');
-            a.style.setProperty('--fan-i', String(i));
-            const icon = document.createElement('span');
-            icon.className = 'sidebar__fan-icon';
-            icon.setAttribute('aria-hidden', 'true');
-            const svg = kid.querySelector('.sidebar__icon svg');
-            if (svg) icon.appendChild(svg.cloneNode(true));
-            const lab = document.createElement('span');
-            lab.className = 'sidebar__fan-label';
-            lab.textContent = label;
-            a.append(icon, lab);
-            a.addEventListener('click', closeNow);
-            el.appendChild(a);
-        });
-        return el;
-    };
-
-    function openFan(group, el) {
-        clearTimer();
-        if (layer) layer.remove();
-        const r = el.getBoundingClientRect();
-        pos = { x: r.left + r.width / 2, y: r.top + r.height / 2 };
-        trigger = el;
-        closing = false;
-        layer = buildLayer(group);
-        layer.style.left = pos.x + 'px';
-        layer.style.top = pos.y + 'px';
-        document.body.appendChild(layer);
-        el.setAttribute('aria-expanded', 'true');
-    }
-    function removeLayer() {
-        if (layer) layer.remove();
-        if (trigger) trigger.setAttribute('aria-expanded', 'false');
-        layer = pos = trigger = null; pinned = closing = false;
-    }
-    function beginClose() {
-        clearTimer(); pinned = false;
-        if (!layer) return;
-        closing = true;
-        layer.dataset.open = 'false';
-        timer = setTimeout(removeLayer, COLLAPSE_MS);
-    }
-    function closeNow() { clearTimer(); removeLayer(); }
-
-    const inRegion = (x, y) => {
-        if (!pos) return false;
-        const dx = x - (pos.x + OFFSET_X), dy = y - pos.y;
-        return x >= pos.x - KEEP_LEFT && dx * dx + dy * dy <= KEEP_RADIUS * KEEP_RADIUS;
-    };
-    const scheduleClose = () => { if (pinned || timer) return; timer = setTimeout(beginClose, GRACE_MS); };
-    const cancelClose = () => { clearTimer(); if (layer && closing) { layer.dataset.open = 'true'; closing = false; } };
-
-    document.querySelectorAll('.sidebar__item--has-fan').forEach((group) => {
-        const el = group.querySelector(':scope > .sidebar__link');
-        if (!el) return;
-        const collapsed = () => !!group.closest('.sidebar--collapsed');
-        el.addEventListener('mouseenter', () => { if (collapsed()) openFan(group, el); });
-        el.addEventListener('mouseleave', (e) => { if (collapsed() && !inRegion(e.clientX, e.clientY)) scheduleClose(); });
-        el.addEventListener('click', (e) => {
-            if (!collapsed()) return;
-            e.preventDefault();
-            if (layer && pinned && trigger === el) beginClose();
-            else { openFan(group, el); pinned = true; }
-        });
+  const fanLayout = count => {
+    if (count <= 0) return [];
+    if (count === 1) return [{ tx: OFFSET_X + RADIUS, ty: 0 }];
+    const spread = Math.min(SPREAD_MAX, STEP * (count - 1));
+    const start = -spread / 2, step = spread / (count - 1);
+    const round = n => Math.round(n * 10) / 10;
+    return Array.from({ length: count }, (_, i) => {
+      const rad = ((start + i * step) * Math.PI) / 180;
+      return { tx: round(OFFSET_X + RADIUS * Math.cos(rad)), ty: round(RADIUS * Math.sin(rad)) };
     });
+  };
 
-    window.addEventListener('pointermove', (e) => {
-        if (!layer || pinned) return;
-        if (inRegion(e.clientX, e.clientY)) cancelClose();
-        else scheduleClose();
-    }, { passive: true });
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && layer) { beginClose(); trigger?.focus(); } });
-    document.addEventListener('click', (e) => {
-        if (!layer) return;
-        if (trigger?.contains(e.target) || layer.contains(e.target)) return;
-        beginClose();
+  let layer = null, pos = null, pinned = false, trigger = null, timer = null, closing = false;
+  const clearTimer = () => { if (timer) { clearTimeout(timer); timer = null; } };
+
+  const buildLayer = group => {
+    const kids = group.querySelectorAll(':scope > .sidebar__sublist > .sidebar__item > .sidebar__link');
+    const layout = fanLayout(kids.length);
+    const el = document.createElement('div');
+    el.className = 'sidebar__fan';
+    el.setAttribute('role', 'menu');
+    el.dataset.open = 'true';
+    kids.forEach((kid, i) => {
+      const label = (kid.querySelector('.sidebar__label')?.textContent || '').trim();
+      const cur = kid.classList.contains('is-current');
+      const a = document.createElement('a');
+      a.className = 'sidebar__fan-item' + (cur ? ' sidebar__fan-item--current' : '');
+      a.href = kid.getAttribute('href') || '#';
+      a.setAttribute('role', 'menuitem');
+      a.setAttribute('aria-label', label);
+      a.title = label;
+      if (cur) a.setAttribute('aria-current', 'page');
+      a.style.setProperty('--tx', layout[i].tx + 'px');
+      a.style.setProperty('--ty', layout[i].ty + 'px');
+      a.style.setProperty('--fan-i', String(i));
+      const icon = document.createElement('span');
+      icon.className = 'sidebar__fan-icon';
+      icon.setAttribute('aria-hidden', 'true');
+      const svg = kid.querySelector('.sidebar__icon svg');
+      if (svg) icon.appendChild(svg.cloneNode(true));
+      const lab = document.createElement('span');
+      lab.className = 'sidebar__fan-label';
+      lab.textContent = label;
+      a.append(icon, lab);
+      a.addEventListener('click', closeNow);
+      el.appendChild(a);
     });
-    window.addEventListener('scroll', () => { if (layer) beginClose(); }, true);
-    window.addEventListener('resize', () => { if (layer) beginClose(); });
-    document.querySelectorAll('.sidebar__collapse').forEach((b) =>
-        b.addEventListener('click', () => { if (layer) closeNow(); }));
+    return el;
+  };
+
+  function openFan(group, el) {
+    clearTimer();
+    if (layer) layer.remove();
+    const r = el.getBoundingClientRect();
+    pos = { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+    trigger = el; closing = false;
+    layer = buildLayer(group);
+    layer.style.left = pos.x + 'px';
+    layer.style.top  = pos.y + 'px';
+    document.body.appendChild(layer);
+    el.setAttribute('aria-expanded', 'true');
+  }
+  function removeLayer() {
+    if (layer) layer.remove();
+    if (trigger) trigger.setAttribute('aria-expanded', 'false');
+    layer = pos = trigger = null; pinned = closing = false;
+  }
+  function beginClose() {
+    clearTimer(); pinned = false;
+    if (!layer) return;
+    closing = true; layer.dataset.open = 'false';
+    timer = setTimeout(removeLayer, COLLAPSE_MS);
+  }
+  function closeNow() { clearTimer(); removeLayer(); }
+
+  const inRegion = (x, y) => {
+    if (!pos) return false;
+    const dx = x - (pos.x + OFFSET_X), dy = y - pos.y;
+    return x >= pos.x - KEEP_LEFT && dx * dx + dy * dy <= KEEP_RADIUS * KEEP_RADIUS;
+  };
+  const scheduleClose = () => { if (pinned || timer) return; timer = setTimeout(beginClose, GRACE_MS); };
+  const cancelClose  = () => { clearTimer(); if (layer && closing) { layer.dataset.open = 'true'; closing = false; } };
+
+  document.querySelectorAll('.sidebar__item--has-fan').forEach(group => {
+    const el = group.querySelector(':scope > .sidebar__link');
+    if (!el) return;
+    const collapsed = () => !!group.closest('.sidebar--collapsed');
+    el.addEventListener('mouseenter', () => { if (collapsed()) openFan(group, el); });
+    el.addEventListener('mouseleave', e => { if (collapsed() && !inRegion(e.clientX, e.clientY)) scheduleClose(); });
+    el.addEventListener('click', e => {
+      if (!collapsed()) return;
+      e.preventDefault();
+      if (layer && pinned && trigger === el) beginClose();
+      else { openFan(group, el); pinned = true; }
+    });
+  });
+
+  window.addEventListener('pointermove', e => {
+    if (!layer || pinned) return;
+    if (inRegion(e.clientX, e.clientY)) cancelClose(); else scheduleClose();
+  }, { passive: true });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && layer) { beginClose(); trigger?.focus(); } });
+  document.addEventListener('click', e => {
+    if (!layer) return;
+    if (trigger?.contains(e.target) || layer.contains(e.target)) return;
+    beginClose();
+  });
+  window.addEventListener('scroll', () => { if (layer) beginClose(); }, true);
+  window.addEventListener('resize', () => { if (layer) beginClose(); });
+  document.querySelectorAll('.sidebar__collapse').forEach(b =>
+    b.addEventListener('click', () => { if (layer) closeNow(); }));
 }
 
-/* =========================================================
-   REVEAL — fade-up content as it scrolls into view.
-   Mirrors the behaviour used on every other section page.
-   ========================================================= */
 function initReveal() {
-    const targets = document.querySelectorAll('.reveal');
-    if (!('IntersectionObserver' in window)) {
-        targets.forEach(el => el.classList.add('in'));
-        return;
-    }
-    const io = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('in');
-                io.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.12 });
-    targets.forEach(el => io.observe(el));
+  const targets = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) { targets.forEach(el => el.classList.add('in')); return; }
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) { entry.target.classList.add('in'); io.unobserve(entry.target); }
+    });
+  }, { threshold: 0.12 });
+  targets.forEach(el => io.observe(el));
+}
+
+function initLivePreview() {
+  const btn     = document.getElementById('sidebar-preview-toggle');
+  const overlay = document.getElementById('sidebar-live');
+  const scrim   = document.getElementById('sidebar-live-scrim');
+  const label   = btn?.querySelector('.sidebar-preview-btn__label');
+  const icon    = btn?.querySelector('svg');
+  if (!btn || !overlay) return;
+
+  const ICON_PANEL = '<rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/>';
+  const ICON_CLOSE = '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>';
+
+  const open = () => {
+    overlay.classList.add('is-open');
+    overlay.removeAttribute('aria-hidden');
+    if (label) label.textContent = 'Close sidebar';
+    if (icon)  icon.innerHTML = ICON_CLOSE;
+  };
+  const close = () => {
+    overlay.classList.remove('is-open');
+    overlay.setAttribute('aria-hidden', 'true');
+    if (label) label.textContent = 'Preview sidebar';
+    if (icon)  icon.innerHTML = ICON_PANEL;
+  };
+
+  btn.addEventListener('click', () => overlay.classList.contains('is-open') ? close() : open());
+  if (scrim) scrim.addEventListener('click', close);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && overlay.classList.contains('is-open')) close();
+  });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    renderTokenTable();
-    initCollapseDemo();
-    initDisclosureDemo();
-    initProfileMenu();
-    initFanout();
-    initReveal();
+  initCollapseDemo();
+  initDisclosureDemo();
+  initProfileMenu();
+  initFanout();
+  initReveal();
+  initLivePreview();
 });
 </script>
 

@@ -1,68 +1,81 @@
 /* =========================================================
-   PAGE — III-12 SIDEBAR (page-only scaffolding)
-   The only styles unique to III-12-sidebar.html. Currently the
-   embedded App-shell demo used by §05 "App shell". Component
-   styling lives in app-shell.css / sidebar.css — this file only
-   FRAMES the demo (a bounded, scrollable stage) and provides
-   throwaway placeholder content. No component is restyled here.
-   Depends on: tokens.css, app-shell.css, sidebar.css
+   PAGE III-12 — sidebar demo scaffolding
    ========================================================= */
 
-/* Bounded, scrollable stage. The .app-shell is a full-viewport
-   layout; to show it inside a doc page we cap the height and let
-   it overflow, so the sticky sidebar + topbar demonstrate against
-   the scroll of this box. Painted with the admin earthsky wash so
-   the demo reads like a real product page. */
-.app-shell-stage {
-  height: 560px;
-  overflow: auto;
-  position: relative;
-  border-radius: var(--radius-lg);
-  border: var(--border-width-base) solid var(--border-default);
-  background: var(--background-earthsky);
-  box-shadow: var(--shadow-md);
+/* ---- Stage: floating (sidebars at natural height, centered
+         with breathing room — mirrors the live app my-4 ml-4) */
+.mode-preview__stage--floating {
+  align-items: center;
 }
-.app-shell-stage .app-shell  { min-height: 760px; }            /* taller than the stage → scrolls */
-.app-shell-stage .app-shell__sidebar { height: calc(560px - var(--app-shell-inset) * 2); }
-
-/* ---- throwaway product content inside the demo ---- */
-.app-shell-demo__head { margin-bottom: var(--space-tier-4); }
-
-.app-shell-demo__grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-gap-default);
-  margin-bottom: var(--space-tier-4);
+.mode-preview__stage--floating .sidebar {
+  align-self: center !important;
+  min-height: 0 !important;
 }
 
-.app-shell-demo__tile,
-.app-shell-demo__block {
-  background: var(--glass-light-light-bg);
-  border: var(--border-width-base) solid var(--glass-light-light-border);
-  border-radius: var(--radius-md);
-  box-shadow: var(--glass-shadow-raised), var(--glass-inset-light-soft);
-  -webkit-backdrop-filter: var(--glass-light-light-blur) var(--glass-saturate);
-          backdrop-filter: var(--glass-light-light-blur) var(--glass-saturate);
-  padding: var(--space-container-y) var(--space-container-x);
-}
-.app-shell-demo__tile  { display: flex; flex-direction: column; gap: var(--space-gap-micro); }
-.app-shell-demo__block { min-height: 360px; }
-
-/* ---- canonical markup skeleton code block ---- */
-.markup-skeleton {
-  font-family: var(--font-mono);
-  font-size: var(--text-data-sm);
-  line-height: var(--line-height-body);
-  color: var(--text-default);
-  background: var(--background-default-minimal);
-  border: var(--border-width-base) solid var(--border-default);
-  border-radius: var(--radius-md);
-  padding: var(--space-container-y) var(--space-container-x);
-  overflow-x: auto;
-  white-space: pre;
-  margin: var(--space-tier-4) 0;
+/* ---- Stage: anchored (sidebar fills full stage height,
+         flush top-to-bottom — mirrors a fixed column layout) */
+.mode-preview__stage--anchored {
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
-@media (max-width: 700px) {
-  .app-shell-demo__grid { grid-template-columns: 1fr; }
+/* ---- Live preview FAB ---------------------------------- */
+.sidebar-preview-btn {
+  position: fixed;
+  bottom: var(--spacing-8x);
+  right: var(--spacing-8x);
+  z-index: 110;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2x);
+  padding: var(--spacing-3x) var(--spacing-5x);
+  background: var(--primary-500);
+  color: var(--text-inverted);
+  border: none;
+  border-radius: 99px;
+  font-family: var(--font-sans);
+  font-size: var(--text-body-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  box-shadow: 0 4px 20px color-mix(in srgb, var(--primary-500) 45%, transparent);
+  transition: background .18s ease, box-shadow .18s ease, transform .18s ease;
 }
+.sidebar-preview-btn:hover {
+  background: var(--primary-600);
+  box-shadow: 0 6px 28px color-mix(in srgb, var(--primary-500) 55%, transparent);
+  transform: translateY(-1px);
+}
+.sidebar-preview-btn:active { transform: none; }
+.sidebar-preview-btn svg { flex: 0 0 auto; }
+
+/* ---- Live sidebar overlay ------------------------------ */
+.sidebar-live {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  pointer-events: none;
+}
+.sidebar-live.is-open { pointer-events: auto; }
+
+.sidebar-live__scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--background-overlay);
+  opacity: 0;
+  transition: opacity .22s ease;
+}
+.sidebar-live.is-open .sidebar-live__scrim { opacity: 1; }
+
+/* Sidebar slides in as a full-height drawer from the left.
+   Right-side radii only (same as mobile in the live app). */
+.sidebar-live .sidebar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  min-height: 100%;
+  border-radius: 0 var(--radius-xl) var(--radius-xl) 0;
+  transform: translateX(calc(-100% - 24px));
+  transition: transform .28s cubic-bezier(.2,.8,.2,1);
+}
+.sidebar-live.is-open .sidebar { transform: translateX(0); }

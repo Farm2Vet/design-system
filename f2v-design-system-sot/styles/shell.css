@@ -219,6 +219,15 @@ h4,
     gap:         var(--space-gap-tight);
 }
 
+/* Breathing room above every subsection heading inside a chunk.
+   Applies globally so individual page CSS files don't need to
+   redeclare this. The first h4 in any chunk still gets the
+   margin — the chunk-head's own bottom spacing provides enough
+   separation that the extra top gap on the first h4 reads as
+   deliberate rhythm, not wasted space. */
+.chunk > h4,
+.chunk > .h4 { margin-top: var(--space-tier-2); }
+
 h4 .tag,
 .h4 .tag {
     font-family:    var(--font-mono);

@@ -50,10 +50,16 @@
     line-height: var(--line-height-body);
     color: var(--text-default-subtle);
     max-width: 72ch;
-    margin: calc(var(--space-tier-6) * -1) 0 var(--space-tier-2) 0;
+    margin: var(--space-tier-3) 0 var(--space-tier-2) 0;
     padding: var(--space-tier-5) 0 var(--space-tier-5) var(--space-tier-4);
     border-left: 2px solid var(--border-primary-subtle);
 }
+/* When the note immediately follows a subsection h4, pull it
+   snug so it reads as that heading's caption, not a free-floating
+   block. For every other predecessor (content grids, demo stages,
+   token tables) the default positive margin applies. */
+.h4 + .usage-note,
+h4 + .usage-note { margin-top: var(--space-tier-6); }
 .usage-note + .usage-note {
     margin-top: var(--space-tier-5);
 }
