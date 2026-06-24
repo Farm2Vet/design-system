@@ -1,26 +1,202 @@
 /* =========================================================
    PAGE — III-15 / Components / Table
    Page-scoped scaffolding for the Table component page.
-   Layout helpers only: anatomy key, demo-hover override,
-   and a stage that hosts the live <table> examples. The
-   component itself ships from styles/table.css.
 
    Depends on: tokens.css, base.css, typography.css, shell.css,
-               global-nav.css, badge.css, button.css, table.css,
+               global-nav.css, badge.css, button.css, switch.css,
+               table.css,
                page-III-02.css (.token-table),
                page-III-03.css (.usage-note, .preview-stage)
    ========================================================= */
 
-/* Tighten the preview stage when it hosts a wide <table>:
-   the table fills the stage, so vertical centering would
-   leave a wide swathe of empty stage above and below. */
-.preview-stage:has(> .table) {
-    display: block;
-    padding: var(--space-tier-4);
+/* ---- Utility: visually hidden (screen-reader only) ---- */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border-width: 0;
 }
 
-/* Anatomy key — plain definition list, two columns. Names
-   on the left, descriptions on the right. */
+/* ---- Main list-table demo ----------------------------- */
+
+/* Break out of the shell's side padding so the table fills
+   the full page width — mirrors how the admin content area
+   works in production. */
+.lt-demo {
+    margin-left:  calc(-1 * var(--space-page-x));
+    margin-right: calc(-1 * var(--space-page-x));
+}
+
+/* Tint native checkboxes to the primary colour */
+.lt-demo input[type="checkbox"] {
+    accent-color: var(--primary-500);
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+}
+
+/* Row action icon buttons — 28 px ghost button matching production ICON_BTN */
+.lt-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border-radius: var(--radius-sm);
+    background: var(--btn-ghost-bg);
+    border: var(--border-width-base) solid transparent;
+    cursor: pointer;
+    color: var(--icon-default);
+    transition: background .15s ease, color .15s ease;
+}
+.lt-action-btn:hover {
+    background: var(--btn-ghost-bg-hover);
+    color: var(--text-default);
+}
+.lt-action-btn svg {
+    width: 15px;
+    height: 15px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+}
+.lt-actions-cell {
+    display: inline-flex;
+    width: 100%;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-gap-micro);
+}
+
+/* Disease name — block span with medium weight matching production */
+.lt-name {
+    display: block;
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-default);
+}
+
+/* Status cell — switch toggle + "Active"/"Inactive" label side by side */
+.lt-status-cell {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-tier-6);
+}
+.lt-status-label {
+    font-size: var(--text-body-sm);
+    color: var(--text-default-minimal);
+    min-width: 58px;
+}
+.lt-status-label--active {
+    color: var(--text-primary-strong);
+    font-weight: var(--font-weight-medium);
+}
+
+/* Inactive row — text-colour dimming matching production DiseaseTable */
+.lt-row--inactive > td { color: var(--text-default-minimal); }
+.lt-row--inactive .lt-name { color: var(--text-default-minimal); }
+.lt-row--inactive .lt-version { color: var(--text-default-minimal); }
+.lt-row--inactive .lt-action-btn { color: var(--text-default-minimal); }
+.lt-row--inactive .lt-action-btn:hover { color: var(--text-default); }
+
+/* Version cell — full-width dropdown trigger matching production VERSION_SELECT */
+.lt-version {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 24px;
+    padding: 0 var(--spacing-3x);
+    border-radius: var(--radius-sm);
+    border: var(--border-width-base) solid var(--border-default-input);
+    background: var(--form-bg);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    color: var(--text-default);
+    white-space: nowrap;
+    cursor: pointer;
+    gap: var(--space-gap-snug);
+    transition: background-color .15s ease, border-color .15s ease;
+}
+.lt-version:hover {
+    background: var(--form-bg-hover);
+    border-color: var(--border-default-strong);
+}
+/* CSS chevron caret — matches production's ::after pseudo-element */
+.lt-version::after {
+    content: '';
+    flex: none;
+    display: block;
+    width: 6px;
+    height: 6px;
+    border-right: 1.5px solid var(--icon-default-subtle);
+    border-bottom: 1.5px solid var(--icon-default-subtle);
+    transform: rotate(45deg) translateY(-1px);
+}
+
+/* ---- Subcomponent demo stages -------------------------- */
+
+.sub-demo {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tier-3);
+}
+.sub-demo__label {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-mono);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+    margin: 0;
+}
+
+/* BulkBar standalone demo — dark stage so the gradient pops */
+.bulk-demo-stage {
+    padding: var(--spacing-6x);
+    border-radius: var(--radius-md);
+    background: var(--background-default-subtle);
+    border: var(--border-width-base) solid var(--border-default);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tier-3);
+}
+
+/* Pager demo stage */
+.pager-demo-stage {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-tier-3);
+    padding: var(--spacing-4x) var(--spacing-5x);
+    background: var(--background-default-subtle);
+    border: var(--border-width-base) solid var(--border-default);
+    border-radius: var(--radius-md);
+}
+
+/* Skeleton demo stage */
+.skel-demo-stage {
+    border-radius: var(--radius-lg);
+    outline: var(--border-width-base) solid var(--border-default);
+    overflow: hidden;
+}
+
+/* Loading demo stage */
+.loading-demo-stage {
+    border-radius: var(--radius-lg);
+    outline: var(--border-width-base) solid var(--border-default);
+    overflow: hidden;
+    background: var(--table-bg);
+}
+
+/* ---- Anatomy key --------------------------------------- */
 .anatomy-key {
     display: grid;
     grid-template-columns: minmax(140px, 220px) 1fr;
@@ -47,14 +223,14 @@
     color: var(--text-default-subtle);
 }
 
-/* Force the second row in the States example to render its
-   hover background, for documentation purposes only. */
-.is-demo-hover .table__row {
+/* ---- Row states demo ----------------------------------- */
+
+/* Force the hover state on a single row for documentation */
+.table__row.is-demo-hover {
     background: var(--background-row-hover);
 }
 
-/* Two-up stage so the Sizes section can render md and sm
-   examples side by side. */
+/* ---- Sizes grid (md + sm side by side) ----------------- */
 .sizes-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -72,7 +248,7 @@
     color: var(--text-default-minimal);
 }
 
-/* Inline sort-state demo row underneath the States table. */
+/* ---- Sort state demo ----------------------------------- */
 .sort-demo {
     display: flex;
     flex-wrap: wrap;

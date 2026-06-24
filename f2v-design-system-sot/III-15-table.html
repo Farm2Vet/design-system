@@ -17,6 +17,7 @@
 <!-- Components consumed on this page -->
 <link rel="stylesheet" href="styles/badge.css" />
 <link rel="stylesheet" href="styles/button.css" />
+<link rel="stylesheet" href="styles/switch.css" />
 <link rel="stylesheet" href="styles/table.css" />
 <!-- Cross-page reuse: .token-table (page-III-02), .usage-note + .preview-stage (page-III-03) -->
 <link rel="stylesheet" href="styles/page-III-02.css" />
@@ -131,631 +132,959 @@
   <!-- ========================== HERO ========================== -->
   <section class="hero">
     <div>
-      <h1 class="h1">
+      <h1 class="h1 reveal">
         <span class="num">III-15 / Components</span>
         Table.
       </h1>
     </div>
     <div>
-      <p class="lede">
-        A grid of cells over tabular data. Use Table when columns are real
-        columns and the user will sort or compare across rows. For activity
-        feeds and free-form lists of mixed items, reach for Card · List
-        instead.
+      <p class="lede reveal">
+        A bounded card housing a sortable, selectable data grid. The
+        <code>.list-table</code> shell provides four zones — frosted glass
+        header rail, animated bulk-action bar, scrollable body, and frosted
+        glass footer with pagination — mirroring the production admin core
+        exactly.
       </p>
     </div>
   </section>
 
-  <!-- ========================== ANATOMY ========================== -->
-  <section class="anatomy">
-    <h2 class="h2">Anatomy.</h2>
-    <p class="section-lede">
-      The component renders as a real <code>&lt;table&gt;</code>. A head, a
-      body, head cells, rows, and cells — each addressable by a BEM-style
-      class hook. Sortable head cells wrap their label in a
-      <code>.table__sort</code> button so the entire label is the click
-      target.
+  <!-- ========================== CANONICAL DEMO ========================== -->
+  <section class="chunk variants" id="demo">
+    <header class="chunk-head reveal">
+      <h2 class="h2">Disease list.</h2>
+    </header>
+    <p class="section-lede reveal">
+      Select rows to trigger the BulkBar. Click column headers to cycle sort
+      state. The footer pager and rows-per-page select are interactive.
     </p>
 
-    <div class="preview-stage">
-      <table class="table table--boxed" aria-label="Anatomy example">
-        <thead class="table__head">
-          <tr class="table__head-row">
-            <th class="table__head-cell" scope="col">
-              <button type="button" class="table__sort is-asc">
-                Codename
-                <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="m5 12 7-7 7 7"/>
-                  <path d="M12 19V5"/>
-                </svg>
-              </button>
-            </th>
-            <th class="table__head-cell" scope="col">
-              <button type="button" class="table__sort">
-                Full name
-                <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="m5 12 7-7 7 7"/>
-                  <path d="M12 19V5"/>
-                </svg>
-              </button>
-            </th>
-            <th class="table__head-cell" scope="col">
-              <button type="button" class="table__sort">
-                Species
-                <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="m5 12 7-7 7 7"/>
-                  <path d="M12 19V5"/>
-                </svg>
-              </button>
-            </th>
-            <th class="table__head-cell" scope="col">
-              <button type="button" class="table__sort">
-                ID
-                <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="m5 12 7-7 7 7"/>
-                  <path d="M12 19V5"/>
-                </svg>
-              </button>
-            </th>
-            <th class="table__head-cell" scope="col">
-              <button type="button" class="table__sort">
-                Updated
-                <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="m5 12 7-7 7 7"/>
-                  <path d="M12 19V5"/>
-                </svg>
-              </button>
-            </th>
-            <th class="table__head-cell" scope="col" style="text-align:right">
-              <button type="button" class="table__sort">
-                State
-                <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="m5 12 7-7 7 7"/>
-                  <path d="M12 19V5"/>
-                </svg>
-              </button>
-            </th>
-          </tr>
-        </thead>
-        <tbody class="table__body">
-          <tr class="table__row">
-            <td class="table__cell table__cell--mono">ASF</td>
-            <td class="table__cell">African Swine Fever</td>
-            <td class="table__cell">Swine</td>
-            <td class="table__cell table__cell--mono table__cell--meta">DIS-001</td>
-            <td class="table__cell table__cell--meta">Apr 18, 2026</td>
-            <td class="table__cell table__cell--state">
-              <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span>
-            </td>
-          </tr>
-          <tr class="table__row">
-            <td class="table__cell table__cell--mono">CSF</td>
-            <td class="table__cell">Classical Swine Fever</td>
-            <td class="table__cell">Swine</td>
-            <td class="table__cell table__cell--mono table__cell--meta">DIS-002</td>
-            <td class="table__cell table__cell--meta">Apr 12, 2026</td>
-            <td class="table__cell table__cell--state">
-              <span class="badge badge--sm is-warning"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Incomplete</span></span>
-            </td>
-          </tr>
-          <tr class="table__row">
-            <td class="table__cell table__cell--mono">PRRS</td>
-            <td class="table__cell">Porcine Reproductive &amp; Respiratory Syndrome</td>
-            <td class="table__cell">Swine</td>
-            <td class="table__cell table__cell--mono table__cell--meta">DIS-003</td>
-            <td class="table__cell table__cell--meta">Apr 10, 2026</td>
-            <td class="table__cell table__cell--state">
-              <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span>
-            </td>
-          </tr>
-          <tr class="table__row">
-            <td class="table__cell table__cell--mono">SALM</td>
-            <td class="table__cell">Salmonella enterica infection</td>
-            <td class="table__cell">Multi</td>
-            <td class="table__cell table__cell--mono table__cell--meta">DIS-004</td>
-            <td class="table__cell table__cell--meta">Apr 06, 2026</td>
-            <td class="table__cell table__cell--state">
-              <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span>
-            </td>
-          </tr>
-          <tr class="table__row table__row--dim">
-            <td class="table__cell table__cell--mono">TGE</td>
-            <td class="table__cell">Transmissible Gastroenteritis</td>
-            <td class="table__cell">Swine</td>
-            <td class="table__cell table__cell--mono table__cell--meta">DIS-005</td>
-            <td class="table__cell table__cell--meta">Apr 02, 2026</td>
-            <td class="table__cell table__cell--state">
-              <span class="badge badge--sm is-neutral"><span class="badge__label">Inactive</span></span>
-            </td>
-          </tr>
-          <tr class="table__row">
-            <td class="table__cell table__cell--mono">SDYS</td>
-            <td class="table__cell">Brachyspira hyodysenteriae infection</td>
-            <td class="table__cell">Swine</td>
-            <td class="table__cell table__cell--mono table__cell--meta">DIS-006</td>
-            <td class="table__cell table__cell--meta">Mar 28, 2026</td>
-            <td class="table__cell table__cell--state">
-              <span class="badge badge--sm is-warning"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Incomplete</span></span>
-            </td>
-          </tr>
-          <tr class="table__row">
-            <td class="table__cell table__cell--mono">GLAS</td>
-            <td class="table__cell">Gl&auml;sser&rsquo;s disease (Glaesserella parasuis)</td>
-            <td class="table__cell">Swine</td>
-            <td class="table__cell table__cell--mono table__cell--meta">DIS-007</td>
-            <td class="table__cell table__cell--meta">Mar 24, 2026</td>
-            <td class="table__cell table__cell--state">
-              <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span>
-            </td>
-          </tr>
-          <tr class="table__row table__row--dim">
-            <td class="table__cell table__cell--mono">PAST</td>
-            <td class="table__cell">Pasteurella multocida infection</td>
-            <td class="table__cell">Multi</td>
-            <td class="table__cell table__cell--mono table__cell--meta">DIS-008</td>
-            <td class="table__cell table__cell--meta">Mar 19, 2026</td>
-            <td class="table__cell table__cell--state">
-              <span class="badge badge--sm is-neutral"><span class="badge__label">Inactive</span></span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <div class="lt-demo">
+      <section class="list-table" aria-label="Disease list">
 
-    <dl class="anatomy-key">
-      <dt>A · root</dt>
-      <dd>The wrapper (<code>.table</code>) is rendered as a real <code>&lt;table&gt;</code> element. Variant and size modifiers go on the root.</dd>
-
-      <dt>B · head</dt>
-      <dd><code>.table__head</code> (<code>&lt;thead&gt;</code>) holds a single <code>.table__head-row</code> (<code>&lt;tr&gt;</code>) of <code>.table__head-cell</code> (<code>&lt;th&gt;</code>) cells. Background and eyebrow typography come from the component tokens.</dd>
-
-      <dt>C · sort</dt>
-      <dd><code>.table__sort</code> is a button placed inside a head cell when the column is sortable. The whole label is the click target. Direction states are <code>.is-asc</code> and <code>.is-desc</code>; the icon flips on <code>.is-desc</code>.</dd>
-
-      <dt>D · body</dt>
-      <dd><code>.table__body</code> (<code>&lt;tbody&gt;</code>) holds the <code>.table__row</code> (<code>&lt;tr&gt;</code>) instances. Rows divide on top borders so hover and selected backgrounds can paint without a seam.</dd>
-
-      <dt>E · cell</dt>
-      <dd><code>.table__cell</code> (<code>&lt;td&gt;</code>) supports four modifiers: <code>--mono</code> (codenames, IDs), <code>--meta</code> (smaller, muted text for timestamps), <code>--num</code> (tabular-numeric, right-aligned), and <code>--state</code> (right-aligned badge slot).</dd>
-    </dl>
-  </section>
-
-  <!-- ========================== VARIANTS ========================== -->
-  <section class="variants">
-    <h2 class="h2">Variants.</h2>
-    <p class="section-lede">
-      Two surface variants. Plain is borderless and lives inside a parent
-      that owns its frame (a panel, a card-body). Boxed carries its own
-      rounded border and lid; reach for it on V-01 and anywhere the table
-      is a standalone region on the page.
-    </p>
-
-    <p class="usage-note">
-      <strong>Use Boxed by default on standalone tables.</strong> A
-      <code>.table</code> with no frame and no surrounding card border
-      has no enclosing surface and reads as visually orphaned on the
-      page. Use <code>--boxed</code> unless the table is rendered
-      inside a card or panel that already provides the border.
-    </p>
-
-    <div class="preview-stage">
-      <table class="table table--boxed" aria-label="Boxed variant">
-        <thead class="table__head">
-          <tr class="table__head-row">
-            <th class="table__head-cell" scope="col">
-              <button type="button" class="table__sort">
-                Codename
-                <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="m5 12 7-7 7 7"/>
-                  <path d="M12 19V5"/>
-                </svg>
-              </button>
-            </th>
-            <th class="table__head-cell" scope="col">
-              <button type="button" class="table__sort">
-                Full name
-                <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="m5 12 7-7 7 7"/>
-                  <path d="M12 19V5"/>
-                </svg>
-              </button>
-            </th>
-            <th class="table__head-cell" scope="col">
-              <button type="button" class="table__sort">
-                Species
-                <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="m5 12 7-7 7 7"/>
-                  <path d="M12 19V5"/>
-                </svg>
-              </button>
-            </th>
-            <th class="table__head-cell" scope="col" style="text-align:right">
-              <button type="button" class="table__sort">
-                State
-                <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="m5 12 7-7 7 7"/>
-                  <path d="M12 19V5"/>
-                </svg>
-              </button>
-            </th>
-          </tr>
-        </thead>
-        <tbody class="table__body">
-          <tr class="table__row">
-            <td class="table__cell table__cell--mono">ASF</td>
-            <td class="table__cell">African Swine Fever</td>
-            <td class="table__cell">Swine</td>
-            <td class="table__cell table__cell--state">
-              <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span>
-            </td>
-          </tr>
-          <tr class="table__row">
-            <td class="table__cell table__cell--mono">CSF</td>
-            <td class="table__cell">Classical Swine Fever</td>
-            <td class="table__cell">Swine</td>
-            <td class="table__cell table__cell--state">
-              <span class="badge badge--sm is-warning"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Incomplete</span></span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <p class="sizes-grid__caption" style="margin-top: var(--space-tier-3)">Plain (no --boxed)</p>
-    <div class="preview-stage">
-      <table class="table" aria-label="Plain variant">
-        <thead class="table__head">
-          <tr class="table__head-row">
-            <th class="table__head-cell" scope="col">
-              <button type="button" class="table__sort">
-                Codename
-                <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="m5 12 7-7 7 7"/>
-                  <path d="M12 19V5"/>
-                </svg>
-              </button>
-            </th>
-            <th class="table__head-cell" scope="col">
-              <button type="button" class="table__sort">
-                Full name
-                <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="m5 12 7-7 7 7"/>
-                  <path d="M12 19V5"/>
-                </svg>
-              </button>
-            </th>
-            <th class="table__head-cell" scope="col">
-              <button type="button" class="table__sort">
-                Species
-                <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="m5 12 7-7 7 7"/>
-                  <path d="M12 19V5"/>
-                </svg>
-              </button>
-            </th>
-            <th class="table__head-cell" scope="col" style="text-align:right">
-              <button type="button" class="table__sort">
-                State
-                <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="m5 12 7-7 7 7"/>
-                  <path d="M12 19V5"/>
-                </svg>
-              </button>
-            </th>
-          </tr>
-        </thead>
-        <tbody class="table__body">
-          <tr class="table__row">
-            <td class="table__cell table__cell--mono">ASF</td>
-            <td class="table__cell">African Swine Fever</td>
-            <td class="table__cell">Swine</td>
-            <td class="table__cell table__cell--state">
-              <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span>
-            </td>
-          </tr>
-          <tr class="table__row">
-            <td class="table__cell table__cell--mono">CSF</td>
-            <td class="table__cell">Classical Swine Fever</td>
-            <td class="table__cell">Swine</td>
-            <td class="table__cell table__cell--state">
-              <span class="badge badge--sm is-warning"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Incomplete</span></span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- ========================== STATES ========================== -->
-  <section class="states">
-    <h2 class="h2">States.</h2>
-    <p class="section-lede">
-      Four row states stack in the same table: default, hover, selected,
-      and dim. Hover paints a subtle row background; selected lifts the
-      whole row to the primary-tinted surface; dim de-emphasises a row
-      via opacity without changing its content. The sort affordance has
-      three states of its own — idle, ascending, descending.
-    </p>
-
-    <div class="preview-stage">
-      <table class="table table--boxed" aria-label="States example">
-        <thead class="table__head">
-          <tr class="table__head-row">
-            <th class="table__head-cell" scope="col">
-              <button type="button" class="table__sort">
-                Codename
-                <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="m5 12 7-7 7 7"/>
-                  <path d="M12 19V5"/>
-                </svg>
-              </button>
-            </th>
-            <th class="table__head-cell" scope="col">
-              <button type="button" class="table__sort">
-                Full name
-                <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="m5 12 7-7 7 7"/>
-                  <path d="M12 19V5"/>
-                </svg>
-              </button>
-            </th>
-            <th class="table__head-cell" scope="col">
-              <button type="button" class="table__sort">
-                State
-                <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="m5 12 7-7 7 7"/>
-                  <path d="M12 19V5"/>
-                </svg>
-              </button>
-            </th>
-            <th class="table__head-cell" scope="col">
-              <button type="button" class="table__sort">
-                Row treatment
-                <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="m5 12 7-7 7 7"/>
-                  <path d="M12 19V5"/>
-                </svg>
-              </button>
-            </th>
-          </tr>
-        </thead>
-        <tbody class="table__body">
-          <tr class="table__row">
-            <td class="table__cell table__cell--mono">ASF</td>
-            <td class="table__cell">African Swine Fever</td>
-            <td class="table__cell">
-              <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span>
-            </td>
-            <td class="table__cell table__cell--meta">default — rest state</td>
-          </tr>
-          <tr class="table__row is-demo-hover">
-            <td class="table__cell table__cell--mono">CSF</td>
-            <td class="table__cell">Classical Swine Fever</td>
-            <td class="table__cell">
-              <span class="badge badge--sm is-warning"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Incomplete</span></span>
-            </td>
-            <td class="table__cell table__cell--meta">hover — :hover or .is-demo-hover</td>
-          </tr>
-          <tr class="table__row is-selected">
-            <td class="table__cell table__cell--mono">PRRS</td>
-            <td class="table__cell">Porcine Reproductive &amp; Respiratory Syndrome</td>
-            <td class="table__cell">
-              <span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span>
-            </td>
-            <td class="table__cell table__cell--meta">selected — .is-selected</td>
-          </tr>
-          <tr class="table__row table__row--dim">
-            <td class="table__cell table__cell--mono">TGE</td>
-            <td class="table__cell">Transmissible Gastroenteritis</td>
-            <td class="table__cell">
-              <span class="badge badge--sm is-neutral"><span class="badge__label">Inactive</span></span>
-            </td>
-            <td class="table__cell table__cell--meta">dim — .table__row--dim</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="sort-demo" aria-label="Sort affordance states">
-      <span class="sort-demo__item">
-        <button type="button" class="table__sort">
-          Idle
-          <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m5 12 7-7 7 7"/>
-            <path d="M12 19V5"/>
-          </svg>
-        </button>
-        <span>no direction set</span>
-      </span>
-      <span class="sort-demo__item">
-        <button type="button" class="table__sort is-asc">
-          Ascending
-          <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m5 12 7-7 7 7"/>
-            <path d="M12 19V5"/>
-          </svg>
-        </button>
-        <span>.is-asc</span>
-      </span>
-      <span class="sort-demo__item">
-        <button type="button" class="table__sort is-desc">
-          Descending
-          <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m5 12 7-7 7 7"/>
-            <path d="M12 19V5"/>
-          </svg>
-        </button>
-        <span>.is-desc</span>
-      </span>
-    </div>
-  </section>
-
-  <!-- ========================== SIZES ========================== -->
-  <section class="sizes">
-    <h2 class="h2">Sizes.</h2>
-    <p class="section-lede">
-      Two sizes. <code>md</code> is the default — comfortable row height,
-      body-size cell text. <code>--sm</code> compresses the row to a denser
-      body-sm; reach for it in dense admin tables where many rows are
-      visible at once.
-    </p>
-
-    <div class="sizes-grid">
-      <div>
-        <p class="sizes-grid__caption">md — default</p>
-        <div class="preview-stage">
-          <table class="table table--boxed" aria-label="md size">
+        <!-- Zone 1: Frosted glass header (visual only — body thead serves a11y) -->
+        <div class="list-table__head">
+          <table class="table table--fixed" aria-hidden="true" role="presentation">
+            <colgroup>
+              <col style="width:52px">
+              <col>
+              <col style="width:150px">
+              <col style="width:170px">
+              <col style="width:150px">
+              <col style="width:140px">
+              <col style="width:120px">
+            </colgroup>
             <thead class="table__head">
               <tr class="table__head-row">
-                <th class="table__head-cell" scope="col">
+                <th class="table__head-cell">
+                  <input type="checkbox" id="lt-select-all" aria-label="Select all diseases">
+                </th>
+                <th class="table__head-cell">
+                  <button type="button" class="table__sort is-asc">
+                    Disease
+                    <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
+                  </button>
+                </th>
+                <th class="table__head-cell">
                   <button type="button" class="table__sort">
                     Codename
-                    <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="m5 12 7-7 7 7"/>
-                      <path d="M12 19V5"/>
-                    </svg>
+                    <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
                   </button>
                 </th>
-                <th class="table__head-cell" scope="col">
+                <th class="table__head-cell">Status</th>
+                <th class="table__head-cell">Active version</th>
+                <th class="table__head-cell">
                   <button type="button" class="table__sort">
-                    Full name
-                    <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="m5 12 7-7 7 7"/>
-                      <path d="M12 19V5"/>
-                    </svg>
+                    Updated
+                    <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
                   </button>
                 </th>
-                <th class="table__head-cell" scope="col" style="text-align:right">
-                  <button type="button" class="table__sort">
-                    State
-                    <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="m5 12 7-7 7 7"/>
-                      <path d="M12 19V5"/>
-                    </svg>
-                  </button>
-                </th>
+                <th class="table__head-cell" style="text-align:right">Actions</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+
+        <!-- Zone 2: Bulk-action bar (grid-rows 0fr → 1fr on .is-open) -->
+        <div class="list-table__bulk" id="lt-bulk">
+          <div class="list-bulk-bar" role="region" aria-label="Bulk actions" aria-live="polite">
+            <span class="list-bulk-bar__count" id="lt-bulk-count">0 diseases selected</span>
+            <span class="list-bulk-bar__sep" aria-hidden="true">·</span>
+            <button type="button" class="list-bulk-bar__action">Activate</button>
+            <button type="button" class="list-bulk-bar__action">Deactivate</button>
+            <button type="button" class="list-bulk-bar__action list-bulk-bar__action--danger">Delete</button>
+            <span class="list-bulk-bar__spacer"></span>
+            <button type="button" class="list-bulk-bar__clear">Clear selection</button>
+          </div>
+        </div>
+
+        <!-- Zone 3: Scrollable body -->
+        <div class="list-table__scroll" tabindex="0">
+          <table class="table table--fixed" aria-label="Disease list">
+            <colgroup>
+              <col style="width:52px">
+              <col>
+              <col style="width:150px">
+              <col style="width:170px">
+              <col style="width:150px">
+              <col style="width:140px">
+              <col style="width:120px">
+            </colgroup>
+            <thead class="table__head sr-only">
+              <tr class="table__head-row">
+                <th scope="col">Select</th>
+                <th scope="col">Disease</th>
+                <th scope="col">Codename</th>
+                <th scope="col">Status</th>
+                <th scope="col">Active version</th>
+                <th scope="col">Updated</th>
+                <th scope="col">Actions</th>
               </tr>
             </thead>
             <tbody class="table__body">
-              <tr class="table__row"><td class="table__cell table__cell--mono">ASF</td><td class="table__cell">African Swine Fever</td><td class="table__cell table__cell--state"><span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span></td></tr>
-              <tr class="table__row"><td class="table__cell table__cell--mono">CSF</td><td class="table__cell">Classical Swine Fever</td><td class="table__cell table__cell--state"><span class="badge badge--sm is-warning"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Incomplete</span></span></td></tr>
-              <tr class="table__row"><td class="table__cell table__cell--mono">PRRS</td><td class="table__cell">Porcine Reproductive &amp; Respiratory Syndrome</td><td class="table__cell table__cell--state"><span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span></td></tr>
+
+              <tr class="table__row">
+                <td class="table__cell"><input type="checkbox" class="lt-row-check" aria-label="Select African Swine Fever"></td>
+                <td class="table__cell"><span class="lt-name">African Swine Fever</span></td>
+                <td class="table__cell table__cell--mono">ASF</td>
+                <td class="table__cell"><span class="lt-status-cell"><button role="switch" aria-checked="true" class="switch switch--sm is-on" style="--_track-h:20px" aria-label="Toggle active status"><span class="switch__thumb"></span></button><span class="lt-status-label lt-status-label--active">Active</span></span></td>
+                <td class="table__cell"><button type="button" class="lt-version">v2.3</button></td>
+                <td class="table__cell table__cell--meta">Apr 18, 2026</td>
+                <td class="table__cell"><div class="lt-actions-cell">
+                  <button type="button" class="lt-action-btn" aria-label="View African Swine Fever"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  <button type="button" class="lt-action-btn" aria-label="Edit African Swine Fever"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                </div></td>
+              </tr>
+
+              <tr class="table__row">
+                <td class="table__cell"><input type="checkbox" class="lt-row-check" aria-label="Select Classical Swine Fever"></td>
+                <td class="table__cell"><span class="lt-name">Classical Swine Fever</span></td>
+                <td class="table__cell table__cell--mono">CSF</td>
+                <td class="table__cell"><span class="lt-status-cell"><button role="switch" aria-checked="true" class="switch switch--sm is-on" style="--_track-h:20px" aria-label="Toggle active status"><span class="switch__thumb"></span></button><span class="lt-status-label lt-status-label--active">Active</span></span></td>
+                <td class="table__cell"><button type="button" class="lt-version">v1.8</button></td>
+                <td class="table__cell table__cell--meta">Mar 22, 2026</td>
+                <td class="table__cell"><div class="lt-actions-cell">
+                  <button type="button" class="lt-action-btn" aria-label="View Classical Swine Fever"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  <button type="button" class="lt-action-btn" aria-label="Edit Classical Swine Fever"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                </div></td>
+              </tr>
+
+              <tr class="table__row">
+                <td class="table__cell"><input type="checkbox" class="lt-row-check" aria-label="Select Porcine Reproductive and Respiratory Syndrome"></td>
+                <td class="table__cell"><span class="lt-name">Porcine Reproductive &amp; Respiratory Syndrome</span></td>
+                <td class="table__cell table__cell--mono">PRRS</td>
+                <td class="table__cell"><span class="lt-status-cell"><button role="switch" aria-checked="true" class="switch switch--sm is-on" style="--_track-h:20px" aria-label="Toggle active status"><span class="switch__thumb"></span></button><span class="lt-status-label lt-status-label--active">Active</span></span></td>
+                <td class="table__cell"><button type="button" class="lt-version">v3.1</button></td>
+                <td class="table__cell table__cell--meta">May 01, 2026</td>
+                <td class="table__cell"><div class="lt-actions-cell">
+                  <button type="button" class="lt-action-btn" aria-label="View PRRS"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  <button type="button" class="lt-action-btn" aria-label="Edit PRRS"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                </div></td>
+              </tr>
+
+              <tr class="table__row">
+                <td class="table__cell"><input type="checkbox" class="lt-row-check" aria-label="Select Salmonella enterica infection"></td>
+                <td class="table__cell"><span class="lt-name">Salmonella enterica infection</span></td>
+                <td class="table__cell table__cell--mono">SALM</td>
+                <td class="table__cell"><span class="lt-status-cell"><button role="switch" aria-checked="true" class="switch switch--sm is-on" style="--_track-h:20px" aria-label="Toggle active status"><span class="switch__thumb"></span></button><span class="lt-status-label lt-status-label--active">Active</span></span></td>
+                <td class="table__cell"><button type="button" class="lt-version">v1.2</button></td>
+                <td class="table__cell table__cell--meta">Feb 14, 2026</td>
+                <td class="table__cell"><div class="lt-actions-cell">
+                  <button type="button" class="lt-action-btn" aria-label="View Salmonella"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  <button type="button" class="lt-action-btn" aria-label="Edit Salmonella"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                </div></td>
+              </tr>
+
+              <tr class="table__row lt-row--inactive">
+                <td class="table__cell"><input type="checkbox" class="lt-row-check" aria-label="Select Transmissible Gastroenteritis"></td>
+                <td class="table__cell"><span class="lt-name">Transmissible Gastroenteritis</span></td>
+                <td class="table__cell table__cell--mono">TGE</td>
+                <td class="table__cell"><span class="lt-status-cell"><button role="switch" aria-checked="false" class="switch switch--sm" style="--_track-h:20px" aria-label="Toggle active status"><span class="switch__thumb"></span></button><span class="lt-status-label">Inactive</span></span></td>
+                <td class="table__cell"><button type="button" class="lt-version">v0.9</button></td>
+                <td class="table__cell table__cell--meta">Dec 05, 2025</td>
+                <td class="table__cell"><div class="lt-actions-cell">
+                  <button type="button" class="lt-action-btn" aria-label="View TGE"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  <button type="button" class="lt-action-btn" aria-label="Edit TGE"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                </div></td>
+              </tr>
+
+              <tr class="table__row">
+                <td class="table__cell"><input type="checkbox" class="lt-row-check" aria-label="Select Brachyspira hyodysenteriae infection"></td>
+                <td class="table__cell"><span class="lt-name">Brachyspira hyodysenteriae infection</span></td>
+                <td class="table__cell table__cell--mono">SDYS</td>
+                <td class="table__cell"><span class="lt-status-cell"><button role="switch" aria-checked="true" class="switch switch--sm is-on" style="--_track-h:20px" aria-label="Toggle active status"><span class="switch__thumb"></span></button><span class="lt-status-label lt-status-label--active">Active</span></span></td>
+                <td class="table__cell"><button type="button" class="lt-version">v1.5</button></td>
+                <td class="table__cell table__cell--meta">Apr 02, 2026</td>
+                <td class="table__cell"><div class="lt-actions-cell">
+                  <button type="button" class="lt-action-btn" aria-label="View SDYS"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  <button type="button" class="lt-action-btn" aria-label="Edit SDYS"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                </div></td>
+              </tr>
+
+              <tr class="table__row">
+                <td class="table__cell"><input type="checkbox" class="lt-row-check" aria-label="Select Glässer's disease"></td>
+                <td class="table__cell"><span class="lt-name">Glässer's disease</span></td>
+                <td class="table__cell table__cell--mono">GLAS</td>
+                <td class="table__cell"><span class="lt-status-cell"><button role="switch" aria-checked="true" class="switch switch--sm is-on" style="--_track-h:20px" aria-label="Toggle active status"><span class="switch__thumb"></span></button><span class="lt-status-label lt-status-label--active">Active</span></span></td>
+                <td class="table__cell"><button type="button" class="lt-version">v2.0</button></td>
+                <td class="table__cell table__cell--meta">Jan 30, 2026</td>
+                <td class="table__cell"><div class="lt-actions-cell">
+                  <button type="button" class="lt-action-btn" aria-label="View GLAS"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  <button type="button" class="lt-action-btn" aria-label="Edit GLAS"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                </div></td>
+              </tr>
+
+              <tr class="table__row lt-row--inactive">
+                <td class="table__cell"><input type="checkbox" class="lt-row-check" aria-label="Select Pasteurella multocida infection"></td>
+                <td class="table__cell"><span class="lt-name">Pasteurella multocida infection</span></td>
+                <td class="table__cell table__cell--mono">PAST</td>
+                <td class="table__cell"><span class="lt-status-cell"><button role="switch" aria-checked="false" class="switch switch--sm" style="--_track-h:20px" aria-label="Toggle active status"><span class="switch__thumb"></span></button><span class="lt-status-label">Inactive</span></span></td>
+                <td class="table__cell"><button type="button" class="lt-version">v1.1</button></td>
+                <td class="table__cell table__cell--meta">Nov 12, 2025</td>
+                <td class="table__cell"><div class="lt-actions-cell">
+                  <button type="button" class="lt-action-btn" aria-label="View PAST"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  <button type="button" class="lt-action-btn" aria-label="Edit PAST"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                </div></td>
+              </tr>
+
+              <tr class="table__row">
+                <td class="table__cell"><input type="checkbox" class="lt-row-check" aria-label="Select Actinobacillus pleuropneumoniae infection"></td>
+                <td class="table__cell"><span class="lt-name">Actinobacillus pleuropneumoniae infection</span></td>
+                <td class="table__cell table__cell--mono">AAPP</td>
+                <td class="table__cell"><span class="lt-status-cell"><button role="switch" aria-checked="true" class="switch switch--sm is-on" style="--_track-h:20px" aria-label="Toggle active status"><span class="switch__thumb"></span></button><span class="lt-status-label lt-status-label--active">Active</span></span></td>
+                <td class="table__cell"><button type="button" class="lt-version">v1.7</button></td>
+                <td class="table__cell table__cell--meta">Feb 28, 2026</td>
+                <td class="table__cell"><div class="lt-actions-cell">
+                  <button type="button" class="lt-action-btn" aria-label="View AAPP"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  <button type="button" class="lt-action-btn" aria-label="Edit AAPP"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                </div></td>
+              </tr>
+
+              <tr class="table__row">
+                <td class="table__cell"><input type="checkbox" class="lt-row-check" aria-label="Select Streptococcus suis infection"></td>
+                <td class="table__cell"><span class="lt-name">Streptococcus suis infection</span></td>
+                <td class="table__cell table__cell--mono">SSUI</td>
+                <td class="table__cell"><span class="lt-status-cell"><button role="switch" aria-checked="true" class="switch switch--sm is-on" style="--_track-h:20px" aria-label="Toggle active status"><span class="switch__thumb"></span></button><span class="lt-status-label lt-status-label--active">Active</span></span></td>
+                <td class="table__cell"><button type="button" class="lt-version">v2.1</button></td>
+                <td class="table__cell table__cell--meta">Mar 10, 2026</td>
+                <td class="table__cell"><div class="lt-actions-cell">
+                  <button type="button" class="lt-action-btn" aria-label="View SSUI"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  <button type="button" class="lt-action-btn" aria-label="Edit SSUI"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                </div></td>
+              </tr>
+
+              <tr class="table__row lt-row--inactive">
+                <td class="table__cell"><input type="checkbox" class="lt-row-check" aria-label="Select Mycoplasma hyopneumoniae infection"></td>
+                <td class="table__cell"><span class="lt-name">Mycoplasma hyopneumoniae infection</span></td>
+                <td class="table__cell table__cell--mono">MHYO</td>
+                <td class="table__cell"><span class="lt-status-cell"><button role="switch" aria-checked="false" class="switch switch--sm" style="--_track-h:20px" aria-label="Toggle active status"><span class="switch__thumb"></span></button><span class="lt-status-label">Inactive</span></span></td>
+                <td class="table__cell"><button type="button" class="lt-version">v1.3</button></td>
+                <td class="table__cell table__cell--meta">Jan 15, 2026</td>
+                <td class="table__cell"><div class="lt-actions-cell">
+                  <button type="button" class="lt-action-btn" aria-label="View MHYO"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  <button type="button" class="lt-action-btn" aria-label="Edit MHYO"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                </div></td>
+              </tr>
+
+              <tr class="table__row">
+                <td class="table__cell"><input type="checkbox" class="lt-row-check" aria-label="Select Porcine Circovirus Disease"></td>
+                <td class="table__cell"><span class="lt-name">Porcine Circovirus Disease</span></td>
+                <td class="table__cell table__cell--mono">PCVD</td>
+                <td class="table__cell"><span class="lt-status-cell"><button role="switch" aria-checked="true" class="switch switch--sm is-on" style="--_track-h:20px" aria-label="Toggle active status"><span class="switch__thumb"></span></button><span class="lt-status-label lt-status-label--active">Active</span></span></td>
+                <td class="table__cell"><button type="button" class="lt-version">v1.9</button></td>
+                <td class="table__cell table__cell--meta">Apr 25, 2026</td>
+                <td class="table__cell"><div class="lt-actions-cell">
+                  <button type="button" class="lt-action-btn" aria-label="View PCVD"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  <button type="button" class="lt-action-btn" aria-label="Edit PCVD"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                </div></td>
+              </tr>
+
+              <tr class="table__row">
+                <td class="table__cell"><input type="checkbox" class="lt-row-check" aria-label="Select Erysipelas"></td>
+                <td class="table__cell"><span class="lt-name">Erysipelas</span></td>
+                <td class="table__cell table__cell--mono">ERYS</td>
+                <td class="table__cell"><span class="lt-status-cell"><button role="switch" aria-checked="true" class="switch switch--sm is-on" style="--_track-h:20px" aria-label="Toggle active status"><span class="switch__thumb"></span></button><span class="lt-status-label lt-status-label--active">Active</span></span></td>
+                <td class="table__cell"><button type="button" class="lt-version">v2.5</button></td>
+                <td class="table__cell table__cell--meta">Mar 05, 2026</td>
+                <td class="table__cell"><div class="lt-actions-cell">
+                  <button type="button" class="lt-action-btn" aria-label="View ERYS"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  <button type="button" class="lt-action-btn" aria-label="Edit ERYS"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                </div></td>
+              </tr>
+
             </tbody>
           </table>
         </div>
+
+        <!-- Zone 4: Frosted glass footer -->
+        <footer class="list-table__footer">
+          <p class="list-table__count">
+            Showing <strong>1–13</strong> of <strong>47</strong>
+          </p>
+          <nav class="pager" aria-label="Disease list pages">
+            <button type="button" class="pager__btn" aria-label="First page" disabled>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m11 17-5-5 5-5"/><path d="m18 17-5-5 5-5"/></svg>
+            </button>
+            <button type="button" class="pager__btn" aria-label="Previous page" disabled>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <button type="button" class="pager__page is-current" aria-current="page">1</button>
+            <button type="button" class="pager__page">2</button>
+            <button type="button" class="pager__page">3</button>
+            <span class="pager__ellipsis" aria-hidden="true">…</span>
+            <button type="button" class="pager__page">4</button>
+            <button type="button" class="pager__btn" aria-label="Next page">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+            <button type="button" class="pager__btn" aria-label="Last page">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 17 5-5-5-5"/><path d="m13 17 5-5-5-5"/></svg>
+            </button>
+            <span class="pager__jump">
+              Go to
+              <input type="text" inputmode="numeric" class="pager__jump-input" value="1" aria-label="Go to page">
+              / 4
+            </span>
+          </nav>
+          <div style="display:flex;align-items:center;gap:var(--spacing-2x)">
+            <label class="list-table__footer-label" for="lt-rows">Rows per page</label>
+            <select id="lt-rows" class="rows-select">
+              <option>10</option>
+              <option selected>25</option>
+              <option>50</option>
+              <option>100</option>
+            </select>
+          </div>
+        </footer>
+
+      </section>
+    </div>
+  </section>
+
+  <!-- ========================== ANATOMY ========================== -->
+  <section class="chunk anatomy">
+    <header class="chunk-head reveal">
+      <h2 class="h2">Anatomy.</h2>
+    </header>
+    <p class="section-lede reveal">
+      The <code>.list-table</code> is a flex-column card shell with four
+      named zones. The header and footer share the same frosted glass surface
+      formula. The header holds a separate <code>&lt;table&gt;</code> (not a
+      sticky <code>&lt;thead&gt;</code>) so the glass rail can bleed to the
+      card edges without being clipped by <code>overflow:hidden</code>.
+    </p>
+    <dl class="anatomy-key">
+      <dt><code>.list-table</code></dt>
+      <dd>Card shell. <code>flex-direction: column; overflow: hidden; outline</code> border; border-radius.</dd>
+
+      <dt><code>.list-table__head</code></dt>
+      <dd>Frosted glass header zone. Contains a <code>table--fixed</code> header-only table. Set <code>aria-hidden="true"</code> — the body table carries accessible column headers in a visually-hidden <code>&lt;thead&gt;</code>.</dd>
+
+      <dt><code>.list-table__bulk + .list-bulk-bar</code></dt>
+      <dd>Animated slot. <code>display: none</code> by default; <code>display: block</code> on <code>.is-open</code> (JS adds this only when selection count &gt; 0). The <code>.list-bulk-bar</code> inside carries the lime-to-forest gradient glass surface. Note: <code>backdrop-filter</code> ignores CSS overflow/grid clipping, so <code>display:none</code> is the only reliable hide mechanism.</dd>
+
+      <dt><code>.list-table__scroll</code></dt>
+      <dd><code>overflow-y: auto; flex: 1 1 auto</code>. Contains the body-only table. <code>overscroll-behavior-y: none</code> prevents page scroll chain-through on iOS.</dd>
+
+      <dt><code>.list-table__footer</code></dt>
+      <dd>Frosted glass footer rail, fixed at 40 px. Holds the showing-count, <code>.pager</code>, and <code>.rows-select</code>. Same glass formula as the header.</dd>
+    </dl>
+  </section>
+
+  <!-- ========================== STATES ========================== -->
+  <section class="chunk states">
+    <header class="chunk-head reveal">
+      <h2 class="h2">Row states.</h2>
+    </header>
+    <p class="section-lede reveal">
+      Hover and selection paint <code>background</code> on the <code>&lt;tr&gt;</code>.
+      Dim rows de-emphasize inactive records — apply <code>.table__row--dim</code>
+      to the row to reduce its opacity to 55%.
+    </p>
+
+    <div class="preview-stage">
+      <table class="table table--boxed" aria-label="Row states example">
+        <thead class="table__head">
+          <tr class="table__head-row">
+            <th class="table__head-cell" scope="col">State</th>
+            <th class="table__head-cell" scope="col">Disease</th>
+            <th class="table__head-cell" scope="col">Codename</th>
+            <th class="table__head-cell" scope="col">Updated</th>
+          </tr>
+        </thead>
+        <tbody class="table__body">
+          <tr class="table__row">
+            <td class="table__cell table__cell--meta">Default</td>
+            <td class="table__cell">African Swine Fever</td>
+            <td class="table__cell table__cell--mono">ASF</td>
+            <td class="table__cell table__cell--meta">Apr 18, 2026</td>
+          </tr>
+          <tr class="table__row is-demo-hover">
+            <td class="table__cell table__cell--meta">Hover</td>
+            <td class="table__cell">Classical Swine Fever</td>
+            <td class="table__cell table__cell--mono">CSF</td>
+            <td class="table__cell table__cell--meta">Mar 22, 2026</td>
+          </tr>
+          <tr class="table__row is-selected">
+            <td class="table__cell table__cell--meta">Selected</td>
+            <td class="table__cell">PRRS</td>
+            <td class="table__cell table__cell--mono">PRRS</td>
+            <td class="table__cell table__cell--meta">May 01, 2026</td>
+          </tr>
+          <tr class="table__row table__row--dim">
+            <td class="table__cell table__cell--meta">Dim (inactive)</td>
+            <td class="table__cell">Transmissible Gastroenteritis</td>
+            <td class="table__cell table__cell--mono">TGE</td>
+            <td class="table__cell table__cell--meta">Dec 05, 2025</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sort-demo">
+      <span class="sort-demo__item">
+        Idle
+        <button type="button" class="table__sort">
+          Disease
+          <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
+        </button>
+      </span>
+      <span class="sort-demo__item">
+        Ascending
+        <button type="button" class="table__sort is-asc">
+          Disease
+          <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
+        </button>
+      </span>
+      <span class="sort-demo__item">
+        Descending
+        <button type="button" class="table__sort is-desc">
+          Disease
+          <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
+        </button>
+      </span>
+    </div>
+  </section>
+
+  <!-- ========================== SUBCOMPONENTS ========================== -->
+  <section class="chunk sizes" id="subcomponents">
+    <header class="chunk-head reveal">
+      <h2 class="h2">Sub-components.</h2>
+    </header>
+    <p class="section-lede reveal">
+      The BulkBar and Pager are used inside <code>.list-table</code> but can
+      also appear standalone. The Pager sits outside the list-table in any
+      context where pagination controls are needed without the full card.
+    </p>
+
+    <!-- BulkBar -->
+    <div class="sub-demo">
+      <p class="sub-demo__label">Bulk bar</p>
+      <div class="bulk-demo-stage">
+        <div class="list-bulk-bar" role="region" aria-label="Bulk actions demo">
+          <span class="list-bulk-bar__count">3 diseases selected</span>
+          <span class="list-bulk-bar__sep" aria-hidden="true">·</span>
+          <button type="button" class="list-bulk-bar__action">Activate</button>
+          <button type="button" class="list-bulk-bar__action">Deactivate</button>
+          <button type="button" class="list-bulk-bar__action list-bulk-bar__action--danger">Delete</button>
+          <span class="list-bulk-bar__spacer"></span>
+          <button type="button" class="list-bulk-bar__clear">Clear selection</button>
+        </div>
       </div>
-      <div>
-        <p class="sizes-grid__caption">sm — denser</p>
-        <div class="preview-stage">
-          <table class="table table--boxed table--sm" aria-label="sm size">
-            <thead class="table__head">
-              <tr class="table__head-row">
-                <th class="table__head-cell" scope="col">
-                  <button type="button" class="table__sort">
-                    Codename
-                    <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="m5 12 7-7 7 7"/>
-                      <path d="M12 19V5"/>
-                    </svg>
-                  </button>
-                </th>
-                <th class="table__head-cell" scope="col">
-                  <button type="button" class="table__sort">
-                    Full name
-                    <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="m5 12 7-7 7 7"/>
-                      <path d="M12 19V5"/>
-                    </svg>
-                  </button>
-                </th>
-                <th class="table__head-cell" scope="col" style="text-align:right">
-                  <button type="button" class="table__sort">
-                    State
-                    <svg class="table__sort-icon" viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="m5 12 7-7 7 7"/>
-                      <path d="M12 19V5"/>
-                    </svg>
-                  </button>
-                </th>
-              </tr>
-            </thead>
-            <tbody class="table__body">
-              <tr class="table__row"><td class="table__cell table__cell--mono">ASF</td><td class="table__cell">African Swine Fever</td><td class="table__cell table__cell--state"><span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span></td></tr>
-              <tr class="table__row"><td class="table__cell table__cell--mono">CSF</td><td class="table__cell">Classical Swine Fever</td><td class="table__cell table__cell--state"><span class="badge badge--sm is-warning"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Incomplete</span></span></td></tr>
-              <tr class="table__row"><td class="table__cell table__cell--mono">PRRS</td><td class="table__cell">Porcine Reproductive &amp; Respiratory Syndrome</td><td class="table__cell table__cell--state"><span class="badge badge--sm is-safe"><span class="badge__dot" aria-hidden="true"></span><span class="badge__label">Complete</span></span></td></tr>
-            </tbody>
-          </table>
+    </div>
+
+    <!-- Pager states -->
+    <div class="sub-demo" style="margin-top:var(--spacing-6x)">
+      <p class="sub-demo__label">Pager — page 1 (first disabled)</p>
+      <div class="pager-demo-stage">
+        <nav class="pager" aria-label="Pagination demo A">
+          <button type="button" class="pager__btn" aria-label="First page" disabled>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m11 17-5-5 5-5"/><path d="m18 17-5-5 5-5"/></svg>
+          </button>
+          <button type="button" class="pager__btn" aria-label="Previous page" disabled>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <button type="button" class="pager__page is-current" aria-current="page">1</button>
+          <button type="button" class="pager__page">2</button>
+          <button type="button" class="pager__page">3</button>
+          <span class="pager__ellipsis" aria-hidden="true">…</span>
+          <button type="button" class="pager__page">8</button>
+          <button type="button" class="pager__btn" aria-label="Next page">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+          <button type="button" class="pager__btn" aria-label="Last page">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 17 5-5-5-5"/><path d="m13 17 5-5-5-5"/></svg>
+          </button>
+          <span class="pager__jump">
+            Go to
+            <input type="text" inputmode="numeric" class="pager__jump-input" value="1" aria-label="Go to page">
+            / 8
+          </span>
+        </nav>
+      </div>
+    </div>
+
+    <div class="sub-demo" style="margin-top:var(--spacing-4x)">
+      <p class="sub-demo__label">Pager — mid-range (page 4 of 8)</p>
+      <div class="pager-demo-stage">
+        <nav class="pager" aria-label="Pagination demo B">
+          <button type="button" class="pager__btn" aria-label="First page">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m11 17-5-5 5-5"/><path d="m18 17-5-5 5-5"/></svg>
+          </button>
+          <button type="button" class="pager__btn" aria-label="Previous page">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <button type="button" class="pager__page">1</button>
+          <span class="pager__ellipsis" aria-hidden="true">…</span>
+          <button type="button" class="pager__page">3</button>
+          <button type="button" class="pager__page is-current" aria-current="page">4</button>
+          <button type="button" class="pager__page">5</button>
+          <span class="pager__ellipsis" aria-hidden="true">…</span>
+          <button type="button" class="pager__page">8</button>
+          <button type="button" class="pager__btn" aria-label="Next page">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+          <button type="button" class="pager__btn" aria-label="Last page">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 17 5-5-5-5"/><path d="m13 17 5-5-5-5"/></svg>
+          </button>
+          <span class="pager__jump">
+            Go to
+            <input type="text" inputmode="numeric" class="pager__jump-input" value="4" aria-label="Go to page">
+            / 8
+          </span>
+        </nav>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================== LOADING STATES ========================== -->
+  <section class="chunk examples" id="loading">
+    <header class="chunk-head reveal">
+      <h2 class="h2">Loading states.</h2>
+    </header>
+    <p class="section-lede reveal">
+      Two patterns: shimmer skeleton cells (<code>.table__cell--skel</code>)
+      for table-in-place loading, and the brand loader
+      (<code>.list-loading</code>) for an empty shell while the first page
+      fetches. The brand loader is the production default; skeletons are still
+      documented as a deprecated alternative.
+    </p>
+
+    <div class="sub-demo">
+      <p class="sub-demo__label">Shimmer skeleton (3 rows)</p>
+      <div class="skel-demo-stage">
+        <table class="table table--fixed" aria-label="Loading skeleton example" aria-busy="true">
+          <colgroup>
+            <col style="width:52px">
+            <col>
+            <col style="width:148px">
+            <col style="width:100px">
+          </colgroup>
+          <thead class="table__head">
+            <tr class="table__head-row">
+              <th class="table__head-cell" scope="col"></th>
+              <th class="table__head-cell" scope="col">Disease</th>
+              <th class="table__head-cell" scope="col">Codename</th>
+              <th class="table__head-cell" scope="col">Updated</th>
+            </tr>
+          </thead>
+          <tbody class="table__body">
+            <tr class="table__row">
+              <td class="table__cell table__cell--skel table__cell--skel-sm"></td>
+              <td class="table__cell table__cell--skel"></td>
+              <td class="table__cell table__cell--skel table__cell--skel-sm"></td>
+              <td class="table__cell table__cell--skel table__cell--skel-sm"></td>
+            </tr>
+            <tr class="table__row">
+              <td class="table__cell table__cell--skel table__cell--skel-sm"></td>
+              <td class="table__cell table__cell--skel"></td>
+              <td class="table__cell table__cell--skel table__cell--skel-sm"></td>
+              <td class="table__cell table__cell--skel table__cell--skel-sm"></td>
+            </tr>
+            <tr class="table__row">
+              <td class="table__cell table__cell--skel table__cell--skel-sm"></td>
+              <td class="table__cell table__cell--skel"></td>
+              <td class="table__cell table__cell--skel table__cell--skel-sm"></td>
+              <td class="table__cell table__cell--skel table__cell--skel-sm"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="sub-demo" style="margin-top:var(--spacing-6x)">
+      <p class="sub-demo__label">Brand loader (production default)</p>
+      <div class="loading-demo-stage">
+        <div class="list-loading" aria-label="Loading disease list" role="status">
+          <img class="list-loading__emblem" src="logo/logo-emblem-color.svg" alt="" aria-hidden="true">
+          <div class="list-loading__dots" aria-hidden="true">
+            <i></i><i></i><i></i>
+          </div>
+          <p class="list-loading__text">Loading diseases…</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ========================== TOKENS ========================== -->
-  <section class="tokens">
-    <h2 class="h2">Tokens.</h2>
-    <p class="section-lede">
-      Every <code>--table-*</code> component token resolves through a
-      semantic token. The component never reaches across tiers for a
-      primitive; semantics are the seam between the component and the
-      colour / spacing palette.
-    </p>
+  <section class="chunk tokens">
+    <header class="chunk-head reveal">
+      <h2 class="h2">Tokens.</h2>
+    </header>
 
     <table class="token-table" aria-label="Table component tokens">
       <thead>
-        <tr><th>Token</th><th>Reference</th><th>Purpose</th></tr>
+        <tr>
+          <th>Token</th>
+          <th>Role</th>
+          <th>Default</th>
+        </tr>
       </thead>
       <tbody>
-        <tr><td class="tk-name">--table-font-family</td><td class="tk-ref">var(--font-sans)</td><td>Default body font for non-mono cells.</td></tr>
-        <tr><td class="tk-name">--table-radius</td><td class="tk-ref">var(--radius-lg)</td><td>Outer corner radius for the --boxed variant.</td></tr>
-        <tr><td class="tk-name">--table-border-width</td><td class="tk-ref">var(--border-width-base)</td><td>Border width used by the outer frame and row dividers.</td></tr>
-        <tr><td class="tk-name">--table-border</td><td class="tk-ref">var(--border-default)</td><td>Outer border colour on --boxed.</td></tr>
-        <tr><td class="tk-name">--table-row-divider</td><td class="tk-ref">var(--border-default-subtle)</td><td>Hairline between rows.</td></tr>
-        <tr><td class="tk-name">--table-bg</td><td class="tk-ref">var(--background-default)</td><td>Surface colour of the table.</td></tr>
-        <tr><td class="tk-name">--table-head-bg</td><td class="tk-ref">var(--background-accent-subtle)</td><td>Surface colour of the head row.</td></tr>
-        <tr><td class="tk-name">--table-head-fg</td><td class="tk-ref">var(--text-default-subtle)</td><td>Head-cell text colour.</td></tr>
-        <tr><td class="tk-name">--table-head-font-size</td><td class="tk-ref">var(--text-body-sm)</td><td>Head-cell text size; the head row is also uppercased and tracked.</td></tr>
-        <tr><td class="tk-name">--table-head-letter-spacing</td><td class="tk-ref">0.04em</td><td>Tracking on uppercase head labels.</td></tr>
-        <tr><td class="tk-name">--table-head-font-weight</td><td class="tk-ref">700</td><td>Head-cell weight.</td></tr>
-        <tr><td class="tk-name">--table-head-pad-x</td><td class="tk-ref">var(--space-tier-4)</td><td>Horizontal padding inside a head cell.</td></tr>
-        <tr><td class="tk-name">--table-head-pad-y</td><td class="tk-ref">var(--space-tier-6)</td><td>Vertical padding inside a head cell.</td></tr>
-        <tr><td class="tk-name">--table-row-bg</td><td class="tk-ref">var(--background-default)</td><td>Row rest background.</td></tr>
-        <tr><td class="tk-name">--table-row-bg-hover</td><td class="tk-ref">var(--background-row-hover)</td><td>Row hover background.</td></tr>
-        <tr><td class="tk-name">--table-row-fg</td><td class="tk-ref">var(--text-default)</td><td>Default cell text colour.</td></tr>
-        <tr><td class="tk-name">--table-row-fg-subtle</td><td class="tk-ref">var(--text-default-subtle)</td><td>Secondary cell text.</td></tr>
-        <tr><td class="tk-name">--table-row-fg-minimal</td><td class="tk-ref">var(--text-default-minimal)</td><td>Meta-cell text.</td></tr>
-        <tr><td class="tk-name">--table-row-pad-x</td><td class="tk-ref">var(--space-tier-4)</td><td>Horizontal padding inside a body cell.</td></tr>
-        <tr><td class="tk-name">--table-row-pad-y</td><td class="tk-ref">var(--space-tier-5)</td><td>Vertical padding inside a body cell.</td></tr>
-        <tr><td class="tk-name">--table-row-font-size</td><td class="tk-ref">var(--text-body)</td><td>Default cell text size.</td></tr>
-        <tr><td class="tk-name">--table-meta-font-size</td><td class="tk-ref">var(--text-body-sm)</td><td>Meta-cell text size (.table__cell--meta).</td></tr>
-        <tr><td class="tk-name">--table-row-dim-opacity</td><td class="tk-ref">0.55</td><td>Opacity for <code>.table__row--dim</code>.</td></tr>
-        <tr><td class="tk-name">--table-mono-font-family</td><td class="tk-ref">var(--font-mono)</td><td>Mono font for codenames and IDs.</td></tr>
-        <tr><td class="tk-name">--table-mono-letter-spacing</td><td class="tk-ref">var(--letter-spacing-mono)</td><td>Tracking on mono cells.</td></tr>
-        <tr><td class="tk-name">--table-sort-icon-size</td><td class="tk-ref">0.7em</td><td>Arrow glyph size next to a sortable label.</td></tr>
-        <tr><td class="tk-name">--table-sort-gap</td><td class="tk-ref">var(--space-tier-7)</td><td>Gap between sort label and icon.</td></tr>
-        <tr><td class="tk-name">--table-transition</td><td class="tk-ref">background-color/color/opacity .15s</td><td>Shared transition for row and sort affordances.</td></tr>
+        <tr><td colspan="3" style="padding-top:var(--space-tier-4);font-family:var(--font-mono);font-size:var(--text-eyebrow);color:var(--text-default-minimal);text-transform:uppercase;letter-spacing:var(--letter-spacing-mono)">Table base</td></tr>
+        <tr>
+          <td><code>--table-bg</code></td>
+          <td>Row area background</td>
+          <td><code>var(--background-default)</code></td>
+        </tr>
+        <tr>
+          <td><code>--table-head-bg</code></td>
+          <td>Simple thead background (standalone table, not list-table)</td>
+          <td><code>var(--background-accent-subtle)</code></td>
+        </tr>
+        <tr>
+          <td><code>--table-head-fg</code></td>
+          <td>Column label colour</td>
+          <td><code>var(--text-default-subtle)</code></td>
+        </tr>
+        <tr>
+          <td><code>--table-head-pad-x</code></td>
+          <td>Head cell horizontal padding</td>
+          <td><code>var(--space-tier-4)</code></td>
+        </tr>
+        <tr>
+          <td><code>--table-head-pad-y</code></td>
+          <td>Head cell vertical padding</td>
+          <td><code>var(--space-tier-6)</code></td>
+        </tr>
+        <tr>
+          <td><code>--table-row-pad-x</code></td>
+          <td>Body cell horizontal padding</td>
+          <td><code>var(--space-tier-4)</code></td>
+        </tr>
+        <tr>
+          <td><code>--table-row-pad-y</code></td>
+          <td>Body cell vertical padding</td>
+          <td><code>var(--space-tier-5)</code></td>
+        </tr>
+        <tr>
+          <td><code>--table-row-bg-hover</code></td>
+          <td>Row hover background</td>
+          <td><code>var(--background-row-hover)</code></td>
+        </tr>
+        <tr>
+          <td><code>--table-row-dim-opacity</code></td>
+          <td>Opacity of <code>.table__row--dim</code> (inactive rows)</td>
+          <td><code>0.55</code></td>
+        </tr>
+        <tr>
+          <td><code>--table-radius</code></td>
+          <td>Border-radius for <code>.table--boxed</code></td>
+          <td><code>var(--radius-lg)</code></td>
+        </tr>
+        <tr>
+          <td><code>--table-row-font-size</code></td>
+          <td>Body cell font size</td>
+          <td><code>var(--text-body)</code></td>
+        </tr>
+        <tr>
+          <td><code>--table-meta-font-size</code></td>
+          <td>Meta cell font size (<code>--meta</code> modifier)</td>
+          <td><code>var(--text-body-sm)</code></td>
+        </tr>
+        <tr>
+          <td><code>--table-sort-gap</code></td>
+          <td>Gap between sort label and icon</td>
+          <td><code>var(--space-tier-7)</code></td>
+        </tr>
+
+        <tr><td colspan="3" style="padding-top:var(--space-tier-4);font-family:var(--font-mono);font-size:var(--text-eyebrow);color:var(--text-default-minimal);text-transform:uppercase;letter-spacing:var(--letter-spacing-mono)">List-table card shell</td></tr>
+        <tr>
+          <td><code>--list-table-radius</code></td>
+          <td>Card border-radius</td>
+          <td><code>var(--radius-lg)</code></td>
+        </tr>
+        <tr>
+          <td><code>--list-table-border</code></td>
+          <td>Card outline colour</td>
+          <td><code>var(--border-default)</code></td>
+        </tr>
+        <tr>
+          <td><code>--list-table-shadow</code></td>
+          <td>Card drop shadow</td>
+          <td><code>var(--shadow-sm)</code></td>
+        </tr>
+        <tr>
+          <td><code>--list-table-rail-h</code></td>
+          <td>Header and footer rail height</td>
+          <td><code>40px</code></td>
+        </tr>
+        <tr>
+          <td><code>--list-table-glass-bg</code></td>
+          <td>Frosted glass fill for head/footer</td>
+          <td><code>color-mix(in srgb, var(--accent-100) 80%, transparent)</code></td>
+        </tr>
+        <tr>
+          <td><code>--list-table-glass-rim</code></td>
+          <td>Inner highlight on head/footer</td>
+          <td><code>color-mix(in srgb, var(--white-base) 60%, transparent)</code></td>
+        </tr>
+
+        <tr><td colspan="3" style="padding-top:var(--space-tier-4);font-family:var(--font-mono);font-size:var(--text-eyebrow);color:var(--text-default-minimal);text-transform:uppercase;letter-spacing:var(--letter-spacing-mono)">Bulk bar</td></tr>
+        <tr>
+          <td><code>--bulk-bar-from</code></td>
+          <td>Gradient start (lime)</td>
+          <td><code>color-mix(in srgb, var(--accent-800) 92%, transparent)</code></td>
+        </tr>
+        <tr>
+          <td><code>--bulk-bar-to</code></td>
+          <td>Gradient end (forest)</td>
+          <td><code>color-mix(in srgb, var(--primary-700) 92%, transparent)</code></td>
+        </tr>
+        <tr>
+          <td><code>--bulk-bar-fg</code></td>
+          <td>Text and icon colour</td>
+          <td><code>var(--text-inverted)</code></td>
+        </tr>
+
+        <tr><td colspan="3" style="padding-top:var(--space-tier-4);font-family:var(--font-mono);font-size:var(--text-eyebrow);color:var(--text-default-minimal);text-transform:uppercase;letter-spacing:var(--letter-spacing-mono)">Pager</td></tr>
+        <tr>
+          <td><code>--pagination-font-family</code></td>
+          <td>Type family for page numbers</td>
+          <td><code>var(--font-mono)</code></td>
+        </tr>
+        <tr>
+          <td><code>--pagination-font-size</code></td>
+          <td>Type size</td>
+          <td><code>var(--text-sm)</code></td>
+        </tr>
+        <tr>
+          <td><code>--pagination-size</code></td>
+          <td>Button height and min-width</td>
+          <td><code>28px</code></td>
+        </tr>
+        <tr>
+          <td><code>--pagination-radius</code></td>
+          <td>Button border-radius</td>
+          <td><code>var(--radius-sm)</code></td>
+        </tr>
+        <tr>
+          <td><code>--pagination-gap</code></td>
+          <td>Gap between pager controls</td>
+          <td><code>var(--space-gap-micro)</code></td>
+        </tr>
+        <tr>
+          <td><code>--pagination-bg</code></td>
+          <td>Default page button fill</td>
+          <td><code>var(--background-default)</code></td>
+        </tr>
+        <tr>
+          <td><code>--pagination-border</code></td>
+          <td>Page button border colour</td>
+          <td><code>var(--border-default-strong)</code></td>
+        </tr>
+        <tr>
+          <td><code>--pagination-fg</code></td>
+          <td>Default page button text</td>
+          <td><code>var(--text-default)</code></td>
+        </tr>
+        <tr>
+          <td><code>--pagination-fg-current</code></td>
+          <td>Current page text (on filled bg)</td>
+          <td><code>var(--text-inverted)</code></td>
+        </tr>
+        <tr>
+          <td><code>--pagination-fg-disabled</code></td>
+          <td>Disabled/ellipsis text</td>
+          <td><code>var(--text-default-disabled)</code></td>
+        </tr>
+        <tr>
+          <td><code>--pagination-bg-hover</code></td>
+          <td>Hovered page button fill</td>
+          <td><code>var(--background-default-minimal)</code></td>
+        </tr>
+        <tr>
+          <td><code>--pagination-bg-current</code></td>
+          <td>Current page filled background</td>
+          <td><code>var(--background-primary)</code></td>
+        </tr>
+        <tr>
+          <td><code>--pagination-jump-input-bg/fg/border</code></td>
+          <td>"Go to" jump input surface tokens</td>
+          <td><code>var(--background-default) / var(--text-default) / var(--border-default-strong)</code></td>
+        </tr>
+        <tr>
+          <td><code>--pagination-jump-label-fg</code></td>
+          <td>"Go to / N" label colour</td>
+          <td><code>var(--text-default-minimal)</code></td>
+        </tr>
       </tbody>
     </table>
   </section>
 
-  <!-- ========================== USAGE ========================== -->
-  <p class="usage-note">
-    <strong>Reach for Table when columns are stable and the user will sort
-    or compare across rows.</strong> Use one badge per row in
-    <code>.table__cell--state</code> — additional state flags belong in
-    row-level treatments (<code>.table__row--dim</code>,
-    <code>.is-selected</code>) or in a separate column. When a row carries
-    a free-form mix of icon, title, description, and trailing meta with no
-    shared schema across rows, that&rsquo;s a Card · List, not a Table.
-    Future work: an active filter / search state that swaps the toolbar
-    label-row for a single-input search bar; rest-state only ships today.
+  <p class="usage-note reveal">
+    Use <code>.list-table</code> for every admin data-list screen — it is the
+    only sanctioned table shell. Reach for the bare <code>.table.table--boxed</code>
+    only when the content genuinely does not need pagination, bulk actions, or
+    a scrollable body (e.g. a small inline reference table in a detail panel).
+    Never hand-roll a sticky-thead workaround; use the two-table pattern
+    (separate header table + body table with matching <code>&lt;colgroup&gt;</code>)
+    so the glass rail can bleed edge-to-edge without overflow clipping.
   </p>
 
-  <!-- ========================== FOOTER ========================== -->
-  <footer>
-    <span>END OF SECTION</span>
-  </footer>
-
 </main>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ---- Row selection + BulkBar ---- */
+  function initSelection() {
+    var selectAll   = document.getElementById('lt-select-all');
+    var rowChecks   = document.querySelectorAll('.lt-row-check');
+    var bulkZone    = document.getElementById('lt-bulk');
+    var bulkCount   = document.getElementById('lt-bulk-count');
+
+    function update() {
+      var checked = Array.from(rowChecks).filter(function (c) { return c.checked; });
+      var n = checked.length;
+
+      rowChecks.forEach(function (c) {
+        c.closest('.table__row').classList.toggle('is-selected', c.checked);
+      });
+
+      if (bulkCount) {
+        bulkCount.textContent = n + ' disease' + (n !== 1 ? 's' : '') + ' selected';
+      }
+      if (bulkZone) bulkZone.classList.toggle('is-open', n > 0);
+
+      if (selectAll) {
+        var all  = n === rowChecks.length && n > 0;
+        var some = n > 0 && !all;
+        selectAll.checked       = all;
+        selectAll.indeterminate = some;
+      }
+    }
+
+    if (selectAll) {
+      selectAll.addEventListener('change', function () {
+        rowChecks.forEach(function (c) { c.checked = selectAll.checked; });
+        update();
+      });
+    }
+    rowChecks.forEach(function (c) { c.addEventListener('change', update); });
+
+    var clearBtn = document.querySelector('.list-bulk-bar__clear');
+    if (clearBtn) {
+      clearBtn.addEventListener('click', function () {
+        rowChecks.forEach(function (c) { c.checked = false; });
+        if (selectAll) { selectAll.checked = false; selectAll.indeterminate = false; }
+        update();
+      });
+    }
+  }
+
+  /* ---- Sort button cycling (idle → asc → desc → idle) ---- */
+  function initSort() {
+    document.querySelectorAll('.table__sort').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var wasAsc  = btn.classList.contains('is-asc');
+        var wasDesc = btn.classList.contains('is-desc');
+        var thead   = btn.closest('thead');
+        if (thead) {
+          thead.querySelectorAll('.table__sort').forEach(function (b) {
+            b.classList.remove('is-asc', 'is-desc');
+          });
+        }
+        if (!wasAsc && !wasDesc) btn.classList.add('is-asc');
+        else if (wasAsc)         btn.classList.add('is-desc');
+      });
+    });
+  }
+
+  /* ---- Pager page switching + "Go to" jump ---- */
+  function initPager() {
+    document.querySelectorAll('.pager').forEach(function (pager) {
+      var pages = pager.querySelectorAll('.pager__page');
+      var jumpInput = pager.querySelector('.pager__jump-input');
+
+      function setCurrentPage(page) {
+        pages.forEach(function (p) { p.classList.remove('is-current'); p.removeAttribute('aria-current'); });
+        page.classList.add('is-current');
+        page.setAttribute('aria-current', 'page');
+        if (jumpInput) jumpInput.value = page.textContent.trim();
+      }
+
+      pages.forEach(function (page) {
+        page.addEventListener('click', function () { setCurrentPage(page); });
+      });
+
+      if (jumpInput) {
+        function commitJump() {
+          var val = parseInt(jumpInput.value, 10);
+          if (!val || val < 1) { jumpInput.value = pager.querySelector('.pager__page.is-current').textContent.trim(); return; }
+          var match = Array.from(pages).find(function (p) { return parseInt(p.textContent.trim(), 10) === val; });
+          if (match) setCurrentPage(match);
+          else jumpInput.value = pager.querySelector('.pager__page.is-current').textContent.trim();
+        }
+        jumpInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); commitJump(); } });
+        jumpInput.addEventListener('blur', commitJump);
+        jumpInput.addEventListener('input', function () { this.value = this.value.replace(/\D/g, ''); });
+      }
+    });
+  }
+
+  /* ---- Switch toggles — update status label + row inactive state ---- */
+  function initSwitches() {
+    document.querySelectorAll('[role="switch"]').forEach(function (sw) {
+      sw.addEventListener('click', function () {
+        var on = sw.getAttribute('aria-checked') === 'true';
+        sw.setAttribute('aria-checked', String(!on));
+        sw.classList.toggle('is-on', !on);
+        var cell = sw.closest('.lt-status-cell');
+        if (cell) {
+          var label = cell.querySelector('.lt-status-label');
+          if (label) {
+            label.textContent = !on ? 'Active' : 'Inactive';
+            label.classList.toggle('lt-status-label--active', !on);
+          }
+        }
+        var row = sw.closest('.table__row');
+        if (row) row.classList.toggle('lt-row--inactive', on);
+      });
+    });
+  }
+
+  /* ---- Reveal on scroll ---- */
+  function initReveal() {
+    var items = document.querySelectorAll('.reveal');
+    if (!window.IntersectionObserver) {
+      items.forEach(function (el) { el.classList.add('in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.05 });
+    items.forEach(function (el) { io.observe(el); });
+  }
+
+  initSelection();
+  initSort();
+  initPager();
+  initSwitches();
+  initReveal();
+}());
+</script>
 
 </body>
 </html>

@@ -58,7 +58,7 @@
     --table-bg:                 var(--background-default);
     --table-head-bg:            var(--background-accent-subtle);
     --table-head-fg:            var(--text-default-subtle);
-    --table-head-font-size:     var(--text-body-sm);
+    --table-head-font-size:     var(--text-eyebrow);
     --table-head-letter-spacing: 0.04em;
     --table-head-font-weight:   700;
     --table-head-pad-x:         var(--space-tier-4);
@@ -70,8 +70,8 @@
     --table-row-fg-subtle:      var(--text-default-subtle);
     --table-row-fg-minimal:     var(--text-default-minimal);
     --table-row-pad-x:          var(--space-tier-4);
-    --table-row-pad-y:          var(--space-tier-5);
-    --table-row-font-size:      var(--text-body);
+    --table-row-pad-y:          var(--space-tier-6);
+    --table-row-font-size:      var(--text-body-sm);
     --table-meta-font-size:     var(--text-body-sm);
     --table-row-dim-opacity:    0.55;
 
@@ -122,7 +122,7 @@
     letter-spacing: var(--table-head-letter-spacing);
     text-transform: uppercase;
     line-height: 1.2;
-    border-bottom: var(--table-border-width) solid var(--table-border);
+    border-bottom: var(--table-border-width) solid var(--table-row-divider);
     vertical-align: middle;
     white-space: nowrap;
 }
@@ -175,8 +175,11 @@
     background: var(--table-row-bg);
     transition: var(--table-transition);
 }
-.table__row + .table__row .table__cell {
-    border-top: var(--table-border-width) solid var(--table-row-divider);
+.table__body .table__row .table__cell {
+    border-bottom: var(--table-border-width) solid var(--table-row-divider);
+}
+.table__body .table__row:last-child .table__cell {
+    border-bottom: none;
 }
 .table__row:hover { background: var(--table-row-bg-hover); }
 .table__row.is-selected { background: var(--background-default-selected); }
@@ -198,7 +201,7 @@
 .table__cell--mono {
     font-family: var(--table-mono-font-family);
     letter-spacing: var(--table-mono-letter-spacing);
-    font-weight: 600;
+    font-weight: var(--font-weight-medium);
 }
 .table__cell--meta {
     color: var(--table-row-fg-minimal);
@@ -219,8 +222,470 @@
    ========================================================= */
 .table--sm {
     --table-head-pad-y:     var(--space-tier-7);
-    --table-row-pad-y:      var(--space-tier-6);
-    --table-head-font-size: var(--text-eyebrow);
-    --table-row-font-size:  var(--text-body-sm);
+    --table-row-pad-y:      var(--space-tier-7);
     --table-meta-font-size: var(--text-eyebrow);
+}
+
+/* =========================================================
+   FIXED-LAYOUT MODIFIER
+   Required for the two-table header-outside-scroll pattern.
+   Both the header table and the body table carry this
+   modifier; column widths are set via <col> elements so
+   they stay aligned between the two tables.
+   ========================================================= */
+.table--fixed { table-layout: fixed; }
+
+/* =========================================================
+   LIST-TABLE CARD SHELL
+   A four-zone bounded card that wraps the full data-list
+   experience: glass header rail → animated bulk bar →
+   scrollable body → glass footer rail.
+
+   Zones
+     .list-table             — card shell (flex column)
+     .list-table__head       — frosted glass header zone
+     .list-table__bulk       — bulk-action bar (animated)
+     .list-bulk-bar          — bulk bar surface + layout
+     .list-table__scroll     — overflow-y-auto body zone
+     .list-table__empty      — empty / loading placeholder
+     .list-table__footer     — frosted glass footer zone
+     .list-table__count      — "Showing X–Y of Z" label
+     .pager                  — pagination nav
+     .rows-select            — rows-per-page pill
+
+   Also: .list-loading, .table__cell--skel
+   ========================================================= */
+
+/* ---- Component tokens ---------------------------------- */
+:root {
+    /* Card shell */
+    --list-table-radius:    var(--radius-lg);
+    --list-table-border:    var(--border-default);
+    --list-table-shadow:    var(--shadow-sm);
+    --list-table-rail-h:    40px;
+
+    /* Frosted glass surface shared by header + footer */
+    --list-table-glass-bg:  color-mix(in srgb, var(--accent-100) 80%, transparent);
+    --list-table-glass-rim: color-mix(in srgb, var(--white-base) 60%, transparent);
+
+    /* Bulk bar gradient */
+    --bulk-bar-from:        color-mix(in srgb, var(--accent-800) 92%, transparent);
+    --bulk-bar-to:          color-mix(in srgb, var(--primary-700) 92%, transparent);
+    --bulk-bar-fg:          var(--text-inverted);
+
+    /* Pager — mirrors --pagination-* token family in production admin.css */
+    --pagination-font-family:       var(--font-mono);
+    --pagination-font-size:         var(--text-sm);
+    --pagination-size:              28px;
+    --pagination-radius:            var(--radius-sm);
+    --pagination-gap:               var(--space-gap-micro);
+    --pagination-bg:                var(--background-default);
+    --pagination-border:            var(--border-default-strong);
+    --pagination-fg:                var(--text-default);
+    --pagination-fg-hover:          var(--text-default);
+    --pagination-fg-current:        var(--text-inverted);
+    --pagination-fg-disabled:       var(--text-default-disabled);
+    --pagination-bg-hover:          var(--background-default-minimal);
+    --pagination-bg-current:        var(--background-primary);
+    --pagination-jump-input-width:  3.5ch;
+    --pagination-jump-input-bg:     var(--background-default);
+    --pagination-jump-input-fg:     var(--text-default);
+    --pagination-jump-input-border: var(--border-default-strong);
+    --pagination-jump-label-fg:     var(--text-default-minimal);
+}
+
+/* ---- Card shell ---------------------------------------- */
+.list-table {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: var(--list-table-radius);
+    /* outline instead of border: keeps the border outside
+       layout flow so rounded corners are respected and inner
+       bands paint flush to the curved edge. */
+    outline: var(--border-width-base) solid var(--list-table-border);
+    box-shadow: var(--list-table-shadow);
+    background: var(--table-bg);
+}
+
+/* ---- Frosted glass rail (header + footer share tokens) - */
+.list-table__head {
+    flex: 0 0 auto;
+    background: var(--list-table-glass-bg);
+    backdrop-filter: blur(16px) saturate(150%);
+    box-shadow: inset 0 1px 0 var(--list-table-glass-rim);
+}
+
+/* The header-only <table> inside the glass zone. Its <thead>
+   holds column labels and occupies the full rail height. */
+.list-table__head .table {
+    display: table;
+}
+.list-table__head .table__head-cell {
+    height: var(--list-table-rail-h);
+    padding-top: 0;
+    padding-bottom: 0;
+    background: transparent;
+}
+
+/* First/last column indent — wider than the default pad-x */
+.list-table .table__head-cell:first-child,
+.list-table .table__cell:first-child {
+    padding-left: var(--spacing-5x);
+}
+.list-table .table__head-cell:last-child,
+.list-table .table__cell:last-child {
+    padding-right: var(--spacing-5x);
+}
+
+/* ---- Bulk-action bar (hidden when idle) ----------------
+   backdrop-filter creates a compositing layer that overrides
+   overflow/grid clipping in every major browser. display:none
+   is the only reliable way to suppress it completely. */
+.list-table__bulk {
+    flex: 0 0 auto;
+    display: none;
+}
+.list-table__bulk.is-open {
+    display: block;
+    animation: bulkbar-in .18s cubic-bezier(.2, .8, .2, 1);
+}
+@keyframes bulkbar-in {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.list-bulk-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-tier-4);
+    padding: var(--spacing-2x) var(--spacing-5x);
+    color: var(--bulk-bar-fg);
+    background: linear-gradient(
+        135deg,
+        var(--bulk-bar-from) 0%,
+        var(--bulk-bar-to)   100%
+    );
+    backdrop-filter: blur(24px) saturate(150%);
+    box-shadow: var(--glass-shadow-floating), var(--glass-inset-dark-soft);
+    white-space: nowrap;
+}
+
+.list-bulk-bar__count {
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-semibold);
+    font-variant-numeric: tabular-nums;
+}
+.list-bulk-bar__sep {
+    opacity: 0.4;
+    font-size: var(--text-body-sm);
+}
+.list-bulk-bar__action {
+    display: inline-flex;
+    align-items: center;
+    height: 28px;
+    padding: 0 var(--spacing-3x);
+    border-radius: var(--radius-sm);
+    background: color-mix(in srgb, var(--white-base) 15%, transparent);
+    border: none;
+    color: var(--bulk-bar-fg);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    transition: background .15s ease;
+}
+.list-bulk-bar__action:hover {
+    background: color-mix(in srgb, var(--white-base) 25%, transparent);
+}
+.list-bulk-bar__action--danger:hover {
+    background: color-mix(in srgb, var(--critical-500) 60%, transparent);
+}
+.list-bulk-bar__spacer { flex: 1; }
+.list-bulk-bar__clear {
+    background: transparent;
+    border: none;
+    color: var(--bulk-bar-fg);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    opacity: 0.7;
+    cursor: pointer;
+    padding: 0 var(--spacing-2x);
+    transition: opacity .15s ease;
+}
+.list-bulk-bar__clear:hover { opacity: 1; }
+
+/* ---- Scroll zone --------------------------------------- */
+.list-table__scroll {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior-y: none;
+    scrollbar-gutter: stable;
+    /* Isolate compositing so the footer's backdrop-filter
+       does not bleed upward into the scroll body. */
+    isolation: isolate;
+}
+
+/* Remove last-row divider — the footer border reads as the
+   final separator so the last row needs no bottom line. */
+.list-table__scroll .table__body tr:last-child .table__cell {
+    border-bottom: none;
+}
+
+/* ---- Empty / loading placeholder ----------------------- */
+.list-table__empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-3x);
+    padding: var(--spacing-16x) var(--spacing-8x);
+    text-align: center;
+}
+.list-table__empty-title {
+    font-size: var(--text-admin-card-title);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-default);
+}
+.list-table__empty-desc {
+    max-width: 420px;
+    font-size: var(--text-body-sm);
+    color: var(--text-default-minimal);
+    line-height: var(--line-height-body);
+}
+
+/* ---- Footer rail --------------------------------------- */
+.list-table__footer {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-tier-4);
+    flex-wrap: wrap;
+    height: var(--list-table-rail-h);
+    margin-top: 0;
+    padding: 0 var(--spacing-5x);
+    background: var(--list-table-glass-bg);
+    backdrop-filter: blur(16px) saturate(150%);
+    box-shadow: inset 0 1px 0 var(--list-table-glass-rim);
+    border-top: var(--border-width-base) solid var(--border-default);
+}
+
+.list-table__count {
+    font-size: var(--text-body-sm);
+    color: var(--text-default-minimal);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+    margin: 0;
+}
+.list-table__count strong {
+    color: var(--text-default);
+    font-weight: var(--font-weight-semibold);
+}
+
+.list-table__footer-label {
+    font-size: var(--text-body-sm);
+    color: var(--text-default-subtle);
+    white-space: nowrap;
+}
+
+/* ---- Pager --------------------------------------------- */
+.pager {
+    display: flex;
+    align-items: center;
+    gap: var(--pagination-gap);
+    font-family: var(--pagination-font-family);
+    font-size: var(--pagination-font-size);
+    flex-wrap: wrap;
+}
+
+.pager__btn,
+.pager__page {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--pagination-size);
+    min-width: var(--pagination-size);
+    padding: 0 var(--spacing-2x);
+    border-radius: var(--pagination-radius);
+    border: var(--border-width-base) solid var(--pagination-border);
+    background: var(--pagination-bg);
+    color: var(--pagination-fg);
+    font: inherit;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: inherit;
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease, border-color .15s ease;
+}
+.pager__btn:hover:not([disabled]):not(:disabled),
+.pager__page:hover:not(.is-current):not([disabled]) {
+    background: var(--pagination-bg-hover);
+    color: var(--pagination-fg-hover);
+}
+.pager__btn[disabled],
+.pager__btn:disabled,
+.pager__page[disabled] {
+    color: var(--pagination-fg-disabled);
+    cursor: default;
+    pointer-events: none;
+}
+.pager__page.is-current {
+    background: var(--pagination-bg-current);
+    border-color: var(--border-primary);
+    color: var(--pagination-fg-current);
+    cursor: default;
+}
+.pager__btn svg {
+    width: 15px;
+    height: 15px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+}
+.pager__ellipsis {
+    color: var(--pagination-fg-disabled);
+    padding: 0 var(--spacing-half);
+    font-family: var(--pagination-font-family);
+    font-size: var(--pagination-font-size);
+    user-select: none;
+}
+
+/* "Go to [input] / N" jump control */
+.pager__jump {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-gap-micro);
+    font-size: var(--text-body-sm);
+    color: var(--pagination-jump-label-fg);
+    white-space: nowrap;
+}
+.pager__jump-input {
+    width: var(--pagination-jump-input-width);
+    height: var(--pagination-size);
+    text-align: center;
+    border: var(--border-width-base) solid var(--pagination-jump-input-border);
+    border-radius: var(--pagination-radius);
+    background: var(--pagination-jump-input-bg);
+    color: var(--pagination-jump-input-fg);
+    font-family: var(--pagination-font-family);
+    font-size: var(--pagination-font-size);
+    font-variant-numeric: tabular-nums;
+}
+.pager__jump-input:focus-visible {
+    outline: none;
+    border-color: var(--border-accent);
+    box-shadow: 0 0 0 3px var(--form-ring-focus);
+}
+
+/* ---- Rows-per-page select ------------------------------ */
+.rows-select {
+    display: inline-flex;
+    align-items: center;
+    height: 28px;
+    padding: 0 var(--spacing-3x);
+    border: var(--border-width-base) solid var(--border-default-input);
+    border-radius: var(--radius-sm);
+    background: var(--form-bg);
+    font-family: var(--font-mono);
+    font-size: var(--text-body-sm);
+    color: var(--text-default);
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    /* chevron via background-image */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12' fill='none' stroke='%23666' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 4L6 8L10 4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right var(--spacing-2x) center;
+    padding-right: var(--spacing-6x);
+}
+.rows-select:focus-visible {
+    outline: 2px solid var(--primary-500);
+    outline-offset: 2px;
+}
+
+/* ---- Skeleton shimmer cell ----------------------------- */
+@keyframes shimmer {
+    from { background-position: 100% 0; }
+    to   { background-position:   0% 0; }
+}
+
+.table__cell--skel::after {
+    content: '';
+    display: block;
+    height: 12px;
+    border-radius: var(--radius-sm);
+    background: linear-gradient(
+        90deg,
+        var(--background-default-subtle) 25%,
+        var(--background-default-minimal) 37%,
+        var(--background-default-subtle) 63%
+    );
+    background-size: 400% 100%;
+    animation: shimmer 1.4s ease infinite;
+}
+.table__cell--skel.table__cell--skel-sm::after { height: 8px; }
+.table__cell--skel.table__cell--skel-lg::after { height: 16px; }
+
+@media (prefers-reduced-motion: reduce) {
+    .table__cell--skel::after { animation: none; }
+}
+
+/* ---- Brand loading state ------------------------------- */
+@keyframes list-loading-breathe {
+    0%, 100% { transform: scale(1); }
+    50%       { transform: scale(1.06); }
+}
+@keyframes list-loading-hop {
+    0%, 100% { transform: translateY(0); }
+    30%      { transform: translateY(-8px); }
+}
+
+.list-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-4x);
+    padding: var(--spacing-16x) var(--spacing-8x);
+}
+.list-loading__emblem {
+    width: 60px;
+    height: 60px;
+    animation: list-loading-breathe 1.6s ease-in-out infinite;
+}
+.list-loading__dots {
+    display: flex;
+    gap: var(--spacing-2x);
+}
+.list-loading__dots i {
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    font-style: normal;
+    animation: list-loading-hop .9s ease-in-out infinite;
+}
+.list-loading__dots i:nth-child(1) {
+    background: var(--accent-500);
+    animation-delay: 0s;
+}
+.list-loading__dots i:nth-child(2) {
+    background: var(--primary-500);
+    animation-delay: .15s;
+}
+.list-loading__dots i:nth-child(3) {
+    background: var(--accent-500);
+    animation-delay: .3s;
+}
+.list-loading__text {
+    font-size: var(--text-body-sm);
+    color: var(--text-default-minimal);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .list-loading__emblem { animation: none; }
+    .list-loading__dots i { animation: none; }
 }
