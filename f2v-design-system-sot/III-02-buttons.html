@@ -146,7 +146,7 @@
 
     <dl class="meta-strip reveal">
       <div><dt>Component</dt><dd>Button</dd></div>
-      <div><dt>Variants</dt><dd>8</dd></div>
+      <div><dt>Variants</dt><dd>10</dd></div>
       <div><dt>States</dt><dd>6</dd></div>
       <div><dt>Versions</dt><dd>4</dd></div>
       <div><dt>Sizes</dt><dd>5</dd></div>
@@ -161,10 +161,11 @@
     </header>
 
     <p class="section-lede reveal">
-      Eight variants, listed in descending emphasis: CTA, Secondary,
-      Tinted, Glass, Ghost, Borderless, Caution, Toggle. Each variant
-      corresponds to a single role — primary action, supporting action,
-      low-emphasis surface, destructive action, or stateful toggle.
+      Ten variants, listed in descending emphasis: CTA, Secondary,
+      Primary-outline, Tinted, Glass, Ghost, Borderless, Caution-ghost,
+      Caution, Toggle. Each variant corresponds to a single role — primary
+      action, supporting branded action, low-emphasis surface, entry-point
+      destructive trigger, confirm-stage destructive action, or stateful toggle.
     </p>
 
     <div class="variant-grid reveal">
@@ -187,6 +188,16 @@
           </button>
         </div>
         <div class="meta"><span>.btn--secondary</span><strong>supporting</strong></div>
+      </article>
+
+      <article class="variant-card">
+        <span class="label">Primary-outline</span>
+        <div class="demo">
+          <button class="btn btn--primary-outline btn--lg">
+            <span class="btn__label">Edit record</span>
+          </button>
+        </div>
+        <div class="meta"><span>.btn--primary-outline</span><strong>branded secondary</strong></div>
       </article>
 
       <article class="variant-card">
@@ -230,13 +241,23 @@
       </article>
 
       <article class="variant-card">
-        <span class="label">Caution · Destructive</span>
+        <span class="label">Caution-ghost · Destructive trigger</span>
+        <div class="demo">
+          <button class="btn btn--caution-ghost btn--lg">
+            <span class="btn__label">Remove animal</span>
+          </button>
+        </div>
+        <div class="meta"><span>.btn--caution-ghost</span><strong>entry-point destructive</strong></div>
+      </article>
+
+      <article class="variant-card">
+        <span class="label">Caution · Destructive confirm</span>
         <div class="demo">
           <button class="btn btn--caution btn--lg">
             <span class="btn__label">Order euthanasia</span>
           </button>
         </div>
-        <div class="meta"><span>.btn--caution</span><strong>irreversible</strong></div>
+        <div class="meta"><span>.btn--caution</span><strong>confirm-stage destructive</strong></div>
       </article>
 
       <article class="variant-card">
@@ -668,6 +689,7 @@ const BTN_TOKENS = [
   ]},
   { group: 'Variant · CTA (Accent · primary action)', tokens: [
     ['--btn-cta-bg',          'var(--background-accent)'],
+    ['--btn-cta-gradient',    'linear-gradient(135deg, var(--accent-500), var(--primary-500))'],
     ['--btn-cta-bg-hover',    'var(--background-accent-hover)'],
     ['--btn-cta-bg-active',   'var(--background-accent-active)'],
     ['--btn-cta-fg',          'var(--text-inverted)'],
@@ -702,13 +724,27 @@ const BTN_TOKENS = [
     ['--btn-loading-spinner', 'var(--text-inverted)'],
     ['--btn-loading-track',   'color-mix(in srgb, var(--white-base) 35%, transparent)'],
   ]},
-  { group: 'Variant · Caution (Destructive)', tokens: [
-    ['--btn-caution-bg',        'var(--background-critical-strong)'],
-    ['--btn-caution-bg-hover',  'var(--background-critical-hover)'],
-    ['--btn-caution-bg-active', 'var(--background-critical-active)'],
+  { group: 'Variant · Caution-ghost (Destructive · entry-point)', tokens: [
+    ['--btn-caution-ghost-bg',           'transparent'],
+    ['--btn-caution-ghost-bg-hover',     'var(--background-critical)'],
+    ['--btn-caution-ghost-bg-active',    'color-mix(in srgb, var(--critical-500) 12%, transparent)'],
+    ['--btn-caution-ghost-fg',           'var(--text-critical)'],
+    ['--btn-caution-ghost-border',       'var(--border-critical)'],
+    ['--btn-caution-ghost-border-hover', 'var(--border-critical)'],
+  ]},
+  { group: 'Variant · Caution (Destructive · confirm-stage)', tokens: [
+    ['--btn-caution-bg',        'var(--critical-600)'],
+    ['--btn-caution-bg-hover',  'var(--critical-700)'],
+    ['--btn-caution-bg-active', 'var(--critical-700)'],
     ['--btn-caution-fg',        'var(--text-inverted)'],
     ['--btn-caution-border',    'transparent'],
     ['--btn-caution-shadow',    'var(--shadow-sm)'],
+  ]},
+  { group: 'Variant · Primary-outline (Branded secondary)', tokens: [
+    ['--btn-primary-outline-bg',       'transparent'],
+    ['--btn-primary-outline-bg-hover', 'var(--background-primary-subtle)'],
+    ['--btn-primary-outline-fg',       'var(--text-primary-strong)'],
+    ['--btn-primary-outline-border',   'var(--border-primary)'],
   ]},
   { group: 'Variant · Tinted', tokens: [
     ['--btn-tinted-bg',        'var(--background-accent-minimal)'],

@@ -902,6 +902,7 @@
 
     /* ---------- Variant: CTA / Primary (uses ACCENT) ---------- */
     --btn-cta-bg:        var(--background-accent);
+    --btn-cta-gradient:  linear-gradient(135deg, var(--accent-500), var(--primary-500));
     --btn-cta-bg-hover:  var(--background-accent-hover);
     --btn-cta-bg-active: var(--background-accent-active);
     --btn-cta-fg:        var(--text-inverted);
@@ -936,25 +937,40 @@
     --btn-loading-spinner: var(--text-inverted);
     --btn-loading-track:   color-mix(in srgb, var(--white-base) 35%, transparent);
 
-    /* ---------- Variant: Caution (destructive) ---------- */
-    --btn-caution-bg:        var(--background-critical-strong);
-    --btn-caution-bg-hover:  var(--background-critical-hover);
-    --btn-caution-bg-active: var(--background-critical-active);
+    /* ---------- Variant: Caution (destructive solid — confirm-stage) ----------
+       One shade darker than --background-critical-strong so the solid button
+       carries enough weight to serve as a modal's primary action. Matches
+       production danger-solid: critical-600 base, critical-700 hover. */
+    --btn-caution-bg:        var(--critical-600);
+    --btn-caution-bg-hover:  var(--critical-700);
+    --btn-caution-bg-active: var(--critical-700);
     --btn-caution-fg:        var(--text-inverted);
     --btn-caution-border:    transparent;
     --btn-caution-shadow:    var(--shadow-sm);
 
-    /* ---------- Variant: Caution-ghost (destructive, lower emphasis) ----------
-       Pairs the Ghost weight with the Caution color rail. Transparent
-       resting surface, critical text and icon, subtle critical-tinted
-       hover fill. Used when a destructive action shares a row with a
-       higher-emphasis caution button and shouldn't compete for weight. */
+    /* ---------- Variant: Caution-ghost (destructive outline — entry-point) ----------
+       Transparent resting surface with a critical-red border always visible.
+       Used for entry-point destructive triggers (row delete, bulk remove) where
+       the red border communicates intent at rest — no hover needed to reveal it.
+       Pairs with btn--caution (solid) for two-stage confirm flows: outline first,
+       solid inside the danger modal. */
     --btn-caution-ghost-bg:           transparent;
     --btn-caution-ghost-bg-hover:     var(--background-critical);
     --btn-caution-ghost-bg-active:    color-mix(in srgb, var(--critical-500) 12%, transparent);
     --btn-caution-ghost-fg:           var(--text-critical);
-    --btn-caution-ghost-border:       var(--border-default);
+    --btn-caution-ghost-border:       var(--border-critical);
     --btn-caution-ghost-border-hover: var(--border-critical);
+
+    /* ---------- Variant: Primary-outline (brand-toned secondary) ----------
+       Transparent fill with a primary-green border and text. Sits one
+       step below CTA on the emphasis ladder — clearly brand-colored but
+       without the gradient fill. Used alongside the CTA (e.g., Edit next
+       to Save on a detail hero) when a second action must feel branded but
+       not compete for the primary slot. */
+    --btn-primary-outline-bg:       transparent;
+    --btn-primary-outline-bg-hover: var(--background-primary-subtle);
+    --btn-primary-outline-fg:       var(--text-primary-strong);
+    --btn-primary-outline-border:   var(--border-primary);
 
     /* ---------- Variant: Tinted (Apple HIG · Bordered Tinted) ----------
        Subtle accent-flavoured fill. Sits between Ghost and CTA on the

@@ -111,13 +111,20 @@
    VARIANTS
    ========================================================= */
 .btn--cta {
-    background:    var(--btn-cta-bg);
-    color:         var(--btn-cta-fg);
-    border-color:  var(--btn-cta-border);
-    box-shadow:    var(--btn-cta-shadow);
+    background:       var(--btn-cta-bg);
+    background-image: var(--btn-cta-gradient);
+    background-clip:  padding-box;
+    color:            var(--btn-cta-fg);
+    border-color:     var(--btn-cta-border);
+    box-shadow:       var(--btn-cta-shadow);
+    transition:       var(--btn-transition), filter .18s ease;
 }
-.btn--cta:hover  { background: var(--btn-cta-bg-hover);  box-shadow: var(--btn-shadow-hover); transform: translateY(-1px); }
-.btn--cta:active { background: var(--btn-cta-bg-active); transform: translateY(0); }
+/* Gradient can't tween to a new color, so hover lifts via brightness + shadow. */
+.btn--cta:hover  { filter: brightness(1.06); box-shadow: var(--btn-shadow-hover); transform: translateY(-1px); }
+.btn--cta:active { filter: brightness(0.93); transform: translateY(0); }
+/* Disabled must strip the gradient so the flat disabled bg shows cleanly. */
+.btn--cta:disabled,
+.btn--cta.btn--disabled { background-image: none !important; filter: none !important; }
 
 .btn--secondary {
     background:    var(--btn-secondary-bg);
@@ -175,17 +182,30 @@
 .btn--caution:hover  { background: var(--btn-caution-bg-hover);  box-shadow: var(--btn-shadow-hover); transform: translateY(-1px); }
 .btn--caution:active { background: var(--btn-caution-bg-active); transform: translateY(0); }
 
-/* Caution-ghost — Ghost weight on the Caution color rail. Lower
-   emphasis than solid Caution; pairs with it when two destructive
-   actions sit on the same row and one should read as the lighter. */
+/* Caution-ghost — entry-point destructive trigger (row delete, bulk remove).
+   Critical-red border always visible at rest; hover fills with a soft
+   critical wash. Pairs with btn--caution (solid) for two-stage confirm flows. */
 .btn--caution-ghost {
     background:    var(--btn-caution-ghost-bg);
     color:         var(--btn-caution-ghost-fg);
     border-color:  var(--btn-caution-ghost-border);
     box-shadow:    none;
 }
-.btn--caution-ghost:hover  { background: var(--btn-caution-ghost-bg-hover);  border-color: var(--btn-caution-ghost-border-hover); }
+.btn--caution-ghost:hover  { background: var(--btn-caution-ghost-bg-hover); }
 .btn--caution-ghost:active { background: var(--btn-caution-ghost-bg-active); }
+
+/* Primary-outline — brand-toned secondary action.
+   Transparent fill, primary-green border and text. One step below CTA on
+   emphasis; used alongside CTA when a second branded action is needed
+   (e.g., Edit next to Save on a detail hero). */
+.btn--primary-outline {
+    background:   var(--btn-primary-outline-bg);
+    color:        var(--btn-primary-outline-fg);
+    border-color: var(--btn-primary-outline-border);
+    box-shadow:   none;
+}
+.btn--primary-outline:hover  { background: var(--btn-primary-outline-bg-hover); }
+.btn--primary-outline:active { background: var(--btn-primary-outline-bg-hover); }
 
 /* Tinted — Apple HIG bordered-tinted analogue.
    Sits between Ghost and CTA on the emphasis ladder. */
