@@ -1,0 +1,170 @@
+/* =========================================================
+   FARM2VET DESIGN SYSTEM — TOOLTIP COMPONENT
+   Frosted speech-bubble tooltip styled to the macOS HUD look.
+   Glass fill (44 % white tint + sheen + blur) applied to both
+   the bubble body and its triangular tail so they read as one
+   continuous glass pane.
+
+   CRITICAL POSITIONING CONSTRAINT
+   backdrop-filter stops frosting the page when any ANCESTOR
+   creates a compositing/backdrop root — transforms, filter,
+   opacity < 1, or another backdrop-filter on a parent all
+   trigger this. In production this component renders via
+   createPortal directly into <body> and positions with
+   fixed top/left (never transform) to avoid the issue.
+   In the DS demo page (no ancestor transforms) transform-
+   based centering is fine for static illustration.
+
+   Depends on: tokens.css
+   ========================================================= */
+
+/* =========================================================
+   COMPONENT TOKENS
+   ========================================================= */
+:root {
+    --tooltip-bg:          color-mix(in srgb, var(--white-base) 44%, transparent);
+    --tooltip-shadow:      var(--shadow-md), var(--glass-inset-light-strong);
+    --tooltip-radius:      10px;
+    --tooltip-max-w:       260px;
+    --tooltip-pad-x:       12px;
+    --tooltip-pad-y:       5px;
+    --tooltip-font-size:   var(--text-body-sm);
+    --tooltip-font-weight: var(--font-weight-medium);
+    --tooltip-line-height: 1.3;
+    --tooltip-fg:          var(--text-default);
+    --tooltip-blur:        var(--blur-lg);
+    --tooltip-saturate:    var(--glass-saturate);
+    --tooltip-offset:      8px;
+    --tooltip-tail-w:      16px;
+    --tooltip-tail-h:      8px;
+    --tooltip-z:           200;
+}
+
+/* =========================================================
+   TRIGGER WRAPPER
+   Inline-flex span that owns the hover target. Children are
+   the trigger slot + the popup. No overflow: hidden so the
+   popup can escape the trigger bounds.
+   ========================================================= */
+.tooltip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* =========================================================
+   POPUP CONTAINER
+   Absolutely positioned column (body + tail). No transform
+   on this element itself — defer centering to the bubble's
+   margin so backdrop-filter on the bubble still frosts the
+   page (transforms create backdrop roots in all browsers).
+   ========================================================= */
+.tooltip__popup {
+    position: absolute;
+    /* Default: above the trigger */
+    bottom: calc(100% + var(--tooltip-offset));
+    left: 50%;
+    /* Centre without transform: shift left by half of max-w.
+       Works when bubble fits within max-w; production JS
+       centres precisely using getBoundingClientRect. */
+    margin-left: calc(var(--tooltip-max-w) / -2);
+    width: var(--tooltip-max-w);
+    z-index: var(--tooltip-z);
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .12s ease, visibility .12s ease;
+}
+
+/* Show on hover and keyboard focus */
+.tooltip:hover .tooltip__popup,
+.tooltip:focus-within .tooltip__popup {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Forced-open state for demo pages */
+.tooltip__popup.is-open {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* =========================================================
+   GLASS FILL — shared by bubble + tail
+   Both elements receive the identical material so the joint
+   between them is seamless. No box-shadow on the tail (a
+   shadow on the small triangle reads as a detached chip).
+   ========================================================= */
+.tooltip__bubble,
+.tooltip__tail {
+    background-color:        var(--tooltip-bg);
+    background-image:        var(--glass-sheen-light);
+    backdrop-filter:         var(--tooltip-blur) var(--tooltip-saturate) brightness(1.06);
+    -webkit-backdrop-filter: var(--tooltip-blur) var(--tooltip-saturate) brightness(1.06);
+}
+
+/* =========================================================
+   BUBBLE BODY
+   ========================================================= */
+.tooltip__bubble {
+    position:    relative;
+    z-index:     1;             /* behind the tail (z-2) */
+    max-width:   var(--tooltip-max-w);
+    border-radius: var(--tooltip-radius);
+    box-shadow:  var(--tooltip-shadow);
+    padding:     var(--tooltip-pad-y) var(--tooltip-pad-x);
+    font-family: var(--font-sans);
+    font-size:   var(--tooltip-font-size);
+    font-weight: var(--tooltip-font-weight);
+    line-height: var(--tooltip-line-height);
+    color:       var(--tooltip-fg);
+    white-space: nowrap;
+    user-select: none;
+}
+
+/* Multi-line content: allow wrapping */
+.tooltip__bubble--wrap {
+    white-space: normal;
+    text-align:  left;
+}
+
+/* =========================================================
+   TAIL (TRIANGLE)
+   Sits in FRONT of the body (z-2) so the body's drop shadow
+   can't dim it. Overlaps the body edge by 1 px (margin -1px)
+   so the join is seamless. Body and tail are SIBLINGS under
+   the popup container — do NOT nest tail inside body, as that
+   would make tail's backdrop-filter filter against the body
+   instead of the page.
+   ========================================================= */
+.tooltip__tail {
+    position:   relative;
+    z-index:    2;
+    display:    block;
+    width:      var(--tooltip-tail-w);
+    height:     var(--tooltip-tail-h);
+    flex-shrink: 0;
+    /* Default (top placement): tail below body, pointing down */
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    margin-top: -1px;
+}
+
+/* =========================================================
+   MODIFIER — BOTTOM PLACEMENT
+   Bubble renders below the trigger; tail points up above it.
+   ========================================================= */
+.tooltip--bottom .tooltip__popup {
+    bottom: auto;
+    top:    calc(100% + var(--tooltip-offset));
+    flex-direction: column-reverse;
+}
+.tooltip--bottom .tooltip__tail {
+    margin-top:    0;
+    margin-bottom: -1px;
+    /* Pointing up */
+    clip-path: polygon(50% 0, 0 100%, 100% 100%);
+}

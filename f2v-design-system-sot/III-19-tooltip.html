@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Farm2Vet · Tooltip — Design System</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+<!-- Design system: shared, reusable foundation -->
+<link rel="stylesheet" href="styles/tokens.css" />
+<link rel="stylesheet" href="styles/base.css" />
+<link rel="stylesheet" href="styles/typography.css" />
+<link rel="stylesheet" href="styles/shell.css" />
+<link rel="stylesheet" href="styles/global-nav.css" />
+<!-- Component -->
+<link rel="stylesheet" href="styles/tooltip.css" />
+<!-- Reuse: usage-note + preview stage; token-table -->
+<link rel="stylesheet" href="styles/page-III-03.css" />
+<link rel="stylesheet" href="styles/page-III-02.css" />
+<!-- Page-specific -->
+<link rel="stylesheet" href="styles/page-III-19.css" />
+
+<script src="scripts/global-nav.js" defer></script>
+
+</head>
+<body data-page="III-19-tooltip">
+
+<!-- ========================== GLOBAL NAV ========================== -->
+<header class="global-nav" aria-label="Design system navigation">
+  <div class="global-nav__inner">
+
+    <a href="index.html" class="global-nav__brand" aria-label="Farm2Vet design system home">
+      <img src="logo/logo-wordmark-color.svg" alt="Farm2Vet" class="global-nav__logo" />
+      <small>Design System</small>
+    </a>
+
+    <nav class="global-nav__sections" aria-label="Design system sections">
+      <ul class="global-nav__list">
+        <li class="global-nav__item">
+          <a class="global-nav__link" href="I-primitives.html">I. Primitives</a>
+        </li>
+        <li class="global-nav__item">
+          <a class="global-nav__link" href="II-semantics.html">II. Semantics</a>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="components">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-components">
+            III. Components
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-components" class="global-nav__panel" role="region" aria-label="Components">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="III-01-typography.html"><span class="global-nav__index">01</span><span>Typography</span></a></li>
+                <li><a href="III-02-buttons.html"><span class="global-nav__index">02</span><span>Buttons</span></a></li>
+                <li><a href="III-03-form.html"><span class="global-nav__index">03</span><span>Form</span></a></li>
+                <li><a href="III-04-dropdowns.html"><span class="global-nav__index">04</span><span>Dropdowns</span></a></li>
+                <li><a href="III-05-cards.html"><span class="global-nav__index">05</span><span>Cards</span></a></li>
+                <li><a href="III-06-modal.html"><span class="global-nav__index">06</span><span>Modal Dialog</span></a></li>
+                <li><a href="III-07-side-panel.html"><span class="global-nav__index">07</span><span>Side Panel</span></a></li>
+                <li><a href="III-08-toast.html"><span class="global-nav__index">08</span><span>Toast</span></a></li>
+                <li><a href="III-09-alert-badges.html"><span class="global-nav__index">09</span><span>Alert &amp; Badge</span></a></li>
+                <li><a href="III-10-header-navigation.html"><span class="global-nav__index">10</span><span>Header &amp; Nav Bar</span></a></li>
+                <li><a href="III-11-switch.html"><span class="global-nav__index">11</span><span>Switch</span></a></li>
+                <li><a href="III-12-sidebar.html"><span class="global-nav__index">12</span><span>Sidebar</span></a></li>
+                <li><a href="III-13-chip.html"><span class="global-nav__index">13</span><span>Chip</span></a></li>
+                <li><a href="III-14-tabs.html"><span class="global-nav__index">14</span><span>Tabs</span></a></li>
+                <li><a href="III-15-table.html"><span class="global-nav__index">15</span><span>Table</span></a></li>
+                <li><a href="III-16-search-toolbar.html"><span class="global-nav__index">16</span><span>Search Toolbar</span></a></li>
+                <li><a href="III-17-accordion.html"><span class="global-nav__index">17</span><span>Accordion</span></a></li>
+                <li><a href="III-18-chat-input.html"><span class="global-nav__index">18</span><span>Chat Input</span></a></li>
+                <li><a href="III-19-tooltip.html"><span class="global-nav__index">19</span><span>Tooltip</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="assets">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-assets">
+            IV. Assets
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-assets" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Assets">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="IV-01-logo.html"><span class="global-nav__index">01</span><span>Logo</span></a></li>
+                <li><a href="IV-02-icons.html"><span class="global-nav__index">02</span><span>Icons</span></a></li>
+                <li><a href="IV-03-images.html"><span class="global-nav__index">03</span><span>Backgrounds &amp; Motion</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="mockups">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-mockups">
+            V. Mockups
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-mockups" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Mockups">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="V-01-wiki.html"><span class="global-nav__index">01</span><span>Wiki</span></a></li>
+                <li><a href="V-02-chatbot.html" class="is-placeholder"><span class="global-nav__index">02</span><span>Chatbot</span></a></li>
+                <li><a href="V-03-hero.html"    class="is-placeholder"><span class="global-nav__index">03</span><span>Hero</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+      </ul>
+    </nav>
+
+    <a href="#" class="global-nav__chip" aria-label="Design system version">v1.0</a>
+
+  </div>
+</header>
+<main class="shell" id="top">
+
+  <!-- ========================== HERO ========================== -->
+  <section class="hero">
+    <div>
+      <h1 class="h1 reveal">
+        <span class="num">III-19 / Components</span>
+        Tooltip.
+      </h1>
+    </div>
+    <div>
+      <p class="lede reveal">
+        Frosted speech-bubble tooltip styled to the macOS HUD look. A thin
+        near-white glass pane (44&nbsp;% tint + sheen + blur) with a matching
+        glass tail — both surfaces share the same material so they read as one
+        continuous piece of glass, not a bubble stuck on top of a triangle.
+      </p>
+      <p class="lede reveal">
+        The tooltip is self-contained (no Radix, no third-party popper). In
+        production it renders via <code>createPortal</code> directly into
+        <code>&lt;body&gt;</code> and positions with <code>fixed top/left</code>
+        — never <code>transform</code> — so <code>backdrop-filter</code> keeps
+        frosting the live page behind it.
+      </p>
+    </div>
+
+    <dl class="meta-strip reveal">
+      <div><dt>Component</dt><dd>Tooltip</dd></div>
+      <div><dt>Placements</dt><dd>Top · Bottom</dd></div>
+      <div><dt>Modes</dt><dd>Anchored · Follow-cursor</dd></div>
+      <div><dt>Delay</dt><dd>150 ms default</dd></div>
+    </dl>
+  </section>
+
+  <!-- ========================== ANATOMY ========================== -->
+  <section class="chunk anatomy" id="anatomy">
+    <header class="chunk-head reveal">
+      <h2 class="h2">Anatomy.</h2>
+    </header>
+    <p class="section-lede reveal">
+      Three elements: the <strong>trigger wrapper</strong> that owns the hover
+      target, the <strong>bubble</strong> body, and the <strong>tail</strong>
+      triangle. Bubble and tail are siblings — not parent/child — so each can
+      independently apply <code>backdrop-filter</code> and frost the same page
+      content with identical material.
+    </p>
+
+    <div class="anatomy-diagram reveal">
+      <span class="tooltip" style="--tooltip-offset:12px">
+        <button class="tt-trigger" aria-describedby="tt-anatomy">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          More info
+        </button>
+        <span class="tooltip__popup is-open" id="tt-anatomy" role="tooltip">
+          <span class="tooltip__bubble">Vaccination status verified 14 days ago</span>
+          <span class="tooltip__tail" aria-hidden="true"></span>
+        </span>
+      </span>
+    </div>
+
+    <dl class="anatomy-callout reveal">
+      <dt><code>.tooltip</code></dt>
+      <dd>Trigger wrapper — <code>position: relative; display: inline-flex</code>. Owns <code>:hover</code> and <code>:focus-within</code> to show/hide the popup. Wrap any element: a button, icon, badge, or plain text.</dd>
+
+      <dt><code>.tooltip__popup</code></dt>
+      <dd>Absolute-positioned column container holding bubble + tail. <code>visibility: hidden; opacity: 0</code> at rest; transitions to visible on hover. Add <code>.is-open</code> to force-show for documentation or testing.</dd>
+
+      <dt><code>.tooltip__bubble</code></dt>
+      <dd>The glass body: 44&nbsp;% white tint, <code>--blur-lg</code> backdrop-filter, <code>--glass-sheen-light</code> sheen gradient, <code>--shadow-md + --glass-inset-light-strong</code> shadows. Max-width 260&nbsp;px; add <code>.tooltip__bubble--wrap</code> for multi-line content.</dd>
+
+      <dt><code>.tooltip__tail</code></dt>
+      <dd>The glass triangle arrow: 16&times;8&nbsp;px, <code>clip-path: polygon</code> for the direction. Same glass fill as the bubble (no shadow — a shadow on the triangle reads as detached). <code>z-index: 2</code> so it floats in front of the bubble and the body's drop shadow doesn't dim it. Overlaps bubble by 1&nbsp;px for a seamless join.</dd>
+    </dl>
+  </section>
+
+  <!-- ========================== LIVE DEMO ========================== -->
+  <section class="chunk" id="demo">
+    <header class="chunk-head reveal">
+      <h2 class="h2">Demo.</h2>
+    </header>
+    <p class="section-lede reveal">
+      Hover each trigger to see the tooltip appear. The glass frosts the
+      gradient stage behind it — most visible on the coloured background.
+    </p>
+
+    <div class="tooltip-stage tooltip-stage--rich reveal">
+
+      <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-tier-6)">
+        <span class="tooltip">
+          <button class="tt-trigger">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Hover me
+          </button>
+          <span class="tooltip__popup" role="tooltip">
+            <span class="tooltip__bubble">Vaccination status verified</span>
+            <span class="tooltip__tail" aria-hidden="true"></span>
+          </span>
+        </span>
+        <p class="demo-label">Short text</p>
+      </div>
+
+      <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-tier-6)">
+        <span class="tooltip">
+          <button class="tt-trigger">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            Warning
+          </button>
+          <span class="tooltip__popup" role="tooltip">
+            <span class="tooltip__bubble tooltip__bubble--wrap">This action will permanently remove the record and cannot be undone.</span>
+            <span class="tooltip__tail" aria-hidden="true"></span>
+          </span>
+        </span>
+        <p class="demo-label">Wrapped text</p>
+      </div>
+
+      <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-tier-6)">
+        <span class="tooltip tooltip--bottom">
+          <button class="tt-trigger">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            Below me
+          </button>
+          <span class="tooltip__popup" role="tooltip">
+            <span class="tooltip__bubble">Appears below the trigger</span>
+            <span class="tooltip__tail" aria-hidden="true"></span>
+          </span>
+        </span>
+        <p class="demo-label">Bottom placement</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================== PLACEMENT ========================== -->
+  <section class="chunk" id="placement">
+    <header class="chunk-head reveal">
+      <h2 class="h2">Placement.</h2>
+    </header>
+    <p class="section-lede reveal">
+      Two placements: <strong>top</strong> (default) and <strong>bottom</strong>.
+      Production flips automatically when there isn't room — if a <code>side="top"</code>
+      tooltip would clip the viewport top edge it flips to <code>bottom</code>, and
+      vice versa.
+    </p>
+
+    <div class="placement-grid reveal">
+
+      <div class="placement-card">
+        <p class="placement-card__label">Top (default)</p>
+        <div class="tooltip-stage">
+          <span class="tooltip">
+            <button class="tt-trigger">Anchor</button>
+            <span class="tooltip__popup is-open" role="tooltip">
+              <span class="tooltip__bubble">Bubble above trigger</span>
+              <span class="tooltip__tail" aria-hidden="true"></span>
+            </span>
+          </span>
+        </div>
+      </div>
+
+      <div class="placement-card">
+        <p class="placement-card__label">Bottom — <code>.tooltip--bottom</code></p>
+        <div class="tooltip-stage" style="padding-top:var(--spacing-4x);padding-bottom:var(--spacing-16x)">
+          <span class="tooltip tooltip--bottom">
+            <button class="tt-trigger">Anchor</button>
+            <span class="tooltip__popup is-open" role="tooltip">
+              <span class="tooltip__bubble">Bubble below trigger</span>
+              <span class="tooltip__tail" aria-hidden="true"></span>
+            </span>
+          </span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================== POSITIONING CONSTRAINT ========================== -->
+  <section class="chunk" id="constraint">
+    <header class="chunk-head reveal">
+      <h2 class="h2">Positioning constraint.</h2>
+    </header>
+    <p class="section-lede reveal">
+      The frosted glass depends on <code>backdrop-filter</code>, which stops working
+      when any ancestor element creates a backdrop root. The DS demo page is fine
+      because no ancestor has a transform. Production requires extra care.
+    </p>
+
+    <div class="constraint-box reveal">
+      <span class="constraint-box__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </span>
+      <div>
+        <p>These CSS properties on <em>any ancestor</em> kill <code>backdrop-filter</code> by creating a backdrop root:</p>
+        <p>
+          <code>transform</code> &nbsp;·&nbsp;
+          <code>filter</code> &nbsp;·&nbsp;
+          <code>opacity &lt; 1</code> &nbsp;·&nbsp;
+          <code>clip-path</code> on a parent &nbsp;·&nbsp;
+          <code>backdrop-filter</code> on a parent
+        </p>
+        <p>
+          That is why the production <code>&lt;Tooltip&gt;</code> renders via
+          <code>createPortal</code> directly into <code>&lt;body&gt;</code> and
+          positions with <code>fixed top/left</code> computed by
+          <code>getBoundingClientRect</code> — never <code>transform: translate</code>
+          (the way Radix's popper works). Framer Motion animations on the
+          page-level layout are the specific ancestor that motivated this design.
+        </p>
+        <p>
+          Do not replace the positioning logic with a Radix/Floating UI popper
+          unless those libraries offer a <code>transform: none</code> mode.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================== TOKENS ========================== -->
+  <section class="chunk tokens" id="tokens">
+    <header class="chunk-head reveal">
+      <h2 class="h2">Tokens.</h2>
+    </header>
+    <p class="section-lede reveal">
+      All visual properties are overridable via CSS custom properties on
+      <code>:root</code>. The glass recipe tokens (<code>--tooltip-blur</code>,
+      <code>--tooltip-saturate</code>) map to the system glass rail in
+      <code>tokens.css</code> so the tooltip tracks any global glass-recipe
+      changes automatically.
+    </p>
+
+    <div class="token-table reveal" id="token-table-root"></div>
+
+    <p class="usage-note reveal">
+      <strong>Glass fill recipe</strong> — tint alpha is 44&nbsp;% by design.
+      Lower alpha is what lets the page genuinely refract through the glass;
+      at higher alpha the frost reads as a flat near-opaque fill. Do not raise
+      <code>--tooltip-bg</code> tint beyond 55&nbsp;% without testing on a busy
+      background.
+    </p>
+  </section>
+
+</main>
+
+<script>
+/* =========================================================
+   Reveal-on-scroll
+   ========================================================= */
+function initReveal() {
+  const items = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    items.forEach(el => el.classList.add('in'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        en.target.classList.add('in');
+        io.unobserve(en.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(el => io.observe(el));
+}
+
+/* =========================================================
+   Token table
+   ========================================================= */
+const TOKEN_GROUPS = [
+  { group: 'Glass fill', tokens: [
+    ['--tooltip-bg',          'color-mix(in srgb, var(--white-base) 44%, transparent)'],
+    ['--tooltip-blur',        'var(--blur-lg)'],
+    ['--tooltip-saturate',    'var(--glass-saturate)'],
+  ]},
+  { group: 'Surface', tokens: [
+    ['--tooltip-shadow',      'var(--shadow-md), var(--glass-inset-light-strong)'],
+    ['--tooltip-radius',      '10px'],
+    ['--tooltip-max-w',       '260px'],
+  ]},
+  { group: 'Spacing', tokens: [
+    ['--tooltip-pad-x',       '12px'],
+    ['--tooltip-pad-y',       '5px'],
+    ['--tooltip-offset',      '8px'],
+  ]},
+  { group: 'Typography', tokens: [
+    ['--tooltip-font-size',   'var(--text-body-sm)'],
+    ['--tooltip-font-weight', 'var(--font-weight-medium)'],
+    ['--tooltip-line-height', '1.3'],
+    ['--tooltip-fg',          'var(--text-default)'],
+  ]},
+  { group: 'Tail', tokens: [
+    ['--tooltip-tail-w',      '16px'],
+    ['--tooltip-tail-h',      '8px'],
+  ]},
+  { group: 'Z-index', tokens: [
+    ['--tooltip-z',           '200'],
+  ]},
+];
+
+function resolveCss(varName) {
+  return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+}
+function isColorish(v) {
+  if (!v) return false;
+  const s = v.toLowerCase();
+  return s.startsWith('#') || s.startsWith('rgb') || s.startsWith('hsl') ||
+         s.startsWith('oklch') || s.startsWith('color') || s === 'transparent';
+}
+function buildTable() {
+  const root = document.getElementById('token-table-root');
+  if (!root) return;
+  let html = '<table class="token-table"><thead><tr><th>Token</th><th>Value</th><th></th></tr></thead><tbody>';
+  TOKEN_GROUPS.forEach(({ group, tokens }) => {
+    html += `<tr class="token-table__group-row"><td colspan="3">${group}</td></tr>`;
+    tokens.forEach(([name, fallback]) => {
+      const raw = resolveCss(name) || fallback || '';
+      const chip = isColorish(raw)
+        ? `<span class="token-chip" style="background:${raw}"></span>` : '';
+      html += `<tr><td><code>${name}</code></td><td>${fallback}</td><td>${chip}</td></tr>`;
+    });
+  });
+  html += '</tbody></table>';
+  root.innerHTML = html;
+}
+document.addEventListener('DOMContentLoaded', () => {
+  buildTable();
+  initReveal();
+});
+</script>
+
+</body>
+</html>

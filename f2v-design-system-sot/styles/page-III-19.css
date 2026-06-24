@@ -1,0 +1,189 @@
+/* =========================================================
+   PAGE — III-19 / Components / Tooltip
+   Page-scoped scaffolding for the Tooltip component page.
+
+   Depends on: tokens.css, base.css, typography.css, shell.css,
+               global-nav.css, tooltip.css,
+               page-III-02.css (.token-table),
+               page-III-03.css (.usage-note, .preview-stage)
+   ========================================================= */
+
+/* ---- Demo stage ----------------------------------------
+   Dark, slightly textured background so the frosted glass
+   is immediately visible; matches how the tooltip is used
+   over busy admin content in production. */
+.tooltip-stage {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-tier-3);
+    align-items: flex-end;
+    justify-content: center;
+    padding: var(--spacing-16x) var(--spacing-8x) var(--spacing-8x);
+    background: var(--background-default-subtle);
+    border: var(--border-width-base) solid var(--border-default);
+    border-radius: var(--radius-md);
+}
+
+/* A richer stage for the anatomy demo: busier background
+   so the blur is unmistakable. */
+.tooltip-stage--rich {
+    background: linear-gradient(
+        135deg,
+        var(--background-default-subtle) 0%,
+        color-mix(in srgb, var(--primary-100) 40%, var(--background-default-subtle)) 50%,
+        color-mix(in srgb, var(--accent-100) 30%, var(--background-default-subtle)) 100%
+    );
+    position: relative;
+    overflow: visible;
+}
+
+/* Always-on helper: overrides hover-gating so anatomy and
+   static demos show the bubble without requiring pointer. */
+.tooltip-stage .tooltip .tooltip__popup,
+.is-open-demo .tooltip__popup {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Push the trigger down so there's room for the bubble above. */
+.tooltip-stage .tooltip {
+    margin-top: var(--spacing-8x);
+}
+
+/* Stage labels */
+.demo-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-mono);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+    text-align: center;
+    margin: 0;
+}
+
+/* ---- Trigger buttons used in demos -------------------- */
+.tt-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-gap-micro);
+    height: 32px;
+    padding: 0 var(--spacing-3x);
+    border-radius: var(--radius-sm);
+    border: var(--border-width-base) solid var(--border-default-strong);
+    background: var(--background-default);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    color: var(--text-default);
+    cursor: default;
+    user-select: none;
+}
+.tt-trigger svg {
+    width: 14px; height: 14px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    color: var(--icon-default);
+    flex-shrink: 0;
+}
+
+/* ---- Anatomy diagram ---------------------------------- */
+.anatomy-diagram {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    padding: var(--spacing-16x) var(--spacing-8x) var(--spacing-8x);
+    background: linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--primary-100) 30%, var(--background-default)) 0%,
+        color-mix(in srgb, var(--accent-100) 20%, var(--background-default)) 100%
+    );
+    border: var(--border-width-base) solid var(--border-default);
+    border-radius: var(--radius-md);
+    overflow: visible;
+}
+
+/* Callout annotation lines */
+.anatomy-callout {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tier-3);
+    margin-top: var(--space-tier-4);
+    padding: var(--space-tier-4);
+    background: var(--background-default-subtle);
+    border: var(--border-width-base) solid var(--border-default-subtle);
+    border-radius: var(--radius-md);
+}
+
+.anatomy-callout dt {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-mono);
+    color: var(--text-default-subtle);
+    margin: 0;
+}
+.anatomy-callout dd {
+    font-size: var(--text-body-sm);
+    color: var(--text-default);
+    margin: 0 0 var(--space-tier-6);
+    line-height: var(--line-height-body);
+}
+.anatomy-callout dd:last-child { margin-bottom: 0; }
+
+/* ---- Grid for placement demos --------------------------
+   2-column: top and bottom side by side. */
+.placement-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-tier-4);
+}
+@media (max-width: 640px) {
+    .placement-grid { grid-template-columns: 1fr; }
+}
+
+.placement-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tier-6);
+}
+.placement-card__label {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-mono);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+    margin: 0;
+}
+
+/* ---- Constraint callout box --------------------------- */
+.constraint-box {
+    display: flex;
+    gap: var(--space-tier-5);
+    padding: var(--spacing-4x) var(--spacing-5x);
+    background: color-mix(in srgb, var(--warning-100) 60%, var(--background-default));
+    border: var(--border-width-base) solid var(--warning-200);
+    border-radius: var(--radius-md);
+    font-size: var(--text-body-sm);
+    line-height: var(--line-height-body);
+    color: var(--text-default);
+}
+.constraint-box__icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    color: var(--warning-600);
+    margin-top: 1px;
+}
+.constraint-box__icon svg {
+    width: 100%; height: 100%;
+    fill: none; stroke: currentColor;
+    stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+.constraint-box p { margin: 0 0 var(--space-tier-6); }
+.constraint-box p:last-child { margin: 0; }
+.constraint-box code {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    color: var(--text-default-subtle);
+}
