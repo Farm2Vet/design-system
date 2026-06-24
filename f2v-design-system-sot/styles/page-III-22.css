@@ -1,0 +1,68 @@
+/* =========================================================
+   PAGE — III-22 / Components / Menu
+   Page-scoped scaffolding for the Menu component page.
+
+   Depends on: tokens.css, base.css, menu.css,
+               dropdown.css (shared tokens),
+               page-III-02.css (.token-table),
+               page-III-03.css (.usage-note)
+   ========================================================= */
+
+/* ---- Demo stage — a surface behind the open panels ------ */
+.menu-stage {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: var(--space-tier-3);
+    padding: var(--spacing-6x) var(--spacing-8x) var(--spacing-16x);
+    background: var(--background-default-subtle);
+    border: var(--border-width-base) solid var(--border-default);
+    border-radius: var(--radius-md);
+    min-height: 320px;
+}
+
+/* ---- Trigger buttons used in demos --------------------- */
+.menu-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-gap-micro);
+    height: 32px;
+    padding: 0 var(--spacing-3x);
+    border-radius: var(--radius-sm);
+    border: var(--border-width-base) solid var(--border-default-strong);
+    background: var(--background-default);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-default);
+    cursor: pointer;
+    transition: background-color .15s ease;
+}
+.menu-trigger:hover { background: var(--background-default-minimal); }
+.menu-trigger svg {
+    width: 14px; height: 14px;
+    stroke: currentColor; fill: none;
+    stroke-width: 1.75;
+}
+
+/* ---- Variants grid ------------------------------------- */
+.menu-variants {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: var(--space-tier-3);
+}
+
+.menu-variant-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-tier-5);
+}
+
+.menu-variant-card__label {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-mono);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+    margin: 0;
+}

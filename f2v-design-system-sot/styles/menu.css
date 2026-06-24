@@ -1,0 +1,202 @@
+/* =========================================================
+   FARM2VET DESIGN SYSTEM — MENU
+   Click/Escape-dismissed floating action panel. Semantically
+   a "menu" (role="menu" + role="menuitem"), not a form control.
+   Unlike .dropdown, Menu owns no trigger shape — the call site
+   provides its own trigger button and passes its label / class.
+
+   The panel surface and option-row geometry intentionally reuse
+   --dropdown-* tokens so the two floating surfaces read as one
+   visual family.
+
+   Required structure:
+     <div class="menu">
+       <!-- trigger button — shape owned by call site -->
+       <button type="button" class="..." aria-haspopup="menu"
+               aria-expanded="false">…</button>
+
+       <div class="menu__panel is-open" role="menu"
+            data-align="end" data-side="bottom">
+
+         <!-- optional eyebrow -->
+         <div class="menu__label">Sort by</div>
+
+         <button class="menu__item menu__item--checkable
+                        is-selected" role="menuitem">
+           <svg class="menu__check" aria-hidden="true">…</svg>
+           <span>A → Z</span>
+           <span class="menu__meta">Default</span>
+         </button>
+
+         <button class="menu__item menu__item--checkable"
+                 role="menuitem">
+           <svg class="menu__check" aria-hidden="true">…</svg>
+           <span>Z → A</span>
+         </button>
+
+         <div class="menu__sep" role="separator"></div>
+
+         <button class="menu__item menu__item--danger"
+                 role="menuitem">Delete</button>
+       </div>
+     </div>
+
+   States: .is-open on panel, .is-selected on item,
+           .menu__item--danger, .menu__item--checkable
+   Placement: data-align="start|end" data-side="top|bottom"
+   Depends on: tokens.css, base.css, dropdown.css (shares tokens)
+   ========================================================= */
+
+/* =========================================================
+   WRAPPER
+   ========================================================= */
+.menu {
+    position: relative;
+    display: inline-flex;
+}
+
+/* =========================================================
+   PANEL
+   Reuses --dropdown-* surface tokens (same floating family).
+   Hidden by display:none when closed — keeping it in layout
+   while invisible extends ancestor scroll height (phantom gap).
+   ========================================================= */
+.menu__panel {
+    display: none;
+    position: absolute;
+    top: calc(100% + var(--dropdown-menu-offset));
+    left: 0;
+    min-width: var(--menu-min-w);
+    z-index: var(--menu-z);
+
+    padding: var(--dropdown-menu-padding);
+    background: var(--dropdown-menu-bg);
+    border: var(--border-width-base) solid var(--dropdown-menu-border);
+    border-radius: var(--dropdown-menu-radius);
+    box-shadow: var(--dropdown-menu-shadow);
+
+    opacity: 0;
+    transform: translateY(calc(var(--dropdown-anim-translate) * -1)) scale(.98);
+    transition:
+        opacity  var(--dropdown-anim-duration) var(--dropdown-anim-easing),
+        transform var(--dropdown-anim-duration) var(--dropdown-anim-easing);
+}
+
+/* Alignment */
+.menu__panel[data-align="end"] { left: auto; right: 0; }
+
+/* Open direction — bottom (default) is already set above.
+   JS adds/removes data-side="top" before revealing the panel. */
+.menu__panel[data-side="top"] {
+    top: auto;
+    bottom: calc(100% + var(--dropdown-menu-offset));
+    transform: translateY(var(--dropdown-anim-translate)) scale(.98);
+}
+
+/* Visible state */
+.menu__panel.is-open {
+    display: flex;
+    flex-direction: column;
+    opacity: 1;
+    transform: none;
+}
+
+/* =========================================================
+   EYEBROW LABEL
+   ========================================================= */
+.menu__label {
+    padding:
+        var(--space-tier-6)
+        var(--dropdown-option-padding-x)
+        var(--space-tier-7);
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+    line-height: 1;
+}
+
+/* =========================================================
+   ITEM — the interactive row
+   ========================================================= */
+.menu__item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-gap-snug);
+    width: 100%;
+    padding:
+        var(--dropdown-option-padding-y)
+        var(--dropdown-option-padding-x);
+    border: none;
+    border-radius: var(--dropdown-option-radius);
+    background: transparent;
+    text-align: left;
+    text-decoration: none;
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    color: var(--dropdown-option-fg);
+    cursor: pointer;
+    user-select: none;
+    transition: background-color .15s ease, color .15s ease;
+}
+.menu__item:hover {
+    background: var(--dropdown-option-bg-hover);
+    color: var(--dropdown-option-fg-hover);
+}
+.menu__item:focus-visible {
+    outline: 2px solid var(--outline-focus);
+    outline-offset: -2px;
+}
+
+/* Selected row */
+.menu__item.is-selected {
+    color: var(--dropdown-option-fg-selected);
+    font-weight: var(--font-weight-medium);
+}
+
+/* Danger row */
+.menu__item--danger {
+    color: var(--menu-item-danger-fg);
+}
+.menu__item--danger:hover {
+    background: var(--menu-item-danger-bg-hover);
+    color: var(--menu-item-danger-fg);
+}
+
+/* =========================================================
+   CHECKABLE — leading check slot
+   ========================================================= */
+.menu__check {
+    flex-shrink: 0;
+    width: 14px;
+    height: 14px;
+    color: var(--dropdown-option-check-color);
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 0;
+}
+.menu__item.is-selected .menu__check { opacity: 1; }
+
+/* =========================================================
+   META — trailing muted label
+   ========================================================= */
+.menu__meta {
+    margin-left: auto;
+    font-size: var(--text-eyebrow);
+    color: var(--text-default-minimal);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* =========================================================
+   SEPARATOR
+   ========================================================= */
+.menu__sep {
+    height: var(--border-width-base);
+    margin: var(--space-tier-7) var(--space-gap-micro);
+    background: var(--border-default);
+}

@@ -1,0 +1,359 @@
+/* =========================================================
+   FARM2VET DESIGN SYSTEM — RICH TEXT EDITOR (RTE)
+   WYSIWYG markdown editor built on TipTap. The CSS layer here
+   covers the visual shell — border + focus ring, toolbar, toolbar
+   buttons, separator, content area prose, and floating poppers.
+   The JS layer (TipTap editor init, toolbar state, focus-reveal)
+   lives in the React component (MarkdownField).
+
+   Required structure:
+     <div class="rte">
+       <div class="rte__toolbar-wrap">          ← grid-rows 0fr↔1fr
+         <div class="rte__toolbar-clip">        ← overflow:hidden clip
+           <div class="rte__toolbar">           ← flex row; fades opacity
+             <button class="rte__tbtn" aria-pressed="false">…</button>
+             <button class="rte__tbtn is-active" aria-pressed="true">…</button>
+             <span class="rte__sep" aria-hidden="true"></span>
+             <button class="rte__type-btn">Normal text ▾</button>
+             <span class="rte__sep" aria-hidden="true"></span>
+             <!-- link, image, table, undo, redo … -->
+           </div>
+         </div>
+       </div>
+
+       <!-- Floating poppers (type listbox, link card, table grid) -->
+       <div class="rte__popper" role="listbox">
+         <button class="rte__popper-item">…</button>
+         <button class="rte__popper-item is-active">…</button>
+       </div>
+
+       <!-- Content area rendered by TipTap / contenteditable -->
+       <div class="rte__content" contenteditable="true">
+         <p>…</p>
+       </div>
+
+       <!-- Placeholder — overlay, pointer-events-none -->
+       <p class="rte__placeholder">Write something…</p>
+     </div>
+
+   State modifiers:
+     .is-focused on root   — toolbar shown (.rte__toolbar-wrap gains display)
+     .is-active on .rte__tbtn — solid forest fill (bold/active toggle)
+   Depends on: tokens.css, base.css
+   ========================================================= */
+
+/* =========================================================
+   CONTAINER
+   ========================================================= */
+.rte {
+    position: relative;
+    border-radius: var(--rte-radius);
+    border: var(--border-width-base) solid var(--rte-border);
+    background: var(--rte-bg);
+    transition: border-color .15s ease, box-shadow .15s ease;
+}
+.rte:focus-within {
+    border-color: var(--rte-border-focus);
+    box-shadow: 0 0 0 3px var(--rte-ring);
+}
+
+/* =========================================================
+   TOOLBAR REVEAL (grid-rows animation)
+   JS toggles .is-focused on root before / after transition.
+   NO transition on grid-template-rows — each TipTap transaction
+   triggers a re-render; a row-height transition would ratchet the
+   field taller character-by-character. Only the inner opacity fades.
+   ========================================================= */
+.rte__toolbar-wrap {
+    display: grid;
+    grid-template-rows: 0fr;
+}
+.rte.is-focused .rte__toolbar-wrap {
+    grid-template-rows: 1fr;
+}
+
+.rte__toolbar-clip {
+    min-height: 0;
+    overflow: hidden;
+}
+/* Lift overflow when a popper is open so it isn't clipped. */
+.rte__toolbar-clip.has-popper {
+    overflow: visible;
+}
+
+.rte__toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2px;
+    padding: var(--rte-toolbar-pad-y) var(--rte-toolbar-pad-x);
+    border-bottom: var(--border-width-base) solid var(--rte-toolbar-border);
+    border-radius: var(--rte-radius) var(--rte-radius) 0 0;
+    background: var(--rte-toolbar-bg);
+    opacity: 0;
+    transition: opacity .18s ease;
+}
+.rte.is-focused .rte__toolbar { opacity: 1; }
+
+/* =========================================================
+   TOOLBAR ICON BUTTON
+   onMouseDown should preventDefault to keep the editor selection
+   alive when the button is clicked (not a DS concern but note here).
+   Icons are Lucide SVGs (same library as production lucide-react).
+   createIcons() replaces each <i data-lucide="name"> with an SVG.
+   ========================================================= */
+.rte__tbtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: var(--rte-tbtn-size);
+    height: var(--rte-tbtn-size);
+    padding: 0;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--rte-tbtn-icon);
+    cursor: pointer;
+    transition: background-color .15s ease, color .15s ease;
+}
+/* Lucide createIcons() replaces <i data-lucide> with a 24×24 SVG.
+   Override to match production's [&_svg]:w-[15px] [&_svg]:h-[15px]. */
+.rte__tbtn svg {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+    pointer-events: none;
+}
+.rte__tbtn:hover:not(:disabled) {
+    background: var(--rte-tbtn-bg-hover);
+    color: var(--rte-tbtn-fg-hover);
+}
+.rte__tbtn.is-active,
+.rte__tbtn[aria-pressed="true"] {
+    background: var(--rte-tbtn-bg-active);
+    color: var(--rte-tbtn-fg-active);
+    box-shadow: var(--rte-tbtn-shadow-active);
+}
+.rte__tbtn:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* =========================================================
+   SEPARATOR — vertical hairline between toolbar groups
+   ========================================================= */
+.rte__sep {
+    display: block;
+    flex-shrink: 0;
+    width: 1px;
+    height: 16px;
+    margin: 0 var(--spacing-1x);
+    background: var(--rte-sep);
+}
+
+/* =========================================================
+   TYPE / BLOCK DROPDOWN TRIGGER
+   Wider than .rte__tbtn; shows current block name + chevron.
+   ========================================================= */
+.rte__type-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-gap-micro);
+    height: var(--rte-tbtn-size);
+    flex-shrink: 0;
+    padding: 0 var(--spacing-2x);
+    border: none;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-default);
+    cursor: pointer;
+    transition: background-color .15s ease, color .15s ease;
+}
+.rte__type-btn svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    pointer-events: none;
+}
+.rte__type-btn:hover {
+    background: var(--rte-tbtn-bg-hover);
+    color: var(--rte-tbtn-fg-hover);
+}
+.rte__type-btn.is-active,
+.rte__type-btn[aria-expanded="true"] {
+    background: var(--rte-tbtn-bg-active);
+    color: var(--rte-tbtn-fg-active);
+    box-shadow: var(--rte-tbtn-shadow-active);
+}
+.rte__type-label {
+    min-width: 78px;
+    text-align: left;
+}
+
+/* =========================================================
+   FLOATING POPPER
+   Positioned absolute from the toolbar-clip (or toolbar-wrap).
+   ========================================================= */
+.rte__popper {
+    position: absolute;
+    left: 0;
+    top: calc(100% + 4px);
+    z-index: 20;
+    padding: var(--spacing-1x);
+    border-radius: var(--rte-popper-radius);
+    border: var(--border-width-base) solid var(--rte-popper-border);
+    background: var(--rte-popper-bg);
+    box-shadow: var(--rte-popper-shadow);
+}
+
+.rte__popper-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-gap-snug);
+    width: 100%;
+    padding: var(--spacing-1x) var(--spacing-2x);
+    border: none;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    font-family: var(--font-sans);
+    font-size: var(--text-body-sm);
+    color: var(--text-default);
+    cursor: pointer;
+    text-align: left;
+    transition: background-color .15s ease, color .15s ease;
+}
+.rte__popper-item svg {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+    pointer-events: none;
+}
+.rte__popper-item:hover {
+    background: var(--background-default-subtle);
+}
+.rte__popper-item.is-active,
+.rte__popper-item[aria-selected="true"] {
+    background: var(--background-primary-subtle);
+    color: var(--text-primary-strong);
+}
+
+/* Check icon: hidden by default; visible when item is active */
+.rte-check-icon { visibility: hidden; }
+.rte__popper-item.is-active .rte-check-icon,
+.rte__popper-item[aria-selected="true"] .rte-check-icon { visibility: visible; }
+
+/* Table grid picker cell */
+.rte__grid-cell {
+    width: 18px;
+    height: 18px;
+    border-radius: 2px;
+    border: var(--border-width-base) solid var(--rte-table-border);
+    background: var(--rte-table-header-bg);
+    cursor: pointer;
+    transition: border-color .1s ease, background-color .1s ease;
+}
+.rte__grid-cell.is-on {
+    border-color: var(--border-primary);
+    background: var(--background-primary-subtle);
+}
+
+/* =========================================================
+   CONTENT AREA (ProseMirror surface)
+   Styling mirrors the read-only Prose component so formatted
+   content looks identical whether editing or viewed.
+   ========================================================= */
+.rte__content {
+    position: relative;
+    padding: var(--rte-content-pad-y) var(--rte-content-pad-x);
+    min-height: var(--rte-content-min-h);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--line-height-body);
+    color: var(--rte-content-fg);
+    outline: none;
+}
+.rte__content--tall { min-height: var(--rte-content-min-h-tall); }
+
+/* Block spacing */
+.rte__content p  { margin: 0 0 var(--spacing-2x); }
+.rte__content p:last-child { margin-bottom: 0; }
+
+/* Headings */
+.rte__content h1,
+.rte__content h2,
+.rte__content h3 {
+    margin: 0 0 var(--spacing-2x);
+    font-weight: var(--font-weight-semibold);
+}
+.rte__content h1 { font-size: var(--text-admin-card-title); }
+.rte__content h2,
+.rte__content h3 { font-size: var(--text-admin-subsection-title); }
+
+/* Inline marks */
+.rte__content strong { font-weight: var(--font-weight-semibold); }
+.rte__content em     { font-style: italic; }
+.rte__content u      { text-decoration: underline; }
+.rte__content code {
+    font-family: var(--rte-code-font);
+    font-size: var(--text-body-sm);
+}
+.rte__content a {
+    color: var(--rte-link-fg);
+    text-decoration: underline;
+}
+
+/* Lists */
+.rte__content ul,
+.rte__content ol {
+    margin: 0 0 var(--spacing-2x);
+    padding-left: var(--spacing-5x);
+}
+.rte__content ul { list-style: disc; }
+.rte__content ol { list-style: decimal; }
+.rte__content li { margin-bottom: var(--spacing-1x); }
+
+/* Table — fixed layout prevents column widening on keystroke */
+.rte__content table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    margin: var(--spacing-2x) 0;
+}
+.rte__content th,
+.rte__content td {
+    border: 1px solid var(--rte-table-border);
+    padding: var(--spacing-1x) var(--spacing-2x);
+    word-break: break-word;
+    text-align: left;
+}
+.rte__content th { background: var(--rte-table-header-bg); }
+
+/* Images */
+.rte__content img {
+    max-width: 100%;
+    border-radius: var(--radius-sm);
+}
+
+/* =========================================================
+   PLACEHOLDER (empty-state overlay)
+   Hidden by default; revealed when root carries .is-empty.
+   In TipTap this is checked against the ProseMirror doc
+   (not innerHTML) to catch the "single empty <p>" case.
+   ========================================================= */
+.rte__placeholder {
+    display: none;
+    position: absolute;
+    inset: var(--rte-content-pad-y) var(--rte-content-pad-x);
+    margin: 0;
+    font-size: var(--text-body);
+    line-height: var(--line-height-body);
+    color: var(--rte-content-placeholder);
+    font-style: italic;
+    pointer-events: none;
+}
+.rte.is-empty .rte__placeholder { display: block; }
