@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Farm2Vet · Breadcrumb — Design System</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+<!-- Design system: shared, reusable foundation -->
+<link rel="stylesheet" href="styles/tokens.css" />
+<link rel="stylesheet" href="styles/base.css" />
+<link rel="stylesheet" href="styles/typography.css" />
+<link rel="stylesheet" href="styles/shell.css" />
+<link rel="stylesheet" href="styles/global-nav.css" />
+<!-- Component -->
+<link rel="stylesheet" href="styles/breadcrumb.css" />
+<!-- Reuse: usage-note + preview stage; token-table -->
+<link rel="stylesheet" href="styles/page-III-03.css" />
+<link rel="stylesheet" href="styles/page-III-02.css" />
+<!-- Page-specific -->
+<link rel="stylesheet" href="styles/page-III-20.css" />
+
+<script src="scripts/global-nav.js" defer></script>
+
+</head>
+<body data-page="III-20-breadcrumb">
+
+<!-- ========================== GLOBAL NAV ========================== -->
+<header class="global-nav" aria-label="Design system navigation">
+  <div class="global-nav__inner">
+
+    <a href="index.html" class="global-nav__brand" aria-label="Farm2Vet design system home">
+      <img src="logo/logo-wordmark-color.svg" alt="Farm2Vet" class="global-nav__logo" />
+      <small>Design System</small>
+    </a>
+
+    <nav class="global-nav__sections" aria-label="Design system sections">
+      <ul class="global-nav__list">
+        <li class="global-nav__item">
+          <a class="global-nav__link" href="I-primitives.html">I. Primitives</a>
+        </li>
+        <li class="global-nav__item">
+          <a class="global-nav__link" href="II-semantics.html">II. Semantics</a>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="components">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-components">
+            III. Components
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-components" class="global-nav__panel" role="region" aria-label="Components">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="III-01-typography.html"><span class="global-nav__index">01</span><span>Typography</span></a></li>
+                <li><a href="III-02-buttons.html"><span class="global-nav__index">02</span><span>Buttons</span></a></li>
+                <li><a href="III-03-form.html"><span class="global-nav__index">03</span><span>Form</span></a></li>
+                <li><a href="III-04-dropdowns.html"><span class="global-nav__index">04</span><span>Dropdowns</span></a></li>
+                <li><a href="III-05-cards.html"><span class="global-nav__index">05</span><span>Cards</span></a></li>
+                <li><a href="III-06-modal.html"><span class="global-nav__index">06</span><span>Modal Dialog</span></a></li>
+                <li><a href="III-07-side-panel.html"><span class="global-nav__index">07</span><span>Side Panel</span></a></li>
+                <li><a href="III-08-toast.html"><span class="global-nav__index">08</span><span>Toast</span></a></li>
+                <li><a href="III-09-alert-badges.html"><span class="global-nav__index">09</span><span>Alert &amp; Badge</span></a></li>
+                <li><a href="III-10-header-navigation.html"><span class="global-nav__index">10</span><span>Header &amp; Nav Bar</span></a></li>
+                <li><a href="III-11-switch.html"><span class="global-nav__index">11</span><span>Switch</span></a></li>
+                <li><a href="III-12-sidebar.html"><span class="global-nav__index">12</span><span>Sidebar</span></a></li>
+                <li><a href="III-13-chip.html"><span class="global-nav__index">13</span><span>Chip</span></a></li>
+                <li><a href="III-14-tabs.html"><span class="global-nav__index">14</span><span>Tabs</span></a></li>
+                <li><a href="III-15-table.html"><span class="global-nav__index">15</span><span>Table</span></a></li>
+                <li><a href="III-16-search-toolbar.html"><span class="global-nav__index">16</span><span>Search Toolbar</span></a></li>
+                <li><a href="III-17-accordion.html"><span class="global-nav__index">17</span><span>Accordion</span></a></li>
+                <li><a href="III-18-chat-input.html"><span class="global-nav__index">18</span><span>Chat Input</span></a></li>
+                <li><a href="III-19-tooltip.html"><span class="global-nav__index">19</span><span>Tooltip</span></a></li>
+                <li><a href="III-20-breadcrumb.html"><span class="global-nav__index">20</span><span>Breadcrumb</span></a></li>
+                <li><a href="III-21-dropzone.html"><span class="global-nav__index">21</span><span>Dropzone</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="assets">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-assets">
+            IV. Assets
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-assets" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Assets">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="IV-01-logo.html"><span class="global-nav__index">01</span><span>Logo</span></a></li>
+                <li><a href="IV-02-icons.html"><span class="global-nav__index">02</span><span>Icons</span></a></li>
+                <li><a href="IV-03-images.html"><span class="global-nav__index">03</span><span>Backgrounds &amp; Motion</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+        <li class="global-nav__item global-nav__item--has-panel" data-section="mockups">
+          <button type="button" class="global-nav__link global-nav__trigger"
+                  aria-expanded="false" aria-controls="global-nav-panel-mockups">
+            V. Mockups
+            <svg class="global-nav__chev" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="global-nav-panel-mockups" class="global-nav__panel global-nav__panel--compact" role="region" aria-label="Mockups">
+            <div class="global-nav__panel-inner">
+              <ul class="global-nav__panel-list">
+                <li><a href="V-01-wiki.html"><span class="global-nav__index">01</span><span>Wiki</span></a></li>
+                <li><a href="V-02-chatbot.html" class="is-placeholder"><span class="global-nav__index">02</span><span>Chatbot</span></a></li>
+                <li><a href="V-03-hero.html"    class="is-placeholder"><span class="global-nav__index">03</span><span>Hero</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+      </ul>
+    </nav>
+
+    <a href="#" class="global-nav__chip" aria-label="Design system version">v1.0</a>
+
+  </div>
+</header>
+
+<main class="shell" id="top">
+
+  <!-- ========================== HERO ========================== -->
+  <section class="hero">
+    <div>
+      <h1 class="text-display">
+        <span class="num">III-20 / Components</span>
+        Breadcrumb.
+      </h1>
+    </div>
+    <div>
+      <p class="lede">Shows a user's location in the page hierarchy. The last item is always the current page — non-interactive, labelled <code>aria-current="page"</code>. In the admin layout it lives inside the floating glass Navbar pill.</p>
+    </div>
+
+    <dl class="meta-strip">
+      <div><dt>Status</dt><dd>Live</dd></div>
+      <div><dt>Authored</dt><dd>2026-06</dd></div>
+      <div><dt>Tokens</dt><dd>7</dd></div>
+      <div><dt>Modifier</dt><dd>--pill</dd></div>
+    </dl>
+  </section>
+
+  <!-- ========================== ANATOMY ========================== -->
+  <section class="anatomy reveal">
+    <h2 class="h2">Anatomy</h2>
+
+    <div class="crumb-stage">
+      <nav class="breadcrumb breadcrumb--pill" aria-label="Breadcrumb">
+        <ol class="breadcrumb__list">
+          <li class="breadcrumb__item">
+            <a class="breadcrumb__link" href="#">Admin</a>
+          </li>
+          <li class="breadcrumb__item">
+            <span class="breadcrumb__sep" aria-hidden="true">›</span>
+            <a class="breadcrumb__link" href="#">Diseases</a>
+          </li>
+          <li class="breadcrumb__item">
+            <span class="breadcrumb__sep" aria-hidden="true">›</span>
+            <span class="breadcrumb__current" aria-current="page">Parvovirus B19</span>
+          </li>
+        </ol>
+      </nav>
+    </div>
+
+    <dl class="anatomy-callout" style="margin-top: var(--space-tier-4);">
+      <div>
+        <dt>.breadcrumb</dt>
+        <dd>The <code>&lt;nav&gt;</code> root. Add <code>.breadcrumb--pill</code> for the glass pill treatment used in the Navbar.</dd>
+      </div>
+      <div>
+        <dt>.breadcrumb__list</dt>
+        <dd>Ordered <code>&lt;ol&gt;</code>. Ordered because the trail has semantic depth order.</dd>
+      </div>
+      <div>
+        <dt>.breadcrumb__item</dt>
+        <dd>Each <code>&lt;li&gt;</code>. Contains one of: link + sep, or current.</dd>
+      </div>
+      <div>
+        <dt>.breadcrumb__sep</dt>
+        <dd>The <code>›</code> separator. Always <code>aria-hidden="true"</code> — purely visual.</dd>
+      </div>
+      <div>
+        <dt>.breadcrumb__link</dt>
+        <dd>An ancestor crumb. Must have an <code>href</code>. Hover color: <code>--breadcrumb-fg-hover</code>.</dd>
+      </div>
+      <div>
+        <dt>.breadcrumb__current</dt>
+        <dd>The final, non-interactive crumb. Requires <code>aria-current="page"</code>. Rendered semibold at <code>--breadcrumb-fg-current</code>.</dd>
+      </div>
+    </dl>
+  </section>
+
+  <!-- ========================== STATES ========================== -->
+  <section class="states reveal">
+    <h2 class="h2">States</h2>
+
+    <div class="crumb-states">
+      <div class="crumb-state-row">
+        <p class="crumb-state-row__label">Rest</p>
+        <nav class="breadcrumb" aria-label="Breadcrumb example — rest">
+          <ol class="breadcrumb__list">
+            <li class="breadcrumb__item"><a class="breadcrumb__link" href="#">Admin</a></li>
+            <li class="breadcrumb__item">
+              <span class="breadcrumb__sep" aria-hidden="true">›</span>
+              <a class="breadcrumb__link" href="#">Diseases</a>
+            </li>
+            <li class="breadcrumb__item">
+              <span class="breadcrumb__sep" aria-hidden="true">›</span>
+              <span class="breadcrumb__current" aria-current="page">Parvovirus B19</span>
+            </li>
+          </ol>
+        </nav>
+      </div>
+
+      <div class="crumb-state-row">
+        <p class="crumb-state-row__label">Link hover</p>
+        <nav class="breadcrumb" aria-label="Breadcrumb example — hover">
+          <ol class="breadcrumb__list">
+            <li class="breadcrumb__item"><a class="breadcrumb__link" href="#">Admin</a></li>
+            <li class="breadcrumb__item">
+              <span class="breadcrumb__sep" aria-hidden="true">›</span>
+              <a class="breadcrumb__link" data-state="hover" href="#">Diseases</a>
+            </li>
+            <li class="breadcrumb__item">
+              <span class="breadcrumb__sep" aria-hidden="true">›</span>
+              <span class="breadcrumb__current" aria-current="page">Parvovirus B19</span>
+            </li>
+          </ol>
+        </nav>
+      </div>
+
+      <div class="crumb-state-row">
+        <p class="crumb-state-row__label">In pill</p>
+        <div class="crumb-stage" style="padding: var(--spacing-3x) var(--spacing-6x);">
+          <nav class="breadcrumb breadcrumb--pill" aria-label="Breadcrumb example — pill">
+            <ol class="breadcrumb__list">
+              <li class="breadcrumb__item"><a class="breadcrumb__link" href="#">Admin</a></li>
+              <li class="breadcrumb__item">
+                <span class="breadcrumb__sep" aria-hidden="true">›</span>
+                <a class="breadcrumb__link" href="#">Diseases</a>
+              </li>
+              <li class="breadcrumb__item">
+                <span class="breadcrumb__sep" aria-hidden="true">›</span>
+                <span class="breadcrumb__current" aria-current="page">Parvovirus B19</span>
+              </li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+
+      <div class="crumb-state-row">
+        <p class="crumb-state-row__label">Single level</p>
+        <nav class="breadcrumb" aria-label="Breadcrumb example — single">
+          <ol class="breadcrumb__list">
+            <li class="breadcrumb__item">
+              <span class="breadcrumb__current" aria-current="page">Overview</span>
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================== TOKENS ========================== -->
+  <section class="tokens reveal">
+    <h2 class="h2">Tokens</h2>
+    <div class="token-table" id="token-table-root"></div>
+  </section>
+
+  <p class="usage-note reveal">
+    <strong>Breadcrumb shows depth, not tabs.</strong> The last item is always the
+    current page (<code>aria-current="page"</code>) and must never be a link.
+    Use <a href="III-14-tabs.html">Tabs</a> for switching between peer views of
+    the same content. Breadcrumb is for hierarchical location only.
+  </p>
+
+  <footer>
+    <span class="sigil">Farm2Vet — cultivated intelligence, since 2024.</span>
+    <a href="index.html">← Design system home</a>
+    <span>III-20 / Components</span>
+  </footer>
+
+</main>
+
+<script>
+/* =========================================================
+   Token data
+   ========================================================= */
+const BREADCRUMB_TOKENS = [
+  { group: 'Typography', tokens: [
+    ['--breadcrumb-font-family',  'var(--font-sans)'],
+    ['--breadcrumb-font-size',    'var(--text-sm)'],
+  ]},
+  { group: 'Colour', tokens: [
+    ['--breadcrumb-fg',           'var(--text-default-subtle)'],
+    ['--breadcrumb-fg-current',   'var(--text-default)'],
+    ['--breadcrumb-fg-hover',     'var(--text-primary-strong)'],
+    ['--breadcrumb-separator-fg', 'var(--text-default-minimal)'],
+  ]},
+  { group: 'Layout', tokens: [
+    ['--breadcrumb-gap',          'var(--space-gap-snug)'],
+    ['--breadcrumb-icon-size',    '14px'],
+  ]},
+];
+
+/* =========================================================
+   Reveal — IntersectionObserver fade-in for .reveal
+   ========================================================= */
+function initReveal() {
+  const els = document.querySelectorAll('.reveal');
+  if (!els.length) return;
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  els.forEach(el => io.observe(el));
+}
+
+/* =========================================================
+   Token table renderer
+   ========================================================= */
+function buildTable() {
+  const root = document.getElementById('token-table-root');
+  if (!root) return;
+
+  let html = '<table class="token-table"><thead><tr><th>Token</th><th>Value</th><th></th></tr></thead><tbody>';
+  for (const { group, tokens } of BREADCRUMB_TOKENS) {
+    html += `<tr class="token-table__group-row"><td colspan="3">${group}</td></tr>`;
+    for (const [name, value] of tokens) {
+      const swatch = name.includes('-fg') || name.includes('-separator')
+        ? `<span class="token-table__swatch" style="background:${value};border:1px solid var(--border-default)"></span>`
+        : '';
+      html += `<tr><td><code>${name}</code></td><td><code>${value}</code></td><td>${swatch}</td></tr>`;
+    }
+  }
+  html += '</tbody></table>';
+  root.innerHTML = html;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  buildTable();
+  initReveal();
+});
+</script>
+
+</body>
+</html>

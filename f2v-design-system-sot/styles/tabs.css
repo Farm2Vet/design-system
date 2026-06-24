@@ -116,7 +116,8 @@
 }
 .tabs__tab.is-selected,
 .tabs__tab[aria-selected="true"] {
-    color: var(--tabs-tab-fg-selected);
+    color:       var(--tabs-tab-fg-selected);
+    font-weight: var(--tabs-font-weight-selected);
 }
 .tabs__tab:focus-visible {
     outline: var(--tabs-focus-outline-width) solid var(--tabs-focus-outline);
@@ -224,13 +225,20 @@
    ========================================================= */
 .tabs--line .tabs__list {
     border-bottom: var(--border-width-base) solid var(--tabs-line-list-border);
+    gap: var(--tabs-line-gap);
 }
 .tabs--line .tabs__tab {
     border-radius: 0;
+    padding-left: 0;
+    padding-right: 0;
     /* Reserve the indicator track so the rule below the
        list doesn't collide with the tab text. */
     padding-bottom: calc(var(--_pad-y) + var(--tabs-line-indicator-thickness));
     margin-bottom: calc(var(--tabs-line-indicator-thickness) * -1);
+}
+.tabs--line .tabs__tab.is-selected,
+.tabs--line .tabs__tab[aria-selected="true"] {
+    color: var(--tabs-line-tab-fg-selected);
 }
 .tabs--line .tabs__indicator {
     left: 0;

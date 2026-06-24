@@ -1,0 +1,127 @@
+/* =========================================================
+   FARM2VET DESIGN SYSTEM — DROPZONE
+   Drag-and-drop file upload surface. Dashed border tints
+   primary on drag-over; click opens a hidden file input.
+   Single-file: authors wire the callback at the page level.
+
+   Required structure:
+     <div class="dropzone" role="button" tabindex="0"
+          aria-label="Upload area">
+       <span class="dropzone__icon" aria-hidden="true">
+         <!-- 24×24 stroke SVG (e.g. upload-cloud) -->
+       </span>
+       <div class="dropzone__body">
+         <span class="dropzone__title">Drop a file here</span>
+         <span class="dropzone__hint">
+           or <span class="dropzone__browse">browse from your computer</span>
+         </span>
+         <span class="dropzone__meta">PNG, JPG up to 10 MB</span>
+       </div>
+       <input type="file" class="dropzone__input" accept="image/*" />
+     </div>
+
+   States: .is-over (drag active), .is-disabled
+   Depends on: tokens.css, base.css
+   ========================================================= */
+
+.dropzone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--dropzone-gap);
+    text-align: center;
+    padding: var(--dropzone-pad-y) var(--dropzone-pad-x);
+    border-radius: var(--dropzone-radius);
+    border: 2px dashed var(--dropzone-border);
+    background: var(--dropzone-bg);
+    cursor: pointer;
+    user-select: none;
+    transition: border-color .15s ease, background-color .15s ease;
+}
+
+.dropzone:hover:not(.is-disabled) {
+    border-color: var(--dropzone-border-over);
+    background: var(--dropzone-bg-over);
+}
+
+.dropzone:focus-visible {
+    outline: 2px solid var(--outline-focus);
+    outline-offset: 2px;
+}
+
+/* Drag-over state — JS toggles this class on dragover/dragleave/drop */
+.dropzone.is-over {
+    border-color: var(--dropzone-border-over);
+    background: var(--dropzone-bg-over);
+}
+
+.dropzone.is-disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* =========================================================
+   ICON CIRCLE
+   ========================================================= */
+.dropzone__icon {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-pill);
+    background: var(--dropzone-icon-bg);
+    color: var(--dropzone-icon);
+    flex-shrink: 0;
+}
+.dropzone__icon svg {
+    width: 24px;
+    height: 24px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* =========================================================
+   BODY — stacked text content
+   ========================================================= */
+.dropzone__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-gap-micro);
+}
+
+.dropzone__title {
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    font-weight: var(--font-weight-semibold);
+    color: var(--dropzone-title-fg);
+    line-height: var(--line-height-body);
+}
+
+.dropzone__hint {
+    font-size: var(--text-body-sm);
+    color: var(--dropzone-hint-fg);
+    line-height: var(--line-height-body);
+}
+
+.dropzone__browse {
+    color: var(--dropzone-browse-fg);
+    font-weight: var(--font-weight-medium);
+}
+
+.dropzone__meta {
+    margin-top: var(--space-gap-micro);
+    font-size: var(--text-body-sm);
+    color: var(--dropzone-hint-fg);
+}
+
+/* =========================================================
+   HIDDEN INPUT
+   ========================================================= */
+.dropzone__input {
+    display: none;
+}

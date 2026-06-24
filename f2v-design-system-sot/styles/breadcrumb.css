@@ -1,0 +1,120 @@
+/* =========================================================
+   FARM2VET DESIGN SYSTEM — BREADCRUMB
+   Path display, not view switching. Shows the user's location
+   in the page hierarchy; the last item is the current page.
+
+   Required structure:
+     <nav class="breadcrumb" aria-label="Breadcrumb">
+       <ol class="breadcrumb__list">
+         <li class="breadcrumb__item">
+           <a class="breadcrumb__link" href="/admin">Admin</a>
+         </li>
+         <li class="breadcrumb__item">
+           <span class="breadcrumb__sep" aria-hidden="true">›</span>
+           <a class="breadcrumb__link" href="/admin/diseases">Diseases</a>
+         </li>
+         <li class="breadcrumb__item">
+           <span class="breadcrumb__sep" aria-hidden="true">›</span>
+           <span class="breadcrumb__current" aria-current="page">Parvovirus B19</span>
+         </li>
+       </ol>
+     </nav>
+
+   Modifier:
+     .breadcrumb--pill   Glass pill wrapper; used in the floating
+                         Navbar islands of the admin layout.
+
+   Depends on: tokens.css, base.css
+   ========================================================= */
+
+.breadcrumb {
+    display: inline-flex;
+    align-items: center;
+}
+
+/* =========================================================
+   LIST
+   ========================================================= */
+.breadcrumb__list {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: var(--breadcrumb-gap);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-family: var(--breadcrumb-font-family);
+    font-size: var(--breadcrumb-font-size);
+    color: var(--breadcrumb-fg);
+    white-space: nowrap;
+    line-height: 1;
+}
+
+/* =========================================================
+   ITEM
+   ========================================================= */
+.breadcrumb__item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--breadcrumb-gap);
+}
+
+/* =========================================================
+   SEPARATOR  ›
+   ========================================================= */
+.breadcrumb__sep {
+    color: var(--breadcrumb-separator-fg);
+    user-select: none;
+    flex-shrink: 0;
+}
+
+/* =========================================================
+   LINK — ancestor crumbs
+   ========================================================= */
+.breadcrumb__link {
+    color: inherit;
+    text-decoration: none;
+    transition: color .15s ease;
+}
+.breadcrumb__link:hover {
+    color: var(--breadcrumb-fg-hover);
+}
+.breadcrumb__link:focus-visible {
+    outline: 2px solid var(--outline-focus);
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+/* =========================================================
+   CURRENT — final (non-link) crumb
+   aria-current="page" is required on this element.
+   ========================================================= */
+.breadcrumb__current {
+    color: var(--breadcrumb-fg-current);
+    font-weight: var(--font-weight-semibold);
+}
+
+/* =========================================================
+   MODIFIER — PILL
+   Glass pill wrapper used in the floating Navbar islands.
+   Match the av2-island recipe (blur 22px / saturate 190%)
+   so the breadcrumb blends with the rest of the chrome.
+   ========================================================= */
+.breadcrumb--pill {
+    min-height: 48px;
+    padding: var(--spacing-2x) var(--spacing-5x);
+    border-radius: var(--radius-pill);
+    background: color-mix(in srgb, var(--white-base) 50%, transparent);
+    -webkit-backdrop-filter: blur(22px) var(--glass-saturate);
+            backdrop-filter: blur(22px) var(--glass-saturate);
+    border: var(--border-width-base) solid color-mix(in srgb, var(--white-base) 60%, transparent);
+    box-shadow:
+        var(--shadow-sm),
+        inset 0 1px 0 color-mix(in srgb, var(--white-base) 60%, transparent);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .breadcrumb--pill {
+        background: color-mix(in srgb, var(--white-base) 92%, transparent);
+    }
+}

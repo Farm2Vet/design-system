@@ -1,0 +1,53 @@
+/* =========================================================
+   PAGE — III-20 / Components / Breadcrumb
+   Page-scoped scaffolding for the Breadcrumb component page.
+
+   Depends on: tokens.css, base.css, breadcrumb.css,
+               page-III-02.css (.token-table),
+               page-III-03.css (.usage-note, .preview-stage)
+   ========================================================= */
+
+/* ---- Demo stage — simulates the page-header backdrop ---- */
+.crumb-stage {
+    display: flex;
+    align-items: center;
+    min-height: 80px;
+    padding: var(--spacing-4x) var(--spacing-8x);
+    background: linear-gradient(
+        160deg,
+        color-mix(in srgb, var(--primary-100) 30%, var(--background-default)) 0%,
+        color-mix(in srgb, var(--accent-100)  20%, var(--background-default)) 100%
+    );
+    border: var(--border-width-base) solid var(--border-default);
+    border-radius: var(--radius-md);
+}
+
+/* ---- States grid ---------------------------------------- */
+.crumb-states {
+    display: flex;
+    flex-direction: column;
+}
+
+.crumb-state-row {
+    display: grid;
+    grid-template-columns: 14ch 1fr;
+    align-items: center;
+    gap: var(--spacing-6x);
+    padding: var(--spacing-4x) 0;
+    border-top: var(--border-width-base) solid var(--border-default);
+}
+.crumb-state-row:first-child { border-top: none; }
+
+.crumb-state-row__label {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--letter-spacing-mono);
+    text-transform: uppercase;
+    color: var(--text-default-minimal);
+    margin: 0;
+}
+
+/* Static hover proxy */
+.breadcrumb__link[data-state="hover"] {
+    color: var(--breadcrumb-fg-hover);
+}

@@ -1471,7 +1471,8 @@
 :root {
     /* ---------- Shared shape ---------- */
     --tabs-font-family:    var(--font-sans);
-    --tabs-font-weight:    var(--font-weight-medium);
+    --tabs-font-weight:          var(--font-weight-medium);
+    --tabs-font-weight-selected: var(--font-weight-semibold);
     --tabs-letter-spacing: 0;
     --tabs-gap:            var(--space-gap-micro);
     --tabs-transition:     background-color .18s ease, color .18s ease,
@@ -1513,7 +1514,7 @@
        surface and indicator tokens below; foreground colour
        transitions are unified here so the system reads as
        one component family across visual treatments. */
-    --tabs-tab-fg:            var(--text-default-subtle);
+    --tabs-tab-fg:            var(--text-default-minimal);
     --tabs-tab-fg-hover:      var(--text-default);
     --tabs-tab-fg-selected:   var(--text-primary-strong);
     --tabs-tab-fg-disabled:   var(--text-default-disabled);
@@ -1532,6 +1533,8 @@
     --tabs-line-list-border:         var(--border-default);
     --tabs-line-indicator-bg:        var(--background-primary);
     --tabs-line-indicator-thickness: 2px;
+    --tabs-line-tab-fg-selected:     var(--text-default);
+    --tabs-line-gap:                 var(--spacing-6x);
 
     /* ---------- Variant: Enclosed (folder) ----------
        Tabs sit on a baseline like browser folder tabs;
@@ -1647,6 +1650,24 @@
     --pagination-jump-input-fg:     var(--text-default);
     --pagination-jump-input-border: var(--border-default);
     --pagination-jump-label-fg:     var(--text-default-subtle);
+
+    /* ---------- Dropzone (file-upload drop target) ----------
+       Stand-alone dashed-border upload surface. Distinct from
+       --form-file-* which scopes the inline file input inside
+       a form row. Over-state tints primary to signal readiness. */
+    --dropzone-bg:           var(--background-default-subtle);
+    --dropzone-bg-over:      var(--background-primary-subtle);
+    --dropzone-border:       var(--border-default-strong);
+    --dropzone-border-over:  var(--border-primary);
+    --dropzone-radius:       var(--radius-lg);
+    --dropzone-icon-bg:      var(--background-default-minimal);
+    --dropzone-icon:         var(--icon-default-subtle);
+    --dropzone-title-fg:     var(--text-default);
+    --dropzone-browse-fg:    var(--text-primary-strong);
+    --dropzone-hint-fg:      var(--text-default-minimal);
+    --dropzone-gap:          var(--space-tier-4);
+    --dropzone-pad-x:        var(--spacing-6x);
+    --dropzone-pad-y:        var(--space-tier-1);
 }
 
 /* ---------- Reduced-transparency override ----------
