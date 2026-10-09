@@ -84,6 +84,36 @@
     --neutral-900: #334b25;
     --neutral-950: #223617;
 
+    /* ---------- Neutral — Grey ----------
+       A SECOND NEUTRAL RAIL, standalone: plain, untinted greys (the
+       lemonade.com ramp, mapped step for step by role). It does not
+       replace Sage, and no semantic token here aliases it — Sage stays
+       the system's default neutral.
+       IN USE: the Farm2Vet platform (Chatbot Pro and the FIS) points its
+       --neutral-* ramp at this rail, so on that surface every semantic
+       built on neutral — text, borders, surfaces, icons — resolves to
+       grey. Roles there:
+         50   page, secondary surface        100  row hover
+         150  pressed, border                200  active, disabled fill
+         300  input border, disabled ink     400 / 500  icons
+         600  minimal ink                    700  subtle ink, default icon
+         900  body text (8.9:1 on white)     950  darkest
+       600 (#7b7b7b) measures 4.2:1 on white and 400 2.8:1: neither is a
+       text colour for body copy. 700 (5.7:1) is the quietest that is.
+       The platform also takes --white-base to pure #ffffff alongside it. */
+    --grey-50:  #f7f7f7;
+    --grey-100: #f3f3f3;
+    --grey-150: #ececec;
+    --grey-200: #dadada;
+    --grey-300: #b7b7b7;
+    --grey-400: #9b9b9b;
+    --grey-500: #8c8c8c;
+    --grey-600: #7b7b7b;
+    --grey-700: #666666;
+    --grey-800: #525252;
+    --grey-900: #4a4a4a;
+    --grey-950: #333333;
+
     /* ---------- Status families ----------
        Status rails are aligned with Apple system colors at the 500
        stop (systemRed / systemOrange / systemGreen / systemBlue,
@@ -281,8 +311,9 @@
        (segmented filter chip, future dark utility tooltips) where
        a brand-tinted dark would compete with primary actions.
        /* TODO: needs neutral ramp — --neutral-950 is brand-tinted
-          sage, not a true neutral; revisit once a pure-grey
-          primitive ramp lands. */
+          sage, not a true neutral. A pure-grey rail now exists
+          (--grey-*, see Primitives); re-pointing this to it is
+          still open. */
     --background-inverse:           var(--neutral-950);
     --text-on-inverse:              var(--white-base);
     --border-on-inverse-subtle:     color-mix(in srgb,
